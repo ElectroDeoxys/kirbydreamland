@@ -1,0 +1,29 @@
+ROM0
+	org $0000
+	"romheader"
+	org $0040
+	"vblank"
+	org $0048
+	"stat"
+	org $0050
+	"timer"
+	org $0150
+	"Home"
+ROMX 1
+	"Bank 1"
+ROMX 5
+	"Bank 5"
+ROMX 6
+	"Bank 6"
+WRAM0
+	"WRAM0"
+WRAMX 1
+	"WRAM1"
+VRAM $00
+	"VRAM0"
+VRAM $01
+	"VRAM1"
+SRAM $00
+	"SRAM0"
+HRAM
+	"HRAM"
