@@ -7,10 +7,6 @@ parser.add_argument('filenames', metavar='filenames', type=str, nargs='+',
 
 args = parser.parse_args()
 
-wramFile = open("src/wram.asm", 'w')
-sramFile = open("src/sram.asm", 'w')
-hramFile = open("src/hram.asm", 'w')
-
 addressSet = set()
 
 for filename in args.filenames:
@@ -24,16 +20,36 @@ for filename in args.filenames:
 
 for address in addressSet:
     fileStr = ""
+    addressPrefix = ""
     if 0xa000 <= address and address < 0xc000:
         fileStr = "src/sram.asm"
+        addressPrefix = "s"
     elif 0xc000 <= address and address < 0xe000:
         fileStr = "src/wram.asm"
+        addressPrefix = "w"
     elif 0xff80 <= address and address < 0xffff:
         fileStr = "src/hram.asm"
+        addressPrefix = "h"
     else:
         raise ValueError("Not within allowed range: " + str(address))
-    with open(fileStr, 'r+') as file:
-        matches = re.findall(" ; [a-df][0-9a-f]{3}", file.read())
-        for match in matches:
-            print(match.group())
+    
+    fileText = ""
+    pos = None
 
+    with open(fileStr, 'r') as file:
+        fileText = file.read()
+        matches = re.finditer(".* ; [a-df][0-9a-f]{3}\n", fileText)
+        for match in matches:
+            curAddress = int(match.group()[-6:], 16)
+            if curAddress > address:
+                pos = match.start()
+                break
+
+        if pos == None:
+            pos = len(fileText)
+
+    with open(fileStr, 'w') as file:
+        strToInsert = "w{:4x}".format(address) + ":: ; {:4x}\n".format(address) + "\tdb\n\n"
+        print(pos)
+        newFileText = fileText[:pos] + strToInsert + fileText[pos:]
+        file.write(newFileText)
