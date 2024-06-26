@@ -80,7 +80,7 @@ SECTION "Bank 5@4b30", ROMX[$4b30], BANK[$5]
 
 Func_14b30::
 	ld hl, $4b3a
-	ld de, $dc00
+	ld de, wdc00
 	call Decompress
 	ret
 ; 0x14b3a

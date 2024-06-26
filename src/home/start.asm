@@ -100,7 +100,7 @@ Func_150:
 	ldh [hff8c], a
 	jp $4783 ; Func_4783
 .asm_21e
-	ldh a, [$ff8e]
+	ldh a, [hff8e]
 	bit 4, a
 	jr z, .asm_22a
 	ldh a, [hJoypadPressed]

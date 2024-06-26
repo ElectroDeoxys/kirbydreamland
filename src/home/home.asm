@@ -735,7 +735,7 @@ SECTION "Home@21fb", ROM0[$21fb]
 ; input:
 ; - a = ?
 Func_21fb::
-	ld [$d3f2], a
+	ld [wd3f2], a
 	ld a, $ff
 	ld [wd096], a
 
@@ -749,32 +749,32 @@ Func_21fb::
 	jr z, .asm_2214
 	ld a, $0f
 .asm_2214
-	ld [$d3f0], a
+	ld [wd3f0], a
 	bankswitch
 	ld d, $00
-	ld a, [$d3f2]
+	ld a, [wd3f2]
 	and a
 	jr z, .asm_222b
 	dec a
 	ld hl, $40ce
 	jr .asm_2249
 .asm_222b
-	ld hl, $ff94
+	ld hl, hff94
 	bit 1, [hl]
 	jr z, .asm_223a
 	ld hl, $413a
-	ld a, [$d03b]
+	ld a, [wd03b]
 	jr .asm_2249
 .asm_223a
 	ld hl, $4000
-	ld a, [$d03b]
+	ld a, [wd03b]
 	ld e, a
 	add hl, de
 	add hl, de
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	ld a, [$d03e]
+	ld a, [wd03e]
 .asm_2249
 	ld e, a
 	add hl, de
@@ -782,31 +782,31 @@ Func_21fb::
 	add hl, de
 	add hl, de ; *16
 	ld a, [hli]
-	ld [$d3e5], a
+	ld [wd3e5], a
 	ld a, [hli]
-	ld [$d3e6], a
+	ld [wd3e6], a
 	ld a, [hli]
-	ld [$d3e7], a
+	ld [wd3e7], a
 	ld a, [hl]
-	ld [$d3e8], a
+	ld [wd3e8], a
 	pop af
 	bankswitch
 
 	call $231e ; Func_231e
 
 	xor a
-	ld [$d3e9], a
-	ld [$d3ea], a
-	ld [$d3eb], a
-	ld [$d3ec], a
-	ld [$d3ed], a
-	ld [$d3ee], a
-	ld [$d3be], a
-	ld [$d3c0], a
-	ld [$d3f7], a
-	ld [$d3c2], a
-	ld [$d3f5], a
-	ld [$d3f8], a
+	ld [wd3e9], a
+	ld [wd3ea], a
+	ld [wd3eb], a
+	ld [wd3ec], a
+	ld [wd3ed], a
+	ld [wd3ee], a
+	ld [wd3be], a
+	ld [wd3c0], a
+	ld [wd3f7], a
+	ld [wd3c2], a
+	ld [wd3f5], a
+	ld [wd3f8], a
 	inc a
 	ld hl, wd037
 	ld [hli], a
@@ -816,7 +816,7 @@ Func_21fb::
 	and $fc
 	ld [hff91], a
 
-	ld a, [$d03f]
+	ld a, [wd03f]
 	ld l, a
 	ld h, $00
 	add hl, hl
@@ -824,13 +824,13 @@ Func_21fb::
 	add hl, hl
 	add hl, hl ; *16
 	ld a, l
-	ld [$d3e3], a
+	ld [wd3e3], a
 	ld a, h
-	ld [$d3e4], a
-	ld a, [$d3f2]
+	ld [wd3e4], a
+	ld a, [wd3f2]
 	and a
 	jr nz, .asm_22c5
-	ld a, [$ff94]
+	ld a, [hff94]
 	and $02
 	jr nz, .asm_22c5
 	ld hl, $414e
@@ -839,48 +839,48 @@ Func_21fb::
 	jr c, .asm_22dd
 .asm_22c5
 	call $3199 ; Func_3199
-	ld hl, $d3ed
+	ld hl, wd3ed
 	ld a, [wd051]
 	cp [hl]
 	jr nz, .asm_22c5
 .asm_22d1
 	call $3199 ; Func_3199
-	ld hl, $d3ee
+	ld hl, wd3ee
 	ld a, [wd052]
 	cp [hl]
 	jr nz, .asm_22d1
 .asm_22dd
 	xor a
-	ld [$d3f6], a
-	ld [$d3cc], a
-	ld hl, $ff95
+	ld [wd3f6], a
+	ld [wd3cc], a
+	ld hl, hff95
 	bit 0, [hl]
 	ret nz
-	ld hl, $ff94
+	ld hl, hff94
 	bit 1, [hl]
 	ret nz
 	ld b, $00
-	ld hl, $d3df
+	ld hl, wd3df
 	ld a, [hli]
 	or [hl]
 	jr z, .asm_2305
-	ld hl, $ff95
+	ld hl, hff95
 	bit 6, [hl]
 	jr z, .asm_2303
 	call $3768 ; Func_3768
 .asm_2303
 	set 4, b
 .asm_2305
-	ld hl, $d3e1
+	ld hl, wd3e1
 	ld a, [hli]
 	or [hl]
 	jr z, .asm_230e
 	set 4, b
 .asm_230e
 	ld a, b
-	ld [$d1a0], a
+	ld [wd1a0], a
 	xor a
-	ld [$d190], a
+	ld [wd190], a
 	ret
 ; 0x2317
 
@@ -892,7 +892,7 @@ Func_2e9c:
 	ld a, $01
 	bankswitch
 	call $2fdf ; Func_2fdf
-	ld hl, $d3bf
+	ld hl, wd3bf
 	bit 0, [hl]
 	call nz, $4bb4
 	ld b, $10
@@ -900,7 +900,7 @@ Func_2e9c:
 .asm_2eb7
 	push bc
 	ld b, $00
-	ld hl, $d160
+	ld hl, wd160
 	add hl, bc
 	ld a, [hl]
 	and a
@@ -930,12 +930,12 @@ Func_2e9c:
 .asm_2eeb
 	push bc
 	ld b, $00
-	ld hl, $d160
+	ld hl, wd160
 	add hl, bc
 	ld a, [hl]
 	cp $01
 	jr nz, .asm_2f05
-	ld hl, $d35a
+	ld hl, wd35a
 	add hl, bc
 	add hl, bc
 	ld a, [hli]
@@ -958,7 +958,7 @@ Func_2e9c:
 .asm_2f19
 	push bc
 	ld b, $00
-	ld hl, $d160
+	ld hl, wd160
 	add hl, bc
 	ld a, [hl]
 	cp $01

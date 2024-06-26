@@ -15,7 +15,8 @@ hff8c:: ; ff8c
 hff8d:: ; ff8d
 	db
 
-	ds $1
+hff8e:: ; ff8e
+	db
 
 hHUDFlags:: ; ff8f
 	db
@@ -31,7 +32,11 @@ hff91:: ; ff91
 hff93:: ; ff93
 	db
 
-	ds $2
+hff94:: ; ff94
+	db
+
+hff95:: ; ff95
+	db
 
 hff96:: ; ff96
 	db
