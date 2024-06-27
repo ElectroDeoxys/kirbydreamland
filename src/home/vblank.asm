@@ -52,7 +52,7 @@ VBlank:
 	ld [hl], d
 .asm_1d6f
 	inc hl
-	dec [hl]
+	dec [hl] ; wd038
 	jr nz, .asm_1d82
 	ld d, $04
 	ld a, [wd036]

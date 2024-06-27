@@ -27,7 +27,8 @@ hff90:: ; ff90
 hff91:: ; ff91
 	db
 
-	ds $1
+hff92:: ; ff92
+	db
 
 hff93:: ; ff93
 	db

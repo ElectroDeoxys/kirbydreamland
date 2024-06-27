@@ -1,5 +1,6 @@
 import argparse
 import re 
+import warnings
 
 parser = argparse.ArgumentParser(description='Labels RAM addresses.')
 parser.add_argument('filenames', metavar='filenames', type=str, nargs='+',
@@ -35,6 +36,7 @@ for address in addressSet:
     
     fileText = ""
     pos = None
+    unlabeled = True
 
     with open(fileStr, 'r') as file:
         fileText = file.read()
@@ -44,12 +46,17 @@ for address in addressSet:
             if curAddress > address:
                 pos = match.start()
                 break
+            elif curAddress == address:
+                unlabeled = False
+                break
 
         if pos == None:
             pos = len(fileText)
 
-    with open(fileStr, 'w') as file:
-        strToInsert = "w{:4x}".format(address) + ":: ; {:4x}\n".format(address) + "\tdb\n\n"
-        print(pos)
-        newFileText = fileText[:pos] + strToInsert + fileText[pos:]
-        file.write(newFileText)
+    if unlabeled:
+        with open(fileStr, 'w') as file:
+            strToInsert = addressPrefix + "{:4x}".format(address) + ":: ; {:4x}\n".format(address) + "\tdb\n\n"
+            newFileText = fileText[:pos] + strToInsert + fileText[pos:]
+            file.write(newFileText)
+    else:
+        warnings.warn("Unhandled case: " + "{:4x}".format(address))

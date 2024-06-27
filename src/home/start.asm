@@ -90,7 +90,7 @@ Func_150:
 	xor a
 	ldh [hff8c], a
 .asm_20c
-	ldh a, [$ff94]
+	ldh a, [hff94]
 	bit 3, a
 	jr z, .asm_21e
 	xor a
