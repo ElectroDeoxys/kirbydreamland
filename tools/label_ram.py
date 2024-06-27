@@ -17,7 +17,9 @@ for filename in args.filenames:
             match = re.search("(\\$[a-d][0-9a-f]{3})|(\\$ff[8-9a-f][0-9a-f])\\b", line)
             if match == None:
                 continue
-            addressSet.add(int(match.group()[1:], 16))
+            address = int(match.group()[1:], 16)
+            if address != 0xffff:
+                addressSet.add(address)
 
 for address in addressSet:
     fileStr = ""

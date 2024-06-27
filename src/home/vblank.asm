@@ -6,7 +6,7 @@ VBlank:
 	push de
 	push hl
 	ld hl, hff8c
-	bit 6, [hl]
+	bit VBLANK_6_F, [hl]
 	jp z, .asm_1d9d
 	ld hl, hff91
 	bit 2, [hl]
@@ -27,8 +27,9 @@ VBlank:
 	call hTransferVirtualOAM
 
 	ldh a, [hff8c]
-	and $9f
+	and $ff ^ (VBLANK_5 | VBLANK_6)
 	ldh [hff8c], a
+
 	call Func_1dfb
 	call Func_1f08
 	call ReadJoypad

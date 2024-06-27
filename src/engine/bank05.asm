@@ -36,7 +36,7 @@ InitRAM::
 	ld [wBGP], a
 	ld a, $d0
 	ld [wOBP], a
-	ld a, $c0
+	ld a, VBLANK_6 | VBLANK_7
 	ld [hff8c], a
 	ld a, $00
 	ld [hff8d], a
@@ -129,7 +129,7 @@ Func_14dc5::
 	push hl
 	ld bc, $7
 .asm_14df3
-	ld hl, $de52
+	ld hl, wde52
 	add hl, bc
 	ld a, [hl]
 	and a

@@ -7,7 +7,7 @@ TitleScreen::
 	call ResetTimer
 
 	xor a
-	ld [wd095], a
+	ld [wVirtualOAMSize], a
 	ld [wSCX], a
 	ld [wOBP], a
 	ld [wBGP], a

@@ -80,13 +80,13 @@ Reset:
 	ldh [rBGP], a
 .asm_1f7
 	ldh a, [hff8c]
-	bit 5, a
+	bit VBLANK_5_F, a
 	jr nz, .asm_1f7
-	bit 6, a
+	bit VBLANK_6_F, a
 	jr nz, .asm_1f7
-	bit 4, a
+	bit VBLANK_4_F, a
 	jr z, .asm_20c
-	and $0f
+	and VBLANK_0 | VBLANK_1 | VBLANK_2 | VBLANK_3
 	jr nz, .asm_20c
 	xor a
 	ldh [hff8c], a
@@ -97,7 +97,7 @@ Reset:
 	xor a
 	ldh [hJoypadPressed], a
 	ldh a, [hff8c]
-	and $10
+	and VBLANK_4
 	ldh [hff8c], a
 	jp $4783 ; Func_4783
 .asm_21e

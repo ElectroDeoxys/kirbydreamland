@@ -6,7 +6,13 @@ wVirtualOAM:: ; c000
 	ds $4 * OAM_COUNT
 wVirtualOAMEnd::
 
-	ds $a60
+	ds $60
+
+wc100:: ; c100
+	ds $900
+
+wca00:: ; ca00
+	ds $100
 
 wTileQueue:: ; cb00
 	ds $3 * $100
@@ -93,6 +99,7 @@ wd05d:: ; d05d
 
 	ds $d
 
+wOAMFlagsOverride::
 wd06b:: ; d06b
 	db
 
@@ -157,7 +164,7 @@ wd093:: ; d093
 
 	ds $1
 
-wd095:: ; d095
+wVirtualOAMSize:: ; d095
 	db
 
 wd096:: ; d096
@@ -205,7 +212,7 @@ wd1a0:: ; d1a0
 wd1b0:: ; d1b0
 	ds $10
 
-wd1c0:: ; d1c0
+wSpriteOAMPtrs:: ; d1c0
 	ds $2 * $10
 
 wd1e0:: ; d1e0
@@ -290,7 +297,13 @@ wd3c4:: ; d3c4
 wd3cc:: ; d3cc
 	db
 
-	ds $9
+	ds $7
+
+wd3d4:: ; d3d4
+	db
+
+wd3d5:: ; d3d5
+	db
 
 wd3d6:: ; d3d6
 	db
@@ -304,7 +317,13 @@ wd3d8:: ; d3d8
 wd3d9:: ; d3d9
 	dw
 
-	ds $4
+wd3db:: ; d3db
+	db
+
+wd3dc:: ; d3dc
+	db
+
+	ds $2
 
 wd3df:: ; d3df
 	db
