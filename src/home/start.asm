@@ -58,7 +58,7 @@ Reset:
 	ld a, $05
 	ld [wInitialLives], a
 	ld a, $06
-	ld [wd088], a
+	ld [wInitialMaxHP], a
 	call TitleScreen
 	ld a, $0c
 	ld [wd050], a

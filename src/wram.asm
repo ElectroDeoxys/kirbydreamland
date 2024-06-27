@@ -97,9 +97,18 @@ wd05c:: ; d05c
 wd05d:: ; d05d
 	db
 
-	ds $d
+	ds $9
+
+wSoundCheckMusic:: ; d067
+	db
+
+wSoundCheckSFX:: ; d068
+	db
+
+	ds $2
 
 wOAMFlagsOverride::
+wMenuCursorPos::
 wd06b:: ; d06b
 	db
 
@@ -142,7 +151,7 @@ wOBP:: db ; d081
 
 wHP::	db ; d086
 wMaxHP:: db ; d087
-wd088::  db ; d088
+wInitialMaxHP::  db ; d088
 
 ; number of lives + 1, so in the HUD
 ; this number is subtracted by 1

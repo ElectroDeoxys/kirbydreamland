@@ -87,8 +87,10 @@ Func_14b30::
 	ret
 ; 0x14b3a
 
+SECTION "Bank 5@4d53", ROMX[$4d53], BANK[$5]
 
-SECTION "Bank 5@4d67", ROMX[$4d67], BANK[$5]
+Data_14d53:
+	db $08, $00, $08, $00, $80, $00, $00, $08, $00, $80, $80, $00, $00, $00, $80, $00, $00, $08, $00, $80
 
 Func_14d67:
 
@@ -104,7 +106,7 @@ Func_14dc5::
 	dec c
 	jr nz, .loop_clear
 
-	ld hl, $4d53
+	ld hl, Data_14d53
 	ld de, wde2e
 	ld c, $14
 .loop
@@ -118,7 +120,7 @@ Func_14dc5::
 	ret z
 	ld e, b
 	ld d, $00
-	ld hl, $79f3
+	ld hl, Data_179f3
 	add hl, de
 	add hl, de
 	ld a, [hli]
@@ -149,3 +151,63 @@ Func_14dc5::
 	ret
 
 Func_14e0b::
+
+SECTION "Bank 5@79f3", ROMX[$79f3], BANK[$5]
+
+Data_179f3:
+	dw $54df
+	dw $54ec
+	dw $54f9
+	dw $5506
+	dw $5513
+	dw $551a
+	dw $5527
+	dw $5534
+	dw $553e
+	dw $554b
+	dw $5558
+	dw $5565
+	dw $5572
+	dw $557f
+	dw $558c
+	dw $5599
+	dw $55a6
+	dw $55b3
+	dw $55c0
+	dw $707e
+	dw $7085
+	dw $708c
+	dw $7090
+	dw $7094
+	dw $7098
+	dw $709c
+	dw $70a3
+	dw $70aa
+	dw $70ae
+	dw $70b2
+	dw $70b6
+	dw $70ba
+	dw $70c1
+	dw $70c8
+	dw $70cc
+	dw $70d0
+	dw $70d4
+	dw $70d8
+	dw $70dc
+	dw $70e0
+	dw $70e4
+	dw $70e8
+	dw $70ef
+	dw $70f9
+	dw $7106
+	dw $710a
+	dw $710e
+	dw $7112
+	dw $7116
+	dw $7120
+	dw $7124
+	dw $7128
+	dw $712c
+	dw $7139
+	dw $7140
+; 0x17a61

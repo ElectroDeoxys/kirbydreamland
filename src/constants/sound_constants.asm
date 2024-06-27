@@ -5,6 +5,22 @@
 	const MUSIC_03          ; $03
 	const MUSIC_04          ; $04
 	const MUSIC_TITLESCREEN ; $05
+	const MUSIC_06          ; $06
+	const MUSIC_07          ; $07
+	const MUSIC_08          ; $08
+	const MUSIC_09          ; $09
+	const MUSIC_10          ; $0a
+	const MUSIC_11          ; $0b
+	const MUSIC_12          ; $0c
+	const MUSIC_13          ; $0d
+	const MUSIC_14          ; $0e
+	const MUSIC_15          ; $0f
+	const MUSIC_16          ; $10
+	const MUSIC_17          ; $11
+	const MUSIC_18          ; $12
+DEF NUM_MUSICS EQU const_value
+	const_def $ff
+	const MUSIC_NONE        ; $ff
 
 	const_def
 	const SFX_00 ; $00
@@ -17,27 +33,31 @@
 	const SFX_07 ; $07
 	const SFX_08 ; $08
 	const SFX_09 ; $09
-	const SFX_0A ; $0a
-	const SFX_0B ; $0b
-	const SFX_0C ; $0c
-	const SFX_0D ; $0d
-	const SFX_0E ; $0e
-	const SFX_0F ; $0f
-	const SFX_10 ; $10
-	const SFX_11 ; $11
-	const SFX_12 ; $12
-	const SFX_13 ; $13
-	const SFX_14 ; $14
-	const SFX_15 ; $15
-	const SFX_16 ; $16
-	const SFX_17 ; $17
-	const SFX_18 ; $18
-	const SFX_19 ; $19
-	const SFX_1A ; $1a
+	const SFX_10 ; $0a
+	const SFX_11 ; $0b
+	const SFX_12 ; $0c
+	const SFX_13 ; $0d
+	const SFX_14 ; $0e
+	const SFX_15 ; $0f
+	const SFX_16 ; $10
+	const SFX_17 ; $11
+	const SFX_18 ; $12
+	const SFX_19 ; $13
+	const SFX_20 ; $14
+	const SFX_21 ; $15
+	const SFX_22 ; $16
+	const SFX_23 ; $17
+	const SFX_24 ; $18
+	const SFX_25 ; $19
+	const SFX_CURSOR ; $1a
 	const SFX_GAME_START ; $1b
-	const SFX_1C ; $1c
-	const SFX_1D ; $1d
-	const SFX_1E ; $1e
-	const SFX_1F ; $1f
-	const SFX_20 ; $20
-	const SFX_21 ; $21
+	const SFX_28 ; $1c
+	const SFX_29 ; $1d
+	const SFX_30 ; $1e
+	const SFX_31 ; $1f
+	const SFX_32 ; $20
+DEF NUM_SOUNDCHECK_SFX EQU const_value
+	const SFX_33 ; $21
+DEF NUM_SFX EQU const_value
+	const_def $ff
+	const SFX_NONE ; $ff

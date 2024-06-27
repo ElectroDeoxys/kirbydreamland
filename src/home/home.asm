@@ -1,6 +1,6 @@
 SECTION "Home@0648", ROM0[$0648]
 
-Func_648:
+Func_648::
 	push hl
 	ldh a, [hff91]
 	and $fb
@@ -188,7 +188,7 @@ ClearSprites::
 
 SECTION "Home@1c01", ROM0[$1c01]
 
-InitWindow:
+InitWindow::
 	ld a, $a0
 	ldh [rWX], a
 	ld a, $90
@@ -233,7 +233,7 @@ CalculateBCPercentage:
 ; - a = ones digit
 ; - b = tens digit
 ; - c = hundreds digit
-GetDigits:
+GetDigits::
 	ld b, -1
 	ld c, b
 .loop_hundreds
@@ -392,7 +392,7 @@ PlayMusic::
 	cp MUSIC_TITLESCREEN
 	jr z, .play_music
 	ld a, [wCurSFX]
-	cp SFX_21
+	cp SFX_33
 	jr z, .play_music
 	ld a, [wCurMusic]
 	cp c
@@ -1038,7 +1038,7 @@ assert Data_1c0ce == Data_3c0ce
 SECTION "Home@231e", ROM0[$231e]
 
 ; clears wd160
-Func_231e:
+Func_231e::
 	ld b, $10
 	ld hl, wd160
 	xor a
@@ -2998,7 +2998,7 @@ MultiplyHLBy16:
 	ld a, h
 	ret
 
-Func_2e9c:
+Func_2e9c::
 	ld a, [wROMBank]
 	push af
 	ld a, $01
