@@ -5,7 +5,6 @@ src/audio.o \
 src/home.o \
 src/hram.o \
 src/main.o \
-src/sram.o \
 src/wram.o
 
 kirbydreamland_obj := $(rom_obj:.o=.o)
