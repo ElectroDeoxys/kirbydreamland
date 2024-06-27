@@ -13,9 +13,9 @@ Func_150:
 
 	ld a, BANK("Bank 5")
 	bankswitch
-	call Func_14ad6
-	call InitTransferVirtualOAMFunction
-	call Func_193b
+	call InitRAM
+	call InitDMATransferFunction
+	call ClearSprites
 	call Func_21bb
 	call Func_14b30
 

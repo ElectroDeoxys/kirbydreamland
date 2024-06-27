@@ -170,12 +170,22 @@ wd099:: ; d099
 	ds $7
 
 wd0a0:: ; d0a0
-	ds $30
+	ds $3 * $10
 
 wd0d0:: ; d0d0
-	ds $30
+	ds $3 * $10
 
-	ds $60
+wd100:: ; d100
+	ds $2 * $10
+
+wd120:: ; d120
+	ds $2 * $10
+
+wd140:: ; d140
+	ds $10
+
+wd150:: ; d150
+	ds $10
 
 wd160:: ; d160
 	ds $10
@@ -196,10 +206,10 @@ wd1b0:: ; d1b0
 	ds $10
 
 wd1c0:: ; d1c0
-	ds $20
+	ds $2 * $10
 
 wd1e0:: ; d1e0
-	ds $20
+	ds $2 * $10
 
 wd200:: ; d200
 	ds $10
@@ -207,25 +217,46 @@ wd200:: ; d200
 	ds $a
 
 wd21a:: ; d21a
-	ds $20
+	ds $2 * $10
 
 wd23a:: ; d23a
-	ds $20
+	ds $2 * $10
 
 wd25a:: ; d25a
-	ds $60
+	ds $2 * $10
+
+wd27a:: ; d27a
+	ds $2 * $10
+
+wd29a:: ; d29a
+	ds $10
+
+wd2aa:: ; d2aa
+	ds $10
 
 wd2ba:: ; d2ba
-	ds $20
+	ds $2 * $10
 
 wd2da:: ; d2da
-	ds $20
+	ds $2 * $10
 
 wd2fa:: ; d2fa
-	ds $60
+	ds $2 * $10
+
+wd31a:: ; d31a
+	ds $2 * $10
+
+wd33a:: ; d33a
+	ds $10
+
+wd34a:: ; d34a
+	ds $10
 
 wd35a:: ; d35a
-	ds $40
+	ds $2 * $10
+
+wd37a:: ; d37a
+	ds $2 * $10
 
 wd39a:: ; d39a
 	ds $10
@@ -267,7 +298,13 @@ wd3d6:: ; d3d6
 wd3d7:: ; d3d7
 	db
 
-	ds $7
+wd3d8:: ; d3d8
+	db
+
+wd3d9:: ; d3d9
+	dw
+
+	ds $4
 
 wd3df:: ; d3df
 	db
@@ -308,7 +345,8 @@ wd3ed:: ; d3ed
 wd3ee:: ; d3ee
 	db
 
-	ds $1
+wd3ef:: ; d3ef
+	db
 
 wd3f0:: ; d3f0
 	db

@@ -1,6 +1,8 @@
 SECTION "Bank 5@4ad6", ROMX[$4ad6], BANK[$5]
 
-Func_14ad6::
+; clears WRAM and HRAM
+; and inits some variables
+InitRAM::
 	ld hl, STARTOF(WRAM0)
 .loop_clear_wram
 	xor a
@@ -53,7 +55,7 @@ Func_14ad6::
 
 SECTION "Bank 5@4abe", ROMX[$4abe], BANK[$5]
 
-InitTransferVirtualOAMFunction::
+InitDMATransferFunction::
 	ld c, LOW(hTransferVirtualOAM)
 	ld b, .end - .Func
 	ld hl, .Func
@@ -84,6 +86,10 @@ Func_14b30::
 	call Decompress
 	ret
 ; 0x14b3a
+
+SECTION "Bank 5@4dc5", ROMX[$4dc5], BANK[$5]
+
+
 
 SECTION "Bank 5@4e0b", ROMX[$4e0b], BANK[$5]
 

@@ -3,7 +3,7 @@ SECTION "Bank 6@4000", ROMX[$4000], BANK[$6]
 Func_18000::
 	ld a, $ff
 	ld [wd096], a
-	call Func_193b
+	call ClearSprites
 	call ResetTimer
 
 	xor a
