@@ -87,10 +87,65 @@ Func_14b30::
 	ret
 ; 0x14b3a
 
+
+SECTION "Bank 5@4d67", ROMX[$4d67], BANK[$5]
+
+Func_14d67:
+
 SECTION "Bank 5@4dc5", ROMX[$4dc5], BANK[$5]
 
+Func_14dc5::
+	ld b, a
+	ld hl, wde56
+	ld c, $04
+	xor a
+.loop_clear
+	ld [hli], a
+	dec c
+	jr nz, .loop_clear
 
-
-SECTION "Bank 5@4e0b", ROMX[$4e0b], BANK[$5]
+	ld hl, $4d53
+	ld de, wde2e
+	ld c, $14
+.loop
+	ld a, [hli]
+	ld [de], a
+	inc de
+	dec c
+	jr nz, .loop
+	ld a, $ff
+	cp b
+	ret z
+	ld e, b
+	ld d, $00
+	ld hl, $79f3
+	add hl, de
+	add hl, de
+	ld a, [hli]
+	ld e, a
+	ld d, [hl]
+	ld a, [de]
+	ld h, a
+	push hl
+	ld bc, $7
+.asm_14df3
+	ld hl, $de52
+	add hl, bc
+	ld a, [hl]
+	and a
+	jr nz, .asm_14e03
+	call Func_14d67
+	pop hl
+	dec h
+	push hl
+	jr z, .done
+.asm_14e03
+	dec c
+	ld a, $03
+	cp c
+	jr nz, .asm_14df3
+.done
+	pop hl
+	ret
 
 Func_14e0b::

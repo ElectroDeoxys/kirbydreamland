@@ -4,6 +4,7 @@ Func_150:
 	cp $91
 	jr c, .wait_vblank
 
+Reset:
 	; reset LCDC
 	xor a
 	ldh [rLCDC], a
@@ -50,7 +51,7 @@ Func_150:
 
 	xor a
 	ldh [hff8c], a
-	ld [wd03a], a
+	ld [wExtraGameEnabled], a
 
 	ld a, $06
 	bankswitch
@@ -58,13 +59,13 @@ Func_150:
 	ld [wInitialLives], a
 	ld a, $06
 	ld [wd088], a
-	call Func_18000
+	call TitleScreen
 	ld a, $0c
 	ld [wd050], a
 	ld a, [wInitialLives]
 	ld [wLives], a
-	call $231e ; Func_231e
-	ld a, [wd03a]
+	call Func_231e
+	ld a, [wExtraGameEnabled]
 	ld [wd039], a
 
 	ld a, $06

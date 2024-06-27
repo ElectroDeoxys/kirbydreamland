@@ -95,7 +95,7 @@ ENDR
 	ei
 	call Func_648
 	call ResetTimer
-	jp $156 ; Func_156
+	jp Reset
 
 .no_reset
 	ld a, [wd050]
@@ -204,6 +204,33 @@ Func_1d01:
 	ret
 ; 0x1d16
 
+SECTION "Home@1dc3", ROM0[$1dc3]
+
+; waits a number of frames
+; input:
+; - a = number of frames
+DoFrames::
+	push hl
+	ld hl, hff8c
+.loop
+	set 6, [hl]
+.asm_1dc9
+	bit 6, [hl]
+	jr nz, .asm_1dc9
+	push hl
+	push af
+	xor a
+	ld [wd095], a
+	call Func_2e9c
+	call ClearSprites
+	pop af
+	pop hl
+	dec a
+	jr nz, .loop
+	pop hl
+	ret
+; 0x1de0
+
 SECTION "Home@1dfb", ROM0[$1dfb]
 
 Func_1dfb:
@@ -241,7 +268,16 @@ Func_1e2e:
 	ret
 ; 0x1e48
 
-SECTION "Home@1e74", ROM0[$1e74]
+SECTION "Home@1e67", ROM0[$1e67]
+
+StopTimerAndSwitchOnLCD::
+	ld a, TACF_STOP
+	ldh [rTAC], a
+	ldh a, [hLCDC]
+	set LCDCB_ON, a
+	ldh [hLCDC], a
+	ldh [rLCDC], a
+	ret
 
 ResetTimer::
 	ld hl, hLCDC
@@ -253,39 +289,58 @@ ResetTimer::
 	jr nz, .asm_1e7e
 	ld a, TACF_STOP
 	ldh [rTAC], a
-	ld a, $bc
+	; sets timer to interrupt at
+	; 4k Hz / 68 ~ 60 Hz
+	ld a, $100 - 68
 	ldh [rTMA], a
-	ld a, TACF_START
+	ld a, TACF_4KHZ | TACF_START
 	ldh [rTAC], a
 	ret
 ; 0x1e8f
 
-SECTION "Home@1eb4", ROM0[$1eb4]
+SECTION "Home@1e96", ROM0[$1e96]
 
 ; input:
-; - a = ?
-Func_1eb4::
+; - a = SFX_* constant
+PlaySFX::
 	push bc
+	ld [wCurSFX], a
 	ld c, a
-	cp $05
-	jr z, .asm_1ec7
-	ld a, [wd02e]
-	cp $21
-	jr z, .asm_1ec7
-	ld a, [wd02d]
-	cp c
-	jr z, .done
-.asm_1ec7
 	ld a, [wROMBank]
 	push af
-	ld a, $5
+	ld a, $05
 	bankswitch
 	ld a, c
-	ld [wd02d], a
-	call $4dc5 ; Func_14dc5
+	call $4c9e ; Func_14c9e
 	pop af
 	bankswitch
-.done
+	pop bc
+	ret
+
+; input:
+; - a = MUSIC_* constant
+PlayMusic::
+	push bc
+	ld c, a
+	cp MUSIC_TITLESCREEN
+	jr z, .play_music
+	ld a, [wCurSFX]
+	cp SFX_21
+	jr z, .play_music
+	ld a, [wCurMusic]
+	cp c
+	jr z, .skip ; already playing
+.play_music
+	ld a, [wROMBank]
+	push af
+	ld a, BANK(Func_14dc5)
+	bankswitch
+	ld a, c
+	ld [wCurMusic], a
+	call Func_14dc5
+	pop af
+	bankswitch
+.skip
 	pop bc
 	ret
 
@@ -784,7 +839,8 @@ Func_21fb::
 	and a
 	jr z, .asm_222b
 	dec a
-	ld hl, $40ce
+assert Data_1c0ce == Data_3c0ce
+	ld hl, Data_1c0ce ; aka Data_3c0ce
 	jr .asm_2249
 .asm_222b
 	ld hl, hff94
@@ -798,7 +854,7 @@ Func_21fb::
 	ld a, [wd03b]
 	ld e, a
 	add hl, de
-	add hl, de ; *4
+	add hl, de
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
@@ -808,7 +864,7 @@ Func_21fb::
 	add hl, de
 	add hl, de
 	add hl, de
-	add hl, de ; *16
+	add hl, de
 	ld a, [hli]
 	ld [wd3e5 + 0], a
 	ld a, [hli]
@@ -2490,7 +2546,7 @@ Func_2fdf:
 	cp $78
 	ret nz
 	ld a, [wd03c]
-	jp Func_1eb4
+	jp PlayMusic
 ; 0x3076
 
 SECTION "Home@3199", ROM0[$3199]

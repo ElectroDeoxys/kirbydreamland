@@ -21,10 +21,10 @@ wd02b:: db ; d02b
 wROMBank:: ; d02c
 	db
 
-wd02d:: ; d02d
+wCurMusic:: ; d02d
 	db
 
-wd02e:: ; d02e
+wCurSFX:: ; d02e
 	db
 
 wd02f:: ; d02f
@@ -41,7 +41,7 @@ wd036:: db ; d036
 wd037:: db ; d037
 wd038:: db ; d038
 wd039:: db ; d039
-wd03a:: db ; d03a
+wExtraGameEnabled:: db ; d03a
 
 wd03b:: ; d03b
 	db
@@ -374,3 +374,19 @@ wd3f8:: ; d3f8
 
 wdc00:: ; dc00
 	db
+
+	ds $22d
+
+wde2e:: ; de2e
+	ds $14
+
+	ds $10
+
+wde52:: ; de52
+	db
+
+	ds $3
+
+wde56:: ; de56
+	ds $4
+

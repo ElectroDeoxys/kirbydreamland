@@ -1,6 +1,6 @@
 SECTION "Bank 6@4000", ROMX[$4000], BANK[$6]
 
-Func_18000::
+TitleScreen::
 	ld a, $ff
 	ld [wd096], a
 	call ClearSprites
@@ -14,6 +14,7 @@ Func_18000::
 	ld a, $00 ; unnecessary
 	ld [wSCY], a
 
+	; load graphics
 	ld hl, $4000
 	ld de, v0Tiles0
 	ld c, $02
@@ -35,45 +36,51 @@ Func_18000::
 	ld c, $03
 	call FarDecompress
 
-	ld a, $05
-	call Func_1eb4
+	ld a, MUSIC_TITLESCREEN
+	call PlayMusic
 
 	ld a, $01
 	call Func_21fb
-	call $1e67 ; Func_1e67
+
+	call StopTimerAndSwitchOnLCD
+
 	xor a
 	ld [hff90], a
 	ld a, $04
 	ld [hHUDFlags], a
-	call .Func_180a0
-	ld a, $01
-	call $1dc3 ; Func_1dc3
+	call .PrintExtraGameText
+
+	ld a, 1
+	call DoFrames
 	call Func_670
 	ld a, $08
 	ld [wd050], a
-.asm_1807a
-	ld a, $01
-	call $1dc3 ; Func_1dc3
+
+; loop until player presses Start
+.loop
+	ld a, 1
+	call DoFrames
 	ld a, [hJoypadPressed]
-	cp $86
+	cp B_BUTTON | SELECT | D_DOWN
 	jp z, $6386 ; Func_1a386
-	cp $45
-	jr nz, .asm_18093
-	ld a, $01
-	ld [wd03a], a
-	call .Func_180a0
-.asm_18093
+	cp A_BUTTON | SELECT | D_UP
+	jr nz, .no_extra_game
+	ld a, TRUE
+	ld [wExtraGameEnabled], a
+	call .PrintExtraGameText
+.no_extra_game
 	ld a, [hJoypadPressed]
-	and $08
-	jr z, .asm_1807a
-	ld a, $1b
-	call $1e96 ; Func_1e96
+	and START
+	jr z, .loop
+
+	ld a, SFX_GAME_START
+	call PlaySFX
 	ret
 
-.Func_180a0:
-	ld a, [wd03a]
+.PrintExtraGameText:
+	ld a, [wExtraGameEnabled]
 	and a
-	ret z
+	ret z ; Extra Game not enabled
 	ld bc, $9945
 	ld de, .tile_indices
 	ld hl, wTileQueue
