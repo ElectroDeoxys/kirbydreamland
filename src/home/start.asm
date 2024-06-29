@@ -64,13 +64,13 @@ Reset:
 	ld [wd050], a
 	ld a, [wInitialLives]
 	ld [wLives], a
-	call Func_231e
+	call Clearwd160
 	ld a, [wExtraGameEnabled]
 	ld [wd039], a
 
 	ld a, $06
 	bankswitch
-	call $40e4 ; Func_180e4
+	call Func_180e4
 
 	ld a, $01
 	bankswitch

@@ -6,11 +6,11 @@ TitleScreen::
 
 	xor a
 	ld [wVirtualOAMSize], a
-	ld [wSCX], a
+	ld [wSCX + 0], a
 	ld [wOBP], a
 	ld [wBGP], a
 	ld a, $00 ; unnecessary
-	ld [wSCY], a
+	ld [wSCY + 0], a
 
 	; load graphics
 	ld hl, $4000
@@ -108,6 +108,203 @@ TitleScreen::
 .tile_ids_end
 ; 0x180d4
 
+SECTION "Bank 6@40e4", ROMX[$40e4], BANK[$6]
+
+Func_180e4::
+	ld a, $ff
+	ld [wd096], a
+	call ClearSprites
+	xor a
+	ld [hff90], a
+	ld [wd3f1], a
+	ld hl, wd3df
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	ld [hl], a
+	ld [wd3be], a
+	ld a, [wd03b]
+	ld b, a
+	add a
+	add a
+	add a
+	sub b
+	ld c, a
+	ld b, $00
+	ld hl, $388e
+	add hl, bc
+	push hl
+	ld bc, $5
+	add hl, bc
+	ld a, [hli]
+	cp $01
+	jr z, .asm_1811a
+	ld a, $c8
+	jr .asm_1811c
+.asm_1811a
+	ld a, $cc
+.asm_1811c
+	ld [hff90], a
+	push hl
+	xor a
+	ld [hff8c], a
+	ld [hff8d], a
+	call Func_648
+	ld a, SFX_NONE
+	call PlaySFX
+	ld a, MUSIC_NONE
+	call PlayMusic
+	pop hl
+	ld a, [hff95]
+	bit 7, a
+	jr nz, .asm_18142
+	call InitWindow
+	call $42e8 ; Func_182e8
+.asm_18142
+	ld a, $ff
+	ld [wd096], a
+	call Clearwd160
+	call Func_648
+	call Func_1c0a
+	call ResetTimer
+	call $4285 ; Func_18285
+	ld d, $00
+	ld a, [wd03b]
+	ld c, a
+	add a
+	add c
+	ld b, $00
+	ld c, a
+	ld hl, $20a2
+	add hl, bc
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld d, a
+	ld a, [hli]
+	ld e, a
+	ld h, d
+	ld l, e
+	ld de, wc600
+	call FarDecompress
+	ld a, $32
+	ld [hHUDFlags], a
+	ld a, $15
+	ld [wd07e], a
+	ld a, $16
+	ld [wd065], a
+	xor a
+	ld hl, wd082
+	ld [hli], a
+	ld [hl], a ; wHP
+	ld [hff8d], a
+	ld [hff8e], a
+	ld [hff92], a
+	ld [hff93], a
+	ld [wd064], a
+	ld [wSCX + 0], a
+	ld [wSCY + 0], a
+	ld [wSCX + 1], a
+	ld [wSCY + 1], a
+	ld [wd078], a
+	ld [wd079], a
+	ld a, $20
+	ld [wd07c], a
+	ld a, $0e
+	ld [wd07d], a
+	ld a, $01
+	ld [wd076], a
+	ld a, $33
+	ld [wd077], a
+	ld a, [wMaxHP]
+	ld [wHP], a
+	xor a
+	ld [wVirtualOAMSize], a
+	call ClearSprites
+	pop hl
+	ld a, [hli]
+	ld [wd03e], a
+	push hl
+	call StopTimerAndSwitchOnLCD
+	call Func_19c9
+	call Func_19f9
+	pop hl
+	ld a, [hli]
+	ld [wd051], a
+	ld a, [hli]
+	ld [wd052], a
+	ld a, [hli]
+	ld [wd05c], a
+	ld a, [hli]
+	ld [wd05d], a
+	ld a, [wd03b]
+	ld e, a
+	ld d, $00
+	ld hl, StageMusics
+	add hl, de
+	ld a, [hl]
+	ld [wd03c], a
+	ld bc, $0
+	ld a, $04
+	cp e
+	jr nz, .asm_1821e
+	ld hl, hff95
+	bit 7, [hl]
+	jr z, .asm_1821e
+	ld a, $33
+	ld [wd051], a
+	ld a, $01
+	ld [wd052], a
+	ld a, $48
+	ld [wd05c], a
+	ld a, $70
+	ld [wd05d], a
+	ld bc, $32
+.asm_1821e
+	ld hl, wc100
+	add hl, bc
+	call Func_1964
+	xor a
+	ld [wVirtualOAMSize], a
+	call Func_21fb
+	call Func_139b
+	call Clearwd3c4
+	call ClearSprites
+	ld a, [wd03b]
+	cp $04
+	jr nz, .asm_1824a
+	ld hl, hff94
+	res 2, [hl]
+	ld a, [hff95]
+	bit 7, a
+	jr nz, .asm_1824a
+	set 2, [hl]
+.asm_1824a
+	ld hl, hff95
+	res 7, [hl]
+	ld a, [hff95]
+	bit 7, a
+	jr z, .asm_18263
+	ld a, [wd03b]
+	cp $04
+	jr z, .asm_18263
+	ld a, [wd03c]
+	call PlayMusic
+.asm_18263
+	call SetFullHP
+	call StopTimerAndSwitchOnLCD
+	call Func_670
+	call Func_8dc
+	ret
+
+StageMusics:
+	db MUSIC_13
+	db MUSIC_16
+	db MUSIC_14
+	db MUSIC_15
+	db MUSIC_18
+; 0x18275
+
 SECTION "Bank 6@5098", ROMX[$5098], BANK[$6]
 
 Func_19098:
@@ -139,11 +336,11 @@ SECTION "Bank 6@6386", ROMX[$6386], BANK[$6]
 ConfigurationMenu:
 	call Func_648
 	call ResetTimer
-	call Func_231e
+	call Clearwd160
 	call InitWindow
 	xor a
-	ld [wSCX], a
-	ld [wSCY], a
+	ld [wSCX + 0], a
+	ld [wSCY + 0], a
 	ld a, $ff
 	ld [wd096], a
 	call ClearSprites

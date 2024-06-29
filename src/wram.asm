@@ -9,7 +9,10 @@ wVirtualOAMEnd::
 	ds $60
 
 wc100:: ; c100
-	ds $900
+	ds $500
+
+wc600:: ; c600
+	ds $400
 
 wca00:: ; ca00
 	ds $100
@@ -64,12 +67,46 @@ wd03e:: ; d03e
 wd03f:: ; d03f
 	db
 
-	ds $8
+wd040:: ; d040
+	db
+
+wd041:: ; d041
+	db
+
+wd042:: ; d042
+	db
+
+wd043:: ; d043
+	db
+
+wd044:: ; d044
+	db
+
+wd045:: ; d045
+	db
+
+wd046:: ; d046
+	db
+
+wd047:: ; d047
+	db
 
 wd048:: ; d048
 	db
 
-	ds $6
+wd049:: ; d049
+	db
+
+wd04a:: ; d04a
+	db
+
+wd04b:: ; d04b
+	db
+
+wd04c:: ; d04c
+	db
+
+	ds $2
 
 wJoypadDown:: ; d04f
 	db
@@ -86,7 +123,13 @@ wd052:: ; d052
 wSCX:: dw ; d053
 wSCY:: dw ; d055
 
-	ds $4
+wd057:: ; d057
+	db
+
+wd058:: ; d058
+	db
+
+	ds $2
 
 wd05b:: ; d05b
 	db
@@ -97,7 +140,15 @@ wd05c:: ; d05c
 wd05d:: ; d05d
 	db
 
-	ds $9
+	ds $6
+
+wd064:: ; d064
+	db
+
+wd065:: ; d065
+	db
+
+	ds $1
 
 wSoundCheckMusic:: ; d067
 	db
@@ -115,7 +166,12 @@ wd06b:: ; d06b
 wd06c:: ; d06c
 	db
 
-	ds $7
+	ds $1
+
+wd06e:: ; d06e
+	db
+
+	ds $5
 
 wd074:: ; d074
 	db
@@ -128,7 +184,11 @@ wd076:: ; d076
 wd077:: ; d077
 	db
 
-	ds $2
+wd078:: ; d078
+	db
+
+wd079:: ; d079
+	db
 
 wd07a:: ; d07a
 	db
@@ -142,12 +202,22 @@ wd07c:: ; d07c
 wd07d:: ; d07d
 	db
 
-	ds $2
+wd07e:: ; d07e
+	db
+
+wd07f:: ; d07f
+	db
 
 wBGP:: db ; d080
 wOBP:: db ; d081
 
-	ds $4
+wd082:: ; d082
+	db
+
+wd083:: ; d083
+	db
+
+	ds $2
 
 wHP::	db ; d086
 wMaxHP:: db ; d087
@@ -171,7 +241,8 @@ wd08e:: ; d08e
 wd093:: ; d093
 	db
 
-	ds $1
+wd094:: ; d094
+	db
 
 wVirtualOAMSize:: ; d095
 	db
@@ -299,9 +370,7 @@ wd3c2:: ; d3c2
 	ds $1
 
 wd3c4:: ; d3c4
-	db
-
-	ds $7
+	ds $8
 
 wd3cc:: ; d3cc
 	db
@@ -379,7 +448,8 @@ wd3ef:: ; d3ef
 wd3f0:: ; d3f0
 	db
 
-	ds $1
+wd3f1:: ; d3f1
+	db
 
 wd3f2:: ; d3f2
 	db

@@ -118,6 +118,391 @@ ENDR
 	ret
 ; 0x6ec
 
+SECTION "Home@08dc", ROM0[$08dc]
+
+Func_8dc::
+	ldh a, [hff8e]
+	bit 7, a
+	ret nz
+	ldh a, [hff92]
+	and $04
+	ret nz
+	ldh a, [hff8d]
+	bit 7, a
+	ret nz
+	set 7, a
+	set 0, a
+	ldh [hff8d], a
+	ldh a, [hff92]
+	and $b3
+	ldh [hff92], a
+	ld a, $16
+	ld [wd065], a
+	xor a
+	ld [wd064], a
+	ld [wd078], a
+	ld [wd079], a
+	ld a, $02
+	ld [wd07a], a
+	ld a, $00
+	ld [wd07b], a
+	ldh a, [hff8c]
+	or $18
+	ldh [hff8c], a
+	ret
+; 0x917
+
+SECTION "Home@131a", ROM0[$131a]
+
+Func_131a:
+	push bc
+	push hl
+	ld l, a
+	ld h, $00
+	add hl, hl
+	add hl, hl
+	ld bc, wc600
+	add hl, bc
+	ld a, [wd057]
+	ld [wd06b], a
+	ld a, [wd058]
+	ld [wd06c], a
+	ld [wd07f], a
+	call Func_1352
+	ld a, [hli]
+	ld [de], a
+	inc de
+	ld a, [hli]
+	ld [de], a
+	inc de
+	ld a, [hli]
+	ld [de], a
+	inc de
+	ld a, [hl]
+	ld [de], a
+	inc de
+	ld a, [wd06b]
+	ld [wd057], a
+	ld a, [wd06c]
+	ld [wd058], a
+	pop hl
+	pop bc
+	ret
+
+Func_1352:
+	push bc
+	push hl
+	ld hl, v0BGMap0
+	ld a, [wd057]
+	srl a
+	srl a
+	srl a
+	ld [wd06e], a
+	ld a, [wd058]
+	srl a
+	srl a
+	srl a
+	jr z, .asm_1375
+	ld bc, $20
+.asm_1371
+	add hl, bc
+	dec a
+	jr nz, .asm_1371
+.asm_1375
+	ld b, $00
+	ld a, [wd06e]
+	ld c, a
+	add hl, bc
+	ld a, h
+	ld [de], a
+	inc de
+	ld a, l
+	ld [de], a
+	inc de
+	pop hl
+	pop bc
+	ret
+; 0x1385
+
+SECTION "Home@139b", ROM0[$139b]
+
+Func_139b::
+	ld hl, hff94
+	bit 5, [hl]
+	ret nz
+	ld a, $01
+	ld [rROMB0 + $100], a
+	ld a, [wd05c]
+	add $08
+	ld [wd0a0 + $1], a
+	ld a, [wd05d]
+	add $08
+	ld [wd0d0 + $1], a
+	ld de, $157a
+	ldh a, [hff92]
+	bit 5, a
+	jr nz, .asm_13c4
+	ld hl, $157d
+	jr .asm_13c7
+.asm_13c4
+	ld hl, $15b7
+.asm_13c7
+	ld c, $00
+	ldh a, [hff8d]
+	bit 4, a
+	jr z, .asm_13d1
+	ld c, $01
+.asm_13d1
+	bit 7, a
+	jr z, .asm_13df
+	ld c, $02
+	ldh a, [hff92]
+	bit 3, a
+	jr z, .asm_13df
+	ld c, $0e
+.asm_13df
+	ldh a, [hff8e]
+	bit 7, a
+	jr z, .asm_1410
+	ldh a, [hff95]
+	bit 2, a
+	jr nz, .asm_13fe
+	ld a, [wd094]
+	cp $02
+	jr nz, .asm_13fa
+	ld c, $04
+	ldh a, [hff92]
+	bit 6, a
+	jr z, .asm_1408
+.asm_13fa
+	ld c, $03
+	jr .asm_1408
+.asm_13fe
+	ldh a, [hff95]
+	bit 1, a
+	jr nz, .asm_1408
+	ld c, $1b
+	jr .asm_1408
+.asm_1408
+	ldh a, [hff8e]
+	bit 2, a
+	jr z, .asm_1410
+	ld c, $05
+.asm_1410
+	ldh a, [hff8e]
+	and $80
+	jr nz, .asm_1424
+	ldh a, [hff92]
+	bit 7, a
+	jr z, .asm_1424
+	ld c, $07
+	ldh a, [hff92]
+	and $03
+	add c
+	ld c, a
+.asm_1424
+	ldh a, [hff92]
+	bit 4, a
+	jr z, .asm_142c
+	ld c, $0b
+.asm_142c
+	ldh a, [hff8e]
+	bit 6, a
+	jr z, .asm_146b
+	ldh a, [hff92]
+	bit 4, a
+	jr nz, .asm_146b
+	ldh a, [hff8e]
+	and $fc
+	ldh [hff8e], a
+	bit 7, a
+	jr nz, .asm_1465
+	ldh a, [hff8d]
+	bit 4, a
+	jr nz, .asm_1453
+	ld a, [wd078]
+	bit 7, a
+	jr z, .asm_1457
+	ld c, $0d
+	jr .asm_146b
+.asm_1453
+	ld c, $0c
+	jr .asm_146b
+.asm_1457
+	ldh a, [hff8d]
+	bit 6, a
+	jr nz, .asm_1461
+	ld c, $02
+	jr .asm_146b
+.asm_1461
+	ld c, $00
+	jr .asm_146b
+.asm_1465
+	bit 2, a
+	jr z, .asm_146b
+	ld c, $05
+.asm_146b
+	ldh a, [hff92]
+	bit 2, a
+	jr z, .asm_147d
+	ldh a, [hff8e]
+	bit 2, a
+	jr nz, .asm_147b
+	ld c, $0e
+	jr .asm_147d
+.asm_147b
+	ld c, $0f
+.asm_147d
+	ldh a, [hff8e]
+	bit 4, a
+	jr z, .asm_149f
+	ld c, $10
+	bit 2, a
+	jr z, .asm_148d
+	ld c, $11
+	jr .asm_149f
+.asm_148d
+	bit 3, a
+	jr z, .asm_1495
+	ld c, $16
+	jr .asm_14dc
+.asm_1495
+	ldh a, [hff93]
+	bit 3, a
+	jr z, .asm_14dc
+	ld c, $19
+	jr .asm_14dc
+.asm_149f
+	ldh a, [hff8e]
+	bit 3, a
+	jr z, .asm_14dc
+	ld a, [wd094]
+	cp $04
+	jr z, .asm_14b6
+	ld c, $17
+	ldh a, [hff8e]
+	res 2, a
+	ldh [hff8e], a
+	jr .asm_14dc
+.asm_14b6
+	ldh a, [hff92]
+	res 7, a
+	ldh [hff92], a
+	ld c, $12
+	ldh a, [hff8d]
+	bit 4, a
+	jr z, .asm_14c6
+	ld c, $13
+.asm_14c6
+	bit 7, a
+	jr z, .asm_14cc
+	ld c, $14
+.asm_14cc
+	ldh a, [hff8e]
+	bit 2, a
+	jr z, .asm_14d4
+	ld c, $15
+.asm_14d4
+	ldh a, [hff93]
+	bit 4, a
+	jr z, .asm_14dc
+	ld c, $18
+.asm_14dc
+	ldh a, [hff8e]
+	and $f8
+	jr nz, .asm_14f0
+	ldh a, [hff95]
+	bit 1, a
+	jr nz, .asm_1510
+	bit 4, a
+	jr z, .asm_14f0
+	ld c, $1a
+	jr .asm_1510
+.asm_14f0
+	ldh a, [hff8e]
+	and $f0
+	jr nz, .asm_1510
+	ldh a, [hff92]
+	and $9c
+	jr nz, .asm_1510
+	ldh a, [hff95]
+	bit 5, a
+	jr z, .asm_1510
+	ldh a, [hff8e]
+	and $e7
+	ldh [hff8e], a
+	ldh a, [hff93]
+	res 4, a
+	ldh [hff93], a
+	ld c, $1c
+.asm_1510
+	ldh a, [hff93]
+	bit 2, a
+	jr z, .asm_1524
+	bit 0, a
+	jr z, .asm_1524
+	ld c, $00
+	ldh a, [hff91]
+	bit 4, a
+	jr z, .asm_1524
+	ld c, $06
+.asm_1524
+	ld a, c
+	add c
+	ld c, a
+	ld a, $00
+	adc $00
+	ld b, a
+	add hl, bc
+	ld a, [hli]
+	ld c, a
+	ld a, [hl]
+	ld b, a
+	push af
+	ldh a, [hff94]
+	bit 6, a
+	jr nz, .asm_1546
+	pop af
+	ld hl, wd082
+	cp [hl]
+	jr nz, .asm_1559
+	ld a, c
+	inc hl
+	cp [hl]
+	jr nz, .asm_1559
+	jr .asm_1569
+.asm_1546
+	res 6, a
+	ldh [hff94], a
+	pop af
+	ldh a, [hff92]
+	bit 5, a
+	jr nz, .asm_1556
+	ld de, $42bc
+	jr .asm_1559
+.asm_1556
+	ld de, $428c
+.asm_1559
+	ld a, b
+	ld h, a
+	ld [wd082], a
+	ld a, c
+	ld l, a
+	ld [wd083], a
+	ld bc, $0
+	call Func_21e6
+.asm_1569
+	ld a, [wROMBank]
+	ld [rROMB0 + $100], a
+	ret
+
+SetFullHP::
+	ld a, [wInitialMaxHP]
+	ld [wMaxHP], a
+	ld [wHP], a
+	ret
+; 0x157a
+
 SECTION "Home@18ff", ROM0[$18ff]
 
 AddSprite:
@@ -184,7 +569,359 @@ ClearSprites::
 	cp c
 	jr nz, .loop_oam
 	ret
-; 0x1964
+
+Func_1964::
+	push bc
+	push de
+	xor a
+	ld [wd057], a
+	ld [wd058], a
+	ld de, wTileQueue
+	ld a, $0a
+	ld b, a
+.asm_1973
+	ld a, [wd03f]
+	cp $0a
+	jr z, .asm_197c
+	ld a, $0b
+.asm_197c
+	ld c, a
+.asm_197d
+	ld a, [hli]
+	call Func_131a
+	ld a, [wd057]
+	add $10
+	ld [wd057], a
+	dec c
+	jr nz, .asm_197d
+	push bc
+	ld b, $00
+	ld a, [wd03f]
+	sub $0a
+	jr z, .asm_1998
+	sub $01
+.asm_1998
+	ld c, a
+	add hl, bc
+	pop bc
+	xor a
+	ld [wd057], a
+	ld a, [wd058]
+	add $10
+	ld [wd058], a
+	dec b
+	jr nz, .asm_1973
+	xor a
+	ld [de], a
+	ld [wd057], a
+	ld [wd058], a
+	xor a
+	ldh [rSCX], a
+	ldh [rSCY], a
+	ldh a, [hff8c]
+	or $60
+	ldh [hff8c], a
+	call Func_1ee3
+	ld a, [wd06b]
+	xor a
+	ldh [hff8c], a
+	pop de
+	pop bc
+	ret
+
+Func_19c9::
+	ldh a, [hff90]
+	and $08
+	ldh [hff90], a
+	ld hl, $38b1
+	ld a, [wd03b]
+	add a
+	ld c, a
+	ld b, $00
+	add hl, bc
+	ld a, [hli]
+	ld c, a
+	ld a, [hl]
+	ld b, a
+	ld h, b
+	ld l, c
+	ld a, [wd03e]
+	add a
+	add a
+	add a
+	ld c, a
+	ld b, $00
+	add hl, bc
+	ld bc, $5
+	add hl, bc
+	ld a, [hli]
+	and a
+	jr z, .asm_19f8
+	ldh a, [hff90]
+	set 2, a
+	ldh [hff90], a
+.asm_19f8
+	ret
+
+Func_19f9::
+	push bc
+	push hl
+	ld a, $ff
+	ld [wd03d], a
+	ld [wd096], a
+	call ResetTimer
+	ld hl, $38b1
+	ld a, [wd03b]
+	add a
+	ld c, a
+	ld b, $00
+	add hl, bc
+	ld a, [hli]
+	ld c, a
+	ld a, [hl]
+	ld b, a
+	ld h, b
+	ld l, c
+	ld a, [wd03e]
+	add a
+	add a
+	add a
+	ld c, a
+	ld b, $00
+	add hl, bc
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld d, a
+	ld a, [hli]
+	ld e, a
+	push hl
+	ld h, d
+	ld l, e
+	ld de, wc100
+	call FarDecompress
+	pop hl
+	ld a, [hli]
+	ld [wd03f], a
+	sub $0a
+	ld [wd041], a
+	ld a, [hli]
+	ld [wd040], a
+	ldh a, [hff91]
+	and $7f
+	ldh [hff91], a
+	ldh a, [hHUDFlags]
+	and $3f
+	ldh [hHUDFlags], a
+	inc hl
+	ld a, [hl]
+	and $15
+	jr z, .asm_1a6e
+	bit 0, a
+	jr nz, .asm_1a60
+	bit 4, a
+	jr nz, .asm_1a68
+	ldh a, [hff91]
+	set 7, a
+	ldh [hff91], a
+	jr .asm_1a6e
+.asm_1a60
+	ldh a, [hff90]
+	set 4, a
+	ldh [hff90], a
+	jr .asm_1a6e
+.asm_1a68
+	ldh a, [hHUDFlags]
+	set 6, a
+	ldh [hHUDFlags], a
+.asm_1a6e
+	bit 3, [hl]
+	jr z, .asm_1a79
+	push hl
+	ld a, $08
+	ld [wd03d], a
+	pop hl
+.asm_1a79
+	inc hl
+	ld a, [hl]
+	ld [wd042], a
+	ld a, [wd03b]
+	cp $04
+	jp nz, .asm_1bc2
+	ld a, [wd03e]
+	and a
+	jr nz, .asm_1b09
+	ldh a, [hff90]
+	set 4, a
+	ldh [hff90], a
+	ld a, [wd044]
+	and a
+	jr z, .asm_1aae
+	ld a, $15
+	ld [wc100 + $6f], a
+	ld a, $16
+	ld [wc100 + $ab], a
+	ld a, $17
+	ld [wc100 + $70], a
+	ld a, $18
+	ld [wc100 + $ac], a
+	ld b, $01
+.asm_1aae
+	ld a, [wd045]
+	and a
+	jr z, .asm_1ac9
+	ld a, $15
+	ld [wc100 + $15f], a
+	ld a, $16
+	ld [wc100 + $19b], a
+	ld a, $17
+	ld [wc100 + $160], a
+	ld a, $18
+	ld [wc100 + $19c], a
+	inc b
+.asm_1ac9
+	ld a, [$d046]
+	and a
+	jr z, .asm_1ae4
+	ld a, $15
+	ld [wc100 + $75], a
+	ld a, $16
+	ld [wc100 + $b1], a
+	ld a, $17
+	ld [wc100 + $76], a
+	ld a, $18
+	ld [wc100 + $b2], a
+	inc b
+.asm_1ae4
+	ld a, [wd047]
+	and a
+	jr z, .asm_1aff
+	ld a, $15
+	ld [wc100 + $165], a
+	ld a, $16
+	ld [wc100 + $1a1], a
+	ld a, $17
+	ld [wc100 + $166], a
+	ld a, $18
+	ld [wc100 + $1a2], a
+	inc b
+.asm_1aff
+	ld a, $04
+	cp b
+	jr nz, .asm_1b08
+	xor a
+	ld [wd048], a
+.asm_1b08
+	xor a
+.asm_1b09
+	ld hl, wd043
+	ld c, a
+	ld b, $00
+	add hl, bc
+	ld a, $01
+	ld [hl], a
+	xor a
+	ld [wd043], a
+	ld [wd049], a
+	ld [wd04b], a
+	ld [wd04a], a
+	ld [wd04c], a
+	ld hl, $1bc5
+	add hl, bc
+	ld a, [hl]
+	ld [wd06c], a
+	cp $04
+	jr z, .asm_1b69
+	push af
+	push hl
+	push de
+	ld a, [wd039]
+	and a
+	jr nz, .asm_1b50
+	ld hl, $4000
+	ld de, v0Tiles0
+	ld c, $02
+	call FarDecompress
+	ld hl, $4855
+	ld de, $9670
+	ld c, $02
+	call FarDecompress
+	jr .asm_1b66
+.asm_1b50
+	ld hl, $488d
+	ld de, v0Tiles0
+	ld c, $0a
+	call FarDecompress
+	ld hl, $50f3
+	ld de, $9670
+	ld c, $0a
+	call FarDecompress
+.asm_1b66
+	pop de
+	pop hl
+	pop af
+.asm_1b69
+	ld c, a
+	add a
+	add a
+	add c
+	ld b, $00
+	ld c, a
+	ld hl, $2070
+	ld a, [wd039]
+	and a
+	jr z, .asm_1b7c
+	ld hl, $2089
+.asm_1b7c
+	add hl, bc
+	ld a, [hli]
+	ld [wd06b], a
+	ld a, [hli]
+	ld b, a
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	ld d, a
+	ld h, b
+	ld l, c
+	ld a, [wd06b]
+	ld c, a
+	call FarDecompress
+	ld a, [wd06c]
+	ld c, a
+	add a
+	add c
+	ld b, $00
+	ld c, a
+	ld hl, $20a2
+	add hl, bc
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld d, a
+	ld a, [hli]
+	ld e, a
+	ld h, d
+	ld l, e
+	ld de, wc600
+	call FarDecompress
+	ld hl, hff91
+	bit 5, [hl]
+	jr z, .asm_1bc2
+	ld hl, $1bcf
+	ld a, [wd03e]
+	ld c, a
+	ld b, $00
+	add hl, bc
+	ld a, [hl]
+	ld [wd03d], a
+.asm_1bc2
+	pop hl
+	pop bc
+	ret
+; 0x1bc5
 
 SECTION "Home@1c01", ROM0[$1c01]
 
@@ -194,9 +931,39 @@ InitWindow::
 	ld a, $90
 	ldh [rWY], a
 	ret
-; 0x1c0a
 
-SECTION "Home@1c52", ROM0[$1c52]
+Func_1c0a::
+	call ResetTimer
+	ld c, $40
+	ld hl, v0BGMap1
+	ld a, $7f
+.asm_1c14
+	ld [hli], a
+	dec c
+	jr nz, .asm_1c14
+	ld a, $07
+	ldh [rWX], a
+	ld a, $80
+	ldh [rWY], a
+	ld a, $67
+	ld [$9c2e], a
+	ld a, $6b
+	ld [$9c2f], a
+	ld a, $6f
+	ld [$9c22], a
+	ld a, $70
+	ld [$9c23], a
+	inc a
+	ld [$9c24], a
+	ld a, $7f
+	ld [$9c06], a
+	ld [$9c07], a
+	ld [$9c08], a
+	ld [$9c09], a
+	ld [$9c0a], a
+	ld [$9c30], a
+	ld [$9c31], a
+	jp StopTimerAndSwitchOnLCD
 
 ; calculates bc as a percentage,
 ; given its percentage value in e
@@ -880,7 +1647,24 @@ Func_21ce:
 	ret
 ; 0x21d5
 
-SECTION "Home@21fb", ROM0[$21fb]
+SECTION "Home@21e6", ROM0[$21e6]
+
+Func_21e6:
+	push hl
+	ld hl, wd21a
+	add hl, bc
+	add hl, bc
+	ld a, e
+	ld [hli], a
+	ld [hl], d
+	pop de
+	ld hl, wd2ba
+	add hl, bc
+	add hl, bc
+	ld a, e
+	ld [hli], a
+	ld [hl], d
+	jp Func_2419
 
 ; input:
 ; - a = ?
@@ -943,7 +1727,7 @@ assert Data_1c0ce == Data_3c0ce
 	pop af
 	bankswitch
 
-	call Func_231e
+	call Clearwd160
 
 	xor a
 	ld [wd3e9], a
@@ -1038,7 +1822,7 @@ assert Data_1c0ce == Data_3c0ce
 SECTION "Home@231e", ROM0[$231e]
 
 ; clears wd160
-Func_231e::
+Clearwd160::
 	ld b, $10
 	ld hl, wd160
 	xor a
@@ -1047,9 +1831,21 @@ Func_231e::
 	dec b
 	jr nz, .loop
 	ret
-; 0x2329
 
-SECTION "Home@2338", ROM0[$2338]
+; clears wd3c4
+Clearwd3c4::
+	push hl
+	push bc
+	xor a
+	ld b, $08
+	ld hl, wd3c4
+.loop
+	ld [hli], a
+	dec b
+	jr nz, .loop
+	pop bc
+	pop hl
+	ret
 
 ; input:
 ; - d = ?
@@ -1220,6 +2016,8 @@ Func_234e:
 	ld [hl], e
 	inc hl
 	ld [hl], d
+;	fallthrough
+Func_2419:
 	ld hl, wd170
 	add hl, bc
 	ld [hl], $01
