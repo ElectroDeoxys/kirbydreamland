@@ -22,3 +22,12 @@ DEF VBLANK_4 EQU 1 << VBLANK_4_F
 DEF VBLANK_5 EQU 1 << VBLANK_5_F
 DEF VBLANK_6 EQU 1 << VBLANK_6_F
 DEF VBLANK_7 EQU 1 << VBLANK_7_F
+
+; wStage constants
+	const_def
+	const GREEN_GREENS  ; $0
+	const CASTLE_LOLOLO ; $1
+	const FLOAT_ISLANDS ; $2
+	const BUBBLY_CLOUDS ; $3
+	const MT_DEDEDE     ; $4
+DEF NUM_STAGES EQU const_value

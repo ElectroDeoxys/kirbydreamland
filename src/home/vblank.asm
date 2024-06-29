@@ -90,7 +90,7 @@ VBlank:
 	ld a, [wSCY]
 	ldh [rSCY], a
 
-	ld hl, wTileQueue
+	ld hl, wBGQueue
 .loop_queue
 	ld a, [hli]
 	and a

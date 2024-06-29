@@ -17,8 +17,10 @@ wc600:: ; c600
 wca00:: ; ca00
 	ds $100
 
-wTileQueue:: ; cb00
-	ds $3 * $100
+wBGQueue:: ; cb00
+FOR n, $100
+wQueuedBG{03d:n}:: queued_bg_struct wQueuedBG{03d:n}
+ENDR
 
 SECTION "WRAM1", WRAMX
 
@@ -52,7 +54,7 @@ wd038:: db ; d038
 wd039:: db ; d039
 wExtraGameEnabled:: db ; d03a
 
-wd03b:: ; d03b
+wStage:: ; d03b
 	db
 
 wd03c:: ; d03c
@@ -61,7 +63,7 @@ wd03c:: ; d03c
 wd03d:: ; d03d
 	db
 
-wd03e:: ; d03e
+wArea:: ; d03e
 	db
 
 wd03f:: ; d03f

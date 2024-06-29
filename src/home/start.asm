@@ -1,4 +1,4 @@
-Func_150:
+_Start:
 .wait_vblank
 	ldh a, [rLY]
 	cp $91

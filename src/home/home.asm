@@ -576,7 +576,7 @@ Func_1964::
 	xor a
 	ld [wd057], a
 	ld [wd058], a
-	ld de, wTileQueue
+	ld de, wBGQueue
 	ld a, $0a
 	ld b, a
 .asm_1973
@@ -634,7 +634,7 @@ Func_19c9::
 	and $08
 	ldh [hff90], a
 	ld hl, $38b1
-	ld a, [wd03b]
+	ld a, [wStage]
 	add a
 	ld c, a
 	ld b, $00
@@ -645,7 +645,7 @@ Func_19c9::
 	ld b, a
 	ld h, b
 	ld l, c
-	ld a, [wd03e]
+	ld a, [wArea]
 	add a
 	add a
 	add a
@@ -671,7 +671,7 @@ Func_19f9::
 	ld [wd096], a
 	call ResetTimer
 	ld hl, $38b1
-	ld a, [wd03b]
+	ld a, [wStage]
 	add a
 	ld c, a
 	ld b, $00
@@ -682,7 +682,7 @@ Func_19f9::
 	ld b, a
 	ld h, b
 	ld l, c
-	ld a, [wd03e]
+	ld a, [wArea]
 	add a
 	add a
 	add a
@@ -745,10 +745,10 @@ Func_19f9::
 	inc hl
 	ld a, [hl]
 	ld [wd042], a
-	ld a, [wd03b]
+	ld a, [wStage]
 	cp $04
 	jp nz, .asm_1bc2
-	ld a, [wd03e]
+	ld a, [wArea]
 	and a
 	jr nz, .asm_1b09
 	ldh a, [hff90]
@@ -780,7 +780,7 @@ Func_19f9::
 	ld [wc100 + $19c], a
 	inc b
 .asm_1ac9
-	ld a, [$d046]
+	ld a, [wd046]
 	and a
 	jr z, .asm_1ae4
 	ld a, $15
@@ -911,7 +911,7 @@ Func_19f9::
 	bit 5, [hl]
 	jr z, .asm_1bc2
 	ld hl, $1bcf
-	ld a, [wd03e]
+	ld a, [wArea]
 	ld c, a
 	ld b, $00
 	add hl, bc
@@ -1184,7 +1184,7 @@ Func_1ee3:
 	ret z
 	bit VBLANK_5_F, a
 	ret z
-	ld bc, wTileQueue
+	ld bc, wBGQueue
 .asm_1eee
 	ld a, [bc]
 	inc bc
@@ -1427,6 +1427,16 @@ UpdateHUD:
 	ld [$9c30], a ; tens digit
 	ret
 ; 0x2070
+
+SECTION "Home@20a2", ROM0[$20a2]
+
+Data_20a2::
+	db $03, $46, $e0 ; GREEN_GREENS
+	db $03, $4a, $c3 ; CASTLE_LOLOLO
+	db $03, $48, $d9 ; FLOAT_ISLANDS
+	db $03, $4c, $ff ; BUBBLY_CLOUDS
+	db $06, $77, $7c ; MT_DEDEDE
+; 0x20b1
 
 SECTION "Home@20c1", ROM0[$20c1]
 
@@ -1698,18 +1708,18 @@ assert Data_1c0ce == Data_3c0ce
 	bit 1, [hl]
 	jr z, .asm_223a
 	ld hl, $413a
-	ld a, [wd03b]
+	ld a, [wStage]
 	jr .asm_2249
 .asm_223a
 	ld hl, $4000
-	ld a, [wd03b]
+	ld a, [wStage]
 	ld e, a
 	add hl, de
 	add hl, de
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	ld a, [wd03e]
+	ld a, [wArea]
 .asm_2249
 	ld e, a
 	add hl, de
@@ -3409,7 +3419,7 @@ Func_2b26:
 	ld hl, hff94
 	bit 1, [hl]
 	jr z, .asm_2c96
-	ld a, [wd03b]
+	ld a, [wStage]
 	cp $04
 	jr z, .asm_2c94
 	ld hl, wd140
@@ -4480,3 +4490,13 @@ Func_3768:
 	ld [wd07d], a
 	ret
 ; 0x37a7
+
+SECTION "Home@388e", ROM0[$388e]
+
+StageHeaders::
+; starting area, ?, ?, starting X, starting Y, pals, ?
+	db $00, $01, $01, $28, $3c, $00, $01 ; GREEN_GREENS
+	db $00, $01, $01, $28, $58, $00, $0c ; CASTLE_LOLOLO
+	db $00, $01, $01, $28, $32, $00, $06 ; FLOAT_ISLANDS
+	db $00, $01, $01, $48, $41, $00, $00 ; BUBBLY_CLOUDS
+	db $00, $01, $01, $28, $70, $00, $11 ; MT_DEDEDE

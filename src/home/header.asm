@@ -28,8 +28,13 @@ REPT $20
 	db $ff
 ENDR
 
-
 	ds $20
 REPT $20
 	db $ff
 ENDR
+
+SECTION "Start", ROM0
+
+Start:
+	nop
+	jp _Start

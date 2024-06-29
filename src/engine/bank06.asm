@@ -80,10 +80,10 @@ TitleScreen::
 	and a
 	ret z ; Extra Game not enabled
 	ld bc, $9945
-	ld de, .tile_ids
-	ld hl, wTileQueue
-	ld a, .tile_ids_end - .tile_ids
-.loop_copy_tile_ids
+	ld de, .text
+	ld hl, wBGQueue
+	ld a, .text_end - .text
+.loop_copy_text
 	push af
 	ld a, b
 	ld [hli], a
@@ -95,17 +95,17 @@ TitleScreen::
 	inc bc
 	pop af
 	dec a
-	jr nz, .loop_copy_tile_ids
+	jr nz, .loop_copy_text
 	xor a ; terminating byte
-	ld [wTileQueue + (.tile_ids_end - .tile_ids) * $3], a
+	ld [wBGQueue + (.text_end - .text) * $3], a
 	ld a, [hff91]
 	set 2, a
 	ld [hff91], a
 	ret
 
-.tile_ids
-	db $e4, $79, $f2, $f0, $e0, $00, $e6, $e0, $ec, $e4
-.tile_ids_end
+.text
+	db "EXTRA GAME"
+.text_end
 ; 0x180d4
 
 SECTION "Bank 6@40e4", ROMX[$40e4], BANK[$6]
@@ -123,15 +123,16 @@ Func_180e4::
 	ld [hli], a
 	ld [hl], a
 	ld [wd3be], a
-	ld a, [wd03b]
+
+	ld a, [wStage]
 	ld b, a
 	add a
 	add a
 	add a
-	sub b
+	sub b ; *7
 	ld c, a
 	ld b, $00
-	ld hl, $388e
+	ld hl, StageHeaders
 	add hl, bc
 	push hl
 	ld bc, $5
@@ -149,12 +150,14 @@ Func_180e4::
 	xor a
 	ld [hff8c], a
 	ld [hff8d], a
+
 	call Func_648
 	ld a, SFX_NONE
 	call PlaySFX
 	ld a, MUSIC_NONE
 	call PlayMusic
 	pop hl
+
 	ld a, [hff95]
 	bit 7, a
 	jr nz, .asm_18142
@@ -168,14 +171,16 @@ Func_180e4::
 	call Func_1c0a
 	call ResetTimer
 	call $4285 ; Func_18285
-	ld d, $00
-	ld a, [wd03b]
+
+	ld d, $00 ; useless
+
+	ld a, [wStage]
 	ld c, a
 	add a
 	add c
 	ld b, $00
 	ld c, a
-	ld hl, $20a2
+	ld hl, Data_20a2
 	add hl, bc
 	ld a, [hli]
 	ld c, a
@@ -187,12 +192,14 @@ Func_180e4::
 	ld l, e
 	ld de, wc600
 	call FarDecompress
+
 	ld a, $32
 	ld [hHUDFlags], a
 	ld a, $15
 	ld [wd07e], a
 	ld a, $16
 	ld [wd065], a
+
 	xor a
 	ld hl, wd082
 	ld [hli], a
@@ -216,19 +223,24 @@ Func_180e4::
 	ld [wd076], a
 	ld a, $33
 	ld [wd077], a
+
 	ld a, [wMaxHP]
 	ld [wHP], a
+
 	xor a
 	ld [wVirtualOAMSize], a
 	call ClearSprites
 	pop hl
+
 	ld a, [hli]
-	ld [wd03e], a
+	ld [wArea], a
+
 	push hl
 	call StopTimerAndSwitchOnLCD
 	call Func_19c9
 	call Func_19f9
 	pop hl
+
 	ld a, [hli]
 	ld [wd051], a
 	ld a, [hli]
@@ -237,15 +249,17 @@ Func_180e4::
 	ld [wd05c], a
 	ld a, [hli]
 	ld [wd05d], a
-	ld a, [wd03b]
+
+	ld a, [wStage]
 	ld e, a
 	ld d, $00
 	ld hl, StageMusics
 	add hl, de
 	ld a, [hl]
 	ld [wd03c], a
+
 	ld bc, $0
-	ld a, $04
+	ld a, MT_DEDEDE
 	cp e
 	jr nz, .asm_1821e
 	ld hl, hff95
@@ -264,14 +278,16 @@ Func_180e4::
 	ld hl, wc100
 	add hl, bc
 	call Func_1964
+
 	xor a
 	ld [wVirtualOAMSize], a
 	call Func_21fb
 	call Func_139b
 	call Clearwd3c4
 	call ClearSprites
-	ld a, [wd03b]
-	cp $04
+
+	ld a, [wStage]
+	cp MT_DEDEDE
 	jr nz, .asm_1824a
 	ld hl, hff94
 	res 2, [hl]
@@ -284,13 +300,13 @@ Func_180e4::
 	res 7, [hl]
 	ld a, [hff95]
 	bit 7, a
-	jr z, .asm_18263
-	ld a, [wd03b]
-	cp $04
-	jr z, .asm_18263
+	jr z, .skip_music
+	ld a, [wStage]
+	cp MT_DEDEDE
+	jr z, .skip_music
 	ld a, [wd03c]
 	call PlayMusic
-.asm_18263
+.skip_music
 	call SetFullHP
 	call StopTimerAndSwitchOnLCD
 	call Func_670
@@ -298,11 +314,11 @@ Func_180e4::
 	ret
 
 StageMusics:
-	db MUSIC_13
-	db MUSIC_16
-	db MUSIC_14
-	db MUSIC_15
-	db MUSIC_18
+	db MUSIC_13 ; GREEN_GREENS
+	db MUSIC_16 ; CASTLE_LOLOLO
+	db MUSIC_14 ; FLOAT_ISLANDS
+	db MUSIC_15 ; BUBBLY_CLOUDS
+	db MUSIC_18 ; MT_DEDEDE
 ; 0x18275
 
 SECTION "Bank 6@5098", ROMX[$5098], BANK[$6]
@@ -455,38 +471,39 @@ ConfigurationMenu:
 	call PlaySFX
 .config_update_cursor
 	ld a, $98
-	ld [wTileQueue + $0], a
+	ld [wQueuedBG000BGPtr + 0], a
 	ld a, $e4
-	ld [wTileQueue + $1], a
+	ld [wQueuedBG000BGPtr + 1], a
 	ld a, $c7
-	ld [wTileQueue + $2], a
+	ld [wQueuedBG000TileID], a
 	ld a, $99
-	ld [wTileQueue + $3], a
+	ld [wQueuedBG001BGPtr + 0], a
 	ld a, $24
-	ld [wTileQueue + $4], a
+	ld [wQueuedBG001BGPtr + 1], a
 	ld a, $c7
-	ld [wTileQueue + $5], a
+	ld [wQueuedBG001TileID], a
 	ld a, $99
-	ld [wTileQueue + $6], a
+	ld [wQueuedBG002BGPtr + 0], a
 	ld a, $64
-	ld [wTileQueue + $7], a
+	ld [wQueuedBG002BGPtr + 1], a
 	ld a, $c7
-	ld [wTileQueue + $8], a
+	ld [wQueuedBG002TileID], a
 	ld a, $99
-	ld [wTileQueue + $9], a
+	ld [wQueuedBG003BGPtr + 0], a
 	ld a, $c4
-	ld [wTileQueue + $a], a
+	ld [wQueuedBG003BGPtr + 1], a
 	ld a, $c7
-	ld [wTileQueue + $b], a
+	ld [wQueuedBG003TileID], a
 	xor a
-	ld [wTileQueue + $c], a
+	ld [wBGQueue + 4 * $3], a
+
 	ld a, [wMenuCursorPos]
 	ld c, a
 	add a
 	add c ; *3
 	ld c, a
 	ld b, $00
-	ld hl, wTileQueue + $2
+	ld hl, wQueuedBG000TileID
 	add hl, bc
 	ld [hl], $c6 ; cursor tile ID
 	ld a, [hff91]
@@ -539,16 +556,16 @@ ConfigurationMenu:
 	ld a, $c4
 
 .update_hp_bar
-	ld [wTileQueue + $2], a
+	ld [wQueuedBG000TileID], a
 	ld b, $00
 	ld hl, $98ea
 	add hl, bc
 	ld a, h
-	ld [wTileQueue + $0], a
+	ld [wQueuedBG000BGPtr + 0], a
 	ld a, l
-	ld [wTileQueue + $1], a
+	ld [wQueuedBG000BGPtr + 1], a
 	xor a
-	ld [wTileQueue + $3], a
+	ld [wQueuedBG001BGPtr + 0], a
 	ld a, [hff91]
 	set 2, a
 	ld [hff91], a
@@ -562,21 +579,21 @@ ConfigurationMenu:
 
 .UpdateNumLives:
 	call GetDigits
-	add $72
-	ld [wTileQueue + $2], a
+	add "0"
+	ld [wQueuedBG000TileID], a
 	ld a, $99
-	ld [wTileQueue + $0], a
+	ld [wQueuedBG000BGPtr + 0], a
 	ld a, $2c
-	ld [wTileQueue + $1], a
+	ld [wQueuedBG000BGPtr + 1], a
 	ld a, b
-	add $72
-	ld [wTileQueue + $5], a
+	add "0"
+	ld [wQueuedBG001TileID], a
 	ld a, $99
-	ld [wTileQueue + $3], a
+	ld [wQueuedBG001BGPtr + 0], a
 	ld a, $2b
-	ld [wTileQueue + $4], a
+	ld [wQueuedBG001BGPtr + 1], a
 	xor a
-	ld [wTileQueue + $6], a
+	ld [wQueuedBG002BGPtr + 0], a
 	ld a, [hff91]
 	set 2, a
 	ld [hff91], a
@@ -731,21 +748,21 @@ ConfigurationMenu:
 
 .UpdateSoundCheckMusicNumber:
 	call GetDigits
-	add $72
-	ld [wTileQueue + $2], a
+	add "0"
+	ld [wQueuedBG000TileID], a
 	ld a, $98
-	ld [wTileQueue + $0], a
+	ld [wQueuedBG000BGPtr + 0], a
 	ld a, $ee
-	ld [wTileQueue + $1], a
+	ld [wQueuedBG000BGPtr + 1], a
 	ld a, b
-	add $72
-	ld [wTileQueue + $5], a
+	add "0"
+	ld [wQueuedBG001TileID], a
 	ld a, $98
-	ld [wTileQueue + $3], a
+	ld [wQueuedBG001BGPtr + 0], a
 	ld a, $ed
-	ld [wTileQueue + $4], a
+	ld [wQueuedBG001BGPtr + 1], a
 	xor a
-	ld [wTileQueue + $6], a
+	ld [wQueuedBG002BGPtr + 0], a
 	ld a, [hff91]
 	set 2, a
 	ld [hff91], a
@@ -753,21 +770,21 @@ ConfigurationMenu:
 
 .UpdateSoundCheckSFXNumber:
 	call GetDigits
-	add $72
-	ld [wTileQueue + $2], a
+	add "0"
+	ld [wQueuedBG000TileID], a
 	ld a, $99
-	ld [wTileQueue], a
+	ld [wBGQueue], a
 	ld a, $2e
-	ld [wTileQueue + $1], a
+	ld [wQueuedBG000BGPtr + 1], a
 	ld a, b
-	add $72
-	ld [wTileQueue + $5], a
+	add "0"
+	ld [wQueuedBG001TileID], a
 	ld a, $99
-	ld [wTileQueue + $3], a
+	ld [wQueuedBG001BGPtr + 0], a
 	ld a, $2d
-	ld [wTileQueue + $4], a
+	ld [wQueuedBG001BGPtr + 1], a
 	xor a
-	ld [wTileQueue + $6], a
+	ld [wQueuedBG002BGPtr + 0], a
 	ld a, [hff91]
 	set 2, a
 	ld [hff91], a
@@ -778,38 +795,38 @@ ConfigurationMenu:
 	and a
 	jr nz, .asm_1a6fc
 	ld a, $98
-	ld [wTileQueue + $0], a
+	ld [wQueuedBG000BGPtr + 0], a
 	ld a, $e6
-	ld [wTileQueue + $1], a
+	ld [wQueuedBG000BGPtr + 1], a
 	ld a, $c6
-	ld [wTileQueue + $2], a
+	ld [wQueuedBG000TileID], a
 	ld a, $99
-	ld [wTileQueue + $3], a
+	ld [wQueuedBG001BGPtr + 0], a
 	ld a, $26
-	ld [wTileQueue + $4], a
+	ld [wQueuedBG001BGPtr + 1], a
 	ld a, $c7
-	ld [wTileQueue + $5], a
+	ld [wQueuedBG001TileID], a
 	xor a
-	ld [wTileQueue + $6], a
+	ld [wQueuedBG002BGPtr + 0], a
 	ld a, [hff91]
 	set 2, a
 	ld [hff91], a
 	ret
 .asm_1a6fc
 	ld a, $98
-	ld [wTileQueue + $0], a
+	ld [wQueuedBG000BGPtr + 0], a
 	ld a, $e6
-	ld [wTileQueue + $1], a
+	ld [wQueuedBG000BGPtr + 1], a
 	ld a, $c7
-	ld [wTileQueue + $2], a
+	ld [wQueuedBG000TileID], a
 	ld a, $99
-	ld [wTileQueue + $3], a
+	ld [wQueuedBG001BGPtr + 0], a
 	ld a, $26
-	ld [wTileQueue + $4], a
+	ld [wQueuedBG001BGPtr + 1], a
 	ld a, $c6
-	ld [wTileQueue + $5], a
+	ld [wQueuedBG001TileID], a
 	xor a
-	ld [wTileQueue + $6], a
+	ld [wQueuedBG002BGPtr + 0], a
 	ld a, [hff91]
 	set 2, a
 	ld [hff91], a
