@@ -70,7 +70,12 @@ byte invertByte(byte b)
     return res;
 }
 
-unsigned getRepeatByteLen(byte *source, unsigned remaining)
+typedef unsigned (*GetCompressLengthFunc)(const byte *, unsigned);
+GetCompressLengthFunc getCompressLengthFuncs[7];
+typedef void (*CompressFunc)(const byte *, unsigned, byte *, unsigned *);
+CompressFunc compressFuncs[7];
+
+unsigned getCompressRepeatByteLen(const byte *source, unsigned remaining)
 {
     unsigned len = 0;
     byte repeatByte = *(source++);
@@ -82,7 +87,7 @@ unsigned getRepeatByteLen(byte *source, unsigned remaining)
     return len;
 }
 
-unsigned getRepeat2BytesLen(byte *source, unsigned remaining)
+unsigned getCompressRepeat2BytesLen(const byte *source, unsigned remaining)
 {
     if (remaining < 2) return 0;
 
@@ -94,6 +99,19 @@ unsigned getRepeat2BytesLen(byte *source, unsigned remaining)
         len += 2;
         if (*(source++) != repeatByte1) break;
         if (*(source++) != repeatByte2) break;
+    }
+    return len;
+}
+
+unsigned getCompressSequenceLen(const byte *source, unsigned remaining)
+{
+    unsigned len = 0;
+    byte pivot = *(source++);
+    while (len < remaining)
+    {
+        len++;
+        pivot++;
+        if (*(source++) != pivot) break;
     }
     return len;
 }
@@ -111,6 +129,7 @@ void compressRepeatByte(const byte *source, unsigned length, byte *dest, unsigne
     {
         dest[0] = 0xe0 | (0x20 >> 3) | (length / 0x100);
         dest[1] = length % 0x100;
+        dest[2] = *source;
         *destLength += 3;
     }
 }
@@ -123,12 +142,32 @@ void compressRepeat2Bytes(const byte *source, unsigned length, byte *dest, unsig
         dest[0] = 0x40 | length;
         dest[1] = source[0];
         dest[2] = source[1];
-        *destLength += 2;
+        *destLength += 3;
     }
     else
     {
         dest[0] = 0xe0 | (0x40 >> 3) | (length / 0x100);
         dest[1] = length % 0x100;
+        dest[2] = source[0];
+        dest[3] = source[1];
+        *destLength += 4;
+    }
+}
+
+void compressSequence(const byte *source, unsigned length, byte *dest, unsigned *destLength)
+{
+    length--;
+    if (length <= 0x1f)
+    {
+        dest[0] = 0x60 | length;
+        dest[1] = *source;
+        *destLength += 2;
+    }
+    else
+    {
+        dest[0] = 0xe0 | (0x60 >> 3) | (length / 0x100);
+        dest[1] = length % 0x100;
+        dest[2] = *source;
         *destLength += 3;
     }
 }
@@ -143,23 +182,25 @@ void compress(char *outFilename, byte *source, unsigned fileSize)
 
     byte *tempBuffer = (byte*) malloc(MAX_FILE_SIZE * sizeof(byte));
 
-    while (true)
+    while (remaining != 0)
     {
-        unsigned lengthRepeat = getRepeatByteLen(source, remaining);
-        unsigned lengthRepeat2 = getRepeat2BytesLen(source, remaining);
+        enum Mode chosenMode;
+        unsigned maxLen = 0;
+        for (int i = 0; i < 3; i++)
+        {
+            enum Mode mode = (enum Mode) i;
+            unsigned curLen = getCompressLengthFuncs[mode](source, remaining);
+            if (curLen > maxLen)
+            {
+                chosenMode = mode;
+                maxLen = curLen;
+            }
+        }
 
-        if (lengthRepeat >= lengthRepeat2)
-        {
-            compressRepeatByte(source, lengthRepeat, buffer, &bufferLength);
-            remaining -= lengthRepeat;
-            source += lengthRepeat;
-        }
-        else
-        {
-            compressRepeat2Bytes(source, lengthRepeat, buffer, &bufferLength);
-            remaining -= lengthRepeat2;
-            source += lengthRepeat2;
-        }
+        byte *dest = buffer + bufferLength;
+        compressFuncs[chosenMode](source, maxLen, dest, &bufferLength);
+        remaining -= maxLen;
+        source += maxLen;
     }
 
     fwrite(buffer, sizeof(byte), bufferLength, fo);
@@ -169,15 +210,19 @@ void compress(char *outFilename, byte *source, unsigned fileSize)
     free(tempBuffer);
 }
 
-void decompressRepeatByte(const byte *source, unsigned length, byte *dest, unsigned *destLength)
+typedef unsigned (*DecompressFunc)(const byte *, unsigned, byte *, unsigned *);
+DecompressFunc decompressFuncs[7];
+
+unsigned decompressRepeatByte(const byte *source, unsigned length, byte *dest, unsigned *destLength)
 {
     unsigned i = 0;
     for (; i < length; i++)
         dest[i] = *source;
     *destLength = i;
+    return 1;
 }
 
-void decompressRepeat2Bytes(const byte *source, unsigned length, byte *dest, unsigned *destLength)
+unsigned decompressRepeat2Bytes(const byte *source, unsigned length, byte *dest, unsigned *destLength)
 {
     unsigned i = 0;
     for (; i < length; i++)
@@ -186,47 +231,53 @@ void decompressRepeat2Bytes(const byte *source, unsigned length, byte *dest, uns
         dest[2*i+1] = source[1];
     }
     *destLength = 2*i;
+    return 2;
 }
 
-void decompressSequence(const byte *source, unsigned length, byte *dest, unsigned *destLength)
+unsigned decompressSequence(const byte *source, unsigned length, byte *dest, unsigned *destLength)
 {
     unsigned i = 0;
     int byte = *source;
     for (; i < length; i++)
         dest[i] = byte++;
     *destLength = i;
+    return 1;
 }
 
-void decompressLiteralCopy(const byte *source, unsigned length, byte *dest, unsigned *destLength)
+unsigned decompressLiteralCopy(const byte *source, unsigned length, byte *dest, unsigned *destLength)
 {
     unsigned i = 0;
     for (; i < length; i++)
         dest[i] = *(source++);
     *destLength = i;
+    return length;
 }
 
-void decompressLookBack(const byte *source, unsigned length, byte *dest, unsigned *destLength)
+unsigned decompressLookBack(const byte *source, unsigned length, byte *dest, unsigned *destLength)
 {
     unsigned i = 0;
     for (; i < length; i++)
         dest[i] = *(source++);
     *destLength = i;
+    return 2;
 }
 
-void decompressLookBackInverted(const byte *source, unsigned length, byte *dest, unsigned *destLength)
+unsigned decompressLookBackInverted(const byte *source, unsigned length, byte *dest, unsigned *destLength)
 {
     unsigned i = 0;
     for (; i < length; i++)
         dest[i] = invertByte(source[i]);
     *destLength = i;
+    return 2;
 }
 
-void decompressReverseLookBack(const byte *source, unsigned length, byte *dest, unsigned *destLength)
+unsigned decompressReverseLookBack(const byte *source, unsigned length, byte *dest, unsigned *destLength)
 {
     unsigned i = 0;
     for (; i < length; i++)
         dest[i] = *(source--);
     *destLength = i;
+    return 2;
 }
 
 void decompress(char *outFilename, byte *source)
@@ -289,43 +340,23 @@ void decompress(char *outFilename, byte *source)
         switch (mode)
         {
             case eRepeatByte:
-                decompressRepeatByte(source, length, tempBuffer, &tempBufferLength);
-                source++;
-                break;
             case eRepeat2Bytes:
-                decompressRepeat2Bytes(source, length, tempBuffer, &tempBufferLength);
-                source += 2;
-                break;
             case eSequence:
-                decompressSequence(source, length, tempBuffer, &tempBufferLength);
-                source++;
-                break;
             case eLiteralCopy:
-                decompressLiteralCopy(source, length, tempBuffer, &tempBufferLength);
-                source += length;
+            {
+                unsigned sourceOffset = decompressFuncs[mode](source, length, tempBuffer, &tempBufferLength);
+                source += sourceOffset;
                 break;
+            }
+
             case eLookBack:
-            {
-                unsigned lookBackPos = (((unsigned) source[0]) << 8) + (unsigned) source[1];
-                byte *sourceLookBack = buffer + lookBackPos;
-                decompressLookBack(sourceLookBack, length, tempBuffer, &tempBufferLength);
-                source += 2;
-                break;
-            }
             case eLookBackInverted:
-            {
-                unsigned lookBackPos = (((unsigned) source[0]) << 8) + (unsigned) source[1];
-                byte *sourceLookBack = buffer + lookBackPos;
-                decompressLookBackInverted(sourceLookBack, length, tempBuffer, &tempBufferLength);
-                source += 2;
-                break;
-            }
             case eReverseLookBack:
             {
                 unsigned lookBackPos = (((unsigned) source[0]) << 8) + (unsigned) source[1];
                 byte *sourceLookBack = buffer + lookBackPos;
-                decompressReverseLookBack(sourceLookBack, length, tempBuffer, &tempBufferLength);
-                source += 2;
+                unsigned sourceOffset = decompressFuncs[mode](sourceLookBack, length, tempBuffer, &tempBufferLength);
+                source += sourceOffset;
                 break;
             }
         }
@@ -386,6 +417,14 @@ int main(int argc, char *argv[])
 
     if (Options.decompress)
     {
+        decompressFuncs[eRepeatByte] = &decompressRepeatByte;
+        decompressFuncs[eRepeat2Bytes] = &decompressRepeat2Bytes;
+        decompressFuncs[eSequence] = &decompressSequence;
+        decompressFuncs[eLiteralCopy] = &decompressLiteralCopy;
+        decompressFuncs[eLookBack] = &decompressLookBack;
+        decompressFuncs[eLookBackInverted] = &decompressLookBackInverted;
+        decompressFuncs[eReverseLookBack] = &decompressReverseLookBack;
+
         char *outFilename = (char*) malloc((strlen(inFilename) + 1) * sizeof(char));
         strcpy(outFilename, inFilename);
         outFilename[strlen(inFilename) - strlen(".lz")] = '\0';
@@ -395,6 +434,21 @@ int main(int argc, char *argv[])
     }
     else // compress
     {
+        getCompressLengthFuncs[eRepeatByte] = &getCompressRepeatByteLen;
+        compressFuncs[eRepeatByte] = &compressRepeatByte;
+        getCompressLengthFuncs[eRepeat2Bytes] = &getCompressRepeat2BytesLen;
+        compressFuncs[eRepeat2Bytes] = &compressRepeat2Bytes;
+        getCompressLengthFuncs[eSequence] = &getCompressSequenceLen;
+        compressFuncs[eSequence] = &compressSequence;
+        // getCompressLengthFuncs[eLiteralCopy] = &getCompressLiteralCopyLen;
+        // compressFuncs[eLiteralCopy] = &compressLiteralCopy;
+        // getCompressLengthFuncs[eLookBack] = &getCompressLookBackLen;
+        // compressFuncs[eLookBack] = &compressLookBack;
+        // getCompressLengthFuncs[eLookBackInverted] = &getCompressLookBackInvertedLen;
+        // compressFuncs[eLookBackInverted] = &compressLookBackInverted;
+        // getCompressLengthFuncs[eReverseLookBack] = &getCompressReverseLookBackLen;
+        // compressFuncs[eReverseLookBack] = &compressReverseLookBack;
+
         char *outFilename = (char*) malloc((strlen(inFilename) + strlen(".lz") + 1) * sizeof(char));
         strcpy(outFilename, inFilename);
         strcat(outFilename, ".lz");
