@@ -2,51 +2,374 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <getopt.h>
 #include <errno.h>
+
+#include "common.h"
+
+typedef unsigned char byte;
+
+static void usage(void) {
+	fprintf(stderr, "Usage: compressor [-d decompress] [-h] infile\n");
+}
+
+struct Options {
+	int decompress;
+	int help;
+};
+
+struct Options Options = {
+	.decompress = false,
+};
+
+void get_args(int argc, char *argv[]) {
+	struct option long_options[] = {
+		{"decompress", no_argument, 0, 'd'},
+		{"help", no_argument, 0, 'h'},
+		{0}
+	};
+	for (int opt = 0; opt != -1;) {
+		switch (opt = getopt_long(argc, argv, "hd::", long_options)) {
+		case 'h':
+			Options.help = true;
+			break;
+		case 'd':
+			Options.decompress = true;
+			break;
+		case 0:
+		case -1:
+			break;
+		default:
+			usage();
+			exit(1);
+			break;
+		}
+	}
+}
 
 const unsigned MAX_FILE_SIZE = 0x8000;
 
 enum Mode
 {
-    eUndefined,
-    eRepeat,
-    eLiteralCopy
+    eRepeatByte,
+    eRepeat2Bytes,
+    eSequence,
+    eLiteralCopy,
+    eLookBack,
+    eLookBackInverted,
+    eReverseLookBack,
 };
+
+byte invertByte(byte b)
+{
+    byte res = 0;
+    for (int bit = 0; bit < 8; bit++)
+    {
+        res |= ((b & (1 << bit)) >> bit) << (7 - bit);
+    }
+    return res;
+}
+
+unsigned getRepeatByteLen(byte *source, unsigned remaining)
+{
+    unsigned len = 0;
+    byte repeatByte = *(source++);
+    while (len < remaining)
+    {
+        len++;
+        if (*(source++) != repeatByte) break;
+    }
+    return len;
+}
+
+unsigned getRepeat2BytesLen(byte *source, unsigned remaining)
+{
+    if (remaining < 2) return 0;
+
+    unsigned len = 0;
+    byte repeatByte1 = *(source++);
+    byte repeatByte2 = *(source++);
+    while (len < remaining)
+    {
+        len += 2;
+        if (*(source++) != repeatByte1) break;
+        if (*(source++) != repeatByte2) break;
+    }
+    return len;
+}
+
+void compressRepeatByte(const byte *source, unsigned length, byte *dest, unsigned *destLength)
+{
+    length--;
+    if (length <= 0x1f)
+    {
+        dest[0] = 0x20 | length;
+        dest[1] = *source;
+        *destLength += 2;
+    }
+    else
+    {
+        dest[0] = 0xe0 | (0x20 >> 3) | (length / 0x100);
+        dest[1] = length % 0x100;
+        *destLength += 3;
+    }
+}
+
+void compressRepeat2Bytes(const byte *source, unsigned length, byte *dest, unsigned *destLength)
+{
+    length = (length / 2) - 1;
+    if (length <= 0x1f)
+    {
+        dest[0] = 0x40 | length;
+        dest[1] = source[0];
+        dest[2] = source[1];
+        *destLength += 2;
+    }
+    else
+    {
+        dest[0] = 0xe0 | (0x40 >> 3) | (length / 0x100);
+        dest[1] = length % 0x100;
+        *destLength += 3;
+    }
+}
+
+void compress(char *outFilename, byte *source, unsigned fileSize)
+{
+    unsigned remaining = fileSize;
+
+    FILE *fo = fopen(outFilename, "wb");
+    byte *buffer = (byte*) malloc(MAX_FILE_SIZE * sizeof(byte));
+    unsigned bufferLength = 0;
+
+    byte *tempBuffer = (byte*) malloc(MAX_FILE_SIZE * sizeof(byte));
+
+    while (true)
+    {
+        unsigned lengthRepeat = getRepeatByteLen(source, remaining);
+        unsigned lengthRepeat2 = getRepeat2BytesLen(source, remaining);
+
+        if (lengthRepeat >= lengthRepeat2)
+        {
+            compressRepeatByte(source, lengthRepeat, buffer, &bufferLength);
+            remaining -= lengthRepeat;
+            source += lengthRepeat;
+        }
+        else
+        {
+            compressRepeat2Bytes(source, lengthRepeat, buffer, &bufferLength);
+            remaining -= lengthRepeat2;
+            source += lengthRepeat2;
+        }
+    }
+
+    fwrite(buffer, sizeof(byte), bufferLength, fo);
+    fclose(fo);
+
+    free(buffer);
+    free(tempBuffer);
+}
+
+void decompressRepeatByte(const byte *source, unsigned length, byte *dest, unsigned *destLength)
+{
+    unsigned i = 0;
+    for (; i < length; i++)
+        dest[i] = *source;
+    *destLength = i;
+}
+
+void decompressRepeat2Bytes(const byte *source, unsigned length, byte *dest, unsigned *destLength)
+{
+    unsigned i = 0;
+    for (; i < length; i++)
+    {
+        dest[2*i+0] = source[0];
+        dest[2*i+1] = source[1];
+    }
+    *destLength = 2*i;
+}
+
+void decompressSequence(const byte *source, unsigned length, byte *dest, unsigned *destLength)
+{
+    unsigned i = 0;
+    int byte = *source;
+    for (; i < length; i++)
+        dest[i] = byte++;
+    *destLength = i;
+}
+
+void decompressLiteralCopy(const byte *source, unsigned length, byte *dest, unsigned *destLength)
+{
+    unsigned i = 0;
+    for (; i < length; i++)
+        dest[i] = *(source++);
+    *destLength = i;
+}
+
+void decompressLookBack(const byte *source, unsigned length, byte *dest, unsigned *destLength)
+{
+    unsigned i = 0;
+    for (; i < length; i++)
+        dest[i] = *(source++);
+    *destLength = i;
+}
+
+void decompressLookBackInverted(const byte *source, unsigned length, byte *dest, unsigned *destLength)
+{
+    unsigned i = 0;
+    for (; i < length; i++)
+        dest[i] = invertByte(source[i]);
+    *destLength = i;
+}
+
+void decompressReverseLookBack(const byte *source, unsigned length, byte *dest, unsigned *destLength)
+{
+    unsigned i = 0;
+    for (; i < length; i++)
+        dest[i] = *(source--);
+    *destLength = i;
+}
+
+void decompress(char *outFilename, byte *source)
+{
+    FILE *fo = fopen(outFilename, "wb");
+    byte *buffer = (byte*) malloc(MAX_FILE_SIZE * sizeof(byte));
+    unsigned bufferLength = 0;
+
+    byte *tempBuffer = (byte*) malloc(MAX_FILE_SIZE * sizeof(byte));
+
+    while (true)
+    {
+        byte cmdByte = *(source++);
+        if (cmdByte == 0xff) break;
+        int isLongLen = ((cmdByte & 0xe0) == 0xe0);
+        int flags;
+        unsigned length;
+        if (isLongLen)
+        {
+            // long length
+            unsigned lowLengthByte = (unsigned) *(source++);
+            length = ((cmdByte & 0x3) * 0x100) + lowLengthByte + 1;
+            flags = (cmdByte & 0x1c) << 3;
+        }
+        else
+        {
+            // short length
+            length = (cmdByte & 0x1f) + 1;
+            flags = (cmdByte & 0xe0);
+        }
+
+        enum Mode mode;
+
+        if (flags & 0x80)
+        {
+            // is look back
+            switch (flags)
+            {
+                default:
+                case 0x80: mode = eLookBack; break;
+                case 0xa0: mode = eLookBackInverted; break;
+                case 0xc0: mode = eReverseLookBack; break;
+            }
+        }
+        else
+        {
+            // not look back
+            switch (flags)
+            {
+                case 0x20: mode = eRepeatByte; break;
+                case 0x40: mode = eRepeat2Bytes; break;
+                case 0x60: mode = eSequence; break;
+                default:   mode = eLiteralCopy; break;
+            }
+        }
+
+        printf("flag = %d, mode = %d, length = %d\n", flags, mode, length);
+        unsigned tempBufferLength;
+
+        switch (mode)
+        {
+            case eRepeatByte:
+                decompressRepeatByte(source, length, tempBuffer, &tempBufferLength);
+                source++;
+                break;
+            case eRepeat2Bytes:
+                decompressRepeat2Bytes(source, length, tempBuffer, &tempBufferLength);
+                source += 2;
+                break;
+            case eSequence:
+                decompressSequence(source, length, tempBuffer, &tempBufferLength);
+                source++;
+                break;
+            case eLiteralCopy:
+                decompressLiteralCopy(source, length, tempBuffer, &tempBufferLength);
+                source += length;
+                break;
+            case eLookBack:
+            {
+                unsigned lookBackPos = (((unsigned) source[0]) << 8) + (unsigned) source[1];
+                byte *sourceLookBack = buffer + lookBackPos;
+                decompressLookBack(sourceLookBack, length, tempBuffer, &tempBufferLength);
+                source += 2;
+                break;
+            }
+            case eLookBackInverted:
+            {
+                unsigned lookBackPos = (((unsigned) source[0]) << 8) + (unsigned) source[1];
+                byte *sourceLookBack = buffer + lookBackPos;
+                decompressLookBackInverted(sourceLookBack, length, tempBuffer, &tempBufferLength);
+                source += 2;
+                break;
+            }
+            case eReverseLookBack:
+            {
+                unsigned lookBackPos = (((unsigned) source[0]) << 8) + (unsigned) source[1];
+                byte *sourceLookBack = buffer + lookBackPos;
+                decompressReverseLookBack(sourceLookBack, length, tempBuffer, &tempBufferLength);
+                source += 2;
+                break;
+            }
+        }
+
+        memcpy(buffer + bufferLength, tempBuffer, tempBufferLength * sizeof(byte));
+        bufferLength += tempBufferLength;
+    }
+
+    fwrite(buffer, sizeof(byte), bufferLength, fo);
+    fclose(fo);
+
+    free(buffer);
+    free(tempBuffer);
+}
 
 int main(int argc, char *argv[])
 {
-    if (argc < 2)
+	get_args(argc, argv);
+	argc -= optind;
+	argv += optind;
+	if (Options.help)
     {
-        perror("Please provide target file\n");
-        return 1;
-    }
-
-    if (argc > 3)
+		usage();
+		return 0;
+	}
+	if (argc < 1)
     {
-        perror("Too many arguments");
-        return 1;
-    }
+		usage();
+		exit(1);
+	}
 
-    const bool forceTrailingCopy = (strcmp(argv[1], "--force-trailing-copy") == 0);
-    const bool forceTrailingRepeat = (strcmp(argv[1], "--force-trailing-repeat") == 0);
-    const bool noTrailingRepeat = forceTrailingCopy || (strcmp(argv[1], "--no-trailing-repeat") == 0);
-
-    char *inFilename = (char*) malloc((strlen(argv[argc - 1]) + 1) * sizeof(char));
-    strcpy(inFilename, argv[argc - 1]);
-
-    char *outFilename = (char*) malloc((strlen(inFilename) + 4 + 1) * sizeof(char));
-    strcpy(outFilename, inFilename);
-    strcat(outFilename, ".rle");
+    char *inFilename = (char*) malloc((strlen(argv[0]) + 1) * sizeof(char));
+    strcpy(inFilename, argv[0]);
 
     FILE *fi = fopen(inFilename, "rb");
 
     if (fi == NULL)
     {
         printf("Error: %d (%s)\n", errno, strerror(errno));
-        return 1;
+        free(inFilename);
+        exit(1);
     }
 
-    int* fileBuffer = (int*) malloc(MAX_FILE_SIZE * sizeof(int));
+    byte *fileBuffer = (byte*) malloc(MAX_FILE_SIZE * sizeof(byte));
     unsigned fileSize = 0;
     for (unsigned i = 0; i < MAX_FILE_SIZE; i++)
     {
@@ -61,106 +384,27 @@ int main(int argc, char *argv[])
 
     fclose(fi);
 
-    FILE *fo = fopen(outFilename, "wb");
-
-    int* buffer = (int*) malloc(0x7f * sizeof(int));
-    unsigned bufferPos = 0;
-    enum Mode mode = eUndefined;
-
-    for (unsigned pos = 0; pos < fileSize; pos++)
+    if (Options.decompress)
     {
-        const bool isLastChar = (pos == fileSize - 1);
-        const unsigned lookAheadLen = (pos + 4 < fileSize)
-                        ? 4
-                        : fileSize - pos;
-        int nextChars[lookAheadLen];
-        for (unsigned i = 0; i < lookAheadLen; i++)
-            nextChars[i] = fileBuffer[pos + i];
+        char *outFilename = (char*) malloc((strlen(inFilename) + 1) * sizeof(char));
+        strcpy(outFilename, inFilename);
+        outFilename[strlen(inFilename) - strlen(".lz")] = '\0';
 
-        // printf("%03x: 0x%02x, (%i)\n", pos, nextChars[0], isLastChar);
+        decompress(outFilename, fileBuffer);
+        free(outFilename);
+    }
+    else // compress
+    {
+        char *outFilename = (char*) malloc((strlen(inFilename) + strlen(".lz") + 1) * sizeof(char));
+        strcpy(outFilename, inFilename);
+        strcat(outFilename, ".lz");
 
-        if (mode == eUndefined)
-        {
-            if (!isLastChar)
-            {
-                mode = ((lookAheadLen > 2 && nextChars[0] == nextChars[1] && nextChars[1] == nextChars[2])
-                     || (lookAheadLen == 2 && nextChars[0] == nextChars[1] && !forceTrailingCopy))
-                    ? eRepeat
-                    : eLiteralCopy;
-            }
-            else
-            {
-                if (!forceTrailingRepeat)
-                {
-                    // printf("Last char literal copy\n");
-                    fputc(0x01 | 0x80, fo);
-                    fputc(nextChars[0], fo);
-                }
-                else
-                {
-                    // printf("Last char repeat\n");
-                    fputc(0x01, fo);
-                    fputc(nextChars[0], fo);
-                }
-            }
-        }
-
-        switch (mode)
-        {
-            case eUndefined: break; // already taken care of
-
-            case eRepeat:
-            {
-                buffer[bufferPos++] = nextChars[0];
-
-                if ((lookAheadLen > 1 && nextChars[0] != nextChars[1]) // if the next character is different
-                  || bufferPos == 0x7f // or if over buffer length, then end run
-                  || isLastChar) // or is last char
-                {
-                    // printf("Repeat for 0x%x bytes, char 0x%x\n", bufferPos, buffer[0]);
-                    fputc(bufferPos, fo);
-                    fputc(buffer[0], fo);
-
-                    mode = eUndefined;
-                    bufferPos = 0;
-                }
-            }
-            break;
-
-            case eLiteralCopy:
-            {
-                buffer[bufferPos++] = nextChars[0];
-
-                const bool isNextRepeated = lookAheadLen > 3
-                                         && nextChars[1] == nextChars[2] && nextChars[1] == nextChars[3]
-                                         && bufferPos != 0x7e; // for matching only, remove for optimal compression
-
-                if (isNextRepeated // if the next characters are repeating
-                 || bufferPos == 0x7f // or if over buffer length
-                 || isLastChar // or is last char, then end run
-                 || (lookAheadLen == 3 && nextChars[1] == nextChars[2] && !noTrailingRepeat)) // special case for last chars
-                {
-                    // printf("Literal copy for 0x%x bytes\n", bufferPos);
-                    fputc(bufferPos | 0x80, fo);
-                    for (unsigned i = 0; i < bufferPos; ++i)
-                        fputc(buffer[i], fo);
-
-                    mode = eUndefined;
-                    bufferPos = 0;
-                }
-            }
-            break;
-        }
+        compress(outFilename, fileBuffer, fileSize);
+        free(outFilename);
     }
 
-    fputc(0x00, fo);
-
     free(inFilename);
-    free(outFilename);
-    free(buffer);
     free(fileBuffer);
-
-    fclose(fo);
 
     return 0;
 }

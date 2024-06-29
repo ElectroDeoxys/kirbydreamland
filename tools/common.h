@@ -1,6 +1,8 @@
 #ifndef GUARD_COMMON_H
 #define GUARD_COMMON_H
 
+#include <stdint.h>
+
 int __getopt_long_i__;
 #define getopt_long(c, v, s, l) getopt_long(c, v, s, l, &__getopt_long_i__)
 
