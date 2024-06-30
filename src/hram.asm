@@ -9,7 +9,7 @@ hLCDC:: ; ff8a
 hJoypadPressed:: ; ff8b
 	db
 
-hff8c:: ; ff8c
+hVBlankFlags:: ; ff8c
 	db
 
 hff8d:: ; ff8d

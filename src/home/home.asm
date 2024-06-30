@@ -1,4 +1,177 @@
-SECTION "Home@0648", ROM0[$0648]
+SECTION "Home@0246", ROM0[$0246]
+
+Func_246::
+	xor a
+	ld [wVirtualOAMSize], a
+	ld a, [wROMBank]
+	push af
+	ld a, $05
+	bankswitch
+	call $432c ; Func_1432c
+	call $47e4 ; Func_147e4
+	pop af
+	bankswitch
+
+	call Func_319d
+	call Func_2e9c
+	call ClearSprites
+
+	ld hl, hff95
+	bit 3, [hl]
+	jr z, .asm_280
+	ld a, [wd06a]
+	inc a
+	ld [wd06a], a
+	cp $0f
+	jr c, .asm_280
+	res 3, [hl]
+.asm_280
+	ld a, [wd05d]
+	cp $88
+	jp nc, Func_1385
+	ld a, [wHP]
+	and a
+	jp z, Func_1390
+
+	ld hl, hHUDFlags
+	bit HUD_UPDATE_SCORE_DIGITS_F, [hl]
+	jr z, .asm_29b
+	res HUD_UPDATE_SCORE_DIGITS_F, [hl]
+	call GetScoreDigitTiles
+.asm_29b
+	ldh a, [hff94]
+	bit 2, a
+	jp z, .asm_2ad ; can be jr
+	ld a, $06
+	bankswitch
+	jp $43bf ; Func_183bf
+
+.asm_2ad
+	ld hl, hff94
+	bit 5, [hl]
+	jr z, .asm_2d1
+	ld hl, hVBlankFlags
+.asm_2b7
+	set VBLANK_6_F, [hl]
+.asm_2b9
+	bit VBLANK_6_F, [hl]
+	jr nz, .asm_2b9
+	push hl
+	xor a
+	ld [wVirtualOAMSize], a
+	call Func_2e9c
+	call ClearSprites
+	pop hl
+	ldh a, [hff94]
+	bit 5, a
+	jr nz, .asm_2b7
+	jr .asm_29b
+.asm_2d1
+	ld hl, hff94
+	bit 3, [hl]
+	jr z, .asm_30a
+	ldh a, [hVBlankFlags]
+	and VBLANK_5
+	jr nz, .asm_30a
+	ld a, [wd069]
+	ld c, a
+	inc a
+	ld [wd069], a
+	ld b, $00
+	ld hl, $488c
+	add hl, bc
+	ld a, [hl]
+	and a
+	jr z, .asm_313
+	ld [wd074], a
+	xor a
+	ld [wd075], a
+	ld hl, hff94
+	bit 4, [hl]
+	jr nz, .asm_303
+	call $4000
+	jr .asm_306
+.asm_303
+	call $417c
+.asm_306
+	xor a
+	ld [wd074], a
+.asm_30a
+	ldh a, [hVBlankFlags]
+	set VBLANK_6_F, a
+	ldh [hVBlankFlags], a
+	jp Func_1f2
+.asm_313
+	ld hl, hff94
+	res 3, [hl]
+	ld hl, hff91
+	set 6, [hl]
+	xor a
+	ld [wd074], a
+	ld [wd075], a
+	jr .asm_30a
+
+Func_326:
+	ldh a, [hff8e]
+	bit 6, a
+	ret nz
+	ld hl, hff95
+	bit 5, [hl]
+	jr z, .asm_354
+	res 5, [hl]
+	ld a, $15
+	call PlaySFX
+	ld a, [wCurMusic]
+	cp $09
+	jr nz, .asm_359
+	ld a, [wMusic]
+	call PlayMusic
+	xor a
+	ld [wd3df], a
+	ld [wd3e0], a
+	ld hl, wd1a0
+	res 4, [hl]
+	jr .asm_359
+.asm_354
+	ld a, $14
+	call PlaySFX
+.asm_359
+	ldh a, [hff8e]
+	set 6, a
+	set 5, a
+	bit 4, a
+	jr z, .asm_365
+	set 2, a
+.asm_365
+	ldh [hff8e], a
+	bit 7, a
+	jr nz, .asm_373
+	ld a, [wd190]
+	set 7, a
+	ld [wd190], a
+.asm_373
+	and $2f
+	ldh [hff8d], a
+	ldh a, [hff92]
+	and $f3
+	ldh [hff92], a
+	xor a
+	ld [wd064], a
+	ld [wGlobalCounter2], a
+	ld a, $00
+	ld [wd076], a
+	ld a, $a8
+	ld [wd077], a
+	ret
+; 0x38f
+
+SECTION "Home@0643", ROM0[$0643]
+
+Func_643:
+	and $0f
+	ret z
+	scf
+	ret
 
 Func_648::
 	push hl
@@ -13,7 +186,7 @@ Func_648::
 	ld [wVirtualOAMSize], a
 	call Func_2e9c
 	call ClearSprites
-	ld hl, hff8c
+	ld hl, hVBlankFlags
 	set VBLANK_6_F, [hl]
 .asm_664
 	bit VBLANK_6_F, [hl]
@@ -33,7 +206,7 @@ Func_670::
 	or $88
 	ldh [hff90], a
 .asm_67e
-	ld hl, hff8c
+	ld hl, hVBlankFlags
 	set VBLANK_6_F, [hl]
 .asm_683
 	bit VBLANK_6_F, [hl]
@@ -47,7 +220,7 @@ Func_670::
 ; workable for use in-game. There are 8 buttons, so we can use
 ; one byte to contain all player input.
 ReadJoypad:
-	ldh a, [hff8c]
+	ldh a, [hVBlankFlags]
 	bit VBLANK_7_F, a
 	ret nz
 
@@ -91,7 +264,7 @@ ENDR
 
 ; soft reset game
 	ld a, VBLANK_7
-	ldh [hff8c], a
+	ldh [hVBlankFlags], a
 	ei
 	call Func_648
 	call ResetTimer
@@ -116,9 +289,261 @@ ENDR
 	ld a, P1F_GET_NONE
 	ldh [rP1], a
 	ret
-; 0x6ec
 
-SECTION "Home@08dc", ROM0[$08dc]
+Func_6ec::
+	ldh a, [hVBlankFlags]
+	and VBLANK_5
+	ret nz
+	ldh [hVBlankFlags], a
+	ld hl, hff90
+	bit 4, [hl]
+	jr nz, .asm_708
+	ld hl, hff91
+	ld a, [wd05c]
+	cp $45
+	jr c, .asm_70e
+	cp $4b
+	jr nc, .asm_733
+.asm_708
+	ld hl, hff91
+	res 6, [hl]
+	ret
+.asm_70e
+	bit 7, [hl]
+	jr nz, .asm_720
+	ld a, [wd051]
+	cp $01
+	jr nz, .asm_720
+	ld a, [wSCX]
+	and $0f
+	jr z, .asm_708
+.asm_720
+	ld a, $02
+	ld [wd062], a
+	ld [wd063], a
+	call Func_1268
+	xor a
+	ld [wd062], a
+	call Func_110b
+	ret
+.asm_733
+	jr z, .asm_708
+	bit 7, [hl]
+	jr nz, .asm_747
+	ld a, [wd042]
+	and a
+	jr z, .asm_708
+	inc a
+	ld b, a
+	ld a, [wd051]
+	cp b
+	jr z, .asm_759
+.asm_747
+	ld a, $02
+	ld [wd062], a
+	ld [wd063], a
+	call Func_1272
+	xor a
+	ld [wd062], a
+	jp Func_1062
+.asm_759
+	ld a, [wSCX]
+	and $f0
+	ld [wSCX], a
+	jr .asm_708
+
+Func_763:
+	push bc
+	push de
+	ld a, [wd052]
+	sub $01
+	ld l, a
+	ld h, $00
+	add hl, hl
+	add hl, hl
+	add hl, hl
+	add hl, hl
+	ld b, $00
+	ld a, [wd05f]
+	ld c, a
+	add hl, bc
+	ld a, [wSCY]
+	and $0f
+	ld b, $00
+	ld c, a
+	add hl, bc
+	pop de
+	pop bc
+	ret
+
+Func_784:
+	push bc
+	push de
+	ld a, [wd051]
+	sub $01
+	ld l, a
+	ld h, $00
+	add hl, hl
+	add hl, hl
+	add hl, hl
+	add hl, hl
+	ld b, $00
+	ld a, [wd05e]
+	sub $08
+	ld c, a
+	add hl, bc
+	ld a, [wSCX]
+	and $0f
+	ld b, $00
+	ld c, a
+	add hl, bc
+	pop de
+	pop bc
+	ret
+
+Func_7a7:
+	ld [wd05f], a
+	call Func_763
+	call Func_1ccb
+	ld a, c
+	dec a
+	dec a
+	jr Func_7bf
+Func_7b5:
+	ld [wd05f], a
+	call Func_763
+	call Func_1ccb
+	ld a, c
+;	fallthrough
+Func_7bf:
+	ld [wd05f], a
+	ld a, [wd05c]
+	add $08
+	ld [wd05e], a
+	jp Func_7cd ; useless jump
+
+Func_7cd:
+	push bc
+	push de
+	push hl
+	ld a, [wd05f]
+	cp $ff
+	jr z, .asm_816
+	ld b, a
+	ld a, [wd03f]
+	ld e, a
+	call CalculateBCPercentage
+	ld hl, wc100
+	add hl, bc
+	push hl
+	call Func_784
+	call Func_1ccb
+	pop hl
+	ld a, [wd03f]
+	cp c
+	jr z, .asm_7ff
+	xor a
+	cp c
+	jr z, .asm_7f7
+	dec bc
+	inc hl
+.asm_7f7
+	ld a, [wd03f]
+	sub $02
+	cp c
+	jr nc, .asm_808
+.asm_7ff
+	ld a, [wd03f]
+	ld e, a
+	ld a, c
+	sub e
+	ld c, a
+	ld b, $00
+.asm_808
+	add hl, bc
+	ld a, [hl]
+	ld c, a
+	ld b, $00
+	ld hl, wca00
+	add hl, bc
+	ld a, [hl]
+.asm_812
+	pop hl
+	pop de
+	pop bc
+	ret
+.asm_816
+	xor a
+	jr .asm_812
+; 0x819
+
+SECTION "Home@0860", ROM0[$0860]
+
+Func_860:
+	ld a, [wd07c]
+	ld d, a
+	ld a, [wd076]
+	ld b, a
+	ld a, [wd077]
+	ld c, a
+	ld a, [wd075]
+	add d
+	ld [wd075], a
+	ld a, [wd074]
+	adc $00
+	cp b
+	jr nc, .asm_87f
+	ld [wd074], a
+	ret
+.asm_87f
+	ld a, b
+	ld [wd074], a
+	ld a, [wd075]
+	cp c
+	ret c
+	ld a, c
+	ld [wd075], a
+	ret
+
+Func_88d:
+	ldh a, [hff8d]
+	bit 5, a
+	jr nz, .asm_8a4
+	jr .asm_895 ; useless jump
+.asm_895
+	call .Func_8b3
+	call $4000 ; Func_4000
+	jp nc, Func_990
+	call Func_1062
+	jp Func_990
+.asm_8a4
+	call .Func_8b3
+	call $417c ; Func_417c
+	jp nc, Func_9d6
+	call Func_110b
+	jp Func_9d6
+
+.Func_8b3:
+	ld a, [wd07d]
+	ld b, a
+	ld a, [wd075]
+	sub b
+	ld [wd075], a
+	ld a, [wd074]
+	sbc $00
+	ld [wd074], a
+	jr c, .asm_8cb
+	bit 7, a
+	ret z
+.asm_8cb
+	xor a
+	ld [wd075], a
+	ld [wd074], a
+	ld [wd04d], a
+	ldh a, [hff8d]
+	res 4, a
+	ldh [hff8d], a
+	ret
 
 Func_8dc::
 	ldh a, [hff8e]
@@ -146,13 +571,1376 @@ Func_8dc::
 	ld [wd07a], a
 	ld a, $00
 	ld [wd07b], a
-	ldh a, [hff8c]
-	or $18
-	ldh [hff8c], a
+	ldh a, [hVBlankFlags]
+	or VBLANK_3 | VBLANK_4
+	ldh [hVBlankFlags], a
 	ret
-; 0x917
 
-SECTION "Home@131a", ROM0[$131a]
+Func_917::
+	ldh a, [hff90]
+	bit 5, a
+	jr nz, .asm_97b
+	ldh a, [hff8d]
+	bit 4, a
+	jr z, .asm_97b
+	ldh a, [hVBlankFlags]
+	and VBLANK_0 | VBLANK_1
+	jp z, Func_88d
+	swap a
+	ld b, a
+	ldh a, [hff8d]
+	and $20
+	jr z, .asm_956
+	and b
+	jr nz, .asm_97b
+	ldh a, [hVBlankFlags]
+	res VBLANK_0_F, a
+	ldh [hVBlankFlags], a
+	bit VBLANK_4_F, b
+	jp z, Func_88d
+	ld a, [wd074]
+	cp $01
+	jp c, Func_88d
+	ld a, $00
+	ld [wd074], a
+	ld a, $80
+	ld [wd075], a
+	jp Func_88d
+.asm_956
+	bit 4, b
+	jp nz, .asm_97b
+	ldh a, [hVBlankFlags]
+	res VBLANK_1_F, a
+	ldh [hVBlankFlags], a
+	bit VBLANK_5_F, b
+	jp z, Func_88d
+	ld a, [wd074]
+	cp $01
+	jp c, Func_88d
+	ld a, $00
+	ld [wd074], a
+	ld a, $80
+	ld [wd075], a
+	jp Func_88d
+.asm_97b
+	ldh a, [hVBlankFlags]
+	bit VBLANK_0_F, a
+	jr z, Func_998
+	call Func_860
+	ldh a, [hff8d]
+	set 4, a
+	ldh [hff8d], a
+	call $4000 ; Func_4000
+	call c, Func_1062
+;	fallthrough
+
+Func_990:
+	ldh a, [hVBlankFlags]
+	set VBLANK_4_F, a
+	res VBLANK_0_F, a
+	ldh [hVBlankFlags], a
+;	fallthrough
+
+Func_998:
+	ld hl, hff95
+	bit 6, [hl]
+	jr z, .asm_9c0
+	ldh a, [hff90]
+	bit 5, a
+	jr z, .asm_9c0
+	ld a, [wStage]
+	cp FLOAT_ISLANDS
+	jr z, .float_islands_or_mt_dedede
+	cp MT_DEDEDE
+	jr nz, .asm_9c0
+.float_islands_or_mt_dedede
+	ld a, [wArea]
+	cp $07
+	jr nz, .asm_9c0
+	ldh a, [hff92]
+	and $f3
+	ldh [hff92], a
+	call Func_11de
+.asm_9c0
+	ldh a, [hVBlankFlags]
+	bit VBLANK_1_F, a
+	jp z, Func_9de
+	call Func_860
+	ldh a, [hff8d]
+	set 4, a
+	ldh [hff8d], a
+	call $417c ; Func_417c
+	call c, Func_110b
+;	fallthrough
+
+Func_9d6:
+	ldh a, [hVBlankFlags]
+	set VBLANK_4_F, a
+	res VBLANK_1_F, a
+	ldh [hVBlankFlags], a
+;	fallthrough
+
+Func_9de:
+	ldh a, [hVBlankFlags]
+	bit VBLANK_2_F, a
+	jp z, Func_caf
+	ldh a, [hff93]
+	res 7, a
+	ldh [hff93], a
+	ldh a, [hff90]
+	bit 5, a
+	jp nz, .asm_ab8
+	ld a, [wd05d]
+	ld [wd05f], a
+	call Func_763
+	ld d, $00
+	ldh a, [hff8d]
+	and $07
+	jp z, .asm_ab8
+	ld e, a
+.asm_a05
+	ld a, l
+	call Func_643
+	jr nc, .asm_a13
+	dec hl
+	inc d
+	dec e
+	jr nz, .asm_a05
+	jp .asm_ab8
+.asm_a13
+	call Func_1ccb
+	ld a, c
+	dec a
+	dec a
+	ld [wd05f], a
+	ld a, [wd05c]
+	add $03
+	ld [wd05e], a
+	call Func_7cd
+	ld c, $00
+	ld b, a
+	and a
+	jr z, .asm_a3f
+	cp $01
+	jr z, .asm_a3f
+	cp $06
+	jr z, .asm_a3f
+	cp $07
+	jr nz, .asm_a63
+	ldh a, [hff93]
+	set 6, a
+	ldh [hff93], a
+.asm_a3f
+	ld a, [wd05c]
+	add $0c
+	ld [wd05e], a
+	call Func_7cd
+	ld c, a
+	and a
+	jp z, .asm_ab8
+	cp $01
+	jp z, .asm_ab8
+	cp $06
+	jp z, .asm_ab8
+	cp $07
+	jr nz, .asm_a63
+	ldh a, [hff93]
+	set 6, a
+	ldh [hff93], a
+.asm_a63
+	ld a, [wd05d]
+	cp $10
+	jp z, .asm_a9e
+	jp c, .asm_a9e
+	ld a, [wd3f5]
+	ld hl, wd3e1
+	or [hl]
+	inc hl
+	or [hl]
+	jr nz, .asm_aa4
+	ld a, b
+	and a
+	jr z, .asm_a87
+	cp $07
+	jr z, .asm_a87
+	cp $08
+	jr nz, .asm_a9e
+	jr .asm_a93
+.asm_a87
+	ld a, c
+	and a
+	jr z, .asm_a93
+	cp $07
+	jr z, .asm_ab8
+	cp $08
+	jr nz, .asm_a9e
+.asm_a93
+	push bc
+	push de
+	call $4c9b ; Func_4c9b
+	pop de
+	pop bc
+	jr c, .asm_aa9
+	jr .asm_ab8
+.asm_a9e
+	ldh a, [hff8e]
+	bit 6, a
+	jr nz, .asm_aa9
+.asm_aa4
+	push de
+	call Func_c85
+	pop de
+.asm_aa9
+	ld a, $16
+	ld [wd065], a
+	xor a
+	ld [wd078], a
+	ld [wd079], a
+	ld a, d
+	jr .asm_abc
+.asm_ab8
+	ldh a, [hff8d]
+	and $07
+.asm_abc
+	ld [wd061], a
+	ld b, a
+	ldh a, [hff90]
+	bit 4, a
+	jr nz, .asm_ad6
+	ld c, $4c
+	ld a, [wd052]
+	cp $01
+	jr nz, .asm_ad8
+	ld a, [wSCY]
+	and $0f
+	jr nz, .asm_ad8
+.asm_ad6
+	ld c, $10
+.asm_ad8
+	ld a, [wd05d]
+	sub c
+	ld [wd060], a
+	sub b
+	jr c, .asm_b08
+	ld a, [wd061]
+	ld [wd060], a
+	call Func_127d
+	ld a, [wd05d]
+	cp $08
+	jp nz, .asm_bba
+.asm_af3
+	call Func_c85
+	jp c, .asm_bba
+	ld a, $16
+	ld [wd065], a
+	xor a
+	ld [wd078], a
+	ld [wd079], a
+	jp .asm_bba
+.asm_b08
+	call Func_127d
+	ldh a, [hff90]
+	bit 4, a
+	jp nz, .asm_bba
+	ld a, [wd060]
+	ld b, a
+	ld a, [wd061]
+	sub b
+	jp z, .asm_bba
+	ld [wd061], a
+	ld b, a
+	ld a, [wSCY]
+	ld c, a
+.asm_b25
+	ld a, c
+	call Func_643
+	jr nc, .asm_b68
+	dec c
+	dec b
+	jr nz, .asm_b25
+	ld a, [wd05d]
+	cp $10
+	jp nc, .asm_baf
+	jp .asm_bba
+.asm_b3a
+	ld a, [wd05d]
+	cp $10
+	jr z, .asm_af3
+	ld a, [wd061]
+	sub b
+	ld [wd061], a
+	ld a, b
+	ld [wd060], a
+	call Func_127d
+	ld a, [wd05d]
+	cp $10
+	jp nz, .asm_baf
+	call Func_c85
+	xor a
+	ld [wd078], a
+	ld [wd079], a
+	ld a, $16
+	ld [wd065], a
+	jr .asm_baf
+.asm_b68
+	ld a, [wd052]
+	ld c, a
+	cp $01
+	jr z, .asm_b3a
+	ldh a, [hVBlankFlags]
+	bit VBLANK_5_F, a
+	jp nz, Func_caf
+	ld a, [wSCY]
+	sub $10
+	ld [wd058], a
+	ld a, [wSCX]
+	and $f0
+	ld [wd057], a
+	ld a, [wd052]
+	dec a
+	jr z, .asm_b8e
+	dec a
+.asm_b8e
+	ld e, a
+	ld a, [wd03f]
+	ld b, a
+	call CalculateBCPercentage
+	ld hl, wc100
+	add hl, bc
+	ld b, $00
+	ld a, [wd051]
+	dec a
+	ld c, a
+	add hl, bc
+	call Func_12b4
+	ld hl, wd052
+	dec [hl]
+	ldh a, [hVBlankFlags]
+	set VBLANK_5_F, a
+	ldh [hVBlankFlags], a
+.asm_baf
+	ld a, [wd061]
+	ld b, a
+	ld a, [wSCY]
+	sub b
+	ld [wSCY], a
+.asm_bba
+	ldh a, [hVBlankFlags]
+	set VBLANK_4_F, a
+	res VBLANK_2_F, a
+	ldh [hVBlankFlags], a
+	ldh a, [hff93]
+	bit 6, a
+	jr z, .asm_be0
+	ld a, [wd3f5]
+	ld hl, wd3e1
+	or [hl]
+	inc hl
+	or [hl]
+	jr nz, .asm_be0
+	ld a, [wd05d]
+	add $18
+	call Func_7a7
+	cp $07
+	jp z, $4c9b ; Func_4c9b
+.asm_be0
+	ldh a, [hff8e]
+	bit 6, a
+	jp z, Func_caf
+	ld a, [wd05d]
+	cp $71
+	jp nc, Func_caf
+	dec a
+	call Func_7b5
+	cp $06
+	jp z, Func_caf
+	ldh a, [hff92]
+	and $3c
+	ldh [hff92], a
+	ld a, [wd190]
+	res 7, a
+	ld [wd190], a
+	ldh a, [hff8e]
+	and $9c
+	ldh [hff8e], a
+	ldh a, [hff95]
+	bit 6, a
+	jr nz, .asm_c82
+	ldh a, [hff8e]
+	bit 7, a
+	jr nz, .asm_c59
+.asm_c18
+	ld a, $02
+	ld [wd07a], a
+	ld a, $00
+	ld [wd07b], a
+	ld a, $01
+	ld [wd076], a
+	ld a, $33
+	ld [wd077], a
+	ldh a, [hff90]
+	res 3, a
+	ldh [hff90], a
+	ldh a, [hff92]
+	res 6, a
+	ldh [hff92], a
+	ldh a, [hff8d]
+	set 7, a
+	res 6, a
+	set 3, a
+	ldh [hff8d], a
+	ld a, $16
+	xor a
+	ld [wd065], a
+	ld [wd078], a
+	ld [wd079], a
+	ldh a, [hff8e]
+	bit 7, a
+	ret z
+	ld a, $16
+	ld [wd065], a
+	ret
+.asm_c59
+	bit 2, a
+	jr nz, .asm_c18
+	ldh a, [hff8d]
+	res 6, a
+	ldh [hff8d], a
+	ld a, $00
+	ld [wd07a], a
+	ld a, $cc
+	ld [wd07b], a
+	ld a, $00
+	ld [wd076], a
+	ld a, $00
+	ld [wd076], a
+	xor a
+	ld [wd078], a
+	ld [wd079], a
+	ld [wd065], a
+	ret
+.asm_c82
+	jp Func_3768
+
+Func_c85:
+	ldh a, [hff8e]
+	bit 7, a
+	jr nz, .set_carry
+	ld a, [wd065]
+	cp $03
+	jr c, .set_carry
+	ld a, [wd078]
+	bit 7, a
+	jp z, .set_carry
+	cp $ff
+	jp nc, .set_carry
+	ld b, $81
+	ldh a, [hff92]
+	and $fc
+	or b
+	ldh [hff92], a
+	call Func_37ac
+	xor a
+	ret
+.set_carry
+	scf
+	ret
+
+Func_caf:
+	ldh a, [hff90]
+	bit 3, a
+	jr nz, .asm_cba
+	ldh a, [hVBlankFlags]
+	bit VBLANK_3_F, a
+	ret z
+.asm_cba
+	ldh a, [hff93]
+	res 6, a
+	ldh [hff93], a
+	ldh a, [hff90]
+	res 3, a
+	ldh [hff90], a
+	bit 5, a
+	jp nz, .asm_ee0
+	ld a, [wd05d]
+	cp $71
+	jp nc, .asm_ee0
+	ld a, [wd05d]
+	ld [wd05f], a
+	call Func_763
+	ld d, $00
+	ldh a, [hff8d]
+	and $07
+	jp z, .asm_cf5
+	inc a
+	ld e, a
+.asm_ce7
+	ld a, l
+	call Func_643
+	jr nc, .asm_cf5
+	inc hl
+	inc d
+	dec e
+	jr nz, .asm_ce7
+	jp .asm_ee0
+.asm_cf5
+	call Func_1ccb
+	ld a, c
+	ld [wd05f], a
+	ld a, [wd05c]
+	add $03
+	ld [wd05e], a
+	call Func_7cd
+	ld c, $00
+	ld b, a
+	and a
+	jr z, .asm_d24
+	cp $01
+	jr z, .asm_d24
+	cp $08
+	jr z, .asm_d1e
+	cp $06
+	jr nz, .asm_d55
+	call Func_326
+	jr .asm_d24
+.asm_d1e
+	ldh a, [hff93]
+	set 7, a
+	ldh [hff93], a
+.asm_d24
+	ld a, [wd05c]
+	add $0c
+	ld [wd05e], a
+	call Func_7cd
+	ld c, a
+	and a
+	jp z, .asm_d4f
+	cp $01
+	jr z, .asm_d55
+	cp $08
+	jr z, .asm_d46
+	cp $06
+	jr nz, .asm_d55
+	call Func_326
+	jp .asm_ee0
+.asm_d46
+	ldh a, [hff93]
+	set 7, a
+	ldh [hff93], a
+	jp .asm_ee0
+
+.asm_d4f
+	ld a, $01
+	cp b
+	jp nz, .asm_ee0
+.asm_d55
+	ld a, [wd3f5]
+	ld hl, wd3e1
+	or [hl]
+	inc hl
+	or [hl]
+	jr nz, .asm_d7f
+	ld a, b
+	and a
+	jr z, .asm_d6a
+	cp $07
+	jr nz, .asm_d7f
+	jr .asm_d72
+.asm_d6a
+	ld a, c
+	and a
+	jr z, .asm_d72
+	cp $07
+	jr nz, .asm_d7f
+.asm_d72
+	push bc
+	push de
+	call $4ced ; Func_4ced
+	pop de
+	pop bc
+	jp c, .asm_ece
+	jp .asm_ee0
+.asm_d7f
+	ldh a, [hff92]
+	bit 2, a
+	jr z, .asm_da7
+	ldh a, [hff8e]
+	and $18
+	jp nz, .asm_ec8
+	ldh a, [hff8e]
+	set 2, a
+	ldh [hff8e], a
+	bit 4, a
+	jp z, .asm_ece
+	ld a, SFX_01
+	call PlaySFX
+	ld a, [wJoypadDown]
+	or A_BUTTON
+	ld [wJoypadDown], a
+	jp .asm_ece
+.asm_da7
+	bit 3, a
+	jp nz, .asm_e7f
+	ldh a, [hff93]
+	bit 4, a
+	jr nz, .asm_df4
+	ldh a, [hJoypadPressed]
+	bit 7, a
+	jp z, .asm_e57
+	ld a, b
+	and a
+	jr z, .asm_dc5
+	cp $06
+	jr z, .asm_dc5
+	cp $01
+	jr nz, .asm_df4
+.asm_dc5
+	ld a, c
+	and a
+	jr z, .asm_dd1
+	cp $06
+	jr z, .asm_dd1
+	cp $01
+	jr nz, .asm_df4
+.asm_dd1
+	xor a
+	ld [wd064], a
+	ld hl, hff93
+	res 4, [hl]
+	ldh a, [hff92]
+	and $e0
+	or $80
+	ldh [hff92], a
+	ld hl, hff8e
+	res 1, [hl]
+	ldh a, [hff8d]
+	set 7, a
+	res 6, a
+	ldh [hff8d], a
+	inc d
+	ld a, d
+	jp .asm_f19
+
+.asm_df4
+	ld hl, hff8e
+	bit 3, [hl]
+	jr z, .asm_e1b
+	bit 7, [hl]
+	jp nz, .asm_e4f
+	ldh a, [hff93]
+	bit 4, a
+	jp nz, .asm_ece
+	ldh a, [hff93]
+	set 4, a
+	ldh [hff93], a
+	xor a
+	ld [wd3be], a
+	push de
+	ld a, $03
+	call PlaySFX
+	pop de
+	jp .asm_ece
+.asm_e1b
+	ldh a, [hff8e]
+	and $98
+	jp nz, .asm_ece
+	ldh a, [hff8e]
+	and $f8
+	ldh [hff8e], a
+	ldh a, [hff92]
+	and $08
+	jp nz, .asm_ece
+	ldh a, [hff95]
+	and $7e
+	jp nz, .asm_ece
+	ldh a, [hff92]
+	and $70
+	or $10
+	ldh [hff92], a
+	ldh a, [hff8d]
+	and $70
+	or $40
+	ldh [hff8d], a
+	xor a
+	ld [wd078], a
+	ld [wd079], a
+	jr .asm_ece
+
+.asm_e4f
+	ldh a, [hff92]
+	res 4, a
+	ldh [hff92], a
+	jr .asm_ece
+
+.asm_e57
+	ld a, [wJoypadDown]
+	or A_BUTTON
+	ld [wJoypadDown], a
+	ld a, [wd078]
+	cp $01
+	jr c, .asm_ece
+	ldh a, [hff8e]
+	and $70
+	jr nz, .asm_ece
+	xor a
+	ld [wd065], a
+	ldh a, [hff92]
+	and $e0
+	or $80
+	ldh [hff92], a
+	push de
+	call Func_37ac
+	pop de
+	jr .asm_ece
+.asm_e7f
+	ld hl, hff92
+	res 3, [hl]
+	ldh a, [hff8e]
+	and $f8
+	jr nz, .asm_ec8
+	ldh a, [hff95]
+	bit 6, a
+	jr nz, .asm_ec8
+	ldh a, [hff92]
+	set 2, a
+	res 6, a
+	ldh [hff92], a
+	ld a, $02
+	ld [wd07a], a
+	ld a, $00
+	ld [wd07b], a
+	ld a, $fd
+	ld [wd078], a
+	ld a, $00
+	ld [wd079], a
+	ld hl, hff8e
+	bit 4, [hl]
+	jr nz, .asm_ec8
+	push de
+	ld a, $1e
+	call PlaySFX
+	call Func_37b1
+	pop de
+	ldh a, [hff8d]
+	res 7, a
+	res 6, a
+	ldh [hff8d], a
+	ld a, d
+	jr .asm_f19
+.asm_ec8
+	ldh a, [hff92]
+	and $60
+	ldh [hff92], a
+.asm_ece
+	ldh a, [hff8d]
+	res 7, a
+	set 6, a
+	ldh [hff8d], a
+	xor a
+	ld [wd078], a
+	ld [wd079], a
+	ld a, d
+	jr .asm_f19
+
+.asm_ee0
+	ld hl, hff8d
+	set 3, [hl]
+	ldh a, [hff8e]
+	and $e0
+	jr nz, .asm_f0f
+	ldh a, [hff95]
+	and $40
+	jr nz, .asm_f0f
+	ld hl, hff92
+	ld a, [hl]
+	and $0c
+	jr nz, .asm_f0f
+	ld a, [wd064]
+	inc a
+	ld [wd064], a
+	cp $1a
+	jr c, .asm_f0f
+	ldh a, [hff8e]
+	bit 3, a
+	jr nz, .asm_f0f
+	set 3, [hl]
+	call Func_383b
+.asm_f0f
+	ldh a, [hff8d]
+	set 7, a
+	res 6, a
+	ldh [hff8d], a
+	and $07
+.asm_f19
+	ld [wd060], a
+	ld b, a
+	ldh a, [hff90]
+	bit 4, a
+	jr nz, .asm_f31
+	ld c, $54
+	ld a, [wd040]
+	sub $07
+	ld d, a
+	ld a, [wd052]
+	cp d
+	jr nz, .asm_f3b
+.asm_f31
+	ld c, $90
+	ldh a, [hff95]
+	bit 6, a
+	jr z, .asm_f3b
+	ld c, $80
+.asm_f3b
+	ld a, [wd05d]
+	add b
+	ld b, a
+	ld a, c
+	sub b
+	jr c, .asm_f5a
+	call Func_1288
+	ld a, [wd040]
+	cp $08
+	jp nz, .asm_1021
+	ld a, [wd05d]
+	cp $90
+	jp c, .asm_1021
+	jp .asm_f92
+.asm_f5a
+	cpl
+	inc a
+	ld [wd061], a
+	ld b, a
+	ld a, [wd060]
+	sub b
+	ld [wd060], a
+	call nz, Func_1288
+	ld a, [wd052]
+	ld b, a
+	ld a, [wd040]
+	sub b
+	cp $08
+	jp c, .asm_f92
+	ld a, [wd061]
+	ld b, a
+	ld a, [wSCY]
+	inc a
+	ld c, a
+.asm_f80
+	ld a, c
+	call Func_643
+	jr nc, .asm_fc3
+	inc c
+	dec b
+	jr nz, .asm_f80
+	ld a, [wd05d]
+	cp $90
+	jp nz, .asm_1019
+.asm_f92
+	ldh a, [hff8d]
+	and $7f
+	set 6, a
+	ldh [hff8d], a
+	ldh a, [hff92]
+	and $33
+	ldh [hff92], a
+	ldh a, [hVBlankFlags]
+	and $ff ^ (VBLANK_0 | VBLANK_1)
+	ldh [hVBlankFlags], a
+	jp .asm_1021
+.asm_fa9
+	ld a, [wd061]
+	sub b
+	inc a
+	ld [wd061], a
+	ld a, b
+	dec a
+	ld [wd060], a
+	call Func_1288
+	ld a, [wd040]
+	sub $07
+	ld [wd052], a
+	jr .asm_1019
+.asm_fc3
+	ld a, [wd040]
+	sub $08
+	ld c, a
+	ld a, [wd052]
+	cp c
+	jr z, .asm_fa9
+	jr nc, .asm_f92
+	ldh a, [hVBlankFlags]
+	bit VBLANK_5_F, a
+	ret nz
+	ld a, [wSCY]
+	and $0f
+	ld b, a
+	jr z, .asm_fe2
+	ld a, $10
+	sub b
+	ld b, a
+.asm_fe2
+	ld a, [wSCY]
+	add $80
+	add b
+	ld [wd058], a
+	ld a, [wSCX]
+	and $f0
+	ld [wd057], a
+	ld a, [wd052]
+	add $08
+	ld e, a
+	ld a, [wd03f]
+	ld b, a
+	call CalculateBCPercentage
+	ld hl, wc100
+	add hl, bc
+	ld b, $00
+	ld a, [wd051]
+	dec a
+	ld c, a
+	add hl, bc
+	call Func_12b4
+	ldh a, [hVBlankFlags]
+	set VBLANK_5_F, a
+	ldh [hVBlankFlags], a
+	ld hl, wd052
+	inc [hl]
+.asm_1019
+	ld hl, wSCY
+	ld a, [wd061]
+	add [hl]
+	ld [hl], a
+.asm_1021
+	ldh a, [hVBlankFlags]
+	set VBLANK_4_F, a
+	res VBLANK_3_F, a
+	ldh [hVBlankFlags], a
+	ldh a, [hff93]
+	bit 7, a
+	ret z
+	ld a, [wd3f5]
+	ld hl, wd3e1
+	or [hl]
+	inc hl
+	or [hl]
+	ret nz
+	ld a, [wd05d]
+	sub $08
+	call Func_7b5
+	cp $08
+	ret nz
+	jp $4ced ; Func_4ced
+
+Func_1046:
+	push bc
+	push de
+	ld hl, wc100
+	ld a, [wd052]
+	dec a
+	ld b, a
+	ld a, [wd03f]
+	ld e, a
+	call CalculateBCPercentage
+	add hl, bc
+	ld b, $00
+	ld a, [wd051]
+	ld c, a
+	add hl, bc
+	pop de
+	pop bc
+	ret
+
+Func_1062:
+	ldh a, [hff90]
+	bit 4, a
+	ret nz
+	ld a, [wd063]
+	and a
+	ret z
+	ld b, a
+	ld a, [wSCX]
+	inc a
+	ld c, a
+.asm_1072
+	ld a, c
+	call Func_643
+	jr nc, .asm_109b
+	inc c
+	dec b
+	jr nz, .asm_1072
+	ld a, [wd05c]
+	cp $98
+	jp nz, .asm_1102
+.asm_1084
+	ld a, [wd063]
+	sub b
+	ld [wd063], a
+	ld a, b
+	ld [wd062], a
+	call Func_1268
+	ld a, [wd042]
+	inc a
+	ld [wd051], a
+	jr .asm_1102
+.asm_109b
+	ldh a, [hff91]
+	bit 7, a
+	jr nz, .asm_10ac
+	ld a, [wd042]
+	inc a
+	ld c, a
+	ld a, [wd051]
+	cp c
+	jr z, .asm_1084
+.asm_10ac
+	ld a, [wSCX]
+	and $0f
+	ld b, a
+	jr z, .asm_10b8
+	ld a, $10
+	sub b
+	ld b, a
+.asm_10b8
+	ld a, [wSCX]
+	add $a0
+	add b
+	ld [wd057], a
+	ld a, [wSCY]
+	and $f0
+	ld [wd058], a
+	call Func_1046
+	ld b, $00
+	ld c, $0a
+	add hl, bc
+	ld a, [wd051]
+	add $0b
+	ld c, a
+	ld a, [wd03f]
+	cp c
+	jr nc, .asm_10e1
+	ld c, a
+	call Func_1ce0
+.asm_10e1
+	call Func_1292
+	ldh a, [hVBlankFlags]
+	set VBLANK_5_F, a
+	ldh [hVBlankFlags], a
+	ld a, [wd051]
+	ld b, a
+	ld a, [wd03f]
+	cp b
+	jr nz, .asm_10fe
+	ldh a, [hff91]
+	bit 7, a
+	jr z, .asm_10fe
+	xor a
+	ld [wd051], a
+.asm_10fe
+	ld hl, wd051
+	inc [hl]
+.asm_1102
+	ld hl, wSCX
+	ld a, [wd063]
+	add [hl]
+	ld [hl], a
+	ret
+; 0x10c4
+
+SECTION "Home@110b", ROM0[$110b]
+
+Func_110b:
+	ldh a, [hff90]
+	bit 4, a
+	ret nz
+	ldh a, [hff90]
+	bit 5, a
+	ret nz
+	ld hl, hff94
+	bit 3, [hl]
+	ret nz
+	ld a, [wd062]
+	ld b, a
+	ld a, [wd063]
+	sub b
+	ret z
+	ld [wd063], a
+	ld b, a
+	ld a, [wSCX]
+	ld c, a
+.asm_112c
+	ld a, c
+	call Func_643
+	jr nc, .asm_115d
+	dec c
+	dec b
+	jr nz, .asm_112c
+	ld a, [wd05c]
+	cp $08
+	jp nc, .asm_11be
+	ret
+.asm_113f
+	ld a, [wd05c]
+	cp $08
+	jp z, $42a1 ; Func_42a1
+	ld a, [wd063]
+	sub b
+	ld [wd063], a
+	ld b, a
+	ld [wd062], a
+	call Func_1272
+	ld a, $01
+	ld [wd051], a
+	jp .asm_11be
+
+.asm_115d
+	ldh a, [hff91]
+	bit 7, a
+	jr nz, .asm_116d
+	ld a, [wd051]
+	cp $01
+	jr z, .asm_113f
+	jp c, $42a1 ; Func_42a1
+.asm_116d
+	ldh a, [hVBlankFlags]
+	bit VBLANK_5_F, a
+	ret nz
+	ld a, [wSCX]
+	sub $10
+	ld [wd057], a
+	ld a, [wSCY]
+	and $f0
+	ld [wd058], a
+	ld a, [wd051]
+	cp $01
+	jr nz, .asm_11ac
+	ldh a, [hff91]
+	bit 7, a
+	jr z, .asm_11ac
+	ld a, [wd03f]
+	inc a
+	ld [wd051], a
+	call Func_1046
+	dec hl
+	dec hl
+	ld a, [wd03f]
+	ld [wd051], a
+	call Func_1292
+	ldh a, [hVBlankFlags]
+	set VBLANK_5_F, a
+	ldh [hVBlankFlags], a
+	jr .asm_11be
+.asm_11ac
+	call Func_1046
+	dec hl
+	dec hl
+	call Func_1292
+	ldh a, [hVBlankFlags]
+	set VBLANK_5_F, a
+	ldh [hVBlankFlags], a
+	ld hl, wd051
+	dec [hl]
+.asm_11be
+	ld hl, wd063
+	ld a, [wSCX]
+	sub [hl]
+	ld [wSCX], a
+	ret
+; 0x11c9
+
+SECTION "Home@11de", ROM0[$11de]
+
+Func_11de:
+	ld b, $01
+	ld a, [wSCX]
+	inc a
+	ld c, a
+.asm_11e5
+	ld a, c
+	call Func_643
+	jr nc, .asm_11f6
+	inc c
+	dec b
+	jr nz, .asm_11e5
+	jr .asm_123f
+.asm_11f1
+	ld a, $14
+	ld [wd051], a
+.asm_11f6
+	ld c, $1e
+	ld a, [wd051]
+	cp c
+	jr z, .asm_11f1
+	ld a, [wSCX]
+	and $0f
+	ld b, a
+	jr z, .asm_120a
+	ld a, $10
+	sub b
+	ld b, a
+.asm_120a
+	ld a, [wSCX]
+	add $a0
+	add b
+	ld [wd057], a
+	xor a
+	ld [wd058], a
+	ld hl, wc100
+	ld b, $00
+	ld a, [wd051]
+	bit 7, a
+	jr z, .asm_122b
+	cpl
+	inc a
+	ld c, a
+	call Func_1ce0
+	jr .asm_122d
+.asm_122b
+	ld c, a
+	add hl, bc
+.asm_122d
+	ld b, $00
+	ld c, $0a
+	add hl, bc
+	call Func_1292
+	ldh a, [hVBlankFlags]
+	set VBLANK_5_F, a
+	ldh [hVBlankFlags], a
+	ld hl, wd051
+	inc [hl]
+.asm_123f
+	ld a, [wSCX]
+	add $01
+	ld [wSCX], a
+	ret
+; 0x1248
+
+SECTION "Home@1268", ROM0[$1268]
+
+Func_1268:
+	ld hl, wd05c
+	ld a, [wd062]
+	ld b, a
+	add [hl]
+	ld [hl], a
+	ret
+
+Func_1272:
+	ld hl, wd05c
+	ld a, [wd062]
+	ld b, a
+	ld a, [hl]
+	sub b
+	ld [hl], a
+	ret
+
+Func_127d:
+	ld hl, wd05d
+	ld a, [wd060]
+	ld b, a
+	ld a, [hl]
+	sub b
+	ld [hl], a
+	ret
+
+Func_1288:
+	ld hl, wd05d
+	ld a, [wd060]
+	ld b, a
+	add [hl]
+	ld [hl], a
+	ret
+
+Func_1292:
+	push bc
+	ld de, wBGQueue
+	ld c, $09
+.asm_1298
+	ld a, [hl]
+	call Func_131a
+	push bc
+	ld b, $00
+	ld a, [wd03f]
+	ld c, a
+	add hl, bc
+	pop bc
+	ld a, [wd058]
+	add $10
+	ld [wd058], a
+	dec c
+	jr nz, .asm_1298
+	xor a
+	ld [de], a
+	pop bc
+	ret
+
+Func_12b4:
+	push bc
+	ld de, wBGQueue
+	ld a, [wd03f]
+	ld b, a
+	ld a, [wd051]
+	add $0a
+	sub b
+	jr c, .asm_12cb
+	ld b, a
+	ld a, $0b
+	sub b
+	ld c, a
+	jr .asm_12cf
+.asm_12cb
+	ld c, $0b
+	ld b, $00
+.asm_12cf
+	push bc
+.asm_12d0
+	ld a, [hli]
+	call Func_131a
+	ld a, [wd057]
+	add $10
+	ld [wd057], a
+	dec c
+	jr nz, .asm_12d0
+	pop bc
+	xor a
+	cp b
+	jr z, .asm_1316
+	push bc
+	push de
+	ld a, [wd052]
+	ld c, a
+	ldh a, [hVBlankFlags]
+	bit VBLANK_2_F, a
+	jr nz, .asm_12f4
+	ld a, $0a
+	add c
+	ld c, a
+.asm_12f4
+	dec c
+	jr z, .asm_12f8
+	dec c
+.asm_12f8
+	ld e, c
+	ld a, [wd03f]
+	ld b, a
+	call CalculateBCPercentage
+	ld hl, wc100
+	add hl, bc
+	pop de
+	pop bc
+	ld c, b
+.asm_1307
+	ld a, [hli]
+	call Func_131a
+	ld a, [wd057]
+	add $10
+	ld [wd057], a
+	dec c
+	jr nz, .asm_1307
+.asm_1316
+	xor a
+	ld [de], a
+	pop bc
+	ret
 
 Func_131a:
 	push bc
@@ -222,9 +2010,16 @@ Func_1352:
 	pop hl
 	pop bc
 	ret
-; 0x1385
 
-SECTION "Home@139b", ROM0[$139b]
+Func_1385:
+	ld a, $06
+	bankswitch
+	jp $4639 ; Func_18639
+
+Func_1390:
+	ld a, $06
+	bankswitch
+	jp $463d ; Func_1863d
 
 Func_139b::
 	ld hl, hff94
@@ -497,7 +2292,7 @@ Func_139b::
 	ret
 
 SetFullHP::
-	ld a, [wInitialMaxHP]
+	ld a, [wConfigMaxHP]
 	ld [wMaxHP], a
 	ld [wHP], a
 	ret
@@ -618,13 +2413,13 @@ Func_1964::
 	xor a
 	ldh [rSCX], a
 	ldh [rSCY], a
-	ldh a, [hff8c]
-	or $60
-	ldh [hff8c], a
+	ldh a, [hVBlankFlags]
+	or VBLANK_5 | VBLANK_6
+	ldh [hVBlankFlags], a
 	call Func_1ee3
 	ld a, [wd06b]
 	xor a
-	ldh [hff8c], a
+	ldh [hVBlankFlags], a
 	pop de
 	pop bc
 	ret
@@ -710,9 +2505,11 @@ Func_19f9::
 	ldh a, [hff91]
 	and $7f
 	ldh [hff91], a
+
 	ldh a, [hHUDFlags]
-	and $3f
+	and $ff ^ (HUD_6 | HUD_BOSS_BATTLE)
 	ldh [hHUDFlags], a
+
 	inc hl
 	ld a, [hl]
 	and $15
@@ -730,9 +2527,10 @@ Func_19f9::
 	set 4, a
 	ldh [hff90], a
 	jr .asm_1a6e
+
 .asm_1a68
 	ldh a, [hHUDFlags]
-	set 6, a
+	set HUD_6_F, a
 	ldh [hHUDFlags], a
 .asm_1a6e
 	bit 3, [hl]
@@ -923,7 +2721,36 @@ Func_19f9::
 	ret
 ; 0x1bc5
 
-SECTION "Home@1c01", ROM0[$1c01]
+SECTION "Home@1bd9", ROM0[$1bd9]
+
+GetScoreDigitTiles:
+	ld hl, wScore
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	ld a, [hl]
+	call GetScoreDigits
+
+	ld a, $7f
+	ld e, a
+	ld d, $5 ; number of score digits
+	ld hl, wScoreDigits
+	ld bc, wScoreDigitTiles
+.loop
+	ld a, [hli]
+	and a
+	jr z, .zero
+	ld e, "0"
+.zero
+	add e
+	ld [bc], a
+	inc bc
+	dec d
+	jr nz, .loop
+	ld hl, hHUDFlags
+	set HUD_UPDATE_FIRST_ROW_F, [hl]
+	ret
 
 InitWindow::
 	ld a, $a0
@@ -1014,7 +2841,99 @@ GetDigits::
 	jr nc, .loop_tens
 	add 10
 	ret
-; 0x1c7d
+
+; outputs in wScoreDigits the number
+; given in a and bc
+; input:
+; - a and bc = score to display
+GetScoreDigits:
+	ld l, c
+	ld h, b
+	ld de, 0
+	ld bc, -10000
+.loop_ten_thousands
+	inc d
+	add hl, bc
+	ccf
+	sbc e
+	jr nc, .loop_ten_thousands
+	dec d
+	ld bc, 10000
+	add hl, bc
+	adc e
+
+	ld bc, -1000
+.loop_thousands
+	inc e
+	add hl, bc
+	jr c, .loop_thousands
+	dec e
+	ld bc, 1000
+	add hl, bc
+	ld b, a
+	ld a, d
+	ld [wScoreDigits + 0], a ; 10,000
+	ld a, e
+	ld [wScoreDigits + 1], a ; 1,000
+	ld a, b
+
+	ld de, 0
+	ld bc, -100
+.loop_hundreds
+	inc d
+	add hl, bc
+	jr c, .loop_hundreds
+	dec d
+	ld bc, 100
+	add hl, bc
+
+	ld a, l
+.loop_tens
+	inc e
+	sub 10
+	jr nc, .loop_tens
+	dec e
+	add 10
+	ld [wScoreDigits + 4], a
+	ld a, e
+	ld [wScoreDigits + 3], a
+	ld a, d
+	ld [wScoreDigits + 2], a
+	ret
+
+Func_1ccb:
+	push af
+	ld a, l
+	and $f0
+	swap a
+	ld c, a
+	ld a, h
+	swap a
+	ld b, a
+	and $f0
+	or c
+	ld c, a
+	ld a, b
+	and $0f
+	ld b, a
+	pop af
+	ret
+
+Func_1ce0:
+	push de
+	ld a, b
+	ld d, a
+	ld a, c
+	ld e, a
+	ld a, l
+	sub e
+	ld l, a
+	ld a, h
+	sbc d
+	ld h, a
+	pop de
+	ret
+; 0x1ced
 
 SECTION "Home@1d01", ROM0[$1d01]
 
@@ -1045,7 +2964,7 @@ SECTION "Home@1dc3", ROM0[$1dc3]
 ; - a = number of frames
 DoFrames::
 	push hl
-	ld hl, hff8c
+	ld hl, hVBlankFlags
 .loop
 	set VBLANK_6_F, [hl]
 .asm_1dc9
@@ -1179,7 +3098,7 @@ PlayMusic::
 	ret
 
 Func_1ee3:
-	ldh a, [hff8c]
+	ldh a, [hVBlankFlags]
 	bit VBLANK_6_F, a
 	ret z
 	bit VBLANK_5_F, a
@@ -1238,7 +3157,7 @@ Func_1f08:
 	jr nz, .asm_1f78
 	ld d, $00
 	ld b, d ; $00
-	ld hl, $20b9
+	ld hl, Data_20b9
 	add hl, de
 	add hl, bc
 	ld a, [wBGP]
@@ -1259,7 +3178,7 @@ Func_1f08:
 	ldh [rOBP1], a
 	ld d, $00
 	ld b, d
-	ld hl, $20b1
+	ld hl, Data_20b1
 	add hl, de
 	add hl, bc
 	ld a, [wOBP]
@@ -1315,59 +3234,62 @@ Func_1f08:
 	ret
 
 UpdateHUD:
-	ld hl, hff8c
+	ld hl, hVBlankFlags
 	bit VBLANK_5_F, [hl]
 	ret nz
 	ld hl, hff90
 	bit 6, [hl]
 	ret nz
 	ldh a, [hHUDFlags]
-	bit 0, a
-	jr z, .asm_2000
+	bit HUD_UPDATE_FIRST_ROW_F, a
+	jr z, .skip_first_row
 	ld hl, $9c06
 	ld c, $0c
-.asm_1fc9
+.loop_clear
 	ld a, $7f
 	ld [hli], a
 	dec c
-	jr nz, .asm_1fc9
+	jr nz, .loop_clear
 	ldh a, [hHUDFlags]
-	bit 7, a
-	jr nz, .asm_1fea
-	ld hl, wd08e
+	bit HUD_BOSS_BATTLE_F, a
+	jr nz, .boss_hp
+
+	ld hl, wScoreDigitTiles
 	ld bc, $9c06
 	ld d, $5
-.asm_1fdd
+.loop_print_score
 	ld a, [hli]
 	ld [bc], a
 	inc bc
 	dec d
-	jr nz, .asm_1fdd
-	ld a, $72
+	jr nz, .loop_print_score
+	ld a, "0"
 	ld [$9c0b], a
 	jr .asm_1ffa
-.asm_1fea
+
+.boss_hp
 	ld hl, $9c06
-	ld a, [wd093]
+	ld a, [wBossHP]
 	and a
 	jr z, .asm_1ffa
 	ld c, a
-	ld a, $69
-.asm_1ff6
+	ld a, $69 ; HP bar tile
+.loop_boss_hp
 	ld [hli], a
 	dec c
-	jr nz, .asm_1ff6
+	jr nz, .loop_boss_hp
+
 .asm_1ffa
 	ldh a, [hHUDFlags]
-	res 0, a
+	res HUD_UPDATE_FIRST_ROW_F, a
 	ldh [hHUDFlags], a
-.asm_2000
+.skip_first_row
 	ldh a, [hHUDFlags]
-	bit 1, a
+	bit HUD_UPDATE_LABEL_F, a
 	jr z, .asm_202d
-	res 1, a
+	res HUD_UPDATE_LABEL_F, a
 	ldh [hHUDFlags], a
-	bit 7, a
+	bit HUD_BOSS_BATTLE_F, a
 	jr nz, .asm_201e
 	ld a, $7f
 	ld [$9c02], a
@@ -1383,9 +3305,10 @@ UpdateHUD:
 	ld [$9c03], a
 	ld a, $7f
 	ld [$9c04], a
+
 .asm_202d
 	ldh a, [hHUDFlags]
-	bit 2, a
+	bit HUD_UPDATE_HP_F, a
 	jr nz, .lives
 	ld a, [wHP]
 	ld c, a
@@ -1413,32 +3336,58 @@ UpdateHUD:
 	ld [hli], a
 .lives
 	ldh a, [hHUDFlags]
-	bit 4, a
+	bit HUD_UPDATE_LIVES_F, a
 	ret z
-	res 4, a
+	res HUD_UPDATE_LIVES_F, a
 	ldh [hHUDFlags], a
 	ld a, [wLives]
 	dec a
 	call GetDigits
-	add $72
+	add "0"
 	ld [$9c31], a ; ones digit
 	ld a, b
-	add $72
+	add "0"
 	ld [$9c30], a ; tens digit
 	ret
-; 0x2070
 
-SECTION "Home@20a2", ROM0[$20a2]
+MACRO data_2070
+	db \1 ; bank
+	bigdw \2
+	dw \3
+ENDM
+
+Data_2070::
+	table_width 5, Data_2070
+	data_2070 $02, $4952, $8ae0 ; GREEN_GREENS
+	data_2070 $02, $5266, $8ae0 ; CASTLE_LOLOLO
+	data_2070 $02, $5b2c, $8ae0 ; FLOAT_ISLANDS
+	data_2070 $02, $63ee, $8ae0 ; BUBBLY_CLOUDS
+	data_2070 $02, $6c49, v0Tiles1 ; MT_DEDEDE
+	assert_table_length NUM_STAGES
+
+Data_2089::
+	table_width 5, Data_2089
+	data_2070 $0a, $51f5, $8ae0 ; GREEN_GREENS
+	data_2070 $0a, $5b0b, $8ae0 ; CASTLE_LOLOLO
+	data_2070 $0a, $63c1, $8ae0 ; FLOAT_ISLANDS
+	data_2070 $0a, $6c79, $8ae0 ; BUBBLY_CLOUDS
+	data_2070 $02, $6c49, v0Tiles1 ; MT_DEDEDE
+	assert_table_length NUM_STAGES
 
 Data_20a2::
+	table_width 3, Data_20a2
 	db $03, $46, $e0 ; GREEN_GREENS
 	db $03, $4a, $c3 ; CASTLE_LOLOLO
 	db $03, $48, $d9 ; FLOAT_ISLANDS
 	db $03, $4c, $ff ; BUBBLY_CLOUDS
 	db $06, $77, $7c ; MT_DEDEDE
-; 0x20b1
+	assert_table_length NUM_STAGES
 
-SECTION "Home@20c1", ROM0[$20c1]
+Data_20b1:
+	db $00, $40, $c0, $00, $01, $00, $00, $00
+
+Data_20b9:
+	db $40, $80, $c0, $00, $02, $01, $00, $00
 
 ; input:
 ; - c = bank
@@ -1707,15 +3656,17 @@ assert Data_1c0ce == Data_3c0ce
 	ld hl, hff94
 	bit 1, [hl]
 	jr z, .asm_223a
-	ld hl, $413a
+assert Data_1c13a == Data_3c13a
+	ld hl, Data_1c13a ; aka Data_3c13a
 	ld a, [wStage]
 	jr .asm_2249
 .asm_223a
-	ld hl, $4000
+assert Data_1c000 == Data_3c000
+	ld hl, Data_1c000 ; aka Data_3c000
 	ld a, [wStage]
 	ld e, a
 	add hl, de
-	add hl, de
+	add hl, de ; *2
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
@@ -1725,7 +3676,7 @@ assert Data_1c0ce == Data_3c0ce
 	add hl, de
 	add hl, de
 	add hl, de
-	add hl, de
+	add hl, de ; *4
 	ld a, [hli]
 	ld [wd3e5 + 0], a
 	ld a, [hli]
@@ -1875,6 +3826,7 @@ Func_233e:
 	ld b, $0d
 	jr Func_234e
 
+Func_2344:
 	ld c, $0d
 	ld b, $0f
 	jr Func_234e
@@ -4066,7 +6018,7 @@ Func_2fdf:
 .asm_306d
 	cp $78
 	ret nz
-	ld a, [wd03c]
+	ld a, [wMusic]
 	jp PlayMusic
 ; 0x3076
 
@@ -4074,9 +6026,11 @@ SECTION "Home@3199", ROM0[$3199]
 
 Func_3199:
 	ld d, $01
-	jr .asm_319f
+	jr Func_319f
+Func_319d:
 	ld d, $00
-.asm_319f
+;	fallthrough
+Func_319f:
 	ld a, [wROMBank]
 	push af
 	ld a, [wd3f0]
@@ -4489,14 +6443,129 @@ Func_3768:
 	ld a, $09
 	ld [wd07d], a
 	ret
-; 0x37a7
 
-SECTION "Home@388e", ROM0[$388e]
+Func_37a7::
+	ld hl, $417e
+	jr Func_37b9
+Func_37ac:
+	ld a, SFX_05
+	call PlaySFX
+;	fallthrough
+Func_37b1:
+	ld a, [$d414]
+	and a
+	ret nz
+	ld hl, $4178
+;	fallthrough
+Func_37b9:
+	call Func_233e
+	ret c
+	push bc
+	ld hl, $d0a1
+	add hl, bc
+	add hl, bc
+	add hl, bc
+	ld a, [wd140]
+	ld c, a
+	ld a, [wSCX]
+	and $0f
+	ld b, a
+	ld a, [wd051]
+	dec a
+	swap a
+	ld d, a
+	and $0f
+	ld e, a
+	ld a, d
+	and $f0
+	add b
+	add c
+	ld [hli], a
+	ld a, e
+	adc $00
+	ld [hl], a
+	pop bc
+	push bc
+	ld hl, $d0d1
+	add hl, bc
+	add hl, bc
+	add hl, bc
+	ld a, [wd150]
+	ld c, a
+	ld a, [wSCY]
+	and $0f
+	ld b, a
+	ld a, [wd052]
+	dec a
+	swap a
+	ld d, a
+	and $0f
+	ld e, a
+	ld a, d
+	and $f0
+	add b
+	add c
+	ld [hli], a
+	ld a, e
+	adc $00
+	ld [hl], a
+	pop bc
+	ret
+; 0x380a
+
+SECTION "Home@383b", ROM0[$383b]
+
+Func_383b:
+	push hl
+	push bc
+	push de
+	ld hl, $418a
+	call Func_2344
+	jr c, .asm_388a
+	ld hl, wd1b0
+	add hl, bc
+	set 0, [hl]
+	jr .asm_3873
+	push hl
+	push bc
+	push de
+	ld hl, $4196
+	call Func_2344
+	jr c, .asm_388a
+	jr .asm_3873
+	push hl
+	push bc
+	push de
+	ld hl, $419c
+	call Func_2344
+	jr c, .asm_388a
+	ld a, [hff91]
+	bit 0, a
+	jr nz, .asm_3873
+	ld hl, wd1b0
+	add hl, bc
+	set 3, [hl]
+.asm_3873
+	ld a, [wROMBank]
+	push af
+	ld a, $05
+	bankswitch
+	call $4a5f ; Func_14a5f
+	pop af
+	bankswitch
+	xor a
+.asm_388a
+	pop de
+	pop bc
+	pop hl
+	ret
 
 StageHeaders::
-; starting area, ?, ?, starting X, starting Y, pals, ?
-	db $00, $01, $01, $28, $3c, $00, $01 ; GREEN_GREENS
-	db $00, $01, $01, $28, $58, $00, $0c ; CASTLE_LOLOLO
-	db $00, $01, $01, $28, $32, $00, $06 ; FLOAT_ISLANDS
-	db $00, $01, $01, $48, $41, $00, $00 ; BUBBLY_CLOUDS
-	db $00, $01, $01, $28, $70, $00, $11 ; MT_DEDEDE
+; starting area, ?, ?, starting X, starting Y, pals, intro music
+	table_width 7, StageHeaders
+	db $00, $01, $01, $28, $3c, $00, MUSIC_01 ; GREEN_GREENS
+	db $00, $01, $01, $28, $58, $00, MUSIC_12 ; CASTLE_LOLOLO
+	db $00, $01, $01, $28, $32, $00, MUSIC_06 ; FLOAT_ISLANDS
+	db $00, $01, $01, $48, $41, $00, MUSIC_00 ; BUBBLY_CLOUDS
+	db $00, $01, $01, $28, $70, $00, MUSIC_17 ; MT_DEDEDE
+	assert_table_length NUM_STAGES

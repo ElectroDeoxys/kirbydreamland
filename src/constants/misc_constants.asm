@@ -23,11 +23,26 @@ DEF VBLANK_5 EQU 1 << VBLANK_5_F
 DEF VBLANK_6 EQU 1 << VBLANK_6_F
 DEF VBLANK_7 EQU 1 << VBLANK_7_F
 
-; wStage constants
 	const_def
-	const GREEN_GREENS  ; $0
-	const CASTLE_LOLOLO ; $1
-	const FLOAT_ISLANDS ; $2
-	const BUBBLY_CLOUDS ; $3
-	const MT_DEDEDE     ; $4
-DEF NUM_STAGES EQU const_value
+	const HUD_UPDATE_FIRST_ROW_F ; 0
+	const HUD_UPDATE_LABEL_F ; 1
+	const HUD_UPDATE_HP_F ; 2
+	const HUD_3_F ; 3
+	const HUD_UPDATE_LIVES_F ; 4
+	const HUD_UPDATE_SCORE_DIGITS_F ; 5
+	const HUD_6_F ; 6
+	const HUD_BOSS_BATTLE_F ; 7
+
+DEF HUD_UPDATE_FIRST_ROW    EQU 1 << HUD_UPDATE_FIRST_ROW_F
+DEF HUD_UPDATE_LABEL        EQU 1 << HUD_UPDATE_LABEL_F
+DEF HUD_UPDATE_HP           EQU 1 << HUD_UPDATE_HP_F
+DEF HUD_3                   EQU 1 << HUD_3_F
+DEF HUD_UPDATE_LIVES        EQU 1 << HUD_UPDATE_LIVES_F
+DEF HUD_UPDATE_SCORE_DIGITS EQU 1 << HUD_UPDATE_SCORE_DIGITS_F
+DEF HUD_6                   EQU 1 << HUD_6_F
+DEF HUD_BOSS_BATTLE         EQU 1 << HUD_BOSS_BATTLE_F
+
+; default number of lives at start of game
+DEF DEFAULT_LIVES EQU 5
+; default max HP at start of game
+DEF DEFAULT_MAX_HP EQU 6

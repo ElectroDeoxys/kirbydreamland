@@ -44,14 +44,14 @@ TitleScreen::
 
 	xor a
 	ld [hff90], a
-	ld a, $04
+	ld a, HUD_UPDATE_HP
 	ld [hHUDFlags], a
 	call .PrintExtraGameText
 
 	ld a, 1
 	call DoFrames
 	call Func_670
-	ld a, $08
+	ld a, START
 	ld [wd050], a
 
 ; loop until player presses Start
@@ -148,7 +148,7 @@ Func_180e4::
 	ld [hff90], a
 	push hl
 	xor a
-	ld [hff8c], a
+	ld [hVBlankFlags], a
 	ld [hff8d], a
 
 	call Func_648
@@ -160,17 +160,17 @@ Func_180e4::
 
 	ld a, [hff95]
 	bit 7, a
-	jr nz, .asm_18142
+	jr nz, .skip_intro
 	call InitWindow
-	call $42e8 ; Func_182e8
-.asm_18142
+	call StageIntro
+.skip_intro
 	ld a, $ff
 	ld [wd096], a
 	call Clearwd160
 	call Func_648
 	call Func_1c0a
 	call ResetTimer
-	call $4285 ; Func_18285
+	call Func_18285
 
 	ld d, $00 ; useless
 
@@ -193,7 +193,7 @@ Func_180e4::
 	ld de, wc600
 	call FarDecompress
 
-	ld a, $32
+	ld a, HUD_UPDATE_LABEL | HUD_UPDATE_LIVES | HUD_UPDATE_SCORE_DIGITS
 	ld [hHUDFlags], a
 	ld a, $15
 	ld [wd07e], a
@@ -256,7 +256,7 @@ Func_180e4::
 	ld hl, StageMusics
 	add hl, de
 	ld a, [hl]
-	ld [wd03c], a
+	ld [wMusic], a
 
 	ld bc, $0
 	ld a, MT_DEDEDE
@@ -304,7 +304,7 @@ Func_180e4::
 	ld a, [wStage]
 	cp MT_DEDEDE
 	jr z, .skip_music
-	ld a, [wd03c]
+	ld a, [wMusic]
 	call PlayMusic
 .skip_music
 	call SetFullHP
@@ -314,12 +314,201 @@ Func_180e4::
 	ret
 
 StageMusics:
+	table_width 1, StageMusics
 	db MUSIC_13 ; GREEN_GREENS
 	db MUSIC_16 ; CASTLE_LOLOLO
 	db MUSIC_14 ; FLOAT_ISLANDS
 	db MUSIC_15 ; BUBBLY_CLOUDS
 	db MUSIC_18 ; MT_DEDEDE
+	assert_table_length NUM_STAGES
 ; 0x18275
+
+SECTION "Bank 6@4285", ROMX[$4285], BANK[$6]
+
+Func_18285:
+	ld a, [wd039]
+	and a
+	jr nz, .asm_182a3
+	ld hl, $4000
+	ld de, v0Tiles0
+	ld c, $02
+	call FarDecompress
+	ld hl, $4855
+	ld de, $9670
+	ld c, $02
+	call FarDecompress
+	jr .asm_182b9
+.asm_182a3
+	ld hl, $488d
+	ld de, v0Tiles0
+	ld c, $0a
+	call FarDecompress
+	ld hl, $50f3
+	ld de, $9670
+	ld c, $0a
+	call FarDecompress
+.asm_182b9
+	ld d, $00
+	ld a, [wStage]
+	ld c, a
+	add a
+	add a
+	add c ; *5
+	ld c, a
+	ld b, $00
+	ld hl, Data_2070
+	ld a, [wd039]
+	and a
+	jr z, .asm_182d1
+	ld hl, Data_2089
+.asm_182d1
+	add hl, bc
+	ld a, [hli]
+	ld [wd06b], a
+	ld a, [hli]
+	ld b, a
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	ld d, a
+	ld h, b
+	ld l, c
+	ld a, [wd06b]
+	ld c, a
+	call FarDecompress
+	ret
+
+StageIntro:
+	push hl
+	xor a
+	ld [wVirtualOAMSize], a
+	ld [wSCX], a
+	ld [wSCY], a
+	inc a
+	ld [wd051], a
+	ld [wd052], a
+	ld hl, hff94
+	set 1, [hl]
+	call ClearSprites
+	call ResetTimer
+
+	ld hl, $4000
+	ld de, v0Tiles0
+	ld c, $02
+	call FarDecompress
+	ld hl, $4855
+	ld de, $9670
+	ld c, $02
+	call FarDecompress
+
+	ld a, [wStage]
+	ld c, a
+	add a
+	add a
+	add c ; *5
+	ld c, a
+	ld b, $00
+	ld hl, Data_2070
+	add hl, bc
+	ld a, [hli]
+	ld [wd06b], a
+	ld a, [hli]
+	ld b, a
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld e, a
+	ld a, [hl]
+	ld d, a
+	ld h, b
+	ld l, c
+	ld a, [wd06b]
+	ld c, a
+	call FarDecompress
+
+	ld a, [wStage]
+	cp MT_DEDEDE
+	jr z, .asm_1835b
+	ld hl, $77e9
+	ld de, $8e00
+	ld c, $02
+	call FarDecompress
+	ld hl, $5cdd
+	ld de, v0Tiles1
+	ld c, $03
+	call FarDecompress
+
+.asm_1835b
+	ld a, [wStage]
+	ld c, a
+	add a
+	add c
+	ld c, a
+	ld b, $00
+	ld hl, Data_190bb
+	add hl, bc
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld d, a
+	ld a, [hl]
+	ld e, a
+	ld h, d
+	ld l, e
+	ld de, v0BGMap0
+	call FarDecompress
+
+	xor a
+	call Func_21fb
+	call StopTimerAndSwitchOnLCD
+	call Func_670
+
+	pop hl
+	ld a, [hl]
+	ld [wMusic], a
+	call PlayMusic
+
+	ld a, [wStage]
+	add a
+	ld e, a
+	ld d, $00
+	ld hl, StageIntroDurations
+	add hl, de
+	ld a, [hli]
+	ld e, a
+	ld d, [hl]
+.loop
+	ld hl, hVBlankFlags
+	set VBLANK_6_F, [hl]
+.asm_1839b
+	halt
+	bit VBLANK_6_F, [hl]
+	jr nz, .asm_1839b
+	call Func_19098
+	ld a, [hJoypadPressed]
+	bit START_F, a
+	jr nz, .start_btn
+	dec de
+	ld a, d
+	or e
+	jr nz, .loop
+
+.start_btn
+	ld hl, hff94
+	res 1, [hl]
+	ret
+
+StageIntroDurations:
+	table_width 2, StageIntroDurations
+	dw 320 ; GREEN_GREENS
+	dw 343 ; CASTLE_LOLOLO
+	dw 400 ; FLOAT_ISLANDS
+	dw 390 ; BUBBLY_CLOUDS
+	dw 712 ; MT_DEDEDE
+	assert_table_length NUM_STAGES
+; 0x183bf
 
 SECTION "Bank 6@5098", ROMX[$5098], BANK[$6]
 
@@ -328,7 +517,7 @@ Func_19098:
 	push bc
 	push de
 	push hl
-	ld a, [wMenuCursorPos]
+	ld a, [wd06b]
 	push af
 	ld a, [wd06c]
 	push af
@@ -339,13 +528,22 @@ Func_19098:
 	pop af
 	ld [wd06c], a
 	pop af
-	ld [wMenuCursorPos], a
+	ld [wd06b], a
 	pop hl
 	pop de
 	pop bc
 	pop af
 	ret
-; 0x190bb
+
+Data_190bb:
+	table_width 3, Data_190bb
+	db $06, $78, $35 ; GREEN_GREENS
+	db $06, $78, $df ; CASTLE_LOLOLO
+	db $06, $79, $5d ; FLOAT_ISLANDS
+	db $06, $79, $f9 ; BUBBLY_CLOUDS
+	db $06, $7a, $af ; MT_DEDEDE
+	assert_table_length NUM_STAGES
+; 0x190ca
 
 SECTION "Bank 6@6386", ROMX[$6386], BANK[$6]
 
@@ -380,11 +578,11 @@ ConfigurationMenu:
 
 	xor a
 	ld [wMenuCursorPos], a
-	dec a
+	dec a ; $ff, all buttons
 	ld [wd050], a
 
 	ld hl, $98eb
-	ld a, [wInitialMaxHP]
+	ld a, [wConfigMaxHP]
 .loop_draw_hp_bars
 	ld [hl], $c5
 	inc hl
@@ -394,10 +592,10 @@ ConfigurationMenu:
 	call StopTimerAndSwitchOnLCD
 	call Func_670
 
-	ld a, [wInitialLives]
+	ld a, [wConfigLives]
 	call .UpdateNumLives
 
-	ld hl, hff8c
+	ld hl, hVBlankFlags
 	set VBLANK_6_F, [hl]
 .asm_1a3f2
 	bit VBLANK_6_F, [hl]
@@ -406,7 +604,7 @@ ConfigurationMenu:
 	call .config_update_cursor
 
 .input_ret
-	ld hl, hff8c
+	ld hl, hVBlankFlags
 	set VBLANK_6_F, [hl]
 .asm_1a3fe
 	bit VBLANK_6_F, [hl]
@@ -443,7 +641,7 @@ ConfigurationMenu:
 	ret nz
 .exit_config_menu
 	pop hl
-	ld a, $0c
+	ld a, SELECT | START
 	ld [wd050], a
 	jp TitleScreen
 
@@ -523,21 +721,21 @@ ConfigurationMenu:
 	jr z, .incr_lives
 	and a
 	ret nz
-	ld a, [wInitialMaxHP]
+	ld a, [wConfigMaxHP]
 	inc a
 	cp $07
 	ret z
-	ld [wInitialMaxHP], a
+	ld [wConfigMaxHP], a
 	ld c, a
 	ld a, $c5
 	jr .update_hp_bar
 
 .incr_lives
-	ld a, [wInitialLives]
+	ld a, [wConfigLives]
 	cp $09
 	ret z ; cannot add more lives
 	inc a
-	ld [wInitialLives], a
+	ld [wConfigLives], a
 	jr .UpdateNumLives
 
 .config_b_btn
@@ -547,10 +745,10 @@ ConfigurationMenu:
 	jr z, .decr_lives
 	and a
 	ret nz
-	ld a, [wInitialMaxHP]
+	ld a, [wConfigMaxHP]
 	dec a
 	ret z
-	ld [wInitialMaxHP], a
+	ld [wConfigMaxHP], a
 	ld c, a
 	inc c
 	ld a, $c4
@@ -572,10 +770,10 @@ ConfigurationMenu:
 	ret
 
 .decr_lives
-	ld a, [wInitialLives]
+	ld a, [wConfigLives]
 	dec a
 	ret z
-	ld [wInitialLives], a
+	ld [wConfigLives], a
 
 .UpdateNumLives:
 	call GetDigits
@@ -623,7 +821,7 @@ ConfigurationMenu:
 	call .UpdateSoundCheckCursor
 
 .asm_1a58a
-	ld hl, hff8c
+	ld hl, hVBlankFlags
 	set VBLANK_6_F, [hl]
 .asm_1a58f
 	bit VBLANK_6_F, [hl]

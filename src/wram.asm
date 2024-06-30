@@ -57,7 +57,7 @@ wExtraGameEnabled:: db ; d03a
 wStage:: ; d03b
 	db
 
-wd03c:: ; d03c
+wMusic:: ; d03c
 	db
 
 wd03d:: ; d03d
@@ -108,7 +108,10 @@ wd04b:: ; d04b
 wd04c:: ; d04c
 	db
 
-	ds $2
+wd04d:: ; d04d
+	db
+
+	ds $1
 
 wJoypadDown:: ; d04f
 	db
@@ -142,7 +145,23 @@ wd05c:: ; d05c
 wd05d:: ; d05d
 	db
 
-	ds $6
+wd05e:: ; d05e
+	db
+
+wd05f:: ; d05f
+	db
+
+wd060:: ; d060
+	db
+
+wd061:: ; d061
+	db
+
+wd062:: ; d062
+	db
+
+wd063:: ; d063
+	db
 
 wd064:: ; d064
 	db
@@ -150,7 +169,8 @@ wd064:: ; d064
 wd065:: ; d065
 	db
 
-	ds $1
+wd066:: ; d066
+	db
 
 wSoundCheckMusic:: ; d067
 	db
@@ -158,7 +178,11 @@ wSoundCheckMusic:: ; d067
 wSoundCheckSFX:: ; d068
 	db
 
-	ds $2
+wd069:: ; d069
+	db
+
+wd06a:: ; d06a
+	db
 
 wOAMFlagsOverride::
 wMenuCursorPos::
@@ -173,12 +197,15 @@ wd06c:: ; d06c
 wd06e:: ; d06e
 	db
 
+; digits of wScore in big endian
+wScoreDigits:: ; d06f
 	ds $5
 
 wd074:: ; d074
 	db
 
-	ds $1
+wd075:: ; d075
+	db
 
 wd076:: ; d076
 	db
@@ -223,7 +250,7 @@ wd083:: ; d083
 
 wHP::	db ; d086
 wMaxHP:: db ; d087
-wInitialMaxHP::  db ; d088
+wConfigMaxHP::  db ; d088
 
 ; number of lives + 1, so in the HUD
 ; this number is subtracted by 1
@@ -232,15 +259,18 @@ wLives:: ; d089
 	db
 
 ; value of number of lives at game start
-wInitialLives:: ; d08a
+wConfigLives:: ; d08a
 	db
 
+; current score
+wScore:: ; d08b
 	ds $3
 
-wd08e:: ; d08e
+; these hold the digit tiles of wScoreDigits
+wScoreDigitTiles:: ; d08e
 	ds $5
 
-wd093:: ; d093
+wBossHP:: ; d093
 	db
 
 wd094:: ; d094

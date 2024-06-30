@@ -5,7 +5,7 @@ VBlank:
 	push bc
 	push de
 	push hl
-	ld hl, hff8c
+	ld hl, hVBlankFlags
 	bit VBLANK_6_F, [hl]
 	jp z, .asm_1d9d
 	ld hl, hff91
@@ -26,9 +26,9 @@ VBlank:
 	; write to OAM
 	call hTransferVirtualOAM
 
-	ldh a, [hff8c]
+	ldh a, [hVBlankFlags]
 	and $ff ^ (VBLANK_5 | VBLANK_6)
-	ldh [hff8c], a
+	ldh [hVBlankFlags], a
 
 	call Func_1dfb
 	call Func_1f08

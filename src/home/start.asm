@@ -9,9 +9,11 @@ Reset:
 	xor a
 	ldh [rLCDC], a
 
+	; set stack
 	di
 	ld sp, hStackTop
 
+	; init RAM, OAM and audio
 	ld a, BANK("Bank 5")
 	bankswitch
 	call InitRAM
@@ -24,11 +26,11 @@ Reset:
 	bankswitch
 	call $4c4a ; Func_14c4a
 
-	ld a, $01
-	bankswitch
+	ld a, $01  ; not necessary since
+	bankswitch ; InitWindow is in home bank
 	call InitWindow
 
-	ld a, $e4
+	ld a, %11100100 ; standard GB palette data
 	ldh [rOBP1], a
 
 	; init scrolling and clear interrupt flags
@@ -50,36 +52,38 @@ Reset:
 	ei
 
 	xor a
-	ldh [hff8c], a
+	ldh [hVBlankFlags], a
 	ld [wExtraGameEnabled], a
 
-	ld a, $06
+	ld a, BANK(TitleScreen)
 	bankswitch
-	ld a, $05
-	ld [wInitialLives], a
-	ld a, $06
-	ld [wInitialMaxHP], a
+	ld a, DEFAULT_LIVES
+	ld [wConfigLives], a
+	ld a, DEFAULT_MAX_HP
+	ld [wConfigMaxHP], a
 	call TitleScreen
-	ld a, $0c
+	ld a, SELECT | START
 	ld [wd050], a
-	ld a, [wInitialLives]
+	ld a, [wConfigLives]
 	ld [wLives], a
 	call Clearwd160
 	ld a, [wExtraGameEnabled]
 	ld [wd039], a
 
-	ld a, $06
+	ld a, BANK(Func_180e4)
 	bankswitch
 	call Func_180e4
 
 	ld a, $01
 	bankswitch
-	ld a, $32
+	ld a, HUD_UPDATE_LABEL | HUD_UPDATE_LIVES | HUD_UPDATE_SCORE_DIGITS
 	ldh [hHUDFlags], a
+;	fallthrough
+Func_1f2:
 	ld a, [wBGP]
 	ldh [rBGP], a
 .asm_1f7
-	ldh a, [hff8c]
+	ldh a, [hVBlankFlags]
 	bit VBLANK_5_F, a
 	jr nz, .asm_1f7
 	bit VBLANK_6_F, a
@@ -89,17 +93,18 @@ Reset:
 	and VBLANK_0 | VBLANK_1 | VBLANK_2 | VBLANK_3
 	jr nz, .asm_20c
 	xor a
-	ldh [hff8c], a
+	ldh [hVBlankFlags], a
 .asm_20c
 	ldh a, [hff94]
 	bit 3, a
 	jr z, .asm_21e
 	xor a
 	ldh [hJoypadPressed], a
-	ldh a, [hff8c]
+	ldh a, [hVBlankFlags]
 	and VBLANK_4
-	ldh [hff8c], a
-	jp $4783 ; Func_4783
+	ldh [hVBlankFlags], a
+	jp Func_4783
+
 .asm_21e
 	ldh a, [hff8e]
 	bit 4, a

@@ -37,10 +37,10 @@ InitRAM::
 	ld a, $d0
 	ld [wOBP], a
 	ld a, VBLANK_6 | VBLANK_7
-	ld [hff8c], a
+	ld [hVBlankFlags], a
 	ld a, $00
 	ld [hff8d], a
-	ld a, $0c
+	ld a, SELECT | START
 	ld [wd050], a
 	ld a, $01
 	ld [wd048], a
