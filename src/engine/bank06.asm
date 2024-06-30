@@ -920,7 +920,7 @@ ConfigurationMenu:
 	sub b
 	ld [wMenuCursorPos], a
 	call .UpdateSoundCheckCursor
-	ld a, $1a
+	ld a, SFX_CURSOR
 	call PlaySFX
 	jp .asm_1a58a
 

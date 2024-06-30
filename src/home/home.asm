@@ -119,10 +119,10 @@ Func_326:
 	bit 5, [hl]
 	jr z, .asm_354
 	res 5, [hl]
-	ld a, $15
+	ld a, SFX_21
 	call PlaySFX
 	ld a, [wCurMusic]
-	cp $09
+	cp MUSIC_09
 	jr nz, .asm_359
 	ld a, [wMusic]
 	call PlayMusic
@@ -133,7 +133,7 @@ Func_326:
 	res 4, [hl]
 	jr .asm_359
 .asm_354
-	ld a, $14
+	ld a, SFX_20
 	call PlaySFX
 .asm_359
 	ldh a, [hff8e]
@@ -1236,7 +1236,7 @@ Func_caf:
 	xor a
 	ld [wd3be], a
 	push de
-	ld a, $03
+	ld a, SFX_03
 	call PlaySFX
 	pop de
 	jp .asm_ece
@@ -1317,7 +1317,7 @@ Func_caf:
 	bit 4, [hl]
 	jr nz, .asm_ec8
 	push de
-	ld a, $1e
+	ld a, SFX_30
 	call PlaySFX
 	call Func_37b1
 	pop de
@@ -6452,7 +6452,7 @@ Func_37ac:
 	call PlaySFX
 ;	fallthrough
 Func_37b1:
-	ld a, [$d414]
+	ld a, [wd414]
 	and a
 	ret nz
 	ld hl, $4178
@@ -6461,7 +6461,7 @@ Func_37b9:
 	call Func_233e
 	ret c
 	push bc
-	ld hl, $d0a1
+	ld hl, wd0a0 + $1
 	add hl, bc
 	add hl, bc
 	add hl, bc
@@ -6486,7 +6486,7 @@ Func_37b9:
 	ld [hl], a
 	pop bc
 	push bc
-	ld hl, $d0d1
+	ld hl, wd0d0 + $1
 	add hl, bc
 	add hl, bc
 	add hl, bc

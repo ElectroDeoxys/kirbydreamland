@@ -500,7 +500,12 @@ wd3f7:: ; d3f7
 wd3f8:: ; d3f8
 	db
 
-	ds $807
+	ds $1b
+
+wd414:: ; d414
+	db
+
+	ds $7eb
 
 wdc00:: ; dc00
 	db
