@@ -58,6 +58,8 @@ DEF NUM_MUSICS EQU const_value
 	const SFX_BOSS_DEFEAT ; $20
 DEF NUM_SOUNDCHECK_SFX EQU const_value
 	const SFX_33 ; $21
+	const SFX_34 ; $22
+	const SFX_35 ; $23
 DEF NUM_SFX EQU const_value
 	const_def $ff
 	const SFX_NONE ; $ff

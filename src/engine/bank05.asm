@@ -1234,59 +1234,65 @@ Func_14e0b::
 SECTION "Bank 5@79f3", ROMX[$79f3], BANK[$5]
 
 Data_179f3:
-	dw $54df
-	dw $54ec
-	dw $54f9
-	dw $5506
-	dw $5513
-	dw $551a
-	dw $5527
-	dw $5534
-	dw $553e
-	dw $554b
-	dw $5558
-	dw $5565
-	dw $5572
-	dw $557f
-	dw $558c
-	dw $5599
-	dw $55a6
-	dw $55b3
-	dw $55c0
-	dw $707e
-	dw $7085
-	dw $708c
-	dw $7090
-	dw $7094
-	dw $7098
-	dw $709c
-	dw $70a3
-	dw $70aa
-	dw $70ae
-	dw $70b2
-	dw $70b6
-	dw $70ba
-	dw $70c1
-	dw $70c8
-	dw $70cc
-	dw $70d0
-	dw $70d4
-	dw $70d8
-	dw $70dc
-	dw $70e0
-	dw $70e4
-	dw $70e8
-	dw $70ef
-	dw $70f9
-	dw $7106
-	dw $710a
-	dw $710e
-	dw $7112
-	dw $7116
-	dw $7120
-	dw $7124
-	dw $7128
-	dw $712c
-	dw $7139
-	dw $7140
+	table_width 2, Data_179f3
+	dw $54df ; MUSIC_BUBBLY_CLOUDS_INTRO
+	dw $54ec ; MUSIC_GREEN_GREENS_INTRO
+	dw $54f9 ; MUSIC_INVINCIBILITY_CANDY
+	dw $5506 ; MUSIC_GAME_OVER
+	dw $5513 ; MUSIC_SPARKLING_STAR
+	dw $551a ; MUSIC_TITLESCREEN
+	dw $5527 ; MUSIC_FLOAT_ISLANDS_INTRO
+	dw $5534 ; MUSIC_LIFE_LOST
+	dw $553e ; MUSIC_BOSS_BATTLE
+	dw $554b ; MUSIC_MINT_LEAF
+	dw $5558 ; MUSIC_VICTORY
+	dw $5565 ; MUSIC_CREDITS
+	dw $5572 ; MUSIC_CASTLE_LOLOLO_INTRO
+	dw $557f ; MUSIC_GREEN_GREENS
+	dw $558c ; MUSIC_FLOAT_ISLANDS
+	dw $5599 ; MUSIC_BUBBLY_CLOUDS
+	dw $55a6 ; MUSIC_CASTLE_LOLOLO
+	dw $55b3 ; MUSIC_DEDEDE_BATTLE
+	dw $55c0 ; MUSIC_MT_DEDEDE
+	assert_table_length NUM_MUSICS
+
+Data_17a19:
+	table_width 2, Data_17a19
+	dw $707e ; SFX_00
+	dw $7085 ; SFX_INHALE
+	dw $708c ; SFX_02
+	dw $7090 ; SFX_SWALLOW
+	dw $7094 ; SFX_JUMP
+	dw $7098 ; SFX_BUMP
+	dw $709c ; SFX_DAMAGE
+	dw $70a3 ; SFX_ENTER_DOOR
+	dw $70aa ; SFX_08
+	dw $70ae ; SFX_POWER_UP
+	dw $70b2 ; SFX_10
+	dw $70b6 ; SFX_RESTORE_HP
+	dw $70ba ; SFX_WARP_STAR
+	dw $70c1 ; SFX_13
+	dw $70c8 ; SFX_14
+	dw $70cc ; SFX_15
+	dw $70d0 ; SFX_16
+	dw $70d4 ; SFX_17
+	dw $70d8 ; SFX_18
+	dw $70dc ; SFX_19
+	dw $70e0 ; SFX_20
+	dw $70e4 ; SFX_21
+	dw $70e8 ; SFX_1UP
+	dw $70ef ; SFX_23
+	dw $70f9 ; SFX_PAUSE
+	dw $7106 ; SFX_25
+	dw $710a ; SFX_CURSOR
+	dw $710e ; SFX_GAME_START
+	dw $7112 ; SFX_28
+	dw $7116 ; SFX_29
+	dw $7120 ; SFX_30
+	dw $7124 ; SFX_31
+	dw $7128 ; SFX_BOSS_DEFEAT
+	dw $712c ; SFX_33
+	dw $7139 ; SFX_34
+	dw $7140 ; SFX_35
+	assert_table_length NUM_SFX
 ; 0x17a61

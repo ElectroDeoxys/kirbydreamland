@@ -106,7 +106,7 @@ Data_1c0ce::
 	dw $57e7, $57e7 ; $1b
 
 Data_1c13a::
-	table_width 2, Data_1c13a
+	table_width 4, Data_1c13a
 	dw $578b, $57e7 ; GREEN_GREENS
 	dw $57a7, $57e7 ; CASTLE_LOLOLO
 	dw $57bd, $57e7 ; FLOAT_ISLANDS
