@@ -508,7 +508,343 @@ StageIntroDurations:
 	dw 390 ; BUBBLY_CLOUDS
 	dw 712 ; MT_DEDEDE
 	assert_table_length NUM_STAGES
-; 0x183bf
+
+Func_183bf::
+	ld a, [wd041]
+	ld [wd042], a
+	call .Func_1844f
+	ld hl, hff90
+	res 4, [hl]
+	ld a, [wStage]
+	add a
+	ld c, a
+	ld b, $00
+	ld hl, $50ca
+	add hl, bc
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	ld a, [wArea]
+	add a
+	ld l, a
+	ld h, $00
+	add hl, bc
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld a, $01
+	ld [$d3dd], a
+.asm_183ec
+	ld a, [hVBlankFlags]
+	set 6, a
+	ld [hVBlankFlags], a
+.asm_183f4
+	ld a, [hVBlankFlags]
+	bit 6, a
+	jr nz, .asm_183f4
+	push hl
+	call Func_319d
+	call Func_19098
+	pop hl
+	ld a, [$d3dd]
+	dec a
+	ld [$d3dd], a
+	jr nz, .asm_18440
+	ld a, [hli]
+	ld [$d3dd], a
+	ld a, [hli]
+	ld [$d3de], a
+	bit 7, a
+	jp nz, Func_3d2d
+	bit 0, a
+	call nz, .Func_184f4
+	bit 1, a
+	call nz, .Func_184f4
+	bit 2, a
+	call nz, .Func_18485
+	bit 4, a
+	call nz, .Func_18473
+	bit 5, a
+	jp nz, $486c ; Func_1886c
+	bit 3, a
+	jr z, .asm_18440
+	ld hl, wStage
+	inc [hl]
+	call Func_180e4
+	jp Func_3d32
+.asm_18440
+	ld a, [$d3de]
+	bit 0, a
+	call nz, .Func_18506
+	bit 1, a
+	call nz, .Func_18528
+	jr .asm_183ec
+
+.Func_1844f:
+	ld a, [wStage]
+	add a
+	ld c, a
+	ld b, $00
+	ld hl, $526a
+	add hl, bc
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	ld a, [wArea]
+	add a
+	ld l, a
+	ld h, $00
+	add hl, bc
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld de, $157a
+	ld bc, $0
+	call Func_21e6
+	ret
+
+.Func_18473:
+	push af
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	ld d, a
+	push hl
+	ld hl, $410c
+	ld bc, $0
+	call Func_21e6
+	pop hl
+	pop af
+	ret
+
+.Func_18485:
+	push af
+	ld a, [hli]
+	ld [wArea], a
+	push hl
+	call Func_19c9
+	call Func_648
+	ld a, SFX_NONE
+	call PlaySFX
+	pop hl
+	xor a
+	ld [wSCX], a
+	ld [wSCY], a
+	ld a, [hli]
+	ld [wd051], a
+	ld a, [hli]
+	ld [wd052], a
+	push hl
+	call Func_19f9
+	ld a, [wd052]
+	dec a
+	ld b, a
+	ld a, [wd03f]
+	ld e, a
+	call CalculateBCPercentage
+	ld a, [wd051]
+	dec a
+	ld l, a
+	ld h, $00
+	add hl, bc
+	ld b, h
+	ld c, l
+	ld hl, wc100
+	add hl, bc
+	call Func_1964
+	ld a, $ff
+	ld [wd096], a
+	call .Func_1844f
+	xor a
+	call Func_21fb
+	call ClearSprites
+	call Func_2e9c
+	ld a, [wStage]
+	cp MT_DEDEDE
+	jr nz, .asm_184eb
+	ld a, [wArea]
+	and a
+	jr nz, .asm_184eb
+	ld a, MUSIC_18
+	call PlayMusic
+.asm_184eb
+	call StopTimerAndSwitchOnLCD
+	call Func_670
+	pop hl
+	pop af
+	ret
+
+.Func_184f4:
+	push af
+	ld a, [hli]
+	ld [wd074], a
+	ld a, [hli]
+	ld [wd075], a
+	xor a
+	ld [wd076], a
+	ld [wd077], a
+	pop af
+	ret
+
+.Func_18506:
+	push af
+	push hl
+	ld a, [wd075]
+	ld e, a
+	ld a, [wd077]
+	add e
+	ld [wd077], a
+	ld a, [wd074]
+	ld e, a
+	ld a, [wd076]
+	adc e
+	ld [wd063], a
+	xor a
+	ld [wd076], a
+	call Func_1062
+	pop hl
+	pop af
+	ret
+
+.Func_18528:
+	push hl
+	ld a, [wd075]
+	ld e, a
+	ld a, [wd077]
+	add e
+	ld [wd077], a
+	ld a, [wd074]
+	ld e, a
+	ld a, [wd076]
+	adc e
+	ld b, a
+	ld [wSoundCheckMusic], a
+	xor a
+	ld [wd076], a
+	cp b
+	jr z, .asm_18591
+	ld a, [wSCY]
+	ld c, a
+.asm_1854b
+	ld a, c
+	call Func_643
+	jr nc, .asm_18557
+	dec c
+	dec b
+	jr nz, .asm_1854b
+	jr .asm_18591
+.asm_18557
+	ld a, [wSCY]
+	sub $10
+	ld [wd058], a
+	ld a, [wSCX]
+	and $f0
+	ld [wd057], a
+	ld a, [wd052]
+	dec a
+	jr z, .asm_1856e
+	dec a
+.asm_1856e
+	ld e, a
+	ld a, [wd03f]
+	ld b, a
+	call CalculateBCPercentage
+	ld hl, wc100
+	add hl, bc
+	ld b, $00
+	ld a, [wd051]
+	dec a
+	ld c, a
+	add hl, bc
+	call Func_12b4
+	ld hl, wd052
+	dec [hl]
+	ld a, [hVBlankFlags]
+	set 5, a
+	ld [hVBlankFlags], a
+.asm_18591
+	ld a, [wSoundCheckMusic]
+	ld b, a
+	ld a, [wSCY]
+	sub b
+	ld [wSCY], a
+	pop hl
+	ret
+
+Func_1859e::
+	ld a, SFX_33
+	call PlaySFX
+	xor a
+	ld [wSoundCheckMusic], a
+	ld [wSoundCheckSFX], a
+	ld [hJoypadPressed], a
+	ld a, [hff93]
+	set 2, a
+	ld [hff93], a
+.asm_185b5
+	ld a, [hVBlankFlags]
+	bit 6, a
+	jr nz, .asm_185b5
+	ld a, [hff94]
+	bit 0, a
+	jr nz, .asm_1862f
+	ld a, [hff8e]
+	and $9c
+	jr nz, .asm_185f6
+	ld a, [hff92]
+	and $80
+	jr nz, .asm_185f6
+	ld a, [hff93]
+	and $38
+	jr nz, .asm_185f6
+	ld hl, hff93
+	set 0, [hl]
+	ld hl, wSoundCheckMusic
+	ld a, [hl]
+	add $01
+	ld [hli], a
+	ld a, [hl]
+	adc $00
+	ld [hld], a
+	cp $04
+	jr c, .asm_185f6
+	ld a, [hl]
+	cp $b0
+	jr c, .asm_185f6
+	ld hl, hff91
+	set 4, [hl]
+.asm_185f6
+	xor a
+	ld [wVirtualOAMSize], a
+	call Func_2e9c
+	call Func_139b
+	call ClearSprites
+	ld a, [hVBlankFlags]
+	set 6, a
+	ld [hVBlankFlags], a
+	ld a, [hJoypadPressed]
+	bit START_F, a
+	jr z, .asm_185b5
+	ld a, SFX_24
+	call PlaySFX
+	ld a, [hff93]
+	and $fa
+	ld [hff93], a
+	ld hl, hff91
+	res 4, [hl]
+	ld hl, hff94
+	res 0, [hl]
+	ld a, 30
+	call WaitAFrames
+	ret
+.asm_1862f
+	ld a, [hff91]
+	res 4, a
+	ld [hff91], a
+	jr .asm_185f6
+; 0x18639
 
 SECTION "Bank 6@5098", ROMX[$5098], BANK[$6]
 

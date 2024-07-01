@@ -44,7 +44,7 @@ Func_246::
 	jp z, .asm_2ad ; can be jr
 	ld a, $06
 	bankswitch
-	jp $43bf ; Func_183bf
+	jp Func_183bf
 
 .asm_2ad
 	ld hl, hff94
@@ -111,7 +111,7 @@ Func_246::
 	ld [wd075], a
 	jr .asm_30a
 
-Func_326:
+Func_326::
 	ldh a, [hff8e]
 	bit 6, a
 	ret nz
@@ -163,11 +163,376 @@ Func_326:
 	ld a, $a8
 	ld [wd077], a
 	ret
-; 0x38f
 
-SECTION "Home@0643", ROM0[$0643]
+Func_38f::
+	ld a, $ff
+	ld [wd078], a
+	ld a, $d8
+	ld [wd079], a
+	ld a, $02
+	ld [wd07a], a
+	ld a, $00
+	ld [wd07b], a
+	ld a, $15
+	ld [wd07e], a
+	xor a
+	ld [wd064], a
+	ldh a, [hff92]
+	and $f3
+	ldh [hff92], a
+	ret
 
-Func_643:
+Func_3b3::
+	ldh a, [hff92]
+	bit 6, a
+	jr nz, .asm_3f2
+	ld a, [wd07a]
+	ld d, a
+	ld a, [wd07b]
+	ld e, a
+	ld a, [wd079]
+	ld b, a
+	ld a, [wd07e]
+	add b
+	ld [wd079], a
+	ld a, [wd078]
+	adc $00
+	ld [wd078], a
+	bit 7, a
+	jr nz, Func_426
+	cp d
+	jr c, Func_426
+	ld a, [wd078]
+	bit 7, a
+	jr nz, Func_426
+	ld a, d
+	ld [wd078], a
+	ld a, [wd079]
+	cp e
+	jr c, Func_426
+	ld a, e
+	ld [wd079], a
+	jr Func_426
+.asm_3f2
+	ld a, $fe
+	ld d, a
+	ld a, $b3
+	ld e, a
+	ld a, [wd07e]
+	ld b, a
+	ld a, [wd079]
+	sub b
+	ld [wd079], a
+	ld a, [wd078]
+	sbc $00
+	bit 7, a
+	jr nz, .asm_411
+.asm_40c
+	ld [wd078], a
+	jr Func_426
+.asm_411
+	cp d
+	jr z, .asm_416
+	jr nc, .asm_40c
+.asm_416
+	ld a, d
+	ld [wd078], a
+	ld a, [wd079]
+	cp e
+	jr z, .asm_422
+	jr nc, Func_426
+.asm_422
+	ld a, e
+	ld [wd079], a
+;	fallthrough
+Func_426::
+	ld a, [wd078]
+	bit 7, a
+	jr z, .asm_455
+	ldh a, [hVBlankFlags]
+	and $f7
+	or $04
+	ldh [hVBlankFlags], a
+	ld a, [wd079]
+	cpl
+	inc a
+	ld b, a
+	ld a, [wSCY + 1]
+	sub b
+	ld [wSCY + 1], a
+	ld a, [wd078]
+	sbc $00
+	jr z, .asm_47a
+	cpl
+	ld b, a
+	ldh a, [hff8d]
+	and $f8
+	or b
+	ldh [hff8d], a
+	jp Func_4783
+.asm_455
+	ldh a, [hVBlankFlags]
+	and $fb
+	or $08
+	ldh [hVBlankFlags], a
+	ld a, [wd079]
+	ld b, a
+	ld a, [wSCY + 1]
+	add b
+	ld [wSCY + 1], a
+	ld a, [wd078]
+	adc $00
+	jr z, .asm_47a
+	ld b, a
+	ldh a, [hff8d]
+	and $f8
+	or b
+	ldh [hff8d], a
+	jp Func_4783
+.asm_47a
+	ldh a, [hVBlankFlags]
+	and $f3
+	ldh [hVBlankFlags], a
+	jp Func_4783
+
+Func_483::
+	ld hl, $3b3d
+.asm_486
+	ld a, [wStage]
+	ld b, a
+	ld a, [hli]
+	cp b
+	jr z, .asm_497
+	cp $ff
+	ret z
+	ld bc, $8
+	add hl, bc
+	jr .asm_486
+.asm_497
+	ld a, [wArea]
+	ld b, a
+	ld a, [hli]
+	cp b
+	jr z, .asm_4a5
+	ld bc, $7
+	add hl, bc
+	jr .asm_486
+.asm_4a5
+	ld a, [wd051]
+	ld b, a
+	ld a, [wSCX]
+	and $0f
+	ld c, a
+	ld a, [wd05c]
+	add c
+	and $f0
+	swap a
+	add b
+	ld b, a
+	ld a, [wd03f]
+	cp b
+	jr nc, .asm_4c3
+	ld c, a
+	ld a, b
+	sub c
+	ld b, a
+.asm_4c3
+	ld a, [hli]
+	cp b
+	jr z, .asm_4cd
+	ld bc, $6
+	add hl, bc
+	jr .asm_486
+.asm_4cd
+	ld a, [wd052]
+	ld b, a
+	ld a, [wSCY]
+	and $0f
+	ld c, a
+	ld a, [wd05d]
+	add c
+	add $0a
+	and $f0
+	swap a
+	add b
+	ld b, a
+	ld a, [hli]
+	cp b
+	jr z, .asm_4ed
+	ld bc, $5
+	add hl, bc
+	jr .asm_486
+.asm_4ed
+	ld a, [hli]
+	ld [wArea], a
+	push hl
+	ld a, [wStage]
+	cp $04
+	jr c, .asm_510
+	ld a, [wArea]
+	ld c, a
+	ld b, $00
+	ld hl, wd043
+	add hl, bc
+	ld a, [hl]
+	cp $01
+	jr nz, .asm_510
+	xor a
+	ld [wArea], a
+	pop hl
+	ld a, $ff
+	ret
+.asm_510
+	ld a, $07
+	call PlaySFX
+	ld hl, hff93
+	bit 4, [hl]
+	jr nz, .asm_566
+	ldh a, [hff95]
+	bit 5, a
+	jr nz, .asm_548
+	ld hl, hff8e
+	ld a, [hl]
+	and $88
+	jr z, .asm_566
+	bit 2, [hl]
+	jr nz, .asm_566
+	set 2, [hl]
+	ld a, [wd3be]
+	and $f9
+	ld [wd3be], a
+	ld a, $04
+	ld [wd094], a
+	ld a, [hl]
+	bit 7, a
+	push af
+	call z, Func_380a
+	pop af
+	call nz, Func_385b
+.asm_548
+	call Func_139b
+	ld b, $13
+.asm_54d
+	call Func_1def
+	push bc
+	xor a
+	ld [wVirtualOAMSize], a
+	call Func_2e9c
+	call ClearSprites
+	pop bc
+	ld a, [wd094]
+	cp $01
+	jr z, .asm_566
+	dec b
+	jr nz, .asm_54d
+.asm_566
+	xor a
+	ld [wd082], a
+	ld [wd083], a
+	ldh a, [hff92]
+	bit 5, a
+	jr nz, .asm_578
+	ld hl, $4566
+	jr .asm_57b
+.asm_578
+	ld hl, $456c
+.asm_57b
+	ld de, $157a
+	ld bc, $0
+	call Func_21e6
+	xor a
+	ldh [hVBlankFlags], a
+	ldh [hff8d], a
+	ldh [hff93], a
+	call Func_19c9
+	call Func_648
+	call Func_19f9
+	pop hl
+	ld a, [hli]
+	ld d, a
+	ld a, [hli]
+	ld e, a
+	ld a, [wd03f]
+	ld b, a
+	push de
+	call CalculateBCPercentage
+	pop de
+	ld a, d
+	add c
+	ld c, a
+	ld a, b
+	adc $00
+	ld b, a
+	xor a
+	ld [wSCX], a
+	ld [wSCY], a
+	ld a, d
+	inc a
+	ld [wd051], a
+	ld a, e
+	inc a
+	ld [wd052], a
+	ld a, [hli]
+	swap a
+	add $08
+	ld [wd05c], a
+	ld a, [hli]
+	swap a
+	ld [wd05d], a
+	ldh a, [hHUDFlags]
+	or $13
+	ldh [hHUDFlags], a
+	ldh a, [hff92]
+	and $20
+	ldh [hff92], a
+	ld hl, wc100
+	add hl, bc
+	call Func_1964
+	ld a, $16
+	ld [wd065], a
+	xor a
+	ldh [hff8e], a
+	ld [wd074], a
+	ld [wd075], a
+	ld [wd078], a
+	ld [wd079], a
+	ld [wd064], a
+	ld [wVirtualOAMSize], a
+	ld a, $20
+	ld [wd07c], a
+	ld a, $0e
+	ld [wd07d], a
+	ld a, $15
+	ld [wd07e], a
+	ld a, $01
+	ld [wd076], a
+	ld a, $33
+	ld [wd077], a
+	ld a, $02
+	ld [wd07a], a
+	ld a, $00
+	ld [wd07b], a
+	xor a
+	call Func_21fb
+	call Func_139b
+	call Func_2e9c
+	call ClearSprites
+	call StopTimerAndSwitchOnLCD
+	call Func_670
+	ld a, $08
+	ldh [hVBlankFlags], a
+	ld a, [wd03d]
+	cp $ff
+	jr z, .asm_641
+	ld [wMusic], a
+	call PlayMusic
+	ld a, $ff
+	ld [wd03d], a
+.asm_641
+	xor a
+	ret
+
+Func_643::
 	and $0f
 	ret z
 	scf
@@ -1185,7 +1550,7 @@ Func_caf:
 	bit 4, a
 	jr nz, .asm_df4
 	ldh a, [hJoypadPressed]
-	bit 7, a
+	bit D_DOWN_F, a
 	jp z, .asm_e57
 	ld a, b
 	and a
@@ -1550,7 +1915,7 @@ Func_1046:
 	pop bc
 	ret
 
-Func_1062:
+Func_1062::
 	ldh a, [hff90]
 	bit 4, a
 	ret nz
@@ -1745,9 +2110,20 @@ Func_110b:
 	sub [hl]
 	ld [wSCX], a
 	ret
-; 0x11c9
 
-SECTION "Home@11de", ROM0[$11de]
+Func_11c9::
+	ldh a, [hff8d]
+	bit 6, a
+	ret z
+	ldh a, [hff92]
+	bit 2, a
+	ret z
+	res 2, a
+	ldh [hff92], a
+	ldh a, [hff8e]
+	res 2, a
+	ldh [hff8e], a
+	ret
 
 Func_11de:
 	ld b, $01
@@ -1873,7 +2249,7 @@ Func_1292:
 	pop bc
 	ret
 
-Func_12b4:
+Func_12b4::
 	push bc
 	ld de, wBGQueue
 	ld a, [wd03f]
@@ -2428,9 +2804,9 @@ Func_19c9::
 	ldh a, [hff90]
 	and $08
 	ldh [hff90], a
-	ld hl, $38b1
+	ld hl, Data_38b1
 	ld a, [wStage]
-	add a
+	add a ; *2
 	ld c, a
 	ld b, $00
 	add hl, bc
@@ -2443,7 +2819,7 @@ Func_19c9::
 	ld a, [wArea]
 	add a
 	add a
-	add a
+	add a ; *8
 	ld c, a
 	ld b, $00
 	add hl, bc
@@ -2465,9 +2841,9 @@ Func_19f9::
 	ld [wd03d], a
 	ld [wd096], a
 	call ResetTimer
-	ld hl, $38b1
+	ld hl, Data_38b1
 	ld a, [wStage]
-	add a
+	add a ; *2
 	ld c, a
 	ld b, $00
 	add hl, bc
@@ -2480,7 +2856,7 @@ Func_19f9::
 	ld a, [wArea]
 	add a
 	add a
-	add a
+	add a ; *8
 	ld c, a
 	ld b, $00
 	add hl, bc
@@ -2543,8 +2919,9 @@ Func_19f9::
 	inc hl
 	ld a, [hl]
 	ld [wd042], a
+
 	ld a, [wStage]
-	cp $04
+	cp MT_DEDEDE
 	jp nz, .asm_1bc2
 	ld a, [wArea]
 	and a
@@ -2624,12 +3001,13 @@ Func_19f9::
 	ld [wd04b], a
 	ld [wd04a], a
 	ld [wd04c], a
-	ld hl, $1bc5
+	ld hl, Data_1bc5
 	add hl, bc
 	ld a, [hl]
 	ld [wd06c], a
 	cp $04
 	jr z, .asm_1b69
+
 	push af
 	push hl
 	push de
@@ -2658,6 +3036,7 @@ Func_19f9::
 	pop de
 	pop hl
 	pop af
+
 .asm_1b69
 	ld c, a
 	add a
@@ -2665,11 +3044,11 @@ Func_19f9::
 	add c
 	ld b, $00
 	ld c, a
-	ld hl, $2070
+	ld hl, Data_2070
 	ld a, [wd039]
 	and a
 	jr z, .asm_1b7c
-	ld hl, $2089
+	ld hl, Data_2089
 .asm_1b7c
 	add hl, bc
 	ld a, [hli]
@@ -2690,10 +3069,10 @@ Func_19f9::
 	ld a, [wd06c]
 	ld c, a
 	add a
-	add c
+	add c ; *3
 	ld b, $00
 	ld c, a
-	ld hl, $20a2
+	ld hl, Data_20a2
 	add hl, bc
 	ld a, [hli]
 	ld c, a
@@ -2708,7 +3087,7 @@ Func_19f9::
 	ld hl, hff91
 	bit 5, [hl]
 	jr z, .asm_1bc2
-	ld hl, $1bcf
+	ld hl, Data_1bcf
 	ld a, [wArea]
 	ld c, a
 	ld b, $00
@@ -2719,9 +3098,34 @@ Func_19f9::
 	pop hl
 	pop bc
 	ret
-; 0x1bc5
 
-SECTION "Home@1bd9", ROM0[$1bd9]
+Data_1bc5:
+	table_width 1, Data_1bc5
+	db MT_DEDEDE ; MT_DEDEDE_0
+	db GREEN_GREENS ; MT_DEDEDE_1
+	db CASTLE_LOLOLO ; MT_DEDEDE_2
+	db FLOAT_ISLANDS ; MT_DEDEDE_3
+	db BUBBLY_CLOUDS ; MT_DEDEDE_4
+	db MT_DEDEDE ; MT_DEDEDE_5
+	db GREEN_GREENS ; MT_DEDEDE_6
+	db FLOAT_ISLANDS ; MT_DEDEDE_7
+	db CASTLE_LOLOLO ; MT_DEDEDE_8
+	db BUBBLY_CLOUDS ; MT_DEDEDE_9
+	assert_table_length NUM_MT_DEDEDE_AREAS
+
+Data_1bcf:
+	table_width 1, Data_1bcf
+	db $12 ; MT_DEDEDE_0
+	db $0d ; MT_DEDEDE_1
+	db $10 ; MT_DEDEDE_2
+	db $0e ; MT_DEDEDE_3
+	db $0f ; MT_DEDEDE_4
+	db $11 ; MT_DEDEDE_5
+	db $0d ; MT_DEDEDE_6
+	db $0e ; MT_DEDEDE_7
+	db $10 ; MT_DEDEDE_8
+	db $0f ; MT_DEDEDE_9
+	assert_table_length NUM_MT_DEDEDE_AREAS
 
 GetScoreDigitTiles:
 	ld hl, wScore
@@ -2800,7 +3204,7 @@ Func_1c0a::
 ; - e = percentage
 ; output:
 ; - bc = result
-CalculateBCPercentage:
+CalculateBCPercentage::
 	push af
 	push hl
 	ld hl, $0
@@ -2997,9 +3401,16 @@ WaitAFrames::
 	jr nz, .asm_1de4
 	pop hl
 	ret
-; 0x1def
 
-SECTION "Home@1dfb", ROM0[$1dfb]
+Func_1def:
+	push hl
+	ld hl, hVBlankFlags
+	set 6, [hl]
+.asm_1df5
+	bit 6, [hl]
+	jr nz, .asm_1df5
+	pop hl
+	ret
 
 Func_1dfb:
 	ldh a, [hLCDC]
@@ -3389,13 +3800,18 @@ Data_2089::
 	data_2070 $02, $6c49, v0Tiles1 ; MT_DEDEDE
 	assert_table_length NUM_STAGES
 
+MACRO data_20a2
+	db \1 ; bank
+	bigdw \2
+ENDM
+
 Data_20a2::
 	table_width 3, Data_20a2
-	db $03, $46, $e0 ; GREEN_GREENS
-	db $03, $4a, $c3 ; CASTLE_LOLOLO
-	db $03, $48, $d9 ; FLOAT_ISLANDS
-	db $03, $4c, $ff ; BUBBLY_CLOUDS
-	db $06, $77, $7c ; MT_DEDEDE
+	data_20a2 $03, $46e0 ; GREEN_GREENS
+	data_20a2 $03, $4ac3 ; CASTLE_LOLOLO
+	data_20a2 $03, $48d9 ; FLOAT_ISLANDS
+	data_20a2 $03, $4cff ; BUBBLY_CLOUDS
+	data_20a2 $06, $777c ; MT_DEDEDE
 	assert_table_length NUM_STAGES
 
 Data_20b1:
@@ -4930,7 +5346,7 @@ Func_294f:
 	jr nc, .divide
 	; $70 <= a < $90
 	sub $70
-	ld hl, $2977
+	ld hl, Data_2977
 	add a ; *2
 	add l
 	ld l, a
@@ -4953,9 +5369,40 @@ Func_294f:
 	sra d
 	rr e ; /8
 	ret
-; 0x2977
 
-SECTION "Home@29b7", ROM0[$29b7]
+Data_2977:
+	dw  $0000 ; $70
+	dw  $0004 ; $71
+	dw  $0008 ; $72
+	dw  $0010 ; $73
+	dw  $0020 ; $74
+	dw  $0040 ; $75
+	dw  $0080 ; $76
+	dw  $00c0 ; $77
+	dw  $0100 ; $78
+	dw  $0140 ; $79
+	dw  $0200 ; $7a
+	dw  $0300 ; $7b
+	dw  $0400 ; $7c
+	dw  $0600 ; $7d
+	dw  $0800 ; $7e
+	dw  $1000 ; $7f
+	dw -$0000 ; $80
+	dw -$0004 ; $81
+	dw -$0008 ; $82
+	dw -$0010 ; $83
+	dw -$0020 ; $84
+	dw -$0040 ; $85
+	dw -$0080 ; $86
+	dw -$00c0 ; $87
+	dw -$0100 ; $88
+	dw -$0140 ; $89
+	dw -$0200 ; $8a
+	dw -$0300 ; $8b
+	dw -$0400 ; $8c
+	dw -$0600 ; $8d
+	dw -$0800 ; $8e
+	dw -$1000 ; $8f
 
 Func_29b7:
 	ld a, c
@@ -5390,7 +5837,7 @@ Func_2b26:
 	bit 1, [hl]
 	jr z, .asm_2c96
 	ld a, [wStage]
-	cp $04
+	cp MT_DEDEDE
 	jr z, .asm_2c94
 	ld hl, wd140
 	add hl, de
@@ -6122,7 +6569,7 @@ Func_3168::
 Func_3199:
 	ld d, $01
 	jr Func_319f
-Func_319d:
+Func_319d::
 	ld d, $00
 ;	fallthrough
 Func_319f:
@@ -6509,7 +6956,17 @@ Func_319f:
 	ret
 ; 0x3408
 
-SECTION "Home@3768", ROM0[$3768]
+SECTION "Home@375d", ROM0[$375d]
+
+Func_375d::
+	xor a
+	ld hl, wd3f9
+	ld c, $06
+.loop
+	ld [hli], a
+	dec c
+	jr nz, .loop
+	ret
 
 Func_3768::
 	ld hl, wd1a0
@@ -6606,41 +7063,14 @@ Func_37b9:
 	ld [hl], a
 	pop bc
 	ret
-; 0x380a
 
-SECTION "Home@383b", ROM0[$383b]
-
-Func_383b:
+Func_380a::
 	push hl
 	push bc
 	push de
-	ld hl, $418a
+	ld hl, $4184
 	call Func_2344
-	jr c, .asm_388a
-	ld hl, wd1b0
-	add hl, bc
-	set 0, [hl]
-	jr .asm_3873
-	push hl
-	push bc
-	push de
-	ld hl, $4196
-	call Func_2344
-	jr c, .asm_388a
-	jr .asm_3873
-	push hl
-	push bc
-	push de
-	ld hl, $419c
-	call Func_2344
-	jr c, .asm_388a
-	ld a, [hff91]
-	bit 0, a
-	jr nz, .asm_3873
-	ld hl, wd1b0
-	add hl, bc
-	set 3, [hl]
-.asm_3873
+	jr c, Func_388a
 	ld a, [wROMBank]
 	push af
 	ld a, $05
@@ -6648,8 +7078,59 @@ Func_383b:
 	call $4a5f ; Func_14a5f
 	pop af
 	bankswitch
+	ld hl, $4190
+	call Func_2344
+	jr c, Func_3889
+	ld hl, wd1b0
+	add hl, bc
+	set 1, [hl]
+	jr Func_384a
+
+Func_383b:
+	push hl
+	push bc
+	push de
+	ld hl, $418a
+	call Func_2344
+	jr c, Func_388a
+	ld hl, wd1b0
+	add hl, bc
+Func_384a:
+	set 0, [hl]
+	jr Func_3873
+Func_384e::
+	push hl
+	push bc
+	push de
+	ld hl, $4196
+	call Func_2344
+	jr c, Func_388a
+	jr Func_3873
+Func_385b::
+	push hl
+	push bc
+	push de
+	ld hl, $419c
+	call Func_2344
+	jr c, Func_388a
+	ld a, [hff91]
+	bit 0, a
+	jr nz, Func_3873
+	ld hl, wd1b0
+	add hl, bc
+	set 3, [hl]
+;	fallthrough
+Func_3873:
+	ld a, [wROMBank]
+	push af
+	ld a, $05
+	bankswitch
+	call $4a5f ; Func_14a5f
+	pop af
+	bankswitch
+Func_3889:
 	xor a
-.asm_388a
+Func_388a:
 	pop de
 	pop bc
 	pop hl
@@ -6665,7 +7146,110 @@ StageHeaders::
 	db $00, $01, $01, $28, $70, $00, MUSIC_17 ; MT_DEDEDE
 	assert_table_length NUM_STAGES
 
-SECTION "Home@3d48", ROM0[$3d48]
+MACRO area
+	db \1 ; BANK(\2)
+	bigdw \2 ; ?
+	db \3 ; ?
+	db \4 ; ?
+	db \5 ; ?
+	db \6 ; ?
+	db \7 ; ?
+ENDM
+
+Data_38b1:
+	table_width 2, Data_38b1
+	dw .GreenGreens ; GREEN_GREENS
+	dw .CastleLololo ; CASTLE_LOLOLO
+	dw .FloatIslands ; FLOAT_ISLANDS
+	dw .BubblyClouds ; BUBBLY_CLOUDS
+	dw .MtDedede ; MT_DEDEDE
+	assert_table_length NUM_STAGES
+
+.GreenGreens:
+	table_width 8, Data_38b1.GreenGreens
+	area $03, $6da3, $6e, $08, $00, $00, $46 ; GREEN_GREENS_0
+	area $03, $6a78, $10, $08, $00, $00, $06 ; GREEN_GREENS_1
+	area $03, $6ba1, $50, $08, $00, $00, $46 ; GREEN_GREENS_2
+	area $03, $7005, $10, $28, $00, $00, $06 ; GREEN_GREENS_3
+	area $03, $6ad2, $0a, $18, $00, $08, $00 ; GREEN_GREENS_4
+	assert_table_length NUM_GREEN_GREENS_AREAS
+
+.CastleLololo:
+	table_width 8, Data_38b1.CastleLololo
+	area $03, $7626, $0a, $08, $00, $00, $00 ; CASTLE_LOLOLO_00
+	area $03, $771e, $0a, $10, $01, $00, $00 ; CASTLE_LOLOLO_01
+	area $03, $73f1, $0a, $08, $00, $00, $00 ; CASTLE_LOLOLO_02
+	area $03, $71cd, $18, $08, $01, $00, $0e ; CASTLE_LOLOLO_03
+	area $03, $742b, $14, $0c, $01, $04, $0a ; CASTLE_LOLOLO_04
+	area $03, $7771, $10, $0c, $01, $00, $06 ; CASTLE_LOLOLO_05
+	area $03, $758d, $0a, $14, $00, $00, $00 ; CASTLE_LOLOLO_06
+	area $03, $7234, $3c, $08, $01, $00, $14 ; CASTLE_LOLOLO_07
+	area $03, $7317, $0a, $08, $00, $00, $00 ; CASTLE_LOLOLO_08
+	area $03, $74ba, $16, $10, $00, $00, $0c ; CASTLE_LOLOLO_09
+	area $03, $7199, $0a, $08, $01, $00, $00 ; CASTLE_LOLOLO_10
+	area $03, $7669, $10, $08, $00, $00, $06 ; CASTLE_LOLOLO_11
+	area $03, $7366, $0c, $10, $00, $00, $02 ; CASTLE_LOLOLO_12
+	area $03, $76bc, $10, $08, $00, $00, $06 ; CASTLE_LOLOLO_13
+	area $03, $733d, $0a, $08, $00, $08, $00 ; CASTLE_LOLOLO_14
+	area $03, $7801, $0a, $08, $00, $00, $00 ; CASTLE_LOLOLO_15
+	assert_table_length NUM_CASTLE_LOLOLO_AREAS
+
+.FloatIslands:
+	table_width 8, Data_38b1.FloatIslands
+	area $03, $6273, $78, $08, $00, $00, $6e ; FLOAT_ISLANDS_0
+	area $03, $6688, $32, $10, $01, $00, $28 ; FLOAT_ISLANDS_1
+	area $03, $65bc, $0a, $18, $00, $00, $00 ; FLOAT_ISLANDS_2
+	area $03, $68d3, $46, $08, $00, $00, $3c ; FLOAT_ISLANDS_3
+	area $03, $6593, $0a, $08, $01, $00, $00 ; FLOAT_ISLANDS_4
+	area $03, $686f, $0a, $18, $01, $01, $00 ; FLOAT_ISLANDS_5
+	area $03, $6a54, $0a, $08, $00, $00, $00 ; FLOAT_ISLANDS_6
+	area $03, $649e, $2a, $08, $00, $00, $14 ; FLOAT_ISLANDS_7
+	assert_table_length NUM_FLOAT_ISLANDS_AREAS
+
+.BubblyClouds:
+	table_width 8, Data_38b1.BubblyClouds
+	area $03, $7843, $62, $08, $00, $00, $58 ; BUBBLY_CLOUDS_0
+	area $03, $7c9f, $46, $08, $00, $00, $3c ; BUBBLY_CLOUDS_1
+	area $03, $7ac5, $12, $20, $00, $04, $16 ; BUBBLY_CLOUDS_2
+	area $06, $6ce8, $32, $0c, $00, $00, $28 ; BUBBLY_CLOUDS_3
+	area $03, $7e39, $0a, $18, $00, $00, $00 ; BUBBLY_CLOUDS_4
+	area $06, $69d7, $32, $0e, $00, $00, $28 ; BUBBLY_CLOUDS_5
+	area $06, $6b94, $3c, $08, $00, $00, $32 ; BUBBLY_CLOUDS_6
+	area $06, $6800, $0e, $28, $00, $00, $04 ; BUBBLY_CLOUDS_7
+	area $06, $6e6d, $0a, $64, $00, $00, $00 ; BUBBLY_CLOUDS_8
+	area $06, $712d, $0a, $08, $00, $08, $00 ; BUBBLY_CLOUDS_9
+	assert_table_length NUM_BUBBLY_CLOUDS_AREAS
+
+.MtDedede:
+	table_width 8, Data_38b1.MtDedede
+	area $06, $716e, $3c, $08, $00, $10, $32 ; MT_DEDEDE_0
+	area $06, $7653, $28, $08, $00, $00, $1e ; MT_DEDEDE_1
+	area $06, $7225, $1e, $10, $00, $00, $14 ; MT_DEDEDE_2
+	area $06, $739c, $1a, $0e, $00, $00, $10 ; MT_DEDEDE_3
+	area $06, $7497, $0a, $32, $00, $00, $00 ; MT_DEDEDE_4
+	area $06, $71e2, $12, $08, $00, $00, $08 ; MT_DEDEDE_5
+	area $03, $6ad2, $0a, $18, $00, $00, $00 ; MT_DEDEDE_6
+	area $03, $649e, $2a, $08, $00, $00, $14 ; MT_DEDEDE_7
+	area $03, $733d, $0a, $08, $00, $00, $00 ; MT_DEDEDE_8
+	area $06, $712d, $0a, $08, $00, $00, $00 ; MT_DEDEDE_9
+	assert_table_length NUM_MT_DEDEDE_AREAS
+; 0x3a43
+
+SECTION "Home@3d2d", ROM0[$3d2d]
+
+Func_3d2d::
+	ld hl, hff94
+	res 2, [hl]
+;	fallthrough
+
+Func_3d32::
+	call Func_3d48
+	ld a, $01
+	ld [wd160], a
+	call Func_139b
+	ld a, $01
+	bankswitch
+	jp Func_1f2
 
 Func_3d48::
 	ld a, $15

@@ -110,17 +110,17 @@ Func_1f2:
 	bit 4, a
 	jr z, .asm_22a
 	ldh a, [hJoypadPressed]
-	and $4e
+	and $ff ^ (A_BUTTON | D_RIGHT | D_LEFT | D_DOWN)
 	ldh [hJoypadPressed], a
 .asm_22a
 	ldh a, [hJoypadPressed]
-	bit 3, a
+	bit START_F, a
 	jr z, .asm_23b
-	ld a, $06
+	ld a, BANK(Func_1859e)
 	bankswitch
-	call $459e ; Func_1459e
+	call Func_1859e
 .asm_23b
-	ld a, $01
+	ld a, BANK(Func_42bf)
 	bankswitch
-	jp $42bf ; Func_42bf
+	jp Func_42bf
 ; 0x246
