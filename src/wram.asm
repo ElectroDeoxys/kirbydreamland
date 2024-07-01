@@ -125,8 +125,10 @@ wd051:: ; d051
 wd052:: ; d052
 	db
 
-wSCX:: dw ; d053
-wSCY:: dw ; d055
+wSCX:: db ; d053
+wd054:: db ; d054
+wSCY:: db ; d055
+wd056:: db ; d056
 
 wd057:: ; d057
 	db
@@ -134,7 +136,8 @@ wd057:: ; d057
 wd058:: ; d058
 	db
 
-	ds $2
+wd059:: ; d059
+	dw
 
 wd05b:: ; d05b
 	db
@@ -172,11 +175,12 @@ wd065:: ; d065
 wd066:: ; d066
 	db
 
-wSoundCheckMusic:: ; d067
-	db
-
-wSoundCheckSFX:: ; d068
-	db
+UNION
+wSoundCheckMusic:: db ; d067
+wSoundCheckSFX::   db ; d068
+NEXTU
+wPauseCounter:: dw ; d067
+ENDU
 
 wd069:: ; d069
 	db
@@ -246,7 +250,11 @@ wd082:: ; d082
 wd083:: ; d083
 	db
 
-	ds $2
+wd084:: ; d084
+	db
+
+wd085:: ; d085
+	db
 
 wHP::	db ; d086
 wMaxHP:: db ; d087
@@ -474,7 +482,11 @@ wd3db:: ; d3db
 wd3dc:: ; d3dc
 	db
 
-	ds $2
+wd3dd:: ; d3dd
+	db
+
+wd3de:: ; d3de
+	db
 
 wd3df:: ; d3df
 	db
@@ -562,7 +574,7 @@ wd406:: ; d406
 wDamage:: ; d40b
 	db
 
-wd40c:: ; d40c
+wScoreToAdd:: ; d40c
 	db
 
 wd40d:: ; d40d

@@ -257,9 +257,9 @@ Func_426::
 	cpl
 	inc a
 	ld b, a
-	ld a, [wSCY + 1]
+	ld a, [wd056]
 	sub b
-	ld [wSCY + 1], a
+	ld [wd056], a
 	ld a, [wd078]
 	sbc $00
 	jr z, .asm_47a
@@ -277,9 +277,9 @@ Func_426::
 	ldh [hVBlankFlags], a
 	ld a, [wd079]
 	ld b, a
-	ld a, [wSCY + 1]
+	ld a, [wd056]
 	add b
-	ld [wSCY + 1], a
+	ld [wd056], a
 	ld a, [wd078]
 	adc $00
 	jr z, .asm_47a
@@ -1984,7 +1984,7 @@ Func_1062::
 	cp c
 	jr nc, .asm_10e1
 	ld c, a
-	call Func_1ce0
+	call SubtractBCFromHL
 .asm_10e1
 	call Func_1292
 	ldh a, [hVBlankFlags]
@@ -2168,7 +2168,7 @@ Func_11de:
 	cpl
 	inc a
 	ld c, a
-	call Func_1ce0
+	call SubtractBCFromHL
 	jr .asm_122d
 .asm_122b
 	ld c, a
@@ -2717,18 +2717,19 @@ AddSprite::
 ClearSprites::
 	ld a, [wd096]
 	inc a
-	jr nz, .asm_194d
+	jr nz, .not_all_sprites
+; clear all sprites
 	ld a, wVirtualOAMEnd - wVirtualOAM
 	ld c, a
 	ld [wd096], a
 	xor a
 	ld [wVirtualOAMSize], a
-	jr .asm_1955
-.asm_194d
+	jr .got_offset
+.not_all_sprites
 	ld a, [wVirtualOAMSize]
 	ld [wd096], a
 	ld c, wVirtualOAMEnd - wVirtualOAM
-.asm_1955
+.got_offset
 	ld l, a
 	ld h, HIGH(wVirtualOAM)
 	ld de, $4
@@ -3323,7 +3324,7 @@ Func_1ccb:
 	pop af
 	ret
 
-Func_1ce0:
+SubtractBCFromHL::
 	push de
 	ld a, b
 	ld d, a
@@ -4039,6 +4040,9 @@ Func_21ce::
 
 SECTION "Home@21e6", ROM0[$21e6]
 
+; input:
+; - hl = ?
+; - bc = ?
 Func_21e6::
 	push hl
 	ld hl, wd21a
@@ -6531,24 +6535,27 @@ Func_3076::
 
 SECTION "Home@3168", ROM0[$3168]
 
-Func_3168::
+; input:
+; - a = score to add
+AddToScore::
 	push hl
 	ld hl, hHUDFlags
 	set HUD_UPDATE_SCORE_DIGITS_F, [hl]
 	ld hl, wScore
 	add [hl]
 	ld [hli], a
-	jr nc, .asm_317a
+	jr nc, .cap
 	inc [hl]
-	jr nz, .asm_317a
+	jr nz, .cap
 	inc hl
 	inc [hl]
-.asm_317a
-	call .Func_317f
+.cap
+	call .CapScore
 	pop hl
 	ret
 
-.Func_317f:
+; caps score to MAX_SCORE
+.CapScore:
 	ld hl, wScore
 	ld a, [hli]
 	sub LOW(MAX_SCORE)
@@ -7000,7 +7007,7 @@ Func_37a7::
 	ld hl, $417e
 	jr Func_37b9
 Func_37ac:
-	ld a, SFX_05
+	ld a, SFX_BUMP
 	call PlaySFX
 ;	fallthrough
 Func_37b1:

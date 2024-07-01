@@ -97,7 +97,7 @@ Func_1f2:
 .asm_20c
 	ldh a, [hff94]
 	bit 3, a
-	jr z, .asm_21e
+	jr z, .check_pause
 	xor a
 	ldh [hJoypadPressed], a
 	ldh a, [hVBlankFlags]
@@ -105,21 +105,21 @@ Func_1f2:
 	ldh [hVBlankFlags], a
 	jp Func_4783
 
-.asm_21e
+.check_pause
 	ldh a, [hff8e]
 	bit 4, a
-	jr z, .asm_22a
+	jr z, .check_start_btn
 	ldh a, [hJoypadPressed]
 	and $ff ^ (A_BUTTON | D_RIGHT | D_LEFT | D_DOWN)
 	ldh [hJoypadPressed], a
-.asm_22a
+.check_start_btn
 	ldh a, [hJoypadPressed]
 	bit START_F, a
-	jr z, .asm_23b
-	ld a, BANK(Func_1859e)
+	jr z, .no_pause
+	ld a, BANK(Pause)
 	bankswitch
-	call Func_1859e
-.asm_23b
+	call Pause
+.no_pause
 	ld a, BANK(Func_42bf)
 	bankswitch
 	jp Func_42bf

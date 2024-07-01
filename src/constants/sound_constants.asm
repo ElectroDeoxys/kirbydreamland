@@ -28,7 +28,7 @@ DEF NUM_MUSICS EQU const_value
 	const SFX_02 ; $02
 	const SFX_SWALLOW ; $03
 	const SFX_JUMP ; $04
-	const SFX_05 ; $05
+	const SFX_BUMP ; $05
 	const SFX_DAMAGE ; $06
 	const SFX_ENTER_DOOR ; $07
 	const SFX_08 ; $08
@@ -55,7 +55,7 @@ DEF NUM_MUSICS EQU const_value
 	const SFX_29 ; $1d
 	const SFX_30 ; $1e
 	const SFX_31 ; $1f
-	const SFX_32 ; $20
+	const SFX_BOSS_DEFEAT ; $20
 DEF NUM_SOUNDCHECK_SFX EQU const_value
 	const SFX_33 ; $21
 DEF NUM_SFX EQU const_value

@@ -2,7 +2,7 @@
 DEF FALSE EQU 0
 DEF TRUE  EQU 1
 
-DEF NULL EQU $ffff
+DEF NULL EQU $0000
 
 	const_def
 	const VBLANK_0_F ; 0

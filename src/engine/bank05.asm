@@ -127,7 +127,7 @@ Func_1432c::
 	ld a, [hli]
 	ld [wd40f], a
 	ld a, [hli]
-	ld [wd40c], a
+	ld [wScoreToAdd], a
 	ld a, [hli]
 	ld [wd40d], a
 	ld a, [hli]
@@ -182,9 +182,9 @@ Func_1432c::
 	ret z
 	call .Func_1456d
 	ret nz
-	ld a, [wd40c]
+	ld a, [wScoreToAdd]
 	add a
-	call Func_3168
+	call AddToScore
 	ld a, [wHP]
 	and a
 	ret z
@@ -208,7 +208,7 @@ Func_1432c::
 	ld a, [hli]
 	ld [wd40f], a
 	ld a, [hli]
-	ld [wd40c], a
+	ld [wScoreToAdd], a
 	ld a, [hli]
 	ld [wd40d], a
 	ld a, [hli]
@@ -229,9 +229,9 @@ Func_1432c::
 	call .Func_14579
 	call .Func_1456d
 	jr nz, .asm_144e1
-	ld a, [wd40c]
+	ld a, [wScoreToAdd]
 	add a
-	call Func_3168
+	call AddToScore
 	ld a, [wd40d]
 	ld e, a
 	ld a, [wd40e]
@@ -287,9 +287,9 @@ Func_1432c::
 .asm_1453b
 	call .Func_1456d
 	jr nz, .asm_144f9
-	ld a, [wd40c]
+	ld a, [wScoreToAdd]
 	add a
-	call Func_3168
+	call AddToScore
 	ld a, [wd40d]
 	ld e, a
 	ld a, [wd40e]
@@ -447,7 +447,7 @@ Func_1432c::
 	call .Func_147c0
 	ld a, $81
 	ld [wd3bf], a
-	ld a, SFX_32
+	ld a, SFX_BOSS_DEFEAT
 	call PlaySFX
 	jp Func_21ce
 
@@ -508,11 +508,14 @@ Func_1432c::
 	ld e, a
 	ld a, $88
 	sub e
-	ld e, a
-.asm_146c3
+	ld e, a ; $88 - wHP
+	; this loops many times unnecessarily
+	; when HP reaches max, calling .Restore1HP
+	; does nothing, but loop continues
+.loop_restore_hp
 	call .Restore1HP
 	dec e
-	jr nz, .asm_146c3
+	jr nz, .loop_restore_hp
 	ret
 
 .EnergyDrink:
