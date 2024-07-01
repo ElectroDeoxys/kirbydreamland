@@ -383,7 +383,7 @@ Func_483::
 	ld a, $ff
 	ret
 .asm_510
-	ld a, $07
+	ld a, SFX_ENTER_DOOR
 	call PlaySFX
 	ld hl, hff93
 	bit 4, [hl]
@@ -1537,7 +1537,7 @@ Func_caf:
 	ldh [hff8e], a
 	bit 4, a
 	jp z, .asm_ece
-	ld a, SFX_01
+	ld a, SFX_INHALE
 	call PlaySFX
 	ld a, [wJoypadDown]
 	or A_BUTTON
@@ -1601,7 +1601,7 @@ Func_caf:
 	xor a
 	ld [wd3be], a
 	push de
-	ld a, SFX_03
+	ld a, SFX_SWALLOW
 	call PlaySFX
 	pop de
 	jp .asm_ece
@@ -7139,11 +7139,11 @@ Func_388a:
 StageHeaders::
 ; starting area, ?, ?, starting X, starting Y, pals, intro music
 	table_width 7, StageHeaders
-	db $00, $01, $01, $28, $3c, $00, MUSIC_01 ; GREEN_GREENS
-	db $00, $01, $01, $28, $58, $00, MUSIC_12 ; CASTLE_LOLOLO
-	db $00, $01, $01, $28, $32, $00, MUSIC_06 ; FLOAT_ISLANDS
-	db $00, $01, $01, $48, $41, $00, MUSIC_00 ; BUBBLY_CLOUDS
-	db $00, $01, $01, $28, $70, $00, MUSIC_17 ; MT_DEDEDE
+	db $00, $01, $01, $28, $3c, $00, MUSIC_GREEN_GREENS_INTRO ; GREEN_GREENS
+	db $00, $01, $01, $28, $58, $00, MUSIC_CASTLE_LOLOLO_INTRO ; CASTLE_LOLOLO
+	db $00, $01, $01, $28, $32, $00, MUSIC_FLOAT_ISLANDS_INTRO ; FLOAT_ISLANDS
+	db $00, $01, $01, $48, $41, $00, MUSIC_BUBBLY_CLOUDS_INTRO ; BUBBLY_CLOUDS
+	db $00, $01, $01, $28, $70, $00, MUSIC_DEDEDE_BATTLE ; MT_DEDEDE
 	assert_table_length NUM_STAGES
 
 MACRO area

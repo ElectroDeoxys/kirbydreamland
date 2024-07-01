@@ -315,11 +315,11 @@ Func_180e4::
 
 StageMusics:
 	table_width 1, StageMusics
-	db MUSIC_13 ; GREEN_GREENS
-	db MUSIC_16 ; CASTLE_LOLOLO
-	db MUSIC_14 ; FLOAT_ISLANDS
-	db MUSIC_15 ; BUBBLY_CLOUDS
-	db MUSIC_18 ; MT_DEDEDE
+	db MUSIC_GREEN_GREENS
+	db MUSIC_CASTLE_LOLOLO
+	db MUSIC_FLOAT_ISLANDS
+	db MUSIC_BUBBLY_CLOUDS
+	db MUSIC_MT_DEDEDE
 	assert_table_length NUM_STAGES
 ; 0x18275
 
@@ -667,7 +667,7 @@ Func_183bf::
 	ld a, [wArea]
 	and a
 	jr nz, .asm_184eb
-	ld a, MUSIC_18
+	ld a, MUSIC_MT_DEDEDE
 	call PlayMusic
 .asm_184eb
 	call StopTimerAndSwitchOnLCD
@@ -827,7 +827,7 @@ Func_1859e::
 	ld a, [hJoypadPressed]
 	bit START_F, a
 	jr z, .asm_185b5
-	ld a, SFX_24
+	ld a, SFX_PAUSE
 	call PlaySFX
 	ld a, [hff93]
 	and $fa

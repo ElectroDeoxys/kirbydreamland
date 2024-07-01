@@ -158,7 +158,7 @@ Func_1432c::
 .asm_14448
 	xor a
 	ld [wd069], a
-	ld a, SFX_06
+	ld a, SFX_DAMAGE
 	call PlaySFX
 	jr .apply_damage
 .asm_14453
@@ -434,7 +434,7 @@ Func_1432c::
 	dec a
 	jr z, .MintLeaf
 	dec a
-	jp z, .asm_146de
+	jp z, .WarpStar
 	dec a
 	jp z, .MaximTomato
 	dec a
@@ -463,7 +463,7 @@ Func_1432c::
 	ld a, MAX_LIVES
 .asm_1465c
 	ld [wLives], a
-	ld a, SFX_22
+	ld a, SFX_1UP
 	call PlaySFX
 	jp Func_21ce
 
@@ -486,7 +486,7 @@ Func_1432c::
 	ld hl, hff95
 	set 5, [hl]
 	res 6, [hl]
-	ld a, SFX_09
+	ld a, SFX_POWER_UP
 	call PlaySFX
 	ld hl, wd1a0
 	set 4, [hl]
@@ -500,7 +500,7 @@ Func_1432c::
 
 .MaximTomato:
 	call .Func_147c0
-	ld a, SFX_09
+	ld a, SFX_POWER_UP
 	call PlaySFX
 	call .Func_147b5
 	call .Func_1470e
@@ -517,17 +517,17 @@ Func_1432c::
 
 .EnergyDrink:
 	call .Func_147c0
-	ld a, SFX_09
+	ld a, SFX_POWER_UP
 	call PlaySFX
 	call .Func_147b5
 	call .Func_1470e
 	call .Restore1HP
 	jp .Restore1HP
 
-.asm_146de
+.WarpStar
 	ld hl, hff94
 	set 2, [hl]
-	ld a, SFX_12
+	ld a, SFX_WARP_STAR
 	call PlaySFX
 	ld hl, wd140
 	add hl, bc
@@ -546,7 +546,7 @@ Func_1432c::
 .asm_14704
 	ld hl, hff94
 	set 2, [hl]
-	ld a, SFX_09
+	ld a, SFX_POWER_UP
 	call PlaySFX
 
 .Func_1470e:
@@ -563,7 +563,7 @@ Func_1432c::
 	ld hl, wd3be
 	set 1, [hl]
 .asm_14723
-	ld a, SFX_09
+	ld a, SFX_POWER_UP
 	call PlaySFX
 	ld a, [wd06b]
 	and a
@@ -632,7 +632,7 @@ Func_1432c::
 	inc a
 	ld [wHP], a
 	push de
-	ld a, SFX_11
+	ld a, SFX_RESTORE_HP
 	call PlaySFX
 	pop de
 	ld a, 10

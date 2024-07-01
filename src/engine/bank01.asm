@@ -73,7 +73,7 @@ Func_42bf::
 	ldh a, [hff92]
 	and $f3
 	ldh [hff92], a
-	ld a, SFX_04
+	ld a, SFX_JUMP
 	call PlaySFX
 	jr .asm_437c
 .asm_4361
@@ -182,7 +182,7 @@ Func_42bf::
 	ldh [hff92], a
 	xor a
 	ld [wd064], a
-	ld a, SFX_01
+	ld a, SFX_INHALE
 	call PlaySFX
 	xor a
 	ld [wd066], a
@@ -228,7 +228,7 @@ Func_42bf::
 	bit D_UP_F, a
 	jp z, .asm_452a
 	ld a, [wCurSFX]
-	cp SFX_01
+	cp SFX_INHALE
 	jr nz, .asm_44a6
 	ld a, SFX_NONE
 	call PlaySFX
