@@ -7,8 +7,8 @@ Func_246::
 	push af
 	ld a, $05
 	bankswitch
-	call $432c ; Func_1432c
-	call $47e4 ; Func_147e4
+	call Func_1432c
+	call Func_147e4
 	pop af
 	bankswitch
 
@@ -122,7 +122,7 @@ Func_326:
 	ld a, SFX_21
 	call PlaySFX
 	ld a, [wCurMusic]
-	cp MUSIC_09
+	cp MUSIC_MINT_LEAF
 	jr nz, .asm_359
 	ld a, [wMusic]
 	call PlayMusic
@@ -2300,7 +2300,7 @@ SetFullHP::
 
 SECTION "Home@18ff", ROM0[$18ff]
 
-AddSprite:
+AddSprite::
 	ld [wOAMFlagsOverride], a
 	ld a, [wROMBank]
 	push af
@@ -2937,7 +2937,7 @@ Func_1ce0:
 
 SECTION "Home@1d01", ROM0[$1d01]
 
-Func_1d01:
+Func_1d01::
 	push hl
 	push de
 	ld hl, wd02f
@@ -2982,7 +2982,22 @@ DoFrames::
 	jr nz, .loop
 	pop hl
 	ret
-; 0x1de0
+
+; input:
+; a = number of frames
+WaitAFrames::
+	push hl
+	ld hl, hVBlankFlags
+.asm_1de4
+	set VBLANK_6_F, [hl]
+.asm_1de6
+	bit VBLANK_6_F, [hl]
+	jr nz, .asm_1de6
+	dec a
+	jr nz, .asm_1de4
+	pop hl
+	ret
+; 0x1def
 
 SECTION "Home@1dfb", ROM0[$1dfb]
 
@@ -3599,7 +3614,7 @@ Func_21bb:
 	ld [hl], a ; ret
 	ret
 
-Func_21ce:
+Func_21ce::
 	ld hl, wd160
 	add hl, bc
 	ld [hl], $00
@@ -3608,7 +3623,7 @@ Func_21ce:
 
 SECTION "Home@21e6", ROM0[$21e6]
 
-Func_21e6:
+Func_21e6::
 	push hl
 	ld hl, wd21a
 	add hl, bc
@@ -3831,6 +3846,7 @@ Func_2344:
 	ld b, $0f
 	jr Func_234e
 
+Func_234a::
 	ld c, $0f
 	ld b, $10
 ;	fallthrough
@@ -3902,7 +3918,9 @@ Func_234e:
 	adc $00
 	ld [hl], a
 	pop de
+;	fallthrough
 
+Func_23af::
 	ld a, [wROMBank]
 	push af
 	ld a, [wd3f0]
@@ -5727,12 +5745,12 @@ Func_2e20:
 	call MultiplyHLBy16
 	pop de
 	ld e, a
-	call .Func_2e7f
-	call .Func_2e90
+	call Func_2e7f
+	call Func_2e90
 	pop bc
 	ret
 
-.Func_2e7f:
+Func_2e7f::
 	ld a, [wd03f]
 	ld b, a
 	call CalculateBCPercentage
@@ -5744,13 +5762,13 @@ Func_2e20:
 	ld e, [hl]
 	ret
 
-.Func_2e90:
+Func_2e90:
 	ld hl, wca00
 	add hl, de
 	ld a, [hl]
 	ret
 
-MultiplyHLBy16:
+MultiplyHLBy16::
 	add hl, hl
 	add hl, hl
 	add hl, hl
@@ -6020,9 +6038,86 @@ Func_2fdf:
 	ret nz
 	ld a, [wMusic]
 	jp PlayMusic
-; 0x3076
 
-SECTION "Home@3199", ROM0[$3199]
+Func_3076::
+	ld a, [wSCX]
+	swap a
+	ld b, a
+	inc d
+	ld hl, wd051
+	ld a, d
+	sub [hl]
+	add b
+	rlca
+	and $1e
+	ld d, a
+	ld a, [wSCY]
+	swap a
+	ld b, a
+	inc e
+	ld hl, wd052
+	ld a, e
+	sub [hl]
+	add b
+	rrca
+	rrca
+	ld e, a
+	and $c0
+	or d
+	ld l, a
+	ld a, e
+	and $03
+	ld h, a
+	ld de, v0BGMap0
+	add hl, de
+	ld a, l
+	ld d, h
+	ld hl, wd029
+	ld [hli], a
+	ld [hl], d
+	inc hl
+	ld [hl], c
+	ld hl, hff96
+	set 7, [hl]
+	ret
+; 0x30b2
+
+SECTION "Home@3168", ROM0[$3168]
+
+Func_3168::
+	push hl
+	ld hl, hHUDFlags
+	set HUD_UPDATE_SCORE_DIGITS_F, [hl]
+	ld hl, wScore
+	add [hl]
+	ld [hli], a
+	jr nc, .asm_317a
+	inc [hl]
+	jr nz, .asm_317a
+	inc hl
+	inc [hl]
+.asm_317a
+	call .Func_317f
+	pop hl
+	ret
+
+.Func_317f:
+	ld hl, wScore
+	ld a, [hli]
+	sub LOW(MAX_SCORE)
+	ld a, [hli]
+	sbc HIGH(MAX_SCORE)
+	ld a, [hl]
+	sbc (MAX_SCORE / $10000)
+	ret c
+	ld hl, wScore
+	ld a, LOW(MAX_SCORE)
+	ld [hli], a
+	ld a, HIGH(MAX_SCORE)
+	ld [hli], a
+	ld a, (MAX_SCORE / $10000)
+	ld [hl], a
+	ret
 
 Func_3199:
 	ld d, $01
@@ -6416,7 +6511,7 @@ Func_319f:
 
 SECTION "Home@3768", ROM0[$3768]
 
-Func_3768:
+Func_3768::
 	ld hl, wd1a0
 	set 4, [hl]
 	ld a, $40
@@ -6569,3 +6664,39 @@ StageHeaders::
 	db $00, $01, $01, $48, $41, $00, MUSIC_00 ; BUBBLY_CLOUDS
 	db $00, $01, $01, $28, $70, $00, MUSIC_17 ; MT_DEDEDE
 	assert_table_length NUM_STAGES
+
+SECTION "Home@3d48", ROM0[$3d48]
+
+Func_3d48::
+	ld a, $15
+	ld [wd07e], a
+	ld a, $16
+	ld [wd065], a
+	xor a
+	ld [hff8d], a
+	ld [hff8e], a
+	ld [hff92], a
+	ld [hff93], a
+	ld [wd064], a
+	ld [wd078], a
+	ld [wd079], a
+	ld hl, hff90
+	set 3, [hl]
+	ld a, $20
+	ld [wd07c], a
+	ld a, $0e
+	ld [wd07d], a
+	ld a, $01
+	ld [wd076], a
+	ld a, $33
+	ld [wd077], a
+	ld a, $02
+	ld [wd07a], a
+	ld a, $00
+	ld [wd07b], a
+	xor a
+	ld hl, wd082
+	ld [hli], a
+	ld [hl], a
+	ret
+; 0x3d92

@@ -46,3 +46,7 @@ DEF HUD_BOSS_BATTLE         EQU 1 << HUD_BOSS_BATTLE_F
 DEF DEFAULT_LIVES EQU 5
 ; default max HP at start of game
 DEF DEFAULT_MAX_HP EQU 6
+; maximum score allowed, divided by 10
+DEF MAX_SCORE EQU 99999
+; maximum number of lives allowed
+DEF MAX_LIVES EQU 99

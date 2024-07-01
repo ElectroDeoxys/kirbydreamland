@@ -44,5 +44,6 @@ hff96:: ; ff96
 
 hStack:: ; ff97
 	ds $67
+
 hStackTop:: ; fffe
 	db

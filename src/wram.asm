@@ -301,13 +301,37 @@ wd120:: ; d120
 	ds $2 * $10
 
 wd140:: ; d140
-	ds $10
+	ds $d
+
+wd14d:: ; d14d
+	db
+
+wd14e:: ; d14e
+	db
+
+	ds $1
 
 wd150:: ; d150
-	ds $10
+	ds $d
+
+wd15d:: ; d15d
+	db
+
+wd15e:: ; d15e
+	db
+
+	ds $1
 
 wd160:: ; d160
-	ds $10
+	ds $d
+
+wd16d:: ; d16d
+	db
+
+wd16e:: ; d16e
+	db
+
+	ds $1
 
 wd170:: ; d170
 	ds $10
@@ -319,10 +343,26 @@ wd190:: ; d190
 	ds $10
 
 wd1a0:: ; d1a0
-	ds $10
+	ds $d
+
+wd1ad:: ; d1ad
+	db
+
+wd1ae:: ; d1ae
+	db
+
+	ds $1
 
 wd1b0:: ; d1b0
-	ds $10
+	ds $d
+
+wd1bd:: ; d1bd
+	db
+
+wd1be:: ; d1be
+	db
+
+	ds $1
 
 wSpriteOAMPtrs:: ; d1c0
 	ds $2 * $10
@@ -394,7 +434,8 @@ wd3bf:: ; d3bf
 wd3c0:: ; d3c0
 	db
 
-	ds $1
+wd3c1:: ; d3c1
+	db
 
 wd3c2:: ; d3c2
 	db
@@ -500,7 +541,50 @@ wd3f7:: ; d3f7
 wd3f8:: ; d3f8
 	db
 
-	ds $1b
+wd3f9:: ; d3f9
+	db
+
+wd3fa:: ; d3fa
+	db
+
+	ds $4
+
+wd3ff:: ; d3ff
+	db
+
+	ds $6
+
+wd406:: ; d406
+	db
+
+	ds $4
+
+wDamage:: ; d40b
+	db
+
+wd40c:: ; d40c
+	db
+
+wd40d:: ; d40d
+	db
+
+wd40e:: ; d40e
+	db
+
+wd40f:: ; d40f
+	db
+
+wd410:: ; d410
+	db
+
+wd411:: ; d411
+	db
+
+wd412:: ; d412
+	db
+
+wd413:: ; d413
+	db
 
 wd414:: ; d414
 	db

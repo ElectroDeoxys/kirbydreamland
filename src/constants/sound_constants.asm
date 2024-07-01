@@ -1,14 +1,14 @@
 	const_def
 	const MUSIC_00          ; $00
 	const MUSIC_01          ; $01
-	const MUSIC_02          ; $02
+	const MUSIC_INVINCIBILITY_CANDY          ; $02
 	const MUSIC_03          ; $03
 	const MUSIC_04          ; $04
 	const MUSIC_TITLESCREEN ; $05
 	const MUSIC_06          ; $06
 	const MUSIC_07          ; $07
 	const MUSIC_08          ; $08
-	const MUSIC_09          ; $09
+	const MUSIC_MINT_LEAF          ; $09
 	const MUSIC_10          ; $0a
 	const MUSIC_11          ; $0b
 	const MUSIC_12          ; $0c
