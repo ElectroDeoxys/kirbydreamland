@@ -1,3 +1,55 @@
+SECTION "Bank 5@40c2", ROMX[$40c2], BANK[$5]
+
+Func_140c2:
+	call Func_140d5
+	ret c
+	ld hl, hff94
+	set 7, [hl]
+	jp Func_1415e
+; 0x140ce
+
+SECTION "Bank 5@40d5", ROMX[$40d5], BANK[$5]
+
+Func_140d5:
+	ld hl, wd1b0
+	add hl, bc
+	set 5, [hl]
+	ld hl, wd1a0
+	add hl, bc
+	bit 0, [hl]
+	jr nz, .asm_140e7
+	res 3, [hl]
+.set_carry
+	scf
+	ret
+.asm_140e7
+	res 0, [hl]
+	bit 3, [hl]
+	jr nz, .set_carry
+	set 3, [hl]
+	xor a
+	ret
+; 0x140f1
+
+SECTION "Bank 5@415e", ROMX[$415e], BANK[$5]
+
+Func_1415e:
+	ld hl, wd2ba
+	add hl, bc
+	add hl, bc
+	ld d, h
+	ld e, l
+	ld hl, wd37a
+	add hl, bc
+	add hl, bc
+	ld a, [hli]
+	ld [de], a
+	inc de
+	ld a, [hl]
+	ld [de], a
+	jp Func_241f
+; 0x14172
+
 SECTION "Bank 5@432c", ROMX[$432c], BANK[$5]
 
 Func_1432c::

@@ -19,6 +19,8 @@ ROMX $6
 	"Bank 6"
 ROMX $7
 	"Bank 7"
+ROMX $8
+	"Bank 8"
 ROMX $f
 	"Bank F"
 WRAM0

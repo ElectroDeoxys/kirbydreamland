@@ -4421,9 +4421,11 @@ Func_2419:
 	ld hl, wd170
 	add hl, bc
 	ld [hl], $01
-	ld hl, wd180
+;	fallthrough
+Func_241f::
+	ld hl, wSpriteAnimationDurations
 	add hl, bc
-	ld [hl], $01
+	ld [hl], 1
 
 	xor a
 	ld hl, wd25a
@@ -4447,22 +4449,24 @@ Func_2419:
 Func_2447:
 	cp $ef
 	jp nc, .asm_253f
-	cp $e0
-	jr nz, .asm_245b
+	cp ANIMCMD_END
+	jr nz, .jump_cmd
 	ld hl, wd160
 	add hl, bc
 	xor a
 	ld [hl], a
-	dec a
-	ld [wd3d8], a
+	dec a ; $ff
+	ld [wSpriteAnimationCommand], a
 	ret
-.asm_245b
-	cp $e1
-	jr nz, .asm_2462
-	jp Func_2784
-.asm_2462
-	cp $e2
-	jr nz, .asm_2479
+
+.jump_cmd
+	cp ANIMCMD_JUMP
+	jr nz, .jump_relative_cmd
+	jp SetSpriteAnimationPtr
+
+.jump_relative_cmd
+	cp ANIMCMD_JUMP_RELATIVE
+	jr nz, .call_cmd
 	ld a, [hl]
 	ld d, $00
 	ld e, a
@@ -4472,27 +4476,29 @@ Func_2447:
 .asm_246f
 	add hl, de
 	ld a, l
-	ld [wd3d9 + 0], a
+	ld [wSpriteAnimationPtr + 0], a
 	ld a, h
-	ld [wd3d9 + 1], a
+	ld [wSpriteAnimationPtr + 1], a
 	ret
-.asm_2479
-	cp $e8
-	jr nz, .asm_248e
+
+.call_cmd
+	cp ANIMCMD_CALL
+	jr nz, .anim_call_arg
 	ld a, [hli]
 	ld e, a
 	ld a, [hli]
 	ld d, a
 	ld a, l
-	ld [wd3d9 + 0], a
+	ld [wSpriteAnimationPtr + 0], a
 	ld a, h
-	ld [wd3d9 + 1], a
+	ld [wSpriteAnimationPtr + 1], a
 	ld h, d
 	ld l, e
-	jp .asm_24a4
-.asm_248e
-	cp $e9
-	jr nz, .asm_24bf
+	jp .call_hl
+
+.anim_call_arg
+	cp ANIMCMD_CALL_ARG
+	jr nz, .condition_cmd
 	ld a, [hli]
 	ld e, a
 	ld a, [hli]
@@ -4500,14 +4506,15 @@ Func_2447:
 	ld a, [hli]
 	push af
 	ld a, l
-	ld [wd3d9 + 0], a
+	ld [wSpriteAnimationPtr + 0], a
 	ld a, h
-	ld [wd3d9 + 1], a
+	ld [wSpriteAnimationPtr + 1], a
 	ld h, d
 	ld l, e
 	pop af
 	ld e, a
-.asm_24a4
+
+.call_hl
 	ld a, [wROMBank]
 	ld [wd3ef], a
 	push af
@@ -4518,8 +4525,9 @@ Func_2447:
 	pop af
 	bankswitch
 	ret
-.asm_24bf
-	cp $ea
+
+.condition_cmd
+	cp ANIMCMD_JPEQ
 	jr nz, .asm_24dc
 	ld a, [hli]
 	ld e, a
@@ -4527,19 +4535,20 @@ Func_2447:
 	ld d, a
 	ld a, [de]
 	cp [hl]
-	jr nz, .asm_24cf
+	jr nz, .skip_jump
 	inc hl
-	jp Func_2784
-.asm_24cf
+	jp SetSpriteAnimationPtr
+.skip_jump
 	ld de, $3
 	add hl, de
 	ld a, l
-	ld [wd3d9 + 0], a
+	ld [wSpriteAnimationPtr + 0], a
 	ld a, h
-	ld [wd3d9 + 1], a
+	ld [wSpriteAnimationPtr + 1], a
 	ret
+
 .asm_24dc
-	cp $eb
+	cp ANIMCMD_ANIM_TABLE
 	jr nz, .asm_24ed
 	ld a, [hli]
 	ld e, a
@@ -4551,9 +4560,10 @@ Func_2447:
 	ld e, a
 	ld d, $00
 	add hl, de
-	jp Func_2784
+	jp SetSpriteAnimationPtr
+
 .asm_24ed
-	cp $ed
+	cp ANIMCMD_ED
 	jr nz, .asm_2505
 	ld d, h
 	ld e, l
@@ -4563,14 +4573,15 @@ Func_2447:
 	inc a
 	ld [hl], a
 	inc de
-	ld a, [de]
+	ld a, [de] ; useless
 	ld a, e
-	ld [wd3d9 + 0], a
+	ld [wSpriteAnimationPtr + 0], a
 	ld a, d
-	ld [wd3d9 + 1], a
+	ld [wSpriteAnimationPtr + 1], a
 	ret
+
 .asm_2505
-	cp $ee
+	cp ANIMCMD_EE
 	jr nz, .asm_252a
 	ld d, h
 	ld e, l
@@ -4593,17 +4604,18 @@ Func_2447:
 	ld [hl], a
 	inc de
 	ld a, e
-	ld [wd3d9 + 0], a
+	ld [wSpriteAnimationPtr + 0], a
 	ld a, d
-	ld [wd3d9 + 1], a
+	ld [wSpriteAnimationPtr + 1], a
 	ret
+
 .asm_252a
-	cp $ef
+	cp ANIMCMD_EF
 	jr nz, .asm_253f
 	ld a, l
-	ld [wd3d9 + 0], a
+	ld [wSpriteAnimationPtr + 0], a
 	ld a, h
-	ld [wd3d9 + 1], a
+	ld [wSpriteAnimationPtr + 1], a
 	xor a
 	ld hl, wd35a
 	add hl, bc
@@ -4611,8 +4623,9 @@ Func_2447:
 	ld [hli], a
 	ld [hl], a
 	ret
+
 .asm_253f
-	cp $f0
+	cp ANIMCMD_F0
 	jr nz, .asm_2568
 	ld d, h
 	ld e, l
@@ -4637,12 +4650,13 @@ Func_2447:
 	ld [hl], $00
 	inc de
 	ld a, e
-	ld [wd3d9 + 0], a
+	ld [wSpriteAnimationPtr + 0], a
 	ld a, d
-	ld [wd3d9 + 1], a
+	ld [wSpriteAnimationPtr + 1], a
 	ret
+
 .asm_2568
-	cp $f1
+	cp ANIMCMD_F1
 	jr nz, .asm_25a3
 	push bc
 	ld d, h
@@ -4682,18 +4696,19 @@ Func_2447:
 	ld [hl], a
 	inc de
 	ld a, e
-	ld [wd3d9 + 0], a
+	ld [wSpriteAnimationPtr + 0], a
 	ld a, d
-	ld [wd3d9 + 1], a
+	ld [wSpriteAnimationPtr + 1], a
 	pop bc
 	ret
+
 .asm_25a3
-	cp $f2
+	cp ANIMCMD_F2
 	jr nz, .asm_260c
 	ld a, l
-	ld [wd3d9 + 0], a
+	ld [wSpriteAnimationPtr + 0], a
 	ld a, h
-	ld [wd3d9 + 1], a
+	ld [wSpriteAnimationPtr + 1], a
 	ld hl, wd190
 	add hl, bc
 	set 0, [hl]
@@ -4762,13 +4777,14 @@ Func_2447:
 	inc hl
 	ld [hl], d
 	ret
+
 .asm_260c
-	cp $f3
-	jr nz, .asm_2637
+	cp ANIMCMD_F3
+	jr nz, .set_cmd
 	ld a, l
-	ld [wd3d9 + 0], a
+	ld [wSpriteAnimationPtr + 0], a
 	ld a, h
-	ld [wd3d9 + 1], a
+	ld [wSpriteAnimationPtr + 1], a
 	ld hl, wd190
 	add hl, bc
 	res 0, [hl]
@@ -4789,9 +4805,10 @@ Func_2447:
 	add hl, bc
 	ld [hl], a
 	ret
-.asm_2637
-	cp $f4
-	jr nz, .asm_264a
+
+.set_cmd
+	cp ANIMCMD_SET
+	jr nz, .inc_cmd
 	ld a, [hli]
 	ld e, a
 	ld a, [hli]
@@ -4799,42 +4816,45 @@ Func_2447:
 	ld a, [hli]
 	ld [de], a
 	ld a, l
-	ld [wd3d9 + 0], a
+	ld [wSpriteAnimationPtr + 0], a
 	ld a, h
-	ld [wd3d9 + 1], a
+	ld [wSpriteAnimationPtr + 1], a
 	ret
-.asm_264a
-	cp $f5
-	jr nz, .asm_265e
+
+.inc_cmd
+	cp ANIMCMD_INC
+	jr nz, .dec_cmd
 	ld a, [hli]
 	ld e, a
 	ld a, [hli]
 	ld d, a
 	ld a, l
-	ld [wd3d9 + 0], a
+	ld [wSpriteAnimationPtr + 0], a
 	ld a, h
-	ld [wd3d9 + 1], a
+	ld [wSpriteAnimationPtr + 1], a
 	ld h, d
 	ld l, e
 	inc [hl]
 	ret
-.asm_265e
-	cp $f6
-	jr nz, .asm_2672
+
+.dec_cmd
+	cp ANIMCMD_DEC
+	jr nz, .jp_if_cmd
 	ld a, [hli]
 	ld e, a
 	ld a, [hli]
 	ld d, a
 	ld a, l
-	ld [wd3d9 + 0], a
+	ld [wSpriteAnimationPtr + 0], a
 	ld a, h
-	ld [wd3d9 + 1], a
+	ld [wSpriteAnimationPtr + 1], a
 	ld h, d
 	ld l, e
 	dec [hl]
 	ret
-.asm_2672
-	cp $f7
+
+.jp_if_cmd
+	cp ANIMCMD_JP_IF
 	jr nz, .asm_2699
 	ld a, [hli]
 	ld e, a
@@ -4851,21 +4871,22 @@ Func_2447:
 	ld a, [hli]
 	ld d, a
 	ld a, e
-	ld [wd3d9 + 0], a
+	ld [wSpriteAnimationPtr + 0], a
 	ld a, d
-	ld [wd3d9 + 1], a
+	ld [wSpriteAnimationPtr + 1], a
 	ret
 .asm_268d
 	inc hl
 	inc hl
 	inc hl
 	ld a, l
-	ld [wd3d9 + 0], a
+	ld [wSpriteAnimationPtr + 0], a
 	ld a, h
-	ld [wd3d9 + 1], a
+	ld [wSpriteAnimationPtr + 1], a
 	ret
+
 .asm_2699
-	cp $f8
+	cp ANIMCMD_JP_IFNOT
 	jr nz, .asm_26a8
 	ld a, [hli]
 	ld e, a
@@ -4876,8 +4897,9 @@ Func_2447:
 	cp [hl]
 	jr z, .asm_268d
 	jr .asm_267f
+
 .asm_26a8
-	cp $f9
+	cp ANIMCMD_F9
 	jr nz, .asm_26bf
 	ld a, [hli]
 	ld e, a
@@ -4890,36 +4912,39 @@ Func_2447:
 	ld [de], a
 	inc hl
 	ld a, l
-	ld [wd3d9 + 0], a
+	ld [wSpriteAnimationPtr + 0], a
 	ld a, h
-	ld [wd3d9 + 1], a
+	ld [wSpriteAnimationPtr + 1], a
 	ret
+
 .asm_26bf
-	cp $fa
+	cp ANIMCMD_FA
 	jr nz, .asm_26d8
 	call Func_1d01
 	cp [hl]
 	inc hl
 	jr nc, .asm_26cd
-	jp Func_2784
+	jp SetSpriteAnimationPtr
 .asm_26cd
 	inc hl
 	inc hl
 	ld a, l
-	ld [wd3d9 + 0], a
+	ld [wSpriteAnimationPtr + 0], a
 	ld a, h
-	ld [wd3d9 + 1], a
+	ld [wSpriteAnimationPtr + 1], a
 	ret
+
 .asm_26d8
-	cp $fb
+	cp ANIMCMD_FB
 	jr nz, .asm_26e4
 	call Func_1d01
 	and [hl]
 	inc hl
 	jp .asm_24e5
+
 .asm_26e4
-	cp $fc
-	jr nz, .asm_2707
+	cp ANIMCMD_FC
+	jr nz, .done
 	push hl
 	ld a, [wd3f0]
 	push af
@@ -4932,10 +4957,11 @@ Func_2447:
 	ld de, $6
 	add hl, de
 	ld a, l
-	ld [wd3d9 + 0], a
+	ld [wSpriteAnimationPtr + 0], a
 	ld a, h
-	ld [wd3d9 + 1], a
-.asm_2707
+	ld [wSpriteAnimationPtr + 1], a
+
+.done
 	ret
 
 .Func_2708:
@@ -5028,16 +5054,16 @@ Func_2447:
 	pop bc
 	ret
 
-Func_2784:
+SetSpriteAnimationPtr:
 	ld a, [hli]
-	ld [wd3d9 + 0], a
+	ld [wSpriteAnimationPtr + 0], a
 	ld a, [hl]
-	ld [wd3d9 + 1], a
+	ld [wSpriteAnimationPtr + 1], a
 	ret
 
 Func_278d:
 	inc hl
-	cp $fd
+	cp ANIMCMD_FD
 	jr nz, .asm_27a4
 	call Func_1d01
 	cp [hl]
@@ -5046,12 +5072,13 @@ Func_278d:
 	inc hl
 	inc hl
 	ld a, l
-	ld [wd3d9 + 0], a
+	ld [wSpriteAnimationPtr + 0], a
 	ld a, h
-	ld [wd3d9 + 1], a
+	ld [wSpriteAnimationPtr + 1], a
 	ret
+
 .asm_27a4
-	cp $fe
+	cp ANIMCMD_FE
 	jr nz, .asm_27c6
 	ld d, [hl]
 	push de
@@ -5071,35 +5098,38 @@ Func_278d:
 	add d
 	add d
 	ld d, a
-	ld a, [wd3d9 + 0]
+	ld a, [wSpriteAnimationPtr + 0]
 	add d
 	jr .asm_27d5
+
 .asm_27c6
-	cp $e3
+	cp ANIMCMD_E3
 	jr nz, .asm_27e0
 .asm_27ca
 	push hl
 	ld hl, wd23a
 	add hl, bc
 	add hl, bc
-	ld a, [wd3d9 + 0]
+	ld a, [wSpriteAnimationPtr + 0]
 	add $03
 .asm_27d5
 	ld [hli], a
-	ld a, [wd3d9 + 1]
+	ld a, [wSpriteAnimationPtr + 1]
 	adc $00
 	ld [hl], a
 	pop hl
-	jp Func_2784
+	jp SetSpriteAnimationPtr
+
 .asm_27e0
-	cp $e4
+	cp ANIMCMD_E4
 	jr nz, .asm_27ec
 	ld hl, wd23a
 	add hl, bc
 	add hl, bc
-	jp Func_2784
+	jp SetSpriteAnimationPtr
+
 .asm_27ec
-	cp $e5
+	cp ANIMCMD_E5
 	jr nz, .asm_2813
 	ld d, h
 	ld e, l
@@ -5113,19 +5143,20 @@ Func_278d:
 	ld [hl], a
 	inc de
 	ld a, [de]
-	ld [wd3d9 + 0], a
+	ld [wSpriteAnimationPtr + 0], a
 	inc de
 	ld a, [de]
-	ld [wd3d9 + 1], a
-	ld hl, wd180
+	ld [wSpriteAnimationPtr + 1], a
+	ld hl, wSpriteAnimationDurations
 	add hl, bc
-	ld [hl], $01
+	ld [hl], 1
 	ld hl, wd170
 	add hl, bc
 	ld [hl], $01
 	ret
+
 .asm_2813
-	cp $e6
+	cp ANIMCMD_E6
 	jr nz, .asm_283e
 	ld a, [hli]
 	push hl
@@ -5149,13 +5180,14 @@ Func_278d:
 	pop de
 	ld a, e
 	ld [hli], a
-	ld [wd3d9 + 0], a
+	ld [wSpriteAnimationPtr + 0], a
 	ld a, d
 	ld [hl], a
-	ld [wd3d9 + 1], a
+	ld [wSpriteAnimationPtr + 1], a
 	ret
+
 .asm_283e
-	cp $e7
+	cp ANIMCMD_E7
 	jr nz, .asm_286b
 	push hl
 	ld hl, wd2aa
@@ -5174,23 +5206,24 @@ Func_278d:
 	ld l, e
 	add hl, bc
 	add hl, bc
-	call Func_2784
+	call SetSpriteAnimationPtr
 	pop hl
 	ret
 .asm_2861
 	pop hl
 	ld a, l
-	ld [wd3d9 + 0], a
+	ld [wSpriteAnimationPtr + 0], a
 	ld a, h
-	ld [wd3d9 + 1], a
+	ld [wSpriteAnimationPtr + 1], a
 	ret
+
 .asm_286b
 	call Func_2447
 	ret
 
 Func_286f:
 	inc hl
-	cp $fd
+	cp ANIMCMD_FD
 	jr nz, .asm_2886
 	call Func_1d01
 	cp [hl]
@@ -5199,12 +5232,13 @@ Func_286f:
 	inc hl
 	inc hl
 	ld a, l
-	ld [wd3d9 + 0], a
+	ld [wSpriteAnimationPtr + 0], a
 	ld a, h
-	ld [wd3d9 + 1], a
+	ld [wSpriteAnimationPtr + 1], a
 	ret
+
 .asm_2886
-	cp $fe
+	cp ANIMCMD_FE
 	jr nz, .asm_28a8
 	ld d, [hl]
 	push de
@@ -5224,40 +5258,40 @@ Func_286f:
 	add d
 	add d
 	ld d, a
-	ld a, [wd3d9 + 0]
+	ld a, [wSpriteAnimationPtr + 0]
 	add d
 	jr .asm_28b7
 .asm_28a8
-	cp $e3
+	cp ANIMCMD_E3
 	jr nz, .asm_28c2
 .asm_28ac
 	push hl
 	ld hl, wd2da
 	add hl, bc
 	add hl, bc
-	ld a, [wd3d9 + 0]
+	ld a, [wSpriteAnimationPtr + 0]
 	add $03
 .asm_28b7
 	ld [hli], a
-	ld a, [wd3d9 + 1]
+	ld a, [wSpriteAnimationPtr + 1]
 	adc $00
 	ld [hl], a
 	pop hl
-	jp Func_2784
+	jp SetSpriteAnimationPtr
 .asm_28c2
-	cp $e4
+	cp ANIMCMD_E4
 	jr nz, .asm_28ce
 	ld hl, wd2da
 	add hl, bc
 	add hl, bc
-	jp Func_2784
+	jp SetSpriteAnimationPtr
 .asm_28ce
-	cp $e5
+	cp ANIMCMD_E5
 	jr nz, .asm_28f3
 	ld a, [hli]
-	ld [wd3d9 + 0], a
+	ld [wSpriteAnimationPtr + 0], a
 	ld a, [hli]
-	ld [wd3d9 + 1], a
+	ld [wSpriteAnimationPtr + 1], a
 	ld d, h
 	ld e, l
 	ld hl, wd21a
@@ -5268,7 +5302,7 @@ Func_286f:
 	inc de
 	ld a, [de]
 	ld [hl], a
-	ld hl, wd180
+	ld hl, wSpriteAnimationDurations
 	add hl, bc
 	ld [hl], $01
 	ld hl, wd170
@@ -5276,7 +5310,7 @@ Func_286f:
 	ld [hl], $01
 	ret
 .asm_28f3
-	cp $e6
+	cp ANIMCMD_E6
 	jr nz, .asm_291e
 	ld a, [hli]
 	push hl
@@ -5300,13 +5334,13 @@ Func_286f:
 	pop de
 	ld a, e
 	ld [hli], a
-	ld [wd3d9 + 0], a
+	ld [wSpriteAnimationPtr + 0], a
 	ld a, d
 	ld [hl], a
-	ld [wd3d9 + 1], a
+	ld [wSpriteAnimationPtr + 1], a
 	ret
 .asm_291e
-	cp $e7
+	cp ANIMCMD_E7
 	jr nz, .asm_294b
 	push hl
 	ld hl, wd34a
@@ -5325,15 +5359,15 @@ Func_286f:
 	ld l, e
 	add hl, bc
 	add hl, bc
-	call Func_2784
+	call SetSpriteAnimationPtr
 	pop hl
 	ret
 .asm_2941
 	pop hl
 	ld a, l
-	ld [wd3d9 + 0], a
+	ld [wSpriteAnimationPtr + 0], a
 	ld a, h
-	ld [wd3d9 + 1], a
+	ld [wSpriteAnimationPtr + 1], a
 	ret
 .asm_294b
 	call Func_2447
@@ -5451,16 +5485,16 @@ Func_29b7:
 	add hl, bc
 	add hl, bc
 	ld a, [hli]
-	ld [wd3d9 + 0], a
+	ld [wSpriteAnimationPtr + 0], a
 	ld a, [hl]
-	ld [wd3d9 + 1], a
+	ld [wSpriteAnimationPtr + 1], a
 .asm_2a05
-	ld a, [wd3d9 + 0]
+	ld a, [wSpriteAnimationPtr + 0]
 	ld l, a
-	ld a, [wd3d9 + 1]
+	ld a, [wSpriteAnimationPtr + 1]
 	ld h, a
 	ld a, [hl]
-	ld [wd3d8], a
+	ld [wSpriteAnimationCommand], a
 	cp $e0
 	jr c, .asm_2a3e
 	cp $ec
@@ -5469,29 +5503,29 @@ Func_29b7:
 	ld a, [hli]
 	ld d, a
 	ld a, l
-	ld [wd3d9 + 0], a
+	ld [wSpriteAnimationPtr + 0], a
 	ld a, h
-	ld [wd3d9 + 1], a
+	ld [wSpriteAnimationPtr + 1], a
 	ld hl, wd170
 	add hl, bc
 	ld [hl], d
 	jr .asm_2a73
 .asm_2a2b
 	call Func_278d
-	ld a, [wd3d8]
+	ld a, [wSpriteAnimationCommand]
 	cp $ff
 	jr nz, .asm_2a05
 	ld a, $01
 	bankswitch
 	ret
 .asm_2a3e
-	ld a, [wd3d8]
+	ld a, [wSpriteAnimationCommand]
 	ld hl, wd170
 	add hl, bc
 	ld [hl], a
-	ld a, [wd3d9 + 0]
+	ld a, [wSpriteAnimationPtr + 0]
 	ld l, a
-	ld a, [wd3d9 + 1]
+	ld a, [wSpriteAnimationPtr + 1]
 	ld h, a
 	inc hl
 	ld a, [hli]
@@ -5515,16 +5549,16 @@ Func_29b7:
 	ld [hl], d
 	pop hl
 	ld a, l
-	ld [wd3d9 + 0], a
+	ld [wSpriteAnimationPtr + 0], a
 	ld a, h
-	ld [wd3d9 + 1], a
+	ld [wSpriteAnimationPtr + 1], a
 .asm_2a73
-	ld a, [wd3d9 + 0]
+	ld a, [wSpriteAnimationPtr + 0]
 	ld hl, wd21a
 	add hl, bc
 	add hl, bc
 	ld [hli], a
-	ld a, [wd3d9 + 1]
+	ld a, [wSpriteAnimationPtr + 1]
 	ld [hl], a
 .asm_2a80
 	ld a, [wExtraGameEnabled]
@@ -5534,7 +5568,7 @@ Func_29b7:
 	ld a, $09
 .asm_2a8a
 	bankswitch
-	ld hl, wd180
+	ld hl, wSpriteAnimationDurations
 	add hl, bc
 	ld a, [hl]
 	and a
@@ -5548,53 +5582,52 @@ Func_29b7:
 	add hl, bc
 	add hl, bc
 	ld a, [hli]
-	ld [wd3d9 + 0], a
+	ld [wSpriteAnimationPtr + 0], a
 	ld a, [hl]
-	ld [wd3d9 + 1], a
+	ld [wSpriteAnimationPtr + 1], a
 .asm_2aa9
-	ld a, [wd3d9 + 0]
+	ld a, [wSpriteAnimationPtr + 0]
 	ld l, a
-	ld a, [wd3d9 + 1]
+	ld a, [wSpriteAnimationPtr + 1]
 	ld h, a
 	ld a, [hl]
-	ld [wd3d8], a
+	ld [wSpriteAnimationCommand], a
 	cp $e0
-	jr c, .asm_2ada
-	; >= $e0
-	cp $ec
-	jr nz, .asm_2acf
-	; == $ec
+	jr c, .duration
+	cp ANIMCMD_DELAY
+	jr nz, .read_cmd
 	inc hl
 	ld a, [hli]
 	ld d, a
 	ld a, l
-	ld [wd3d9 + 0], a
+	ld [wSpriteAnimationPtr + 0], a
 	ld a, h
-	ld [wd3d9 + 1], a
-	ld hl, wd180
+	ld [wSpriteAnimationPtr + 1], a
+	ld hl, wSpriteAnimationDurations
 	add hl, bc
 	ld [hl], d
 	jr .asm_2b18
-.asm_2acf
+.read_cmd
 	call Func_286f
-	ld a, [wd3d8]
+	ld a, [wSpriteAnimationCommand]
 	cp $ff
-	ret z
+	ret z ; animation ended
 	jr .asm_2aa9
-.asm_2ada
-	ld a, [wd3d8]
-	ld hl, wd180
+
+.duration
+	ld a, [wSpriteAnimationCommand]
+	ld hl, wSpriteAnimationDurations
 	add hl, bc
 	ld [hl], a
-	ld a, [wd3d9 + 0]
+	ld a, [wSpriteAnimationPtr + 0]
 	ld l, a
-	ld a, [wd3d9 + 1]
+	ld a, [wSpriteAnimationPtr + 1]
 	ld h, a
 	inc hl
 	ld a, l
-	ld [wd3d9 + 0], a
+	ld [wSpriteAnimationPtr + 0], a
 	ld a, h
-	ld [wd3d9 + 1], a
+	ld [wSpriteAnimationPtr + 1], a
 	inc hl
 	ld a, [hl]
 	cp $ff
@@ -5611,23 +5644,23 @@ Func_29b7:
 	ld a, [de]
 	ld [hl], a
 .asm_2b06
-	ld a, [wd3d9 + 0]
+	ld a, [wSpriteAnimationPtr + 0]
 	ld l, a
-	ld a, [wd3d9 + 1]
+	ld a, [wSpriteAnimationPtr + 1]
 	ld h, a
 	inc hl
 	inc hl
 	ld a, l
-	ld [wd3d9 + 0], a
+	ld [wSpriteAnimationPtr + 0], a
 	ld a, h
-	ld [wd3d9 + 1], a
+	ld [wSpriteAnimationPtr + 1], a
 .asm_2b18
-	ld a, [wd3d9 + 0]
+	ld a, [wSpriteAnimationPtr + 0]
 	ld hl, wd2ba
 	add hl, bc
 	add hl, bc
 	ld [hli], a
-	ld a, [wd3d9 + 1]
+	ld a, [wSpriteAnimationPtr + 1]
 	ld [hl], a
 	ret
 
@@ -6264,6 +6297,7 @@ Func_2e9c::
 	ld hl, hff93
 	bit 2, [hl]
 	jr nz, .asm_2f15
+
 	ld a, [wROMBank]
 	push af
 	ld a, $05
@@ -6533,9 +6567,82 @@ Func_3076::
 	ld hl, hff96
 	set 7, [hl]
 	ret
-; 0x30b2
 
-SECTION "Home@3168", ROM0[$3168]
+Func_30b2::
+	ld a, [wd3ef]
+	bankswitch
+	ld hl, wd140
+	ld a, [hl]
+	add $28
+	ld e, a
+	add hl, bc
+	ld a, [hl]
+	add $28
+	sub e
+	ld a, [wSpriteAnimationPtr + 0]
+	ld l, a
+	ld a, [wSpriteAnimationPtr + 1]
+	ld h, a
+	jr nc, .asm_30d3
+	inc hl
+	inc hl
+.asm_30d3
+	ld a, [hli]
+	ld [wSpriteAnimationPtr + 0], a
+	ld a, [hl]
+	ld [wSpriteAnimationPtr + 1], a
+	ret
+; 0x30dc
+
+SECTION "Home@3121", ROM0[$3121]
+
+Func_3121::
+	ld a, [wd3ef]
+	bankswitch
+	ld hl, wd1e0
+	add hl, bc
+	add hl, bc
+	push bc
+	ld a, [wSpriteAnimationPtr + 0]
+	ld e, a
+	ld a, [wSpriteAnimationPtr + 1]
+	ld d, a
+	ld a, [de]
+	ld [hli], a
+	ld b, a
+	inc de
+	ld a, [de]
+	ld [hl], a
+	ld h, a
+	ld l, b
+	inc de
+	ld a, e
+	ld [wSpriteAnimationPtr + 0], a
+	ld a, d
+	ld [wSpriteAnimationPtr + 1], a
+	pop bc
+	push hl
+	ld a, [hl]
+	ld hl, wd190
+	add hl, bc
+	ld [hl], a
+	pop hl
+	inc hl
+	inc hl
+	inc hl
+	inc hl
+	ld a, [hl]
+	ld hl, wd39a
+	add hl, bc
+	ld [hl], a
+	xor a
+	ld hl, wd1a0
+	add hl, bc
+	ld [hl], a
+	ld hl, wd1b0
+	add hl, bc
+	ld [hl], a
+	ret
 
 ; input:
 ; - a = score to add
