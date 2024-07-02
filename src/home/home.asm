@@ -3012,9 +3012,9 @@ Func_19f9::
 	push af
 	push hl
 	push de
-	ld a, [wd039]
+	ld a, [wExtraGameEnabled]
 	and a
-	jr nz, .asm_1b50
+	jr nz, .extra_game
 	ld hl, $4000
 	ld de, v0Tiles0
 	ld c, $02
@@ -3024,7 +3024,7 @@ Func_19f9::
 	ld c, $02
 	call FarDecompress
 	jr .asm_1b66
-.asm_1b50
+.extra_game
 	ld hl, $488d
 	ld de, v0Tiles0
 	ld c, $0a
@@ -3046,7 +3046,7 @@ Func_19f9::
 	ld b, $00
 	ld c, a
 	ld hl, Data_2070
-	ld a, [wd039]
+	ld a, [wExtraGameEnabled]
 	and a
 	jr z, .asm_1b7c
 	ld hl, Data_2089
@@ -4071,7 +4071,7 @@ Func_21fb::
 
 	ld a, [wROMBank]
 	push af
-	ld a, [wd039]
+	ld a, [wExtraGameEnabled]
 	and a
 	ld a, $07
 	jr z, .asm_2214
@@ -4427,16 +4427,16 @@ Func_2419:
 
 	xor a
 	ld hl, wd25a
-	call .Func_2441
+	call .Clear
 	ld hl, wd2fa
-	call .Func_2441
+	call .Clear
 	ld hl, wd23a
-	call .Func_2441
+	call .Clear
 	ld hl, wd2da
-	call .Func_2441
+	call .Clear
 	ld hl, wd35a
 ;	fallthrough
-.Func_2441:
+.Clear:
 	add hl, bc
 	add hl, bc
 	ld [hli], a
@@ -5430,7 +5430,7 @@ Func_29b7:
 .asm_29d4
 	call Func_2ce5
 	ret c
-	ld a, [wd039]
+	ld a, [wExtraGameEnabled]
 	and a
 	ld a, $04
 	jr z, .asm_29e2
@@ -5527,7 +5527,7 @@ Func_29b7:
 	ld a, [wd3d9 + 1]
 	ld [hl], a
 .asm_2a80
-	ld a, [wd039]
+	ld a, [wExtraGameEnabled]
 	and a
 	ld a, $08
 	jr z, .asm_2a8a
@@ -5560,8 +5560,10 @@ Func_29b7:
 	ld [wd3d8], a
 	cp $e0
 	jr c, .asm_2ada
+	; >= $e0
 	cp $ec
 	jr nz, .asm_2acf
+	; == $ec
 	inc hl
 	ld a, [hli]
 	ld d, a
@@ -6846,8 +6848,8 @@ Func_319f:
 	push hl
 	push bc
 	push de
-	ld d, h
-	ld e, l
+	ld d, h ; useless
+	ld e, l ;
 	ld b, $0c
 	ld de, wd160 + $1
 	ld hl, wd200 + $2
@@ -6962,6 +6964,89 @@ Func_319f:
 	ld [hl], a
 	ret
 ; 0x3408
+
+MACRO object_data
+	db \1 ; ?
+	db \2 ; ?
+	db \3 ; ?
+	db \4 ; damage dealt to Kirby
+	db \5 ; ?
+	db \6 ; ?
+	db (\7) / 10 ; score when defeated
+	dw \8 ; )
+ENDM
+
+SECTION "Home@3421", ROM0[$3421]
+
+Data_3421::
+	db $05, $00, $00, $00, $04, $00
+; 0x3427
+
+SECTION "Home@3429", ROM0[$3429]
+
+Data_3429::
+	db $69, $08, $08, $00, $54, $41
+; 0x342f
+
+SECTION "Home@344d", ROM0[$344d]
+
+Data_344d::
+	db $69, $08, $08, $05, $72, $41
+; 0x3453
+
+SECTION "Home@3459", ROM0[$3459]
+
+Data_3459::
+	db $69, $08, $08, $06, $72, $41
+; 0x345f
+
+SECTION "Home@3465", ROM0[$3465]
+
+Data_3465::
+	db $69, $06, $08, $07, $72, $41
+; 0x346b
+
+SECTION "Home@348c", ROM0[$348c]
+
+Data_348c::
+	object_data $01, $06, $06, 1, $01, $03, 200, $4154
+; 0x3495
+
+SECTION "Home@34ff", ROM0[$34ff]
+
+Data_34ff::
+	object_data $09, $06, $06, 1, $01, $03, 200, $4154
+
+Data_3508::
+	object_data $09, $06, $06, 1, $01, $03, 200, $4154
+; 0x3511
+
+SECTION "Home@351a", ROM0[$351a]
+
+Data_351a::
+	object_data $01, $06, $06, 1, $01, $03, 200, $4154
+
+Data_3523::
+	object_data $01, $06, $06, 1, $01, $03, 200, $4154
+; 0x352c
+
+SECTION "Home@3535", ROM0[$3535]
+
+Data_3535::
+	object_data $01, $0a, $0a, 2, $01, $03, 400, $4154
+; 0x353e
+
+SECTION "Home@3547", ROM0[$3547]
+
+Data_3547::
+	object_data $01, $0a, $0d, 2, $01, $03, 200, $41a8
+; 0x3550
+
+SECTION "Home@3562", ROM0[$3562]
+
+Data_3562::
+	object_data $01, $08, $10, 1, $01, $03, 300, $41b4
+; 0x356b
 
 SECTION "Home@375d", ROM0[$375d]
 
@@ -7080,9 +7165,9 @@ Func_380a::
 	jr c, Func_388a
 	ld a, [wROMBank]
 	push af
-	ld a, $05
+	ld a, BANK(Func_14a5f)
 	bankswitch
-	call $4a5f ; Func_14a5f
+	call Func_14a5f
 	pop af
 	bankswitch
 	ld hl, $4190
@@ -7130,9 +7215,9 @@ Func_385b::
 Func_3873:
 	ld a, [wROMBank]
 	push af
-	ld a, $05
+	ld a, BANK(Func_14a5f)
 	bankswitch
-	call $4a5f ; Func_14a5f
+	call Func_14a5f
 	pop af
 	bankswitch
 Func_3889:

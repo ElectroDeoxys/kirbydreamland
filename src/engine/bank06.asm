@@ -64,7 +64,7 @@ TitleScreen::
 	cp A_BUTTON | SELECT | D_UP
 	jr nz, .no_extra_game
 	ld a, TRUE
-	ld [wExtraGameEnabled], a
+	ld [wExtraGameUnlocked], a
 	call .PrintExtraGameText
 .no_extra_game
 	ld a, [hJoypadPressed]
@@ -76,7 +76,7 @@ TitleScreen::
 	ret
 
 .PrintExtraGameText:
-	ld a, [wExtraGameEnabled]
+	ld a, [wExtraGameUnlocked]
 	and a
 	ret z ; Extra Game not enabled
 	ld bc, $9945
@@ -323,19 +323,19 @@ StageMusics:
 	assert_table_length NUM_STAGES
 
 Func_18275:
-	ld a, [wd039]
+	ld a, [wExtraGameEnabled]
 	push af
 	xor a
-	ld [wd039], a
+	ld [wExtraGameEnabled], a
 	call Func_18285
 	pop af
-	ld [wd039], a
+	ld [wExtraGameEnabled], a
 	ret
 
 Func_18285:
-	ld a, [wd039]
+	ld a, [wExtraGameEnabled]
 	and a
-	jr nz, .asm_182a3
+	jr nz, .extra_game
 	ld hl, $4000
 	ld de, v0Tiles0
 	ld c, $02
@@ -345,7 +345,7 @@ Func_18285:
 	ld c, $02
 	call FarDecompress
 	jr .asm_182b9
-.asm_182a3
+.extra_game
 	ld hl, $488d
 	ld de, v0Tiles0
 	ld c, $0a
@@ -364,7 +364,7 @@ Func_18285:
 	ld c, a
 	ld b, $00
 	ld hl, Data_2070
-	ld a, [wd039]
+	ld a, [wExtraGameEnabled]
 	and a
 	jr z, .asm_182d1
 	ld hl, Data_2089
@@ -1487,10 +1487,10 @@ Func_1886c:
 	call Func_648
 	call ResetTimer
 	call Clearwd160
-	ld a, [wd039]
+	ld a, [wExtraGameEnabled]
 	and a
-	ld a, $01
-	ld [wd039], a
+	ld a, TRUE
+	ld [wExtraGameEnabled], a
 	jp z, .asm_19055
 
 	ld a, MUSIC_GREEN_GREENS_INTRO

@@ -51,8 +51,8 @@ wGlobalCounter2:: db ; d035
 wd036:: db ; d036
 wd037:: db ; d037
 wd038:: db ; d038
-wd039:: db ; d039
-wExtraGameEnabled:: db ; d03a
+wExtraGameEnabled:: db ; d039
+wExtraGameUnlocked:: db ; d03a
 
 wStage:: ; d03b
 	db

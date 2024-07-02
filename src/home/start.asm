@@ -53,7 +53,7 @@ Reset:
 
 	xor a
 	ldh [hVBlankFlags], a
-	ld [wExtraGameEnabled], a
+	ld [wExtraGameUnlocked], a
 
 	ld a, BANK(TitleScreen)
 	bankswitch
@@ -67,8 +67,8 @@ Reset:
 	ld a, [wConfigLives]
 	ld [wLives], a
 	call Clearwd160
-	ld a, [wExtraGameEnabled]
-	ld [wd039], a
+	ld a, [wExtraGameUnlocked]
+	ld [wExtraGameEnabled], a
 
 	ld a, BANK(Func_180e4)
 	bankswitch

@@ -1075,7 +1075,69 @@ Func_149fb:
 	ld [hld], a
 	ld [hl], a
 	ret
-; 0x14a5f
+
+Func_14a5f::
+	ld hl, wd1a0
+	add hl, bc
+	set 2, [hl]
+	push bc
+	ld hl, wd0a0 + $1
+	add hl, bc
+	add hl, bc
+	add hl, bc
+	ld c, $0a
+	ld a, [hff92]
+	bit 5, a
+	jr z, .asm_14a77
+	ld c, $f6
+.asm_14a77
+	ld a, [wd140]
+	add c
+	ld c, a
+	ld a, [wSCX]
+	and $0f
+	ld b, a
+	ld a, [wd051]
+	dec a
+	swap a
+	ld d, a
+	and $0f
+	ld e, a
+	ld a, d
+	and $f0
+	add b
+	add c
+	ld [hli], a
+	ld a, e
+	adc $00
+	ld [hl], a
+	pop bc
+	ld hl, wd0d0 + $1
+	add hl, bc
+	add hl, bc
+	add hl, bc
+	ld a, [wd150]
+	sub $05
+	ld c, a
+	ld a, [wSCY]
+	and $0f
+	ld b, a
+	ld a, [wd052]
+	dec a
+	swap a
+	ld d, a
+	and $0f
+	ld e, a
+	ld a, d
+	and $f0
+	add b
+	add c
+	ld [hli], a
+	ld a, e
+	adc $00
+	ld [hl], a
+	ret
+; 0x14abe
 
 SECTION "Bank 5@4ad6", ROMX[$4ad6], BANK[$5]
 
