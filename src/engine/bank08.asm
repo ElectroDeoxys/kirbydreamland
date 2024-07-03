@@ -123,7 +123,7 @@ SpriteAnim_20d0b:
 	dbw 20, $41c4
 	dbw 20, $41bc
 	anim_jp .loop
-; 0x20d22
+; 0x20d19
 
 SECTION "Bank 8@4d19", ROMX[$4d19], BANK[$8]
 
