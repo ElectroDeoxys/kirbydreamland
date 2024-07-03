@@ -344,7 +344,7 @@ wd16e:: ; d16e
 wd170:: ; d170
 	ds $10
 
-wSpriteAnimationDurations:: ; d180
+wAnimationDurations:: ; d180
 	ds $10
 
 wd190:: ; d190
@@ -470,10 +470,10 @@ wd3d6:: ; d3d6
 wd3d7:: ; d3d7
 	db
 
-wSpriteAnimationCommand:: ; d3d8
+wAnimationCommand:: ; d3d8
 	db
 
-wSpriteAnimationPtr:: ; d3d9
+wAnimationPtr:: ; d3d9
 	dw
 
 wd3db:: ; d3db
