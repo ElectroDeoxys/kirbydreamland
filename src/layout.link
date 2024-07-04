@@ -30,4 +30,6 @@ WRAMX 1
 VRAM $00
 	"VRAM0"
 HRAM
+	"DMA Transfer"
 	"HRAM"
+	"Stack"

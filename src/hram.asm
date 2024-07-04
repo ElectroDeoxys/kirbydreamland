@@ -1,8 +1,5 @@
 SECTION "HRAM", HRAM
 
-hTransferVirtualOAM:: ; ff80
-	ds $a
-
 hLCDC:: ; ff8a
 	db
 
@@ -41,6 +38,8 @@ hff95:: ; ff95
 
 hff96:: ; ff96
 	db
+
+SECTION "Stack", HRAM
 
 hStack:: ; ff97
 	ds $67

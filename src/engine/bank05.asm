@@ -1261,6 +1261,8 @@ InitDMATransferFunction::
 	ret
 
 .Func:
+LOAD "DMA Transfer", HRAM
+hTransferVirtualOAM::
 	ld a, HIGH(wVirtualOAM)
 	ldh [rDMA], a ; start DMA transfer (starts right after instruction)
 	ld a, 160 / (1 + 3) ; delay for a total of 160 cycles
@@ -1268,6 +1270,7 @@ InitDMATransferFunction::
 	dec a        ; 1 cycle
 	jr nz, .loop ; 3 cycles
 	ret
+ENDL
 .end
 ; 0x14ad6
 
