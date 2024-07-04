@@ -51,7 +51,7 @@ const unsigned MAX_FILE_SIZE = 0x8000;
 
 enum Mode
 {
-    eRepeatByte,
+    eRepeatByte = 0,
     eRepeat2Bytes,
     eSequence,
     eLiteralCopy,
@@ -60,7 +60,12 @@ enum Mode
     eReverseLookBack,
 };
 
-byte invertByte(byte b)
+byte returnByte(const byte b)
+{
+    return b;
+}
+
+byte invertByte(const byte b)
 {
     byte res = 0;
     for (int bit = 0; bit < 8; bit++)
@@ -72,8 +77,17 @@ byte invertByte(byte b)
 
 typedef unsigned (*GetCompressLengthFunc)(const byte *, unsigned);
 GetCompressLengthFunc getCompressLengthFuncs[7];
-typedef void (*CompressFunc)(const byte *, unsigned, byte *, unsigned *);
+typedef void (*CompressFunc)(const byte *, unsigned, byte *, unsigned *, unsigned);
 CompressFunc compressFuncs[7];
+const unsigned compressModeMinLengths[7] = {
+    3, // eRepeatByte
+    4, // eRepeat2Bytes
+    3, // eSequence
+    0, // eLiteralCopy
+    4, // eLookBack
+    4, // eLookBackInverted
+    4, // eReverseLookBack
+};
 
 unsigned getCompressRepeatByteLen(const byte *source, unsigned remaining)
 {
@@ -116,7 +130,69 @@ unsigned getCompressSequenceLen(const byte *source, unsigned remaining)
     return len;
 }
 
-void compressRepeatByte(const byte *source, unsigned length, byte *dest, unsigned *destLength)
+unsigned getCompressLookBackLenGeneric(const byte *sourceBegin, unsigned pos, unsigned remaining, unsigned *lookBackPos, byte (*func)(const byte))
+{
+    if (remaining < 2) return 0;
+    if (pos < 2) return 0;
+
+    unsigned maxLen = 0;
+
+    for (unsigned i = 0; i < pos - 1; i++)
+    {
+        unsigned curLen = 0;
+        for (unsigned j = 0; j < pos - i && j < remaining; j++)
+        {
+            if (func(*(sourceBegin + i + j)) != *(sourceBegin + pos + j))
+                break;
+            curLen++;
+        }
+        if (curLen > maxLen)
+        {
+            maxLen = curLen;
+            *lookBackPos = i;
+        }
+    }
+
+    return maxLen;
+}
+
+unsigned getCompressLookBackLen(const byte *sourceBegin, unsigned pos, unsigned remaining, unsigned *lookBackPos)
+{
+    return getCompressLookBackLenGeneric(sourceBegin, pos, remaining, lookBackPos, &returnByte);
+}
+
+unsigned getCompressLookBackInvertedLen(const byte *sourceBegin, unsigned pos, unsigned remaining, unsigned *lookBackPos)
+{
+    return getCompressLookBackLenGeneric(sourceBegin, pos, remaining, lookBackPos, &invertByte);
+}
+
+unsigned getCompressReverseLookBackLen(const byte *sourceBegin, unsigned pos, unsigned remaining, unsigned *lookBackPos, byte (*func)(const byte))
+{
+    if (remaining < 2) return 0;
+    if (pos < 2) return 0;
+
+    unsigned maxLen = 0;
+
+    for (unsigned i = pos - 1; i > 0; i--)
+    {
+        unsigned curLen = 0;
+        for (unsigned j = 0; j < pos - i && j < remaining; j++)
+        {
+            if (func(*(sourceBegin + i - j)) != *(sourceBegin + pos + j))
+                break;
+            curLen++;
+        }
+        if (curLen > maxLen)
+        {
+            maxLen = curLen;
+            *lookBackPos = i;
+        }
+    }
+
+    return maxLen;
+}
+
+void compressRepeatByte(const byte *source, unsigned length, byte *dest, unsigned *destLength, __attribute__((unused)) unsigned lookBackPos)
 {
     length--;
     if (length <= 0x1f)
@@ -134,7 +210,7 @@ void compressRepeatByte(const byte *source, unsigned length, byte *dest, unsigne
     }
 }
 
-void compressRepeat2Bytes(const byte *source, unsigned length, byte *dest, unsigned *destLength)
+void compressRepeat2Bytes(const byte *source, unsigned length, byte *dest, unsigned *destLength, __attribute__((unused)) unsigned lookBackPos)
 {
     length = (length / 2) - 1;
     if (length <= 0x1f)
@@ -154,7 +230,7 @@ void compressRepeat2Bytes(const byte *source, unsigned length, byte *dest, unsig
     }
 }
 
-void compressSequence(const byte *source, unsigned length, byte *dest, unsigned *destLength)
+void compressSequence(const byte *source, unsigned length, byte *dest, unsigned *destLength, __attribute__((unused)) unsigned lookBackPos)
 {
     length--;
     if (length <= 0x1f)
@@ -172,42 +248,138 @@ void compressSequence(const byte *source, unsigned length, byte *dest, unsigned 
     }
 }
 
+void compressLiteralCopy(const byte *source, unsigned length, byte *dest, unsigned *destLength, __attribute__((unused)) unsigned lookBackPos)
+{
+    unsigned byteLen = length - 1;
+    if (byteLen <= 0x1f)
+    {
+        dest[0] = byteLen;
+        dest++;
+        memcpy(dest, source, sizeof(byte) * length);
+        *destLength += 1 + length;
+    }
+    else
+    {
+        dest[0] = 0xe0 | (byteLen / 0x100);
+        dest[1] = byteLen % 0x100;
+        dest += 2;
+        memcpy(dest, source, sizeof(byte) * length);
+        *destLength += 2 + length;
+    }
+}
+
+void compressLookBackGeneric(unsigned length, byte *dest, unsigned *destLength, unsigned lookBackPos, byte cmdByte)
+{
+    length--;
+    if (length <= 0x1f)
+    {
+        dest[0] = cmdByte | length;
+        dest[1] = lookBackPos / 0x100;
+        dest[2] = lookBackPos % 0x100;
+        *destLength += 3;
+    }
+    else
+    {
+        dest[0] = 0xe0 | (cmdByte >> 3) | (length / 0x100);
+        dest[1] = length % 0x100;
+        dest[2] = lookBackPos / 0x100;
+        dest[3] = lookBackPos % 0x100;
+        *destLength += 4;
+    }
+}
+
+void compressLookBack(__attribute__((unused)) const byte *source, unsigned length, byte *dest, unsigned *destLength, unsigned lookBackPos)
+{
+    compressLookBackGeneric(length, dest, destLength, lookBackPos, 0x80);
+}
+
+void compressLookBackInverted(__attribute__((unused)) const byte *source, unsigned length, byte *dest, unsigned *destLength, unsigned lookBackPos)
+{
+    compressLookBackGeneric(length, dest, destLength, lookBackPos, 0xa0);
+}
+
 void compress(char *outFilename, byte *source, unsigned fileSize)
 {
     unsigned remaining = fileSize;
+    const byte *sourceBegin = source;
 
     FILE *fo = fopen(outFilename, "wb");
     byte *buffer = (byte*) malloc(MAX_FILE_SIZE * sizeof(byte));
     unsigned bufferLength = 0;
 
-    byte *tempBuffer = (byte*) malloc(MAX_FILE_SIZE * sizeof(byte));
+    unsigned literalCopyLen = 0;
+    bool isCopyingLiteral = false;
 
     while (remaining != 0)
     {
-        enum Mode chosenMode;
+        enum Mode chosenMode = eLiteralCopy;
         unsigned maxLen = 0;
+
         for (int i = 0; i < 3; i++)
         {
             enum Mode mode = (enum Mode) i;
             unsigned curLen = getCompressLengthFuncs[mode](source, remaining);
-            if (curLen > maxLen)
+            if (curLen > maxLen && curLen >= compressModeMinLengths[mode])
             {
                 chosenMode = mode;
                 maxLen = curLen;
             }
         }
 
-        byte *dest = buffer + bufferLength;
-        compressFuncs[chosenMode](source, maxLen, dest, &bufferLength);
-        remaining -= maxLen;
-        source += maxLen;
+        unsigned chosenLookBackPos = 0;
+
+        unsigned curLen;
+        unsigned pos = source - sourceBegin;
+        unsigned lookBackPos = 0;
+
+        curLen = getCompressLookBackLen(sourceBegin, pos, remaining, &lookBackPos);
+        if (curLen > maxLen && curLen >= compressModeMinLengths[eLookBack])
+        {
+            chosenMode = eLookBack;
+            maxLen = curLen;
+            chosenLookBackPos = lookBackPos;
+        }
+
+        curLen = getCompressLookBackInvertedLen(sourceBegin, pos, remaining, &lookBackPos);
+        if (curLen > maxLen && curLen >= compressModeMinLengths[eLookBackInverted])
+        {
+            chosenMode = eLookBackInverted;
+            maxLen = curLen;
+            chosenLookBackPos = lookBackPos;
+        }
+
+        if (chosenMode == eLiteralCopy)
+        {
+            if (!isCopyingLiteral)
+            {
+                isCopyingLiteral = true;
+                literalCopyLen = 0;
+            }
+            literalCopyLen++;
+            remaining--;
+            source++;
+        }
+        else
+        {
+            if (isCopyingLiteral)
+            {
+                byte *destLiteralCopy = buffer + bufferLength;
+                byte *sourceLiteralCopy = source - literalCopyLen;
+                compressFuncs[eLiteralCopy](sourceLiteralCopy, literalCopyLen, destLiteralCopy, &bufferLength, chosenLookBackPos);
+                isCopyingLiteral = false;
+            }
+
+            byte *dest = buffer + bufferLength;
+            compressFuncs[chosenMode](source, maxLen, dest, &bufferLength, chosenLookBackPos);
+            remaining -= maxLen;
+            source += maxLen;
+        }
     }
 
     fwrite(buffer, sizeof(byte), bufferLength, fo);
     fclose(fo);
 
     free(buffer);
-    free(tempBuffer);
 }
 
 typedef unsigned (*DecompressFunc)(const byte *, unsigned, byte *, unsigned *);
@@ -334,7 +506,6 @@ void decompress(char *outFilename, byte *source)
             }
         }
 
-        printf("flag = %d, mode = %d, length = %d\n", flags, mode, length);
         unsigned tempBufferLength;
 
         switch (mode)
@@ -440,12 +611,10 @@ int main(int argc, char *argv[])
         compressFuncs[eRepeat2Bytes] = &compressRepeat2Bytes;
         getCompressLengthFuncs[eSequence] = &getCompressSequenceLen;
         compressFuncs[eSequence] = &compressSequence;
-        // getCompressLengthFuncs[eLiteralCopy] = &getCompressLiteralCopyLen;
-        // compressFuncs[eLiteralCopy] = &compressLiteralCopy;
-        // getCompressLengthFuncs[eLookBack] = &getCompressLookBackLen;
-        // compressFuncs[eLookBack] = &compressLookBack;
-        // getCompressLengthFuncs[eLookBackInverted] = &getCompressLookBackInvertedLen;
-        // compressFuncs[eLookBackInverted] = &compressLookBackInverted;
+        getCompressLengthFuncs[eLiteralCopy] = NULL;
+        compressFuncs[eLiteralCopy] = &compressLiteralCopy;
+        compressFuncs[eLookBack] = &compressLookBack;
+        compressFuncs[eLookBackInverted] = &compressLookBackInverted;
         // getCompressLengthFuncs[eReverseLookBack] = &getCompressReverseLookBackLen;
         // compressFuncs[eReverseLookBack] = &compressReverseLookBack;
 
