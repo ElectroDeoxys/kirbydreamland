@@ -66,7 +66,7 @@ Reset:
 	ld [wd050], a
 	ld a, [wConfigLives]
 	ld [wLives], a
-	call Clearwd160
+	call ClearObjects
 	ld a, [wExtraGameUnlocked]
 	ld [wExtraGameEnabled], a
 

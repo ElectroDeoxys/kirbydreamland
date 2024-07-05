@@ -166,7 +166,7 @@ Func_180e4::
 .skip_intro
 	ld a, $ff
 	ld [wd096], a
-	call Clearwd160
+	call ClearObjects
 	call Func_648
 	call Func_1c0a
 	call ResetTimer
@@ -1486,7 +1486,7 @@ Func_1886c:
 .asm_18d06
 	call Func_648
 	call ResetTimer
-	call Clearwd160
+	call ClearObjects
 	ld a, [wExtraGameEnabled]
 	and a
 	ld a, TRUE
@@ -2074,7 +2074,7 @@ SECTION "Bank 6@6386", ROMX[$6386], BANK[$6]
 ConfigurationMenu:
 	call Func_648
 	call ResetTimer
-	call Clearwd160
+	call ClearObjects
 	call InitWindow
 	xor a
 	ld [wSCX ], a

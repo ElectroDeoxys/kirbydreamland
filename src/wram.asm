@@ -296,17 +296,17 @@ wd097:: ; d097
 wd099:: ; d099
 	ds $7
 
-wd0a0:: ; d0a0
-	ds $3 * $10
+wObjectXCoords:: ; d0a0
+	ds $3 * NUM_OBJECT_SLOTS
 
-wd0d0:: ; d0d0
-	ds $3 * $10
+wObjectYCoords:: ; d0d0
+	ds $3 * NUM_OBJECT_SLOTS
 
-wd100:: ; d100
-	ds $2 * $10
+wObjectXVels:: ; d100
+	ds $2 * NUM_OBJECT_SLOTS
 
-wd120:: ; d120
-	ds $2 * $10
+wObjectYVels:: ; d120
+	ds $2 * NUM_OBJECT_SLOTS
 
 wd140:: ; d140
 	ds $d
@@ -330,22 +330,17 @@ wd15e:: ; d15e
 
 	ds $1
 
-wd160:: ; d160
-	ds $d
+; if OBJECT_NOT_ACTIVE, then this object slot is empty
+; if OBJECT_ACTIVE, then this object is active
+; if > 1, then this represents a counter until is active again
+wObjectActiveStates:: ; d160
+	ds NUM_OBJECT_SLOTS
 
-wd16d:: ; d16d
-	db
+wObjectMotionScriptTimers:: ; d170
+	ds NUM_OBJECT_SLOTS
 
-wd16e:: ; d16e
-	db
-
-	ds $1
-
-wd170:: ; d170
-	ds $10
-
-wAnimationDurations:: ; d180
-	ds $10
+wObjectGfxScriptTimers:: ; d180
+	ds NUM_OBJECT_SLOTS
 
 wd190:: ; d190
 	ds $10
@@ -373,7 +368,7 @@ wd1be:: ; d1be
 	ds $1
 
 wSpriteOAMPtrs:: ; d1c0
-	ds $2 * $10
+	ds $2 * NUM_OBJECT_SLOTS
 
 wd1e0:: ; d1e0
 	ds $2 * $10
@@ -383,25 +378,25 @@ wd200:: ; d200
 
 	ds $a
 
-wd21a:: ; d21a
-	ds $2 * $10
+wObjectMotionScriptPtrs:: ; d21a
+	ds $2 * NUM_OBJECT_SLOTS
 
 wd23a:: ; d23a
-	ds $2 * $10
+	ds $2 * NUM_OBJECT_SLOTS
 
 wd25a:: ; d25a
-	ds $2 * $10
+	ds $2 * NUM_OBJECT_SLOTS
 
 wd27a:: ; d27a
-	ds $2 * $10
+	ds $2 * NUM_OBJECT_SLOTS
 
 wd29a:: ; d29a
-	ds $10
+	ds NUM_OBJECT_SLOTS
 
 wd2aa:: ; d2aa
-	ds $10
+	ds NUM_OBJECT_SLOTS
 
-wd2ba:: ; d2ba
+wObjectGfxScriptPtrs:: ; d2ba
 	ds $2 * $10
 
 wd2da:: ; d2da
@@ -419,11 +414,11 @@ wd33a:: ; d33a
 wd34a:: ; d34a
 	ds $10
 
-wd35a:: ; d35a
-	ds $2 * $10
+wObjectCustomFuncs:: ; d35a
+	ds $2 * NUM_OBJECT_SLOTS
 
 wd37a:: ; d37a
-	ds $2 * $10
+	ds $2 * NUM_OBJECT_SLOTS
 
 wd39a:: ; d39a
 	ds $10
@@ -470,11 +465,8 @@ wd3d6:: ; d3d6
 wd3d7:: ; d3d7
 	db
 
-wAnimationCommand:: ; d3d8
-	db
-
-wAnimationPtr:: ; d3d9
-	dw
+wScriptCommand:: db ; d3d8
+wScriptPtr::     dw ; d3d9
 
 wd3db:: ; d3db
 	db
@@ -527,7 +519,7 @@ wd3ed:: ; d3ed
 wd3ee:: ; d3ee
 	db
 
-wd3ef:: ; d3ef
+wScriptBank:: ; d3ef
 	db
 
 wd3f0:: ; d3f0

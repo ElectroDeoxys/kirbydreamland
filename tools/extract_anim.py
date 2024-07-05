@@ -35,37 +35,37 @@ def parseAnimFC(args):
     return parseWord(args[0:2]) + parseWord(args[2:4]) + parseWord(args[4:6])
 
 commands = {
-    0xe0: ("anim_end", 0, None),
-    0xe1: ("anim_jp", 2, parseWord),
-    0xe2: ("anim_jr", 1, parseAnimJr),
-    0xe3: ("anim_e3", 2, parseWord),
-    0xe4: ("anim_e4", 0, None),
-    0xe5: ("anim_e5", 4, parse2Words),
-    0xe6: ("anim_e6", 1, parseByte),
-    0xe7: ("anim_e7", 0, None),
-    0xe8: ("anim_call", 2, parseWord),
-    0xe9: ("anim_callarg", 3, parseWordWithByte),
-    0xea: ("anim_jpeq", 5, parseWordByteWord),
-    0xeb: ("anim_animtable", 0, None),
-    0xec: ("anim_delay", 2, parseWord),
-    0xed: ("anim_ed", 1, parseByte),
-    0xee: ("anim_ee", 4, parse2Words),
-    0xef: ("anim_ef", 0, None),
-    0xf0: ("anim_f0", 2, parseByte),
-    0xf1: ("anim_f1", 2, parseByte),
-    0xf2: ("anim_f2", 0, None),
-    0xf3: ("anim_f3", 0, None),
-    0xf4: ("anim_set", 3, parseWordWithByte),
-    0xf5: ("anim_inc", 2, parseWord),
-    0xf6: ("anim_dec", 2, parseWord),
-    0xf7: ("anim_jpif", 5, parseWordByteWord),
-    0xf8: ("anim_jpifnot", 5, parseWordByteWord),
-    0xf9: ("anim_f9", 4, parseWord2Bytes),
-    0xfa: ("anim_fa", 1, parseByte),
-    0xfb: ("anim_fb", 1, parseByte),
-    0xfc: ("anim_fc", 6, parseAnimFC),
-    0xfd: ("anim_fd", 1, parseByte),
-    0xfe: ("anim_fe", 1, parseByte),
+    0xe0: ("script_end", 0, None),
+    0xe1: ("jump_abs", 2, parseWord),
+    0xe2: ("jump_rel", 1, parseAnimJr),
+    0xe3: ("script_e3", 2, parseWord),
+    0xe4: ("script_e4", 0, None),
+    0xe5: ("set_scripts", 4, parse2Words),
+    0xe6: ("script_e6", 1, parseByte),
+    0xe7: ("script_e7", 0, None),
+    0xe8: ("script_call_bank01", 2, parseWord),
+    0xe9: ("script_call_arg", 3, parseWordWithByte),
+    0xea: ("jump_if_equal", 5, parseWordByteWord),
+    0xeb: ("jumptable", 0, None),
+    0xec: ("script_delay", 2, parseWord),
+    0xed: ("script_ed", 1, parseByte),
+    0xee: ("set_custom_func", 4, parse2Words),
+    0xef: ("clear_custom_func", 0, None),
+    0xf0: ("script_f0", 2, parseByte),
+    0xf1: ("script_f1", 2, parseByte),
+    0xf2: ("script_f2", 0, None),
+    0xf3: ("script_f3", 0, None),
+    0xf4: ("set_value", 3, parseWordWithByte),
+    0xf5: ("inc_value", 2, parseWord),
+    0xf6: ("dec_value", 2, parseWord),
+    0xf7: ("jump_if_flags", 5, parseWordByteWord),
+    0xf8: ("jump_if_not_flags", 5, parseWordByteWord),
+    0xf9: ("script_f9", 4, parseWord2Bytes),
+    0xfa: ("script_fa", 1, parseByte),
+    0xfb: ("script_fb", 1, parseByte),
+    0xfc: ("create_object", 6, parseAnimFC),
+    0xfd: ("script_fd", 1, parseByte),
+    0xfe: ("script_fe", 1, parseByte),
 }
 
 commandsWithByte = { 0xe6, 0xed, 0xf0, 0xf1, 0xfa, 0xfb, 0xfd, 0xfe }
@@ -155,7 +155,7 @@ for o in args.offsets:
         for k, v in addressLabels.items():
             addressLabels[k] = ".loop"
 
-    outStr = "Anim_{}:\n".format(o)
+    outStr = "Script_{}:\n".format(o)
     for cmdByte, cmdPos, args in parsedCommands:
         if cmdPos in addressLabels:
             outStr += addressLabels[cmdPos] + "\n"

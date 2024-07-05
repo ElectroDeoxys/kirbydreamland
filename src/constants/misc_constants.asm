@@ -50,3 +50,32 @@ DEF DEFAULT_MAX_HP EQU 6
 DEF MAX_SCORE EQU 99999
 ; maximum number of lives allowed
 DEF MAX_LIVES EQU 99
+
+	const_def
+	const OBJECT_SLOT_00 ; $0
+DEF OBJECT_GROUP_1_BEGIN EQU const_value
+	const OBJECT_SLOT_01 ; $1
+	const OBJECT_SLOT_02 ; $2
+	const OBJECT_SLOT_03 ; $3
+	const OBJECT_SLOT_04 ; $4
+	const OBJECT_SLOT_05 ; $5
+	const OBJECT_SLOT_06 ; $6
+	const OBJECT_SLOT_07 ; $7
+	const OBJECT_SLOT_08 ; $8
+	const OBJECT_SLOT_09 ; $9
+	const OBJECT_SLOT_10 ; $a
+	const OBJECT_SLOT_11 ; $b
+	const OBJECT_SLOT_12 ; $c
+DEF OBJECT_GROUP_1_END EQU const_value
+DEF OBJECT_GROUP_2_BEGIN EQU const_value
+	const OBJECT_SLOT_13 ; $d
+	const OBJECT_SLOT_14 ; $e
+DEF OBJECT_GROUP_2_END EQU const_value
+DEF OBJECT_GROUP_3_BEGIN EQU const_value
+	const OBJECT_SLOT_15 ; $f
+DEF OBJECT_GROUP_3_END EQU const_value
+DEF NUM_OBJECT_SLOTS EQU const_value
+
+; wd160 state
+DEF OBJECT_NOT_ACTIVE EQU 0
+DEF OBJECT_ACTIVE     EQU 1

@@ -2405,10 +2405,10 @@ Func_139b::
 	ld [rROMB0 + $100], a
 	ld a, [wd05c]
 	add $08
-	ld [wd0a0 + $1], a
+	ld [wObjectXCoords + $1], a
 	ld a, [wd05d]
 	add $08
-	ld [wd0d0 + $1], a
+	ld [wObjectYCoords + $1], a
 	ld de, $157a
 	ldh a, [hff92]
 	bit 5, a
@@ -4031,10 +4031,12 @@ Func_21bb:
 	ld [hl], a ; ret
 	ret
 
-Func_21ce::
-	ld hl, wd160
+; input:
+; - bc = object slot
+DestroyObject::
+	ld hl, wObjectActiveStates
 	add hl, bc
-	ld [hl], $00
+	ld [hl], OBJECT_NOT_ACTIVE
 	ret
 ; 0x21d5
 
@@ -4042,17 +4044,18 @@ SECTION "Home@21e6", ROM0[$21e6]
 
 ; input:
 ; - hl = ?
+; - de = ?
 ; - bc = ?
 Func_21e6::
 	push hl
-	ld hl, wd21a
+	ld hl, wObjectMotionScriptPtrs
 	add hl, bc
 	add hl, bc
 	ld a, e
 	ld [hli], a
 	ld [hl], d
 	pop de
-	ld hl, wd2ba
+	ld hl, wObjectGfxScriptPtrs
 	add hl, bc
 	add hl, bc
 	ld a, e
@@ -4123,7 +4126,7 @@ assert Data_1c000 == Data_3c000
 	pop af
 	bankswitch
 
-	call Clearwd160
+	call ClearObjects
 
 	xor a
 	ld [wd3e9], a
@@ -4166,7 +4169,7 @@ assert Data_1c000 == Data_3c000
 	jr nz, .asm_22c5
 	ld hl, $414e
 	lb de, $80, $80
-	call Func_2338
+	call CreateObject_Groups1And2
 	jr c, .asm_22dd
 .asm_22c5
 	call Func_3199
@@ -4217,11 +4220,11 @@ assert Data_1c000 == Data_3c000
 
 SECTION "Home@231e", ROM0[$231e]
 
-; clears wd160
-Clearwd160::
-	ld b, $10
-	ld hl, wd160
-	xor a
+; clears wObjectActiveStates
+ClearObjects::
+	ld b, NUM_OBJECT_SLOTS
+	ld hl, wObjectActiveStates
+	xor a ; OBJECT_NOT_ACTIVE
 .loop
 	ld [hli], a
 	dec b
@@ -4247,31 +4250,31 @@ Clearwd3c4::
 ; - d = ?
 ; - e = ?
 ; - hl = ?
-Func_2338:
-	ld c, 0
-	ld b, 13
-	jr Func_234e
+CreateObject_Groups1And2:
+	ld c, OBJECT_SLOT_00
+	ld b, OBJECT_GROUP_1_END
+	jr CreateObject
 
 ; input:
 ; - d = ?
 ; - e = ?
 ; - hl = ?
-Func_233e:
-	ld c, 1
-	ld b, 13
-	jr Func_234e
+CreateObject_Group1:
+	ld c, OBJECT_GROUP_1_BEGIN
+	ld b, OBJECT_GROUP_1_END
+	jr CreateObject
 
-Func_2344:
-	ld c, 13
-	ld b, 15
-	jr Func_234e
+CreateObject_Group2:
+	ld c, OBJECT_GROUP_2_BEGIN
+	ld b, OBJECT_GROUP_2_END
+	jr CreateObject
 
-Func_234a::
-	ld c, 15
-	ld b, 16
+CreateObject_Group3::
+	ld c, OBJECT_GROUP_3_BEGIN
+	ld b, OBJECT_GROUP_3_END
 ;	fallthrough
 
-Func_234e:
+CreateObject:
 	ld a, d
 	swap a
 	ld [wd3d6], a
@@ -4281,11 +4284,11 @@ Func_234e:
 	ld d, h
 	ld e, l
 
-	; find first non-zero entry in wd160
-	ld a, LOW(wd160)
+	; find first non-zero entry in wObjectActiveStates
+	ld a, LOW(wObjectActiveStates)
 	add c
 	ld l, a
-	ld h, HIGH(wd160)
+	ld h, HIGH(wObjectActiveStates)
 	jr nc, .loop
 	inc h
 .loop
@@ -4302,13 +4305,13 @@ Func_234e:
 .found_empty
 	push de
 	ld b, $00
-	ld a, $01
-	ld hl, wd160
+	ld a, OBJECT_ACTIVE
+	ld hl, wObjectActiveStates
 	add hl, bc
 	ld [hl], a
 
 	xor a
-	ld hl, wd0a0
+	ld hl, wObjectXCoords
 	add hl, bc
 	add hl, bc
 	add hl, bc
@@ -4324,7 +4327,7 @@ Func_234e:
 	adc $00
 	ld [hl], a
 
-	ld hl, wd0d0
+	ld hl, wObjectYCoords
 	add hl, bc
 	add hl, bc
 	add hl, bc
@@ -4350,7 +4353,7 @@ Func_23af::
 	bankswitch
 	ld a, [de]
 	inc de
-	ld hl, wd2ba
+	ld hl, wObjectGfxScriptPtrs
 	add hl, bc
 	add hl, bc
 	ld [hli], a
@@ -4360,7 +4363,7 @@ Func_23af::
 
 	ld a, [de]
 	inc de
-	ld hl, wd21a
+	ld hl, wObjectMotionScriptPtrs
 	add hl, bc
 	add hl, bc
 	ld [hli], a
@@ -4421,12 +4424,12 @@ Func_23af::
 	ld [hl], d
 ;	fallthrough
 Func_2419:
-	ld hl, wd170
+	ld hl, wObjectMotionScriptTimers
 	add hl, bc
-	ld [hl], $01
+	ld [hl], 1
 ;	fallthrough
 Func_241f::
-	ld hl, wAnimationDurations
+	ld hl, wObjectGfxScriptTimers
 	add hl, bc
 	ld [hl], 1
 
@@ -4439,7 +4442,7 @@ Func_241f::
 	call .Clear
 	ld hl, wd2da
 	call .Clear
-	ld hl, wd35a
+	ld hl, wObjectCustomFuncs
 ;	fallthrough
 .Clear:
 	add hl, bc
@@ -4449,58 +4452,58 @@ Func_241f::
 	xor a
 	ret
 
-Func_2447:
+DoCommonScriptCommand:
 	cp $ef
 	jp nc, .asm_253f
-	cp ANIMCMD_END
+	cp SCRIPT_END
 	jr nz, .jump_cmd
-	ld hl, wd160
+	ld hl, wObjectActiveStates
 	add hl, bc
 	xor a
 	ld [hl], a
 	dec a ; $ff
-	ld [wAnimationCommand], a
+	ld [wScriptCommand], a
 	ret
 
 .jump_cmd
-	cp ANIMCMD_JUMP
+	cp SCRIPT_JUMP_ABS
 	jr nz, .jump_relative_cmd
-	jp SetAnimationPtr
+	jp SetScriptPtr
 
 .jump_relative_cmd
-	cp ANIMCMD_JUMP_RELATIVE
+	cp SCRIPT_JUMP_REL
 	jr nz, .call_cmd
 	ld a, [hl]
 	ld d, $00
 	ld e, a
 	rlca
-	jr nc, .asm_246f
+	jr nc, .positive_offset
 	ld d, $ff
-.asm_246f
+.positive_offset
 	add hl, de
 	ld a, l
-	ld [wAnimationPtr + 0], a
+	ld [wScriptPtr + 0], a
 	ld a, h
-	ld [wAnimationPtr + 1], a
+	ld [wScriptPtr + 1], a
 	ret
 
 .call_cmd
-	cp ANIMCMD_CALL
-	jr nz, .anim_call_arg
+	cp SCRIPT_CALL
+	jr nz, .script_call_arg
 	ld a, [hli]
 	ld e, a
 	ld a, [hli]
 	ld d, a
 	ld a, l
-	ld [wAnimationPtr + 0], a
+	ld [wScriptPtr + 0], a
 	ld a, h
-	ld [wAnimationPtr + 1], a
+	ld [wScriptPtr + 1], a
 	ld h, d
 	ld l, e
-	jp .call_hl
+	jp .call_hl_bank01
 
-.anim_call_arg
-	cp ANIMCMD_CALL_ARG
+.script_call_arg
+	cp SCRIPT_CALL_ARG
 	jr nz, .condition_cmd
 	ld a, [hli]
 	ld e, a
@@ -4509,17 +4512,17 @@ Func_2447:
 	ld a, [hli]
 	push af
 	ld a, l
-	ld [wAnimationPtr + 0], a
+	ld [wScriptPtr + 0], a
 	ld a, h
-	ld [wAnimationPtr + 1], a
+	ld [wScriptPtr + 1], a
 	ld h, d
 	ld l, e
 	pop af
 	ld e, a
 
-.call_hl
+.call_hl_bank01
 	ld a, [wROMBank]
-	ld [wd3ef], a
+	ld [wScriptBank], a
 	push af
 	ld a, $01
 	bankswitch
@@ -4530,8 +4533,8 @@ Func_2447:
 	ret
 
 .condition_cmd
-	cp ANIMCMD_JPEQ
-	jr nz, .asm_24dc
+	cp SCRIPT_JUMP_IF_EQUAL
+	jr nz, .jumptable_cmd
 	ld a, [hli]
 	ld e, a
 	ld a, [hli]
@@ -4540,18 +4543,18 @@ Func_2447:
 	cp [hl]
 	jr nz, .skip_jump
 	inc hl
-	jp SetAnimationPtr
+	jp SetScriptPtr
 .skip_jump
 	ld de, $3
 	add hl, de
 	ld a, l
-	ld [wAnimationPtr + 0], a
+	ld [wScriptPtr + 0], a
 	ld a, h
-	ld [wAnimationPtr + 1], a
+	ld [wScriptPtr + 1], a
 	ret
 
-.asm_24dc
-	cp ANIMCMD_ANIM_TABLE
+.jumptable_cmd
+	cp SCRIPT_JUMPTABLE
 	jr nz, .asm_24ed
 	ld a, [hli]
 	ld e, a
@@ -4563,14 +4566,14 @@ Func_2447:
 	ld e, a
 	ld d, $00
 	add hl, de
-	jp SetAnimationPtr
+	jp SetScriptPtr
 
 .asm_24ed
-	cp ANIMCMD_ED
-	jr nz, .asm_2505
+	cp SCRIPT_ED
+	jr nz, .set_custom_func_cmd
 	ld d, h
 	ld e, l
-	ld hl, wd160
+	ld hl, wObjectActiveStates
 	add hl, bc
 	ld a, [de]
 	inc a
@@ -4578,17 +4581,17 @@ Func_2447:
 	inc de
 	ld a, [de] ; useless
 	ld a, e
-	ld [wAnimationPtr + 0], a
+	ld [wScriptPtr + 0], a
 	ld a, d
-	ld [wAnimationPtr + 1], a
+	ld [wScriptPtr + 1], a
 	ret
 
-.asm_2505
-	cp ANIMCMD_EE
-	jr nz, .asm_252a
+.set_custom_func_cmd
+	cp SCRIPT_SET_CUSTOM_FUNC
+	jr nz, .clear_custom_func_cmd
 	ld d, h
 	ld e, l
-	ld hl, wd35a
+	ld hl, wObjectCustomFuncs
 	add hl, bc
 	add hl, bc
 	ld a, [de]
@@ -4607,20 +4610,20 @@ Func_2447:
 	ld [hl], a
 	inc de
 	ld a, e
-	ld [wAnimationPtr + 0], a
+	ld [wScriptPtr + 0], a
 	ld a, d
-	ld [wAnimationPtr + 1], a
+	ld [wScriptPtr + 1], a
 	ret
 
-.asm_252a
-	cp ANIMCMD_EF
+.clear_custom_func_cmd
+	cp SCRIPT_CLEAR_CUSTOM_FUNC
 	jr nz, .asm_253f
 	ld a, l
-	ld [wAnimationPtr + 0], a
+	ld [wScriptPtr + 0], a
 	ld a, h
-	ld [wAnimationPtr + 1], a
+	ld [wScriptPtr + 1], a
 	xor a
-	ld hl, wd35a
+	ld hl, wObjectCustomFuncs
 	add hl, bc
 	add hl, bc
 	ld [hli], a
@@ -4628,11 +4631,11 @@ Func_2447:
 	ret
 
 .asm_253f
-	cp ANIMCMD_F0
+	cp SCRIPT_F0
 	jr nz, .asm_2568
 	ld d, h
 	ld e, l
-	ld hl, wd0a0
+	ld hl, wObjectXCoords
 	add hl, bc
 	add hl, bc
 	add hl, bc
@@ -4642,7 +4645,7 @@ Func_2447:
 	ld [hli], a
 	ld [hl], $00
 	inc de
-	ld hl, wd0d0
+	ld hl, wObjectYCoords
 	add hl, bc
 	add hl, bc
 	add hl, bc
@@ -4653,18 +4656,18 @@ Func_2447:
 	ld [hl], $00
 	inc de
 	ld a, e
-	ld [wAnimationPtr + 0], a
+	ld [wScriptPtr + 0], a
 	ld a, d
-	ld [wAnimationPtr + 1], a
+	ld [wScriptPtr + 1], a
 	ret
 
 .asm_2568
-	cp ANIMCMD_F1
+	cp SCRIPT_F1
 	jr nz, .asm_25a3
 	push bc
 	ld d, h
 	ld e, l
-	ld hl, wd0a0 + $1
+	ld hl, wObjectXCoords + $1
 	add hl, bc
 	add hl, bc
 	add hl, bc
@@ -4682,7 +4685,7 @@ Func_2447:
 	inc de
 	pop bc
 	push bc
-	ld hl, wd0d0 + $1
+	ld hl, wObjectYCoords + $1
 	add hl, bc
 	add hl, bc
 	add hl, bc
@@ -4699,19 +4702,19 @@ Func_2447:
 	ld [hl], a
 	inc de
 	ld a, e
-	ld [wAnimationPtr + 0], a
+	ld [wScriptPtr + 0], a
 	ld a, d
-	ld [wAnimationPtr + 1], a
+	ld [wScriptPtr + 1], a
 	pop bc
 	ret
 
 .asm_25a3
-	cp ANIMCMD_F2
+	cp SCRIPT_F2
 	jr nz, .asm_260c
 	ld a, l
-	ld [wAnimationPtr + 0], a
+	ld [wScriptPtr + 0], a
 	ld a, h
-	ld [wAnimationPtr + 1], a
+	ld [wScriptPtr + 1], a
 	ld hl, wd190
 	add hl, bc
 	set 0, [hl]
@@ -4730,7 +4733,7 @@ Func_2447:
 	or e
 	ld l, a
 	push hl
-	ld hl, wd0a0 + $1
+	ld hl, wObjectXCoords + $1
 	add hl, bc
 	add hl, bc
 	add hl, bc
@@ -4740,7 +4743,7 @@ Func_2447:
 	add hl, de
 	ld d, h
 	ld e, l
-	ld hl, wd0a0 + $1
+	ld hl, wObjectXCoords + $1
 	add hl, bc
 	add hl, bc
 	add hl, bc
@@ -4762,7 +4765,7 @@ Func_2447:
 	or e
 	ld l, a
 	push hl
-	ld hl, wd0d0 + $1
+	ld hl, wObjectYCoords + $1
 	add hl, bc
 	add hl, bc
 	add hl, bc
@@ -4772,7 +4775,7 @@ Func_2447:
 	add hl, de
 	ld d, h
 	ld e, l
-	ld hl, wd0d0 + $1
+	ld hl, wObjectYCoords + $1
 	add hl, bc
 	add hl, bc
 	add hl, bc
@@ -4782,19 +4785,19 @@ Func_2447:
 	ret
 
 .asm_260c
-	cp ANIMCMD_F3
+	cp SCRIPT_F3
 	jr nz, .set_cmd
 	ld a, l
-	ld [wAnimationPtr + 0], a
+	ld [wScriptPtr + 0], a
 	ld a, h
-	ld [wAnimationPtr + 1], a
+	ld [wScriptPtr + 1], a
 	ld hl, wd190
 	add hl, bc
 	res 0, [hl]
 	ld hl, wd140
 	add hl, bc
 	ld a, [hl]
-	ld hl, wd0a0 + $1
+	ld hl, wObjectXCoords + $1
 	add hl, bc
 	add hl, bc
 	add hl, bc
@@ -4802,7 +4805,7 @@ Func_2447:
 	ld hl, wd150
 	add hl, bc
 	ld a, [hl]
-	ld hl, wd0d0 + $1
+	ld hl, wObjectYCoords + $1
 	add hl, bc
 	add hl, bc
 	add hl, bc
@@ -4810,7 +4813,7 @@ Func_2447:
 	ret
 
 .set_cmd
-	cp ANIMCMD_SET
+	cp SCRIPT_SET_VALUE
 	jr nz, .inc_cmd
 	ld a, [hli]
 	ld e, a
@@ -4819,45 +4822,45 @@ Func_2447:
 	ld a, [hli]
 	ld [de], a
 	ld a, l
-	ld [wAnimationPtr + 0], a
+	ld [wScriptPtr + 0], a
 	ld a, h
-	ld [wAnimationPtr + 1], a
+	ld [wScriptPtr + 1], a
 	ret
 
 .inc_cmd
-	cp ANIMCMD_INC
+	cp SCRIPT_INC_VALUE
 	jr nz, .dec_cmd
 	ld a, [hli]
 	ld e, a
 	ld a, [hli]
 	ld d, a
 	ld a, l
-	ld [wAnimationPtr + 0], a
+	ld [wScriptPtr + 0], a
 	ld a, h
-	ld [wAnimationPtr + 1], a
+	ld [wScriptPtr + 1], a
 	ld h, d
 	ld l, e
 	inc [hl]
 	ret
 
 .dec_cmd
-	cp ANIMCMD_DEC
+	cp SCRIPT_DEC_VALUE
 	jr nz, .jp_if_cmd
 	ld a, [hli]
 	ld e, a
 	ld a, [hli]
 	ld d, a
 	ld a, l
-	ld [wAnimationPtr + 0], a
+	ld [wScriptPtr + 0], a
 	ld a, h
-	ld [wAnimationPtr + 1], a
+	ld [wScriptPtr + 1], a
 	ld h, d
 	ld l, e
 	dec [hl]
 	ret
 
 .jp_if_cmd
-	cp ANIMCMD_JP_IF
+	cp SCRIPT_JUMP_IF_FLAGS
 	jr nz, .asm_2699
 	ld a, [hli]
 	ld e, a
@@ -4874,22 +4877,22 @@ Func_2447:
 	ld a, [hli]
 	ld d, a
 	ld a, e
-	ld [wAnimationPtr + 0], a
+	ld [wScriptPtr + 0], a
 	ld a, d
-	ld [wAnimationPtr + 1], a
+	ld [wScriptPtr + 1], a
 	ret
 .asm_268d
 	inc hl
 	inc hl
 	inc hl
 	ld a, l
-	ld [wAnimationPtr + 0], a
+	ld [wScriptPtr + 0], a
 	ld a, h
-	ld [wAnimationPtr + 1], a
+	ld [wScriptPtr + 1], a
 	ret
 
 .asm_2699
-	cp ANIMCMD_JP_IFNOT
+	cp SCRIPT_JUMP_IF_NOT_FLAGS
 	jr nz, .asm_26a8
 	ld a, [hli]
 	ld e, a
@@ -4902,7 +4905,7 @@ Func_2447:
 	jr .asm_267f
 
 .asm_26a8
-	cp ANIMCMD_F9
+	cp SCRIPT_F9
 	jr nz, .asm_26bf
 	ld a, [hli]
 	ld e, a
@@ -4915,30 +4918,30 @@ Func_2447:
 	ld [de], a
 	inc hl
 	ld a, l
-	ld [wAnimationPtr + 0], a
+	ld [wScriptPtr + 0], a
 	ld a, h
-	ld [wAnimationPtr + 1], a
+	ld [wScriptPtr + 1], a
 	ret
 
 .asm_26bf
-	cp ANIMCMD_FA
+	cp SCRIPT_FA
 	jr nz, .asm_26d8
 	call Func_1d01
 	cp [hl]
 	inc hl
 	jr nc, .asm_26cd
-	jp SetAnimationPtr
+	jp SetScriptPtr
 .asm_26cd
 	inc hl
 	inc hl
 	ld a, l
-	ld [wAnimationPtr + 0], a
+	ld [wScriptPtr + 0], a
 	ld a, h
-	ld [wAnimationPtr + 1], a
+	ld [wScriptPtr + 1], a
 	ret
 
 .asm_26d8
-	cp ANIMCMD_FB
+	cp SCRIPT_FB
 	jr nz, .asm_26e4
 	call Func_1d01
 	and [hl]
@@ -4946,7 +4949,7 @@ Func_2447:
 	jp .asm_24e5
 
 .asm_26e4
-	cp ANIMCMD_FC
+	cp SCRIPT_CREATE_OBJECT
 	jr nz, .done
 	push hl
 	ld a, [wd3f0]
@@ -4960,9 +4963,9 @@ Func_2447:
 	ld de, $6
 	add hl, de
 	ld a, l
-	ld [wAnimationPtr + 0], a
+	ld [wScriptPtr + 0], a
 	ld a, h
-	ld [wAnimationPtr + 1], a
+	ld [wScriptPtr + 1], a
 
 .done
 	ret
@@ -4970,11 +4973,11 @@ Func_2447:
 .Func_2708:
 	push bc
 	lb de, $0, $0
-	call Func_233e
-	jr nc, .asm_2713
+	call CreateObject_Group1
+	jr nc, .created
 	pop bc
 	ret
-.asm_2713
+.created
 	ld d, b
 	ld e, c
 	pop bc
@@ -5000,7 +5003,7 @@ Func_2447:
 	ld hl, wd140
 	add hl, de
 	ld [hl], a
-	ld hl, wd0a0 + $1
+	ld hl, wObjectXCoords + $1
 	add hl, de
 	add hl, de
 	add hl, de
@@ -5012,7 +5015,7 @@ Func_2447:
 	ld hl, wd150
 	add hl, de
 	ld [hl], a
-	ld hl, wd0d0 + $1
+	ld hl, wObjectYCoords + $1
 	add hl, de
 	add hl, de
 	add hl, de
@@ -5020,9 +5023,9 @@ Func_2447:
 	ld [hl], $00
 	ret
 .asm_2755
-	ld hl, wd0a0
+	ld hl, wObjectXCoords
 	call .Func_2771
-	ld hl, wd0d0
+	ld hl, wObjectYCoords
 	call .Func_2771
 	ld hl, wd140
 	call .Func_276a
@@ -5057,16 +5060,16 @@ Func_2447:
 	pop bc
 	ret
 
-SetAnimationPtr:
+SetScriptPtr:
 	ld a, [hli]
-	ld [wAnimationPtr + 0], a
+	ld [wScriptPtr + 0], a
 	ld a, [hl]
-	ld [wAnimationPtr + 1], a
+	ld [wScriptPtr + 1], a
 	ret
 
-Func_278d:
+DoMotionScriptCommand:
 	inc hl
-	cp ANIMCMD_FD
+	cp SCRIPT_FD
 	jr nz, .asm_27a4
 	call Func_1d01
 	cp [hl]
@@ -5075,13 +5078,13 @@ Func_278d:
 	inc hl
 	inc hl
 	ld a, l
-	ld [wAnimationPtr + 0], a
+	ld [wScriptPtr + 0], a
 	ld a, h
-	ld [wAnimationPtr + 1], a
+	ld [wScriptPtr + 1], a
 	ret
 
 .asm_27a4
-	cp ANIMCMD_FE
+	cp SCRIPT_FE
 	jr nz, .asm_27c6
 	ld d, [hl]
 	push de
@@ -5101,42 +5104,42 @@ Func_278d:
 	add d
 	add d
 	ld d, a
-	ld a, [wAnimationPtr + 0]
+	ld a, [wScriptPtr + 0]
 	add d
 	jr .asm_27d5
 
 .asm_27c6
-	cp ANIMCMD_E3
+	cp SCRIPT_E3
 	jr nz, .asm_27e0
 .asm_27ca
 	push hl
 	ld hl, wd23a
 	add hl, bc
 	add hl, bc
-	ld a, [wAnimationPtr + 0]
+	ld a, [wScriptPtr + 0]
 	add $03
 .asm_27d5
 	ld [hli], a
-	ld a, [wAnimationPtr + 1]
+	ld a, [wScriptPtr + 1]
 	adc $00
 	ld [hl], a
 	pop hl
-	jp SetAnimationPtr
+	jp SetScriptPtr
 
 .asm_27e0
-	cp ANIMCMD_E4
+	cp SCRIPT_E4
 	jr nz, .asm_27ec
 	ld hl, wd23a
 	add hl, bc
 	add hl, bc
-	jp SetAnimationPtr
+	jp SetScriptPtr
 
 .asm_27ec
-	cp ANIMCMD_E5
+	cp SCRIPT_SET_SCRIPTS
 	jr nz, .asm_2813
 	ld d, h
 	ld e, l
-	ld hl, wd2ba
+	ld hl, wObjectGfxScriptPtrs
 	add hl, bc
 	add hl, bc
 	ld a, [de]
@@ -5146,20 +5149,20 @@ Func_278d:
 	ld [hl], a
 	inc de
 	ld a, [de]
-	ld [wAnimationPtr + 0], a
+	ld [wScriptPtr + 0], a
 	inc de
 	ld a, [de]
-	ld [wAnimationPtr + 1], a
-	ld hl, wAnimationDurations
+	ld [wScriptPtr + 1], a
+	ld hl, wObjectGfxScriptTimers
 	add hl, bc
 	ld [hl], 1
-	ld hl, wd170
+	ld hl, wObjectMotionScriptTimers
 	add hl, bc
-	ld [hl], $01
+	ld [hl], 1
 	ret
 
 .asm_2813
-	cp ANIMCMD_E6
+	cp SCRIPT_E6
 	jr nz, .asm_283e
 	ld a, [hli]
 	push hl
@@ -5183,14 +5186,14 @@ Func_278d:
 	pop de
 	ld a, e
 	ld [hli], a
-	ld [wAnimationPtr + 0], a
+	ld [wScriptPtr + 0], a
 	ld a, d
 	ld [hl], a
-	ld [wAnimationPtr + 1], a
+	ld [wScriptPtr + 1], a
 	ret
 
 .asm_283e
-	cp ANIMCMD_E7
+	cp SCRIPT_E7
 	jr nz, .asm_286b
 	push hl
 	ld hl, wd2aa
@@ -5209,24 +5212,24 @@ Func_278d:
 	ld l, e
 	add hl, bc
 	add hl, bc
-	call SetAnimationPtr
+	call SetScriptPtr
 	pop hl
 	ret
 .asm_2861
 	pop hl
 	ld a, l
-	ld [wAnimationPtr + 0], a
+	ld [wScriptPtr + 0], a
 	ld a, h
-	ld [wAnimationPtr + 1], a
+	ld [wScriptPtr + 1], a
 	ret
 
 .asm_286b
-	call Func_2447
+	call DoCommonScriptCommand
 	ret
 
-Func_286f:
+DoGfxScriptCommand:
 	inc hl
-	cp ANIMCMD_FD
+	cp SCRIPT_FD
 	jr nz, .asm_2886
 	call Func_1d01
 	cp [hl]
@@ -5235,13 +5238,13 @@ Func_286f:
 	inc hl
 	inc hl
 	ld a, l
-	ld [wAnimationPtr + 0], a
+	ld [wScriptPtr + 0], a
 	ld a, h
-	ld [wAnimationPtr + 1], a
+	ld [wScriptPtr + 1], a
 	ret
 
 .asm_2886
-	cp ANIMCMD_FE
+	cp SCRIPT_FE
 	jr nz, .asm_28a8
 	ld d, [hl]
 	push de
@@ -5261,43 +5264,46 @@ Func_286f:
 	add d
 	add d
 	ld d, a
-	ld a, [wAnimationPtr + 0]
+	ld a, [wScriptPtr + 0]
 	add d
 	jr .asm_28b7
+
 .asm_28a8
-	cp ANIMCMD_E3
+	cp SCRIPT_E3
 	jr nz, .asm_28c2
 .asm_28ac
 	push hl
 	ld hl, wd2da
 	add hl, bc
 	add hl, bc
-	ld a, [wAnimationPtr + 0]
+	ld a, [wScriptPtr + 0]
 	add $03
 .asm_28b7
 	ld [hli], a
-	ld a, [wAnimationPtr + 1]
+	ld a, [wScriptPtr + 1]
 	adc $00
 	ld [hl], a
 	pop hl
-	jp SetAnimationPtr
+	jp SetScriptPtr
+
 .asm_28c2
-	cp ANIMCMD_E4
+	cp SCRIPT_E4
 	jr nz, .asm_28ce
 	ld hl, wd2da
 	add hl, bc
 	add hl, bc
-	jp SetAnimationPtr
+	jp SetScriptPtr
+
 .asm_28ce
-	cp ANIMCMD_E5
+	cp SCRIPT_SET_SCRIPTS
 	jr nz, .asm_28f3
 	ld a, [hli]
-	ld [wAnimationPtr + 0], a
+	ld [wScriptPtr + 0], a
 	ld a, [hli]
-	ld [wAnimationPtr + 1], a
+	ld [wScriptPtr + 1], a
 	ld d, h
 	ld e, l
-	ld hl, wd21a
+	ld hl, wObjectMotionScriptPtrs
 	add hl, bc
 	add hl, bc
 	ld a, [de]
@@ -5305,15 +5311,16 @@ Func_286f:
 	inc de
 	ld a, [de]
 	ld [hl], a
-	ld hl, wAnimationDurations
+	ld hl, wObjectGfxScriptTimers
 	add hl, bc
-	ld [hl], $01
-	ld hl, wd170
+	ld [hl], 1
+	ld hl, wObjectMotionScriptTimers
 	add hl, bc
-	ld [hl], $01
+	ld [hl], 1
 	ret
+
 .asm_28f3
-	cp ANIMCMD_E6
+	cp SCRIPT_E6
 	jr nz, .asm_291e
 	ld a, [hli]
 	push hl
@@ -5337,13 +5344,14 @@ Func_286f:
 	pop de
 	ld a, e
 	ld [hli], a
-	ld [wAnimationPtr + 0], a
+	ld [wScriptPtr + 0], a
 	ld a, d
 	ld [hl], a
-	ld [wAnimationPtr + 1], a
+	ld [wScriptPtr + 1], a
 	ret
+
 .asm_291e
-	cp ANIMCMD_E7
+	cp SCRIPT_E7
 	jr nz, .asm_294b
 	push hl
 	ld hl, wd34a
@@ -5362,29 +5370,33 @@ Func_286f:
 	ld l, e
 	add hl, bc
 	add hl, bc
-	call SetAnimationPtr
+	call SetScriptPtr
 	pop hl
 	ret
 .asm_2941
 	pop hl
 	ld a, l
-	ld [wAnimationPtr + 0], a
+	ld [wScriptPtr + 0], a
 	ld a, h
-	ld [wAnimationPtr + 1], a
-	ret
-.asm_294b
-	call Func_2447
+	ld [wScriptPtr + 1], a
 	ret
 
+.asm_294b
+	call DoCommonScriptCommand
+	ret
+
+; if $70 <= a < $90, then return
+; corresponding entry in Data_2977
+; otherwise, return a << 5
 ; input:
-; - a = ?
+; - a = either entry in Data_2977 or a velocity value
 ; output:
-; - de = ?
-Func_294f:
+; - de = velocity
+SetObjectVelocity:
 	cp $70
-	jr c, .divide
+	jr c, .use_input_value
 	cp $90
-	jr nc, .divide
+	jr nc, .use_input_value
 	; $70 <= a < $90
 	sub $70
 	ld hl, Data_2977
@@ -5392,15 +5404,15 @@ Func_294f:
 	add l
 	ld l, a
 	ld a, h
-	adc $00
+	adc 0
 	ld h, a
 	ld a, [hli]
 	ld e, a
 	ld d, [hl]
 	ret
 
-.divide
-	; a < $70 && a >= $90
+.use_input_value
+	; a < $70 || a >= $90
 	ld d, a
 	ld e, $00
 	sra d
@@ -5467,6 +5479,7 @@ Func_29b7:
 .asm_29d4
 	call Func_2ce5
 	ret c
+
 	ld a, [wExtraGameEnabled]
 	and a
 	ld a, $04
@@ -5474,95 +5487,103 @@ Func_29b7:
 	ld a, $0c
 .asm_29e2
 	bankswitch
-	ld hl, wd170
+	ld hl, wObjectMotionScriptTimers
 	add hl, bc
 	ld a, [hl]
 	and a
-	jp z, .asm_2a80
-	dec a
+	jp z, .asm_2a80 ; inactive
+	dec a ; countdown
 	jr z, .asm_29f8
 	ld [hl], a
 	jp .asm_2a80
 .asm_29f8
-	ld hl, wd21a
+	ld hl, wObjectMotionScriptPtrs
 	add hl, bc
 	add hl, bc
 	ld a, [hli]
-	ld [wAnimationPtr + 0], a
+	ld [wScriptPtr + 0], a
 	ld a, [hl]
-	ld [wAnimationPtr + 1], a
+	ld [wScriptPtr + 1], a
 .asm_2a05
-	ld a, [wAnimationPtr + 0]
+	ld a, [wScriptPtr + 0]
 	ld l, a
-	ld a, [wAnimationPtr + 1]
+	ld a, [wScriptPtr + 1]
 	ld h, a
 	ld a, [hl]
-	ld [wAnimationCommand], a
-	cp $e0
-	jr c, .asm_2a3e
-	cp $ec
+	ld [wScriptCommand], a
+	cp SCRIPT_COMMANDS_BEGIN
+	jr c, .set_velocities
+	cp SCRIPT_DELAY
 	jr nz, .asm_2a2b
 	inc hl
 	ld a, [hli]
 	ld d, a
 	ld a, l
-	ld [wAnimationPtr + 0], a
+	ld [wScriptPtr + 0], a
 	ld a, h
-	ld [wAnimationPtr + 1], a
-	ld hl, wd170
+	ld [wScriptPtr + 1], a
+	ld hl, wObjectMotionScriptTimers
 	add hl, bc
 	ld [hl], d
 	jr .asm_2a73
 .asm_2a2b
-	call Func_278d
-	ld a, [wAnimationCommand]
+	call DoMotionScriptCommand
+	ld a, [wScriptCommand]
 	cp $ff
 	jr nz, .asm_2a05
 	ld a, $01
 	bankswitch
 	ret
-.asm_2a3e
-	ld a, [wAnimationCommand]
-	ld hl, wd170
+
+.set_velocities
+	ld a, [wScriptCommand]
+	ld hl, wObjectMotionScriptTimers
 	add hl, bc
 	ld [hl], a
-	ld a, [wAnimationPtr + 0]
+	ld a, [wScriptPtr + 0]
 	ld l, a
-	ld a, [wAnimationPtr + 1]
+	ld a, [wScriptPtr + 1]
 	ld h, a
 	inc hl
+
+	; set x velocity
 	ld a, [hli]
 	push hl
-	call Func_294f
-	ld hl, wd100
+	call SetObjectVelocity
+	ld hl, wObjectXVels
 	add hl, bc
 	add hl, bc
 	ld [hl], e
 	inc hl
 	ld [hl], d
 	pop hl
+
+	; set y velocity
 	ld a, [hli]
 	push hl
-	call Func_294f
-	ld hl, wd120
+	call SetObjectVelocity
+	ld hl, wObjectYVels
 	add hl, bc
 	add hl, bc
 	ld [hl], e
 	inc hl
 	ld [hl], d
 	pop hl
+
 	ld a, l
-	ld [wAnimationPtr + 0], a
+	ld [wScriptPtr + 0], a
 	ld a, h
-	ld [wAnimationPtr + 1], a
+	ld [wScriptPtr + 1], a
+
 .asm_2a73
-	ld a, [wAnimationPtr + 0]
-	ld hl, wd21a
+	ld a, [wScriptPtr + 0]
+	ld hl, wObjectMotionScriptPtrs
 	add hl, bc
 	add hl, bc
 	ld [hli], a
-	ld a, [wAnimationPtr + 1]
+	ld a, [wScriptPtr + 1]
 	ld [hl], a
+
 .asm_2a80
 	ld a, [wExtraGameEnabled]
 	and a
@@ -5571,66 +5592,66 @@ Func_29b7:
 	ld a, $09
 .asm_2a8a
 	bankswitch
-	ld hl, wAnimationDurations
+	ld hl, wObjectGfxScriptTimers
 	add hl, bc
 	ld a, [hl]
 	and a
-	ret z
-	dec a
-	jr z, .asm_2a9c
+	ret z ; inactive
+	dec a ; countdown
+	jr z, .read_command
 	ld [hl], a
 	ret
-.asm_2a9c
-	ld hl, wd2ba
+.read_command
+	ld hl, wObjectGfxScriptPtrs
 	add hl, bc
 	add hl, bc
 	ld a, [hli]
-	ld [wAnimationPtr + 0], a
+	ld [wScriptPtr + 0], a
 	ld a, [hl]
-	ld [wAnimationPtr + 1], a
+	ld [wScriptPtr + 1], a
 .asm_2aa9
-	ld a, [wAnimationPtr + 0]
+	ld a, [wScriptPtr + 0]
 	ld l, a
-	ld a, [wAnimationPtr + 1]
+	ld a, [wScriptPtr + 1]
 	ld h, a
 	ld a, [hl]
-	ld [wAnimationCommand], a
-	cp $e0
+	ld [wScriptCommand], a
+	cp SCRIPT_COMMANDS_BEGIN
 	jr c, .duration
-	cp ANIMCMD_DELAY
+	cp SCRIPT_DELAY
 	jr nz, .read_cmd
 	inc hl
 	ld a, [hli]
 	ld d, a
 	ld a, l
-	ld [wAnimationPtr + 0], a
+	ld [wScriptPtr + 0], a
 	ld a, h
-	ld [wAnimationPtr + 1], a
-	ld hl, wAnimationDurations
+	ld [wScriptPtr + 1], a
+	ld hl, wObjectGfxScriptTimers
 	add hl, bc
 	ld [hl], d
 	jr .asm_2b18
 .read_cmd
-	call Func_286f
-	ld a, [wAnimationCommand]
+	call DoGfxScriptCommand
+	ld a, [wScriptCommand]
 	cp $ff
 	ret z ; animation ended
 	jr .asm_2aa9
 
 .duration
-	ld a, [wAnimationCommand]
-	ld hl, wAnimationDurations
+	ld a, [wScriptCommand]
+	ld hl, wObjectGfxScriptTimers
 	add hl, bc
 	ld [hl], a
-	ld a, [wAnimationPtr + 0]
+	ld a, [wScriptPtr + 0]
 	ld l, a
-	ld a, [wAnimationPtr + 1]
+	ld a, [wScriptPtr + 1]
 	ld h, a
 	inc hl
 	ld a, l
-	ld [wAnimationPtr + 0], a
+	ld [wScriptPtr + 0], a
 	ld a, h
-	ld [wAnimationPtr + 1], a
+	ld [wScriptPtr + 1], a
 	inc hl
 	ld a, [hl]
 	cp $ff
@@ -5647,23 +5668,23 @@ Func_29b7:
 	ld a, [de]
 	ld [hl], a
 .asm_2b06
-	ld a, [wAnimationPtr + 0]
+	ld a, [wScriptPtr + 0]
 	ld l, a
-	ld a, [wAnimationPtr + 1]
+	ld a, [wScriptPtr + 1]
 	ld h, a
 	inc hl
 	inc hl
 	ld a, l
-	ld [wAnimationPtr + 0], a
+	ld [wScriptPtr + 0], a
 	ld a, h
-	ld [wAnimationPtr + 1], a
+	ld [wScriptPtr + 1], a
 .asm_2b18
-	ld a, [wAnimationPtr + 0]
-	ld hl, wd2ba
+	ld a, [wScriptPtr + 0]
+	ld hl, wObjectGfxScriptPtrs
 	add hl, bc
 	add hl, bc
 	ld [hli], a
-	ld a, [wAnimationPtr + 1]
+	ld a, [wScriptPtr + 1]
 	ld [hl], a
 	ret
 
@@ -5680,21 +5701,23 @@ Func_2b26:
 	jp nz, .asm_2b8b
 	call Func_2ce5
 	jp c, .asm_2b8b
-	ld de, wd0a0
-	ld hl, wd100
-	call Func_2d0d
+
+	ld de, wObjectXCoords
+	ld hl, wObjectXVels
+	call ApplyObjectVelocity
+
 	ld hl, hff91
 	bit 7, [hl]
-	jr z, .asm_2b82
+	jr z, .y_velocity
 	ld hl, wd190
 	add hl, bc
 	bit 0, [hl]
-	jr z, .asm_2b82
+	jr z, .y_velocity
 	ld a, [wd3e3]
 	ld e, a
 	ld a, [wd3e4]
 	ld d, a
-	ld hl, wd0a0 + $1
+	ld hl, wObjectXCoords + $1
 	add hl, bc
 	add hl, bc
 	add hl, bc
@@ -5702,7 +5725,7 @@ Func_2b26:
 	sub e
 	ld a, [hl]
 	sbc d
-	jr c, .asm_2b82
+	jr c, .y_velocity
 	bit 7, [hl]
 	jr nz, .asm_2b7b
 	dec hl
@@ -5721,10 +5744,12 @@ Func_2b26:
 	adc d
 .asm_2b81
 	ld [hl], a
-.asm_2b82
-	ld de, wd0d0
-	ld hl, wd120
-	call Func_2d0d
+
+.y_velocity
+	ld de, wObjectYCoords
+	ld hl, wObjectYVels
+	call ApplyObjectVelocity
+
 .asm_2b8b
 	ld hl, wd3cc
 	bit 0, [hl]
@@ -5736,7 +5761,7 @@ Func_2b26:
 	ld hl, hff91
 	bit 7, [hl]
 	jr nz, .asm_2bca
-	ld hl, wd0a0 + $1
+	ld hl, wObjectXCoords + $1
 	add hl, bc
 	add hl, bc
 	add hl, bc
@@ -5761,13 +5786,13 @@ Func_2b26:
 	jr z, .asm_2bca
 	jr c, .asm_2bca
 .asm_2bc7
-	jp Func_21ce
+	jp DestroyObject
 .asm_2bca
 	ld hl, wd190
 	add hl, bc
 	bit 0, [hl]
 	jr z, .asm_2c18
-	ld hl, wd0d0 + $1
+	ld hl, wObjectYCoords + $1
 	add hl, bc
 	add hl, bc
 	add hl, bc
@@ -5793,7 +5818,7 @@ Func_2b26:
 	jr nc, .asm_2bc7
 	jr .asm_2c18
 .asm_2bf9
-	ld hl, wd0a0 + $1
+	ld hl, wObjectXCoords + $1
 	add hl, bc
 	add hl, bc
 	add hl, bc
@@ -5806,7 +5831,7 @@ Func_2b26:
 	jr z, .asm_2c0e
 	ld d, $aa
 .asm_2c0e
-	ld hl, wd0d0 + $1
+	ld hl, wObjectYCoords + $1
 	add hl, bc
 	add hl, bc
 	add hl, bc
@@ -5829,15 +5854,17 @@ Func_2b26:
 	and a
 	jr z, .asm_2c5b
 	cp $06
-	jr nz, .asm_2c4d
-	ld hl, wd120
+	jr nz, .zero_y_velocity
+	ld hl, wObjectYVels
 	add hl, bc
 	add hl, bc
 	ld [hl], $66
 	inc hl
 	xor a
 	ld [hl], a
-	ld hl, wd100
+
+; zero x velocity
+	ld hl, wObjectXVels
 	add hl, bc
 	add hl, bc
 	ld [hli], a
@@ -5846,8 +5873,9 @@ Func_2b26:
 	add hl, bc
 	set 7, [hl]
 	jr .asm_2c5b
-.asm_2c4d
-	ld hl, wd120
+
+.zero_y_velocity
+	ld hl, wObjectYVels
 	add hl, bc
 	add hl, bc
 	xor a
@@ -5966,7 +5994,13 @@ Func_2ce5:
 	xor a
 	ret
 
-Func_2d0d:
+; adds the bc-th word (velocity) in [hl]
+; to the bc-th 3-byte value (coordinate) in [de]
+; input:
+; - hl = object coordinates
+; - de = object velocities
+; - bc = object slot
+ApplyObjectVelocity:
 	push hl
 	ld h, d
 	ld l, e
@@ -5989,9 +6023,9 @@ Func_2d0d:
 	inc de
 	ld a, $00
 	bit 7, [hl]
-	jr z, .asm_2d28
-	dec a
-.asm_2d28
+	jr z, .positive
+	dec a ; $ff
+.positive
 	ld h, a
 	ld a, [de]
 	adc h
@@ -6018,7 +6052,7 @@ Func_2d2d:
 	ld b, a
 	ld [wd3db], a
 	pop de
-	ld hl, wd0a0 + $1
+	ld hl, wObjectXCoords + $1
 	add hl, de
 	add hl, de
 	add hl, de
@@ -6099,7 +6133,7 @@ Func_2d2d:
 	or d
 	ld b, a
 	pop de
-	ld hl, wd0d0 + $1
+	ld hl, wObjectYCoords + $1
 	add hl, de
 	add hl, de
 	add hl, de
@@ -6135,7 +6169,7 @@ Func_2d2d:
 	ret
 
 Func_2deb:
-	ld hl, wd0a0 + $1
+	ld hl, wObjectXCoords + $1
 	add hl, de
 	add hl, de
 	add hl, de
@@ -6143,7 +6177,7 @@ Func_2deb:
 	ld hl, wd140
 	add hl, de
 	ld [hl], b
-	ld hl, wd0d0 + $1
+	ld hl, wObjectYCoords + $1
 	add hl, de
 	add hl, de
 	add hl, de
@@ -6153,27 +6187,29 @@ Func_2deb:
 	ld [hl], c
 	ret
 
+; adds 36 to the y velocity of the bc-th object
+; caps this velocity to 640
 Func_2e04:
-	ld hl, wd120
+	ld hl, wObjectYVels
 	add hl, bc
 	add hl, bc
 	ld a, [hl]
-	add $24
+	add 36
 	ld [hli], a
-	jr nc, .asm_2e10
+	jr nc, .no_overflow
 	inc [hl]
-.asm_2e10
+.no_overflow
 	dec hl
 	ld a, [hli]
-	cp $80
+	cp LOW(640)
 	ld a, [hl]
-	cp $02
-	jr c, .asm_2e1f
-	ld a, $02
+	cp HIGH(640)
+	jr c, .done
+	ld a, HIGH(640)
 	ld [hld], a
-	ld a, $80
+	ld a, LOW(640)
 	ld [hl], a
-.asm_2e1f
+.done
 	ret
 
 Func_2e20:
@@ -6185,7 +6221,7 @@ Func_2e20:
 	ret
 .asm_2e2a
 	push bc
-	ld hl, wd0a0 + $1
+	ld hl, wObjectXCoords + $1
 	add hl, bc
 	add hl, bc
 	add hl, bc
@@ -6213,7 +6249,7 @@ Func_2e20:
 .asm_2e52
 	ld d, a
 	push de
-	ld hl, wd0d0 + $1
+	ld hl, wObjectYCoords + $1
 	add hl, bc
 	add hl, bc
 	add hl, bc
@@ -6274,29 +6310,31 @@ Func_2e9c::
 	ld hl, wd3bf
 	bit 0, [hl]
 	call nz, $4bb4
-	ld b, $10
-	ld c, $00
-.asm_2eb7
+
+	ld b, NUM_OBJECT_SLOTS
+	ld c, OBJECT_SLOT_00
+.loop_objects_1
 	push bc
 	ld b, $00
-	ld hl, wd160
+	ld hl, wObjectActiveStates
 	add hl, bc
 	ld a, [hl]
 	and a
-	jr z, .asm_2ecf
+	jr z, .next_object
 	cp $ff
-	jr z, .asm_2ecf
+	jr z, .next_object
 	dec a
-	jr z, .asm_2ecc
+	jr z, .run_scripts
 	ld [hl], a
-	jr .asm_2ecf
-.asm_2ecc
+	jr .next_object
+.run_scripts
 	call Func_29b7
-.asm_2ecf
+.next_object
 	pop bc
 	inc c
 	dec b
-	jr nz, .asm_2eb7
+	jr nz, .loop_objects_1
+
 	ld hl, hff93
 	bit 2, [hl]
 	jr nz, .asm_2f15
@@ -6305,40 +6343,42 @@ Func_2e9c::
 	push af
 	ld a, $05
 	bankswitch
-	ld b, $10
-	ld c, $00
-.asm_2eeb
+	ld b, NUM_OBJECT_SLOTS
+	ld c, OBJECT_SLOT_00
+.loop_objects_2
 	push bc
 	ld b, $00
-	ld hl, wd160
+	ld hl, wObjectActiveStates
 	add hl, bc
 	ld a, [hl]
-	cp $01
-	jr nz, .asm_2f05
-	ld hl, wd35a
+	cp OBJECT_ACTIVE
+	jr nz, .skip_execution
+	ld hl, wObjectCustomFuncs
 	add hl, bc
 	add hl, bc
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
 	or h
-	jr z, .asm_2f05
+	jr z, .skip_execution
 	call JumpHL
-.asm_2f05
+.skip_execution
 	pop bc
 	inc c
 	dec b
-	jp nz, .asm_2eeb
+	jp nz, .loop_objects_2
 	pop af
 	bankswitch
+
 	call Func_2f34
+
 .asm_2f15
 	ld b, $10
 	ld c, $00
 .asm_2f19
 	push bc
 	ld b, $00
-	ld hl, wd160
+	ld hl, wObjectActiveStates
 	add hl, bc
 	ld a, [hl]
 	cp $01
@@ -6391,7 +6431,7 @@ Func_2f34:
 .asm_2f6a
 	ld a, [wd3d5]
 	ld c, a
-	ld hl, wd0a0 + $1
+	ld hl, wObjectXCoords + $1
 	add hl, bc
 	add hl, bc
 	add hl, bc
@@ -6420,7 +6460,7 @@ Func_2f34:
 .asm_2f91
 	ld a, [wd3d5]
 	ld c, a
-	ld hl, wd0d0 + $1
+	ld hl, wObjectYCoords + $1
 	add hl, bc
 	add hl, bc
 	add hl, bc
@@ -6572,7 +6612,7 @@ Func_3076::
 	ret
 
 Func_30b2::
-	ld a, [wd3ef]
+	ld a, [wScriptBank]
 	bankswitch
 	ld hl, wd140
 	ld a, [hl]
@@ -6582,33 +6622,33 @@ Func_30b2::
 	ld a, [hl]
 	add $28
 	sub e
-	ld a, [wAnimationPtr + 0]
+	ld a, [wScriptPtr + 0]
 	ld l, a
-	ld a, [wAnimationPtr + 1]
+	ld a, [wScriptPtr + 1]
 	ld h, a
 	jr nc, .asm_30d3
 	inc hl
 	inc hl
 .asm_30d3
 	ld a, [hli]
-	ld [wAnimationPtr + 0], a
+	ld [wScriptPtr + 0], a
 	ld a, [hl]
-	ld [wAnimationPtr + 1], a
+	ld [wScriptPtr + 1], a
 	ret
 ; 0x30dc
 
 SECTION "Home@3121", ROM0[$3121]
 
 Func_3121::
-	ld a, [wd3ef]
+	ld a, [wScriptBank]
 	bankswitch
 	ld hl, wd1e0
 	add hl, bc
 	add hl, bc
 	push bc
-	ld a, [wAnimationPtr + 0]
+	ld a, [wScriptPtr + 0]
 	ld e, a
-	ld a, [wAnimationPtr + 1]
+	ld a, [wScriptPtr + 1]
 	ld d, a
 	ld a, [de]
 	ld [hli], a
@@ -6620,9 +6660,9 @@ Func_3121::
 	ld l, b
 	inc de
 	ld a, e
-	ld [wAnimationPtr + 0], a
+	ld [wScriptPtr + 0], a
 	ld a, d
-	ld [wAnimationPtr + 1], a
+	ld [wScriptPtr + 1], a
 	pop bc
 	push hl
 	ld a, [hl]
@@ -6963,7 +7003,7 @@ Func_319f:
 	ld d, h ; useless
 	ld e, l ;
 	ld b, $0c
-	ld de, wd160 + $1
+	ld de, wObjectActiveStates + OBJECT_SLOT_01
 	ld hl, wd200 + $2
 .asm_3372
 	ld a, [de]
@@ -6993,7 +7033,7 @@ Func_319f:
 	push hl
 	inc hl
 	inc hl
-	call Func_233e
+	call CreateObject_Group1
 	jr nc, .asm_339a
 	pop de
 	ret
@@ -7027,14 +7067,14 @@ Func_319f:
 	and [hl]
 	jr z, .asm_33cd
 	pop bc
-	call Func_21ce
+	call DestroyObject
 	pop de
 	ret
 .asm_33cd
 	pop bc
 .asm_33ce
 	pop de
-	ld hl, wd0a0 + $1
+	ld hl, wObjectXCoords + $1
 	add hl, bc
 	add hl, bc
 	add hl, bc
@@ -7052,7 +7092,7 @@ Func_319f:
 	ld [hl], a
 	pop de
 	inc de
-	ld hl, wd0d0 + $1
+	ld hl, wObjectYCoords + $1
 	add hl, bc
 	add hl, bc
 	add hl, bc
@@ -7214,10 +7254,10 @@ Func_37b1:
 	ld hl, $4178
 ;	fallthrough
 Func_37b9:
-	call Func_233e
+	call CreateObject_Group1
 	ret c
 	push bc
-	ld hl, wd0a0 + $1
+	ld hl, wObjectXCoords + $1
 	add hl, bc
 	add hl, bc
 	add hl, bc
@@ -7242,7 +7282,7 @@ Func_37b9:
 	ld [hl], a
 	pop bc
 	push bc
-	ld hl, wd0d0 + $1
+	ld hl, wObjectYCoords + $1
 	add hl, bc
 	add hl, bc
 	add hl, bc
@@ -7273,7 +7313,7 @@ Func_380a::
 	push bc
 	push de
 	ld hl, $4184
-	call Func_2344
+	call CreateObject_Group2
 	jr c, Func_388a
 	ld a, [wROMBank]
 	push af
@@ -7283,7 +7323,7 @@ Func_380a::
 	pop af
 	bankswitch
 	ld hl, $4190
-	call Func_2344
+	call CreateObject_Group2
 	jr c, Func_3889
 	ld hl, wd1b0
 	add hl, bc
@@ -7295,7 +7335,7 @@ Func_383b:
 	push bc
 	push de
 	ld hl, $418a
-	call Func_2344
+	call CreateObject_Group2
 	jr c, Func_388a
 	ld hl, wd1b0
 	add hl, bc
@@ -7307,7 +7347,7 @@ Func_384e::
 	push bc
 	push de
 	ld hl, $4196
-	call Func_2344
+	call CreateObject_Group2
 	jr c, Func_388a
 	jr Func_3873
 Func_385b::
@@ -7315,7 +7355,7 @@ Func_385b::
 	push bc
 	push de
 	ld hl, $419c
-	call Func_2344
+	call CreateObject_Group2
 	jr c, Func_388a
 	ld a, [hff91]
 	bit 0, a
@@ -7449,7 +7489,7 @@ Func_3d2d::
 Func_3d32::
 	call Func_3d48
 	ld a, $01
-	ld [wd160], a
+	ld [wObjectActiveStates], a
 	call Func_139b
 	ld a, $01
 	bankswitch

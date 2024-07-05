@@ -34,7 +34,7 @@ Func_140d5:
 SECTION "Bank 5@415e", ROMX[$415e], BANK[$5]
 
 Func_1415e:
-	ld hl, wd2ba
+	ld hl, wObjectGfxScriptPtrs
 	add hl, bc
 	add hl, bc
 	ld d, h
@@ -94,10 +94,10 @@ Func_1432c::
 	ret
 
 .Func_14379:
-	ld hl, wd16d
+	ld hl, wObjectActiveStates + OBJECT_SLOT_13
 	ld a, [hl]
 	and a
-	ret z
+	ret z ; OBJECT_NOT_ACTIVE
 	ld hl, wd1ad
 	bit 7, [hl]
 	ret z
@@ -115,10 +115,10 @@ Func_1432c::
 	jr .asm_143cd
 
 .Func_143a4:
-	ld hl, wd16e
+	ld hl, wObjectActiveStates + OBJECT_SLOT_14
 	ld a, [hl]
 	and a
-	ret z
+	ret z ; OBJECT_NOT_ACTIVE
 	ld hl, wd1ae
 	bit 7, [hl]
 	ret z
@@ -300,7 +300,7 @@ Func_1432c::
 .asm_144ee
 	ld a, [wd411]
 	ld c, a
-	jp Func_21ce
+	jp DestroyObject
 .asm_144f5
 	bit 0, a
 	jr nz, .asm_1451e
@@ -321,7 +321,7 @@ Func_1432c::
 	ld de, $4008
 	jp Func_21e6
 .asm_1451b
-	jp Func_21ce
+	jp DestroyObject
 .asm_1451e
 	ld hl, wd410
 	bit 0, [hl]
@@ -352,7 +352,7 @@ Func_1432c::
 	jr nz, .asm_14560
 	ld a, [wd411]
 	ld c, a
-	jp Func_21ce
+	jp DestroyObject
 .asm_14560
 	ld a, [wd411]
 	ld c, a
@@ -401,25 +401,25 @@ Func_1432c::
 	ret
 
 .Func_145b0:
-	ld hl, wd160
+	ld hl, wObjectActiveStates
 	add hl, bc
 	ld a, [hl]
 	and a
-	jr z, .asm_145cf
+	jr z, .set_carry
 	ld hl, wd1a0
 	add hl, bc
 	ld a, [hl]
 	bit 7, a
-	jr z, .asm_145cf
+	jr z, .set_carry
 	bit 0, a
-	jr nz, .asm_145cf
+	jr nz, .set_carry
 	ld hl, wd190
 	add hl, bc
 	bit 2, [hl]
-	jr nz, .asm_145cf
+	jr nz, .set_carry
 	xor a
 	ret
-.asm_145cf
+.set_carry
 	scf
 	ret
 
@@ -501,7 +501,7 @@ Func_1432c::
 	ld [wd3bf], a
 	ld a, SFX_BOSS_DEFEAT
 	call PlaySFX
-	jp Func_21ce
+	jp DestroyObject
 
 .OneUp:
 	call .Func_147c0
@@ -517,7 +517,7 @@ Func_1432c::
 	ld [wLives], a
 	ld a, SFX_1UP
 	call PlaySFX
-	jp Func_21ce
+	jp DestroyObject
 
 .InvincibilityCandy:
 	call .Func_147c0
@@ -587,13 +587,13 @@ Func_1432c::
 	ld hl, wd140
 	add hl, bc
 	ld a, [hl]
-	ld [wd0a0 + $1], a
+	ld [wObjectXCoords + $1], a
 	sub $08
 	ld [wd05c], a
 	ld hl, wd150
 	add hl, bc
 	ld a, [hl]
-	ld [wd0d0 + $1], a
+	ld [wObjectYCoords + $1], a
 	sub $08
 	ld [wd05d], a
 	jr .Func_1470e
@@ -605,7 +605,7 @@ Func_1432c::
 	call PlaySFX
 
 .Func_1470e:
-	jp Func_21ce
+	jp DestroyObject
 
 .asm_14711
 	call .Func_147c0
@@ -676,7 +676,7 @@ Func_1432c::
 	call Func_3768
 	ld a, MUSIC_MINT_LEAF
 	call PlayMusic
-	jp Func_21ce
+	jp DestroyObject
 
 .Restore1HP:
 	ld a, [wMaxHP]
@@ -741,7 +741,7 @@ Func_147e4::
 	call z, Func_148ea
 	ld bc, $1
 .loop
-	ld hl, wd160
+	ld hl, wObjectActiveStates
 	add hl, bc
 	ld a, [hl]
 	and a
@@ -839,30 +839,30 @@ Func_147e4::
 	ld hl, hff94
 	bit 7, [hl]
 	jr z, .asm_148d7
-	ld bc, $1
-.asm_148a5
-	ld hl, wd160
+	ld bc, OBJECT_SLOT_01
+.loop_objects
+	ld hl, wObjectActiveStates
 	add hl, bc
 	ld a, [hl]
 	and a
-	jr z, .asm_148bc
-	ld hl, wd35a
+	jr z, .next_object
+	ld hl, wObjectCustomFuncs
 	add hl, bc
 	add hl, bc
 	ld a, [hli]
 	cp $1a
-	jr nz, .asm_148bc
+	jr nz, .next_object
 	ld a, [hl]
 	cp $40
 	jr z, .asm_148d7
-.asm_148bc
+.next_object
 	inc c
 	ld a, c
-	cp $10
-	jr nz, .asm_148a5
+	cp NUM_OBJECT_SLOTS
+	jr nz, .loop_objects
 	ld a, [wd3f8]
 	inc a
-	cp $0a
+	cp 10
 	jr nz, .asm_148d3
 	ld hl, hff94
 	res 7, [hl]
@@ -982,7 +982,7 @@ Func_148ea:
 	push bc
 	push de
 	ld hl, $41a2
-	call Func_234a
+	call CreateObject_Group3
 	ld hl, wd1a0
 	add hl, bc
 	set 0, [hl]
@@ -1133,7 +1133,7 @@ Func_14a5f::
 	add hl, bc
 	set 2, [hl]
 	push bc
-	ld hl, wd0a0 + $1
+	ld hl, wObjectXCoords + $1
 	add hl, bc
 	add hl, bc
 	add hl, bc
@@ -1164,7 +1164,7 @@ Func_14a5f::
 	adc $00
 	ld [hl], a
 	pop bc
-	ld hl, wd0d0 + $1
+	ld hl, wObjectYCoords + $1
 	add hl, bc
 	add hl, bc
 	add hl, bc
