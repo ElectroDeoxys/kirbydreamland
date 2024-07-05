@@ -42,7 +42,7 @@ Func_246::
 	ldh a, [hff94]
 	bit 2, a
 	jp z, .asm_2ad ; can be jr
-	ld a, $06
+	ld a, BANK(Func_183bf)
 	bankswitch
 	jp Func_183bf
 
@@ -438,7 +438,7 @@ Func_483::
 	ld hl, $456c
 .asm_57b
 	ld de, $157a
-	ld bc, $0
+	ld bc, OBJECT_SLOT_00
 	call Func_21e6
 	xor a
 	ldh [hVBlankFlags], a
@@ -1257,10 +1257,10 @@ Func_9de:
 	jp nz, Func_caf
 	ld a, [wSCY]
 	sub $10
-	ld [wd058], a
+	ld [wYCoord], a
 	ld a, [wSCX]
 	and $f0
-	ld [wd057], a
+	ld [wXCoord], a
 	ld a, [wd052]
 	dec a
 	jr z, .asm_b8e
@@ -1809,7 +1809,7 @@ Func_caf:
 	and $33
 	ldh [hff92], a
 	ldh a, [hVBlankFlags]
-	and $ff ^ (VBLANK_0 | VBLANK_1)
+	and ~(VBLANK_0 | VBLANK_1)
 	ldh [hVBlankFlags], a
 	jp .asm_1021
 .asm_fa9
@@ -1847,10 +1847,10 @@ Func_caf:
 	ld a, [wSCY]
 	add $80
 	add b
-	ld [wd058], a
+	ld [wYCoord], a
 	ld a, [wSCX]
 	and $f0
-	ld [wd057], a
+	ld [wXCoord], a
 	ld a, [wd052]
 	add $08
 	ld e, a
@@ -1969,10 +1969,10 @@ Func_1062::
 	ld a, [wSCX]
 	add $a0
 	add b
-	ld [wd057], a
+	ld [wXCoord], a
 	ld a, [wSCY]
 	and $f0
-	ld [wd058], a
+	ld [wYCoord], a
 	call Func_1046
 	ld b, $00
 	ld c, $0a
@@ -2071,10 +2071,10 @@ Func_110b:
 	ret nz
 	ld a, [wSCX]
 	sub $10
-	ld [wd057], a
+	ld [wXCoord], a
 	ld a, [wSCY]
 	and $f0
-	ld [wd058], a
+	ld [wYCoord], a
 	ld a, [wd051]
 	cp $01
 	jr nz, .asm_11ac
@@ -2157,9 +2157,9 @@ Func_11de:
 	ld a, [wSCX]
 	add $a0
 	add b
-	ld [wd057], a
+	ld [wXCoord], a
 	xor a
-	ld [wd058], a
+	ld [wYCoord], a
 	ld hl, wc100
 	ld b, $00
 	ld a, [wd051]
@@ -2239,9 +2239,9 @@ Func_1292:
 	ld c, a
 	add hl, bc
 	pop bc
-	ld a, [wd058]
+	ld a, [wYCoord]
 	add $10
-	ld [wd058], a
+	ld [wYCoord], a
 	dec c
 	jr nz, .asm_1298
 	xor a
@@ -2271,9 +2271,9 @@ Func_12b4::
 .asm_12d0
 	ld a, [hli]
 	call Func_131a
-	ld a, [wd057]
+	ld a, [wXCoord]
 	add $10
-	ld [wd057], a
+	ld [wXCoord], a
 	dec c
 	jr nz, .asm_12d0
 	pop bc
@@ -2307,9 +2307,9 @@ Func_12b4::
 .asm_1307
 	ld a, [hli]
 	call Func_131a
-	ld a, [wd057]
+	ld a, [wXCoord]
 	add $10
-	ld [wd057], a
+	ld [wXCoord], a
 	dec c
 	jr nz, .asm_1307
 .asm_1316
@@ -2318,21 +2318,23 @@ Func_12b4::
 	pop bc
 	ret
 
+; input:
+; - a = index in wc600
 Func_131a:
 	push bc
 	push hl
 	ld l, a
 	ld h, $00
 	add hl, hl
-	add hl, hl
+	add hl, hl ; *4
 	ld bc, wc600
 	add hl, bc
-	ld a, [wd057]
+	ld a, [wXCoord]
 	ld [wd06b], a
-	ld a, [wd058]
+	ld a, [wYCoord]
 	ld [wd06c], a
 	ld [wd07f], a
-	call Func_1352
+	call GetBGCoordFromPosition
 	ld a, [hli]
 	ld [de], a
 	inc de
@@ -2346,33 +2348,37 @@ Func_131a:
 	ld [de], a
 	inc de
 	ld a, [wd06b]
-	ld [wd057], a
+	ld [wXCoord], a
 	ld a, [wd06c]
-	ld [wd058], a
+	ld [wYCoord], a
 	pop hl
 	pop bc
 	ret
 
-Func_1352:
+; input:
+; - [wXCoord] = x pos
+; - [wYCoord] = y pos
+; - de = bg map pointer
+GetBGCoordFromPosition:
 	push bc
 	push hl
 	ld hl, v0BGMap0
-	ld a, [wd057]
+	ld a, [wXCoord]
 	srl a
 	srl a
-	srl a
+	srl a ; /8
 	ld [wd06e], a
-	ld a, [wd058]
+	ld a, [wYCoord]
 	srl a
 	srl a
-	srl a
-	jr z, .asm_1375
-	ld bc, $20
-.asm_1371
+	srl a ; /8
+	jr z, .got_row
+	ld bc, SCRN_VX_B
+.loop
 	add hl, bc
 	dec a
-	jr nz, .asm_1371
-.asm_1375
+	jr nz, .loop
+.got_row
 	ld b, $00
 	ld a, [wd06e]
 	ld c, a
@@ -2641,7 +2647,7 @@ Func_139b::
 	inc hl
 	cp [hl]
 	jr nz, .asm_1559
-	jr .asm_1569
+	jr .finish
 .asm_1546
 	res 6, a
 	ldh [hff94], a
@@ -2660,9 +2666,9 @@ Func_139b::
 	ld a, c
 	ld l, a
 	ld [wd083], a
-	ld bc, $0
+	ld bc, OBJECT_SLOT_00
 	call Func_21e6
-.asm_1569
+.finish
 	ld a, [wROMBank]
 	ld [rROMB0 + $100], a
 	ret
@@ -2742,30 +2748,32 @@ ClearSprites::
 	jr nz, .loop_oam
 	ret
 
+; input:
+; - hl = ?
 Func_1964::
 	push bc
 	push de
 	xor a
-	ld [wd057], a
-	ld [wd058], a
+	ld [wXCoord], a
+	ld [wYCoord], a
 	ld de, wBGQueue
 	ld a, $0a
 	ld b, a
-.asm_1973
+.loop_rows
 	ld a, [wd03f]
 	cp $0a
-	jr z, .asm_197c
+	jr z, .got_num_cols
 	ld a, $0b
-.asm_197c
+.got_num_cols
 	ld c, a
-.asm_197d
+.loop_cols
 	ld a, [hli]
 	call Func_131a
-	ld a, [wd057]
+	ld a, [wXCoord]
 	add $10
-	ld [wd057], a
+	ld [wXCoord], a
 	dec c
-	jr nz, .asm_197d
+	jr nz, .loop_cols
 	push bc
 	ld b, $00
 	ld a, [wd03f]
@@ -2777,16 +2785,16 @@ Func_1964::
 	add hl, bc
 	pop bc
 	xor a
-	ld [wd057], a
-	ld a, [wd058]
+	ld [wXCoord], a
+	ld a, [wYCoord]
 	add $10
-	ld [wd058], a
+	ld [wYCoord], a
 	dec b
-	jr nz, .asm_1973
+	jr nz, .loop_rows
 	xor a
 	ld [de], a
-	ld [wd057], a
-	ld [wd058], a
+	ld [wXCoord], a
+	ld [wYCoord], a
 	xor a
 	ldh [rSCX], a
 	ldh [rSCY], a
@@ -4043,9 +4051,9 @@ DestroyObject::
 SECTION "Home@21e6", ROM0[$21e6]
 
 ; input:
-; - hl = ?
-; - de = ?
-; - bc = ?
+; - hl = motion script
+; - de = gfx script
+; - bc = object slot
 Func_21e6::
 	push hl
 	ld hl, wObjectMotionScriptPtrs
@@ -4158,9 +4166,9 @@ assert Data_1c000 == Data_3c000
 	add hl, hl
 	add hl, hl ; *16
 	ld a, l
-	ld [wd3e3], a
+	ld [wd3e3 + 0], a
 	ld a, h
-	ld [wd3e4], a
+	ld [wd3e3 + 1], a
 	ld a, [wd3f2]
 	and a
 	jr nz, .asm_22c5
@@ -5713,9 +5721,9 @@ Func_2b26:
 	add hl, bc
 	bit 0, [hl]
 	jr z, .y_velocity
-	ld a, [wd3e3]
+	ld a, [wd3e3 + 0]
 	ld e, a
-	ld a, [wd3e4]
+	ld a, [wd3e3 + 1]
 	ld d, a
 	ld hl, wObjectXCoords + $1
 	add hl, bc
@@ -6232,9 +6240,9 @@ Func_2e20:
 	add hl, de
 	bit 7, h
 	jr z, .asm_2e45
-	ld a, [wd3e3]
+	ld a, [wd3e3 + 0]
 	ld e, a
-	ld a, [wd3e4]
+	ld a, [wd3e3 + 1]
 	ld d, a
 	add hl, de
 .asm_2e45
@@ -6373,20 +6381,20 @@ Func_2e9c::
 	call Func_2f34
 
 .asm_2f15
-	ld b, $10
-	ld c, $00
-.asm_2f19
+	ld b, NUM_OBJECT_SLOTS
+	ld c, OBJECT_SLOT_00
+.loop_objects_3
 	push bc
 	ld b, $00
 	ld hl, wObjectActiveStates
 	add hl, bc
 	ld a, [hl]
-	cp $01
+	cp OBJECT_ACTIVE
 	call z, Func_2b26
 	pop bc
 	inc c
 	dec b
-	jr nz, .asm_2f19
+	jr nz, .loop_objects_3
 	pop af
 	bankswitch
 	ret
@@ -6726,10 +6734,10 @@ AddToScore::
 	ret
 
 Func_3199:
-	ld d, $01
+	ld d, $1
 	jr Func_319f
 Func_319d::
-	ld d, $00
+	ld d, $0
 ;	fallthrough
 Func_319f:
 	ld a, [wROMBank]
@@ -6761,6 +6769,7 @@ Func_319f:
 	jr z, .asm_31da
 	ld e, $03
 .asm_31da
+	; e = (d == $1) ? $3 : $5
 	ld a, [wd3e9]
 	and a
 	jr z, .asm_31f0
@@ -6798,12 +6807,14 @@ Func_319f:
 	sub $03
 	ld [wd3ea], a
 	ret
+
 .asm_3220
 	ld e, $0d
 	bit 0, d
 	jr z, .asm_3228
 	ld e, $0b
 .asm_3228
+	; e = (d == $1) ? $b : $d
 	ld a, [wd3ea]
 	and a
 	jr z, .asm_324d
@@ -6850,6 +6861,7 @@ Func_319f:
 	jr z, .asm_3279
 	ld e, $03
 .asm_3279
+	; e = (d == $1) ? $3 : $4
 	ld a, [wd3eb]
 	and a
 	jr z, .asm_328f
@@ -6997,47 +7009,49 @@ Func_319f:
 	add $09
 	cp e
 	ret c
+
 	push hl
 	push bc
 	push de
 	ld d, h ; useless
 	ld e, l ;
-	ld b, $0c
-	ld de, wObjectActiveStates + OBJECT_SLOT_01
+	ld b, OBJECT_GROUP_1_END - OBJECT_GROUP_1_BEGIN
+	ld de, wObjectActiveStates + OBJECT_GROUP_1_BEGIN
 	ld hl, wd200 + $2
-.asm_3372
+.loop_object_active_states
 	ld a, [de]
 	and a
-	jr z, .asm_3387
+	jr z, .next_1 ; is inactive
 	ld a, [wd06b]
 	cp [hl]
-	jr nz, .asm_3387
+	jr nz, .next_1
 	inc hl
 	ld a, [wd06c]
 	cp [hl]
-	jr nz, .asm_3388
+	jr nz, .next_2
 	pop de
 	pop bc
 	pop hl
 	ret
-.asm_3387
+.next_1
 	inc hl
-.asm_3388
+.next_2
 	inc hl
 	inc de
 	dec b
-	jr nz, .asm_3372
+	jr nz, .loop_object_active_states
 	pop de
 	pop bc
 	pop hl
+
 	push hl
 	inc hl
 	inc hl
 	call CreateObject_Group1
-	jr nc, .asm_339a
+	jr nc, .created
 	pop de
 	ret
-.asm_339a
+.created
 	pop de
 	push de
 	ld hl, wd190
@@ -7383,11 +7397,11 @@ Func_388a:
 StageHeaders::
 ; starting area, ?, ?, starting X, starting Y, pals, intro music
 	table_width 7, StageHeaders
-	db GREEN_GREENS_0, $01, $01, $28, $3c, $00, MUSIC_GREEN_GREENS_INTRO ; GREEN_GREENS
-	db CASTLE_LOLOLO_00, $01, $01, $28, $58, $00, MUSIC_CASTLE_LOLOLO_INTRO ; CASTLE_LOLOLO
-	db FLOAT_ISLANDS_0, $01, $01, $28, $32, $00, MUSIC_FLOAT_ISLANDS_INTRO ; FLOAT_ISLANDS
-	db BUBBLY_CLOUDS_0, $01, $01, $48, $41, $00, MUSIC_BUBBLY_CLOUDS_INTRO ; BUBBLY_CLOUDS
-	db MT_DEDEDE_0, $01, $01, $28, $70, $00, MUSIC_DEDEDE_BATTLE ; MT_DEDEDE
+	db GREEN_GREENS_0,   01, $01, $28, $3c, $00, MUSIC_GREEN_GREENS_INTRO  ; GREEN_GREENS
+	db CASTLE_LOLOLO_00, 01, $01, $28, $58, $00, MUSIC_CASTLE_LOLOLO_INTRO ; CASTLE_LOLOLO
+	db FLOAT_ISLANDS_0,  01, $01, $28, $32, $00, MUSIC_FLOAT_ISLANDS_INTRO ; FLOAT_ISLANDS
+	db BUBBLY_CLOUDS_0,  01, $01, $48, $41, $00, MUSIC_BUBBLY_CLOUDS_INTRO ; BUBBLY_CLOUDS
+	db MT_DEDEDE_0,      01, $01, $28, $70, $00, MUSIC_DEDEDE_BATTLE       ; MT_DEDEDE
 	assert_table_length NUM_STAGES
 
 MACRO area
@@ -7488,8 +7502,8 @@ Func_3d2d::
 
 Func_3d32::
 	call Func_3d48
-	ld a, $01
-	ld [wObjectActiveStates], a
+	ld a, OBJECT_ACTIVE
+	ld [wObjectActiveStates + OBJECT_SLOT_00], a
 	call Func_139b
 	ld a, $01
 	bankswitch

@@ -1,116 +1,11 @@
-TitleScreen::
-	ld a, $ff
-	ld [wd096], a
-	call ClearSprites
-	call ResetTimer
+SECTION "Title Screen", ROMX[$4000], BANK[$6]
 
-	xor a
-	ld [wVirtualOAMSize], a
-	ld [wSCX ], a
-	ld [wOBP], a
-	ld [wBGP], a
-	ld a, $00 ; unnecessary
-	ld [wSCY], a
-
-	; load graphics
-	ld hl, $4000
-	ld de, v0Tiles0
-	ld c, $02
-	call FarDecompress
-	ld hl, $4000
-	ld de, v0Tiles1
-	ld c, $0a
-	call FarDecompress
-	ld hl, $42ac
-	ld de, v0Tiles2
-	ld c, $0a
-	call FarDecompress
-	ld hl, $77e9
-	ld de, $8e00
-	ld c, $02
-	call FarDecompress
-	ld hl, $4000
-	ld de, v0BGMap0
-	ld c, $03
-	call FarDecompress
-
-	ld a, MUSIC_TITLESCREEN
-	call PlayMusic
-
-	ld a, $01
-	call Func_21fb
-
-	call StopTimerAndSwitchOnLCD
-
-	xor a
-	ld [hff90], a
-	ld a, HUD_UPDATE_HP
-	ld [hHUDFlags], a
-	call .PrintExtraGameText
-
-	ld a, 1
-	call DoFrames
-	call Func_670
-	ld a, START
-	ld [wd050], a
-
-; loop until player presses Start
-.loop
-	ld a, 1
-	call DoFrames
-	ld a, [hJoypadPressed]
-	cp B_BUTTON | SELECT | D_DOWN
-	jp z, ConfigurationMenu
-	cp A_BUTTON | SELECT | D_UP
-	jr nz, .no_extra_game
-	ld a, TRUE
-	ld [wExtraGameUnlocked], a
-	call .PrintExtraGameText
-.no_extra_game
-	ld a, [hJoypadPressed]
-	and START
-	jr z, .loop
-
-	ld a, SFX_GAME_START
-	call PlaySFX
-	ret
-
-.PrintExtraGameText:
-	ld a, [wExtraGameUnlocked]
-	and a
-	ret z ; Extra Game not enabled
-	ld bc, $9945
-	ld de, .text
-	ld hl, wBGQueue
-	ld a, .text_end - .text
-.loop_copy_text
-	push af
-	ld a, b
-	ld [hli], a
-	ld a, c
-	ld [hli], a
-	ld a, [de]
-	ld [hli], a
-	inc de
-	inc bc
-	pop af
-	dec a
-	jr nz, .loop_copy_text
-	xor a ; terminating byte
-	ld [wBGQueue + (.text_end - .text) * $3], a
-	ld a, [hff91]
-	set 2, a
-	ld [hff91], a
-	ret
-
-.text
-	db "EXTRA GAME"
-.text_end
-; 0x180d4
+INCLUDE "engine/title_screen.asm"
 
 SECTION "Bank 6@40e4", ROMX[$40e4], BANK[$6]
 
-Func_180e4::
+; starts stage that is in wStage
+StartStage::
 	ld a, $ff
 	ld [wd096], a
 	call ClearSprites
@@ -140,10 +35,10 @@ Func_180e4::
 	ld a, [hli]
 	cp $01
 	jr z, .asm_1811a
-	ld a, $c8
+	ld a, %11001000
 	jr .asm_1811c
 .asm_1811a
-	ld a, $cc
+	ld a, %11001100
 .asm_1811c
 	ld [hff90], a
 	push hl
@@ -260,7 +155,7 @@ Func_180e4::
 
 	ld bc, $0
 	ld a, MT_DEDEDE
-	cp e
+	cp e ; wStage
 	jr nz, .asm_1821e
 	ld hl, hff95
 	bit 7, [hl]
@@ -300,12 +195,15 @@ Func_180e4::
 	res 7, [hl]
 	ld a, [hff95]
 	bit 7, a
-	jr z, .skip_music
+	jr z, .skip_music ; z is always set here
+
+	; unreachable
 	ld a, [wStage]
 	cp MT_DEDEDE
 	jr z, .skip_music
 	ld a, [wMusic]
 	call PlayMusic
+
 .skip_music
 	call SetFullHP
 	call StopTimerAndSwitchOnLCD
@@ -580,9 +478,10 @@ Func_183bf::
 	jp nz, Func_1886c
 	bit 3, a
 	jr z, .asm_18440
+; next stage
 	ld hl, wStage
 	inc [hl]
-	call Func_180e4
+	call StartStage
 	jp Func_3d32
 .asm_18440
 	ld a, [wd3de]
@@ -612,7 +511,7 @@ Func_183bf::
 	ld h, [hl]
 	ld l, a
 	ld de, $157a
-	ld bc, $0
+	ld bc, OBJECT_SLOT_00
 	call Func_21e6
 	ret
 
@@ -624,7 +523,7 @@ Func_183bf::
 	ld d, a
 	push hl
 	ld hl, $410c
-	ld bc, $0
+	ld bc, OBJECT_SLOT_00
 	call Func_21e6
 	pop hl
 	pop af
@@ -749,10 +648,10 @@ Func_183bf::
 .asm_18557
 	ld a, [wSCY]
 	sub $10
-	ld [wd058], a
+	ld [wYCoord], a
 	ld a, [wSCX]
 	and $f0
-	ld [wd057], a
+	ld [wXCoord], a
 	ld a, [wd052]
 	dec a
 	jr z, .asm_1856e
@@ -2069,488 +1968,6 @@ Data_1926a:
 	assert_table_length NUM_MT_DEDEDE_AREAS
 ; 0x192d6
 
-SECTION "Bank 6@6386", ROMX[$6386], BANK[$6]
+SECTION "Configuration", ROMX[$6386], BANK[$6]
 
-ConfigurationMenu:
-	call Func_648
-	call ResetTimer
-	call ClearObjects
-	call InitWindow
-	xor a
-	ld [wSCX ], a
-	ld [wSCY], a
-	ld a, $ff
-	ld [wd096], a
-	call ClearSprites
-
-	ld hl, $4855
-	ld de, $9670
-	ld c, $02
-	call FarDecompress
-	ld hl, $7b0d
-	ld de, v0Tiles1
-	ld c, $06
-	call FarDecompress
-	ld hl, $41c7
-	ld de, $8e00
-	ld c, $03
-	call FarDecompress
-	ld hl, $4541
-	ld de, v0BGMap0
-	ld c, $03
-	call FarDecompress
-
-	xor a
-	ld [wMenuCursorPos], a
-	dec a ; $ff, all buttons
-	ld [wd050], a
-
-	ld hl, $98eb
-	ld a, [wConfigMaxHP]
-.loop_draw_hp_bars
-	ld [hl], $c5
-	inc hl
-	dec a
-	jr nz, .loop_draw_hp_bars
-
-	call StopTimerAndSwitchOnLCD
-	call Func_670
-
-	ld a, [wConfigLives]
-	call .UpdateNumLives
-
-	ld hl, hVBlankFlags
-	set VBLANK_6_F, [hl]
-.asm_1a3f2
-	bit VBLANK_6_F, [hl]
-	jr nz, .asm_1a3f2
-
-	call .config_update_cursor
-
-.input_ret
-	ld hl, hVBlankFlags
-	set VBLANK_6_F, [hl]
-.asm_1a3fe
-	bit VBLANK_6_F, [hl]
-	jr nz, .asm_1a3fe
-
-	call Func_19098
-
-	ld hl, .input_ret
-	push hl
-	ld a, [hJoypadPressed]
-	bit A_BUTTON_F, a
-	jp nz, .config_a_btn
-	bit B_BUTTON_F, a
-	jp nz, .config_b_btn
-	bit SELECT_F, a
-	jp nz, .config_select_btn
-	bit START_F, a
-	jp nz, .config_start_btn
-	bit D_RIGHT_F, a
-	jp nz, .config_d_right
-	bit D_LEFT_F, a
-	jp nz, .config_d_left
-	bit D_UP_F, a
-	jp nz, .config_d_up
-	bit D_DOWN_F, a
-	jp nz, .config_d_down
-	ret
-
-.config_start_btn
-	ld a, [wMenuCursorPos]
-	cp $02
-	jp z, .SoundTest
-	cp $03
-	ret nz
-.exit_config_menu
-	pop hl
-	ld a, SELECT | START
-	ld [wd050], a
-	jp TitleScreen
-
-.config_d_up
-	ld a, [wMenuCursorPos]
-	and a
-	ret z
-	dec a
-	jr .config_update_cursor_with_sfx
-.config_d_down
-	ld a, [wMenuCursorPos]
-	cp $03
-	ret z
-	inc a
-	jr .config_update_cursor_with_sfx
-.config_select_btn
-	ld a, [wMenuCursorPos]
-	inc a
-	cp $04
-	jr nz, .config_update_cursor_with_sfx
-	xor a ; wrap around
-.config_update_cursor_with_sfx
-	ld [wMenuCursorPos], a
-	ld a, SFX_CURSOR
-	call PlaySFX
-.config_update_cursor
-	ld a, $98
-	ld [wQueuedBG000BGPtr + 0], a
-	ld a, $e4
-	ld [wQueuedBG000BGPtr + 1], a
-	ld a, $c7
-	ld [wQueuedBG000TileID], a
-	ld a, $99
-	ld [wQueuedBG001BGPtr + 0], a
-	ld a, $24
-	ld [wQueuedBG001BGPtr + 1], a
-	ld a, $c7
-	ld [wQueuedBG001TileID], a
-	ld a, $99
-	ld [wQueuedBG002BGPtr + 0], a
-	ld a, $64
-	ld [wQueuedBG002BGPtr + 1], a
-	ld a, $c7
-	ld [wQueuedBG002TileID], a
-	ld a, $99
-	ld [wQueuedBG003BGPtr + 0], a
-	ld a, $c4
-	ld [wQueuedBG003BGPtr + 1], a
-	ld a, $c7
-	ld [wQueuedBG003TileID], a
-	xor a
-	ld [wBGQueue + 4 * $3], a
-
-	ld a, [wMenuCursorPos]
-	ld c, a
-	add a
-	add c ; *3
-	ld c, a
-	ld b, $00
-	ld hl, wQueuedBG000TileID
-	add hl, bc
-	ld [hl], $c6 ; cursor tile ID
-	ld a, [hff91]
-	set 2, a
-	ld [hff91], a
-	ret
-
-.config_a_btn
-	ld a, [wMenuCursorPos]
-	cp $02
-	jp z, .SoundTest
-	cp $03
-	jp z, .exit_config_menu
-.config_d_right
-	ld a, [wMenuCursorPos]
-	cp $01
-	jr z, .incr_lives
-	and a
-	ret nz
-	ld a, [wConfigMaxHP]
-	inc a
-	cp $07
-	ret z
-	ld [wConfigMaxHP], a
-	ld c, a
-	ld a, $c5
-	jr .update_hp_bar
-
-.incr_lives
-	ld a, [wConfigLives]
-	cp $09
-	ret z ; cannot add more lives
-	inc a
-	ld [wConfigLives], a
-	jr .UpdateNumLives
-
-.config_b_btn
-.config_d_left
-	ld a, [wMenuCursorPos]
-	cp $01
-	jr z, .decr_lives
-	and a
-	ret nz
-	ld a, [wConfigMaxHP]
-	dec a
-	ret z
-	ld [wConfigMaxHP], a
-	ld c, a
-	inc c
-	ld a, $c4
-
-.update_hp_bar
-	ld [wQueuedBG000TileID], a
-	ld b, $00
-	ld hl, $98ea
-	add hl, bc
-	ld a, h
-	ld [wQueuedBG000BGPtr + 0], a
-	ld a, l
-	ld [wQueuedBG000BGPtr + 1], a
-	xor a
-	ld [wQueuedBG001BGPtr + 0], a
-	ld a, [hff91]
-	set 2, a
-	ld [hff91], a
-	ret
-
-.decr_lives
-	ld a, [wConfigLives]
-	dec a
-	ret z
-	ld [wConfigLives], a
-
-.UpdateNumLives:
-	call GetDigits
-	add "0"
-	ld [wQueuedBG000TileID], a
-	ld a, $99
-	ld [wQueuedBG000BGPtr + 0], a
-	ld a, $2c
-	ld [wQueuedBG000BGPtr + 1], a
-	ld a, b
-	add "0"
-	ld [wQueuedBG001TileID], a
-	ld a, $99
-	ld [wQueuedBG001BGPtr + 0], a
-	ld a, $2b
-	ld [wQueuedBG001BGPtr + 1], a
-	xor a
-	ld [wQueuedBG002BGPtr + 0], a
-	ld a, [hff91]
-	set 2, a
-	ld [hff91], a
-	ret
-
-.SoundTest:
-	pop hl
-	call Func_648
-	call ResetTimer
-	ld a, $02
-	call Func_21fb
-	call InitWindow
-
-	ld hl, $44c9
-	ld de, v0BGMap0
-	ld c, $03
-	call FarDecompress
-
-	call StopTimerAndSwitchOnLCD
-	call Func_670
-
-	xor a
-	ld [wMenuCursorPos], a
-	ld hl, wSoundCheckMusic
-	ld [hli], a
-	ld [hl], a
-	call .UpdateSoundCheckCursor
-
-.asm_1a58a
-	ld hl, hVBlankFlags
-	set VBLANK_6_F, [hl]
-.asm_1a58f
-	bit VBLANK_6_F, [hl]
-	jr nz, .asm_1a58f
-
-	call Func_19098
-
-	ld a, [hJoypadPressed]
-	bit A_BUTTON_F, a
-	jp nz, .soundcheck_a_btn
-	bit B_BUTTON_F, a
-	jp nz, .soundcheck_b_btn
-	bit SELECT_F, a
-	jp nz, .soundcheck_select_btn
-	bit START_F, a
-	jp nz, .soundcheck_start_btn
-	bit D_RIGHT_F, a
-	jr nz, .soundcheck_d_right
-	bit D_LEFT_F, a
-	jr nz, .soundcheck_d_left
-	bit D_UP_F, a
-	jr nz, .soundcheck_d_up
-	bit D_DOWN_F, a
-	jr nz, .soundcheck_d_down
-	jr .asm_1a58a
-
-.soundcheck_d_down
-	ld a, $01
-	ld [wMenuCursorPos], a
-	call .UpdateSoundCheckCursor
-	ld a, SFX_CURSOR
-	call PlaySFX
-	jr .asm_1a58a
-
-.soundcheck_d_up
-	xor a
-	ld [wMenuCursorPos], a
-	call .UpdateSoundCheckCursor
-	ld a, SFX_CURSOR
-	call PlaySFX
-	jr .asm_1a58a
-
-.soundcheck_d_left
-	ld a, [wMenuCursorPos]
-	and a
-	jr nz, .asm_1a5f4
-	ld a, [wSoundCheckMusic]
-	dec a
-	cp -1
-	jr c, .set_soundcheck_music
-	ld a, NUM_MUSICS - 1
-	ld [wSoundCheckMusic], a
-	call .UpdateSoundCheckMusicNumber
-	jr .asm_1a58a
-.asm_1a5f4
-	ld a, [wSoundCheckSFX]
-	dec a
-	cp -1
-	jr c, .set_soundcheck_sfx
-	ld a, NUM_SOUNDCHECK_SFX - 1
-	ld [wSoundCheckSFX], a
-	call .UpdateSoundCheckSFXNumber
-	jr .asm_1a58a
-
-.soundcheck_d_right
-	ld a, [wMenuCursorPos]
-	and a
-	jr nz, .asm_1a61e
-	ld a, [wSoundCheckMusic]
-	inc a
-	cp NUM_MUSICS
-	jr c, .set_soundcheck_music
-	xor a ; wrap around
-.set_soundcheck_music
-	ld [wSoundCheckMusic], a
-	call .UpdateSoundCheckMusicNumber
-	jp .asm_1a58a
-.asm_1a61e
-	ld a, [wSoundCheckSFX]
-	inc a
-	cp NUM_SOUNDCHECK_SFX
-	jr c, .set_soundcheck_sfx
-	xor a ; wrap around
-.set_soundcheck_sfx
-	ld [wSoundCheckSFX], a
-	call .UpdateSoundCheckSFXNumber
-	jp .asm_1a58a
-
-.soundcheck_start_btn
-	jp ConfigurationMenu
-
-.soundcheck_select_btn
-	ld a, [wMenuCursorPos]
-	ld b, a
-	ld a, $01
-	sub b
-	ld [wMenuCursorPos], a
-	call .UpdateSoundCheckCursor
-	ld a, SFX_CURSOR
-	call PlaySFX
-	jp .asm_1a58a
-
-.soundcheck_b_btn
-	ld a, MUSIC_NONE
-	call PlayMusic
-	ld a, SFX_NONE
-	call PlaySFX
-	jp .asm_1a58a
-
-.soundcheck_a_btn
-	ld a, [wMenuCursorPos]
-	and a
-	jr nz, .play_sfx
-; play music
-	ld a, [wSoundCheckMusic]
-	call PlayMusic
-	jp .asm_1a58a
-.play_sfx
-	ld a, [wSoundCheckSFX]
-	call PlaySFX
-	jp .asm_1a58a
-
-.UpdateSoundCheckMusicNumber:
-	call GetDigits
-	add "0"
-	ld [wQueuedBG000TileID], a
-	ld a, $98
-	ld [wQueuedBG000BGPtr + 0], a
-	ld a, $ee
-	ld [wQueuedBG000BGPtr + 1], a
-	ld a, b
-	add "0"
-	ld [wQueuedBG001TileID], a
-	ld a, $98
-	ld [wQueuedBG001BGPtr + 0], a
-	ld a, $ed
-	ld [wQueuedBG001BGPtr + 1], a
-	xor a
-	ld [wQueuedBG002BGPtr + 0], a
-	ld a, [hff91]
-	set 2, a
-	ld [hff91], a
-	ret
-
-.UpdateSoundCheckSFXNumber:
-	call GetDigits
-	add "0"
-	ld [wQueuedBG000TileID], a
-	ld a, $99
-	ld [wBGQueue], a
-	ld a, $2e
-	ld [wQueuedBG000BGPtr + 1], a
-	ld a, b
-	add "0"
-	ld [wQueuedBG001TileID], a
-	ld a, $99
-	ld [wQueuedBG001BGPtr + 0], a
-	ld a, $2d
-	ld [wQueuedBG001BGPtr + 1], a
-	xor a
-	ld [wQueuedBG002BGPtr + 0], a
-	ld a, [hff91]
-	set 2, a
-	ld [hff91], a
-	ret
-
-.UpdateSoundCheckCursor:
-	ld a, [wMenuCursorPos]
-	and a
-	jr nz, .asm_1a6fc
-	ld a, $98
-	ld [wQueuedBG000BGPtr + 0], a
-	ld a, $e6
-	ld [wQueuedBG000BGPtr + 1], a
-	ld a, $c6
-	ld [wQueuedBG000TileID], a
-	ld a, $99
-	ld [wQueuedBG001BGPtr + 0], a
-	ld a, $26
-	ld [wQueuedBG001BGPtr + 1], a
-	ld a, $c7
-	ld [wQueuedBG001TileID], a
-	xor a
-	ld [wQueuedBG002BGPtr + 0], a
-	ld a, [hff91]
-	set 2, a
-	ld [hff91], a
-	ret
-.asm_1a6fc
-	ld a, $98
-	ld [wQueuedBG000BGPtr + 0], a
-	ld a, $e6
-	ld [wQueuedBG000BGPtr + 1], a
-	ld a, $c7
-	ld [wQueuedBG000TileID], a
-	ld a, $99
-	ld [wQueuedBG001BGPtr + 0], a
-	ld a, $26
-	ld [wQueuedBG001BGPtr + 1], a
-	ld a, $c6
-	ld [wQueuedBG001TileID], a
-	xor a
-	ld [wQueuedBG002BGPtr + 0], a
-	ld a, [hff91]
-	set 2, a
-	ld [hff91], a
-	ret
-; 0x1a727
+INCLUDE "engine/configuration.asm"

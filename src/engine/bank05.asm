@@ -109,9 +109,9 @@ Func_1432c::
 	ld [wd412], a
 	ld a, [wd15d]
 	ld [wd413], a
-	ld a, $0d
+	ld a, OBJECT_SLOT_13
 	ld [wd411], a
-	ld hl, wd1e0 + 13 * $2
+	ld hl, wd1e0 + OBJECT_SLOT_13 * $2
 	jr .asm_143cd
 
 .Func_143a4:
@@ -130,9 +130,9 @@ Func_1432c::
 	ld [wd412], a
 	ld a, [wd15e]
 	ld [wd413], a
-	ld a, $0e
+	ld a, OBJECT_SLOT_14
 	ld [wd411], a
-	ld hl, wd1e0 + 14 * $2
+	ld hl, wd1e0 + OBJECT_SLOT_14 * $2
 .asm_143cd
 	ld a, [hli]
 	ld h, [hl]

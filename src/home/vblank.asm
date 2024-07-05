@@ -27,7 +27,7 @@ VBlank:
 	call hTransferVirtualOAM
 
 	ldh a, [hVBlankFlags]
-	and $ff ^ (VBLANK_5 | VBLANK_6)
+	and ~(VBLANK_5 | VBLANK_6)
 	ldh [hVBlankFlags], a
 
 	call Func_1dfb

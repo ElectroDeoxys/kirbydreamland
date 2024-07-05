@@ -76,6 +76,6 @@ DEF OBJECT_GROUP_3_BEGIN EQU const_value
 DEF OBJECT_GROUP_3_END EQU const_value
 DEF NUM_OBJECT_SLOTS EQU const_value
 
-; wd160 state
+; wObjectActiveStates state
 DEF OBJECT_NOT_ACTIVE EQU 0
 DEF OBJECT_ACTIVE     EQU 1

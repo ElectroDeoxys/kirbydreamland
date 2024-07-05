@@ -12,7 +12,7 @@ wc100:: ; c100
 	ds $500
 
 wc600:: ; c600
-	ds $400
+	ds $4 * $100
 
 wca00:: ; ca00
 	ds $100
@@ -130,10 +130,10 @@ wd054:: db ; d054
 wSCY:: db ; d055
 wd056:: db ; d056
 
-wd057:: ; d057
+wXCoord:: ; d057
 	db
 
-wd058:: ; d058
+wYCoord:: ; d058
 	db
 
 wd059:: ; d059
@@ -343,7 +343,7 @@ wObjectGfxScriptTimers:: ; d180
 	ds NUM_OBJECT_SLOTS
 
 wd190:: ; d190
-	ds $10
+	ds NUM_OBJECT_SLOTS
 
 wd1a0:: ; d1a0
 	ds $d
@@ -371,7 +371,7 @@ wSpriteOAMPtrs:: ; d1c0
 	ds $2 * NUM_OBJECT_SLOTS
 
 wd1e0:: ; d1e0
-	ds $2 * $10
+	ds $2 * NUM_OBJECT_SLOTS
 
 wd200:: ; d200
 	ds $10
@@ -397,22 +397,22 @@ wd2aa:: ; d2aa
 	ds NUM_OBJECT_SLOTS
 
 wObjectGfxScriptPtrs:: ; d2ba
-	ds $2 * $10
+	ds $2 * NUM_OBJECT_SLOTS
 
 wd2da:: ; d2da
-	ds $2 * $10
+	ds $2 * NUM_OBJECT_SLOTS
 
 wd2fa:: ; d2fa
-	ds $2 * $10
+	ds $2 * NUM_OBJECT_SLOTS
 
 wd31a:: ; d31a
-	ds $2 * $10
+	ds $2 * NUM_OBJECT_SLOTS
 
 wd33a:: ; d33a
-	ds $10
+	ds NUM_OBJECT_SLOTS
 
 wd34a:: ; d34a
-	ds $10
+	ds NUM_OBJECT_SLOTS
 
 wObjectCustomFuncs:: ; d35a
 	ds $2 * NUM_OBJECT_SLOTS
@@ -493,10 +493,7 @@ wd3e2:: ; d3e2
 	db
 
 wd3e3:: ; d3e3
-	db
-
-wd3e4:: ; d3e4
-	db
+	dw
 
 wd3e5:: dw ; d3e5
 wd3e7:: dw ; d3e7

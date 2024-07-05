@@ -70,9 +70,9 @@ Reset:
 	ld a, [wExtraGameUnlocked]
 	ld [wExtraGameEnabled], a
 
-	ld a, BANK(Func_180e4)
+	ld a, BANK(StartStage)
 	bankswitch
-	call Func_180e4
+	call StartStage
 
 	ld a, $01
 	bankswitch

@@ -1,9 +1,7 @@
 SECTION "romheader", ROM0
 
 	ds $20
-REPT $20
-	db $ff
-ENDR
+	ds $20, $ff
 
 ; interrupts
 SECTION "vblank", ROM0
@@ -19,19 +17,13 @@ SECTION "timer", ROM0
 	ds 5
 
 	ds $8
-REPT $20
-	db $ff
-ENDR
+	ds $20, $ff
 
 	ds $20
-REPT $20
-	db $ff
-ENDR
+	ds $20, $ff
 
 	ds $20
-REPT $20
-	db $ff
-ENDR
+	ds $20, $ff
 
 SECTION "Start", ROM0
 
