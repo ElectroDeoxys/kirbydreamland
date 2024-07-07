@@ -1,4 +1,217 @@
-SECTION "Bank 1@42bf", ROMX[$42bf], BANK[$1]
+SECTION "Bank 1@4105", ROMX[$4105], BANK[$1]
+
+Func_4105:
+	bit 5, a
+	jp nz, .asm_4115
+	ld a, [wd042]
+	inc a
+	ld d, a
+	ld a, [wd051]
+	cp d
+	jr nz, .asm_4117
+.asm_4115
+	ld c, $98
+.asm_4117
+	ld a, [wd062]
+	ld b, a
+	ld a, [wd05c]
+	add b
+	cp $98
+	jr nc, .asm_4149
+	ld b, a
+	ld a, c
+	sub b
+	jr c, .asm_4133
+	call Func_1268
+	ld a, [wd05c]
+	xor a
+	ld [wd063], a
+	ret
+.asm_4133
+	cpl
+	inc a
+	ld [wd063], a
+	ld b, a
+	ld a, [wd062]
+	sub b
+	ld [wd062], a
+	ld a, b
+	ld [wd063], a
+	call Func_1268
+	scf
+	ret
+.asm_4149
+	ldh a, [hff92]
+	and $0c
+	jr nz, .asm_416f
+	ld a, [wd074]
+	cp $01
+	jr nc, .asm_415d
+	ld a, [wd075]
+	cp $82
+	jr c, .asm_416f
+.asm_415d
+	ld b, $82
+	ldh a, [hff92]
+	and $f0
+	or b
+	ldh [hff92], a
+	call Func_37ac
+	ldh a, [hff8d]
+	res 4, a
+	ldh [hff8d], a
+.asm_416f
+	call Func_8cb
+	ld a, $98
+	ld [wd05c], a
+	xor a
+	ld [wd063], a
+	ret
+; 0x417c
+
+SECTION "Bank 1@41b1", ROMX[$41b1], BANK[$1]
+
+Func_41b1:
+	ld b, d
+	inc e
+	ld a, [wd05c]
+	add $03
+	ld [wd05e], a
+	call Func_784
+	ld bc, $10
+	call SubtractBCFromHL
+	ld d, $00
+.asm_41c6
+	ld a, l
+	call Func_643
+	jr nc, .asm_41d4
+	dec hl
+	inc d
+	dec e
+	jr nz, .asm_41c6
+	jp .asm_4250
+.asm_41d4
+	call Func_1ccb
+	ld a, c
+	ld [wd05e], a
+	ld a, [wd05d]
+	sub $10
+	ld [wd05f], a
+	call Func_819
+	and a
+	jr z, .asm_41fe
+	cp $01
+	jr z, .asm_41fe
+	cp $06
+	jr z, .asm_41fe
+	cp $09
+	jr z, .asm_41fe
+	cp $07
+	jr nz, .asm_4221
+	call Func_1248
+	jr c, .asm_4221
+.asm_41fe
+	ld a, [wd05d]
+	sub $01
+	ld [wd05f], a
+	call Func_819
+	and a
+	jr z, .asm_4250
+	cp $01
+	jr z, .asm_4250
+	cp $06
+	jr z, .asm_4250
+	cp $09
+	jr z, .asm_4250
+	cp $08
+	jr nz, .asm_4221
+	call Func_1257
+	jr c, .asm_4250
+.asm_4221
+	ldh a, [hff8e]
+	bit 6, a
+	jr nz, .asm_4245
+	call Func_11c9
+	ldh a, [hff92]
+	and $0c
+	jr nz, .asm_4245
+	ld a, [wd074]
+	cp $01
+	jr nz, .asm_4245
+	ld b, $83
+	ldh a, [hff92]
+	and $f0
+	or b
+	ldh [hff92], a
+	push de
+	call Func_37ac
+	pop de
+.asm_4245
+	call Func_8cb
+	xor a
+	ld [wd054], a
+	ld a, d
+	ld [wd063], a
+.asm_4250
+	ld a, [wd063]
+	ld b, a
+	ldh a, [hff90]
+	bit 4, a
+	jr nz, .asm_427e
+	ld hl, hff94
+	bit 3, [hl]
+	jr nz, .asm_427e
+	ld c, $44
+	ldh a, [hff90]
+	bit 5, a
+	jp nz, .asm_427e
+	ldh a, [hff91]
+	bit 7, a
+	jr nz, .asm_4280
+	ld a, [wd051]
+	cp $01
+	jr nz, .asm_4280
+	ld a, [wSCX]
+	and $0f
+	jr nz, .asm_4280
+.asm_427e
+	ld c, $08
+.asm_4280
+	ld a, [wd05c]
+	sub c
+	ld [wd062], a
+	sub b
+	jr c, .asm_429c
+	ld a, [wd063]
+	ld [wd062], a
+	call Func_1272
+	ld a, [wd05c]
+	cp $08
+	jr z, .asm_42a1
+	and a
+	ret
+.asm_429c
+	call Func_1272
+	scf
+	ret
+.asm_42a1
+	ldh a, [hff92]
+Func_42a3:
+	and $0c
+	jr nz, .asm_42ba
+	ld a, [wd074]
+	cp $01
+	jr c, .asm_42ba
+	ld b, $83
+	ldh a, [hff92]
+	and $f0
+	or b
+	ldh [hff92], a
+	call Func_37ac
+.asm_42ba
+	call Func_8cb
+	and a
+	ret
 
 Func_42bf::
 	ldh a, [hJoypadPressed]
@@ -671,7 +884,7 @@ Func_4783::
 	ld hl, hff91
 	bit 6, [hl]
 	call nz, Func_6ec
-	ld hl, wd3e1
+	ld hl, wInvincibilityCounter
 	ld a, [hli]
 	or [hl]
 	jr z, .asm_481d
@@ -682,3 +895,137 @@ Func_4783::
 .asm_481d
 	jp Func_246
 ; 0x4820
+
+SECTION "Bank 1@48e1", ROMX[$48e1], BANK[$1]
+
+Func_48e1:
+	ld hl, wd1a0
+	add hl, bc
+	set 1, [hl]
+	ret
+
+Func_48e8:
+	ld hl, wd1a0
+	add hl, bc
+	res 1, [hl]
+	ld hl, wd1b0
+	add hl, bc
+	res 5, [hl]
+	ret
+; 0x48f5
+
+SECTION "Bank 1@4a1c", ROMX[$4a1c], BANK[$1]
+
+Func_4a1c:
+	push bc
+	ld a, [wSCX]
+	and $0f
+	ld hl, wd140
+	add hl, bc
+	add [hl]
+	sub $08
+	ld l, a
+	ld h, $00
+	call MultiplyHLBy16
+	ld hl, wd051
+	add [hl]
+	dec a
+	ld d, a
+	ld a, [wSCY]
+	and $0f
+	ld hl, wd150
+	add hl, bc
+	add [hl]
+	sub $10
+	ld l, a
+	ld h, $00
+	call MultiplyHLBy16
+	ld hl, wd052
+	add [hl]
+	dec a
+	ld e, a
+	push de
+	call Func_2e7f
+	pop bc
+	push bc
+	ld a, $00
+	add [hl]
+	ld e, a
+	ld a, $ca
+	adc $00
+	ld d, a
+	ld a, [de]
+	cp $04
+	jr z, .asm_4a68
+	cp $05
+	jr z, .asm_4a6d
+	pop de
+	pop bc
+	ret
+.asm_4a68
+	xor a
+	ld c, $7f
+	jr .asm_4a71
+.asm_4a6d
+	ld a, $03
+	ld c, $7c
+.asm_4a71
+	ld [hl], a
+	pop de
+	call Func_3076
+	pop bc
+	ld a, $02
+	call AddToScore
+	ld a, SFX_14
+	call PlaySFX
+	ret
+; 0x4a82
+
+SECTION "Bank 1@4ab3", ROMX[$4ab3], BANK[$1]
+
+Func_4ab3:
+	ld hl, wd190
+	add hl, bc
+	res 4, [hl]
+	ret
+
+Func_4aba:
+	ld hl, wd190
+	add hl, bc
+	set 4, [hl]
+	ret
+; 0x4ac1
+
+SECTION "Bank 1@4ad6", ROMX[$4ad6], BANK[$1]
+
+Func_4ad6:
+	ld hl, wd190
+	add hl, bc
+	res 5, [hl]
+	res 3, [hl]
+	ret
+
+Func_4adf:
+	ld hl, wd1b0
+	add hl, bc
+	set 4, [hl]
+	ret
+; 0x4ae6
+
+SECTION "Bank 1@4afb", ROMX[$4afb], BANK[$1]
+
+Func_4afb:
+	ld hl, wd1a0
+	add hl, bc
+	set 0, [hl]
+	ld hl, MotionScript_10003
+	ld de, GfxScript_20000
+	call Func_21e6
+	ld hl, hff94
+	set 7, [hl]
+	ld hl, wd3f6
+	inc [hl]
+	ld a, $ff
+	ld [wScriptCommand], a
+	ret
+; 0x4b19

@@ -20,15 +20,15 @@ MACRO jump_rel
 	db \1 - @ ; relative offset
 ENDM
 
-	const SCRIPT_E3 ; $e3
-MACRO script_e3
-	db SCRIPT_E3
+	const SCRIPT_CALL ; $e3
+MACRO script_call
+	db SCRIPT_CALL
 	dw \1 ; address
 ENDM
 
-	const SCRIPT_E4 ; $e4
-MACRO script_e4
-	db SCRIPT_E4
+	const SCRIPT_RET ; $e4
+MACRO script_ret
+	db SCRIPT_RET
 ENDM
 
 	const SCRIPT_SET_SCRIPTS ; $e5
@@ -38,26 +38,26 @@ MACRO set_scripts
 	dw \2 ; address
 ENDM
 
-	const SCRIPT_E6 ; $e6
-MACRO script_e6
-	db SCRIPT_E6
+	const SCRIPT_REPEAT ; $e6
+MACRO script_repeat
+	db SCRIPT_REPEAT
 	db \1 ; value
 ENDM
 
-	const SCRIPT_E7 ; $e7
-MACRO script_e7
-	db SCRIPT_E7
+	const SCRIPT_REPEAT_END ; $e7
+MACRO script_repeat_end
+	db SCRIPT_REPEAT_END
 ENDM
 
-	const SCRIPT_CALL ; $e8
-MACRO script_call_bank01
-	db SCRIPT_CALL
+	const SCRIPT_EXEC ; $e8
+MACRO script_exec
+	db SCRIPT_EXEC
 	dw \1 ; address
 ENDM
 
-	const SCRIPT_CALL_ARG ; $e9
-MACRO script_call_arg
-	db SCRIPT_CALL_ARG
+	const SCRIPT_EXEC_ARG ; $e9
+MACRO script_exec_arg
+	db SCRIPT_EXEC_ARG
 	dw \1 ; address
 	db \2 ; arg
 ENDM
@@ -79,7 +79,7 @@ ENDM
 	const SCRIPT_DELAY ; $ec
 MACRO script_delay
 	db SCRIPT_DELAY
-	dw \1 ; address
+	db \1 ; value
 ENDM
 
 	const SCRIPT_ED ; $ed
@@ -171,6 +171,7 @@ ENDM
 MACRO script_fa
 	db SCRIPT_FA
 	db \1 ; value
+	dw \2 ; address
 ENDM
 
 	const SCRIPT_FB ; $fb
@@ -200,4 +201,20 @@ ENDM
 MACRO frame
 	db \1 ; duration
 	dw \2 ; OAM ptr
+ENDM
+
+MACRO set_velocities
+	db \1 ; duration
+	db \2 ; x vel
+	db \3 ; y vel
+ENDM
+
+MACRO set_gfx_script
+	set_scripts \1, :+
+:
+ENDM
+
+MACRO set_motion_script
+	set_scripts :+, \1
+:
 ENDM

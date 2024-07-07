@@ -3,6 +3,11 @@ SECTION "Bank 1", ROMX
 INCLUDE "engine/bank01.asm"
 
 
+SECTION "Bank 4", ROMX
+
+INCLUDE "engine/bank04.asm"
+
+
 SECTION "Bank 5", ROMX
 
 INCLUDE "engine/bank05.asm"

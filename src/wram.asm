@@ -370,7 +370,7 @@ wd1be:: ; d1be
 wSpriteOAMPtrs:: ; d1c0
 	ds $2 * NUM_OBJECT_SLOTS
 
-wd1e0:: ; d1e0
+wObjectDatum:: ; d1e0
 	ds $2 * NUM_OBJECT_SLOTS
 
 wd200:: ; d200
@@ -445,7 +445,11 @@ wd3c2:: ; d3c2
 
 	ds $1
 
-wd3c4:: ; d3c4
+; bit array of items that were consumed
+; each consumable item in the stage
+; represents a bit in this array
+; bit set means the item was consumed
+wConsumedItems:: ; d3c4
 	ds $8
 
 wd3cc:: ; d3cc
@@ -486,11 +490,8 @@ wd3df:: ; d3df
 wd3e0:: ; d3e0
 	db
 
-wd3e1:: ; d3e1
-	db
-
-wd3e2:: ; d3e2
-	db
+wInvincibilityCounter:: ; d3e1
+	dw
 
 wd3e3:: ; d3e3
 	dw
@@ -567,10 +568,7 @@ wScoreToAdd:: ; d40c
 	db
 
 wd40d:: ; d40d
-	db
-
-wd40e:: ; d40e
-	db
+	dw
 
 wd40f:: ; d40f
 	db

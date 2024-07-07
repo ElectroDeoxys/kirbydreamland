@@ -77,7 +77,7 @@ Func_1432c::
 	ld a, [wd150]
 	add c
 	ld [wd413], a
-	ld bc, $1
+	ld bc, OBJECT_GROUP_1_BEGIN
 .asm_14363
 	push de
 	call .Func_145b0
@@ -89,7 +89,7 @@ Func_1432c::
 	pop de
 	inc c
 	ld a, c
-	cp $0d
+	cp OBJECT_GROUP_1_END
 	jr nz, .asm_14363
 	ret
 
@@ -111,7 +111,7 @@ Func_1432c::
 	ld [wd413], a
 	ld a, OBJECT_SLOT_13
 	ld [wd411], a
-	ld hl, wd1e0 + OBJECT_SLOT_13 * $2
+	ld hl, wObjectDatum + OBJECT_SLOT_13 * $2
 	jr .asm_143cd
 
 .Func_143a4:
@@ -132,7 +132,7 @@ Func_1432c::
 	ld [wd413], a
 	ld a, OBJECT_SLOT_14
 	ld [wd411], a
-	ld hl, wd1e0 + OBJECT_SLOT_14 * $2
+	ld hl, wObjectDatum + OBJECT_SLOT_14 * $2
 .asm_143cd
 	ld a, [hli]
 	ld h, [hl]
@@ -141,7 +141,7 @@ Func_1432c::
 	ld d, [hl]
 	inc hl
 	ld e, [hl]
-	ld bc, $1
+	ld bc, OBJECT_GROUP_1_BEGIN
 .asm_143d7
 	push de
 	call .Func_145b0
@@ -155,7 +155,7 @@ Func_1432c::
 	pop de
 	inc c
 	ld a, c
-	cp $0d
+	cp OBJECT_GROUP_1_END
 	jr nz, .asm_143d7
 	ret
 
@@ -181,10 +181,10 @@ Func_1432c::
 	ld a, [hli]
 	ld [wScoreToAdd], a
 	ld a, [hli]
-	ld [wd40d], a
+	ld [wd40d + 0], a
 	ld a, [hli]
-	ld [wd40e], a
-	ld hl, wd3e1
+	ld [wd40d + 1], a
+	ld hl, wInvincibilityCounter
 	ld a, [wd3f5]
 	or [hl]
 	inc hl
@@ -221,9 +221,9 @@ Func_1432c::
 	ld e, a
 	ld a, [wHP]
 	sub e
-	jr nc, .non_zero_hp
+	jr nc, .got_hp_value
 	xor a
-.non_zero_hp
+.got_hp_value
 	ld [wHP], a
 
 .asm_14466
@@ -240,9 +240,9 @@ Func_1432c::
 	ld a, [wHP]
 	and a
 	ret z
-	ld a, [wd40d]
+	ld a, [wd40d + 0]
 	ld e, a
-	ld a, [wd40e]
+	ld a, [wd40d + 1]
 	ld d, a
 	jp Func_23af
 
@@ -262,9 +262,9 @@ Func_1432c::
 	ld a, [hli]
 	ld [wScoreToAdd], a
 	ld a, [hli]
-	ld [wd40d], a
+	ld [wd40d + 0], a
 	ld a, [hli]
-	ld [wd40e], a
+	ld [wd40d + 1], a
 	ld a, [wd40f]
 	bit 4, a
 	ret nz
@@ -284,9 +284,9 @@ Func_1432c::
 	ld a, [wScoreToAdd]
 	add a
 	call AddToScore
-	ld a, [wd40d]
+	ld a, [wd40d + 0]
 	ld e, a
-	ld a, [wd40e]
+	ld a, [wd40d + 1]
 	ld d, a
 	call Func_23af
 	jr .asm_144ee
@@ -342,9 +342,9 @@ Func_1432c::
 	ld a, [wScoreToAdd]
 	add a
 	call AddToScore
-	ld a, [wd40d]
+	ld a, [wd40d + 0]
 	ld e, a
-	ld a, [wd40e]
+	ld a, [wd40d + 1]
 	ld d, a
 	call Func_23af
 	ld a, [wd410]
@@ -424,7 +424,7 @@ Func_1432c::
 	ret
 
 .Func_145d1:
-	ld hl, wd1e0
+	ld hl, wObjectDatum
 	add hl, bc
 	add hl, bc
 	ld a, [hli]
@@ -464,7 +464,7 @@ Func_1432c::
 
 .Func_14600:
 	ld [wd06b], a
-	ld hl, wd1e0
+	ld hl, wObjectDatum
 	add hl, bc
 	add hl, bc
 	ld a, [hli]
@@ -476,27 +476,27 @@ Func_1432c::
 	ld l, a
 	ld a, [hl]
 	and a
-	jr z, .InvincibilityCandy
+	jr z, .InvincibilityCandy ; INVINCIBILITY_CANDY
 	dec a
-	jp z, .asm_14711
+	jp z, .Bomb ; $1
 	dec a
-	jp z, .asm_1471b
+	jp z, .Mike ; $2
 	dec a
-	jp z, .asm_1474f
+	jp z, .asm_1474f ; $3
 	dec a
-	jr z, .MintLeaf
+	jr z, .MintLeaf ; MINT_LEAF
 	dec a
-	jp z, .WarpStar
+	jp z, .WarpStar ; WARP_STAR
 	dec a
-	jp z, .MaximTomato
+	jp z, .MaximTomato ; MAXIM_TOMATO
 	dec a
-	jp z, .EnergyDrink
+	jp z, .EnergyDrink ; ENERGY_DRINK
 	dec a
-	jp z, .asm_14704
+	jp z, .asm_14704 ; $8
 	dec a
-	jp z, .OneUp
+	jp z, .OneUp ; ONE_UP
 
-	call .Func_147c0
+	call .ConsumeItem
 	ld a, $81
 	ld [wd3bf], a
 	ld a, SFX_BOSS_DEFEAT
@@ -504,36 +504,36 @@ Func_1432c::
 	jp DestroyObject
 
 .OneUp:
-	call .Func_147c0
+	call .ConsumeItem
 	call .Func_147b5
 	ld hl, hHUDFlags
 	set HUD_UPDATE_LIVES_F, [hl]
 	ld a, [wLives]
 	inc a
 	cp MAX_LIVES
-	jr c, .asm_1465c
+	jr c, .got_num_lives
 	ld a, MAX_LIVES
-.asm_1465c
+.got_num_lives
 	ld [wLives], a
 	ld a, SFX_1UP
 	call PlaySFX
 	jp DestroyObject
 
 .InvincibilityCandy:
-	call .Func_147c0
+	call .ConsumeItem
 	call .Func_147b5
-	ld a, $84
-	ld [wd3e1], a
-	ld a, $03
-	ld [wd3e2], a
+	ld a, LOW(INVINCIBILITY_DURATION)
+	ld [wInvincibilityCounter + 0], a
+	ld a, HIGH(INVINCIBILITY_DURATION)
+	ld [wInvincibilityCounter + 1], a
 	ld hl, wd1a0
 	set 4, [hl]
 	ld a, MUSIC_INVINCIBILITY_CANDY
 	call PlayMusic
-	jp .Func_1470e
+	jp .DestroyObject
 
 .MintLeaf:
-	call .Func_147c0
+	call .ConsumeItem
 	call .Func_147b5
 	ld hl, hff95
 	set 5, [hl]
@@ -548,14 +548,14 @@ Func_1432c::
 	ld [wd3e0], a
 	ld a, MUSIC_MINT_LEAF
 	call PlayMusic
-	jp .Func_1470e
+	jp .DestroyObject
 
 .MaximTomato:
-	call .Func_147c0
+	call .ConsumeItem
 	ld a, SFX_POWER_UP
 	call PlaySFX
 	call .Func_147b5
-	call .Func_1470e
+	call .DestroyObject
 	ld a, [wHP]
 	ld e, a
 	ld a, $88
@@ -571,11 +571,11 @@ Func_1432c::
 	ret
 
 .EnergyDrink:
-	call .Func_147c0
+	call .ConsumeItem
 	ld a, SFX_POWER_UP
 	call PlaySFX
 	call .Func_147b5
-	call .Func_1470e
+	call .DestroyObject
 	call .Restore1HP
 	jp .Restore1HP
 
@@ -596,7 +596,7 @@ Func_1432c::
 	ld [wObjectYCoords + $1], a
 	sub $08
 	ld [wd05d], a
-	jr .Func_1470e
+	jr .DestroyObject
 
 .asm_14704
 	ld hl, hff94
@@ -604,17 +604,17 @@ Func_1432c::
 	ld a, SFX_POWER_UP
 	call PlaySFX
 
-.Func_1470e:
+.DestroyObject:
 	jp DestroyObject
 
-.asm_14711
-	call .Func_147c0
+.Bomb
+	call .ConsumeItem
 	ld hl, wd3be
 	set 2, [hl]
 	jr .asm_14723
 
-.asm_1471b
-	call .Func_147c0
+.Mike
+	call .ConsumeItem
 	ld hl, wd3be
 	set 1, [hl]
 .asm_14723
@@ -623,7 +623,7 @@ Func_1432c::
 	ld a, [wd06b]
 	and a
 	jr z, .asm_14730
-	jr .Func_1470e
+	jr .DestroyObject
 .asm_14730
 	ld a, [hff8e]
 	bit 7, a
@@ -639,17 +639,17 @@ Func_1432c::
 .asm_14748
 	ld a, $08
 	ld [hff8e], a
-	jr .Func_1470e
+	jr .DestroyObject
 
 .asm_1474f
-	call .Func_147c0
+	call .ConsumeItem
 	ld a, [wd06b]
 	and a
 	jr z, .asm_14761
 	ld a, $01
-	ld a, $01
+	ld a, $01 ; unnecessary
 	ld [wd3be], a
-	jr .Func_1470e
+	jr .DestroyObject
 .asm_14761
 	ld hl, wd3be
 	res 0, [hl]
@@ -701,7 +701,7 @@ Func_1432c::
 	set 4, [hl]
 	ret
 
-.Func_147c0:
+.ConsumeItem:
 	push bc
 	ld hl, wd3aa
 	add hl, bc
@@ -709,7 +709,7 @@ Func_1432c::
 	cp $ff
 	jr z, .asm_147e2
 	ld e, a
-	and $07
+	and %111
 	ld c, a
 	xor a
 	ld b, a
@@ -717,10 +717,10 @@ Func_1432c::
 	srl e
 	srl e
 	srl e
-	ld hl, $3408
+	ld hl, PowersOfTwo
 	add hl, bc
 	ld a, [hl]
-	ld hl, wd3c4
+	ld hl, wConsumedItems
 	add hl, de
 	or [hl]
 	ld [hl], a
@@ -760,7 +760,7 @@ Func_147e4::
 	add hl, bc
 	bit 6, [hl]
 	jr z, .asm_1483d
-	ld hl, wd1e0
+	ld hl, wObjectDatum
 	add hl, bc
 	add hl, bc
 	ld a, [hli]
@@ -877,7 +877,7 @@ Func_147e4::
 	ret
 
 Func_148dc:
-	ld hl, wd1e0
+	ld hl, wObjectDatum
 	add hl, bc
 	add hl, bc
 	ld a, [hli]

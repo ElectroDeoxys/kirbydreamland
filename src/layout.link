@@ -13,6 +13,8 @@ ROM0
 	"Home"
 ROMX $1
 	"Bank 1"
+ROMX $4
+	"Bank 4"
 ROMX $5
 	"Bank 5"
 ROMX $6

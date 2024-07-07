@@ -146,9 +146,9 @@ Func_326::
 	ldh [hff8e], a
 	bit 7, a
 	jr nz, .asm_373
-	ld a, [wd190]
+	ld a, [wd190 + OBJECT_SLOT_00]
 	set 7, a
-	ld [wd190], a
+	ld [wd190 + OBJECT_SLOT_00], a
 .asm_373
 	and $2f
 	ldh [hff8d], a
@@ -741,7 +741,7 @@ Func_763:
 	pop bc
 	ret
 
-Func_784:
+Func_784::
 	push bc
 	push de
 	ld a, [wd051]
@@ -751,7 +751,7 @@ Func_784:
 	add hl, hl
 	add hl, hl
 	add hl, hl
-	add hl, hl
+	add hl, hl ; *16
 	ld b, $00
 	ld a, [wd05e]
 	sub $08
@@ -840,9 +840,54 @@ Func_7cd:
 .asm_816
 	xor a
 	jr .asm_812
-; 0x819
 
-SECTION "Home@0860", ROM0[$0860]
+Func_819::
+	push bc
+	push de
+	push hl
+	call Func_763
+	call Func_1ccb
+	ld b, c
+	ld a, [wd03f]
+	ld e, a
+	call CalculateBCPercentage
+	ld hl, wc100
+	add hl, bc
+	ldh a, [hff91]
+	ld b, a
+	ld a, [wd05e]
+	ld c, a
+	bit 7, b
+	jr z, .asm_850
+	cp $01
+	jr z, .asm_84b
+	ld a, [wd03f]
+	dec a
+	cp c
+	jr nc, .asm_850
+	inc a
+	ld e, a
+	ld a, c
+	sub e
+	ld c, a
+	jr .asm_850
+.asm_84b
+	ld a, [wd03f]
+	add e
+	ld c, a
+.asm_850
+	ld b, $00
+	add hl, bc
+	ld a, [hl]
+	ld c, a
+	ld b, $00
+	ld hl, wca00
+	add hl, bc
+	ld a, [hl]
+	pop hl
+	pop de
+	pop bc
+	ret
 
 Func_860:
 	ld a, [wd07c]
@@ -897,10 +942,11 @@ Func_88d:
 	ld a, [wd074]
 	sbc $00
 	ld [wd074], a
-	jr c, .asm_8cb
+	jr c, Func_8cb
 	bit 7, a
 	ret z
-.asm_8cb
+;	fallthrough
+Func_8cb::
 	xor a
 	ld [wd075], a
 	ld [wd074], a
@@ -1118,7 +1164,7 @@ Func_9de:
 	jp z, .asm_a9e
 	jp c, .asm_a9e
 	ld a, [wd3f5]
-	ld hl, wd3e1
+	ld hl, wInvincibilityCounter
 	or [hl]
 	inc hl
 	or [hl]
@@ -1298,7 +1344,7 @@ Func_9de:
 	bit 6, a
 	jr z, .asm_be0
 	ld a, [wd3f5]
-	ld hl, wd3e1
+	ld hl, wInvincibilityCounter
 	or [hl]
 	inc hl
 	or [hl]
@@ -1322,9 +1368,9 @@ Func_9de:
 	ldh a, [hff92]
 	and $3c
 	ldh [hff92], a
-	ld a, [wd190]
+	ld a, [wd190 + OBJECT_SLOT_00]
 	res 7, a
-	ld [wd190], a
+	ld [wd190 + OBJECT_SLOT_00], a
 	ldh a, [hff8e]
 	and $9c
 	ldh [hff8e], a
@@ -1500,7 +1546,7 @@ Func_caf:
 	jp nz, .asm_ee0
 .asm_d55
 	ld a, [wd3f5]
-	ld hl, wd3e1
+	ld hl, wInvincibilityCounter
 	or [hl]
 	inc hl
 	or [hl]
@@ -1884,7 +1930,7 @@ Func_caf:
 	bit 7, a
 	ret z
 	ld a, [wd3f5]
-	ld hl, wd3e1
+	ld hl, wInvincibilityCounter
 	or [hl]
 	inc hl
 	or [hl]
@@ -2188,11 +2234,31 @@ Func_11de:
 	add $01
 	ld [wSCX], a
 	ret
-; 0x1248
 
-SECTION "Home@1268", ROM0[$1268]
+Func_1248::
+	ld hl, wd05d
+	ld a, [wSCY]
+	and $0f
+	add [hl]
+	and $08
+	jr nz, Func_1257.no_carry
+	scf
+	ret
 
-Func_1268:
+Func_1257::
+	ld hl, wd05d
+	ld a, [wSCY]
+	and $0f
+	add [hl]
+	and $08
+	jr z, .no_carry
+	scf
+	ret
+.no_carry
+	xor a
+	ret
+
+Func_1268::
 	ld hl, wd05c
 	ld a, [wd062]
 	ld b, a
@@ -2200,7 +2266,7 @@ Func_1268:
 	ld [hl], a
 	ret
 
-Func_1272:
+Func_1272::
 	ld hl, wd05c
 	ld a, [wd062]
 	ld b, a
@@ -3314,7 +3380,7 @@ GetScoreDigits:
 	ld [wScoreDigits + 2], a
 	ret
 
-Func_1ccb:
+Func_1ccb::
 	push af
 	ld a, l
 	and $f0
@@ -4213,7 +4279,7 @@ assert Data_1c000 == Data_3c000
 .asm_2303
 	set 4, b
 .asm_2305
-	ld hl, wd3e1
+	ld hl, wInvincibilityCounter
 	ld a, [hli]
 	or [hl]
 	jr z, .asm_230e
@@ -4222,7 +4288,7 @@ assert Data_1c000 == Data_3c000
 	ld a, b
 	ld [wd1a0], a
 	xor a
-	ld [wd190], a
+	ld [wd190 + OBJECT_SLOT_00], a
 	ret
 ; 0x2317
 
@@ -4239,13 +4305,13 @@ ClearObjects::
 	jr nz, .loop
 	ret
 
-; clears wd3c4
-Clearwd3c4::
+; clears wConsumedItems
+ClearConsumedItems::
 	push hl
 	push bc
 	xor a
 	ld b, $08
-	ld hl, wd3c4
+	ld hl, wConsumedItems
 .loop
 	ld [hli], a
 	dec b
@@ -4255,28 +4321,36 @@ Clearwd3c4::
 	ret
 
 ; input:
-; - d = ?
-; - e = ?
-; - hl = ?
+; - d = x position
+; - e = y position
+; - hl = scripts and object data
 CreateObject_Groups1And2:
 	ld c, OBJECT_SLOT_00
 	ld b, OBJECT_GROUP_1_END
 	jr CreateObject
 
 ; input:
-; - d = ?
-; - e = ?
-; - hl = ?
+; - d = x position
+; - e = y position
+; - hl = scripts and object data
 CreateObject_Group1:
 	ld c, OBJECT_GROUP_1_BEGIN
 	ld b, OBJECT_GROUP_1_END
 	jr CreateObject
 
+; input:
+; - d = x position
+; - e = y position
+; - hl = scripts and object data
 CreateObject_Group2:
 	ld c, OBJECT_GROUP_2_BEGIN
 	ld b, OBJECT_GROUP_2_END
 	jr CreateObject
 
+; input:
+; - d = x position
+; - e = y position
+; - hl = scripts and object data
 CreateObject_Group3::
 	ld c, OBJECT_GROUP_3_BEGIN
 	ld b, OBJECT_GROUP_3_END
@@ -4379,7 +4453,7 @@ Func_23af::
 	inc de
 	ld [hl], a
 
-	ld hl, wd1e0
+	ld hl, wObjectDatum
 	add hl, bc
 	add hl, bc
 	push bc
@@ -4496,8 +4570,8 @@ DoCommonScriptCommand:
 	ret
 
 .call_cmd
-	cp SCRIPT_CALL
-	jr nz, .script_call_arg
+	cp SCRIPT_EXEC
+	jr nz, .script_exec_arg
 	ld a, [hli]
 	ld e, a
 	ld a, [hli]
@@ -4510,8 +4584,8 @@ DoCommonScriptCommand:
 	ld l, e
 	jp .call_hl_bank01
 
-.script_call_arg
-	cp SCRIPT_CALL_ARG
+.script_exec_arg
+	cp SCRIPT_EXEC_ARG
 	jr nz, .condition_cmd
 	ld a, [hli]
 	ld e, a
@@ -5117,7 +5191,7 @@ DoMotionScriptCommand:
 	jr .asm_27d5
 
 .asm_27c6
-	cp SCRIPT_E3
+	cp SCRIPT_CALL
 	jr nz, .asm_27e0
 .asm_27ca
 	push hl
@@ -5135,7 +5209,7 @@ DoMotionScriptCommand:
 	jp SetScriptPtr
 
 .asm_27e0
-	cp SCRIPT_E4
+	cp SCRIPT_RET
 	jr nz, .asm_27ec
 	ld hl, wd23a
 	add hl, bc
@@ -5170,7 +5244,7 @@ DoMotionScriptCommand:
 	ret
 
 .asm_2813
-	cp SCRIPT_E6
+	cp SCRIPT_REPEAT
 	jr nz, .asm_283e
 	ld a, [hli]
 	push hl
@@ -5201,7 +5275,7 @@ DoMotionScriptCommand:
 	ret
 
 .asm_283e
-	cp SCRIPT_E7
+	cp SCRIPT_REPEAT_END
 	jr nz, .asm_286b
 	push hl
 	ld hl, wd2aa
@@ -5277,7 +5351,7 @@ DoGfxScriptCommand:
 	jr .asm_28b7
 
 .asm_28a8
-	cp SCRIPT_E3
+	cp SCRIPT_CALL
 	jr nz, .asm_28c2
 .asm_28ac
 	push hl
@@ -5295,7 +5369,7 @@ DoGfxScriptCommand:
 	jp SetScriptPtr
 
 .asm_28c2
-	cp SCRIPT_E4
+	cp SCRIPT_RET
 	jr nz, .asm_28ce
 	ld hl, wd2da
 	add hl, bc
@@ -5328,7 +5402,7 @@ DoGfxScriptCommand:
 	ret
 
 .asm_28f3
-	cp SCRIPT_E6
+	cp SCRIPT_REPEAT
 	jr nz, .asm_291e
 	ld a, [hli]
 	push hl
@@ -5359,7 +5433,7 @@ DoGfxScriptCommand:
 	ret
 
 .asm_291e
-	cp SCRIPT_E7
+	cp SCRIPT_REPEAT_END
 	jr nz, .asm_294b
 	push hl
 	ld hl, wd34a
@@ -5499,7 +5573,7 @@ Func_29b7:
 	add hl, bc
 	ld a, [hl]
 	and a
-	jp z, .asm_2a80 ; inactive
+	jp z, .asm_2a80 ; permanent motion
 	dec a ; countdown
 	jr z, .asm_29f8
 	ld [hl], a
@@ -5984,7 +6058,7 @@ Func_2ce5:
 	add hl, bc
 	bit 2, [hl]
 	jr nz, .no_carry
-	ld hl, wd1e0
+	ld hl, wObjectDatum
 	add hl, bc
 	add hl, bc
 	ld a, [hli]
@@ -6532,7 +6606,7 @@ Func_2fdf:
 	jr .asm_3041
 
 .Func_303a:
-	ld hl, wd3e1
+	ld hl, wInvincibilityCounter
 	call .Func_3047
 	ret nz
 
@@ -6562,12 +6636,12 @@ Func_2fdf:
 .Func_3059:
 	ld a, [wd3e0]
 	ld e, a
-	ld a, [wd3e2]
+	ld a, [wInvincibilityCounter + 1]
 	or e
 	ret nz
 	ld a, [wd3df]
 	ld e, a
-	ld a, [wd3e1]
+	ld a, [wInvincibilityCounter + 0]
 	cp e
 	jr nc, .asm_306d
 	ld a, e
@@ -6643,14 +6717,51 @@ Func_30b2::
 	ld a, [hl]
 	ld [wScriptPtr + 1], a
 	ret
-; 0x30dc
 
-SECTION "Home@3121", ROM0[$3121]
+Func_30dc::
+	ld a, [wScriptBank]
+	bankswitch
+	ld hl, wd150
+	ld a, [hl]
+	add hl, bc
+	sub [hl]
+	bit 7, a
+	jr z, .positive
+	cpl
+	inc a
+.positive
+	cp $03
+	jr nc, .asm_3110
+	ld hl, wd140
+	ld a, [hl]
+	add hl, bc
+	cp [hl]
+	ld a, [wScriptPtr + 0]
+	ld l, a
+	ld a, [wScriptPtr + 1]
+	ld h, a
+	jr c, .asm_3107
+	inc hl
+	inc hl
+.asm_3107
+	ld a, [hli]
+	ld [wScriptPtr + 0], a
+	ld a, [hl]
+	ld [wScriptPtr + 1], a
+	ret
+.asm_3110
+	ld a, [wScriptPtr + 0]
+	add $04
+	ld [wScriptPtr + 0], a
+	ld a, [wScriptPtr + 1]
+	adc $00
+	ld [wScriptPtr + 1], a
+	ret
 
 Func_3121::
 	ld a, [wScriptBank]
 	bankswitch
-	ld hl, wd1e0
+	ld hl, wObjectDatum
 	add hl, bc
 	add hl, bc
 	push bc
@@ -6976,7 +7087,7 @@ Func_319f:
 	ld a, h
 	ld [wd06c], a
 	ld a, [hli]
-	ld d, a
+	ld d, a ; x
 	ld a, [hff91]
 	bit 7, a
 	jr nz, .asm_3350
@@ -6995,7 +7106,7 @@ Func_319f:
 	ret c
 .asm_3350
 	ld a, [hli]
-	ld e, a
+	ld e, a ; y
 	ld a, [wd052]
 	sub $03
 	jr nc, .asm_335a
@@ -7073,18 +7184,18 @@ Func_319f:
 	srl e
 	srl e
 	srl e
-	ld hl, wd3c4
+	ld hl, wConsumedItems
 	add hl, de
 	ld a, [hl]
-	ld hl, $3408
+	ld hl, PowersOfTwo
 	add hl, bc
 	and [hl]
-	jr z, .asm_33cd
+	jr z, .not_consumed
 	pop bc
 	call DestroyObject
 	pop de
 	ret
-.asm_33cd
+.not_consumed
 	pop bc
 .asm_33ce
 	pop de
@@ -7129,7 +7240,17 @@ Func_319f:
 	ld a, [wd06c]
 	ld [hl], a
 	ret
-; 0x3408
+
+PowersOfTwo::
+	db   1
+	db   2
+	db   4
+	db   8
+	db  16
+	db  32
+	db  64
+	db 128
+; 0x3410
 
 MACRO object_data
 	db \1 ; ?
@@ -7157,49 +7278,49 @@ Data_3429::
 SECTION "Home@344d", ROM0[$344d]
 
 Data_344d::
-	db $69, $08, $08, $05, $72, $41
+	db $69, $08, $08, WARP_STAR, $72, $41
 ; 0x3453
 
 SECTION "Home@3459", ROM0[$3459]
 
-Data_3459::
-	db $69, $08, $08, $06, $72, $41
+MaximTomatoData::
+	db $69, $08, $08, MAXIM_TOMATO, $72, $41
 ; 0x345f
 
 SECTION "Home@3465", ROM0[$3465]
 
-Data_3465::
-	db $69, $06, $08, $07, $72, $41
+EnergyDrinkData::
+	db $69, $06, $08, ENERGY_DRINK, $72, $41
 ; 0x346b
 
 SECTION "Home@348c", ROM0[$348c]
 
-Data_348c::
-	object_data $01, $06, $06, 1, $01, $03, 200, $4154
+WaddleDeeData::
+	object_data $01, $06, $06, 1, $01, $03, 200, Data_4154
 ; 0x3495
 
 SECTION "Home@34ff", ROM0[$34ff]
 
-Data_34ff::
-	object_data $09, $06, $06, 1, $01, $03, 200, $4154
+CappyData::
+	object_data $09, $06, $06, 1, $01, $03, 200, Data_4154
 
 Data_3508::
-	object_data $09, $06, $06, 1, $01, $03, 200, $4154
+	object_data $09, $06, $06, 1, $01, $03, 200, Data_4154
 ; 0x3511
 
 SECTION "Home@351a", ROM0[$351a]
 
-Data_351a::
-	object_data $01, $06, $06, 1, $01, $03, 200, $4154
+TwizzyData::
+	object_data $01, $06, $06, 1, $01, $03, 200, Data_4154
 
 Data_3523::
-	object_data $01, $06, $06, 1, $01, $03, 200, $4154
+	object_data $01, $06, $06, 1, $01, $03, 200, Data_4154
 ; 0x352c
 
 SECTION "Home@3535", ROM0[$3535]
 
 Data_3535::
-	object_data $01, $0a, $0a, 2, $01, $03, 400, $4154
+	object_data $01, $0a, $0a, 2, $01, $03, 400, Data_4154
 ; 0x353e
 
 SECTION "Home@3547", ROM0[$3547]
@@ -7208,11 +7329,21 @@ Data_3547::
 	object_data $01, $0a, $0d, 2, $01, $03, 200, $41a8
 ; 0x3550
 
-SECTION "Home@3562", ROM0[$3562]
+SECTION "Home@3559", ROM0[$3559]
+
+Data_3559::
+	object_data $09, $06, $06, 1, $01, $01, 200, $4154
 
 Data_3562::
 	object_data $01, $08, $10, 1, $01, $03, 300, $41b4
 ; 0x356b
+
+SECTION "Home@35cd", ROM0[$35cd]
+
+Data_35cd::
+	db $0d, $01, $12, $10, $01, $28, $09, $00
+	dw $41d8
+; 0x35d7
 
 SECTION "Home@375d", ROM0[$375d]
 
@@ -7257,7 +7388,7 @@ Func_3768::
 Func_37a7::
 	ld hl, $417e
 	jr Func_37b9
-Func_37ac:
+Func_37ac::
 	ld a, SFX_BUMP
 	call PlaySFX
 ;	fallthrough

@@ -178,7 +178,7 @@ StartStage::
 	ld [wVirtualOAMSize], a
 	call Func_21fb
 	call Func_139b
-	call Clearwd3c4
+	call ClearConsumedItems
 	call ClearSprites
 
 	ld a, [wStage]
