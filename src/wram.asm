@@ -38,7 +38,7 @@ wCurMusic:: ; d02d
 wCurSFX:: ; d02e
 	db
 
-wd02f:: ; d02f
+wRNG:: ; d02f
 	ds $3
 
 wd032:: ; d032
@@ -443,7 +443,11 @@ wd3c1:: ; d3c1
 wd3c2:: ; d3c2
 	db
 
-	ds $1
+; used to animate boss HP replenishing
+; at the start of the battle
+; counts down until it's 0
+wBossHPCounter:: ; d3c3
+	db
 
 ; bit array of items that were consumed
 ; each consumable item in the stage

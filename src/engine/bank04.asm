@@ -95,9 +95,9 @@ MotionScript_1067d:
 	set_velocities  6, $87, $85
 	set_velocities  6, $87, $75
 	set_velocities  6, $87, $77
-	script_fa $55, .loop
+	jump_random 33 percent + 1, .loop
 	set_velocities  3, $87, $79
-	script_fa $80, .loop
+	jump_random 50 percent + 1, .loop
 	set_velocities  3, $87, $79
 	jump_abs .loop
 ; 0x106a2
@@ -263,7 +263,7 @@ MotionScript_10d16:
 .loop
 	set_velocities  2, $00, $79
 	script_exec Func_30dc
-	dw $4d40, .script_10d23
+	dw .script_10d40, .script_10d23
 	jump_abs .loop
 
 .script_10d23
@@ -275,10 +275,18 @@ MotionScript_10d16:
 	set_velocities  8, $86, $87
 	set_velocities  8, $73, $85
 	set_velocities  8, $74, $00
-	set_velocities 0, $78, $00
-; 0x10d40
+	set_velocities  0, $78, $00
 
-SECTION "Bank 4@4d5d", ROMX[$4d5d], BANK[$4]
+.script_10d40
+	set_gfx_script GfxScript_20659
+	set_velocities 16, $00, $78
+	set_velocities  8, $74, $75
+	set_velocities  8, $76, $73
+	set_velocities  8, $79, $8a
+	set_velocities  8, $76, $87
+	set_velocities  8, $83, $85
+	set_velocities  8, $84, $00
+	set_velocities  0, $88, $00
 
 MotionScript_10d5d:
 .loop
@@ -314,8 +322,7 @@ MotionScript_10db7:
 	set_velocities  8, $77, $87
 	set_velocities  8, $77, $77
 	set_velocities  8, $77, $78
-	script_exec Func_3121
-	dw $3483
+	set_object_properties Data_3483
 	set_velocities 0, $00, $00
 
 MotionScript_10dcb:
@@ -323,8 +330,7 @@ MotionScript_10dcb:
 	set_velocities  8, $87, $87
 	set_velocities  8, $87, $77
 	set_velocities  8, $87, $78
-	script_exec Func_3121
-	dw $3483
+	set_object_properties Data_3483
 	set_velocities 0, $00, $00
 
 MotionScript_10ddf:
@@ -417,16 +423,16 @@ MotionScript_10e87:
 	jump_abs .loop
 
 MotionScript_10e96:
-.loop
 	set_gfx_script GfxScript_20d3f
 	script_repeat 2
 	script_call MotionSubScript_10ecb
 	script_repeat_end
+MotionScript_10ea1:
 	set_gfx_script GfxScript_20d47
 	script_repeat 2
 	script_call MotionSubScript_10ede
 	script_repeat_end
-	jump_rel .loop
+	jump_rel MotionScript_10e96
 
 MotionScript_10eae:
 .loop
@@ -460,9 +466,15 @@ MotionSubScript_10ede:
 	set_velocities  3, $76, $75
 	set_velocities  3, $76, $00
 	script_ret
-; 0x10ef1
 
-SECTION "Bank 4@4f06", ROMX[$4f06], BANK[$4]
+MotionScript_10ef1:
+	set_velocities 10, $00, $8a
+	set_velocities 10, $00, $87
+	set_velocities 10, $00, $00
+	set_velocities 10, $00, $76
+	set_velocities 10, $00, $78
+	set_velocities 14, $00, $7a
+	set_velocities  0, $00, $00
 
 MotionScript_10f06:
 .loop
@@ -538,6 +550,7 @@ MotionScript_10f9c:
 
 MotionScript_10fdf:
 	set_velocities 45, $00, $7a
+MotionScript_10fe2:
 	script_repeat 2
 	set_velocities  8, $76, $88
 	set_velocities  8, $76, $86
@@ -549,7 +562,97 @@ MotionScript_10fdf:
 	set_velocities  8, $86, $79
 	script_repeat_end
 	set_velocities 0, $00, $00
-; 0x11000
+
+MotionScript_11000:
+	set_velocities  4, $87, $8a
+	set_velocities  4, $87, $8a
+	set_velocities  4, $87, $88
+	set_velocities  4, $87, $87
+	set_velocities  4, $87, $86
+	set_velocities  4, $87, $85
+	set_velocities  4, $87, $75
+	set_velocities  4, $87, $76
+	set_velocities  4, $87, $77
+	set_velocities  4, $87, $78
+	set_velocities  4, $87, $7a
+	set_velocities  4, $87, $7a
+	set_velocities  4, $77, $8a
+	set_velocities  4, $77, $8a
+	set_velocities  4, $77, $88
+	set_velocities  4, $77, $87
+	set_velocities  4, $77, $86
+	set_velocities  4, $77, $85
+	set_velocities  4, $77, $75
+	set_velocities  4, $77, $76
+	set_velocities  4, $77, $77
+	set_velocities  4, $77, $78
+	set_velocities  4, $77, $7a
+	set_velocities  4, $77, $7a
+	set_velocities  0, $00, $00
+
+MotionScript_1104b:
+	set_velocities  5, $8a, $8a
+	set_velocities  5, $8a, $8a
+	set_velocities  5, $8a, $88
+	set_velocities  5, $8a, $87
+	set_velocities  5, $8a, $86
+	set_velocities  5, $8a, $85
+	set_velocities  5, $8a, $75
+	set_velocities  5, $8a, $76
+	set_velocities  5, $8a, $77
+	set_velocities  5, $8a, $78
+	set_velocities  5, $8a, $7a
+	set_velocities  5, $8a, $7a
+	set_velocities  5, $7a, $8a
+	set_velocities  5, $7a, $8a
+	set_velocities  5, $7a, $88
+	set_velocities  5, $7a, $87
+	set_velocities  5, $7a, $86
+	set_velocities  5, $7a, $85
+	set_velocities  5, $7a, $75
+	set_velocities  5, $7a, $76
+	set_velocities  5, $7a, $77
+	set_velocities  5, $7a, $78
+	set_velocities  5, $7a, $7a
+	set_velocities  5, $7a, $7a
+	set_velocities  0, $00, $00
+
+MotionScript_11096:
+	set_velocities  6, $00, $8b
+	set_velocities  6, $00, $8a
+	set_velocities  6, $00, $89
+	set_velocities  6, $00, $87
+	set_velocities  6, $00, $84
+	set_velocities 16, $00, $00
+	set_velocities  6, $00, $74
+	set_velocities  6, $00, $77
+	set_velocities  6, $00, $79
+	set_velocities  6, $00, $7a
+	set_velocities  6, $00, $7b
+	set_velocities  0, $00, $00
+
+MotionScript_110ba:
+	set_velocities  8, $8a, $00
+	set_velocities  8, $8a, $75
+	set_velocities  8, $8a, $77
+	set_velocities  8, $89, $89
+	set_velocities  8, $89, $84
+	set_velocities  8, $89, $74
+	set_velocities  8, $89, $78
+	create_object GfxScript_203be, MotionScript_10008, Data_35bb
+	script_end
+
+MotionScript_110d7:
+	set_velocities  8, $8a, $78
+	set_velocities  8, $8a, $7a
+	set_velocities  8, $8a, $7b
+	set_velocities  8, $89, $8a
+	set_velocities  8, $89, $86
+	set_velocities  8, $89, $76
+	set_velocities  8, $89, $7a
+	create_object GfxScript_203be, MotionScript_10008, Data_35bb
+	script_end
+; 0x110f4
 
 SECTION "Bank 4@51d8", ROMX[$51d8], BANK[$4]
 

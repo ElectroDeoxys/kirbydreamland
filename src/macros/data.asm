@@ -11,3 +11,5 @@ MACRO dwb
 	dw \1
 	db \2
 ENDM
+
+DEF percent EQUS "* $ff / 100"

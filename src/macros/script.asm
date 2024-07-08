@@ -107,9 +107,9 @@ MACRO script_f0
 	db \2 ; value 2
 ENDM
 
-	const SCRIPT_F1 ; $f1
-MACRO script_f1
-	db SCRIPT_F1
+	const SCRIPT_POSITION_OFFSET ; $f1
+MACRO position_offset
+	db SCRIPT_POSITION_OFFSET
 	db \1 ; value 1
 	db \2 ; value 2
 ENDM
@@ -167,16 +167,16 @@ MACRO script_f9
 	db \3 ; value 2
 ENDM
 
-	const SCRIPT_FA ; $fa
-MACRO script_fa
-	db SCRIPT_FA
+	const SCRIPT_JUMP_RANDOM ; $fa
+MACRO jump_random
+	db SCRIPT_JUMP_RANDOM
 	db \1 ; value
 	dw \2 ; address
 ENDM
 
-	const SCRIPT_FB ; $fb
-MACRO script_fb
-	db SCRIPT_FB
+	const SCRIPT_JUMPTABLE_RANDOM ; $fb
+MACRO jumptable_random
+	db SCRIPT_JUMPTABLE_RANDOM
 	db \1 ; value 1
 ENDM
 
@@ -186,15 +186,15 @@ MACRO create_object
 	dw \1, \2, \3
 ENDM
 
-	const SCRIPT_FD ; $fd
-MACRO script_fd
-	db SCRIPT_FD
+	const SCRIPT_CALL_RANDOM ; $fd
+MACRO script_call_random
+	db SCRIPT_CALL_RANDOM
 	db \1 ; value 1
 ENDM
 
-	const SCRIPT_FE ; $fe
-MACRO script_fe
-	db SCRIPT_FE
+	const SCRIPT_CALLTABLE_RANDOM ; $fe
+MACRO calltable_random
+	db SCRIPT_CALLTABLE_RANDOM
 	db \1 ; value 1
 ENDM
 
@@ -217,4 +217,13 @@ ENDM
 MACRO set_motion_script
 	set_scripts :+, \1
 :
+ENDM
+
+MACRO play_sfx
+	script_exec_arg PlaySFX, \1
+ENDM
+
+MACRO set_object_properties
+	script_exec SetObjectProperties
+	dw \1
 ENDM

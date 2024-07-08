@@ -2,8 +2,7 @@ GfxScript_20000:
 	frame  0, $58b8
 
 	script_delay 0
-	script_exec Func_3121
-	dw $35b7
+	set_object_properties Data_35b7
 	set_custom_func Func_41b1, GfxScript_20ba2
 	script_exec Func_4adf
 	set_scripts GfxScript_203be, MotionScript_102fb
@@ -12,7 +11,7 @@ GfxScript_20000:
 SECTION "Bank 8@43be", ROMX[$43be], BANK[$8]
 
 GfxScript_203be:
-	script_exec_arg PlaySFX, SFX_10
+	play_sfx SFX_10
 	script_repeat 2
 	frame  2, $5d39
 	frame  2, $5d51
@@ -77,7 +76,13 @@ GfxScript_20647:
 	jump_abs .loop
 ; 0x20650
 
-SECTION "Bank 8@4662", ROMX[$4662], BANK[$8]
+SECTION "Bank 8@4659", ROMX[$4659], BANK[$8]
+
+GfxScript_20659:
+.loop
+	frame  5, $5ec5
+	frame  5, $5ecd
+	jump_abs .loop
 
 GfxScript_20662:
 .loop
@@ -122,8 +127,8 @@ GfxScript_20958:
 SECTION "Bank 8@4a01", ROMX[$4a01], BANK[$8]
 
 GfxScript_20a01:
-	script_exec_arg PlaySFX, SFX_28
-	script_fb $03
+	play_sfx SFX_28
+	jumptable_random %11
 	dw GfxScript_20a0f
 	dw GfxScript_20a3b
 	dw GfxScript_20a76
@@ -187,8 +192,7 @@ SECTION "Bank 8@4ba2", ROMX[$4ba2], BANK[$8]
 
 GfxScript_20ba2:
 	script_exec Func_4a1c
-	script_exec Func_3121
-	dw $35b7
+	set_object_properties Data_35b7
 	set_scripts GfxScript_203be, MotionScript_10008
 	set_custom_func Func_42a3, NULL
 	jump_abs GfxScript_20000
@@ -213,7 +217,7 @@ GfxScript_20c5b:
 
 GfxScript_20c6d:
 	create_object GfxScript_20c7e, MotionScript_10008, Data_3421
-	script_exec_arg PlaySFX, SFX_30
+	play_sfx SFX_30
 	frame 1, $41cc
 	script_exec Func_4afb
 
@@ -229,8 +233,7 @@ GfxScript_20c7e:
 	frame 4, $419c
 	script_repeat_end
 	script_exec Func_48e8
-	script_exec Func_3121
-	dw $34ff
+	set_object_properties CappyProperties
 	set_scripts GfxScript_20cc3, MotionScript_10ddf
 .branch_2
 	set_scripts GfxScript_20cad, MotionScript_10dcb
@@ -241,8 +244,7 @@ GfxScript_20cad:
 	frame 4, $41ac
 	script_repeat_end
 	script_exec Func_48e8
-	script_exec Func_3121
-	dw $34ff
+	set_object_properties CappyProperties
 	set_scripts GfxScript_20ccb, MotionScript_10de7
 
 GfxScript_20cc3:
@@ -320,13 +322,54 @@ GfxScript_20d47:
 	jump_rel .loop
 
 GfxScript_20d4f:
-	script_f1 $00, $f6
-	script_exec Func_3121
-	dw $352c
-	set_custom_func $41b1, $4d79
-	set_motion_script $4ef1
+	position_offset 0, -10
+	set_object_properties Data_352c
+	set_custom_func Func_41b1, GfxScript_20d79
+	set_motion_script MotionScript_10ef1
 	frame  0, $417c
-; 0x20d64
+
+GfxScript_20d64:
+	position_offset 0, -10
+	set_object_properties Data_352c
+	set_custom_func Func_41b1, GfxScript_20d83
+	set_motion_script MotionScript_10ef1
+	frame  0, $418c
+
+GfxScript_20d79:
+	set_object_properties Data_3523
+	set_scripts GfxScript_20d3f, MotionScript_10e96
+
+GfxScript_20d83:
+	set_object_properties Data_3523
+	set_scripts GfxScript_20d47, MotionScript_10ea1
+; 0x20d8d
+
+SECTION "Bank 8@4d92", ROMX[$4d92], BANK[$8]
+
+GfxScript_20d92:
+	set_motion_script MotionScript_10f06
+.loop
+	script_call GfxScript_20db1
+	script_call GfxScript_20dbb
+	jump_rel .loop
+; 0x20d9f
+
+SECTION "Bank 8@4db1", ROMX[$4db1], BANK[$8]
+
+GfxScript_20db1:
+	script_repeat 9
+	frame  3, $4224
+	frame 16, $423c
+	script_repeat_end
+	script_ret
+
+GfxScript_20dbb:
+	script_repeat 9
+	frame  3, $426c
+	frame 16, $4284
+	script_repeat_end
+	script_ret
+; 0x20dc5
 
 SECTION "Bank 8@4e58", ROMX[$4e58], BANK[$8]
 
@@ -349,13 +392,12 @@ GfxScript_20e58:
 
 GfxScript_20e83:
 	create_object GfxScript_20e9d, MotionScript_10f9c, Data_3559
-	script_f1 $00, $f0
+	position_offset 0, -16
 	frame  1, $417c
 	jump_rel .asm_20e95
 	frame  1, $418c
 .asm_20e95
-	script_exec Func_3121
-	dw $3523
+	set_object_properties Data_3523
 	script_exec Func_4afb
 
 GfxScript_20e9d:
@@ -371,17 +413,136 @@ GfxScript_20e9d:
 	frame  8, $41ec
 	frame  8, $41d4
 	frame 20, $41ec
-	script_exec Func_3121
-	dw $3550
+	set_object_properties Data_3550
 	frame  0, $41ec
 
-	script_exec_arg PlaySFX, SFX_28
+	play_sfx SFX_28
 	script_exec Func_30b2
 	dw .script_20ed1, .script_20edb
 .script_20ed1
-	create_object $4d4f, MotionScript_10008, $3523
+	create_object GfxScript_20d4f, MotionScript_10008, Data_3523
 	jump_abs GfxScript_20a0f
 .script_20edb
-	create_object $4d64, MotionScript_10008, $3523
+	create_object GfxScript_20d64, MotionScript_10008, Data_3523
 	jump_abs GfxScript_20a0f
 ; 0x20ee5
+
+SECTION "Bank 8@4f14", ROMX[$4f14], BANK[$8]
+
+GfxScript_20f14:
+	jump_if_equal wd3f1, $00, .start_battle
+	script_end
+.start_battle
+	set_object_properties Data_356b
+	script_exec Func_4a82
+	set_value wBossHPCounter, 3
+	set_value wd3c1, $01
+	create_object GfxScript_21195, MotionScript_10008, Data_3421
+	frame 45, $4088
+.loop
+	; scripted attacks
+	script_call GfxSubScript_20f50
+	script_call GfxSubScript_20fd5
+	script_call GfxSubScript_20f50
+	script_call GfxSubScript_20fa3
+	script_call GfxSubScript_20f50
+	; random attack
+	calltable_random %11
+	dw GfxSubScript_20fd5
+	dw GfxSubScript_20fa3
+	dw GfxSubScript_20f6e
+	dw GfxSubScript_20f6e
+	jump_rel .loop
+
+GfxSubScript_20f50:
+	set_motion_script MotionScript_10fe2
+	script_repeat 2
+	frame  8, $4088
+	frame  8, $4098
+	frame  8, $40a8
+	frame 16, $40b8
+	frame  8, $40a8
+	frame  8, $4098
+	frame  8, $4088
+	script_repeat_end
+	script_ret
+
+GfxSubScript_20f6e:
+	set_motion_script MotionScript_11000
+	frame 12, $4088
+	frame 12, $4098
+	frame 12, $40b8
+	frame 24, $40a8
+	frame 12, $40b8
+	frame 12, $4098
+	frame 12, $4088
+	set_motion_script MotionScript_1104b
+	frame 15, $4088
+	frame 15, $4098
+	frame 15, $40b8
+	frame 30, $40a8
+	frame 15, $40b8
+	frame 15, $4098
+	frame 15, $4088
+	script_ret
+
+GfxSubScript_20fa3:
+	set_motion_script MotionScript_11096
+	frame  6, $40c8
+	frame  6, $40f0
+	frame  6, $410c
+	frame  6, $4128
+	frame  6, $4144
+	frame  8, $4160
+	frame  3, $4144
+	frame  3, $4128
+	play_sfx SFX_28
+	create_object GfxScript_2101d, MotionScript_110d7, Data_3574
+	frame  3, $40dc
+	frame  8, $40c8
+	frame 21, $4088
+	script_ret
+
+GfxSubScript_20fd5:
+	set_motion_script $5096
+	frame  6, $40c8
+	frame  6, $40f0
+	frame  6, $410c
+	frame  6, $4128
+	frame  6, $4144
+	frame 40, $4160
+	frame  3, $4144
+	frame  3, $4128
+	play_sfx SFX_28
+	create_object GfxScript_2101d, MotionScript_110ba, Data_3574
+	frame  3, $40dc
+	frame  8, $40c8
+	script_ret
+; 0x21004
+
+SECTION "Bank 8@501d", ROMX[$501d], BANK[$8]
+
+GfxScript_2101d:
+	position_offset -16, 8
+	frame  0, $5c4d
+; 0x21023
+
+SECTION "Bank 8@5195", ROMX[$5195], BANK[$8]
+
+GfxScript_21195:
+	frame  1, $58b8
+	script_f3
+	script_f0 $14, $14
+	set_value wBossHP, 0
+	script_f9 hHUDFlags, $ff, HUD_UPDATE_LABEL | HUD_BOSS_BATTLE
+.loop
+	frame 10, $58b8
+	inc_value wBossHP
+	script_f9 hHUDFlags, $ff, HUD_UPDATE_FIRST_ROW
+	play_sfx SFX_RESTORE_HP
+	dec_value wBossHPCounter
+	jump_if_equal wBossHPCounter, 0, .end
+	jump_rel .loop
+.end
+	script_end
+; 0x211c0

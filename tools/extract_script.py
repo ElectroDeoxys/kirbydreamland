@@ -55,7 +55,7 @@ commands = {
     0xee: ("set_custom_func", 4, parse2Words),
     0xef: ("clear_custom_func", 0, None),
     0xf0: ("script_f0", 2, parseByte),
-    0xf1: ("script_f1", 2, parseByte),
+    0xf1: ("position_offset", 2, parseByte),
     0xf2: ("script_f2", 0, None),
     0xf3: ("script_f3", 0, None),
     0xf4: ("set_value", 3, parseWordWithByte),
@@ -64,11 +64,15 @@ commands = {
     0xf7: ("jump_if_flags", 5, parseWordByteWord),
     0xf8: ("jump_if_not_flags", 5, parseWordByteWord),
     0xf9: ("script_f9", 4, parseWord2Bytes),
-    0xfa: ("script_fa", 3, parseByteWithWord),
-    0xfb: ("script_fb", 1, parseByte),
+    0xfa: ("jump_random", 3, parseByteWithWord),
+    0xfb: ("jumptable_random", 1, parseByte),
     0xfc: ("create_object", 6, parseAnimFC),
-    0xfd: ("script_fd", 1, parseByte),
-    0xfe: ("script_fe", 1, parseByte),
+    0xfd: ("script_call_random", 1, parseByte),
+    0xfe: ("calltable_random", 1, parseByte),
+
+    # higher order commands
+    0x100: ("set_gfx_script", 0, None),
+    0x101: ("set_motion_script", 0, None),
 }
 
 commandsWithByte = { 0xe6, 0xec, 0xed, 0xfb, 0xfd, 0xfe }
@@ -78,6 +82,7 @@ commandsWithByteAndAddress = { 0xfa }
 commandsWithAddressByteAddress = { 0xea, 0xf7, 0xf8 }
 commandsWithAddress = { 0xe1, 0xe2, 0xe3, 0xe8, 0xf5, 0xf6 }
 commandsWith2Addresses = { 0xe5, 0xee }
+commandsWithAddressAnd2Bytes = { 0xf9 }
 
 def getCommandString(cmdByte, args, addressLabels):
     cmdStr, nArgBytes, parseFunc = commands[cmdByte]
@@ -111,6 +116,9 @@ def getCommandString(cmdByte, args, addressLabels):
 
     if cmdByte in commandsWith2Addresses:
         return resStr + " " + parseAddress(args[0]) + ", " + parseAddress(args[1])
+
+    if cmdByte in commandsWithAddressAnd2Bytes:
+        return resStr + " " + parseAddress(args[0]) + ", ${:02x}".format(args[1]) + ", ${:02x}".format(args[2])
 
     if cmdByte == 0xfc:
         return resStr + " " + parseAddress(args[0]) + ", " + parseAddress(args[1]) + ", " + parseAddress(args[2])
@@ -170,12 +178,10 @@ for o in args.offsets:
             if cmdByte == 0xe0 or cmdByte == 0xe4:
                 break # end of script
 
-
-
     addressLabels = {}
     for jumpAddress in jumpAddresses:
         addressLabels[jumpAddress] = ".asm_{:0x}".format(jumpAddress)
-    
+
     # for the common case where the animation is a simple loop
     if len(addressLabels) == 1:
         for k, v in addressLabels.items():

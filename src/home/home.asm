@@ -3416,17 +3416,19 @@ SubtractBCFromHL::
 
 SECTION "Home@1d01", ROM0[$1d01]
 
-Func_1d01::
+; output:
+; - a = random byte
+Random::
 	push hl
 	push de
-	ld hl, wd02f
+	ld hl, wRNG
 	ld a, [hli]
-	ld e, a
+	ld e, a ; = wRNG[0]
 	adc [hl]
-	ld d, a
+	ld d, a ; = wRNG[0] + wRNG[1]
 	inc hl
-	adc [hl]
-	ld hl, wd02f
+	adc [hl] ; = wRNG[0] + wRNG[1] + wRNG[2]
+	ld hl, wRNG
 	ld [hl], d
 	inc hl
 	ld [hli], a
@@ -4744,7 +4746,7 @@ DoCommonScriptCommand:
 	ret
 
 .asm_2568
-	cp SCRIPT_F1
+	cp SCRIPT_POSITION_OFFSET
 	jr nz, .asm_25a3
 	push bc
 	ld d, h
@@ -4757,7 +4759,7 @@ DoCommonScriptCommand:
 	ld a, [de]
 	bit 7, a
 	jr z, .asm_257d
-	dec b
+	dec b ; $ff
 .asm_257d
 	add [hl]
 	ld [hli], a
@@ -4775,7 +4777,7 @@ DoCommonScriptCommand:
 	ld a, [de]
 	bit 7, a
 	jr z, .asm_2593
-	dec b
+	dec b ; $ff
 .asm_2593
 	add [hl]
 	ld [hli], a
@@ -5006,9 +5008,9 @@ DoCommonScriptCommand:
 	ret
 
 .asm_26bf
-	cp SCRIPT_FA
+	cp SCRIPT_JUMP_RANDOM
 	jr nz, .asm_26d8
-	call Func_1d01
+	call Random
 	cp [hl]
 	inc hl
 	jr nc, .asm_26cd
@@ -5023,9 +5025,9 @@ DoCommonScriptCommand:
 	ret
 
 .asm_26d8
-	cp SCRIPT_FB
+	cp SCRIPT_JUMPTABLE_RANDOM
 	jr nz, .asm_26e4
-	call Func_1d01
+	call Random
 	and [hl]
 	inc hl
 	jp .asm_24e5
@@ -5151,9 +5153,9 @@ SetScriptPtr:
 
 DoMotionScriptCommand:
 	inc hl
-	cp SCRIPT_FD
+	cp SCRIPT_CALL_RANDOM
 	jr nz, .asm_27a4
-	call Func_1d01
+	call Random
 	cp [hl]
 	inc hl
 	jr c, .asm_27ca
@@ -5166,11 +5168,11 @@ DoMotionScriptCommand:
 	ret
 
 .asm_27a4
-	cp SCRIPT_FE
+	cp SCRIPT_CALLTABLE_RANDOM
 	jr nz, .asm_27c6
 	ld d, [hl]
 	push de
-	call Func_1d01
+	call Random
 	and [hl]
 	inc hl
 	add a
@@ -5182,9 +5184,9 @@ DoMotionScriptCommand:
 	ld hl, wd23a
 	add hl, bc
 	add hl, bc
-	ld a, $04
+	ld a, $2 + $2 ; 2 bytes for this command, 2 bytes for first entry
 	add d
-	add d
+	add d ; + val * 2
 	ld d, a
 	ld a, [wScriptPtr + 0]
 	add d
@@ -5311,9 +5313,9 @@ DoMotionScriptCommand:
 
 DoGfxScriptCommand:
 	inc hl
-	cp SCRIPT_FD
+	cp SCRIPT_CALL_RANDOM
 	jr nz, .asm_2886
-	call Func_1d01
+	call Random
 	cp [hl]
 	inc hl
 	jr c, .asm_28ac
@@ -5326,11 +5328,11 @@ DoGfxScriptCommand:
 	ret
 
 .asm_2886
-	cp SCRIPT_FE
+	cp SCRIPT_CALLTABLE_RANDOM
 	jr nz, .asm_28a8
 	ld d, [hl]
 	push de
-	call Func_1d01
+	call Random
 	and [hl]
 	inc hl
 	add a
@@ -6758,7 +6760,7 @@ Func_30dc::
 	ld [wScriptPtr + 1], a
 	ret
 
-Func_3121::
+SetObjectProperties::
 	ld a, [wScriptBank]
 	bankswitch
 	ld hl, wObjectDatum
@@ -7252,7 +7254,7 @@ PowersOfTwo::
 	db 128
 ; 0x3410
 
-MACRO object_data
+MACRO object_properties
 	db \1 ; ?
 	db \2 ; ?
 	db \3 ; ?
@@ -7283,60 +7285,78 @@ Data_344d::
 
 SECTION "Home@3459", ROM0[$3459]
 
-MaximTomatoData::
+MaximTomatoProperties::
 	db $69, $08, $08, MAXIM_TOMATO, $72, $41
 ; 0x345f
 
 SECTION "Home@3465", ROM0[$3465]
 
-EnergyDrinkData::
+EnergyDrinkProperties::
 	db $69, $06, $08, ENERGY_DRINK, $72, $41
 ; 0x346b
 
-SECTION "Home@348c", ROM0[$348c]
+SECTION "Home@3483", ROM0[$3483]
 
-WaddleDeeData::
-	object_data $01, $06, $06, 1, $01, $03, 200, Data_4154
+Data_3483::
+	object_properties $29, $06, $06, 1, $01, $03, 200, Data_4154
+
+WaddleDeeProperties::
+	object_properties $01, $06, $06, 1, $01, $03, 200, Data_4154
 ; 0x3495
 
 SECTION "Home@34ff", ROM0[$34ff]
 
-CappyData::
-	object_data $09, $06, $06, 1, $01, $03, 200, Data_4154
+CappyProperties::
+	object_properties $09, $06, $06, 1, $01, $03, 200, Data_4154
 
 Data_3508::
-	object_data $09, $06, $06, 1, $01, $03, 200, Data_4154
+	object_properties $09, $06, $06, 1, $01, $03, 200, Data_4154
 ; 0x3511
 
 SECTION "Home@351a", ROM0[$351a]
 
-TwizzyData::
-	object_data $01, $06, $06, 1, $01, $03, 200, Data_4154
+TwizzyProperties::
+	object_properties $01, $06, $06, 1, $01, $03, 200, Data_4154
 
 Data_3523::
-	object_data $01, $06, $06, 1, $01, $03, 200, Data_4154
-; 0x352c
+	object_properties $01, $06, $06, 1, $01, $03, 200, Data_4154
 
-SECTION "Home@3535", ROM0[$3535]
+Data_352c::
+	object_properties $09, $06, $06, 1, $01, $03, 200, Data_4154
 
 Data_3535::
-	object_data $01, $0a, $0a, 2, $01, $03, 400, Data_4154
+	object_properties $01, $0a, $0a, 2, $01, $03, 400, Data_4154
 ; 0x353e
 
 SECTION "Home@3547", ROM0[$3547]
 
 Data_3547::
-	object_data $01, $0a, $0d, 2, $01, $03, 200, $41a8
-; 0x3550
+	object_properties $01, $0a, $0d, 2, $01, $03, 200, $41a8
 
-SECTION "Home@3559", ROM0[$3559]
+Data_3550::
+	object_properties $09, $06, $06, 1, $01, $03, 200, Data_4154
 
 Data_3559::
-	object_data $09, $06, $06, 1, $01, $01, 200, $4154
+	object_properties $09, $06, $06, 1, $01, $01, 200, Data_4154
 
 Data_3562::
-	object_data $01, $08, $10, 1, $01, $03, 300, $41b4
-; 0x356b
+	object_properties $01, $08, $10, 1, $01, $03, 300, $41b4
+
+Data_356b::
+	object_properties $01, $08, $0b, 1, $03, $09, 0, $41c0
+
+Data_3574::
+	object_properties $01, $06, $06, 1, $01, $03, 10, $4160
+; 0x357d
+
+SECTION "Home@35b7", ROM0[$35b7]
+
+Data_35b7::
+	db $0d, $14, $14, $01
+
+Data_35bb::
+	object_properties $01, $14, $14, 1, $05, $00, 0, $4160
+; 0x35c4
 
 SECTION "Home@35cd", ROM0[$35cd]
 

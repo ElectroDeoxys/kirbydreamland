@@ -979,7 +979,12 @@ Func_4a1c:
 	ld a, SFX_14
 	call PlaySFX
 	ret
-; 0x4a82
+
+Func_4a82:
+	ld hl, hff90
+	set 4, [hl]
+	ret
+; 0x4a88
 
 SECTION "Bank 1@4ab3", ROMX[$4ab3], BANK[$1]
 

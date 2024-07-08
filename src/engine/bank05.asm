@@ -1018,11 +1018,11 @@ Func_14993:
 	ret
 
 .Func_149ae:
-	call Func_1d01
+	call Random
 	and $1e
-	add $db
+	add LOW(.data)
 	ld e, a
-	ld a, $49
+	ld a, HIGH(.data)
 	adc $00
 	ld d, a
 	ld hl, wd3fa
@@ -1048,9 +1048,24 @@ Func_14993:
 	ld [hli], a
 	ld [hl], a
 	ret
-; 0x149db
 
-SECTION "Bank 5@49fb", ROMX[$49fb], BANK[$5]
+.data
+	db $0f, $ec
+	db $14, $ec
+	db $19, $ec
+	db $1e, $ec
+	db $23, $ec
+	db $28, $ec
+	db $2c, $f4
+	db $2c, $fb
+	db $2c, $05
+	db $2c, $0c
+	db $28, $14
+	db $23, $14
+	db $1e, $14
+	db $19, $14
+	db $14, $14
+	db $0f, $14
 
 Func_149fb:
 	ld hl, wd3fa
@@ -1237,12 +1252,14 @@ InitRAM::
 	ld [wd050], a
 	ld a, $01
 	ld [wd048], a
-	ld hl, wd02f
-	ld [hli], a
+
+	; initial RNG seed
+	ld hl, wRNG
+	ld [hli], a ; $1
 	inc a
-	ld [hli], a
+	ld [hli], a ; $2
 	inc a
-	ld [hl], a
+	ld [hl], a  ; $3
 	ret
 ; 0x14b30
 
