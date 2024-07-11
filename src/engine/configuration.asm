@@ -1,7 +1,7 @@
 ConfigurationMenu:
 	call Func_648
 	call ResetTimer
-	call ClearObjects
+	call ClearAllObjects
 	call InitWindow
 	xor a
 	ld [wSCX ], a

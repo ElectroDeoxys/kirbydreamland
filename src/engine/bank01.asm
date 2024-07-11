@@ -1,6 +1,137 @@
-SECTION "Bank 1@4105", ROMX[$4105], BANK[$1]
-
-Func_4105:
+Func_4000::
+	ldh a, [hff8e]
+	bit 6, a
+	call z, Func_8dc
+	ld a, [wd05c]
+	cp $98
+	jr c, .asm_401c
+	call Func_8cb
+	ldh a, [hff8d]
+	res 4, a
+	ldh [hff8d], a
+	xor a
+	ld [wd063], a
+	ret
+.asm_401c
+	ld a, [wd074]
+	ld e, a
+	ld a, [wd075]
+	ld b, a
+	ld a, [wd054]
+	add b
+	ld [wd054], a
+	jr nc, .asm_402e
+	inc e
+.asm_402e
+	ld a, e
+	and a
+	ret z
+	ld [wd062], a
+	ldh a, [hff90]
+	bit 5, a
+	jp nz, .asm_40e1
+	inc e
+	ld a, [wd05c]
+	add $0d
+	ld [wd05e], a
+	call Func_784
+	ld d, $00
+.asm_4049
+	ld a, l
+	call Func_643
+	jr nc, .asm_4057
+	inc hl
+	inc d
+	dec e
+	jr nz, .asm_4049
+	jp .asm_40e1
+.asm_4057
+	call Func_1ccb
+	ld a, c
+	ld [wd05e], a
+	ld a, [wd05d]
+	sub $10
+	ld [wd05f], a
+	call Func_819
+	and a
+	jr z, .asm_4081
+	cp $01
+	jr z, .asm_4081
+	cp $06
+	jr z, .asm_4081
+	cp $09
+	jr z, .asm_4081
+	cp $08
+	jr nz, .asm_40a4
+	call Func_1248
+	jr c, .asm_40a4
+.asm_4081
+	ld a, [wd05d]
+	sub $01
+	ld [wd05f], a
+	call Func_819
+	and a
+	jr z, .asm_40e1
+	cp $01
+	jr z, .asm_40e1
+	cp $06
+	jr z, .asm_40e1
+	cp $09
+	jr z, .asm_40e1
+	cp $08
+	jr nz, .asm_40a4
+	call Func_1257
+	jr nc, .asm_40e1
+.asm_40a4
+	ldh a, [hff8e]
+	bit 6, a
+	jr nz, .asm_40d5
+	call Func_11c9
+	ldh a, [hff92]
+	and $0c
+	jr nz, .asm_40d5
+	ld a, [wd074]
+	cp $01
+	jr nc, .asm_40c1
+	ld a, [wd075]
+	cp $82
+	jr c, .asm_40d5
+.asm_40c1
+	ldh a, [hff8d]
+	res 4, a
+	ldh [hff8d], a
+	ld b, $82
+	ldh a, [hff92]
+	and $f0
+	or b
+	ldh [hff92], a
+	push de
+	call Func_37ac
+	pop de
+.asm_40d5
+	call Func_8cb
+	ld a, $ff
+	ld [wd054], a
+	ld a, d
+	ld [wd062], a
+.asm_40e1
+	ldh a, [hff90]
+	bit 4, a
+	jr nz, .asm_4115
+	ld hl, hff94
+	bit 3, [hl]
+	jr nz, .asm_4115
+	ld hl, hff91
+	bit 6, [hl]
+	jr nz, .asm_4115
+	ldh a, [hff90]
+	bit 5, a
+	jr nz, .asm_4115
+	ld c, $4c
+	ldh a, [hff91]
+	bit 7, a
+	jr nz, .asm_4117
+	ldh a, [hff90]
 	bit 5, a
 	jp nz, .asm_4115
 	ld a, [wd042]
@@ -67,12 +198,37 @@ Func_4105:
 	xor a
 	ld [wd063], a
 	ret
-; 0x417c
 
-SECTION "Bank 1@41b1", ROMX[$41b1], BANK[$1]
-
-Func_41b1:
-	ld b, d
+Func_417c::
+	xor a
+	ld [wd063], a
+	ldh a, [hff8e]
+	bit 6, a
+	call z, Func_8dc
+	ld a, [wd05c]
+	cp $08
+	jr nz, .asm_4193
+	call Func_8cb
+	and a
+	ret
+.asm_4193
+	ld a, [wd074]
+	ld e, a
+	ld a, [wd075]
+	ld b, a
+	ld a, [wd054]
+	sub b
+	ld [wd054], a
+	jr nc, .asm_41a5
+	inc e
+.asm_41a5
+	ld a, e
+	ld [wd063], a
+	and a
+	ret z
+	ldh a, [hff90]
+	bit 5, a
+	jp nz, .asm_4250
 	inc e
 	ld a, [wd05c]
 	add $03
@@ -196,7 +352,6 @@ Func_41b1:
 	ret
 .asm_42a1
 	ldh a, [hff92]
-Func_42a3:
 	and $0c
 	jr nz, .asm_42ba
 	ld a, [wd074]
@@ -582,9 +737,9 @@ Func_42bf::
 	jr nz, .asm_460c
 	ld hl, hff8d
 	set 7, [hl]
-	bit 4, b
+	bit A_BUTTON_F + 4, b
 	jr nz, .asm_4629
-	bit 2, b
+	bit D_UP_F - 4, b
 	jr nz, .asm_4629
 	ld a, [wd064]
 	and a
@@ -655,9 +810,9 @@ Func_42bf::
 	jr nc, .asm_4655
 	ld b, $00
 	ld a, c
-	add c
+	add c ; *2
 	ld c, a
-	ld hl, $4820
+	ld hl, Data_4820
 	add hl, bc
 	ld a, [hli]
 	ld [wd078], a
@@ -692,9 +847,9 @@ Func_42bf::
 	and $03
 	ldh [hVBlankFlags], a
 	ld [wd04d], a
-	bit 2, b
+	bit D_UP_F - 4, b
 	jr nz, .asm_46ef
-	bit 4, b
+	bit A_BUTTON_F + 4, b
 	jr nz, .asm_46ef
 	jr .asm_46fc
 .asm_4692
@@ -776,8 +931,8 @@ Func_42bf::
 	ldh a, [hJoypadPressed]
 	swap a
 	and $03
-	ld b, a
-	ld a, b
+	ld b, a ; unnecessary
+	ld a, b ;
 	ld [wd04d], a
 	ldh [hVBlankFlags], a
 	ld a, [wd065]
@@ -792,7 +947,7 @@ Func_42bf::
 	ld a, c
 	add c
 	ld c, a
-	ld hl, $4860
+	ld hl, Data_4860
 	add hl, bc
 	ld a, [hli]
 	ld [wd078], a
@@ -887,14 +1042,77 @@ Func_4783::
 	ld hl, wInvincibilityCounter
 	ld a, [hli]
 	or [hl]
-	jr z, .asm_481d
+	jr z, .skip_spawn_star
 	ld a, [wGlobalCounter1]
 	and %111
-	jr nz, .asm_481d
+	jr nz, .skip_spawn_star
 	call Func_37a7
-.asm_481d
+.skip_spawn_star
 	jp Func_246
-; 0x4820
+
+Data_4820:
+	db $fe, $80
+	db $fe, $80
+	db $fe, $80
+	db $fe, $80
+	db $fe, $80
+	db $fe, $80
+	db $fe, $80
+	db $fe, $80
+	db $ff, $bf
+	db $ff, $bf
+	db $ff, $bf
+	db $ff, $bf
+	db $ff, $bf
+	db $ff, $bf
+	db $ff, $bf
+	db $ff, $bf
+	db $ff, $3f
+	db $ff, $3f
+	db $ff, $3f
+	db $ff, $3f
+	db $ff, $3f
+	db $ff, $3f
+	db $ff, $3f
+	db $ff, $3f
+	db $00, $3f
+	db $00, $3f
+	db $00, $3f
+	db $00, $3f
+	db $00, $3f
+	db $00, $3f
+	db $00, $3f
+	db $00, $3f
+
+Data_4860:
+	db $fc, $00
+	db $fc, $00
+	db $fc, $00
+	db $fc, $00
+	db $fc, $00
+	db $fc, $00
+	db $fd, $00
+	db $fd, $00
+	db $fd, $00
+	db $fd, $00
+	db $fd, $00
+	db $fd, $00
+	db $fe, $00
+	db $fe, $00
+	db $fe, $00
+	db $fe, $00
+	db $fe, $00
+	db $ff, $80
+	db $ff, $80
+	db $ff, $80
+	db $ff, $80
+	db $ff, $80
+	db $04, $03
+	db $03, $02
+	db $02, $02
+	db $01, $01
+	db $01, $01
+; 0x4896
 
 SECTION "Bank 1@48e1", ROMX[$48e1], BANK[$1]
 
@@ -1034,3 +1252,84 @@ Func_4afb:
 	ld [wScriptCommand], a
 	ret
 ; 0x4b19
+
+SECTION "Bank 1@4c9b", ROMX[$4c9b], BANK[$1]
+
+Func_4c9b::
+	ld a, [wd3f5]
+	and a
+	jp nz, Func_4ced.set_carry
+	ld hl, wInvincibilityCounter
+	ld a, [hli]
+	or [hl]
+	jp nz, Func_4ced.set_carry
+	ld a, [wHP]
+	srl a
+	ld [wHP], a
+	ld a, $5a
+	ld [wd3f5], a
+	ld a, [wd1a0]
+	set 5, a
+	ld [wd1a0], a
+
+	ld a, SFX_21
+	call PlaySFX
+
+	ld de, GfxScript_20162
+	ld hl, MotionScript_101dc
+	ld bc, OBJECT_SLOT_00
+	call Func_21e6
+.asm_4cd0
+	ld a, 1
+	call DoFrames
+	ld hl, hff94
+	bit 5, a
+	jr nz, .asm_4cd0
+	ld a, $01
+	ld [wd082], a
+	ld a, $01
+	ld [wd078], a
+	ld a, $80
+	ld [wd079], a
+	xor a
+	ret
+
+Func_4ced::
+	ld a, [wd3f5]
+	and a
+	jr nz, .set_carry
+	ld hl, wInvincibilityCounter
+	ld a, [hli]
+	or [hl]
+	jr nz, .set_carry
+	ld a, [wHP]
+	srl a
+	ld [wHP], a
+	ld a, SFX_21
+	call PlaySFX
+	ld a, $5a
+	ld [wd3f5], a
+	ld a, [wd1a0]
+	set 5, a
+	ld [wd1a0], a
+	ld de, $4149
+	ld hl, $41dc
+	ld bc, OBJECT_SLOT_00
+	call Func_21e6
+.asm_4d20
+	ld a, 1
+	call DoFrames
+	ld hl, hff94
+	bit 5, a
+	jr nz, .asm_4d20
+	ld a, $01
+	ld [wd082], a
+	ld a, $fe
+	ld [wd078], a
+	ld a, $80
+	ld [wd079], a
+	xor a
+	ret
+.set_carry
+	scf
+	ret

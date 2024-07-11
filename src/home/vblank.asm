@@ -7,7 +7,7 @@ VBlank:
 	push hl
 	ld hl, hVBlankFlags
 	bit VBLANK_6_F, [hl]
-	jp z, .asm_1d9d
+	jp z, .waste_cycles
 	ld hl, hff91
 	bit 2, [hl]
 	jp nz, .asm_1da4
@@ -30,13 +30,13 @@ VBlank:
 	and ~(VBLANK_5 | VBLANK_6)
 	ldh [hVBlankFlags], a
 
-	call Func_1dfb
+	call ApplyLCDCScrollAndBGPalette
 	call Func_1f08
 	call ReadJoypad
 	jr .asm_1d56
 
 .asm_1d53
-	call Func_1dfb
+	call ApplyLCDCScrollAndBGPalette
 .asm_1d56
 	ld hl, hff91
 	res 3, [hl]
@@ -77,11 +77,11 @@ VBlank:
 	pop af
 	reti
 
-.asm_1d9d
+.waste_cycles
 	ld b, $50
-.asm_1d9f
+.loop_waste_cycles
 	dec b
-	jr nz, .asm_1d9f
+	jr nz, .loop_waste_cycles
 	jr .asm_1d53
 
 .asm_1da4

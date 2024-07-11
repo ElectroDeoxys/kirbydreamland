@@ -12,7 +12,7 @@ StartStage::
 	xor a
 	ld [hff90], a
 	ld [wd3f1], a
-	ld hl, wd3df
+	ld hl, wMintLeafCounter
 	ld [hli], a
 	ld [hli], a
 	ld [hli], a
@@ -61,7 +61,7 @@ StartStage::
 .skip_intro
 	ld a, $ff
 	ld [wd096], a
-	call ClearObjects
+	call ClearAllObjects
 	call Func_648
 	call Func_1c0a
 	call ResetTimer
@@ -764,7 +764,293 @@ Pause::
 	res 4, a
 	ld [hff91], a
 	jr .show_sprites
-; 0x18639
+
+Func_18639::
+	xor a
+	ld [wHP], a
+
+	ld a, SFX_21
+	call PlaySFX
+	ld a, MUSIC_NONE
+	call PlayMusic
+
+	ld hl, wMintLeafCounter
+	xor a
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+	ld [hl], a
+	ld [wd3be], a
+	ld [wd3f5], a
+	ld a, [wd1a0]
+	res 4, a
+	res 5, a
+	ld [wd1a0], a
+	ld a, [wStage]
+	cp MT_DEDEDE
+	jr nz, .asm_18678
+	ld a, [wArea]
+	ld b, $00
+	ld c, a
+	ld hl, Data_1874d
+	add hl, bc
+	ld a, [hl]
+	ld c, a
+	ld hl, wd043
+	add hl, bc
+	xor a
+	ld [hl], a
+
+.asm_18678
+	xor a
+	ld [hVBlankFlags], a
+	ld [hff94], a
+	ld [hff93], a
+	ld a, [hff95]
+	and $81
+	ld [hff95], a
+
+	call ClearConsumedItems
+
+	ld a, 1
+	call DoFrames
+	ld a, 59
+	call WaitAFrames
+	ld a, MUSIC_LIFE_LOST
+	call PlayMusic
+
+	ld hl, hff94
+	set 5, [hl]
+	call ClearObjectsExceptSlot00
+	xor a
+	ld [wd3cc], a
+	ld bc, OBJECT_SLOT_00
+	ld hl, $4154
+	ld de, $4137
+	call Func_21e6
+
+	ld b, 160
+.asm_186b6
+	push bc
+	ld a, [wObjectYCoords + $1]
+	cp $dc
+	jr nc, .asm_186c2
+	cp $a0
+	jr nc, .asm_186c7
+.asm_186c2
+	ld a, OBJECT_ACTIVE
+	ld [wObjectActiveStates + OBJECT_SLOT_00], a
+.asm_186c7
+	ld a, 1
+	call DoFrames
+	pop bc
+	dec b
+	jr nz, .asm_186b6
+
+	ld hl, hff94
+	res 5, [hl]
+
+	; decrement lives
+	ld a, [wLives]
+	dec a
+	jr z, Func_18757
+	ld [wLives], a
+
+	ld a, [wStage]
+	add a ; *2
+	ld c, a
+	ld b, $00
+	ld hl, Data_3a43
+	add hl, bc
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	ld a, [wArea]
+	ld h, a
+	add a
+	add a
+	add h ; *5
+	ld l, a
+	ld h, $00
+	add hl, bc
+	ld a, [hli]
+	ld [wArea], a
+	push hl
+	call Func_19c9
+	call Func_648
+	call Func_19f9
+	pop hl
+	ld a, [hli]
+	ld [wd051], a
+	ld a, [hli]
+	ld [wd052], a
+	ld a, [hli]
+	ld [wd05c], a
+	ld a, [hli]
+	ld [wd05d], a
+	xor a
+	ld [hff8d], a
+	ld [hff8e], a
+	ld [hff92], a
+	call Func_139b
+	ld a, [wStage]
+	cp MT_DEDEDE
+	jr z, .asm_18731
+	ld a, [wMusic]
+	call PlayMusic
+.asm_18731
+	ld a, [hff91]
+	res 6, a
+	ld [hff91], a
+	call Func_3d92
+	ld a, [hHUDFlags]
+	set 4, a
+	ld [hHUDFlags], a
+	ld a, [wMaxHP]
+	ld [wHP], a
+	jp Func_1e6
+
+Data_1874d:
+	db $00 ; MT_DEDEDE_0
+	db $01 ; MT_DEDEDE_1
+	db $02 ; MT_DEDEDE_2
+	db $03 ; MT_DEDEDE_3
+	db $04 ; MT_DEDEDE_4
+	db $05 ; MT_DEDEDE_5
+	db $01 ; MT_DEDEDE_6
+	db $03 ; MT_DEDEDE_7
+	db $02 ; MT_DEDEDE_8
+	db $04 ; MT_DEDEDE_9
+
+Func_18757:
+	call Func_648
+	call InitWindow
+	call ResetTimer
+	ld a, $0a
+	call Func_21fb
+	ld hl, $4665
+	ld de, v0BGMap0
+	ld c, $03
+	call FarDecompress
+	ld hl, $41c7
+	ld de, $8e00
+	ld c, $03
+	call FarDecompress
+	ld a, $03
+	call PlayMusic
+	xor a
+	ld [wSCX], a
+	ld [wSCY], a
+	call StopTimerAndSwitchOnLCD
+	call Func_670
+	xor a
+	ld [wVirtualOAMSize], a
+	call Func_2e9c
+	ld bc, $118
+.asm_18797
+	ld hl, hVBlankFlags
+	set 6, [hl]
+.asm_1879c
+	bit 6, [hl]
+	jr nz, .asm_1879c
+	ld a, [hJoypadPressed]
+	bit 3, a
+	jr nz, .asm_187b0
+	dec bc
+	ld a, b
+	and a
+	jr nz, .asm_18797
+	ld a, c
+	and a
+	jr nz, .asm_18797
+.asm_187b0
+	ld hl, hff95
+	set 0, [hl]
+	call Func_648
+	call InitWindow
+	call ResetTimer
+	call ClearAllObjects
+	inc a
+	ld [wd051], a
+	ld [wd052], a
+	ld a, $0b
+	call Func_21fb
+	ld a, $ff
+	ld [wd096], a
+	call ClearSprites
+	ld hl, $77e9
+	ld de, $8e00
+	ld c, $02
+	call FarDecompress
+	ld hl, $5cdd
+	ld de, v0Tiles1
+	ld c, $03
+	call FarDecompress
+	ld hl, $46b5
+	ld de, v0BGMap0
+	ld c, $03
+	call FarDecompress
+	xor a
+	ld [wOAMFlagsOverride], a
+	ld [wSCX], a
+	ld [wSCY], a
+	ld a, $04
+	call PlayMusic
+	call StopTimerAndSwitchOnLCD
+	call Func_670
+.asm_1880b
+	ld hl, hVBlankFlags
+	set 6, [hl]
+.asm_18810
+	bit 6, [hl]
+	jr nz, .asm_18810
+	call Func_19098
+	ld a, [$d3d0]
+	and a
+	jr z, .asm_1880b
+	ld hl, hff95
+	res 0, [hl]
+	ld a, [$d3cf]
+	and a
+	jp nz, .asm_1885e
+	ld a, [wConfigLives]
+	ld [wLives], a
+	call SetFullHP
+	ld hl, wd048
+	ld a, [hld]
+	and a
+	jr z, .asm_1883e
+	xor a
+	ld [hld], a
+	ld [hld], a
+	ld [hld], a
+	ld [hld], a
+.asm_1883e
+	ld hl, $d08d
+	ld a, [hl]
+	srl a
+	ld [hld], a
+	ld a, [hl]
+	rr a
+	ld [hld], a
+	ld a, [hl]
+	rr a
+	ld [hl], a
+	ld hl, hff91
+	set 5, [hl]
+	call StartStage
+	ld a, [wMusic]
+	call PlayMusic
+	jp Func_1e6
+
+.asm_1885e
+	ld a, 60
+	call DoFrames
+	call Func_648
+	call ResetTimer
+	jp Reset
+; 0x1886c
 
 SECTION "Bank 6@486c", ROMX[$486c], BANK[$6]
 
@@ -1385,7 +1671,7 @@ Func_1886c:
 .asm_18d06
 	call Func_648
 	call ResetTimer
-	call ClearObjects
+	call ClearAllObjects
 	ld a, [wExtraGameEnabled]
 	and a
 	ld a, TRUE

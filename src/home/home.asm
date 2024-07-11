@@ -89,10 +89,10 @@ Func_246::
 	ld hl, hff94
 	bit 4, [hl]
 	jr nz, .asm_303
-	call $4000
+	call Func_4000
 	jr .asm_306
 .asm_303
-	call $417c
+	call Func_417c
 .asm_306
 	xor a
 	ld [wd074], a
@@ -127,8 +127,8 @@ Func_326::
 	ld a, [wMusic]
 	call PlayMusic
 	xor a
-	ld [wd3df], a
-	ld [wd3e0], a
+	ld [wMintLeafCounter + 0], a
+	ld [wMintLeafCounter + 1], a
 	ld hl, wd1a0
 	res 4, [hl]
 	jr .asm_359
@@ -922,13 +922,13 @@ Func_88d:
 	jr .asm_895 ; useless jump
 .asm_895
 	call .Func_8b3
-	call $4000 ; Func_4000
+	call Func_4000
 	jp nc, Func_990
 	call Func_1062
 	jp Func_990
 .asm_8a4
 	call .Func_8b3
-	call $417c ; Func_417c
+	call Func_417c
 	jp nc, Func_9d6
 	call Func_110b
 	jp Func_9d6
@@ -1041,7 +1041,7 @@ Func_917::
 	ldh a, [hff8d]
 	set 4, a
 	ldh [hff8d], a
-	call $4000 ; Func_4000
+	call Func_4000
 	call c, Func_1062
 ;	fallthrough
 
@@ -1080,7 +1080,7 @@ Func_998:
 	ldh a, [hff8d]
 	set 4, a
 	ldh [hff8d], a
-	call $417c ; Func_417c
+	call Func_417c
 	call c, Func_110b
 ;	fallthrough
 
@@ -1188,7 +1188,7 @@ Func_9de:
 .asm_a93
 	push bc
 	push de
-	call $4c9b ; Func_4c9b
+	call Func_4c9b
 	pop de
 	pop bc
 	jr c, .asm_aa9
@@ -1353,7 +1353,7 @@ Func_9de:
 	add $18
 	call Func_7a7
 	cp $07
-	jp z, $4c9b ; Func_4c9b
+	jp z, Func_4c9b
 .asm_be0
 	ldh a, [hff8e]
 	bit 6, a
@@ -1566,7 +1566,7 @@ Func_caf:
 .asm_d72
 	push bc
 	push de
-	call $4ced ; Func_4ced
+	call Func_4ced
 	pop de
 	pop bc
 	jp c, .asm_ece
@@ -1940,7 +1940,7 @@ Func_caf:
 	call Func_7b5
 	cp $08
 	ret nz
-	jp $4ced ; Func_4ced
+	jp Func_4ced
 
 Func_1046:
 	push bc
@@ -2460,9 +2460,9 @@ GetBGCoordFromPosition:
 	ret
 
 Func_1385:
-	ld a, $06
+	ld a, BANK(Func_18639)
 	bankswitch
-	jp $4639 ; Func_18639
+	jp Func_18639
 
 Func_1390:
 	ld a, $06
@@ -3489,7 +3489,7 @@ Func_1def:
 	pop hl
 	ret
 
-Func_1dfb:
+ApplyLCDCScrollAndBGPalette:
 	ldh a, [hLCDC]
 	ldh [rLCDC], a
 	ld a, [wSCX]
@@ -4163,19 +4163,19 @@ Func_21fb::
 	and a
 	jr z, .asm_222b
 	dec a
-assert Data_1c0ce == Data_3c0ce
+ASSERT Data_1c0ce == Data_3c0ce
 	ld hl, Data_1c0ce ; aka Data_3c0ce
 	jr .asm_2249
 .asm_222b
 	ld hl, hff94
 	bit 1, [hl]
 	jr z, .asm_223a
-assert Data_1c13a == Data_3c13a
+ASSERT Data_1c13a == Data_3c13a
 	ld hl, Data_1c13a ; aka Data_3c13a
 	ld a, [wStage]
 	jr .asm_2249
 .asm_223a
-assert Data_1c000 == Data_3c000
+ASSERT Data_1c000 == Data_3c000
 	ld hl, Data_1c000 ; aka Data_3c000
 	ld a, [wStage]
 	ld e, a
@@ -4202,7 +4202,7 @@ assert Data_1c000 == Data_3c000
 	pop af
 	bankswitch
 
-	call ClearObjects
+	call ClearAllObjects
 
 	xor a
 	ld [wd3e9], a
@@ -4270,7 +4270,7 @@ assert Data_1c000 == Data_3c000
 	bit 1, [hl]
 	ret nz
 	ld b, $00
-	ld hl, wd3df
+	ld hl, wMintLeafCounter
 	ld a, [hli]
 	or [hl]
 	jr z, .asm_2305
@@ -4292,14 +4292,17 @@ assert Data_1c000 == Data_3c000
 	xor a
 	ld [wd190 + OBJECT_SLOT_00], a
 	ret
-; 0x2317
 
-SECTION "Home@231e", ROM0[$231e]
+ClearObjectsExceptSlot00::
+	ld b, NUM_OBJECT_SLOTS - 1
+	ld hl, wObjectActiveStates + OBJECT_GROUP_1_BEGIN
+	jr ClearObjects
 
 ; clears wObjectActiveStates
-ClearObjects::
+ClearAllObjects::
 	ld b, NUM_OBJECT_SLOTS
 	ld hl, wObjectActiveStates
+ClearObjects:
 	xor a ; OBJECT_NOT_ACTIVE
 .loop
 	ld [hli], a
@@ -6585,7 +6588,7 @@ Func_2fdf:
 	ld a, [hff91]
 	bit 0, a
 	ret nz
-	ld hl, wd3df
+	ld hl, wMintLeafCounter
 	call .Func_3047
 	ret nz
 	ld a, [wd1a0]
@@ -6636,12 +6639,12 @@ Func_2fdf:
 	ret
 
 .Func_3059:
-	ld a, [wd3e0]
+	ld a, [wMintLeafCounter + 1]
 	ld e, a
 	ld a, [wInvincibilityCounter + 1]
 	or e
 	ret nz
-	ld a, [wd3df]
+	ld a, [wMintLeafCounter + 0]
 	ld e, a
 	ld a, [wInvincibilityCounter + 0]
 	cp e
@@ -7268,13 +7271,13 @@ ENDM
 SECTION "Home@3421", ROM0[$3421]
 
 Data_3421::
-	db $05, $00, $00, $00, $04, $00
-; 0x3427
+	db $05, $00, $00, $00
 
-SECTION "Home@3429", ROM0[$3429]
-
+Data_3425::
+	db $04, $00, $00, 0
 Data_3429::
-	db $69, $08, $08, $00, $54, $41
+	db $69, $08, $08, 0
+	dw Data_4154
 ; 0x342f
 
 SECTION "Home@344d", ROM0[$344d]
@@ -7642,7 +7645,82 @@ Data_38b1:
 	area $03, $733d, $0a, $08, $00, $00, $00 ; MT_DEDEDE_8
 	area $06, $712d, $0a, $08, $00, $00, $00 ; MT_DEDEDE_9
 	assert_table_length NUM_MT_DEDEDE_AREAS
-; 0x3a43
+
+Data_3a43::
+	dw .GreenGreens ; GREEN_GREENS
+	dw .CastleLololo ; CASTLE_LOLOLO
+	dw .FloatIslands ; FLOAT_ISLANDS
+	dw .BubblyClouds ; BUBBLY_CLOUDS
+	dw .MtDedede ; MT_DEDEDE
+
+.GreenGreens:
+	table_width 5, Data_3a43.GreenGreens
+	db GREEN_GREENS_0, $01, $01, $28, $40 ; GREEN_GREENS_0
+	db GREEN_GREENS_0, $01, $01, $28, $40 ; GREEN_GREENS_1
+	db GREEN_GREENS_2, $01, $01, $28, $50 ; GREEN_GREENS_2
+	db GREEN_GREENS_3, $03, $21, $48, $60 ; GREEN_GREENS_3
+	db GREEN_GREENS_4, $01, $01, $18, $30 ; GREEN_GREENS_4
+	assert_table_length NUM_GREEN_GREENS_AREAS
+
+.CastleLololo:
+	table_width 5, Data_3a43.CastleLololo
+	db CASTLE_LOLOLO_00, $01, $01, $28, $40 ; CASTLE_LOLOLO_00
+	db CASTLE_LOLOLO_00, $01, $01, $28, $40 ; CASTLE_LOLOLO_01
+	db CASTLE_LOLOLO_00, $01, $01, $28, $40 ; CASTLE_LOLOLO_02
+	db CASTLE_LOLOLO_00, $01, $01, $28, $40 ; CASTLE_LOLOLO_03
+	db CASTLE_LOLOLO_04, $02, $01, $48, $30 ; CASTLE_LOLOLO_04
+	db CASTLE_LOLOLO_04, $02, $01, $48, $30 ; CASTLE_LOLOLO_05
+	db CASTLE_LOLOLO_04, $02, $01, $48, $30 ; CASTLE_LOLOLO_06
+	db CASTLE_LOLOLO_04, $02, $01, $48, $30 ; CASTLE_LOLOLO_07
+	db CASTLE_LOLOLO_08, $01, $01, $18, $50 ; CASTLE_LOLOLO_08
+	db CASTLE_LOLOLO_09, $01, $09, $38, $70 ; CASTLE_LOLOLO_09
+	db CASTLE_LOLOLO_09, $01, $09, $38, $70 ; CASTLE_LOLOLO_10
+	db CASTLE_LOLOLO_09, $01, $09, $38, $70 ; CASTLE_LOLOLO_11
+	db CASTLE_LOLOLO_12, $02, $09, $28, $70 ; CASTLE_LOLOLO_12
+	db CASTLE_LOLOLO_12, $02, $09, $28, $70 ; CASTLE_LOLOLO_13
+	db CASTLE_LOLOLO_14, $01, $01, $58, $50 ; CASTLE_LOLOLO_14
+	assert_table_length NUM_CASTLE_LOLOLO_AREAS - 1
+
+.FloatIslands:
+	table_width 5, Data_3a43.FloatIslands
+	db FLOAT_ISLANDS_0, $01, $01, $28, $40 ; FLOAT_ISLANDS_0
+	db FLOAT_ISLANDS_1, $01, $01, $48, $50 ; FLOAT_ISLANDS_1
+	db FLOAT_ISLANDS_1, $01, $01, $48, $50 ; FLOAT_ISLANDS_2
+	db FLOAT_ISLANDS_3, $01, $01, $38, $30 ; FLOAT_ISLANDS_3
+	db FLOAT_ISLANDS_3, $01, $01, $38, $30 ; FLOAT_ISLANDS_4
+	db FLOAT_ISLANDS_3, $01, $01, $38, $30 ; FLOAT_ISLANDS_5
+	db FLOAT_ISLANDS_3, $01, $01, $38, $30 ; FLOAT_ISLANDS_6
+	db FLOAT_ISLANDS_7, $01, $01, $28, $40 ; FLOAT_ISLANDS_7
+	assert_table_length NUM_FLOAT_ISLANDS_AREAS
+
+.BubblyClouds:
+	table_width 5, Data_3a43.BubblyClouds
+	db BUBBLY_CLOUDS_0, $01, $01, $48, $40 ; BUBBLY_CLOUDS_0
+	db BUBBLY_CLOUDS_1, $01, $01, $28, $70 ; BUBBLY_CLOUDS_1
+	db BUBBLY_CLOUDS_2, $01, $19, $48, $50 ; BUBBLY_CLOUDS_2
+	db BUBBLY_CLOUDS_2, $01, $19, $48, $50 ; BUBBLY_CLOUDS_3
+	db BUBBLY_CLOUDS_4, $01, $11, $18, $48 ; BUBBLY_CLOUDS_4
+	db BUBBLY_CLOUDS_5, $01, $01, $48, $3f ; BUBBLY_CLOUDS_5
+	db BUBBLY_CLOUDS_6, $01, $01, $40, $40 ; BUBBLY_CLOUDS_6
+	db BUBBLY_CLOUDS_7, $03, $1f, $48, $50 ; BUBBLY_CLOUDS_7
+	db BUBBLY_CLOUDS_7, $03, $1f, $48, $50 ; BUBBLY_CLOUDS_8
+	db BUBBLY_CLOUDS_9, $01, $01, $18, $48 ; BUBBLY_CLOUDS_9
+	assert_table_length NUM_BUBBLY_CLOUDS_AREAS
+
+.MtDedede:
+	table_width 5, Data_3a43.MtDedede
+	db MT_DEDEDE_0, $33, $01, $48, $70 ; MT_DEDEDE_0
+	db MT_DEDEDE_0, $33, $01, $48, $70 ; MT_DEDEDE_1
+	db MT_DEDEDE_0, $33, $01, $48, $70 ; MT_DEDEDE_2
+	db MT_DEDEDE_0, $33, $01, $48, $70 ; MT_DEDEDE_3
+	db MT_DEDEDE_0, $33, $01, $48, $70 ; MT_DEDEDE_4
+	db MT_DEDEDE_0, $33, $01, $48, $70 ; MT_DEDEDE_5
+	db MT_DEDEDE_0, $33, $01, $48, $70 ; MT_DEDEDE_6
+	db MT_DEDEDE_0, $33, $01, $48, $70 ; MT_DEDEDE_7
+	db MT_DEDEDE_0, $33, $01, $48, $70 ; MT_DEDEDE_8
+	db MT_DEDEDE_0, $33, $01, $48, $70 ; MT_DEDEDE_9
+	assert_table_length NUM_MT_DEDEDE_AREAS
+; 0x3b3d
 
 SECTION "Home@3d2d", ROM0[$3d2d]
 
@@ -7692,4 +7770,14 @@ Func_3d48::
 	ld [hli], a
 	ld [hl], a
 	ret
-; 0x3d92
+
+Func_3d92::
+	ld a, [wROMBank]
+	push af
+	ld a, $01
+	bankswitch
+	call $4d3f ; Func_4d3f
+	pop af
+	bankswitch
+	ret
+; 0x3da9

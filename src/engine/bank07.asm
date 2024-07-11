@@ -77,7 +77,7 @@ Data_1c000::
 	assert_table_length NUM_MT_DEDEDE_AREAS
 
 Data_1c0ce::
-	dw $558f, $57e7 ; $01
+	dw Data_1d58f, $57e7 ; $01
 	dw $55ba, $57e7 ; $02
 	dw $55fd, $57e7 ; $03
 	dw $5607, $57e7 ; $04
@@ -384,3 +384,20 @@ Data_1c594:
 
 Data_1c59e:
 	object $07, $16, $02, $d5, $5023, MotionScript_10008, Data_3421
+
+SECTION "Bank 7@558f", ROMX[$558f], BANK[$7]
+
+Data_1d58f:
+	dbw $00, NULL
+	dbw $00, Data_1d5b0
+	dbw $00, Data_1d5a6
+	dbw $04, Data_1d59c
+	db $ff
+
+Data_1d59c:
+	object $04, $03, $0a, $e6, GfxScript_22114, MotionScript_11fc6, Data_3425
+Data_1d5a6:
+	object $00, $07, $f0, $f8, GfxScript_22139, MotionScript_10008, Data_3425
+Data_1d5b0:
+	object $00, $00, $00, $00, GfxScript_221b9, MotionScript_10008, Data_3425
+; 0x1d5ba

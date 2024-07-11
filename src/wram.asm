@@ -488,11 +488,8 @@ wd3dd:: ; d3dd
 wd3de:: ; d3de
 	db
 
-wd3df:: ; d3df
-	db
-
-wd3e0:: ; d3e0
-	db
+wMintLeafCounter:: ; d3df
+	dw
 
 wInvincibilityCounter:: ; d3e1
 	dw

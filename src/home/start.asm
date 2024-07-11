@@ -4,7 +4,7 @@ _Start:
 	cp $91
 	jr c, .wait_vblank
 
-Reset:
+Reset::
 	; reset LCDC
 	xor a
 	ldh [rLCDC], a
@@ -66,14 +66,15 @@ Reset:
 	ld [wd050], a
 	ld a, [wConfigLives]
 	ld [wLives], a
-	call ClearObjects
+	call ClearAllObjects
 	ld a, [wExtraGameUnlocked]
 	ld [wExtraGameEnabled], a
 
 	ld a, BANK(StartStage)
 	bankswitch
 	call StartStage
-
+;	fallthrough
+Func_1e6::
 	ld a, $01
 	bankswitch
 	ld a, HUD_UPDATE_LABEL | HUD_UPDATE_LIVES | HUD_UPDATE_SCORE_DIGITS

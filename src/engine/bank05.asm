@@ -31,6 +31,55 @@ Func_140d5:
 	ret
 ; 0x140f1
 
+SECTION "Bank 5@4105", ROMX[$4105], BANK[$5]
+
+Func_14105:
+	ld hl, wd1b0
+	add hl, bc
+	res 1, [hl]
+	ld hl, wd1a0
+	add hl, bc
+	bit 0, [hl]
+	ret z
+	res 0, [hl]
+	ld hl, wd1b0
+	add hl, bc
+	set 1, [hl]
+	ld hl, wObjectXCoords
+	add hl, bc
+	add hl, bc
+	add hl, bc
+	ld a, [wGlobalCounter1]
+	and %110
+	add LOW(.data)
+	ld e, a
+	ld a, HIGH(.data)
+	adc 0
+	ld d, a
+	ld a, [de]
+	add [hl]
+	ld [hli], a
+	inc de
+	ld a, [de]
+	ld d, 0
+	bit 7, a
+	jr z, .positive
+	ld d, -1
+.positive
+	adc [hl]
+	ld [hli], a
+	ld a, [hl]
+	adc d
+	ld [hl], a
+	ret
+
+.data
+	dw  -$40
+	dw -$100
+	dw   $40
+	dw  $100
+; 0x14148
+
 SECTION "Bank 5@415e", ROMX[$415e], BANK[$5]
 
 Func_1415e:
@@ -50,6 +99,39 @@ Func_1415e:
 	jp Func_241f
 ; 0x14172
 
+SECTION "Bank 5@41b1", ROMX[$41b1], BANK[$5]
+
+Func_141b1:
+	ld hl, wd1b0
+	add hl, bc
+	bit 6, [hl]
+	ret z
+	jp Func_1415e
+; 0x141bb
+
+SECTION "Bank 5@42a3", ROMX[$42a3], BANK[$5]
+
+Func_142a3:
+	ld hl, wd140
+	ld a, [hl]
+	ld hl, wObjectXCoords + $1
+	add hl, bc
+	add hl, bc
+	add hl, bc
+	ld [hl], a
+	ld hl, wd150
+	ld a, [hl]
+	ld hl, wObjectYCoords + $1
+	add hl, bc
+	add hl, bc
+	add hl, bc
+	ld [hl], a
+	ld hl, hff92
+	bit 3, [hl]
+	jp z, DestroyObject
+	ret
+; 0x142c2
+
 SECTION "Bank 5@432c", ROMX[$432c], BANK[$5]
 
 Func_1432c::
@@ -59,17 +141,17 @@ Func_1432c::
 	ret
 
 .Func_14336:
-	ld c, $fc
+	ld c, -4
 	ld de, $505
 	ld a, [hff8e]
 	and $98
 	jr nz, .asm_14353
-	ld c, $00
+	ld c, 0
 	ld de, $303
 	ld hl, hff92
 	bit 4, [hl]
 	jr z, .asm_14353
-	ld c, $06
+	ld c, 6
 	ld de, $201
 .asm_14353
 	ld a, [wd140]
@@ -78,19 +160,19 @@ Func_1432c::
 	add c
 	ld [wd413], a
 	ld bc, OBJECT_GROUP_1_BEGIN
-.asm_14363
+.loop_objects
 	push de
 	call .Func_145b0
-	jr c, .asm_14371
+	jr c, .next_object
 	call .Func_145d1
-	jr nc, .asm_14371
+	jr nc, .next_object
 	call .Func_143ef
-.asm_14371
+.next_object
 	pop de
 	inc c
 	ld a, c
 	cp OBJECT_GROUP_1_END
-	jr nz, .asm_14363
+	jr nz, .loop_objects
 	ret
 
 .Func_14379:
@@ -543,9 +625,9 @@ Func_1432c::
 	ld hl, wd1a0
 	set 4, [hl]
 	ld a, $fc
-	ld [wd3df], a
+	ld [wMintLeafCounter + 0], a
 	ld a, $03
-	ld [wd3e0], a
+	ld [wMintLeafCounter + 1], a
 	ld a, MUSIC_MINT_LEAF
 	call PlayMusic
 	jp .DestroyObject
@@ -653,26 +735,27 @@ Func_1432c::
 .asm_14761
 	ld hl, wd3be
 	res 0, [hl]
-	ld a, $52
-	ld [wd3df], a
-	ld a, $03
-	ld [wd3e0], a
+	ld a, LOW(MINT_LEAF_DURATION)
+	ld [wMintLeafCounter + 0], a
+	ld a, HIGH(MINT_LEAF_DURATION)
+	ld [wMintLeafCounter + 1], a
 	ld a, [wArea]
-	cp $07
-	jr nz, .asm_14791
+ASSERT FLOAT_ISLANDS_7 == MT_DEDEDE_7
+	cp FLOAT_ISLANDS_7 ; MT_DEDEDE_7
+	jr nz, .not_kaboola_fight
 	ld a, [wStage]
 	cp FLOAT_ISLANDS
-	jr z, .asm_14782
+	jr z, .kaboola_fight
 	cp MT_DEDEDE
-	jr nz, .asm_14791
-.asm_14782
+	jr nz, .not_kaboola_fight
+.kaboola_fight
 	ld a, [hff91]
 	and $bf
 	or $03
 	ld [hff91], a
 	ld hl, hff90
 	set 5, [hl]
-.asm_14791
+.not_kaboola_fight
 	call Func_3768
 	ld a, MUSIC_MINT_LEAF
 	call PlayMusic
