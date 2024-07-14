@@ -1,7 +1,9 @@
 GfxScript_20000:
 	frame  0, $58b8
 
+GfxScript_20003:
 	script_delay 0
+GfxScript_20005:
 	set_object_properties Data_35b7
 	set_custom_func Func_141b1, GfxScript_20ba2
 	script_exec Func_4adf
@@ -424,7 +426,44 @@ GfxScript_20dbb:
 	script_ret
 ; 0x20dc5
 
-SECTION "Bank 8@4e58", ROMX[$4e58], BANK[$8]
+SECTION "Bank 8@4de5", ROMX[$4de5], BANK[$8]
+
+GfxScript_20de5:
+	script_exec Func_30b2
+	dw $4dec, $4dfe
+	set_motion_script $4f3c
+	frame 30, $4254
+	set_object_properties $3535
+	set_scripts $4dc5, $4f5a
+; 0x20e03
+
+SECTION "Bank 8@4e20", ROMX[$4e20], BANK[$8]
+
+GfxSubScript_20e20:
+	set_custom_func Func_140c2, GfxScript_20e2f
+	script_repeat 9
+	frame  3, $42d4
+	frame 16, $42b4
+	script_repeat_end
+	script_ret
+
+GfxScript_20e2f:
+	create_object $4de5, MotionScript_10008, $353e
+	position_offset $00, $f0
+	jump_abs $4e8d
+
+GfxSubScript_20e3c:
+	set_custom_func Func_140c2, GfxScript_20e4b
+	script_repeat 9
+	frame  3, $4334
+	frame 16, $4354
+	script_repeat_end
+	script_ret
+
+GfxScript_20e4b:
+	create_object $4de5, MotionScript_10008, $353e
+	position_offset $00, $f0
+	jump_abs GfxScript_20e92
 
 GfxScript_20e58:
 	set_custom_func Func_140c2, GfxScript_20e83
@@ -447,9 +486,10 @@ GfxScript_20e83:
 	create_object GfxScript_20e9d, MotionScript_10f9c, Data_3559
 	position_offset 0, -16
 	frame  1, $417c
-	jump_rel .asm_20e95
+	jump_rel GfxScript_20e95
+GfxScript_20e92:
 	frame  1, $418c
-.asm_20e95
+GfxScript_20e95:
 	set_object_properties Data_3523
 	script_exec Func_4afb
 

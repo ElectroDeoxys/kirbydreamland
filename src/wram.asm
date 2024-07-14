@@ -142,11 +142,8 @@ wd059:: ; d059
 wd05b:: ; d05b
 	db
 
-wd05c:: ; d05c
-	db
-
-wd05d:: ; d05d
-	db
+wKirbyScreenX:: db ; d05c
+wKirbyScreenY:: db ; d05d
 
 wd05e:: ; d05e
 	db
@@ -154,13 +151,13 @@ wd05e:: ; d05e
 wd05f:: ; d05f
 	db
 
-wd060:: ; d060
+wKirbyScreenDeltaY:: ; d060
 	db
 
 wd061:: ; d061
 	db
 
-wd062:: ; d062
+wKirbyScreenDeltaX:: ; d062
 	db
 
 wd063:: ; d063
@@ -245,10 +242,7 @@ wBGP:: db ; d080
 wOBP:: db ; d081
 
 wd082:: ; d082
-	db
-
-wd083:: ; d083
-	db
+	dw
 
 wd084:: ; d084
 	db
@@ -309,15 +303,7 @@ wObjectYVels:: ; d120
 	ds $2 * NUM_OBJECT_SLOTS
 
 wd140:: ; d140
-	ds $d
-
-wd14d:: ; d14d
-	db
-
-wd14e:: ; d14e
-	db
-
-	ds $1
+	ds NUM_OBJECT_SLOTS
 
 wd150:: ; d150
 	ds $d
@@ -370,7 +356,7 @@ wd1be:: ; d1be
 wSpriteOAMPtrs:: ; d1c0
 	ds $2 * NUM_OBJECT_SLOTS
 
-wObjectDatum:: ; d1e0
+wObjectPropertyPtrs:: ; d1e0
 	ds $2 * NUM_OBJECT_SLOTS
 
 wd200:: ; d200

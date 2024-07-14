@@ -3,9 +3,11 @@ SECTION "Home@0246", ROM0[$0246]
 Func_246::
 	xor a
 	ld [wVirtualOAMSize], a
+
 	ld a, [wROMBank]
 	push af
-	ld a, $05
+ASSERT BANK(Func_1432c) == BANK(Func_147e4)
+	ld a, BANK(Func_1432c)
 	bankswitch
 	call Func_1432c
 	call Func_147e4
@@ -26,12 +28,14 @@ Func_246::
 	jr c, .asm_280
 	res 3, [hl]
 .asm_280
-	ld a, [wd05d]
+	; if fell in a pit, then zero HP and lose life
+	ld a, [wKirbyScreenY]
 	cp $88
-	jp nc, Func_1385
+	jp nc, SetHPToZeroAndLoseLife
+	; if HP reached 0, then lose life
 	ld a, [wHP]
 	and a
-	jp z, Func_1390
+	jp z, LoseLife
 
 	ld hl, hHUDFlags
 	bit HUD_UPDATE_SCORE_DIGITS_F, [hl]
@@ -78,7 +82,7 @@ Func_246::
 	inc a
 	ld [wd069], a
 	ld b, $00
-	ld hl, $488c
+	ld hl, Data_488c
 	add hl, bc
 	ld a, [hl]
 	and a
@@ -295,35 +299,35 @@ Func_426::
 	ldh [hVBlankFlags], a
 	jp Func_4783
 
-Func_483::
-	ld hl, $3b3d
-.asm_486
+ProcessDoorConnection::
+	ld hl, DoorConnections
+.loop_door_connections
 	ld a, [wStage]
 	ld b, a
 	ld a, [hli]
 	cp b
-	jr z, .asm_497
+	jr z, .check_area
 	cp $ff
 	ret z
 	ld bc, $8
 	add hl, bc
-	jr .asm_486
-.asm_497
+	jr .loop_door_connections
+.check_area
 	ld a, [wArea]
 	ld b, a
 	ld a, [hli]
 	cp b
-	jr z, .asm_4a5
+	jr z, .check_x
 	ld bc, $7
 	add hl, bc
-	jr .asm_486
-.asm_4a5
+	jr .loop_door_connections
+.check_x
 	ld a, [wd051]
 	ld b, a
 	ld a, [wSCX]
 	and $0f
 	ld c, a
-	ld a, [wd05c]
+	ld a, [wKirbyScreenX]
 	add c
 	and $f0
 	swap a
@@ -331,25 +335,25 @@ Func_483::
 	ld b, a
 	ld a, [wd03f]
 	cp b
-	jr nc, .asm_4c3
+	jr nc, .got_x
 	ld c, a
 	ld a, b
 	sub c
 	ld b, a
-.asm_4c3
+.got_x
 	ld a, [hli]
 	cp b
-	jr z, .asm_4cd
+	jr z, .check_y
 	ld bc, $6
 	add hl, bc
-	jr .asm_486
-.asm_4cd
+	jr .loop_door_connections
+.check_y
 	ld a, [wd052]
 	ld b, a
 	ld a, [wSCY]
 	and $0f
 	ld c, a
-	ld a, [wd05d]
+	ld a, [wKirbyScreenY]
 	add c
 	add $0a
 	and $f0
@@ -358,17 +362,17 @@ Func_483::
 	ld b, a
 	ld a, [hli]
 	cp b
-	jr z, .asm_4ed
+	jr z, .is_in_front_of_door
 	ld bc, $5
 	add hl, bc
-	jr .asm_486
-.asm_4ed
+	jr .loop_door_connections
+.is_in_front_of_door
 	ld a, [hli]
 	ld [wArea], a
 	push hl
 	ld a, [wStage]
-	cp $04
-	jr c, .asm_510
+	cp MT_DEDEDE
+	jr c, .enter_door
 	ld a, [wArea]
 	ld c, a
 	ld b, $00
@@ -376,13 +380,14 @@ Func_483::
 	add hl, bc
 	ld a, [hl]
 	cp $01
-	jr nz, .asm_510
+	jr nz, .enter_door
 	xor a
 	ld [wArea], a
 	pop hl
 	ld a, $ff
 	ret
-.asm_510
+
+.enter_door
 	ld a, SFX_ENTER_DOOR
 	call PlaySFX
 	ld hl, hff93
@@ -427,8 +432,9 @@ Func_483::
 	jr nz, .asm_54d
 .asm_566
 	xor a
-	ld [wd082], a
-	ld [wd083], a
+	ld [wd082 + 0], a
+	ld [wd082 + 1], a
+
 	ldh a, [hff92]
 	bit 5, a
 	jr nz, .asm_578
@@ -437,9 +443,10 @@ Func_483::
 .asm_578
 	ld hl, $456c
 .asm_57b
-	ld de, $157a
+	ld de, GfxScript_157a
 	ld bc, OBJECT_SLOT_00
 	call Func_21e6
+
 	xor a
 	ldh [hVBlankFlags], a
 	ldh [hff8d], a
@@ -475,13 +482,15 @@ Func_483::
 	ld a, [hli]
 	swap a
 	add $08
-	ld [wd05c], a
+	ld [wKirbyScreenX], a
 	ld a, [hli]
 	swap a
-	ld [wd05d], a
+	ld [wKirbyScreenY], a
+
 	ldh a, [hHUDFlags]
-	or $13
+	or HUD_UPDATE_FIRST_ROW | HUD_UPDATE_LABEL | HUD_UPDATE_LIVES
 	ldh [hHUDFlags], a
+
 	ldh a, [hff92]
 	and $20
 	ldh [hff92], a
@@ -664,7 +673,7 @@ Func_6ec::
 	bit 4, [hl]
 	jr nz, .asm_708
 	ld hl, hff91
-	ld a, [wd05c]
+	ld a, [wKirbyScreenX]
 	cp $45
 	jr c, .asm_70e
 	cp $4b
@@ -684,11 +693,11 @@ Func_6ec::
 	jr z, .asm_708
 .asm_720
 	ld a, $02
-	ld [wd062], a
+	ld [wKirbyScreenDeltaX], a
 	ld [wd063], a
-	call Func_1268
+	call MoveKirbyRight
 	xor a
-	ld [wd062], a
+	ld [wKirbyScreenDeltaX], a
 	call Func_110b
 	ret
 .asm_733
@@ -705,11 +714,11 @@ Func_6ec::
 	jr z, .asm_759
 .asm_747
 	ld a, $02
-	ld [wd062], a
+	ld [wKirbyScreenDeltaX], a
 	ld [wd063], a
-	call Func_1272
+	call MoveKirbyLeft
 	xor a
-	ld [wd062], a
+	ld [wKirbyScreenDeltaX], a
 	jp Func_1062
 .asm_759
 	ld a, [wSCX]
@@ -782,7 +791,7 @@ Func_7b5:
 ;	fallthrough
 Func_7bf:
 	ld [wd05f], a
-	ld a, [wd05c]
+	ld a, [wKirbyScreenX]
 	add $08
 	ld [wd05e], a
 	jp Func_7cd ; useless jump
@@ -1101,7 +1110,7 @@ Func_9de:
 	ldh a, [hff90]
 	bit 5, a
 	jp nz, .asm_ab8
-	ld a, [wd05d]
+	ld a, [wKirbyScreenY]
 	ld [wd05f], a
 	call Func_763
 	ld d, $00
@@ -1124,7 +1133,7 @@ Func_9de:
 	dec a
 	dec a
 	ld [wd05f], a
-	ld a, [wd05c]
+	ld a, [wKirbyScreenX]
 	add $03
 	ld [wd05e], a
 	call Func_7cd
@@ -1142,7 +1151,7 @@ Func_9de:
 	set 6, a
 	ldh [hff93], a
 .asm_a3f
-	ld a, [wd05c]
+	ld a, [wKirbyScreenX]
 	add $0c
 	ld [wd05e], a
 	call Func_7cd
@@ -1159,7 +1168,7 @@ Func_9de:
 	set 6, a
 	ldh [hff93], a
 .asm_a63
-	ld a, [wd05d]
+	ld a, [wKirbyScreenY]
 	cp $10
 	jp z, .asm_a9e
 	jp c, .asm_a9e
@@ -1228,15 +1237,15 @@ Func_9de:
 .asm_ad6
 	ld c, $10
 .asm_ad8
-	ld a, [wd05d]
+	ld a, [wKirbyScreenY]
 	sub c
-	ld [wd060], a
+	ld [wKirbyScreenDeltaY], a
 	sub b
 	jr c, .asm_b08
 	ld a, [wd061]
-	ld [wd060], a
-	call Func_127d
-	ld a, [wd05d]
+	ld [wKirbyScreenDeltaY], a
+	call MoveKirbyDown
+	ld a, [wKirbyScreenY]
 	cp $08
 	jp nz, .asm_bba
 .asm_af3
@@ -1249,11 +1258,11 @@ Func_9de:
 	ld [wd079], a
 	jp .asm_bba
 .asm_b08
-	call Func_127d
+	call MoveKirbyDown
 	ldh a, [hff90]
 	bit 4, a
 	jp nz, .asm_bba
-	ld a, [wd060]
+	ld a, [wKirbyScreenDeltaY]
 	ld b, a
 	ld a, [wd061]
 	sub b
@@ -1269,21 +1278,21 @@ Func_9de:
 	dec c
 	dec b
 	jr nz, .asm_b25
-	ld a, [wd05d]
+	ld a, [wKirbyScreenY]
 	cp $10
 	jp nc, .asm_baf
 	jp .asm_bba
 .asm_b3a
-	ld a, [wd05d]
+	ld a, [wKirbyScreenY]
 	cp $10
 	jr z, .asm_af3
 	ld a, [wd061]
 	sub b
 	ld [wd061], a
 	ld a, b
-	ld [wd060], a
-	call Func_127d
-	ld a, [wd05d]
+	ld [wKirbyScreenDeltaY], a
+	call MoveKirbyDown
+	ld a, [wKirbyScreenY]
 	cp $10
 	jp nz, .asm_baf
 	call Func_c85
@@ -1349,7 +1358,7 @@ Func_9de:
 	inc hl
 	or [hl]
 	jr nz, .asm_be0
-	ld a, [wd05d]
+	ld a, [wKirbyScreenY]
 	add $18
 	call Func_7a7
 	cp $07
@@ -1358,7 +1367,7 @@ Func_9de:
 	ldh a, [hff8e]
 	bit 6, a
 	jp z, Func_caf
-	ld a, [wd05d]
+	ld a, [wKirbyScreenY]
 	cp $71
 	jp nc, Func_caf
 	dec a
@@ -1473,10 +1482,10 @@ Func_caf:
 	ldh [hff90], a
 	bit 5, a
 	jp nz, .asm_ee0
-	ld a, [wd05d]
+	ld a, [wKirbyScreenY]
 	cp $71
 	jp nc, .asm_ee0
-	ld a, [wd05d]
+	ld a, [wKirbyScreenY]
 	ld [wd05f], a
 	call Func_763
 	ld d, $00
@@ -1498,7 +1507,7 @@ Func_caf:
 	call Func_1ccb
 	ld a, c
 	ld [wd05f], a
-	ld a, [wd05c]
+	ld a, [wKirbyScreenX]
 	add $03
 	ld [wd05e], a
 	call Func_7cd
@@ -1519,7 +1528,7 @@ Func_caf:
 	set 7, a
 	ldh [hff93], a
 .asm_d24
-	ld a, [wd05c]
+	ld a, [wKirbyScreenX]
 	add $0c
 	ld [wd05e], a
 	call Func_7cd
@@ -1783,7 +1792,7 @@ Func_caf:
 	ldh [hff8d], a
 	and $07
 .asm_f19
-	ld [wd060], a
+	ld [wKirbyScreenDeltaY], a
 	ld b, a
 	ldh a, [hff90]
 	bit 4, a
@@ -1802,17 +1811,17 @@ Func_caf:
 	jr z, .asm_f3b
 	ld c, $80
 .asm_f3b
-	ld a, [wd05d]
+	ld a, [wKirbyScreenY]
 	add b
 	ld b, a
 	ld a, c
 	sub b
 	jr c, .asm_f5a
-	call Func_1288
+	call MoveKirbyUp
 	ld a, [wd040]
 	cp $08
 	jp nz, .asm_1021
-	ld a, [wd05d]
+	ld a, [wKirbyScreenY]
 	cp $90
 	jp c, .asm_1021
 	jp .asm_f92
@@ -1821,10 +1830,10 @@ Func_caf:
 	inc a
 	ld [wd061], a
 	ld b, a
-	ld a, [wd060]
+	ld a, [wKirbyScreenDeltaY]
 	sub b
-	ld [wd060], a
-	call nz, Func_1288
+	ld [wKirbyScreenDeltaY], a
+	call nz, MoveKirbyUp
 	ld a, [wd052]
 	ld b, a
 	ld a, [wd040]
@@ -1843,7 +1852,7 @@ Func_caf:
 	inc c
 	dec b
 	jr nz, .asm_f80
-	ld a, [wd05d]
+	ld a, [wKirbyScreenY]
 	cp $90
 	jp nz, .asm_1019
 .asm_f92
@@ -1865,8 +1874,8 @@ Func_caf:
 	ld [wd061], a
 	ld a, b
 	dec a
-	ld [wd060], a
-	call Func_1288
+	ld [wKirbyScreenDeltaY], a
+	call MoveKirbyUp
 	ld a, [wd040]
 	sub $07
 	ld [wd052], a
@@ -1935,7 +1944,7 @@ Func_caf:
 	inc hl
 	or [hl]
 	ret nz
-	ld a, [wd05d]
+	ld a, [wKirbyScreenY]
 	sub $08
 	call Func_7b5
 	cp $08
@@ -1979,7 +1988,7 @@ Func_1062::
 	inc c
 	dec b
 	jr nz, .asm_1072
-	ld a, [wd05c]
+	ld a, [wKirbyScreenX]
 	cp $98
 	jp nz, .asm_1102
 .asm_1084
@@ -1987,8 +1996,8 @@ Func_1062::
 	sub b
 	ld [wd063], a
 	ld a, b
-	ld [wd062], a
-	call Func_1268
+	ld [wKirbyScreenDeltaX], a
+	call MoveKirbyRight
 	ld a, [wd042]
 	inc a
 	ld [wd051], a
@@ -2069,7 +2078,7 @@ Func_110b:
 	ld hl, hff94
 	bit 3, [hl]
 	ret nz
-	ld a, [wd062]
+	ld a, [wKirbyScreenDeltaX]
 	ld b, a
 	ld a, [wd063]
 	sub b
@@ -2085,20 +2094,20 @@ Func_110b:
 	dec c
 	dec b
 	jr nz, .asm_112c
-	ld a, [wd05c]
+	ld a, [wKirbyScreenX]
 	cp $08
 	jp nc, .asm_11be
 	ret
 .asm_113f
-	ld a, [wd05c]
+	ld a, [wKirbyScreenX]
 	cp $08
-	jp z, $42a1 ; Func_42a1
+	jp z, Func_42a1
 	ld a, [wd063]
 	sub b
 	ld [wd063], a
 	ld b, a
-	ld [wd062], a
-	call Func_1272
+	ld [wKirbyScreenDeltaX], a
+	call MoveKirbyLeft
 	ld a, $01
 	ld [wd051], a
 	jp .asm_11be
@@ -2110,7 +2119,7 @@ Func_110b:
 	ld a, [wd051]
 	cp $01
 	jr z, .asm_113f
-	jp c, $42a1 ; Func_42a1
+	jp c, Func_42a1
 .asm_116d
 	ldh a, [hVBlankFlags]
 	bit VBLANK_5_F, a
@@ -2236,7 +2245,7 @@ Func_11de:
 	ret
 
 Func_1248::
-	ld hl, wd05d
+	ld hl, wKirbyScreenY
 	ld a, [wSCY]
 	and $0f
 	add [hl]
@@ -2246,7 +2255,7 @@ Func_1248::
 	ret
 
 Func_1257::
-	ld hl, wd05d
+	ld hl, wKirbyScreenY
 	ld a, [wSCY]
 	and $0f
 	add [hl]
@@ -2258,35 +2267,47 @@ Func_1257::
 	xor a
 	ret
 
-Func_1268::
-	ld hl, wd05c
-	ld a, [wd062]
+; input:
+; - [wKirbyScreenDeltaX] = offset to add to
+;   Kirby's screen X position
+MoveKirbyRight::
+	ld hl, wKirbyScreenX
+	ld a, [wKirbyScreenDeltaX]
 	ld b, a
 	add [hl]
 	ld [hl], a
 	ret
 
-Func_1272::
-	ld hl, wd05c
-	ld a, [wd062]
+; input:
+; - [wKirbyScreenDeltaX] = offset to subtract
+;   from Kirby's screen X position
+MoveKirbyLeft::
+	ld hl, wKirbyScreenX
+	ld a, [wKirbyScreenDeltaX]
 	ld b, a
 	ld a, [hl]
 	sub b
 	ld [hl], a
 	ret
 
-Func_127d:
-	ld hl, wd05d
-	ld a, [wd060]
+; input:
+; - [wKirbyScreenDeltaY] = offset to add to
+;   Kirby's screen Y position
+MoveKirbyDown:
+	ld hl, wKirbyScreenY
+	ld a, [wKirbyScreenDeltaY]
 	ld b, a
 	ld a, [hl]
 	sub b
 	ld [hl], a
 	ret
 
-Func_1288:
-	ld hl, wd05d
-	ld a, [wd060]
+; input:
+; - [wKirbyScreenDeltaY] = offset to subtract
+;   from Kirby's screen Y position
+MoveKirbyUp:
+	ld hl, wKirbyScreenY
+	ld a, [wKirbyScreenDeltaY]
 	ld b, a
 	add [hl]
 	ld [hl], a
@@ -2459,15 +2480,15 @@ GetBGCoordFromPosition:
 	pop bc
 	ret
 
-Func_1385:
-	ld a, BANK(Func_18639)
+SetHPToZeroAndLoseLife:
+	ld a, BANK(_SetHPToZeroAndLoseLife)
 	bankswitch
-	jp Func_18639
+	jp _SetHPToZeroAndLoseLife
 
-Func_1390:
-	ld a, $06
+LoseLife:
+	ld a, BANK(_LoseLife)
 	bankswitch
-	jp $463d ; Func_1863d
+	jp _LoseLife
 
 Func_139b::
 	ld hl, hff94
@@ -2475,13 +2496,13 @@ Func_139b::
 	ret nz
 	ld a, $01
 	ld [rROMB0 + $100], a
-	ld a, [wd05c]
+	ld a, [wKirbyScreenX]
 	add $08
 	ld [wObjectXCoords + $1], a
-	ld a, [wd05d]
+	ld a, [wKirbyScreenY]
 	add $08
 	ld [wObjectYCoords + $1], a
-	ld de, $157a
+	ld de, GfxScript_157a
 	ldh a, [hff92]
 	bit 5, a
 	jr nz, .asm_13c4
@@ -2718,6 +2739,7 @@ Func_139b::
 	res 6, a
 	ldh [hff94], a
 	pop af
+
 	ldh a, [hff92]
 	bit 5, a
 	jr nz, .asm_1556
@@ -2728,12 +2750,13 @@ Func_139b::
 .asm_1559
 	ld a, b
 	ld h, a
-	ld [wd082], a
+	ld [wd082 + 0], a
 	ld a, c
 	ld l, a
-	ld [wd083], a
+	ld [wd082 + 1], a
 	ld bc, OBJECT_SLOT_00
 	call Func_21e6
+
 .finish
 	ld a, [wROMBank]
 	ld [rROMB0 + $100], a
@@ -2744,7 +2767,10 @@ SetFullHP::
 	ld [wMaxHP], a
 	ld [wHP], a
 	ret
-; 0x157a
+
+GfxScript_157a::
+	frame  0, $0000
+; 0x157d
 
 SECTION "Home@18ff", ROM0[$18ff]
 
@@ -3282,8 +3308,8 @@ Func_1c0a::
 CalculateBCPercentage::
 	push af
 	push hl
-	ld hl, $0
-	ld c, h ; $0
+	ld hl, 0
+	ld c, h ; 0
 	ld a, 8
 .loop
 	srl b
@@ -4458,7 +4484,7 @@ Func_23af::
 	inc de
 	ld [hl], a
 
-	ld hl, wObjectDatum
+	ld hl, wObjectPropertyPtrs
 	add hl, bc
 	add hl, bc
 	push bc
@@ -6063,7 +6089,7 @@ Func_2ce5:
 	add hl, bc
 	bit 2, [hl]
 	jr nz, .no_carry
-	ld hl, wObjectDatum
+	ld hl, wObjectPropertyPtrs
 	add hl, bc
 	add hl, bc
 	ld a, [hli]
@@ -6766,7 +6792,7 @@ Func_30dc::
 SetObjectProperties::
 	ld a, [wScriptBank]
 	bankswitch
-	ld hl, wObjectDatum
+	ld hl, wObjectPropertyPtrs
 	add hl, bc
 	add hl, bc
 	push bc
@@ -7720,9 +7746,64 @@ Data_3a43::
 	db MT_DEDEDE_0, $33, $01, $48, $70 ; MT_DEDEDE_8
 	db MT_DEDEDE_0, $33, $01, $48, $70 ; MT_DEDEDE_9
 	assert_table_length NUM_MT_DEDEDE_AREAS
-; 0x3b3d
 
-SECTION "Home@3d2d", ROM0[$3d2d]
+DoorConnections:
+	db GREEN_GREENS,  GREEN_GREENS_0,   $2c, $07, GREEN_GREENS_1,   $04, $00, $04, $05
+	db GREEN_GREENS,  GREEN_GREENS_1,   $09, $06, GREEN_GREENS_0,   $27, $00, $04, $06
+	db GREEN_GREENS,  GREEN_GREENS_2,   $4a, $08, GREEN_GREENS_3,   $02, $20, $04, $06
+	db GREEN_GREENS,  GREEN_GREENS_3,   $09, $06, GREEN_GREENS_4,   $00, $00, $01, $03
+	db CASTLE_LOLOLO, CASTLE_LOLOLO_00, $08, $08, CASTLE_LOLOLO_01, $00, $08, $01, $05
+	db CASTLE_LOLOLO, CASTLE_LOLOLO_01, $02, $03, CASTLE_LOLOLO_02, $00, $00, $04, $07
+	db CASTLE_LOLOLO, CASTLE_LOLOLO_01, $09, $0b, CASTLE_LOLOLO_03, $00, $00, $03, $07
+	db CASTLE_LOLOLO, CASTLE_LOLOLO_02, $05, $08, CASTLE_LOLOLO_01, $00, $00, $01, $02
+	db CASTLE_LOLOLO, CASTLE_LOLOLO_03, $16, $08, CASTLE_LOLOLO_04, $01, $00, $04, $03
+	db CASTLE_LOLOLO, CASTLE_LOLOLO_04, $08, $0c, CASTLE_LOLOLO_05, $00, $00, $03, $03
+	db CASTLE_LOLOLO, CASTLE_LOLOLO_04, $0d, $04, CASTLE_LOLOLO_07, $00, $00, $03, $05
+	db CASTLE_LOLOLO, CASTLE_LOLOLO_05, $03, $0a, CASTLE_LOLOLO_06, $00, $0a, $07, $05
+	db CASTLE_LOLOLO, CASTLE_LOLOLO_06, $08, $04, CASTLE_LOLOLO_07, $00, $00, $03, $05
+	db CASTLE_LOLOLO, CASTLE_LOLOLO_09, $0c, $05, CASTLE_LOLOLO_10, $00, $00, $04, $07
+	db CASTLE_LOLOLO, CASTLE_LOLOLO_09, $14, $10, CASTLE_LOLOLO_11, $00, $00, $02, $06
+	db CASTLE_LOLOLO, CASTLE_LOLOLO_10, $05, $08, CASTLE_LOLOLO_09, $07, $00, $04, $04
+	db CASTLE_LOLOLO, CASTLE_LOLOLO_11, $0c, $04, CASTLE_LOLOLO_12, $00, $08, $03, $07
+	db CASTLE_LOLOLO, CASTLE_LOLOLO_12, $02, $05, CASTLE_LOLOLO_12, $02, $08, $06, $07
+	db CASTLE_LOLOLO, CASTLE_LOLOLO_12, $09, $10, CASTLE_LOLOLO_12, $00, $00, $01, $04
+	db CASTLE_LOLOLO, CASTLE_LOLOLO_12, $03, $09, CASTLE_LOLOLO_12, $02, $01, $06, $05
+	db CASTLE_LOLOLO, CASTLE_LOLOLO_12, $09, $07, CASTLE_LOLOLO_12, $00, $03, $02, $05
+	db CASTLE_LOLOLO, CASTLE_LOLOLO_12, $0a, $04, CASTLE_LOLOLO_13, $00, $00, $02, $07
+	db CASTLE_LOLOLO, CASTLE_LOLOLO_13, $0c, $05, CASTLE_LOLOLO_14, $00, $00, $04, $05
+	db FLOAT_ISLANDS, FLOAT_ISLANDS_0,  $75, $06, FLOAT_ISLANDS_1,  $00, $01, $04, $04
+	db FLOAT_ISLANDS, FLOAT_ISLANDS_1,  $23, $06, FLOAT_ISLANDS_2,  $00, $00, $04, $02
+	db FLOAT_ISLANDS, FLOAT_ISLANDS_1,  $2b, $0f, FLOAT_ISLANDS_3,  $00, $00, $03, $03
+	db FLOAT_ISLANDS, FLOAT_ISLANDS_2,  $09, $15, FLOAT_ISLANDS_1,  $18, $00, $04, $04
+	db FLOAT_ISLANDS, FLOAT_ISLANDS_3,  $2d, $07, FLOAT_ISLANDS_4,  $00, $00, $02, $03
+	db FLOAT_ISLANDS, FLOAT_ISLANDS_3,  $43, $05, FLOAT_ISLANDS_5,  $00, $10, $02, $07
+	db FLOAT_ISLANDS, FLOAT_ISLANDS_4,  $03, $04, FLOAT_ISLANDS_3,  $2a, $00, $04, $06
+	db BUBBLY_CLOUDS, BUBBLY_CLOUDS_0,  $60, $07, BUBBLY_CLOUDS_1,  $00, $00, $02, $07
+	db BUBBLY_CLOUDS, BUBBLY_CLOUDS_1,  $44, $08, BUBBLY_CLOUDS_2,  $00, $18, $04, $05
+	db BUBBLY_CLOUDS, BUBBLY_CLOUDS_2,  $05, $10, BUBBLY_CLOUDS_3,  $00, $00, $04, $05
+	db BUBBLY_CLOUDS, BUBBLY_CLOUDS_2,  $07, $06, BUBBLY_CLOUDS_4,  $00, $10, $02, $05
+	db BUBBLY_CLOUDS, BUBBLY_CLOUDS_3,  $2d, $05, BUBBLY_CLOUDS_4,  $00, $10, $02, $05
+	db BUBBLY_CLOUDS, BUBBLY_CLOUDS_4,  $04, $00, BUBBLY_CLOUDS_5,  $00, $00, $04, $01
+	db BUBBLY_CLOUDS, BUBBLY_CLOUDS_5,  $2f, $04, BUBBLY_CLOUDS_6,  $00, $00, $04, $05
+	db BUBBLY_CLOUDS, BUBBLY_CLOUDS_6,  $38, $08, BUBBLY_CLOUDS_7,  $02, $1e, $04, $05
+	db BUBBLY_CLOUDS, BUBBLY_CLOUDS_7,  $09, $03, BUBBLY_CLOUDS_8,  $00, $00, $04, $03
+	db BUBBLY_CLOUDS, BUBBLY_CLOUDS_7,  $07, $07, BUBBLY_CLOUDS_9,  $00, $00, $04, $05
+	db BUBBLY_CLOUDS, BUBBLY_CLOUDS_8,  $06, $63, BUBBLY_CLOUDS_9,  $00, $00, $04, $05
+	db MT_DEDEDE,     MT_DEDEDE_0,      $34, $04, MT_DEDEDE_1,      $00, $00, $03, $06
+	db MT_DEDEDE,     MT_DEDEDE_0,      $35, $04, MT_DEDEDE_1,      $00, $00, $03, $06
+	db MT_DEDEDE,     MT_DEDEDE_0,      $34, $08, MT_DEDEDE_2,      $00, $07, $03, $05
+	db MT_DEDEDE,     MT_DEDEDE_0,      $35, $08, MT_DEDEDE_2,      $00, $07, $03, $05
+	db MT_DEDEDE,     MT_DEDEDE_0,      $3a, $04, MT_DEDEDE_3,      $00, $00, $03, $04
+	db MT_DEDEDE,     MT_DEDEDE_0,      $3b, $04, MT_DEDEDE_3,      $00, $00, $03, $04
+	db MT_DEDEDE,     MT_DEDEDE_0,      $3a, $08, MT_DEDEDE_4,      $00, $00, $04, $03
+	db MT_DEDEDE,     MT_DEDEDE_0,      $3b, $08, MT_DEDEDE_4,      $00, $00, $04, $03
+	db MT_DEDEDE,     MT_DEDEDE_0,      $37, $05, MT_DEDEDE_5,      $04, $00, $02, $03
+	db MT_DEDEDE,     MT_DEDEDE_0,      $38, $05, MT_DEDEDE_5,      $04, $00, $02, $03
+	db MT_DEDEDE,     MT_DEDEDE_1,      $24, $05, MT_DEDEDE_6,      $00, $00, $01, $03
+	db MT_DEDEDE,     MT_DEDEDE_2,      $1c, $04, MT_DEDEDE_8,      $00, $00, $04, $03
+	db MT_DEDEDE,     MT_DEDEDE_3,      $04, $0d, MT_DEDEDE_7,      $00, $00, $02, $06
+	db MT_DEDEDE,     MT_DEDEDE_4,      $03, $31, MT_DEDEDE_9,      $00, $00, $02, $06
+	db $ff
 
 Func_3d2d::
 	ld hl, hff94

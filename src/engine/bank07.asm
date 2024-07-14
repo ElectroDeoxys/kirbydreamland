@@ -318,7 +318,7 @@ Data_1c451:
 Data_1c45b:
 	object $0a, $00, $e0, $00, GfxScript_20f14, MotionScript_10fdf, Data_3429, 6
 ; unreferenced
-	object $37, $06, $f8, $00, $463b, MotionScript_10cf4, WaddleDeeProperties
+	object $37, $06, $f8, $00, GfxScript_2063b, MotionScript_10cf4, WaddleDeeProperties
 Data_1c470:
 	object $2a, $02, $00, $00, GfxScript_20c52, MotionScript_10d5d, TwizzyProperties
 Data_1c47a:
@@ -330,7 +330,7 @@ Data_1c484:
 Data_1c498:
 	object $2f, $06, $f8, $00, GfxScript_20d19, MotionScript_111d8, CappyProperties
 Data_1c4a2:
-	object $30, $05, $00, $00, $463b, MotionScript_10cf4, WaddleDeeProperties
+	object $30, $05, $00, $00, GfxScript_2063b, MotionScript_10cf4, WaddleDeeProperties
 Data_1c4ac:
 	object $32, $00, $ba, $00, GfxScript_20647, MotionScript_10d16, WaddleDeeProperties
 Data_1c4b6:
@@ -344,7 +344,7 @@ Data_1c4ca:
 Data_1c4de:
 	object $3f, $06, $00, $00, $4e10, MotionScript_10f06, Data_3547
 Data_1c4e8:
-	object $41, $06, $f0, $00, $463b, MotionScript_10cf4, WaddleDeeProperties
+	object $41, $06, $f0, $00, GfxScript_2063b, MotionScript_10cf4, WaddleDeeProperties
 Data_1c4f2:
 	object $42, $06, $08, $00, GfxScript_20d0b, MotionScript_111e4, CappyProperties
 Data_1c4fc:

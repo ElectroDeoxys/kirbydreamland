@@ -141,9 +141,9 @@ StartStage::
 	ld a, [hli]
 	ld [wd052], a
 	ld a, [hli]
-	ld [wd05c], a
+	ld [wKirbyScreenX], a
 	ld a, [hli]
-	ld [wd05d], a
+	ld [wKirbyScreenY], a
 
 	ld a, [wStage]
 	ld e, a
@@ -165,9 +165,9 @@ StartStage::
 	ld a, $01
 	ld [wd052], a
 	ld a, $48
-	ld [wd05c], a
+	ld [wKirbyScreenX], a
 	ld a, $70
-	ld [wd05d], a
+	ld [wKirbyScreenY], a
 	ld bc, $32
 .asm_1821e
 	ld hl, wc100
@@ -510,7 +510,7 @@ Func_183bf::
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	ld de, $157a
+	ld de, GfxScript_157a
 	ld bc, OBJECT_SLOT_00
 	call Func_21e6
 	ret
@@ -765,10 +765,11 @@ Pause::
 	ld [hff91], a
 	jr .show_sprites
 
-Func_18639::
+_SetHPToZeroAndLoseLife::
 	xor a
 	ld [wHP], a
-
+;	fallthrough
+_LoseLife::
 	ld a, SFX_21
 	call PlaySFX
 	ld a, MUSIC_NONE
@@ -876,19 +877,21 @@ Func_18639::
 	add hl, bc
 	ld a, [hli]
 	ld [wArea], a
+
 	push hl
 	call Func_19c9
 	call Func_648
 	call Func_19f9
 	pop hl
+
 	ld a, [hli]
 	ld [wd051], a
 	ld a, [hli]
 	ld [wd052], a
 	ld a, [hli]
-	ld [wd05c], a
+	ld [wKirbyScreenX], a
 	ld a, [hli]
-	ld [wd05d], a
+	ld [wKirbyScreenY], a
 	xor a
 	ld [hff8d], a
 	ld [hff8e], a
@@ -905,7 +908,7 @@ Func_18639::
 	ld [hff91], a
 	call Func_3d92
 	ld a, [hHUDFlags]
-	set 4, a
+	set HUD_UPDATE_LIVES_F, a
 	ld [hHUDFlags], a
 	ld a, [wMaxHP]
 	ld [wHP], a
@@ -1027,7 +1030,7 @@ Func_18757:
 	ld [hld], a
 	ld [hld], a
 .asm_1883e
-	ld hl, $d08d
+	ld hl, wScore + $2
 	ld a, [hl]
 	srl a
 	ld [hld], a
@@ -1050,9 +1053,6 @@ Func_18757:
 	call Func_648
 	call ResetTimer
 	jp Reset
-; 0x1886c
-
-SECTION "Bank 6@486c", ROMX[$486c], BANK[$6]
 
 Func_1886c:
 	ld a, $ff
@@ -1222,12 +1222,12 @@ Func_1886c:
 	ld [wSCX], a
 	ld a, $08
 	ld [wSCY], a
-	ld hl, v0BGMap0
 
-	ld de, $52d6
-	ld b, $13
+	ld hl, v0BGMap0
+	ld de, BG_192d6
+	ld b, $13 ; number of rows
 .asm_189e5
-	ld c, $14
+	ld c, $14 ; number of cols
 .asm_189e7
 	ld a, [de]
 	inc de
@@ -1236,10 +1236,11 @@ Func_1886c:
 	jr nz, .asm_189e7
 	dec b
 	push bc
-	ld bc, $c
+	ld bc, SCRN_VX_B - $14 ; next row
 	add hl, bc
 	pop bc
 	jr nz, .asm_189e5
+
 	push de
 	call StopTimerAndSwitchOnLCD
 	call Func_670
@@ -1326,11 +1327,12 @@ Func_1886c:
 	ld [hli], a
 	dec c
 	jr nz, .asm_18a89
+
 	ld hl, v0BGMap0
-	ld de, $5786
-	ld b, $0e
+	ld de, BG_19786
+	ld b, $0e ; number of rows
 .asm_18a97
-	ld c, $15
+	ld c, $15 ; number of cols
 .asm_18a99
 	ld a, [de]
 	inc de
@@ -1338,7 +1340,7 @@ Func_1886c:
 	dec c
 	jr nz, .asm_18a99
 	push bc
-	ld bc, $b
+	ld bc, SCRN_VX_B - $15
 	add hl, bc
 	pop bc
 	dec b
@@ -1347,11 +1349,12 @@ Func_1886c:
 	ld [wd059 + 0], a
 	ld a, e
 	ld [wd059 + 1], a
-	ld hl, $5e86
+
+	ld hl, BG_19e86
 	ld de, v0BGMap1
-	ld c, $04
+	ld c, $04 ; number of rows
 .asm_18ab8
-	ld b, $14
+	ld b, $14 ; number of cols
 .asm_18aba
 	ld a, [hli]
 	ld [de], a
@@ -1359,13 +1362,14 @@ Func_1886c:
 	dec b
 	jr nz, .asm_18aba
 	push hl
-	ld hl, $c
+	ld hl, SCRN_VX_B - $14
 	add hl, de
 	ld d, h
 	ld e, l
 	pop hl
 	dec c
 	jr nz, .asm_18ab8
+
 	xor a
 	ldh [rIF], a
 	ld a, $6f
@@ -1376,23 +1380,23 @@ Func_1886c:
 	ld [wd05b], a
 	call StopTimerAndSwitchOnLCD
 
-	ld a, $40
+	ld a, %01000000
 	ld [wBGP], a
-	ld a, $40
+	ld a, %01000000
 	ldh [rOBP0], a
 	ld a, 5
 	call DoFrames
 
-	ld a, $90
+	ld a, %10010000
 	ld [wBGP], a
-	ld a, $80
+	ld a, %10000000
 	ldh [rOBP0], a
 	ld a, 5
 	call DoFrames
 
-	ld a, $e1
+	ld a, %11100001
 	ld [wBGP], a
-	ld a, $d0
+	ld a, %11010000
 	ldh [rOBP0], a
 	ld a, 5
 	call DoFrames
@@ -1410,12 +1414,12 @@ Func_1886c:
 	ld [wd085], a
 	ld hl, $5ed6
 	ld a, h
-	ld [wd082], a
+	ld [wd082 + 0], a
 	ld a, l
-	ld [wd083], a
+	ld [wd082 + 1], a
 	xor a
 	ld [wd054], a
-	ld [wd060], a
+	ld [wKirbyScreenDeltaY], a
 	ld [wd061], a
 	ld [wd054], a ; unnecessary
 	ld [wd065], a
@@ -1455,11 +1459,11 @@ Func_1886c:
 	jr .asm_18b48
 
 .Func_18b85:
-	ld a, [wd060]
+	ld a, [wKirbyScreenDeltaY]
 	ld b, a
 	ld a, $01
 	sub b
-	ld [wd060], a
+	ld [wKirbyScreenDeltaY], a
 	ld hl, wBGQueue
 	ld b, $0a
 .asm_18b94
@@ -1474,17 +1478,17 @@ Func_1886c:
 	ld [wd084], a
 	ld a, e
 	ld [wd085], a
-	ld a, [wd082]
+	ld a, [wd082 + 0]
 	ld d, a
-	ld a, [wd083]
+	ld a, [wd082 + 1]
 	ld e, a
 	ld a, [de]
 	ld [hli], a
 	inc de
 	ld a, d
-	ld [wd082], a
+	ld [wd082 + 0], a
 	ld a, e
-	ld [wd083], a
+	ld [wd082 + 1], a
 	dec b
 	jr nz, .asm_18b94
 	ld a, [wd061]
@@ -1498,7 +1502,7 @@ Func_1886c:
 	ld a, [hff91]
 	set 2, a
 	ld [hff91], a
-	ld a, [wd060]
+	ld a, [wKirbyScreenDeltaY]
 	and a
 	ret nz
 	ld a, [wd084]
@@ -2105,75 +2109,114 @@ Data_190ca:
 
 .GreenGreens:
 	table_width 2, Data_190ca.GreenGreens
-	dw $5138 ; GREEN_GREENS_0
-	dw $5136 ; GREEN_GREENS_1
-	dw $5136 ; GREEN_GREENS_2
-	dw $5136 ; GREEN_GREENS_3
-	dw $516d ; GREEN_GREENS_4
+	dw Data_19138 ; GREEN_GREENS_0
+	dw Data_19136 ; GREEN_GREENS_1
+	dw Data_19136 ; GREEN_GREENS_2
+	dw Data_19136 ; GREEN_GREENS_3
+	dw Data_1916d ; GREEN_GREENS_4
 	assert_table_length NUM_GREEN_GREENS_AREAS
 
 .CastleLololo:
 	table_width 2, Data_190ca.CastleLololo
-	dw $5136 ; CASTLE_LOLOLO_00
-	dw $5136 ; CASTLE_LOLOLO_01
-	dw $5136 ; CASTLE_LOLOLO_02
-	dw $5136 ; CASTLE_LOLOLO_03
-	dw $5136 ; CASTLE_LOLOLO_04
-	dw $5136 ; CASTLE_LOLOLO_05
-	dw $5136 ; CASTLE_LOLOLO_06
-	dw $5175 ; CASTLE_LOLOLO_07
-	dw $51aa ; CASTLE_LOLOLO_08
-	dw $5136 ; CASTLE_LOLOLO_09
-	dw $5136 ; CASTLE_LOLOLO_10
-	dw $5136 ; CASTLE_LOLOLO_11
-	dw $5136 ; CASTLE_LOLOLO_12
-	dw $5136 ; CASTLE_LOLOLO_13
-	dw $51b7 ; CASTLE_LOLOLO_14
-	dw $51be ; CASTLE_LOLOLO_15
+	dw Data_19136 ; CASTLE_LOLOLO_00
+	dw Data_19136 ; CASTLE_LOLOLO_01
+	dw Data_19136 ; CASTLE_LOLOLO_02
+	dw Data_19136 ; CASTLE_LOLOLO_03
+	dw Data_19136 ; CASTLE_LOLOLO_04
+	dw Data_19136 ; CASTLE_LOLOLO_05
+	dw Data_19136 ; CASTLE_LOLOLO_06
+	dw Data_19175 ; CASTLE_LOLOLO_07
+	dw Data_191aa ; CASTLE_LOLOLO_08
+	dw Data_19136 ; CASTLE_LOLOLO_09
+	dw Data_19136 ; CASTLE_LOLOLO_10
+	dw Data_19136 ; CASTLE_LOLOLO_11
+	dw Data_19136 ; CASTLE_LOLOLO_12
+	dw Data_19136 ; CASTLE_LOLOLO_13
+	dw Data_191b7 ; CASTLE_LOLOLO_14
+	dw Data_191be ; CASTLE_LOLOLO_15
 	assert_table_length NUM_CASTLE_LOLOLO_AREAS
 
 .FloatIslands:
 	table_width 2, Data_190ca.FloatIslands
-	dw $5136 ; FLOAT_ISLANDS_0
-	dw $5136 ; FLOAT_ISLANDS_1
-	dw $5136 ; FLOAT_ISLANDS_2
-	dw $5136 ; FLOAT_ISLANDS_3
-	dw $5136 ; FLOAT_ISLANDS_4
-	dw $51c6 ; FLOAT_ISLANDS_5
-	dw $5136 ; FLOAT_ISLANDS_6
-	dw $51fe ; FLOAT_ISLANDS_7
+	dw Data_19136 ; FLOAT_ISLANDS_0
+	dw Data_19136 ; FLOAT_ISLANDS_1
+	dw Data_19136 ; FLOAT_ISLANDS_2
+	dw Data_19136 ; FLOAT_ISLANDS_3
+	dw Data_19136 ; FLOAT_ISLANDS_4
+	dw Data_191c6 ; FLOAT_ISLANDS_5
+	dw Data_19136 ; FLOAT_ISLANDS_6
+	dw Data_191fe ; FLOAT_ISLANDS_7
 	assert_table_length NUM_FLOAT_ISLANDS_AREAS
 
 .BubblyClouds:
 	table_width 2, Data_190ca.BubblyClouds
-	dw $5136 ; BUBBLY_CLOUDS_0
-	dw $5136 ; BUBBLY_CLOUDS_1
-	dw $5136 ; BUBBLY_CLOUDS_2
-	dw $5136 ; BUBBLY_CLOUDS_3
-	dw $5206 ; BUBBLY_CLOUDS_4
-	dw $5136 ; BUBBLY_CLOUDS_5
-	dw $5136 ; BUBBLY_CLOUDS_6
-	dw $5136 ; BUBBLY_CLOUDS_7
-	dw $5136 ; BUBBLY_CLOUDS_8
-	dw $522b ; BUBBLY_CLOUDS_9
+	dw Data_19136 ; BUBBLY_CLOUDS_0
+	dw Data_19136 ; BUBBLY_CLOUDS_1
+	dw Data_19136 ; BUBBLY_CLOUDS_2
+	dw Data_19136 ; BUBBLY_CLOUDS_3
+	dw Data_19206 ; BUBBLY_CLOUDS_4
+	dw Data_19136 ; BUBBLY_CLOUDS_5
+	dw Data_19136 ; BUBBLY_CLOUDS_6
+	dw Data_19136 ; BUBBLY_CLOUDS_7
+	dw Data_19136 ; BUBBLY_CLOUDS_8
+	dw Data_1922b ; BUBBLY_CLOUDS_9
 	assert_table_length NUM_BUBBLY_CLOUDS_AREAS
 
 .MtDedede:
 	table_width 2, Data_190ca.MtDedede
-	dw $5233 ; MT_DEDEDE_0
-	dw $5136 ; MT_DEDEDE_1
-	dw $5136 ; MT_DEDEDE_2
-	dw $5136 ; MT_DEDEDE_3
-	dw $5136 ; MT_DEDEDE_4
-	dw $5268 ; MT_DEDEDE_5
-	dw $525b ; MT_DEDEDE_6
-	dw $525b ; MT_DEDEDE_7
-	dw $525b ; MT_DEDEDE_8
-	dw $525b ; MT_DEDEDE_9
+	dw Data_19233 ; MT_DEDEDE_0
+	dw Data_19136 ; MT_DEDEDE_1
+	dw Data_19136 ; MT_DEDEDE_2
+	dw Data_19136 ; MT_DEDEDE_3
+	dw Data_19136 ; MT_DEDEDE_4
+	dw Data_19268 ; MT_DEDEDE_5
+	dw Data_1925b ; MT_DEDEDE_6
+	dw Data_1925b ; MT_DEDEDE_7
+	dw Data_1925b ; MT_DEDEDE_8
+	dw Data_1925b ; MT_DEDEDE_9
 	assert_table_length NUM_MT_DEDEDE_AREAS
-; 0x19136
 
-SECTION "Bank 6@526a", ROMX[$526a], BANK[$6]
+Data_19136:
+	db $01, $80
+
+Data_19138:
+	db $3c, $00, $0a, $01, $00, $80, $0a, $01, $01, $00, $0a, $01, $02, $00, $0b, $01, $03, $00, $56, $01, $04, $00, $0b, $01, $03, $00, $0a, $01, $02, $00, $0a, $01, $01, $00, $0a, $01, $00, $80, $78, $00, $01, $04, $02, $01, $01, $01, $10, $0b, $40, $ff, $00, $01, $80
+
+Data_1916d:
+	db $f0, $00, $f0, $00, $f0, $00, $01, $08
+
+Data_19175:
+	db $3c, $00, $0a, $01, $00, $80, $0a, $01, $01, $00, $0a, $01, $02, $00, $0b, $01, $03, $00, $56, $01, $04, $00, $0b, $01, $03, $00, $0a, $01, $02, $00, $0a, $01, $01, $00, $0a, $01, $00, $80, $1e, $00, $01, $04, $08, $01, $01, $01, $10, $14, $40, $f0, $00, $01, $80
+
+Data_191aa:
+	db $01, $04, $09, $01, $09, $01, $10, $76, $42, $1e, $00, $01, $80
+
+Data_191b7:
+	db $01, $04, $0f, $01, $01, $01, $80
+
+Data_191be:
+	db $f0, $00, $f0, $00, $f0, $00, $01, $08
+
+Data_191c6:
+	db $a0, $00, $0a, $02, $01, $00, $0a, $02, $02, $00, $0a, $02, $03, $00, $22, $02, $04, $00, $0a, $02, $03, $00, $0a, $02, $02, $00, $0a, $02, $01, $00, $8c, $00, $01, $04, $06, $01, $01, $01, $10, $2f, $40, $c8, $00, $01, $04, $07, $01, $01, $01, $10, $56, $40, $ff, $00, $01, $80
+
+Data_191fe:
+	db $f0, $00, $f0, $00, $f0, $00, $01, $08
+
+Data_19206:
+	db $64, $00, $0a, $02, $00, $80, $0a, $02, $01, $00, $0a, $02, $02, $00, $0b, $02, $03, $00, $2c, $02, $04, $00, $78, $00, $01, $04, $05, $01, $01, $01, $10, $bf, $40, $ff, $00, $01, $80
+
+Data_1922b:
+	db $f0, $00, $f0, $00, $f0, $00, $01, $08
+
+Data_19233:
+	db $f0, $01, $01, $c0, $bc, $01, $01, $c0, $0a, $01, $01, $80, $0a, $01, $01, $40, $0a, $01, $01, $00, $0a, $01, $00, $c0, $0a, $01, $00, $80, $0a, $01, $00, $40, $0a, $01, $00, $00, $32, $00, $01, $80
+
+Data_1925b:
+	db $01, $04, $00, $33, $01, $01, $10, $1d, $41, $f0, $00, $01, $80
+
+Data_19268:
+	db $01, $20
 
 Data_1926a:
 	table_width 2, Data_1926a
@@ -2252,7 +2295,22 @@ Data_1926a:
 	dw $404a ; MT_DEDEDE_8
 	dw $404a ; MT_DEDEDE_9
 	assert_table_length NUM_MT_DEDEDE_AREAS
-; 0x192d6
+
+BG_192d6:
+INCBIN "data/bg_192d6.bin"
+; 0x19452
+
+SECTION "Bank 6@5786", ROMX[$5786], BANK[$6]
+
+BG_19786:
+INCBIN "data/bg_19786.bin"
+; 0x198ac
+
+SECTION "Bank 6@5e86", ROMX[$5e86], BANK[$6]
+
+BG_19e86:
+INCBIN "data/bg_19e86.bin"
+; 0x19ed6
 
 SECTION "Configuration", ROMX[$6386], BANK[$6]
 

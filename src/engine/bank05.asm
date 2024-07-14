@@ -187,13 +187,13 @@ Func_1432c::
 	bit 2, a
 	ret nz
 	ld [wd410], a
-	ld a, [wd14d]
+	ld a, [wd140 + OBJECT_SLOT_13]
 	ld [wd412], a
 	ld a, [wd15d]
 	ld [wd413], a
 	ld a, OBJECT_SLOT_13
 	ld [wd411], a
-	ld hl, wObjectDatum + OBJECT_SLOT_13 * $2
+	ld hl, wObjectPropertyPtrs + OBJECT_SLOT_13 * $2
 	jr .asm_143cd
 
 .Func_143a4:
@@ -208,13 +208,13 @@ Func_1432c::
 	bit 2, a
 	ret nz
 	ld [wd410], a
-	ld a, [wd14e]
+	ld a, [wd140 + OBJECT_SLOT_14]
 	ld [wd412], a
 	ld a, [wd15e]
 	ld [wd413], a
 	ld a, OBJECT_SLOT_14
 	ld [wd411], a
-	ld hl, wObjectDatum + OBJECT_SLOT_14 * $2
+	ld hl, wObjectPropertyPtrs + OBJECT_SLOT_14 * $2
 .asm_143cd
 	ld a, [hli]
 	ld h, [hl]
@@ -375,7 +375,7 @@ Func_1432c::
 .asm_144e1
 	ld hl, $4026
 .asm_144e4
-	ld de, $4008
+	ld de, MotionScript_10008
 	ld a, [wd411]
 	ld c, a
 	jp Func_21e6
@@ -400,7 +400,7 @@ Func_1432c::
 	jr nz, .asm_14515
 	ld hl, $4026
 .asm_14515
-	ld de, $4008
+	ld de, MotionScript_10008
 	jp Func_21e6
 .asm_1451b
 	jp DestroyObject
@@ -438,8 +438,8 @@ Func_1432c::
 .asm_14560
 	ld a, [wd411]
 	ld c, a
-	ld hl, $4005
-	ld de, $4008
+	ld hl, GfxScript_20005
+	ld de, MotionScript_10008
 	jp Func_21e6
 
 .Func_1456d:
@@ -506,7 +506,7 @@ Func_1432c::
 	ret
 
 .Func_145d1:
-	ld hl, wObjectDatum
+	ld hl, wObjectPropertyPtrs
 	add hl, bc
 	add hl, bc
 	ld a, [hli]
@@ -546,7 +546,7 @@ Func_1432c::
 
 .Func_14600:
 	ld [wd06b], a
-	ld hl, wObjectDatum
+	ld hl, wObjectPropertyPtrs
 	add hl, bc
 	add hl, bc
 	ld a, [hli]
@@ -671,13 +671,13 @@ Func_1432c::
 	ld a, [hl]
 	ld [wObjectXCoords + $1], a
 	sub $08
-	ld [wd05c], a
+	ld [wKirbyScreenX], a
 	ld hl, wd150
 	add hl, bc
 	ld a, [hl]
 	ld [wObjectYCoords + $1], a
 	sub $08
-	ld [wd05d], a
+	ld [wKirbyScreenY], a
 	jr .DestroyObject
 
 .asm_14704
@@ -843,7 +843,7 @@ Func_147e4::
 	add hl, bc
 	bit 6, [hl]
 	jr z, .asm_1483d
-	ld hl, wObjectDatum
+	ld hl, wObjectPropertyPtrs
 	add hl, bc
 	add hl, bc
 	ld a, [hli]
@@ -899,8 +899,8 @@ Func_147e4::
 	ld a, [hl]
 	and $22
 	jr nz, .asm_1488d
-	ld hl, $4003
-	ld de, $4000
+	ld hl, GfxScript_20003
+	ld de, MotionScript_10000
 	call Func_21e6
 	ld hl, hff94
 	set 7, [hl]
@@ -960,7 +960,7 @@ Func_147e4::
 	ret
 
 Func_148dc:
-	ld hl, wObjectDatum
+	ld hl, wObjectPropertyPtrs
 	add hl, bc
 	add hl, bc
 	ld a, [hli]
@@ -1315,9 +1315,9 @@ InitRAM::
 	ld [wd052], a
 	ld [wd074], a
 	ld a, $30
-	ld [wd05c], a
+	ld [wKirbyScreenX], a
 	ld a, $00
-	ld [wd05d], a
+	ld [wKirbyScreenY], a
 	ld a, $ff
 	ld [wd096], a
 	ld [wd03d], a

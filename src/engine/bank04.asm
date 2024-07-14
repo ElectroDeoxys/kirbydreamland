@@ -1,5 +1,5 @@
-SECTION "Bank 4@4003", ROMX[$4003], BANK[$4]
-
+MotionScript_10000:
+	set_custom_func $401a
 MotionScript_10003:
 	set_velocities 0, $00, $00
 ; 0x10006

@@ -2,7 +2,7 @@ Func_4000::
 	ldh a, [hff8e]
 	bit 6, a
 	call z, Func_8dc
-	ld a, [wd05c]
+	ld a, [wKirbyScreenX]
 	cp $98
 	jr c, .asm_401c
 	call Func_8cb
@@ -26,12 +26,12 @@ Func_4000::
 	ld a, e
 	and a
 	ret z
-	ld [wd062], a
+	ld [wKirbyScreenDeltaX], a
 	ldh a, [hff90]
 	bit 5, a
 	jp nz, .asm_40e1
 	inc e
-	ld a, [wd05c]
+	ld a, [wKirbyScreenX]
 	add $0d
 	ld [wd05e], a
 	call Func_784
@@ -49,7 +49,7 @@ Func_4000::
 	call Func_1ccb
 	ld a, c
 	ld [wd05e], a
-	ld a, [wd05d]
+	ld a, [wKirbyScreenY]
 	sub $10
 	ld [wd05f], a
 	call Func_819
@@ -66,7 +66,7 @@ Func_4000::
 	call Func_1248
 	jr c, .asm_40a4
 .asm_4081
-	ld a, [wd05d]
+	ld a, [wKirbyScreenY]
 	sub $01
 	ld [wd05f], a
 	call Func_819
@@ -113,7 +113,7 @@ Func_4000::
 	ld a, $ff
 	ld [wd054], a
 	ld a, d
-	ld [wd062], a
+	ld [wKirbyScreenDeltaX], a
 .asm_40e1
 	ldh a, [hff90]
 	bit 4, a
@@ -143,9 +143,9 @@ Func_4000::
 .asm_4115
 	ld c, $98
 .asm_4117
-	ld a, [wd062]
+	ld a, [wKirbyScreenDeltaX]
 	ld b, a
-	ld a, [wd05c]
+	ld a, [wKirbyScreenX]
 	add b
 	cp $98
 	jr nc, .asm_4149
@@ -153,8 +153,8 @@ Func_4000::
 	ld a, c
 	sub b
 	jr c, .asm_4133
-	call Func_1268
-	ld a, [wd05c]
+	call MoveKirbyRight
+	ld a, [wKirbyScreenX]
 	xor a
 	ld [wd063], a
 	ret
@@ -163,12 +163,12 @@ Func_4000::
 	inc a
 	ld [wd063], a
 	ld b, a
-	ld a, [wd062]
+	ld a, [wKirbyScreenDeltaX]
 	sub b
-	ld [wd062], a
+	ld [wKirbyScreenDeltaX], a
 	ld a, b
 	ld [wd063], a
-	call Func_1268
+	call MoveKirbyRight
 	scf
 	ret
 .asm_4149
@@ -194,7 +194,7 @@ Func_4000::
 .asm_416f
 	call Func_8cb
 	ld a, $98
-	ld [wd05c], a
+	ld [wKirbyScreenX], a
 	xor a
 	ld [wd063], a
 	ret
@@ -205,7 +205,7 @@ Func_417c::
 	ldh a, [hff8e]
 	bit 6, a
 	call z, Func_8dc
-	ld a, [wd05c]
+	ld a, [wKirbyScreenX]
 	cp $08
 	jr nz, .asm_4193
 	call Func_8cb
@@ -230,7 +230,7 @@ Func_417c::
 	bit 5, a
 	jp nz, .asm_4250
 	inc e
-	ld a, [wd05c]
+	ld a, [wKirbyScreenX]
 	add $03
 	ld [wd05e], a
 	call Func_784
@@ -250,7 +250,7 @@ Func_417c::
 	call Func_1ccb
 	ld a, c
 	ld [wd05e], a
-	ld a, [wd05d]
+	ld a, [wKirbyScreenY]
 	sub $10
 	ld [wd05f], a
 	call Func_819
@@ -267,7 +267,7 @@ Func_417c::
 	call Func_1248
 	jr c, .asm_4221
 .asm_41fe
-	ld a, [wd05d]
+	ld a, [wKirbyScreenY]
 	sub $01
 	ld [wd05f], a
 	call Func_819
@@ -333,24 +333,25 @@ Func_417c::
 .asm_427e
 	ld c, $08
 .asm_4280
-	ld a, [wd05c]
+	ld a, [wKirbyScreenX]
 	sub c
-	ld [wd062], a
+	ld [wKirbyScreenDeltaX], a
 	sub b
 	jr c, .asm_429c
 	ld a, [wd063]
-	ld [wd062], a
-	call Func_1272
-	ld a, [wd05c]
+	ld [wKirbyScreenDeltaX], a
+	call MoveKirbyLeft
+	ld a, [wKirbyScreenX]
 	cp $08
-	jr z, .asm_42a1
+	jr z, Func_42a1
 	and a
 	ret
 .asm_429c
-	call Func_1272
+	call MoveKirbyLeft
 	scf
 	ret
-.asm_42a1
+
+Func_42a1::
 	ldh a, [hff92]
 	and $0c
 	jr nz, .asm_42ba
@@ -610,7 +611,7 @@ Func_42bf::
 	push bc
 	push hl
 	push de
-	call Func_483
+	call ProcessDoorConnection
 	pop de
 	pop hl
 	pop bc
@@ -665,6 +666,7 @@ Func_42bf::
 	set 2, [hl]
 	ld hl, hff93
 	set 1, [hl]
+
 .asm_452a
 	ldh a, [hJoypadPressed]
 	bit D_LEFT_F, a
@@ -1107,11 +1109,18 @@ Data_4860:
 	db $ff, $80
 	db $ff, $80
 	db $ff, $80
-	db $04, $03
-	db $03, $02
-	db $02, $02
-	db $01, $01
-	db $01, $01
+
+Data_488c::
+	db $04
+	db $03
+	db $03
+	db $02
+	db $02
+	db $02
+	db $01
+	db $01
+	db $01
+	db $01
 ; 0x4896
 
 SECTION "Bank 1@48e1", ROMX[$48e1], BANK[$1]
@@ -1286,7 +1295,7 @@ Func_4c9b::
 	bit 5, a
 	jr nz, .asm_4cd0
 	ld a, $01
-	ld [wd082], a
+	ld [wd082 + 0], a
 	ld a, $01
 	ld [wd078], a
 	ld a, $80
@@ -1323,7 +1332,7 @@ Func_4ced::
 	bit 5, a
 	jr nz, .asm_4d20
 	ld a, $01
-	ld [wd082], a
+	ld [wd082 + 0], a
 	ld a, $fe
 	ld [wd078], a
 	ld a, $80
