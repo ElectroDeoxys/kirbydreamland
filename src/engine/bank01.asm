@@ -7,7 +7,7 @@ Func_4000::
 	jr c, .asm_401c
 	call Func_8cb
 	ldh a, [hff8d]
-	res 4, a
+	res KIRBY1F_UNK4_F, a
 	ldh [hff8d], a
 	xor a
 	ld [wd063], a
@@ -88,7 +88,7 @@ Func_4000::
 	jr nz, .asm_40d5
 	call Func_11c9
 	ldh a, [hff92]
-	and $0c
+	and KIRBY2F_UNK2 | KIRBY2F_UNK3
 	jr nz, .asm_40d5
 	ld a, [wd074]
 	cp $01
@@ -98,11 +98,11 @@ Func_4000::
 	jr c, .asm_40d5
 .asm_40c1
 	ldh a, [hff8d]
-	res 4, a
+	res KIRBY1F_UNK4_F, a
 	ldh [hff8d], a
-	ld b, $82
+	ld b, KIRBY2F_UNK1 | KIRBY2F_FACE_LEFT
 	ldh a, [hff92]
-	and $f0
+	and KIRBY2F_DUCK | KIRBY2F_LAND | KIRBY2F_UNK6 | KIRBY2F_FACE_LEFT
 	or b
 	ldh [hff92], a
 	push de
@@ -173,7 +173,7 @@ Func_4000::
 	ret
 .asm_4149
 	ldh a, [hff92]
-	and $0c
+	and KIRBY2F_UNK2 | KIRBY2F_UNK3
 	jr nz, .asm_416f
 	ld a, [wd074]
 	cp $01
@@ -182,14 +182,14 @@ Func_4000::
 	cp $82
 	jr c, .asm_416f
 .asm_415d
-	ld b, $82
+	ld b, KIRBY2F_UNK1 | KIRBY2F_FACE_LEFT
 	ldh a, [hff92]
-	and $f0
+	and KIRBY2F_DUCK | KIRBY2F_LAND | KIRBY2F_UNK6 | KIRBY2F_FACE_LEFT
 	or b
 	ldh [hff92], a
 	call Func_37ac
 	ldh a, [hff8d]
-	res 4, a
+	res KIRBY1F_UNK4_F, a
 	ldh [hff8d], a
 .asm_416f
 	call Func_8cb
@@ -289,14 +289,14 @@ Func_417c::
 	jr nz, .asm_4245
 	call Func_11c9
 	ldh a, [hff92]
-	and $0c
+	and KIRBY2F_UNK2 | KIRBY2F_UNK3
 	jr nz, .asm_4245
 	ld a, [wd074]
 	cp $01
 	jr nz, .asm_4245
-	ld b, $83
+	ld b, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_FACE_LEFT
 	ldh a, [hff92]
-	and $f0
+	and KIRBY2F_DUCK | KIRBY2F_LAND | KIRBY2F_UNK6 | KIRBY2F_FACE_LEFT
 	or b
 	ldh [hff92], a
 	push de
@@ -353,14 +353,14 @@ Func_417c::
 
 Func_42a1::
 	ldh a, [hff92]
-	and $0c
+	and KIRBY2F_UNK2 | KIRBY2F_UNK3
 	jr nz, .asm_42ba
 	ld a, [wd074]
 	cp $01
 	jr c, .asm_42ba
-	ld b, $83
+	ld b, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_FACE_LEFT
 	ldh a, [hff92]
-	and $f0
+	and KIRBY2F_DUCK | KIRBY2F_LAND | KIRBY2F_UNK6 | KIRBY2F_FACE_LEFT
 	or b
 	ldh [hff92], a
 	call Func_37ac
@@ -372,84 +372,90 @@ Func_42a1::
 Func_42bf::
 	ldh a, [hJoypadPressed]
 	bit D_DOWN_F, a
-	jr z, .asm_4301
+	jr z, .not_ducking
 	ldh a, [hff8d]
-	bit 6, a
-	jr z, .asm_4301
+	bit KIRBY1F_GROUNDED_F, a
+	jr z, .not_ducking
 	ldh a, [hff8e]
 	bit 7, a
-	jr nz, .asm_4301
+	jr nz, .not_ducking
 	ldh a, [hff95]
 	and $60
-	jp nz, .asm_4301
+	jp nz, .not_ducking
 	ld hl, hff8e
 	bit 2, [hl]
-	jp nz, .asm_4301
+	jp nz, .not_ducking
 	bit 4, [hl]
-	jr nz, .asm_4301
+	jr nz, .not_ducking
 	ldh a, [hff92]
-	bit 2, a
-	jr nz, .asm_4301
-	set 4, a
+	bit KIRBY2F_UNK2_F, a
+	jr nz, .not_ducking
+
+	; do duck
+	set KIRBY2F_DUCK_F, a
 	ldh [hff92], a
 	call Func_8dc
 	ld hl, hff8d
-	res 7, [hl]
-	res 0, [hl]
+	res KIRBY1F_AIRBORNE_F, [hl]
+	res KIRBY1F_UNK0_F, [hl]
 	ldh a, [hVBlankFlags]
 	set 3, a
 	ldh [hVBlankFlags], a
 	jp Func_4783
-.asm_4301
+
+.not_ducking
 	ld hl, hff92
-	res 4, [hl]
+	res KIRBY2F_DUCK_F, [hl]
 	ldh a, [hff8e]
 	bit 1, a
 	jp nz, .asm_4778
 	bit 0, a
 	jp nz, Func_4783
+
 	ldh a, [hff8e]
 	and $f0
 	jr nz, .asm_437c
 	ldh a, [hff92]
-	bit 7, a
+	bit KIRBY2F_FACE_LEFT_F, a
 	jr nz, .asm_437c
-	bit 2, a
+	bit KIRBY2F_UNK2_F, a
 	jr nz, .asm_437c
 	ldh a, [hJoypadPressed]
 	bit A_BUTTON_F, a
 	jr z, .asm_4361
 	ldh a, [hff8d]
-	bit 7, a
+	bit KIRBY1F_AIRBORNE_F, a
 	jr nz, .asm_437c
-	bit 6, a
+	bit KIRBY1F_GROUNDED_F, a
 	jr z, .asm_437c
-	bit 3, a
+	bit KIRBY1F_UNK3_F, a
 	jr nz, .asm_437c
+
+	; do jump
 	ld hl, hff90
 	res 3, [hl]
 	ld hl, hff92
-	res 6, [hl]
+	res KIRBY2F_UNK6_F, [hl]
 	ldh a, [hff8d]
-	set 7, a
-	res 6, a
-	set 3, a
+	set KIRBY1F_AIRBORNE_F, a
+	res KIRBY1F_GROUNDED_F, a
+	set KIRBY1F_UNK3_F, a
 	ldh [hff8d], a
 	xor a
 	ld [wd414], a
 	ld [wd065], a
 	ld [wd064], a
 	ldh a, [hff92]
-	and $f3
+	and ~(KIRBY2F_UNK2 | KIRBY2F_UNK3)
 	ldh [hff92], a
 	ld a, SFX_JUMP
 	call PlaySFX
 	jr .asm_437c
 .asm_4361
 	ldh a, [hff8d]
-	bit 7, a
+	bit KIRBY1F_AIRBORNE_F, a
 	jr z, .asm_4377
-	bit 3, a
+	bit KIRBY1F_UNK3_F, a
 	jr z, .asm_437c
 	ld a, [wd065]
 	cp $11
@@ -458,7 +464,7 @@ Func_42bf::
 	ld [wd065], a
 .asm_4377
 	ld hl, hff8d
-	res 3, [hl]
+	res KIRBY1F_UNK3_F, [hl]
 .asm_437c
 	ldh a, [hJoypadPressed]
 	ld c, a
@@ -500,7 +506,7 @@ Func_42bf::
 	ld a, $16
 	ld [wd065], a
 	ldh a, [hff92]
-	and $b3
+	and ~(KIRBY2F_UNK2 | KIRBY2F_UNK3 | KIRBY2F_UNK6)
 	ldh [hff92], a
 	xor a
 	ld [wd064], a
@@ -535,19 +541,19 @@ Func_42bf::
 	ldh a, [hff8e]
 	bit 3, a
 	jr nz, .asm_444e
-	bit 6, c
+	bit D_UP_F, c
 	jp nz, .asm_4492
 	ld hl, hff93
 	res 1, [hl]
 	and $f7
 	jr nz, .asm_4492
 	ldh a, [hff92]
-	and $94
+	and KIRBY2F_UNK2 | KIRBY2F_DUCK | KIRBY2F_FACE_LEFT
 	jr nz, .asm_4492
 	ld hl, hff8e
 	set 4, [hl]
 	ldh a, [hff92]
-	and $f3
+	and ~(KIRBY2F_UNK2 | KIRBY2F_UNK3)
 	ldh [hff92], a
 	xor a
 	ld [wd064], a
@@ -617,13 +623,13 @@ Func_42bf::
 	pop bc
 	and a
 	jr z, .asm_452a
-	bit 1, b
+	bit B_BUTTON_F, b
 	jr nz, .asm_452a
 	ldh a, [hff8e]
 	and $7b
 	jr nz, .asm_452a
 	ldh a, [hff92]
-	and $f3
+	and ~(KIRBY2F_UNK2 | KIRBY2F_UNK3)
 	ldh [hff92], a
 	ldh a, [hff8e]
 	bit 6, a
@@ -638,7 +644,7 @@ Func_42bf::
 	ld hl, hff95
 	res 2, [hl]
 	ldh a, [hff8d]
-	and $37
+	and $ff ^ (KIRBY1F_UNK3 | KIRBY1F_GROUNDED | KIRBY1F_AIRBORNE)
 	ldh [hff8d], a
 	ld a, $00
 	ld [wd07a], a
@@ -689,12 +695,12 @@ Func_42bf::
 	jr nz, .asm_4556
 .asm_4551
 	ld hl, hff92
-	set 5, [hl]
+	set KIRBY2F_LAND_F, [hl]
 .asm_4556
 	ldh a, [hff8d]
-	bit 4, a
+	bit KIRBY1F_UNK4_F, a
 	jr nz, .asm_4560
-	set 5, a
+	set KIRBY1F_UNK5_F, a
 	ldh [hff8d], a
 .asm_4560
 	ldh a, [hJoypadPressed]
@@ -715,12 +721,12 @@ Func_42bf::
 	jr nz, .asm_4590
 .asm_4581
 	ld hl, hff92
-	res 5, [hl]
+	res KIRBY2F_LAND_F, [hl]
 .asm_4586
 	ldh a, [hff8d]
-	bit 4, a
+	bit KIRBY1F_UNK4_F, a
 	jr nz, .asm_4590
-	res 5, a
+	res KIRBY1F_UNK5_F, a
 	ldh [hff8d], a
 .asm_4590
 	ldh a, [hff8e]
@@ -738,7 +744,7 @@ Func_42bf::
 	bit 7, a
 	jr nz, .asm_460c
 	ld hl, hff8d
-	set 7, [hl]
+	set KIRBY1F_AIRBORNE_F, [hl]
 	bit A_BUTTON_F + 4, b
 	jr nz, .asm_4629
 	bit D_UP_F - 4, b
@@ -825,7 +831,7 @@ Func_42bf::
 	xor a
 	ld [wd064], a
 	ldh a, [hff92]
-	and $f3
+	and ~(KIRBY2F_UNK2 | KIRBY2F_UNK3)
 	ldh [hff92], a
 	bit 4, b
 	jr nz, .asm_4629
@@ -871,9 +877,9 @@ Func_42bf::
 	inc a
 	ld [wd074], a
 	ldh a, [hJoypadPressed]
-	bit 6, a
+	bit D_UP_F, a
 	jr nz, .asm_46c8
-	bit 7, a
+	bit D_DOWN_F, a
 	jr nz, .asm_46dc
 	xor a
 	ld [wd078], a
@@ -887,7 +893,7 @@ Func_42bf::
 	ld [wd079], a
 	ld [wd07e], a
 	ld hl, hff92
-	set 6, [hl]
+	set KIRBY2F_UNK6_F, [hl]
 	jp Func_426
 .asm_46dc
 	xor a
@@ -896,28 +902,28 @@ Func_42bf::
 	inc a
 	ld [wd078], a
 	ld hl, hff92
-	res 6, [hl]
+	res KIRBY2F_UNK6_F, [hl]
 	jp Func_426
 .asm_46ef
 	ld hl, hff92
-	set 6, [hl]
+	set KIRBY2F_UNK6_F, [hl]
 	ld a, $50
 	ld [wd07e], a
 	jp Func_3b3
 .asm_46fc
 	ld hl, hff92
-	res 6, [hl]
+	res KIRBY2F_UNK6_F, [hl]
 	ld a, $14
 	ld [wd07e], a
 	jp Func_3b3
 .asm_4709
 	ldh a, [hff92]
-	bit 2, a
+	bit KIRBY2F_UNK2_F, a
 	jr z, .asm_4726
 	ld hl, hff8d
-	set 3, [hl]
+	set KIRBY1F_UNK3_F, [hl]
 	ld hl, hff92
-	res 6, [hl]
+	res KIRBY2F_UNK6_F, [hl]
 	ld a, $40
 	ld [wd07e], a
 	ld a, [wd04d]
@@ -925,16 +931,16 @@ Func_42bf::
 	jp Func_3b3
 .asm_4726
 	ldh a, [hff8d]
-	bit 7, a
+	bit KIRBY1F_AIRBORNE_F, a
 	jp z, .asm_476b
 	ldh a, [hff92]
-	res 6, a
+	res KIRBY2F_UNK6_F, a
 	ldh [hff92], a
 	ldh a, [hJoypadPressed]
 	swap a
 	and $03
-	ld b, a ; unnecessary
-	ld a, b ;
+	ld b, a
+	ld a, b ; unnecessary
 	ld [wd04d], a
 	ldh [hVBlankFlags], a
 	ld a, [wd065]
@@ -1002,7 +1008,7 @@ Func_4783::
 	jr nz, .asm_47bf
 	call Func_8dc
 	ldh a, [hff92]
-	res 7, a
+	res KIRBY2F_FACE_LEFT_F, a
 	ldh [hff92], a
 	xor a
 	ld [wd094], a
@@ -1019,7 +1025,7 @@ Func_4783::
 	set 1, a
 	ldh [hff93], a
 	ldh a, [hff8d]
-	and $37
+	and $ff ^ (KIRBY1F_UNK3 | KIRBY1F_GROUNDED | KIRBY1F_AIRBORNE)
 	ldh [hff8d], a
 	ld a, $00
 	ld [wd07a], a
@@ -1175,11 +1181,11 @@ Func_4a1c:
 	call Func_2e7f
 	pop bc
 	push bc
-	ld a, $00
+	ld a, LOW(wca00)
 	add [hl]
 	ld e, a
-	ld a, $ca
-	adc $00
+	ld a, HIGH(wca00)
+	adc 0
 	ld d, a
 	ld a, [de]
 	cp $04

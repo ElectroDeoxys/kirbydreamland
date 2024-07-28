@@ -7,6 +7,19 @@ parser.add_argument('offsets', metavar='offsets', type=str, nargs='+',
 
 args = parser.parse_args()
 
+symbols = {}
+
+with open("kirbydreamland.sym", "r") as file:
+    for line in file.readlines():
+        line = line.split(":")
+        if len(line) != 2:
+            continue
+        offs = int(line[1][0:4], 16)
+        if int(line[0], 16) != 0 and int(line[0], 16) != 1:
+            continue
+        symString = line[1].split()[1]
+        symbols[offs] = symString
+
 def parseByte(args):
     return args
 
@@ -71,16 +84,19 @@ commands = {
     0xfe: ("calltable_random", 1, parseByte),
 
     # higher order commands
-    0x100: ("set_gfx_script", 0, None),
-    0x101: ("set_motion_script", 0, None),
+    0x100: ("set_gfx_script", 2, None),
+    0x101: ("set_motion_script", 2, None),
+    0x102: ("play_sfx", 1, None),
+    0x103: ("set_object_properties", 2, None),
 }
 
-commandsWithByte = { 0xe6, 0xec, 0xed, 0xfb, 0xfd, 0xfe }
+commandsWithNum = { 0xe6, 0xec, 0xed }
+commandsWithByte = { 0xfb, 0xfd, 0xfe }
 commandsWith2Bytes = { 0xf0, 0xf1 }
 commandsWithAddressAndByte = { 0xe9, 0xf4 }
 commandsWithByteAndAddress = { 0xfa }
 commandsWithAddressByteAddress = { 0xea, 0xf7, 0xf8 }
-commandsWithAddress = { 0xe1, 0xe2, 0xe3, 0xe8, 0xf5, 0xf6 }
+commandsWithAddress = { 0xe1, 0xe2, 0xe3, 0xe8, 0xf5, 0xf6, 0x100, 0x101, 0x103 }
 commandsWith2Addresses = { 0xe5, 0xee }
 commandsWithAddressAnd2Bytes = { 0xf9 }
 
@@ -93,8 +109,13 @@ def getCommandString(cmdByte, args, addressLabels):
     def parseAddress(a):
         if a in addressLabels:
             return addressLabels[a]
+        elif a in symbols:
+            return symbols[a]
         else:
             return "${:04x}".format(a)
+
+    if cmdByte in commandsWithNum:
+        return resStr + " {}".format(args[0])
 
     if cmdByte in commandsWithByte:
         return resStr + " ${:02x}".format(args[0])
@@ -174,8 +195,23 @@ for o in args.offsets:
                 parsedCommands[-1][2][0] = absAddress
                 if absAddress < cmdPos:
                     break
+            elif cmdByte == 0xe5:
+                gfxScriptAddr = parsedCommands[-1][2][0]
+                motionScriptAddr = parsedCommands[-1][2][1]
+                if isMotionScript:
+                    if motionScriptAddr == pos:
+                        parsedCommands[-1] = (0x100, parsedCommands[-1][1], gfxScriptAddr)
+                else:
+                    if gfxScriptAddr == pos:
+                        parsedCommands[-1] = (0x101, parsedCommands[-1][1], motionScriptAddr)
 
-            if cmdByte == 0xe0 or cmdByte == 0xe4:
+            elif cmdByte == 0xe8:
+                funcAddr = parsedCommands[-1][2][0]
+                if funcAddr in symbols and symbols[funcAddr] == "SetObjectProperties":
+                    parsedCommands[-1] = (0x103, parsedCommands[-1][1], parseWord(source[pos : pos + 2]))
+                    pos += 2
+
+            if cmdByte == 0xe0 or cmdByte == 0xe4 or cmdByte == 0xe5:
                 break # end of script
 
     addressLabels = {}

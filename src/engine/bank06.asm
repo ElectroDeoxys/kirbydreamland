@@ -709,7 +709,7 @@ Pause::
 	and $9c
 	jr nz, .show_sprites
 	ld a, [hff92]
-	and $80
+	and KIRBY2F_FACE_LEFT
 	jr nz, .show_sprites
 	ld a, [hff93]
 	and $38
@@ -797,7 +797,7 @@ _LoseLife::
 	add hl, bc
 	ld a, [hl]
 	ld c, a
-	ld hl, wd043
+	ld hl, wMtDededeDefeatedBosses
 	add hl, bc
 	xor a
 	ld [hl], a
@@ -915,16 +915,18 @@ _LoseLife::
 	jp Func_1e6
 
 Data_1874d:
-	db $00 ; MT_DEDEDE_0
-	db $01 ; MT_DEDEDE_1
-	db $02 ; MT_DEDEDE_2
-	db $03 ; MT_DEDEDE_3
-	db $04 ; MT_DEDEDE_4
-	db $05 ; MT_DEDEDE_5
-	db $01 ; MT_DEDEDE_6
-	db $03 ; MT_DEDEDE_7
-	db $02 ; MT_DEDEDE_8
-	db $04 ; MT_DEDEDE_9
+	table_width 1, Data_1874d
+	db MT_DEDEDE_0 ; MT_DEDEDE_0
+	db MT_DEDEDE_1 ; MT_DEDEDE_1
+	db MT_DEDEDE_2 ; MT_DEDEDE_2
+	db MT_DEDEDE_3 ; MT_DEDEDE_3
+	db MT_DEDEDE_4 ; MT_DEDEDE_4
+	db MT_DEDEDE_5 ; MT_DEDEDE_5
+	db MT_DEDEDE_1 ; MT_DEDEDE_6
+	db MT_DEDEDE_3 ; MT_DEDEDE_7
+	db MT_DEDEDE_2 ; MT_DEDEDE_8
+	db MT_DEDEDE_4 ; MT_DEDEDE_9
+	assert_table_length NUM_MT_DEDEDE_AREAS
 
 Func_18757:
 	call Func_648
@@ -958,7 +960,7 @@ Func_18757:
 	bit 6, [hl]
 	jr nz, .asm_1879c
 	ld a, [hJoypadPressed]
-	bit 3, a
+	bit START_F, a
 	jr nz, .asm_187b0
 	dec bc
 	ld a, b
@@ -1009,18 +1011,18 @@ Func_18757:
 	bit 6, [hl]
 	jr nz, .asm_18810
 	call Func_19098
-	ld a, [$d3d0]
+	ld a, [wd3d0]
 	and a
 	jr z, .asm_1880b
 	ld hl, hff95
 	res 0, [hl]
-	ld a, [$d3cf]
+	ld a, [wd3cf]
 	and a
 	jp nz, .asm_1885e
 	ld a, [wConfigLives]
 	ld [wLives], a
 	call SetFullHP
-	ld hl, wd048
+	ld hl, wMtDededeDefeatedBosses + MT_DEDEDE_5
 	ld a, [hld]
 	and a
 	jr z, .asm_1883e

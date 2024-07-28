@@ -48,6 +48,25 @@ GfxScript_203be:
 	script_end
 ; 0x203de
 
+SECTION "Bank 8@4477", ROMX[$4477], BANK[$8]
+
+GfxScript_20477:
+	script_exec_arg PlaySFX, SFX_15
+	jump_if_flags wd3be, $02, $4bc9
+	jump_if_flags wd3be, $04, $4bb7
+	jump_if_flags hff91, $01, .script_2049e
+	set_custom_func Func_141b1, GfxScript_20b9a
+.check_land
+	jump_if_not_flags hff92, KIRBY2F_LAND, .script_2049b
+	frame  0, $5cf9
+.script_2049b
+	frame  0, $5cf1
+.script_2049e
+	frame  1, $58b8
+	script_f3
+	jump_rel .check_land
+; 0x204a4
+
 SECTION "Bank 8@4587", ROMX[$4587], BANK[$8]
 
 GfxScript_20587:
@@ -214,9 +233,9 @@ GfxScript_20ad4:
 SECTION "Bank 8@4ae6", ROMX[$4ae6], BANK[$8]
 
 GfxScript_20ae6:
-	set_value $d414, $01
+	set_value wd414, $01
 	frame 24, $5c1d
-	set_value $d414, $00
+	set_value wd414, $00
 	script_end
 
 GfxScript_20af2:
@@ -229,7 +248,11 @@ GfxScript_20af2:
 	script_end
 ; 0x20b05
 
-SECTION "Bank 8@4ba2", ROMX[$4ba2], BANK[$8]
+SECTION "Bank 8@4b9a", ROMX[$4b9a], BANK[$8]
+
+GfxScript_20b9a:
+	script_exec Func_4a1c
+	set_scripts $49f6, MotionScript_10008
 
 GfxScript_20ba2:
 	script_exec Func_4a1c

@@ -29,7 +29,7 @@ MotionScript_102fb:
 	dw MotionScript_1030b, MotionScript_10308
 
 MotionScript_10302:
-	jump_if_not_flags hff92, $20, MotionScript_1030b
+	jump_if_not_flags hff92, KIRBY2F_LAND, MotionScript_1030b
 
 MotionScript_10308:
 	set_velocities 0, $8b, $00
@@ -90,6 +90,16 @@ MotionScript_10508:
 	set_velocities 32, $00, $85
 	jump_abs .loop
 ; 0x10523
+
+SECTION "Bank 4@4566", ROMX[$4566], BANK[$4]
+
+MotionScript_10566::
+	set_velocities 136, $04, $87
+	set_velocities 120, $04, $87
+MotionScript_1056c::
+	set_velocities 122, $10, $00
+	set_velocities   0, $e1, $61
+; 0x10572
 
 SECTION "Bank 4@467d", ROMX[$467d], BANK[$4]
 

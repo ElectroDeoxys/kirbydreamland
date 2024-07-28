@@ -78,35 +78,8 @@ wd041:: ; d041
 wd042:: ; d042
 	db
 
-wd043:: ; d043
-	db
-
-wd044:: ; d044
-	db
-
-wd045:: ; d045
-	db
-
-wd046:: ; d046
-	db
-
-wd047:: ; d047
-	db
-
-wd048:: ; d048
-	db
-
-wd049:: ; d049
-	db
-
-wd04a:: ; d04a
-	db
-
-wd04b:: ; d04b
-	db
-
-wd04c:: ; d04c
-	db
+wMtDededeDefeatedBosses:: ; d043
+	ds NUM_MT_DEDEDE_AREAS
 
 wd04d:: ; d04d
 	db
@@ -445,7 +418,15 @@ wConsumedItems:: ; d3c4
 wd3cc:: ; d3cc
 	db
 
-	ds $7
+	ds $2
+
+wd3cf:: ; d3cf
+	db
+
+wd3d0:: ; d3d0
+	db
+
+	ds $3
 
 wd3d4:: ; d3d4
 	db

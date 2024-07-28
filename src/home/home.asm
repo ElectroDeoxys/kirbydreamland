@@ -154,10 +154,10 @@ Func_326::
 	set 7, a
 	ld [wd190 + OBJECT_SLOT_00], a
 .asm_373
-	and $2f
+	and $ff ^ (KIRBY1F_UNK4 | KIRBY1F_GROUNDED | KIRBY1F_AIRBORNE)
 	ldh [hff8d], a
 	ldh a, [hff92]
-	and $f3
+	and ~(KIRBY2F_UNK2 | KIRBY2F_UNK3)
 	ldh [hff92], a
 	xor a
 	ld [wd064], a
@@ -182,13 +182,13 @@ Func_38f::
 	xor a
 	ld [wd064], a
 	ldh a, [hff92]
-	and $f3
+	and ~(KIRBY2F_UNK2 | KIRBY2F_UNK3)
 	ldh [hff92], a
 	ret
 
 Func_3b3::
 	ldh a, [hff92]
-	bit 6, a
+	bit KIRBY2F_UNK6_F, a
 	jr nz, .asm_3f2
 	ld a, [wd07a]
 	ld d, a
@@ -270,7 +270,7 @@ Func_426::
 	cpl
 	ld b, a
 	ldh a, [hff8d]
-	and $f8
+	and ~(KIRBY1F_UNK0 | KIRBY1F_UNK1 | KIRBY1F_UNK2)
 	or b
 	ldh [hff8d], a
 	jp Func_4783
@@ -289,7 +289,7 @@ Func_426::
 	jr z, .asm_47a
 	ld b, a
 	ldh a, [hff8d]
-	and $f8
+	and ~(KIRBY1F_UNK0 | KIRBY1F_UNK1 | KIRBY1F_UNK2)
 	or b
 	ldh [hff8d], a
 	jp Func_4783
@@ -299,6 +299,9 @@ Func_426::
 	ldh [hVBlankFlags], a
 	jp Func_4783
 
+; output:
+; - a = $ff if not entered door
+;       else, entered door
 ProcessDoorConnection::
 	ld hl, DoorConnections
 .loop_door_connections
@@ -376,10 +379,10 @@ ProcessDoorConnection::
 	ld a, [wArea]
 	ld c, a
 	ld b, $00
-	ld hl, wd043
+	ld hl, wMtDededeDefeatedBosses
 	add hl, bc
 	ld a, [hl]
-	cp $01
+	cp TRUE
 	jr nz, .enter_door
 	xor a
 	ld [wArea], a
@@ -436,12 +439,12 @@ ProcessDoorConnection::
 	ld [wd082 + 1], a
 
 	ldh a, [hff92]
-	bit 5, a
+	bit KIRBY2F_LAND_F, a
 	jr nz, .asm_578
-	ld hl, $4566
+	ld hl, MotionScript_10566
 	jr .asm_57b
 .asm_578
-	ld hl, $456c
+	ld hl, MotionScript_1056c
 .asm_57b
 	ld de, GfxScript_157a
 	ld bc, OBJECT_SLOT_00
@@ -492,7 +495,7 @@ ProcessDoorConnection::
 	ldh [hHUDFlags], a
 
 	ldh a, [hff92]
-	and $20
+	and KIRBY2F_LAND
 	ldh [hff92], a
 	ld hl, wc100
 	add hl, bc
@@ -926,7 +929,7 @@ Func_860:
 
 Func_88d:
 	ldh a, [hff8d]
-	bit 5, a
+	bit KIRBY1F_UNK5_F, a
 	jr nz, .asm_8a4
 	jr .asm_895 ; useless jump
 .asm_895
@@ -961,7 +964,7 @@ Func_8cb::
 	ld [wd074], a
 	ld [wd04d], a
 	ldh a, [hff8d]
-	res 4, a
+	res KIRBY1F_UNK4_F, a
 	ldh [hff8d], a
 	ret
 
@@ -970,16 +973,16 @@ Func_8dc::
 	bit 7, a
 	ret nz
 	ldh a, [hff92]
-	and $04
+	and KIRBY2F_UNK2
 	ret nz
 	ldh a, [hff8d]
-	bit 7, a
+	bit KIRBY1F_AIRBORNE_F, a
 	ret nz
-	set 7, a
-	set 0, a
+	set KIRBY1F_AIRBORNE_F, a
+	set KIRBY1F_UNK0_F, a
 	ldh [hff8d], a
 	ldh a, [hff92]
-	and $b3
+	and ~(KIRBY2F_UNK2 | KIRBY2F_UNK3 | KIRBY2F_UNK6)
 	ldh [hff92], a
 	ld a, $16
 	ld [wd065], a
@@ -1001,7 +1004,7 @@ Func_917::
 	bit 5, a
 	jr nz, .asm_97b
 	ldh a, [hff8d]
-	bit 4, a
+	bit KIRBY1F_UNK4_F, a
 	jr z, .asm_97b
 	ldh a, [hVBlankFlags]
 	and VBLANK_0 | VBLANK_1
@@ -1009,7 +1012,7 @@ Func_917::
 	swap a
 	ld b, a
 	ldh a, [hff8d]
-	and $20
+	and KIRBY1F_UNK5
 	jr z, .asm_956
 	and b
 	jr nz, .asm_97b
@@ -1048,7 +1051,7 @@ Func_917::
 	jr z, Func_998
 	call Func_860
 	ldh a, [hff8d]
-	set 4, a
+	set KIRBY1F_UNK4_F, a
 	ldh [hff8d], a
 	call Func_4000
 	call c, Func_1062
@@ -1078,7 +1081,7 @@ Func_998:
 	cp $07
 	jr nz, .asm_9c0
 	ldh a, [hff92]
-	and $f3
+	and ~(KIRBY2F_UNK2 | KIRBY2F_UNK3)
 	ldh [hff92], a
 	call Func_11de
 .asm_9c0
@@ -1087,7 +1090,7 @@ Func_998:
 	jp z, Func_9de
 	call Func_860
 	ldh a, [hff8d]
-	set 4, a
+	set KIRBY1F_UNK4_F, a
 	ldh [hff8d], a
 	call Func_417c
 	call c, Func_110b
@@ -1115,7 +1118,7 @@ Func_9de:
 	call Func_763
 	ld d, $00
 	ldh a, [hff8d]
-	and $07
+	and (KIRBY1F_UNK0 | KIRBY1F_UNK1 | KIRBY1F_UNK2)
 	jp z, .asm_ab8
 	ld e, a
 .asm_a05
@@ -1220,7 +1223,7 @@ Func_9de:
 	jr .asm_abc
 .asm_ab8
 	ldh a, [hff8d]
-	and $07
+	and (KIRBY1F_UNK0 | KIRBY1F_UNK1 | KIRBY1F_UNK2)
 .asm_abc
 	ld [wd061], a
 	ld b, a
@@ -1375,7 +1378,7 @@ Func_9de:
 	cp $06
 	jp z, Func_caf
 	ldh a, [hff92]
-	and $3c
+	and $ff ^ (KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_UNK6 | KIRBY2F_FACE_LEFT)
 	ldh [hff92], a
 	ld a, [wd190 + OBJECT_SLOT_00]
 	res 7, a
@@ -1402,12 +1405,12 @@ Func_9de:
 	res 3, a
 	ldh [hff90], a
 	ldh a, [hff92]
-	res 6, a
+	res KIRBY2F_UNK6_F, a
 	ldh [hff92], a
 	ldh a, [hff8d]
-	set 7, a
-	res 6, a
-	set 3, a
+	set KIRBY1F_AIRBORNE_F, a
+	res KIRBY1F_GROUNDED_F, a
+	set KIRBY1F_UNK3_F, a
 	ldh [hff8d], a
 	ld a, $16
 	xor a
@@ -1424,7 +1427,7 @@ Func_9de:
 	bit 2, a
 	jr nz, .asm_c18
 	ldh a, [hff8d]
-	res 6, a
+	res KIRBY1F_GROUNDED_F, a
 	ldh [hff8d], a
 	ld a, $00
 	ld [wd07a], a
@@ -1454,9 +1457,9 @@ Func_c85:
 	jp z, .set_carry
 	cp $ff
 	jp nc, .set_carry
-	ld b, $81
+	ld b, KIRBY2F_UNK0 | KIRBY2F_FACE_LEFT
 	ldh a, [hff92]
-	and $fc
+	and ~(KIRBY2F_UNK0 | KIRBY2F_UNK1)
 	or b
 	ldh [hff92], a
 	call Func_37ac
@@ -1490,7 +1493,7 @@ Func_caf:
 	call Func_763
 	ld d, $00
 	ldh a, [hff8d]
-	and $07
+	and (KIRBY1F_UNK0 | KIRBY1F_UNK1 | KIRBY1F_UNK2)
 	jp z, .asm_cf5
 	inc a
 	ld e, a
@@ -1582,7 +1585,7 @@ Func_caf:
 	jp .asm_ee0
 .asm_d7f
 	ldh a, [hff92]
-	bit 2, a
+	bit KIRBY2F_UNK2_F, a
 	jr z, .asm_da7
 	ldh a, [hff8e]
 	and $18
@@ -1628,14 +1631,14 @@ Func_caf:
 	ld hl, hff93
 	res 4, [hl]
 	ldh a, [hff92]
-	and $e0
-	or $80
+	and ~(KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_UNK2 | KIRBY2F_UNK3 | KIRBY2F_DUCK)
+	or KIRBY2F_FACE_LEFT
 	ldh [hff92], a
 	ld hl, hff8e
 	res 1, [hl]
 	ldh a, [hff8d]
-	set 7, a
-	res 6, a
+	set KIRBY1F_AIRBORNE_F, a
+	res KIRBY1F_GROUNDED_F, a
 	ldh [hff8d], a
 	inc d
 	ld a, d
@@ -1668,18 +1671,18 @@ Func_caf:
 	and $f8
 	ldh [hff8e], a
 	ldh a, [hff92]
-	and $08
+	and KIRBY2F_UNK3
 	jp nz, .asm_ece
 	ldh a, [hff95]
 	and $7e
 	jp nz, .asm_ece
 	ldh a, [hff92]
-	and $70
-	or $10
+	and $ff ^ (KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_UNK2 | KIRBY2F_UNK3 | KIRBY2F_FACE_LEFT)
+	or KIRBY2F_DUCK
 	ldh [hff92], a
 	ldh a, [hff8d]
-	and $70
-	or $40
+	and $ff ^ (KIRBY1F_UNK0 | KIRBY1F_UNK1 | KIRBY1F_UNK2 | KIRBY1F_UNK3 | KIRBY1F_AIRBORNE)
+	or KIRBY1F_GROUNDED
 	ldh [hff8d], a
 	xor a
 	ld [wd078], a
@@ -1688,7 +1691,7 @@ Func_caf:
 
 .asm_e4f
 	ldh a, [hff92]
-	res 4, a
+	res KIRBY2F_DUCK_F, a
 	ldh [hff92], a
 	jr .asm_ece
 
@@ -1705,8 +1708,8 @@ Func_caf:
 	xor a
 	ld [wd065], a
 	ldh a, [hff92]
-	and $e0
-	or $80
+	and ~(KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_UNK2 | KIRBY2F_UNK3 | KIRBY2F_DUCK)
+	or KIRBY2F_FACE_LEFT
 	ldh [hff92], a
 	push de
 	call Func_37ac
@@ -1714,7 +1717,7 @@ Func_caf:
 	jr .asm_ece
 .asm_e7f
 	ld hl, hff92
-	res 3, [hl]
+	res KIRBY2F_UNK3_F, [hl]
 	ldh a, [hff8e]
 	and $f8
 	jr nz, .asm_ec8
@@ -1722,8 +1725,8 @@ Func_caf:
 	bit 6, a
 	jr nz, .asm_ec8
 	ldh a, [hff92]
-	set 2, a
-	res 6, a
+	set KIRBY2F_UNK2_F, a
+	res KIRBY2F_UNK6_F, a
 	ldh [hff92], a
 	ld a, $02
 	ld [wd07a], a
@@ -1742,19 +1745,19 @@ Func_caf:
 	call Func_37b1
 	pop de
 	ldh a, [hff8d]
-	res 7, a
-	res 6, a
+	res KIRBY1F_AIRBORNE_F, a
+	res KIRBY1F_GROUNDED_F, a
 	ldh [hff8d], a
 	ld a, d
 	jr .asm_f19
 .asm_ec8
 	ldh a, [hff92]
-	and $60
+	and KIRBY2F_LAND | KIRBY2F_UNK6
 	ldh [hff92], a
 .asm_ece
 	ldh a, [hff8d]
-	res 7, a
-	set 6, a
+	res KIRBY1F_AIRBORNE_F, a
+	set KIRBY1F_GROUNDED_F, a
 	ldh [hff8d], a
 	xor a
 	ld [wd078], a
@@ -1764,7 +1767,7 @@ Func_caf:
 
 .asm_ee0
 	ld hl, hff8d
-	set 3, [hl]
+	set KIRBY1F_UNK3_F, [hl]
 	ldh a, [hff8e]
 	and $e0
 	jr nz, .asm_f0f
@@ -1773,7 +1776,7 @@ Func_caf:
 	jr nz, .asm_f0f
 	ld hl, hff92
 	ld a, [hl]
-	and $0c
+	and KIRBY2F_UNK2 | KIRBY2F_UNK3
 	jr nz, .asm_f0f
 	ld a, [wd064]
 	inc a
@@ -1787,10 +1790,10 @@ Func_caf:
 	call Func_383b
 .asm_f0f
 	ldh a, [hff8d]
-	set 7, a
-	res 6, a
+	set KIRBY1F_AIRBORNE_F, a
+	res KIRBY1F_GROUNDED_F, a
 	ldh [hff8d], a
-	and $07
+	and KIRBY1F_UNK0 | KIRBY1F_UNK1 | KIRBY1F_UNK2
 .asm_f19
 	ld [wKirbyScreenDeltaY], a
 	ld b, a
@@ -1857,11 +1860,11 @@ Func_caf:
 	jp nz, .asm_1019
 .asm_f92
 	ldh a, [hff8d]
-	and $7f
-	set 6, a
+	and $ff ^ KIRBY1F_AIRBORNE
+	set KIRBY1F_GROUNDED_F, a
 	ldh [hff8d], a
 	ldh a, [hff92]
-	and $33
+	and $ff ^ (KIRBY2F_UNK2 | KIRBY2F_UNK3 | KIRBY2F_UNK6 | KIRBY2F_FACE_LEFT)
 	ldh [hff92], a
 	ldh a, [hVBlankFlags]
 	and ~(VBLANK_0 | VBLANK_1)
@@ -2168,12 +2171,12 @@ Func_110b:
 
 Func_11c9::
 	ldh a, [hff8d]
-	bit 6, a
+	bit KIRBY1F_GROUNDED_F, a
 	ret z
 	ldh a, [hff92]
-	bit 2, a
+	bit KIRBY2F_UNK2_F, a
 	ret z
-	res 2, a
+	res KIRBY2F_UNK2_F, a
 	ldh [hff92], a
 	ldh a, [hff8e]
 	res 2, a
@@ -2504,7 +2507,7 @@ Func_139b::
 	ld [wObjectYCoords + $1], a
 	ld de, GfxScript_157a
 	ldh a, [hff92]
-	bit 5, a
+	bit KIRBY2F_LAND_F, a
 	jr nz, .asm_13c4
 	ld hl, $157d
 	jr .asm_13c7
@@ -2513,7 +2516,7 @@ Func_139b::
 .asm_13c7
 	ld c, $00
 	ldh a, [hff8d]
-	bit 4, a
+	bit KIRBY1F_UNK4_F, a
 	jr z, .asm_13d1
 	ld c, $01
 .asm_13d1
@@ -2521,7 +2524,7 @@ Func_139b::
 	jr z, .asm_13df
 	ld c, $02
 	ldh a, [hff92]
-	bit 3, a
+	bit KIRBY2F_UNK3_F, a
 	jr z, .asm_13df
 	ld c, $0e
 .asm_13df
@@ -2536,7 +2539,7 @@ Func_139b::
 	jr nz, .asm_13fa
 	ld c, $04
 	ldh a, [hff92]
-	bit 6, a
+	bit KIRBY2F_UNK6_F, a
 	jr z, .asm_1408
 .asm_13fa
 	ld c, $03
@@ -2557,16 +2560,16 @@ Func_139b::
 	and $80
 	jr nz, .asm_1424
 	ldh a, [hff92]
-	bit 7, a
+	bit KIRBY2F_FACE_LEFT_F, a
 	jr z, .asm_1424
-	ld c, $07
+	ld c, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_UNK2
 	ldh a, [hff92]
-	and $03
+	and KIRBY2F_UNK0 | KIRBY2F_UNK1
 	add c
 	ld c, a
 .asm_1424
 	ldh a, [hff92]
-	bit 4, a
+	bit KIRBY2F_DUCK_F, a
 	jr z, .asm_142c
 	ld c, $0b
 .asm_142c
@@ -2574,7 +2577,7 @@ Func_139b::
 	bit 6, a
 	jr z, .asm_146b
 	ldh a, [hff92]
-	bit 4, a
+	bit KIRBY2F_DUCK_F, a
 	jr nz, .asm_146b
 	ldh a, [hff8e]
 	and $fc
@@ -2582,7 +2585,7 @@ Func_139b::
 	bit 7, a
 	jr nz, .asm_1465
 	ldh a, [hff8d]
-	bit 4, a
+	bit KIRBY1F_UNK4_F, a
 	jr nz, .asm_1453
 	ld a, [wd078]
 	bit 7, a
@@ -2594,7 +2597,7 @@ Func_139b::
 	jr .asm_146b
 .asm_1457
 	ldh a, [hff8d]
-	bit 6, a
+	bit KIRBY1F_GROUNDED_F, a
 	jr nz, .asm_1461
 	ld c, $02
 	jr .asm_146b
@@ -2607,7 +2610,7 @@ Func_139b::
 	ld c, $05
 .asm_146b
 	ldh a, [hff92]
-	bit 2, a
+	bit KIRBY2F_UNK2_F, a
 	jr z, .asm_147d
 	ldh a, [hff8e]
 	bit 2, a
@@ -2650,11 +2653,11 @@ Func_139b::
 	jr .asm_14dc
 .asm_14b6
 	ldh a, [hff92]
-	res 7, a
+	res KIRBY2F_FACE_LEFT_F, a
 	ldh [hff92], a
 	ld c, $12
 	ldh a, [hff8d]
-	bit 4, a
+	bit KIRBY1F_UNK4_F, a
 	jr z, .asm_14c6
 	ld c, $13
 .asm_14c6
@@ -2687,7 +2690,7 @@ Func_139b::
 	and $f0
 	jr nz, .asm_1510
 	ldh a, [hff92]
-	and $9c
+	and KIRBY2F_UNK2 | KIRBY2F_UNK3 | KIRBY2F_DUCK | KIRBY2F_FACE_LEFT
 	jr nz, .asm_1510
 	ldh a, [hff95]
 	bit 5, a
@@ -2741,7 +2744,7 @@ Func_139b::
 	pop af
 
 	ldh a, [hff92]
-	bit 5, a
+	bit KIRBY2F_LAND_F, a
 	jr nz, .asm_1556
 	ld de, $42bc
 	jr .asm_1559
@@ -3030,7 +3033,7 @@ Func_19f9::
 	ldh a, [hff90]
 	set 4, a
 	ldh [hff90], a
-	ld a, [wd044]
+	ld a, [wMtDededeDefeatedBosses + MT_DEDEDE_1]
 	and a
 	jr z, .asm_1aae
 	ld a, $15
@@ -3041,9 +3044,9 @@ Func_19f9::
 	ld [wc100 + $70], a
 	ld a, $18
 	ld [wc100 + $ac], a
-	ld b, $01
+	ld b, 1
 .asm_1aae
-	ld a, [wd045]
+	ld a, [wMtDededeDefeatedBosses + MT_DEDEDE_2]
 	and a
 	jr z, .asm_1ac9
 	ld a, $15
@@ -3056,7 +3059,7 @@ Func_19f9::
 	ld [wc100 + $19c], a
 	inc b
 .asm_1ac9
-	ld a, [wd046]
+	ld a, [wMtDededeDefeatedBosses + MT_DEDEDE_3]
 	and a
 	jr z, .asm_1ae4
 	ld a, $15
@@ -3069,7 +3072,7 @@ Func_19f9::
 	ld [wc100 + $b2], a
 	inc b
 .asm_1ae4
-	ld a, [wd047]
+	ld a, [wMtDededeDefeatedBosses + MT_DEDEDE_4]
 	and a
 	jr z, .asm_1aff
 	ld a, $15
@@ -3086,22 +3089,22 @@ Func_19f9::
 	cp b
 	jr nz, .asm_1b08
 	xor a
-	ld [wd048], a
+	ld [wMtDededeDefeatedBosses + MT_DEDEDE_5], a
 .asm_1b08
 	xor a
 .asm_1b09
-	ld hl, wd043
+	ld hl, wMtDededeDefeatedBosses
 	ld c, a
 	ld b, $00
 	add hl, bc
-	ld a, $01
+	ld a, TRUE
 	ld [hl], a
 	xor a
-	ld [wd043], a
-	ld [wd049], a
-	ld [wd04b], a
-	ld [wd04a], a
-	ld [wd04c], a
+	ld [wMtDededeDefeatedBosses + MT_DEDEDE_0], a
+	ld [wMtDededeDefeatedBosses + MT_DEDEDE_6], a
+	ld [wMtDededeDefeatedBosses + MT_DEDEDE_8], a
+	ld [wMtDededeDefeatedBosses + MT_DEDEDE_7], a
+	ld [wMtDededeDefeatedBosses + MT_DEDEDE_9], a
 	ld hl, Data_1bc5
 	add hl, bc
 	ld a, [hl]
@@ -3202,13 +3205,13 @@ Func_19f9::
 
 Data_1bc5:
 	table_width 1, Data_1bc5
-	db MT_DEDEDE ; MT_DEDEDE_0
-	db GREEN_GREENS ; MT_DEDEDE_1
+	db MT_DEDEDE     ; MT_DEDEDE_0
+	db GREEN_GREENS  ; MT_DEDEDE_1
 	db CASTLE_LOLOLO ; MT_DEDEDE_2
 	db FLOAT_ISLANDS ; MT_DEDEDE_3
 	db BUBBLY_CLOUDS ; MT_DEDEDE_4
-	db MT_DEDEDE ; MT_DEDEDE_5
-	db GREEN_GREENS ; MT_DEDEDE_6
+	db MT_DEDEDE     ; MT_DEDEDE_5
+	db GREEN_GREENS  ; MT_DEDEDE_6
 	db FLOAT_ISLANDS ; MT_DEDEDE_7
 	db CASTLE_LOLOLO ; MT_DEDEDE_8
 	db BUBBLY_CLOUDS ; MT_DEDEDE_9
@@ -7303,7 +7306,7 @@ Data_3425::
 	db $04, $00, $00, 0
 Data_3429::
 	db $69, $08, $08, 0
-	dw Data_4154
+	dw Data_1c154
 ; 0x342f
 
 SECTION "Home@344d", ROM0[$344d]
@@ -7327,34 +7330,34 @@ EnergyDrinkProperties::
 SECTION "Home@3483", ROM0[$3483]
 
 Data_3483::
-	object_properties $29, $06, $06, 1, $01, $03, 200, Data_4154
+	object_properties $29, $06, $06, 1, $01, $03, 200, Data_1c154
 
 WaddleDeeProperties::
-	object_properties $01, $06, $06, 1, $01, $03, 200, Data_4154
+	object_properties $01, $06, $06, 1, $01, $03, 200, Data_1c154
 ; 0x3495
 
 SECTION "Home@34ff", ROM0[$34ff]
 
 CappyProperties::
-	object_properties $09, $06, $06, 1, $01, $03, 200, Data_4154
+	object_properties $09, $06, $06, 1, $01, $03, 200, Data_1c154
 
 Data_3508::
-	object_properties $09, $06, $06, 1, $01, $03, 200, Data_4154
+	object_properties $09, $06, $06, 1, $01, $03, 200, Data_1c154
 ; 0x3511
 
 SECTION "Home@351a", ROM0[$351a]
 
 TwizzyProperties::
-	object_properties $01, $06, $06, 1, $01, $03, 200, Data_4154
+	object_properties $01, $06, $06, 1, $01, $03, 200, Data_1c154
 
 Data_3523::
-	object_properties $01, $06, $06, 1, $01, $03, 200, Data_4154
+	object_properties $01, $06, $06, 1, $01, $03, 200, Data_1c154
 
 Data_352c::
-	object_properties $09, $06, $06, 1, $01, $03, 200, Data_4154
+	object_properties $09, $06, $06, 1, $01, $03, 200, Data_1c154
 
 Data_3535::
-	object_properties $01, $0a, $0a, 2, $01, $03, 400, Data_4154
+	object_properties $01, $0a, $0a, 2, $01, $03, 400, Data_1c154
 ; 0x353e
 
 SECTION "Home@3547", ROM0[$3547]
@@ -7363,10 +7366,10 @@ Data_3547::
 	object_properties $01, $0a, $0d, 2, $01, $03, 200, $41a8
 
 Data_3550::
-	object_properties $09, $06, $06, 1, $01, $03, 200, Data_4154
+	object_properties $09, $06, $06, 1, $01, $03, 200, Data_1c154
 
 Data_3559::
-	object_properties $09, $06, $06, 1, $01, $01, 200, Data_4154
+	object_properties $09, $06, $06, 1, $01, $01, 200, Data_1c154
 
 Data_3562::
 	object_properties $01, $08, $10, 1, $01, $03, 300, $41b4
@@ -7412,9 +7415,9 @@ Func_3768::
 	ld a, $40
 	ld [hff95], a
 	ld hl, hff8d
-	res 7, [hl]
+	res KIRBY1F_AIRBORNE_F, [hl]
 	ld a, [hff92]
-	and $63
+	and $ff ^ (KIRBY2F_UNK2 | KIRBY2F_UNK3 | KIRBY2F_DUCK | KIRBY2F_FACE_LEFT)
 	ld [hff92], a
 	ld a, $80
 	ld [hff8e], a
@@ -7540,15 +7543,16 @@ Func_384e::
 	push hl
 	push bc
 	push de
-	ld hl, $4196
+	ld hl, Data_1c196
 	call CreateObject_Group2
 	jr c, Func_388a
 	jr Func_3873
+
 Func_385b::
 	push hl
 	push bc
 	push de
-	ld hl, $419c
+	ld hl, Data_1c19c
 	call CreateObject_Group2
 	jr c, Func_388a
 	ld a, [hff91]

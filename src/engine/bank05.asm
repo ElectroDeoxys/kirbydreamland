@@ -127,7 +127,7 @@ Func_142a3:
 	add hl, bc
 	ld [hl], a
 	ld hl, hff92
-	bit 3, [hl]
+	bit KIRBY2F_UNK3_F, [hl]
 	jp z, DestroyObject
 	ret
 ; 0x142c2
@@ -149,7 +149,7 @@ Func_1432c::
 	ld c, 0
 	ld de, $303
 	ld hl, hff92
-	bit 4, [hl]
+	bit KIRBY2F_DUCK_F, [hl]
 	jr z, .asm_14353
 	ld c, 6
 	ld de, $201
@@ -411,7 +411,7 @@ Func_1432c::
 	bit 1, [hl]
 	jr nz, .asm_1453b
 	ld a, [hff92]
-	and $20
+	and KIRBY2F_LAND
 	push af
 	call Func_3d48
 	pop af
@@ -711,7 +711,7 @@ Func_1432c::
 	bit 7, a
 	jr z, .asm_14748
 	ld a, [hff92]
-	and $20
+	and KIRBY2F_LAND
 	push af
 	call Func_3d48
 	pop af
@@ -1005,7 +1005,7 @@ Func_148ea:
 	push bc
 	ld c, $03
 	ld a, [hff92]
-	bit 5, a
+	bit KIRBY2F_LAND_F, a
 	jr nz, .asm_1494a
 	jr .asm_14933
 .asm_1492b
@@ -1113,7 +1113,7 @@ Func_14993:
 	push hl
 	ld a, [de]
 	ld hl, hff92
-	bit 5, [hl]
+	bit KIRBY2F_LAND_F, [hl]
 	jr z, .asm_149ca
 	cpl
 	inc a
@@ -1237,7 +1237,7 @@ Func_14a5f::
 	add hl, bc
 	ld c, $0a
 	ld a, [hff92]
-	bit 5, a
+	bit KIRBY2F_LAND_F, a
 	jr z, .asm_14a77
 	ld c, $f6
 .asm_14a77
@@ -1334,7 +1334,7 @@ InitRAM::
 	ld a, SELECT | START
 	ld [wd050], a
 	ld a, $01
-	ld [wd048], a
+	ld [wMtDededeDefeatedBosses + MT_DEDEDE_5], a
 
 	; initial RNG seed
 	ld hl, wRNG

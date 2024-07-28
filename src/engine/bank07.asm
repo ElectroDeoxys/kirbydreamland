@@ -117,9 +117,18 @@ Data_1c13a::
 
 SECTION "Bank 7@4154", ROMX[$4154], BANK[$7]
 
-Data_4154::
+Data_1c154::
 	dw GfxScript_20a01, MotionScript_10008, Data_35cd
 ; 0x1c15a
+
+SECTION "Bank 7@4196", ROMX[$4196], BANK[$7]
+
+Data_1c196::
+	dw $4bda, $422a, $35b3
+
+Data_1c19c::
+	dw GfxScript_20477, $4244, $35b3
+; 0x1c1a2
 
 SECTION "Bank 7@4202", ROMX[$4202], BANK[$7]
 
