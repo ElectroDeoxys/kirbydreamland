@@ -561,12 +561,106 @@ wd414:: ; d414
 wdc00:: ; dc00
 	db
 
-	ds $22d
+	ds $200
+
+wde01:: ; de01
+	db
+
+wde02:: ; de02
+	db
+
+wde03:: ; de03
+	db
+
+wde04:: ; de04
+	db
+
+	ds $1
+
+wde06:: ; de06
+	db
+
+	ds $3
+
+wde0a:: ; de0a
+	db
+
+	ds $1
+
+wde0c:: ; de0c
+	db
+
+	ds $2
+
+wde0f:: ; de0f
+	db
+
+wde10:: ; de10
+	db
+
+	ds $5
+
+wde16:: ; de16
+	db
+
+	ds $2
+
+wde19:: ; de19
+	db
+
+wde1a:: ; de1a
+	db
+
+	ds $13
 
 wde2e:: ; de2e
-	ds $14
+	db
 
-	ds $10
+	ds $5
+
+wde34:: ; de34
+	db
+
+	ds $3
+
+wde38:: ; de38
+	db
+
+	ds $5
+
+wde3e:: ; de3e
+	db
+
+	ds $3
+
+wde42:: ; de42
+	db
+
+wde43:: ; de43
+	db
+
+wde44:: ; de44
+	db
+
+wde45:: ; de45
+	db
+
+wde46:: ; de46
+	db
+
+wde47:: ; de47
+	db
+
+wde48:: ; de48
+	db
+
+wde49:: ; de49
+	db
+
+wde4a:: ; de4a
+	db
+
+	ds $7
 
 wde52:: ; de52
 	db
@@ -576,3 +670,74 @@ wde52:: ; de52
 wde56:: ; de56
 	ds $4
 
+wde5a:: ; de5a
+	db
+
+	ds $7
+
+wde62:: ; de62
+	db
+
+	ds $1f
+
+wde82:: ; de82
+	db
+
+	ds $7
+
+wde8a:: ; de8a
+	db
+
+	ds $7
+
+wde92:: ; de92
+	db
+
+	ds $7
+
+wde9a:: ; de9a
+	db
+
+	ds $7
+
+wdea2:: ; dea2
+	db
+
+	ds $7
+
+wdeaa:: ; deaa
+	db
+
+	ds $7
+
+wdeb2:: ; deb2
+	db
+
+	ds $7
+
+wdeba:: ; deba
+	db
+
+	ds $f
+
+wdeca:: ; deca
+	db
+
+wdecb:: ; decb
+	db
+
+	ds $2
+
+wdece:: ; dece
+	db
+
+	ds $3
+
+wded2:: ; ded2
+	db
+
+wded3:: ; ded3
+	db
+
+wded4:: ; ded4
+	db

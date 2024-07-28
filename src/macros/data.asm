@@ -12,4 +12,11 @@ MACRO dwb
 	db \2
 ENDM
 
+MACRO dn ; nybbles
+REPT _NARG / 2
+	db ((\1) << 4) | (\2)
+	shift 2
+ENDR
+ENDM
+
 DEF percent EQUS "* $ff / 100"

@@ -24,10 +24,10 @@ Reset::
 
 	ld a, BANK("Bank 5")
 	bankswitch
-	call $4c4a ; Func_14c4a
+	call InitAudio
+	ld a, BANK("Bank 1")
+	bankswitch
 
-	ld a, $01  ; not necessary since
-	bankswitch ; InitWindow is in home bank
 	call InitWindow
 
 	ld a, %11100100 ; standard GB palette data
