@@ -561,7 +561,10 @@ wd414:: ; d414
 wdc00:: ; dc00
 	db
 
-	ds $200
+	ds $1ff
+
+wde00:: ; de00
+	db
 
 wde01:: ; de01
 	db
@@ -577,41 +580,55 @@ wde04:: ; de04
 
 	ds $1
 
-wde06:: ; de06
-	db
-
-	ds $3
-
-wde0a:: ; de0a
-	db
+wChannel1::
+wChannel1Sweep::    db ; de06
+wChannel1Length::   db ; de07
+wChannel1Envelope:: db ; de08
+wChannel1FreqLo::   db ; de09
+wChannel1FreqHi::   db ; de0a
 
 	ds $1
 
-wde0c:: ; de0c
-	db
+wChannel2::
+wChannel2Length::   db ; de0c
+wChannel2Envelope:: db ; de0d
+wChannel2FreqLo::   db ; de0e
+wChannel2FreqHi::   db ; de0f
 
-	ds $2
+wChannel3::
+wChannel3Enabled:: db ; de10
+wChannel3Length::  db ; de11
+wChannel3Level::   db ; de12
+wChannel3FreqLo::  db ; de13
+wChannel3FreqHi::  db ; de14
 
-wde0f:: ; de0f
-	db
+	ds $1
 
-wde10:: ; de10
-	db
-
-	ds $5
-
-wde16:: ; de16
-	db
-
-	ds $2
-
-wde19:: ; de19
-	db
+wChannel4::
+wChannel4Length::   db ; de16
+wChannel4Envelope:: db ; de17
+wChannel4FreqLo::   db ; de18
+wChannel4FreqHi::   db ; de19
 
 wde1a:: ; de1a
 	db
 
-	ds $13
+	ds $5
+
+wde20:: ; de20
+	db
+
+	ds $3
+
+wde24:: ; de24
+	db
+
+	ds $5
+
+wde2a:: ; de2a
+	db
+
+	ds $3
 
 wde2e:: ; de2e
 	db
@@ -658,86 +675,68 @@ wde49:: ; de49
 	db
 
 wde4a:: ; de4a
-	db
-
-	ds $7
+	ds NUM_CHANNELS
 
 wde52:: ; de52
-	db
-
-	ds $3
-
-wde56:: ; de56
-	ds $4
+	ds NUM_CHANNELS
 
 wde5a:: ; de5a
-	db
-
-	ds $7
+	ds NUM_CHANNELS
 
 wde62:: ; de62
-	db
+	ds NUM_CHANNELS
 
-	ds $1f
+wde6a:: ; de6a
+	ds NUM_CHANNELS
+
+wde72:: ; de72
+	ds NUM_CHANNELS
+
+	ds $8
 
 wde82:: ; de82
-	db
-
-	ds $7
+	ds NUM_CHANNELS
 
 wde8a:: ; de8a
-	db
-
-	ds $7
+	ds NUM_CHANNELS
 
 wde92:: ; de92
-	db
-
-	ds $7
+	ds NUM_CHANNELS
 
 wde9a:: ; de9a
-	db
-
-	ds $7
+	ds NUM_CHANNELS
 
 wdea2:: ; dea2
-	db
-
-	ds $7
+	ds NUM_CHANNELS
 
 wdeaa:: ; deaa
-	db
-
-	ds $7
+	ds NUM_CHANNELS
 
 wdeb2:: ; deb2
-	db
-
-	ds $7
+	ds NUM_CHANNELS
 
 wdeba:: ; deba
-	db
+	ds NUM_CHANNELS
 
-	ds $f
+wdec2:: ; dec2
+	ds NUM_CHANNELS
 
 wdeca:: ; deca
-	db
-
-wdecb:: ; decb
-	db
-
-	ds $2
+	ds NUM_SFX_CHANNELS
 
 wdece:: ; dece
-	db
+	ds NUM_MUSIC_CHANNELS
 
-	ds $3
-
-wded2:: ; ded2
+wWaveSample:: ; ded2
 	db
 
 wded3:: ; ded3
 	db
 
 wded4:: ; ded4
+	db
+
+	ds $ab
+
+wdf80:: ; df80
 	db

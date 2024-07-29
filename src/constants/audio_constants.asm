@@ -1,0 +1,28 @@
+; channel
+	const_def
+	const CHANNEL_1 ; 0
+	const CHANNEL_2 ; 1
+	const CHANNEL_3 ; 2
+	const CHANNEL_4 ; 3
+DEF NUM_SFX_CHANNELS EQU const_value
+	const CHANNEL_5 ; 4
+	const CHANNEL_6 ; 5
+	const CHANNEL_7 ; 6
+	const CHANNEL_8 ; 7
+DEF NUM_MUSIC_CHANNELS EQU const_value - NUM_SFX_CHANNELS
+DEF NUM_CHANNELS EQU const_value
+
+; values for wde52
+DEF CHANNEL_OFF EQU 0
+DEF CHANNEL_ON  EQU 1
+
+DEF VOLUME_SO1_LEVEL EQU %00000111
+DEF VOLUME_SO2_LEVEL EQU %01110000
+DEF MAX_VOLUME       EQU VOLUME_SO1_LEVEL | VOLUME_SO2_LEVEL
+
+; wWaveSample constants
+	const_def
+	const WAVEFORM_M_SHAPE ; $0
+	const WAVEFORM_SQUARE  ; $1
+	const WAVEFORM_SINE    ; $2
+DEF NUM_WAVEFORMS EQU const_value

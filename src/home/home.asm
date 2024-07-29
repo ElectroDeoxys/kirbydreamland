@@ -3596,7 +3596,7 @@ PlaySFX::
 	ld a, $05
 	bankswitch
 	ld a, c
-	call $4c9e ; Func_14c9e
+	call Func_14c9e
 	pop af
 	bankswitch
 	pop bc
