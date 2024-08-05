@@ -161,9 +161,9 @@ MACRO jump_if_not_flags
 	dw \3 ; address
 ENDM
 
-	const SCRIPT_F9 ; $f9
-MACRO script_f9
-	db SCRIPT_F9
+	const SCRIPT_SET_FLAGS ; $f9
+MACRO set_flags
+	db SCRIPT_SET_FLAGS
 	dw \1 ; address
 	db \2 ; value 1
 	db \3 ; value 2
@@ -223,6 +223,10 @@ ENDM
 
 MACRO play_sfx
 	script_exec_arg PlaySFX, \1
+ENDM
+
+MACRO play_music
+	script_exec_arg PlayMusic, \1
 ENDM
 
 MACRO set_object_properties

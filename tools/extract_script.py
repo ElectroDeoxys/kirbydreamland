@@ -76,7 +76,7 @@ commands = {
     0xf6: ("dec_value", 2, parseWord),
     0xf7: ("jump_if_flags", 5, parseWordByteWord),
     0xf8: ("jump_if_not_flags", 5, parseWordByteWord),
-    0xf9: ("script_f9", 4, parseWord2Bytes),
+    0xf9: ("set_flags", 4, parseWord2Bytes),
     0xfa: ("jump_random", 3, parseByteWithWord),
     0xfb: ("jumptable_random", 1, parseByte),
     0xfc: ("create_object", 6, parseAnimFC),
@@ -199,11 +199,13 @@ for o in args.offsets:
                 gfxScriptAddr = parsedCommands[-1][2][0]
                 motionScriptAddr = parsedCommands[-1][2][1]
                 if isMotionScript:
-                    if motionScriptAddr == pos:
-                        parsedCommands[-1] = (0x100, parsedCommands[-1][1], gfxScriptAddr)
+                    if motionScriptAddr == pos + 0x4000:
+                        cmdByte = 0x100
+                        parsedCommands[-1] = (cmdByte, parsedCommands[-1][1], [gfxScriptAddr])
                 else:
-                    if gfxScriptAddr == pos:
-                        parsedCommands[-1] = (0x101, parsedCommands[-1][1], motionScriptAddr)
+                    if gfxScriptAddr == pos + 0x4000:
+                        cmdByte = 0x101
+                        parsedCommands[-1] = (cmdByte, parsedCommands[-1][1], [motionScriptAddr])
 
             elif cmdByte == 0xe8:
                 funcAddr = parsedCommands[-1][2][0]

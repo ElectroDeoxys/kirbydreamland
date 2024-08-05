@@ -121,7 +121,7 @@ Func_326::
 	bit 5, [hl]
 	jr z, .asm_354
 	res 5, [hl]
-	ld a, SFX_21
+	ld a, SFX_LOSE_LIFE
 	call PlaySFX
 	ld a, [wCurMusic]
 	cp MUSIC_MINT_LEAF
@@ -437,14 +437,14 @@ ProcessDoorConnection::
 	ld [wd082 + 1], a
 
 	ldh a, [hff92]
-	bit KIRBY2F_LAND_F, a
+	bit KIRBY2F_FACE_LEFT_F, a
 	jr nz, .asm_578
-	ld hl, MotionScript_10566
+	ld hl, GfxScript_20566
 	jr .asm_57b
 .asm_578
-	ld hl, MotionScript_1056c
+	ld hl, GfxScript_2056c
 .asm_57b
-	ld de, GfxScript_157a
+	ld de, MotionScript_157a
 	ld bc, OBJECT_SLOT_00
 	call Func_21e6
 
@@ -493,7 +493,7 @@ ProcessDoorConnection::
 	ldh [hHUDFlags], a
 
 	ldh a, [hff92]
-	and KIRBY2F_LAND
+	and KIRBY2F_FACE_LEFT
 	ldh [hff92], a
 	ld hl, wc100
 	add hl, bc
@@ -1378,7 +1378,7 @@ Func_9de:
 	cp $06
 	jp z, Func_caf
 	ldh a, [hff92]
-	and $ff ^ (KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_UNK6 | KIRBY2F_FACE_LEFT)
+	and $ff ^ (KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_UNK6 | KIRBY2F_LAND)
 	ldh [hff92], a
 	ld a, [wd190 + OBJECT_SLOT_00]
 	res 7, a
@@ -1457,7 +1457,7 @@ Func_c85:
 	jp z, .set_carry
 	cp $ff
 	jp nc, .set_carry
-	ld b, KIRBY2F_UNK0 | KIRBY2F_FACE_LEFT
+	ld b, KIRBY2F_UNK0 | KIRBY2F_LAND
 	ldh a, [hff92]
 	and ~(KIRBY2F_UNK0 | KIRBY2F_UNK1)
 	or b
@@ -1632,7 +1632,7 @@ Func_caf:
 	res 4, [hl]
 	ldh a, [hff92]
 	and ~(KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_UNK2 | KIRBY2F_UNK3 | KIRBY2F_DUCK)
-	or KIRBY2F_FACE_LEFT
+	or KIRBY2F_LAND
 	ldh [hff92], a
 	ld hl, hff8e
 	res 1, [hl]
@@ -1677,7 +1677,7 @@ Func_caf:
 	and $7e
 	jp nz, .asm_ece
 	ldh a, [hff92]
-	and $ff ^ (KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_UNK2 | KIRBY2F_UNK3 | KIRBY2F_FACE_LEFT)
+	and $ff ^ (KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_UNK2 | KIRBY2F_UNK3 | KIRBY2F_LAND)
 	or KIRBY2F_DUCK
 	ldh [hff92], a
 	ldh a, [hff8d]
@@ -1709,7 +1709,7 @@ Func_caf:
 	ld [wd065], a
 	ldh a, [hff92]
 	and ~(KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_UNK2 | KIRBY2F_UNK3 | KIRBY2F_DUCK)
-	or KIRBY2F_FACE_LEFT
+	or KIRBY2F_LAND
 	ldh [hff92], a
 	push de
 	call Func_37ac
@@ -1752,7 +1752,7 @@ Func_caf:
 	jr .asm_f19
 .asm_ec8
 	ldh a, [hff92]
-	and KIRBY2F_LAND | KIRBY2F_UNK6
+	and KIRBY2F_FACE_LEFT | KIRBY2F_UNK6
 	ldh [hff92], a
 .asm_ece
 	ldh a, [hff8d]
@@ -1864,7 +1864,7 @@ Func_caf:
 	set KIRBY1F_GROUNDED_F, a
 	ldh [hff8d], a
 	ldh a, [hff92]
-	and $ff ^ (KIRBY2F_UNK2 | KIRBY2F_UNK3 | KIRBY2F_UNK6 | KIRBY2F_FACE_LEFT)
+	and $ff ^ (KIRBY2F_UNK2 | KIRBY2F_UNK3 | KIRBY2F_UNK6 | KIRBY2F_LAND)
 	ldh [hff92], a
 	ldh a, [hVBlankFlags]
 	and ~(VBLANK_0 | VBLANK_1)
@@ -2502,9 +2502,9 @@ Func_139b::
 	ld a, [wKirbyScreenY]
 	add $08
 	ld [wObjectYCoords + $1], a
-	ld de, GfxScript_157a
+	ld de, MotionScript_157a
 	ldh a, [hff92]
-	bit KIRBY2F_LAND_F, a
+	bit KIRBY2F_FACE_LEFT_F, a
 	jr nz, .asm_13c4
 	ld hl, $157d
 	jr .asm_13c7
@@ -2557,7 +2557,7 @@ Func_139b::
 	and $80
 	jr nz, .asm_1424
 	ldh a, [hff92]
-	bit KIRBY2F_FACE_LEFT_F, a
+	bit KIRBY2F_LAND_F, a
 	jr z, .asm_1424
 	ld c, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_UNK2
 	ldh a, [hff92]
@@ -2650,7 +2650,7 @@ Func_139b::
 	jr .asm_14dc
 .asm_14b6
 	ldh a, [hff92]
-	res KIRBY2F_FACE_LEFT_F, a
+	res KIRBY2F_LAND_F, a
 	ldh [hff92], a
 	ld c, $12
 	ldh a, [hff8d]
@@ -2687,7 +2687,7 @@ Func_139b::
 	and $f0
 	jr nz, .asm_1510
 	ldh a, [hff92]
-	and KIRBY2F_UNK2 | KIRBY2F_UNK3 | KIRBY2F_DUCK | KIRBY2F_FACE_LEFT
+	and KIRBY2F_UNK2 | KIRBY2F_UNK3 | KIRBY2F_DUCK | KIRBY2F_LAND
 	jr nz, .asm_1510
 	ldh a, [hff95]
 	bit 5, a
@@ -2741,7 +2741,7 @@ Func_139b::
 	pop af
 
 	ldh a, [hff92]
-	bit KIRBY2F_LAND_F, a
+	bit KIRBY2F_FACE_LEFT_F, a
 	jr nz, .asm_1556
 	ld de, $42bc
 	jr .asm_1559
@@ -2768,8 +2768,8 @@ SetFullHP::
 	ld [wHP], a
 	ret
 
-GfxScript_157a::
-	frame  0, $0000
+MotionScript_157a::
+	set_velocities 0, $00, $00
 ; 0x157d
 
 SECTION "Home@18ff", ROM0[$18ff]

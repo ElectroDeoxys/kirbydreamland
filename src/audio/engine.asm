@@ -1870,7 +1870,7 @@ SFXHeaders:
 	dw SFXHeader_18         ; SFX_18
 	dw SFXHeader_19         ; SFX_19
 	dw SFXHeader_20         ; SFX_20
-	dw SFXHeader_21         ; SFX_21
+	dw SFXHeader_21         ; SFX_LOSE_LIFE
 	dw SFXHeader_1Up        ; SFX_1UP
 	dw SFXHeader_23         ; SFX_23
 	dw SFXHeader_Pause      ; SFX_PAUSE

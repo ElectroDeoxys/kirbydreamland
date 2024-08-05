@@ -6,3 +6,5 @@ vTiles2:: ds $80 tiles ; 9000
 
 vBGMap0:: ds SCRN_VX_B * SCRN_VY_B ; 9800
 vBGMap1:: ds SCRN_VX_B * SCRN_VY_B ; 9c00
+
+vEnd:: ; a000

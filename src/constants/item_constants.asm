@@ -8,8 +8,9 @@
 	const WARP_STAR ; $5
 	const MAXIM_TOMATO ; $6
 	const ENERGY_DRINK ; $7
-	const_skip
+	const ITEM_8 ; $8
 	const ONE_UP ; $9
+	const ITEM_A ; $a
 
 DEF INVINCIBILITY_DURATION EQU 900
 DEF MINT_LEAF_DURATION EQU 850

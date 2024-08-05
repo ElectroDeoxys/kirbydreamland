@@ -74,13 +74,11 @@ Reset::
 	ld a, BANK(StartStage)
 	bankswitch
 	call StartStage
-;	fallthrough
-Func_1e6::
+ResetStage::
 	ld a, $01
 	bankswitch
 	ld a, HUD_UPDATE_LABEL | HUD_UPDATE_LIVES | HUD_UPDATE_SCORE_DIGITS
 	ldh [hHUDFlags], a
-;	fallthrough
 Func_1f2:
 	ld a, [wBGP]
 	ldh [rBGP], a

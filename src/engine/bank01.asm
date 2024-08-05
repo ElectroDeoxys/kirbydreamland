@@ -100,9 +100,9 @@ Func_4000::
 	ldh a, [hff8d]
 	res KIRBY1F_UNK4_F, a
 	ldh [hff8d], a
-	ld b, KIRBY2F_UNK1 | KIRBY2F_FACE_LEFT
+	ld b, KIRBY2F_UNK1 | KIRBY2F_LAND
 	ldh a, [hff92]
-	and KIRBY2F_DUCK | KIRBY2F_LAND | KIRBY2F_UNK6 | KIRBY2F_FACE_LEFT
+	and KIRBY2F_DUCK | KIRBY2F_FACE_LEFT | KIRBY2F_UNK6 | KIRBY2F_LAND
 	or b
 	ldh [hff92], a
 	push de
@@ -182,9 +182,9 @@ Func_4000::
 	cp $82
 	jr c, .asm_416f
 .asm_415d
-	ld b, KIRBY2F_UNK1 | KIRBY2F_FACE_LEFT
+	ld b, KIRBY2F_UNK1 | KIRBY2F_LAND
 	ldh a, [hff92]
-	and KIRBY2F_DUCK | KIRBY2F_LAND | KIRBY2F_UNK6 | KIRBY2F_FACE_LEFT
+	and KIRBY2F_DUCK | KIRBY2F_FACE_LEFT | KIRBY2F_UNK6 | KIRBY2F_LAND
 	or b
 	ldh [hff92], a
 	call Func_37ac
@@ -294,9 +294,9 @@ Func_417c::
 	ld a, [wd074]
 	cp $01
 	jr nz, .asm_4245
-	ld b, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_FACE_LEFT
+	ld b, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_LAND
 	ldh a, [hff92]
-	and KIRBY2F_DUCK | KIRBY2F_LAND | KIRBY2F_UNK6 | KIRBY2F_FACE_LEFT
+	and KIRBY2F_DUCK | KIRBY2F_FACE_LEFT | KIRBY2F_UNK6 | KIRBY2F_LAND
 	or b
 	ldh [hff92], a
 	push de
@@ -358,9 +358,9 @@ Func_42a1::
 	ld a, [wd074]
 	cp $01
 	jr c, .asm_42ba
-	ld b, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_FACE_LEFT
+	ld b, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_LAND
 	ldh a, [hff92]
-	and KIRBY2F_DUCK | KIRBY2F_LAND | KIRBY2F_UNK6 | KIRBY2F_FACE_LEFT
+	and KIRBY2F_DUCK | KIRBY2F_FACE_LEFT | KIRBY2F_UNK6 | KIRBY2F_LAND
 	or b
 	ldh [hff92], a
 	call Func_37ac
@@ -414,22 +414,22 @@ Func_42bf::
 
 	ldh a, [hff8e]
 	and $f0
-	jr nz, .asm_437c
+	jr nz, .check_b_btn
 	ldh a, [hff92]
-	bit KIRBY2F_FACE_LEFT_F, a
-	jr nz, .asm_437c
+	bit KIRBY2F_LAND_F, a
+	jr nz, .check_b_btn
 	bit KIRBY2F_UNK2_F, a
-	jr nz, .asm_437c
+	jr nz, .check_b_btn
 	ldh a, [hJoypadPressed]
 	bit A_BUTTON_F, a
 	jr z, .asm_4361
 	ldh a, [hff8d]
 	bit KIRBY1F_AIRBORNE_F, a
-	jr nz, .asm_437c
+	jr nz, .check_b_btn
 	bit KIRBY1F_GROUNDED_F, a
-	jr z, .asm_437c
+	jr z, .check_b_btn
 	bit KIRBY1F_UNK3_F, a
-	jr nz, .asm_437c
+	jr nz, .check_b_btn
 
 	; do jump
 	ld hl, hPalFadeFlags
@@ -450,13 +450,13 @@ Func_42bf::
 	ldh [hff92], a
 	ld a, SFX_JUMP
 	call PlaySFX
-	jr .asm_437c
+	jr .check_b_btn
 .asm_4361
 	ldh a, [hff8d]
 	bit KIRBY1F_AIRBORNE_F, a
 	jr z, .asm_4377
 	bit KIRBY1F_UNK3_F, a
-	jr z, .asm_437c
+	jr z, .check_b_btn
 	ld a, [wd065]
 	cp $11
 	jr nc, .asm_4377
@@ -465,7 +465,7 @@ Func_42bf::
 .asm_4377
 	ld hl, hff8d
 	res KIRBY1F_UNK3_F, [hl]
-.asm_437c
+.check_b_btn
 	ldh a, [hJoypadPressed]
 	ld c, a
 	bit B_BUTTON_F, a
@@ -548,7 +548,7 @@ Func_42bf::
 	and $f7
 	jr nz, .asm_4492
 	ldh a, [hff92]
-	and KIRBY2F_UNK2 | KIRBY2F_DUCK | KIRBY2F_FACE_LEFT
+	and KIRBY2F_UNK2 | KIRBY2F_DUCK | KIRBY2F_LAND
 	jr nz, .asm_4492
 	ld hl, hff8e
 	set 4, [hl]
@@ -601,7 +601,7 @@ Func_42bf::
 	ldh a, [hJoypadPressed]
 	ld b, a
 	bit D_UP_F, a
-	jp z, .asm_452a
+	jp z, .check_d_left
 	ld a, [wCurSFX]
 	cp SFX_INHALE
 	jr nz, .asm_44a6
@@ -611,7 +611,7 @@ Func_42bf::
 	ldh a, [hff8e]
 	ld c, a
 	and $03
-	jp nz, .asm_452a
+	jp nz, .check_d_left
 	bit 4, c
 	jr nz, .asm_451a
 	push bc
@@ -622,20 +622,20 @@ Func_42bf::
 	pop hl
 	pop bc
 	and a
-	jr z, .asm_452a
+	jr z, .check_d_left
 	bit B_BUTTON_F, b
-	jr nz, .asm_452a
+	jr nz, .check_d_left
 	ldh a, [hff8e]
 	and $7b
-	jr nz, .asm_452a
+	jr nz, .check_d_left
 	ldh a, [hff92]
 	and ~(KIRBY2F_UNK2 | KIRBY2F_UNK3)
 	ldh [hff92], a
 	ldh a, [hff8e]
 	bit 6, a
-	jr nz, .asm_452a
+	jr nz, .check_d_left
 	bit 7, a
-	jr nz, .asm_452a
+	jr nz, .check_d_left
 	set 7, a
 	and $98
 	ldh [hff8e], a
@@ -663,46 +663,47 @@ Func_42bf::
 	xor a
 	ld [wd094], a
 	ld [wd064], a
-	jr .asm_452a
+	jr .check_d_left
 .asm_451a
 	ldh a, [hff94]
 	and $c0
-	jr nz, .asm_452a
+	jr nz, .check_d_left
 	ld hl, hff8e
 	set 2, [hl]
 	ld hl, hff93
 	set 1, [hl]
 
-.asm_452a
+.check_d_left
 	ldh a, [hJoypadPressed]
 	bit D_LEFT_F, a
-	jr z, .asm_4560
+	jr z, .check_d_right
 	ldh a, [hff93]
 	bit 4, a
-	jr nz, .asm_4560
+	jr nz, .check_d_right
 	ldh a, [hff8e]
 	bit 4, a
-	jr nz, .asm_4560
+	jr nz, .check_d_right
 	bit 2, a
 	jr nz, .asm_4556
 	bit 7, a
-	jr z, .asm_4551
+	jr z, .set_face_left
 	ld a, [wd094]
 	cp $02
-	jr nz, .asm_4560
+	jr nz, .check_d_right
 	ldh a, [hff91]
 	bit 1, a
 	jr nz, .asm_4556
-.asm_4551
+.set_face_left
 	ld hl, hff92
-	set KIRBY2F_LAND_F, [hl]
+	set KIRBY2F_FACE_LEFT_F, [hl]
 .asm_4556
 	ldh a, [hff8d]
 	bit KIRBY1F_UNK4_F, a
-	jr nz, .asm_4560
+	jr nz, .check_d_right
 	set KIRBY1F_UNK5_F, a
 	ldh [hff8d], a
-.asm_4560
+
+.check_d_right
 	ldh a, [hJoypadPressed]
 	bit D_RIGHT_F, a
 	jr z, .asm_4590
@@ -715,13 +716,13 @@ Func_42bf::
 	bit 2, a
 	jr nz, .asm_4586
 	bit 7, a
-	jr z, .asm_4581
+	jr z, .unset_face_left
 	ld a, [wd094]
 	cp $02
 	jr nz, .asm_4590
-.asm_4581
+.unset_face_left
 	ld hl, hff92
-	res KIRBY2F_LAND_F, [hl]
+	res KIRBY2F_FACE_LEFT_F, [hl]
 .asm_4586
 	ldh a, [hff8d]
 	bit KIRBY1F_UNK4_F, a
@@ -1008,7 +1009,7 @@ Func_4783::
 	jr nz, .asm_47bf
 	call Func_8dc
 	ldh a, [hff92]
-	res KIRBY2F_FACE_LEFT_F, a
+	res KIRBY2F_LAND_F, a
 	ldh [hff92], a
 	xor a
 	ld [wd094], a
@@ -1147,6 +1148,22 @@ Func_48e8:
 	ret
 ; 0x48f5
 
+SECTION "Bank 1@49fb", ROMX[$49fb], BANK[$1]
+
+Func_49fb:
+	ld d, $00
+	ld hl, wd140
+	add hl, bc
+	ld a, [hl]
+	cp $58
+	jr c, .asm_4a07
+	inc d
+.asm_4a07
+	ld a, d
+	ld [wd3ce], a
+	ret
+; 0x4a0c
+
 SECTION "Bank 1@4a1c", ROMX[$4a1c], BANK[$1]
 
 Func_4a1c:
@@ -1232,9 +1249,19 @@ Func_4aba:
 	add hl, bc
 	set 4, [hl]
 	ret
-; 0x4ac1
 
-SECTION "Bank 1@4ad6", ROMX[$4ad6], BANK[$1]
+Func_4ac1:
+	ld hl, wd140
+	add hl, bc
+	ld a, [hl]
+	sub $8
+	ld [wKirbyScreenX], a
+	ld hl, wd150
+	add hl, bc
+	ld a, [hl]
+	sub $8
+	ld [wKirbyScreenY], a
+	ret
 
 Func_4ad6:
 	ld hl, wd190
@@ -1248,7 +1275,13 @@ Func_4adf:
 	add hl, bc
 	set 4, [hl]
 	ret
-; 0x4ae6
+
+Func_4ae6:
+	ld hl, wd1b0
+	add hl, bc
+	set 2, [hl]
+	ret
+; 0x4aed
 
 SECTION "Bank 1@4afb", ROMX[$4afb], BANK[$1]
 
@@ -1256,8 +1289,8 @@ Func_4afb:
 	ld hl, wd1a0
 	add hl, bc
 	set OBJFLAG_0_F, [hl]
-	ld hl, MotionScript_10003
-	ld de, GfxScript_20000
+	ld hl, GfxScript_20003
+	ld de, MotionScript_10000
 	call Func_21e6
 	ld hl, hff94
 	set 7, [hl]
@@ -1267,6 +1300,119 @@ Func_4afb:
 	ld [wScriptCommand], a
 	ret
 ; 0x4b19
+
+SECTION "Bank 1@4bb4", ROMX[$4bb4], BANK[$1]
+
+Func_4bb4::
+	ld hl, wd3bf
+	res 0, [hl]
+	set 3, [hl]
+	bit 7, [hl]
+	jr nz, .skip_overwrite_gfx_script
+	ld a, [wd082 + 1]
+	push af
+	ld a, [wd082 + 0]
+	push af
+	ld a, [wObjectGfxScriptPtrs + OBJECT_SLOT_00 + 0]
+	push af
+	ld a, [wObjectGfxScriptPtrs + OBJECT_SLOT_00 + 1]
+	push af
+	ld a, 1
+	ld [wObjectGfxScriptTimers + OBJECT_SLOT_00], a
+	ld a, LOW(GfxScript_20405)
+	ld [wObjectGfxScriptPtrs + OBJECT_SLOT_00 + 0], a
+	ld a, HIGH(GfxScript_20405)
+	ld [wObjectGfxScriptPtrs + OBJECT_SLOT_00 + 1], a
+
+.skip_overwrite_gfx_script
+	ld bc, OBJECT_SLOT_01
+.loop_objects
+	push bc
+	ld hl, wObjectActiveStates
+	add hl, bc
+	ld a, [hl]
+	and a
+	jr z, .next_object ; inactive
+	ld hl, wd3bf
+	res 1, [hl]
+	ld hl, wd1b0
+	add hl, bc
+	ld a, [hl]
+	ld hl, GfxScript_2037c
+	bit 2, a
+	jr nz, .asm_4c39
+	ld hl, wd190
+	add hl, bc
+	ld a, [hl]
+	and $44
+	jr nz, .next_object
+	ld hl, wObjectPropertyPtrs
+	add hl, bc
+	add hl, bc
+	ld a, [hli]
+	add $05
+	ld h, [hl]
+	jr nc, .asm_4c10
+	inc h
+.asm_4c10
+	ld l, a
+	ld a, [hli]
+	bit 3, a
+	jr nz, .next_object
+	bit 0, a
+	jr z, .next_object
+	ld a, [hl]
+	ld [wScoreToAdd], a
+	ld hl, wd1a0
+	add hl, bc
+	bit 0, [hl]
+	jr nz, .next_object
+	bit 7, [hl]
+	jr nz, .asm_4c2f
+	call DestroyObject
+	jr .next_object
+.asm_4c2f
+	ld a, [wScoreToAdd]
+	add a
+	call AddToScore
+	ld hl, GfxScript_2036c
+.asm_4c39
+	ld de, MotionScript_10008
+	call Func_21e6
+.loop_wait
+	ld a, 1
+	call DoFrames
+	ld hl, wd3bf
+	bit 1, [hl]
+	jr z, .loop_wait
+.next_object
+	pop bc
+	inc c
+	ld a, c
+	cp NUM_OBJECT_SLOTS
+	jr nz, .loop_objects
+	xor a
+	ld [wVirtualOAMSize], a
+	ld hl, wd3bf
+	res 0, [hl]
+	res 3, [hl]
+	bit 7, [hl]
+	ret nz ; skip loading backed up script
+
+	ld hl, hff94
+	res 5, [hl]
+	ld a, 1
+	ld [wObjectGfxScriptTimers + OBJECT_SLOT_00], a
+	pop af
+	ld [wObjectGfxScriptPtrs + OBJECT_SLOT_00 + 1], a
+	pop af
+	ld [wObjectGfxScriptPtrs + OBJECT_SLOT_00 + 0], a
+	pop af
+	ld [wd082 + 0], a
+	pop af
+	ld [wd082 + 1], a
+	ret
+; 0x4c7b
 
 SECTION "Bank 1@4c9b", ROMX[$4c9b], BANK[$1]
 
@@ -1287,13 +1433,14 @@ Func_4c9b::
 	set OBJFLAG_BLINKING_F, a
 	ld [wd1a0 + OBJECT_SLOT_00], a
 
-	ld a, SFX_21
+	ld a, SFX_LOSE_LIFE
 	call PlaySFX
 
-	ld de, GfxScript_20162
-	ld hl, MotionScript_101dc
+	ld de, MotionScript_10162
+	ld hl, GfxScript_201dc
 	ld bc, OBJECT_SLOT_00
 	call Func_21e6
+
 .asm_4cd0
 	ld a, 1
 	call DoFrames
@@ -1320,15 +1467,15 @@ Func_4ced::
 	ld a, [wHP]
 	srl a
 	ld [wHP], a
-	ld a, SFX_21
+	ld a, SFX_LOSE_LIFE
 	call PlaySFX
 	ld a, $5a
 	ld [wd3f5], a
 	ld a, [wd1a0 + OBJECT_SLOT_00]
 	set OBJFLAG_BLINKING_F, a
 	ld [wd1a0 + OBJECT_SLOT_00], a
-	ld de, $4149
-	ld hl, $41dc
+	ld de, MotionScript_10149
+	ld hl, GfxScript_201dc
 	ld bc, OBJECT_SLOT_00
 	call Func_21e6
 .asm_4d20
@@ -1348,3 +1495,86 @@ Func_4ced::
 .set_carry
 	scf
 	ret
+
+Func_4d3f::
+	xor a
+	ld [wd082 + 0], a
+	ld [wd082 + 1], a
+	xor a ; unnecessary
+	ld [wSCX], a
+	ld [wSCY], a
+	ld [wd054], a
+	ld [wd056], a
+
+	ld a, [hHUDFlags]
+	or HUD_UPDATE_FIRST_ROW | HUD_UPDATE_LABEL | HUD_UPDATE_LIVES
+	ld [hHUDFlags], a
+
+	ld a, [hff92]
+	and KIRBY2F_FACE_LEFT
+	ld [hff92], a
+
+	ld a, [hff8e]
+	and $98
+	ld [hff8e], a
+
+	ld a, [hff8d]
+	and $20
+	ld [hff8d], a
+
+	ld bc, $0
+	ld a, [wd03f]
+	ld b, a
+	ld a, [wd052]
+	dec a
+	ld e, a
+	call CalculateBCPercentage
+	ld h, $00
+	ld a, [wd051]
+	dec a
+	ld l, a
+	add hl, bc
+	ld b, h
+	ld c, l
+	ld hl, wc100
+	add hl, bc
+	call Func_1964
+	ld a, $16
+	ld [wd065], a
+	ld a, $20
+	ld [wd07c], a
+	ld a, $0e
+	ld [wd07d], a
+	ld a, $15
+	ld [wd07e], a
+	ld a, $01
+	ld [wd076], a
+	ld a, $33
+	ld [wd077], a
+	ld a, $02
+	ld [wd07a], a
+	ld a, $00
+	ld [wd07b], a
+	xor a
+	ld [wd074], a
+	ld [wd075], a
+	ld [wd078], a
+	ld [wd079], a
+	ld [wd064], a
+	ld [wVirtualOAMSize], a
+
+	call Func_21fb
+	call Func_139b
+	call Func_2e9c
+	call StopTimerAndSwitchOnLCD
+	call FadeIn
+
+	ld a, [wd03d]
+	cp MUSIC_NONE
+	ret z
+	ld [wMusic], a
+	call PlayMusic
+	ld a, MUSIC_NONE
+	ld [wd03d], a
+	ret
+; 0x4def

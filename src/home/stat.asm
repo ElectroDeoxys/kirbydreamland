@@ -9,7 +9,7 @@ Stat:
 	ld hl, rLCDC
 	ld a, [wd05b]
 	ld c, a
-	ld a, $e4
+	ld a, %11100100
 	set LCDCB_BG9C00, [hl]
 	ldh [rBGP], a
 	xor a

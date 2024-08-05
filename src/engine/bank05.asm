@@ -1,4 +1,106 @@
-SECTION "Bank 5@40c2", ROMX[$40c2], BANK[$5]
+SECTION "Bank 5@401a", ROMX[$401a], BANK[$5]
+
+Func_1401a:
+	ld hl, wd1a0
+	add hl, bc
+	bit 7, [hl]
+	ret z
+	ld hl, wd140
+	ld e, [hl]
+	add hl, bc
+	ld a, [hl]
+	sub e
+	ld de, -30
+	jr nc, .asm_14032
+	cpl
+	inc a
+	ld de, 30
+.asm_14032
+	cp $0a
+	jr c, .asm_1405d
+	ld hl, wObjectXVels
+	add hl, bc
+	add hl, bc
+	ld a, [hl]
+	add e
+	ld [hli], a
+	ld a, [hl]
+	adc d
+	ld [hl], a
+	ld d, $03
+	ld hl, wd150
+	ld e, [hl]
+	add hl, bc
+	ld a, [hl]
+	inc a
+	sub e
+	cpl
+	inc a
+	ld e, a
+	xor a
+.asm_1404f
+	sra e
+	rra
+	dec d
+	jr nz, .asm_1404f
+	ld hl, wObjectYVels
+	add hl, bc
+	add hl, bc
+	ld [hli], a
+	ld [hl], e
+	ret
+.asm_1405d
+	ld hl, wd190
+	add hl, bc
+	bit 6, [hl]
+	jr z, .asm_1406c
+	ld a, $01
+	call Func_14600
+	jr .asm_1407f
+.asm_1406c
+	ld hl, wd3f7
+	inc [hl]
+	ld d, [hl]
+	call Func_148dc
+	inc hl
+.asm_14075
+	ld a, [hl]
+	call AddToScore
+	dec d
+	jr nz, .asm_14075
+	call DestroyObject
+.asm_1407f
+	ld hl, hff8e
+	set 3, [hl]
+	ld hl, hff93
+	bit 5, [hl]
+	jr nz, .asm_14090
+	ld hl, hff94
+	set 6, [hl]
+.asm_14090
+	ld hl, wd3f6
+	dec [hl]
+	jr nz, .asm_140c1
+	xor a
+	ld [wd3f7], a
+	ld hl, hff94
+	res 7, [hl]
+	ld hl, hff8e
+	res 4, [hl]
+	ld hl, hff93
+	set 1, [hl]
+	ld a, SFX_02
+	call PlaySFX
+	ld hl, wd3be
+	bit 0, [hl]
+	jp nz, Func_14761
+	bit 4, [hl]
+	jr z, .asm_140c1
+	res 4, [hl]
+	ld hl, hff93
+	set 4, [hl]
+.asm_140c1
+	ret
 
 Func_140c2:
 	call Func_140d5
@@ -248,7 +350,7 @@ Func_1432c::
 	jr z, .asm_143fe
 	push bc
 	xor a
-	call .Func_14600
+	call Func_14600
 	pop bc
 	ret
 .asm_143fe
@@ -357,7 +459,7 @@ Func_1432c::
 	jr nz, .asm_144ee
 	bit 3, a
 	jr z, .asm_144c5
-	ld hl, $403c
+	ld hl, GfxScript_2003c
 	jr .asm_144e4
 .asm_144c5
 	call .Func_14579
@@ -373,7 +475,7 @@ Func_1432c::
 	call Func_23af
 	jr .asm_144ee
 .asm_144e1
-	ld hl, $4026
+	ld hl, GfxScript_20026
 .asm_144e4
 	ld de, MotionScript_10008
 	ld a, [wd411]
@@ -392,13 +494,13 @@ Func_1432c::
 	ld a, [wd410]
 	bit 0, a
 	jr nz, .asm_1451b
-	ld hl, $403c
+	ld hl, GfxScript_2003c
 	bit 3, a
 	jr nz, .asm_14515
-	ld hl, $4017
+	ld hl, GfxScript_20017
 	bit 4, a
 	jr nz, .asm_14515
-	ld hl, $4026
+	ld hl, GfxScript_20026
 .asm_14515
 	ld de, MotionScript_10008
 	jp Func_21e6
@@ -411,7 +513,7 @@ Func_1432c::
 	bit 1, [hl]
 	jr nz, .asm_1453b
 	ld a, [hff92]
-	and KIRBY2F_LAND
+	and KIRBY2F_FACE_LEFT
 	push af
 	call Func_3d48
 	pop af
@@ -544,7 +646,7 @@ Func_1432c::
 	pop hl
 	ret
 
-.Func_14600:
+Func_14600:
 	ld [wd06b], a
 	ld hl, wObjectPropertyPtrs
 	add hl, bc
@@ -578,7 +680,7 @@ Func_1432c::
 	dec a
 	jp z, .OneUp ; ONE_UP
 
-	call .ConsumeItem
+	call ConsumeItem
 	ld a, $81
 	ld [wd3bf], a
 	ld a, SFX_BOSS_DEFEAT
@@ -586,8 +688,8 @@ Func_1432c::
 	jp DestroyObject
 
 .OneUp:
-	call .ConsumeItem
-	call .Func_147b5
+	call ConsumeItem
+	call Func_147b5
 	ld hl, hHUDFlags
 	set HUD_UPDATE_LIVES_F, [hl]
 	ld a, [wLives]
@@ -602,8 +704,8 @@ Func_1432c::
 	jp DestroyObject
 
 .InvincibilityCandy:
-	call .ConsumeItem
-	call .Func_147b5
+	call ConsumeItem
+	call Func_147b5
 	ld a, LOW(INVINCIBILITY_DURATION)
 	ld [wInvincibilityCounter + 0], a
 	ld a, HIGH(INVINCIBILITY_DURATION)
@@ -615,8 +717,8 @@ Func_1432c::
 	jp .DestroyObject
 
 .MintLeaf:
-	call .ConsumeItem
-	call .Func_147b5
+	call ConsumeItem
+	call Func_147b5
 	ld hl, hff95
 	set 5, [hl]
 	res 6, [hl]
@@ -633,10 +735,10 @@ Func_1432c::
 	jp .DestroyObject
 
 .MaximTomato:
-	call .ConsumeItem
+	call ConsumeItem
 	ld a, SFX_POWER_UP
 	call PlaySFX
-	call .Func_147b5
+	call Func_147b5
 	call .DestroyObject
 	ld a, [wHP]
 	ld e, a
@@ -644,22 +746,22 @@ Func_1432c::
 	sub e
 	ld e, a ; $88 - wHP
 	; this loops many times unnecessarily
-	; when HP reaches max, calling .Restore1HP
+	; when HP reaches max, calling Restore1HP
 	; does nothing, but loop continues
 .loop_restore_hp
-	call .Restore1HP
+	call Restore1HP
 	dec e
 	jr nz, .loop_restore_hp
 	ret
 
 .EnergyDrink:
-	call .ConsumeItem
+	call ConsumeItem
 	ld a, SFX_POWER_UP
 	call PlaySFX
-	call .Func_147b5
+	call Func_147b5
 	call .DestroyObject
-	call .Restore1HP
-	jp .Restore1HP
+	call Restore1HP
+	jp Restore1HP
 
 .WarpStar
 	ld hl, hff94
@@ -690,13 +792,13 @@ Func_1432c::
 	jp DestroyObject
 
 .Bomb
-	call .ConsumeItem
+	call ConsumeItem
 	ld hl, wd3be
 	set 2, [hl]
 	jr .asm_14723
 
 .Mike
-	call .ConsumeItem
+	call ConsumeItem
 	ld hl, wd3be
 	set 1, [hl]
 .asm_14723
@@ -711,7 +813,7 @@ Func_1432c::
 	bit 7, a
 	jr z, .asm_14748
 	ld a, [hff92]
-	and KIRBY2F_LAND
+	and KIRBY2F_FACE_LEFT
 	push af
 	call Func_3d48
 	pop af
@@ -724,15 +826,16 @@ Func_1432c::
 	jr .DestroyObject
 
 .asm_1474f
-	call .ConsumeItem
+	call ConsumeItem
 	ld a, [wd06b]
 	and a
-	jr z, .asm_14761
+	jr z, Func_14761
 	ld a, $01
 	ld a, $01 ; unnecessary
 	ld [wd3be], a
 	jr .DestroyObject
-.asm_14761
+
+Func_14761:
 	ld hl, wd3be
 	res 0, [hl]
 	ld a, LOW(MINT_LEAF_DURATION)
@@ -761,7 +864,7 @@ ASSERT FLOAT_ISLANDS_7 == MT_DEDEDE_7
 	call PlayMusic
 	jp DestroyObject
 
-.Restore1HP:
+Restore1HP:
 	ld a, [wMaxHP]
 	ld l, a
 	ld a, [wHP]
@@ -776,7 +879,7 @@ ASSERT FLOAT_ISLANDS_7 == MT_DEDEDE_7
 	ld a, 10
 	jp WaitAFrames
 
-.Func_147b5:
+Func_147b5:
 	ld a, [wd06b]
 	and a
 	ret z
@@ -784,7 +887,7 @@ ASSERT FLOAT_ISLANDS_7 == MT_DEDEDE_7
 	set 4, [hl]
 	ret
 
-.ConsumeItem:
+ConsumeItem:
 	push bc
 	ld hl, wd3aa
 	add hl, bc
@@ -853,11 +956,11 @@ Func_147e4::
 	inc hl
 	inc hl
 	ld a, [hl]
-	cp $05
+	cp WARP_STAR
 	jr z, .asm_1488d
-	cp $08
+	cp ITEM_8
 	jr z, .asm_1488d
-	cp $0a
+	cp ITEM_A
 	jr z, .asm_1488d
 	jr .asm_14844
 .asm_1483d
@@ -882,7 +985,7 @@ Func_147e4::
 	ld a, [hl]
 	add hl, bc
 	sub [hl]
-	bit 5, e
+	bit KIRBY2F_FACE_LEFT_F, e
 	jr nz, .asm_14864
 	cpl
 	inc a
@@ -1005,7 +1108,7 @@ Func_148ea:
 	push bc
 	ld c, $03
 	ld a, [hff92]
-	bit KIRBY2F_LAND_F, a
+	bit KIRBY2F_FACE_LEFT_F, a
 	jr nz, .asm_1494a
 	jr .asm_14933
 .asm_1492b
@@ -1113,7 +1216,7 @@ Func_14993:
 	push hl
 	ld a, [de]
 	ld hl, hff92
-	bit KIRBY2F_LAND_F, [hl]
+	bit KIRBY2F_FACE_LEFT_F, [hl]
 	jr z, .asm_149ca
 	cpl
 	inc a
@@ -1241,7 +1344,7 @@ Func_14a5f::
 	add hl, bc
 	ld c, $0a
 	ld a, [hff92]
-	bit KIRBY2F_LAND_F, a
+	bit KIRBY2F_FACE_LEFT_F, a
 	jr z, .asm_14a77
 	ld c, $f6
 .asm_14a77

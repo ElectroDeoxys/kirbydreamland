@@ -44,7 +44,7 @@ DEF NUM_MUSICS EQU const_value
 	const SFX_18 ; $12
 	const SFX_19 ; $13
 	const SFX_20 ; $14
-	const SFX_21 ; $15
+	const SFX_LOSE_LIFE ; $15
 	const SFX_1UP ; $16
 	const SFX_23 ; $17
 	const SFX_PAUSE ; $18

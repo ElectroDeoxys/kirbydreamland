@@ -150,6 +150,8 @@ wSoundCheckMusic:: db ; d067
 wSoundCheckSFX::   db ; d068
 NEXTU
 wPauseCounter:: dw ; d067
+NEXTU
+wd067:: dw ; d067
 ENDU
 
 wd069:: ; d069
@@ -403,7 +405,10 @@ wConsumedItems:: ; d3c4
 wd3cc:: ; d3cc
 	db
 
-	ds $2
+	ds $1
+
+wd3ce:: ; d3ce
+	db
 
 wd3cf:: ; d3cf
 	db

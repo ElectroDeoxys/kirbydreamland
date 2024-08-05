@@ -1,3 +1,16 @@
+MACRO object
+	db \1 ; x
+	db \2 ; y
+	db \3 ; ?
+	db \4 ; ?
+	dw \5 ; ?
+	dw \6 ; ?
+	dw \7 ; ?
+IF _NARG == 8
+	db \8 ; consumable item ID
+ENDC
+ENDM
+
 Data_1c000::
 	table_width 2, Data_1c000
 	dw .GreenGreens ; GREEN_GREENS
@@ -77,45 +90,45 @@ Data_1c000::
 	assert_table_length NUM_MT_DEDEDE_AREAS
 
 Data_1c0ce::
-	dw Data_1d58f, $57e7 ; $01
-	dw $55ba, $57e7 ; $02
-	dw $55fd, $57e7 ; $03
-	dw $5607, $57e7 ; $04
-	dw $561d, $57e7 ; $05
-	dw $5624, $57e7 ; $06
-	dw $5631, $57e7 ; $07
-	dw $55c4, $57e7 ; $08
-	dw $55e0, $57e7 ; $09
-	dw $55f9, $57e7 ; $0a
-	dw $563e, $57e7 ; $0b
-	dw $57e7, $57e7 ; $0c
-	dw $57e7, $57e7 ; $0d
-	dw $57e7, $57e7 ; $0e
-	dw $57e7, $57e7 ; $0f
-	dw $57e7, $57e7 ; $10
-	dw $57e7, $57e7 ; $11
-	dw $57e7, $57e7 ; $12
-	dw $57e7, $57e7 ; $13
-	dw $57e7, $57e7 ; $14
-	dw $57e7, $57e7 ; $15
-	dw $57e7, $57e7 ; $16
-	dw $57e7, $57e7 ; $17
-	dw $57e7, $57e7 ; $18
-	dw $57e7, $57e7 ; $19
-	dw $57e7, $57e7 ; $1a
-	dw $57e7, $57e7 ; $1b
+	dw Data_1d58f, Data_1d7e7 ; $01
+	dw $55ba, Data_1d7e7 ; $02
+	dw $55fd, Data_1d7e7 ; $03
+	dw $5607, Data_1d7e7 ; $04
+	dw $561d, Data_1d7e7 ; $05
+	dw $5624, Data_1d7e7 ; $06
+	dw $5631, Data_1d7e7 ; $07
+	dw $55c4, Data_1d7e7 ; $08
+	dw $55e0, Data_1d7e7 ; $09
+	dw $55f9, Data_1d7e7 ; $0a
+	dw $563e, Data_1d7e7 ; $0b
+	dw $57e7, Data_1d7e7 ; $0c
+	dw $57e7, Data_1d7e7 ; $0d
+	dw $57e7, Data_1d7e7 ; $0e
+	dw $57e7, Data_1d7e7 ; $0f
+	dw $57e7, Data_1d7e7 ; $10
+	dw $57e7, Data_1d7e7 ; $11
+	dw $57e7, Data_1d7e7 ; $12
+	dw $57e7, Data_1d7e7 ; $13
+	dw $57e7, Data_1d7e7 ; $14
+	dw $57e7, Data_1d7e7 ; $15
+	dw $57e7, Data_1d7e7 ; $16
+	dw $57e7, Data_1d7e7 ; $17
+	dw $57e7, Data_1d7e7 ; $18
+	dw $57e7, Data_1d7e7 ; $19
+	dw $57e7, Data_1d7e7 ; $1a
+	dw $57e7, Data_1d7e7 ; $1b
 
 Data_1c13a::
 	table_width 4, Data_1c13a
-	dw $578b, $57e7 ; GREEN_GREENS
-	dw $57a7, $57e7 ; CASTLE_LOLOLO
-	dw $57bd, $57e7 ; FLOAT_ISLANDS
-	dw $57ca, $57e7 ; BUBBLY_CLOUDS
-	dw $57d4, $57e7 ; MT_DEDEDE
+	dw $578b, Data_1d7e7 ; GREEN_GREENS
+	dw $57a7, Data_1d7e7 ; CASTLE_LOLOLO
+	dw $57bd, Data_1d7e7 ; FLOAT_ISLANDS
+	dw $57ca, Data_1d7e7 ; BUBBLY_CLOUDS
+	dw $57d4, Data_1d7e7 ; MT_DEDEDE
 	assert_table_length NUM_STAGES
-; 0x1c14e
 
-SECTION "Bank 7@4154", ROMX[$4154], BANK[$7]
+Data_1c14e::
+	dw GfxScript_20000, MotionScript_10008, Data_3425
 
 Data_1c154::
 	dw GfxScript_20a01, MotionScript_10008, Data_35cd
@@ -124,7 +137,7 @@ Data_1c154::
 SECTION "Bank 7@4196", ROMX[$4196], BANK[$7]
 
 Data_1c196::
-	dw $4bda, $422a, $35b3
+	dw GfxScript_20bda, $422a, $35b3
 
 Data_1c19c::
 	dw GfxScript_20477, $4244, $35b3
@@ -240,19 +253,6 @@ Data_1c2f9:
 	db $ff
 
 	db $ff
-
-MACRO object
-	db \1 ; x
-	db \2 ; y
-	db \3 ; ?
-	db \4 ; ?
-	dw \5 ; ?
-	dw \6 ; ?
-	dw \7 ; ?
-IF _NARG == 8
-	db \8 ; consumable item ID
-ENDC
-ENDM
 
 Data_1c304:
 	object $0f, $05, $00, $00, GfxScript_20587, MotionScript_102c8, WaddleDeeProperties
@@ -410,3 +410,10 @@ Data_1d5a6:
 Data_1d5b0:
 	object $00, $00, $00, $00, GfxScript_221b9, MotionScript_10008, Data_3425
 ; 0x1d5ba
+
+SECTION "Bank 7@57e7", ROMX[$57e7], BANK[$7]
+
+Data_1d7e7:
+	dbw $00, NULL
+	db $ff
+; 0x1d7eb

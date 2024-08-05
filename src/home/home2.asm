@@ -615,8 +615,8 @@ DestroyObject::
 SECTION "Home@21e6", ROM0[$21e6]
 
 ; input:
-; - hl = motion script
-; - de = gfx script
+; - hl = gfx script
+; - de = motion script
 ; - bc = object slot
 Func_21e6::
 	push hl
@@ -739,7 +739,7 @@ ASSERT Data_1c000 == Data_3c000
 	ld a, [hff94]
 	and $02
 	jr nz, .asm_22c5
-	ld hl, $414e
+	ld hl, Data_1c14e
 	lb de, $80, $80
 	call CreateObject_Groups1And2
 	jr c, .asm_22dd
@@ -1488,7 +1488,7 @@ DoCommonScriptCommand:
 	jr .asm_267f
 
 .asm_26a8
-	cp SCRIPT_F9
+	cp SCRIPT_SET_FLAGS
 	jr nz, .asm_26bf
 	ld a, [hli]
 	ld e, a
@@ -2893,7 +2893,7 @@ Func_2e9c::
 	call Func_2fdf
 	ld hl, wd3bf
 	bit 0, [hl]
-	call nz, $4bb4
+	call nz, Func_4bb4
 
 	ld b, NUM_OBJECT_SLOTS
 	ld c, OBJECT_SLOT_00
@@ -3886,7 +3886,7 @@ Func_3768::
 	ld hl, hff8d
 	res KIRBY1F_AIRBORNE_F, [hl]
 	ld a, [hff92]
-	and $ff ^ (KIRBY2F_UNK2 | KIRBY2F_UNK3 | KIRBY2F_DUCK | KIRBY2F_FACE_LEFT)
+	and $ff ^ (KIRBY2F_UNK2 | KIRBY2F_UNK3 | KIRBY2F_DUCK | KIRBY2F_LAND)
 	ld [hff92], a
 	ld a, $80
 	ld [hff8e], a
@@ -4328,9 +4328,9 @@ Func_3d48::
 Func_3d92::
 	ld a, [wROMBank]
 	push af
-	ld a, $01
+	ld a, BANK(Func_4d3f)
 	bankswitch
-	call $4d3f ; Func_4d3f
+	call Func_4d3f
 	pop af
 	bankswitch
 	ret

@@ -1,6 +1,5 @@
 MotionScript_10000:
-	set_custom_func $401a
-MotionScript_10003:
+	set_custom_func Func_1401a
 	set_velocities 0, $00, $00
 ; 0x10006
 
@@ -10,11 +9,52 @@ MotionScript_10008:
 	set_velocities 0, $00, $00
 ; 0x1000b
 
-SECTION "Bank 4@41dc", ROMX[$41dc], BANK[$4]
+SECTION "Bank 4@4137", ROMX[$4137], BANK[$4]
 
-MotionScript_101dc:
+MotionScript_10137:
+	set_velocities  8, $00, $8a
+	set_velocities  8, $00, $88
+	set_velocities  8, $00, $85
+	set_velocities  8, $00, $75
+	set_velocities  8, $00, $79
+	set_velocities  0, $00, $7b
+
+MotionScript_10149:
+	set_flags hff94, $ff, $20
+	script_repeat 3
+	set_velocities  1, $8a, $8c
+	set_velocities  1, $7a, $8a
+	script_repeat_end
+	script_exec Func_4ac1
+	set_flags hff94, $df, $00
 	set_velocities  0, $00, $00
-; 0x101df
+
+MotionScript_10162:
+	set_flags hff94, $ff, $20
+	script_repeat 4
+	set_velocities  1, $8a, $79
+	set_velocities  1, $7a, $79
+	script_repeat_end
+	script_exec Func_4ac1
+	set_flags hff94, $df, $00
+	set_velocities  0, $00, $00
+; 0x1017b
+
+SECTION "Bank 4@422a", ROMX[$422a], BANK[$4]
+
+MotionScript_1022a:
+	jump_if_not_flags hff92, KIRBY2F_FACE_LEFT, .script_1023a
+	set_velocities  8, $8c, $00
+	set_velocities  8, $8a, $00
+	set_velocities 10, $86, $00
+	script_end
+
+.script_1023a
+	set_velocities  8, $7c, $00
+	set_velocities  8, $7a, $00
+	set_velocities 10, $76, $00
+	script_end
+; 0x10244
 
 SECTION "Bank 4@42c8", ROMX[$42c8], BANK[$4]
 
@@ -29,7 +69,7 @@ MotionScript_102fb:
 	dw MotionScript_1030b, MotionScript_10308
 
 MotionScript_10302:
-	jump_if_not_flags hff92, KIRBY2F_LAND, MotionScript_1030b
+	jump_if_not_flags hff92, KIRBY2F_FACE_LEFT, MotionScript_1030b
 
 MotionScript_10308:
 	set_velocities 0, $8b, $00
@@ -37,6 +77,12 @@ MotionScript_10308:
 MotionScript_1030b:
 	set_velocities 0, $7b, $00
 ; 0x1030e
+
+SECTION "Bank 4@4317", ROMX[$4317], BANK[$4]
+
+MotionScript_10317:
+	set_velocities  0, $8c, $00
+; 0x1031a
 
 SECTION "Bank 4@431d", ROMX[$431d], BANK[$4]
 
@@ -49,6 +95,25 @@ MotionScript_1031d:
 	script_delay 4
 	jump_abs .loop
 ; 0x1032d
+
+SECTION "Bank 4@4370", ROMX[$4370], BANK[$4]
+
+MotionScript_10370:
+	set_value wd3bf, $01
+	set_flags hff94, $ff, $20
+	jump_if_not_flags hff92, KIRBY2F_FACE_LEFT, .script_1038d
+	position_offset $00, $06
+	set_velocities  2, $8a, $00
+	set_velocities  2, $88, $00
+	set_velocities  4, $86, $00
+	jump_rel .jump
+.script_1038d
+	set_velocities  2, $7a, $00
+	set_velocities  2, $78, $00
+	set_velocities  4, $76, $00
+.jump
+	set_velocities  0, $00, $00
+; 0x10399
 
 SECTION "Bank 4@43ff", ROMX[$43ff], BANK[$4]
 
@@ -91,16 +156,6 @@ MotionScript_10508:
 	jump_abs .loop
 ; 0x10523
 
-SECTION "Bank 4@4566", ROMX[$4566], BANK[$4]
-
-MotionScript_10566::
-	set_velocities 136, $04, $87
-	set_velocities 120, $04, $87
-MotionScript_1056c::
-	set_velocities 122, $10, $00
-	set_velocities   0, $e1, $61
-; 0x10572
-
 SECTION "Bank 4@467d", ROMX[$467d], BANK[$4]
 
 MotionScript_1067d:
@@ -118,7 +173,43 @@ MotionScript_1067d:
 	jump_abs .loop
 ; 0x106a2
 
-SECTION "Bank 4@472b", ROMX[$472b], BANK[$4]
+SECTION "Bank 4@46eb", ROMX[$46eb], BANK[$4]
+
+MotionScript_106eb:
+	position_offset $fc, $fc
+	set_velocities  8, $87, $87
+	set_velocities 48, $84, $85
+	script_end
+
+MotionScript_106f5:
+	position_offset $04, $fc
+	set_velocities  8, $77, $87
+	set_velocities 48, $74, $85
+	script_end
+
+MotionScript_106ff:
+	position_offset $fa, $00
+	set_velocities  8, $89, $00
+	set_velocities 48, $85, $00
+	script_end
+
+MotionScript_10709:
+	position_offset $06, $00
+	set_velocities  8, $79, $00
+	set_velocities 48, $75, $00
+	script_end
+
+MotionScript_10713:
+	set_velocities  6, $00, $8d
+	set_velocities  6, $00, $8b
+	set_velocities  6, $00, $89
+	set_velocities  0, $00, $87
+
+MotionScript_1071f:
+	set_velocities  6, $7d, $00
+	set_velocities  6, $7b, $00
+	set_velocities  6, $79, $00
+	set_velocities  0, $77, $00
 
 MotionScript_1072b:
 	set_velocities  6, $00, $7d
@@ -160,16 +251,63 @@ MotionScript_10767:
 SECTION "Bank 4@47c3", ROMX[$47c3], BANK[$4]
 
 MotionScript_107c3:
-	jumptable_random $07
-	set_velocities 213, $47, $e1
-	set_velocities 71, $ed, $47
-	script_f9 $0547, $48, $11
-	set_velocities 72, $1d, $48
-	set_velocities 41, $48, $f1
-	set_velocities  0, $fa, $03
-; 0x107d9
+	jumptable_random %111
+	dw .script_107d5
+	dw .script_107e1
+	dw .script_107ed
+	dw .script_107f9
+	dw .script_10805
+	dw .script_10811
+	dw .script_1081d
+	dw .script_10829
 
-SECTION "Bank 4@4835", ROMX[$4835], BANK[$4]
+.script_107d5
+	position_offset $00, $fa
+	set_velocities  3, $00, $8b
+	set_velocities  3, $00, $8a
+	set_velocities  0, $00, $00
+
+.script_107e1
+	position_offset $05, $fb
+	set_velocities  3, $7a, $8a
+	set_velocities  3, $79, $89
+	set_velocities  0, $00, $00
+
+.script_107ed
+	position_offset $06, $00
+	set_velocities  3, $7b, $00
+	set_velocities  3, $7a, $00
+	set_velocities  0, $00, $00
+
+.script_107f9
+	position_offset $05, $05
+	set_velocities  3, $7a, $7a
+	set_velocities  3, $79, $79
+	set_velocities  0, $00, $00
+
+.script_10805
+	position_offset $00, $06
+	set_velocities  3, $00, $7b
+	set_velocities  3, $00, $7a
+	set_velocities  0, $00, $00
+
+.script_10811
+	position_offset $fb, $05
+	set_velocities  3, $8a, $7a
+	set_velocities  3, $89, $79
+	set_velocities  0, $00, $00
+
+.script_1081d
+	position_offset $fa, $00
+	set_velocities  3, $8b, $00
+	set_velocities  3, $8a, $00
+	set_velocities  0, $00, $00
+
+.script_10829
+	position_offset $fb, $fb
+	set_velocities  3, $8a, $8a
+	set_velocities  3, $89, $89
+	set_velocities  0, $00, $00
 
 MotionScript_10835:
 	set_velocities  4, $7b, $8b
@@ -310,7 +448,302 @@ MotionScript_10921:
 	set_velocities  2, $7b, $7b
 	set_velocities  2, $7c, $00
 	jump_abs MotionScript_1090f
-; 0x1092a
+
+MotionScript_1092a:
+	script_call MotionScript_10a75
+	set_velocities 20, $00, $00
+	set_velocities 20, $00, $83
+	set_velocities 16, $84, $89
+	set_velocities 16, $88, $85
+	set_velocities  8, $8a, $75
+	set_velocities  8, $88, $78
+	set_velocities  8, $78, $7a
+	set_velocities  8, $7a, $7c
+	set_velocities  8, $78, $7a
+	set_velocities  8, $85, $78
+	set_velocities  8, $88, $76
+	set_velocities  8, $8b, $84
+	set_velocities  8, $8c, $86
+	set_velocities  8, $8a, $88
+	set_velocities  8, $88, $8b
+	set_velocities  8, $74, $8c
+	set_velocities  8, $77, $8c
+	set_velocities  6, $78, $8c
+	set_velocities 32, $7a, $00
+	set_velocities 128, $84, $76
+	set_velocities  0, $00, $00
+
+MotionScript_1096c:
+	script_call MotionScript_10a75
+	set_velocities  8, $00, $79
+	set_velocities  8, $00, $76
+	set_velocities  8, $00, $86
+	set_velocities  8, $00, $89
+	set_velocities  8, $00, $8a
+	set_velocities 12, $00, $8c
+	set_velocities  8, $8c, $00
+	set_velocities  8, $8a, $00
+	set_velocities  8, $89, $00
+	set_velocities  8, $85, $00
+	set_velocities  8, $00, $00
+	script_repeat 22
+	set_velocities  2, $79, $88
+	set_velocities  2, $7a, $78
+	create_object GfxScript_208f1, MotionScript_135bc, Data_3425
+	script_repeat_end
+	set_velocities  0, $87, $00
+
+MotionScript_109a3:
+	script_call MotionScript_10a75
+	set_velocities  8, $00, $84
+	set_velocities  8, $85, $8a
+	set_velocities  8, $85, $8c
+	set_velocities  8, $85, $8a
+	set_velocities  8, $85, $86
+	set_velocities  8, $85, $76
+	set_velocities  8, $85, $7a
+	set_velocities  8, $85, $7c
+	set_velocities  8, $85, $7a
+	set_velocities  8, $00, $74
+	set_velocities 16, $00, $70
+	play_sfx SFX_WARP_STAR
+	script_repeat 15
+	create_object GfxScript_208f1, $4a13, Data_3425
+	set_velocities  2, $70, $8a
+	set_velocities  2, $70, $7a
+	script_repeat_end
+	create_object $43be, $4a13, Data_3425
+	script_repeat 8
+	set_velocities  6, $70, $74
+	create_object GfxScript_208f1, $4a13, Data_3425
+	script_repeat_end
+	set_velocities  8, $83, $88
+	create_object GfxScript_208f1, $4a13, Data_3425
+	set_velocities  8, $85, $8a
+	create_object GfxScript_208f1, $4a13, Data_3425
+	set_velocities 20, $86, $8c
+	script_f0 $68, $08
+	set_velocities 20, $00, $00
+	play_sfx SFX_13
+	set_velocities  0, $73, $75
+
+MotionScript_10a13:
+	jumptable_random %11
+	dw .script_10a1d
+	dw .script_10a20
+	dw .script_10a23
+	dw .script_10a26
+
+.script_10a1d
+	set_velocities  0, $86, $7b
+.script_10a20
+	set_velocities  0, $84, $7b
+.script_10a23
+	set_velocities  0, $74, $7b
+.script_10a26
+	set_velocities  0, $76, $7b
+
+MotionScript_10a29:
+	script_call MotionScript_10a75
+	set_velocities  8, $8c, $8a
+	set_velocities  8, $8a, $8c
+	set_velocities  8, $87, $8b
+	set_velocities  8, $77, $86
+	set_velocities  8, $7a, $77
+	set_velocities  8, $7c, $7a
+	set_velocities  8, $7c, $7c
+	set_velocities  8, $7a, $7a
+	set_velocities  8, $77, $77
+	set_velocities  8, $87, $00
+	set_velocities  8, $8a, $86
+	set_velocities  8, $8c, $88
+	set_velocities  8, $8a, $86
+	set_velocities  8, $86, $00
+	set_velocities  8, $76, $78
+	set_velocities  8, $79, $76
+	set_velocities  8, $76, $74
+	set_velocities  8, $85, $00
+	set_velocities  8, $00, $00
+	set_velocities  8, $00, $8a
+	set_velocities  8, $00, $8b
+	play_sfx SFX_08
+	set_velocities  8, $00, $88
+	set_velocities  0, $00, $86
+
+MotionScript_10a75:
+	create_object GfxScript_208f1, MotionScript_106eb, Data_3425
+	create_object GfxScript_208f1, MotionScript_106f5, Data_3425
+	create_object GfxScript_208f1, MotionScript_106ff, Data_3425
+	create_object GfxScript_208f1, MotionScript_10709, Data_3425
+	script_ret
+
+MotionScript_10a92:
+	create_object GfxScript_208f1, MotionScript_106eb, Data_3425
+	create_object GfxScript_208f1, MotionScript_106f5, Data_3425
+	create_object GfxScript_208f1, MotionScript_106ff, Data_3425
+	create_object GfxScript_208f1, MotionScript_10709, Data_3425
+	set_velocities  6, $85, $00
+	set_velocities  6, $85, $74
+	set_velocities  6, $85, $76
+	set_velocities  6, $85, $78
+	set_velocities  0, $85, $79
+
+MotionScript_10abd:
+	create_object GfxScript_208f1, MotionScript_106eb, Data_3425
+	create_object GfxScript_208f1, MotionScript_106f5, Data_3425
+	create_object GfxScript_208f1, MotionScript_106ff, Data_3425
+	create_object GfxScript_208f1, MotionScript_10709, Data_3425
+	set_velocities  6, $75, $00
+	set_velocities  6, $75, $74
+	set_velocities  6, $75, $76
+	set_velocities  6, $75, $78
+	set_velocities  0, $75, $79
+
+MotionScript_10ae8:
+.loop
+	jump_if_equal wd140, $56, $4b00
+	set_velocities  1, $86, $00
+	jump_abs .loop
+
+MotionScript_10af4:
+.loop
+	jump_if_equal wd140, $5a, $4b00
+	set_velocities  1, $76, $00
+	jump_abs .loop
+
+MotionScript_10b00:
+	set_scripts $4771, MotionScript_10008
+
+MotionScript_10b05:
+	set_velocities 79, $85, $00
+	script_repeat 2
+	set_velocities  6, $86, $00
+	set_velocities 12, $85, $00
+	set_velocities  6, $83, $00
+	script_repeat_end
+	set_velocities 31, $00, $00
+	set_velocities  8, $76, $8a
+	set_velocities  8, $76, $88
+	set_velocities  8, $76, $84
+	set_velocities  8, $76, $74
+	set_velocities  8, $76, $78
+	set_velocities  8, $76, $7a
+	set_velocities  8, $76, $00
+	set_velocities 31, $75, $00
+	set_velocities 36, $00, $00
+	set_velocities 24, $86, $00
+	set_velocities  0, $00, $00
+
+MotionScript_10b38:
+	set_velocities 10, $77, $89
+	set_velocities 10, $00, $00
+	set_velocities 10, $87, $89
+	set_velocities 10, $00, $00
+	set_velocities 20, $00, $79
+	set_velocities 18, $00, $00
+	set_velocities 10, $87, $8a
+	set_velocities 10, $87, $86
+	set_velocities 10, $87, $00
+	set_velocities 10, $87, $76
+	set_velocities 10, $87, $7a
+	set_velocities 10, $00, $00
+	set_velocities 18, $00, $00
+	set_velocities  6, $78, $8a
+	set_velocities  6, $78, $88
+	set_velocities  6, $78, $86
+	set_velocities  6, $78, $84
+	set_velocities  6, $78, $74
+	set_velocities  6, $78, $76
+	set_velocities  6, $78, $78
+	set_velocities  6, $78, $7a
+	set_velocities  6, $76, $89
+	set_velocities  6, $76, $86
+	set_velocities  6, $76, $76
+	set_velocities  6, $76, $79
+	set_velocities 12, $00, $00
+	script_repeat 2
+	set_velocities  6, $88, $00
+	set_velocities  6, $86, $00
+	set_velocities  6, $85, $00
+	set_velocities  6, $84, $00
+	script_repeat_end
+	set_velocities  0, $00, $00
+
+MotionScript_10b98:
+	set_velocities 10, $76, $8a
+	set_velocities 10, $76, $88
+	set_velocities 10, $76, $85
+	set_velocities 10, $76, $75
+	set_velocities 10, $76, $78
+	set_velocities 10, $76, $7a
+	set_velocities 20, $00, $00
+	script_repeat 2
+	set_velocities  6, $88, $00
+	set_velocities 12, $86, $00
+	set_velocities  6, $84, $00
+	script_repeat_end
+	set_velocities 31, $00, $00
+	script_repeat 2
+	set_velocities 10, $00, $00
+	set_velocities 10, $89, $00
+	set_velocities 10, $86, $00
+	set_velocities 10, $84, $00
+	script_repeat_end
+	script_repeat 2
+	set_velocities  8, $79, $00
+	set_velocities  8, $76, $00
+	set_velocities  8, $75, $00
+	script_repeat_end
+	set_velocities  0, $00, $00
+
+MotionScript_10bda:
+	set_velocities 10, $00, $8a
+	set_velocities 10, $00, $88
+	set_velocities 10, $00, $85
+	set_velocities 10, $00, $75
+	set_velocities 10, $00, $78
+	set_velocities 10, $00, $7a
+	set_velocities 20, $00, $00
+	script_call MotionScript_10c3a
+	script_repeat 2
+	set_velocities  4, $77, $89
+	set_velocities  4, $77, $86
+	set_velocities  4, $77, $76
+	set_velocities  4, $77, $79
+	script_repeat_end
+	script_call MotionScript_10c3a
+	set_velocities 16, $00, $00
+	set_velocities  5, $8a, $88
+	set_velocities  5, $8a, $85
+	set_velocities  5, $8a, $75
+	set_velocities  5, $8a, $78
+	set_velocities 20, $00, $00
+	set_velocities  5, $7a, $88
+	set_velocities  5, $7a, $85
+	set_velocities  5, $7a, $75
+	set_velocities  5, $7a, $78
+	set_velocities 20, $00, $00
+	set_velocities  8, $79, $00
+	set_velocities  8, $76, $00
+	set_velocities  8, $75, $00
+	set_velocities  8, $89, $00
+	set_velocities  8, $86, $00
+	set_velocities  8, $85, $00
+	set_velocities  0, $00, $00
+
+MotionScript_10c3a:
+	set_velocities  4, $87, $89
+	set_velocities  4, $87, $86
+	set_velocities  4, $87, $76
+	set_velocities  4, $87, $79
+	script_ret
+
+MotionScript_10c47:
+.loop
+	set_velocities  2, $86, $00
+	set_velocities  2, $76, $00
+	jump_abs .loop
+; 0x10c50
 
 SECTION "Bank 4@4cf4", ROMX[$4cf4], BANK[$4]
 
@@ -574,9 +1007,36 @@ MotionSubScript_10f29:
 	set_velocities  4, $75, $76
 	script_repeat_end
 	script_ret
-; 0x10f3c
 
-SECTION "Bank 4@4f84", ROMX[$4f84], BANK[$4]
+MotionScript_10f3c:
+	set_velocities  4, $00, $00
+	set_velocities  8, $7a, $00
+	set_velocities  8, $78, $00
+	set_velocities  8, $76, $00
+	set_velocities  0, $00, $00
+; 0x10f4b
+
+SECTION "Bank 4@4f5a", ROMX[$4f5a], BANK[$4]
+
+MotionScript_10f5a:
+.loop
+	script_repeat 3
+	set_velocities  3, $00, $00
+	set_velocities  4, $86, $86
+	set_velocities  4, $85, $83
+	set_velocities  4, $85, $73
+	set_velocities  4, $85, $76
+	script_repeat_end
+	jump_abs .asm_10f6f ; unnecessary
+.asm_10f6f
+	script_repeat 3
+	set_velocities  3, $00, $00
+	set_velocities  4, $76, $86
+	set_velocities  4, $75, $83
+	set_velocities  4, $75, $73
+	set_velocities  4, $75, $76
+	script_repeat_end
+	jump_abs .loop
 
 MotionScript_10f84:
 .loop
@@ -844,3 +1304,62 @@ MotionSubScript_1208c:
 	script_repeat_end
 	script_ret
 ; 0x1209c
+
+SECTION "Bank 4@75bc", ROMX[$75bc], BANK[$4]
+
+MotionScript_135bc:
+	jumptable_random %11
+	dw .script_135c6
+	dw .script_135c9
+	dw .script_135cc
+	dw .script_135cf
+
+.script_135c6
+	set_velocities  0, $8b, $77
+
+.script_135c9
+	set_velocities  0, $8b, $74
+
+.script_135cc
+	set_velocities  0, $8b, $84
+
+.script_135cf
+	set_velocities  0, $8b, $87
+
+MotionScript_135d2:
+	script_f0 $00, $70
+	set_velocities 16, $7b, $00
+	set_velocities 16, $7a, $00
+	set_velocities 16, $79, $00
+	set_velocities 16, $78, $83
+	set_velocities 16, $78, $84
+	set_velocities 16, $76, $84
+	script_repeat 4
+	set_velocities  2, $89, $8a
+	set_velocities  2, $88, $79
+	script_repeat_end
+	set_velocities 16, $89, $76
+	script_repeat 8
+	set_velocities  2, $89, $8a
+	set_velocities  2, $88, $7b
+	script_repeat_end
+	set_velocities  8, $75, $8b
+	set_velocities  8, $75, $89
+	set_velocities  8, $75, $86
+	set_velocities  8, $75, $84
+	set_velocities 40, $00, $00
+	set_velocities 16, $74, $74
+	set_velocities 16, $74, $75
+	set_velocities 16, $74, $77
+	set_velocities 16, $74, $78
+	script_repeat 2
+	play_sfx SFX_BUMP
+	set_velocities  2, $84, $00
+	set_velocities 10, $84, $86
+	set_velocities 10, $84, $84
+	set_velocities 10, $84, $74
+	set_velocities 10, $84, $76
+	script_repeat_end
+	play_sfx SFX_25
+	set_scripts $428f, $4008
+; 0x13636

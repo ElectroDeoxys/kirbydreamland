@@ -511,7 +511,7 @@ Func_183bf::
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	ld de, GfxScript_157a
+	ld de, MotionScript_157a
 	ld bc, OBJECT_SLOT_00
 	call Func_21e6
 	ret
@@ -631,7 +631,7 @@ Func_183bf::
 	ld a, [wd076]
 	adc e
 	ld b, a
-	ld [wSoundCheckMusic], a
+	ld [wd067], a
 	xor a
 	ld [wd076], a
 	cp b
@@ -676,7 +676,7 @@ Func_183bf::
 	set 5, a
 	ld [hVBlankFlags], a
 .asm_18591
-	ld a, [wSoundCheckMusic]
+	ld a, [wd067]
 	ld b, a
 	ld a, [wSCY]
 	sub b
@@ -710,7 +710,7 @@ Pause::
 	and $9c
 	jr nz, .show_sprites
 	ld a, [hff92]
-	and KIRBY2F_FACE_LEFT
+	and KIRBY2F_LAND
 	jr nz, .show_sprites
 	ld a, [hff93]
 	and $38
@@ -771,7 +771,7 @@ _SetHPToZeroAndLoseLife::
 	ld [wHP], a
 ;	fallthrough
 _LoseLife::
-	ld a, SFX_21
+	ld a, SFX_LOSE_LIFE
 	call PlaySFX
 	ld a, MUSIC_NONE
 	call PlayMusic
@@ -827,27 +827,27 @@ _LoseLife::
 	xor a
 	ld [wd3cc], a
 	ld bc, OBJECT_SLOT_00
-	ld hl, $4154
-	ld de, $4137
+	ld hl, GfxScript_20154
+	ld de, MotionScript_10137
 	call Func_21e6
 
 	ld b, 160
-.asm_186b6
+.loop_wait_animation
 	push bc
 	ld a, [wObjectYCoords + $1]
 	cp $dc
-	jr nc, .asm_186c2
+	jr nc, .set_kirby_obj_active
 	cp $a0
-	jr nc, .asm_186c7
-.asm_186c2
+	jr nc, .skip_set_kirby_obj_active
+.set_kirby_obj_active
 	ld a, OBJECT_ACTIVE
 	ld [wObjectActiveStates + OBJECT_SLOT_00], a
-.asm_186c7
+.skip_set_kirby_obj_active
 	ld a, 1
 	call DoFrames
 	pop bc
 	dec b
-	jr nz, .asm_186b6
+	jr nz, .loop_wait_animation
 
 	ld hl, hff94
 	res 5, [hl]
@@ -855,7 +855,7 @@ _LoseLife::
 	; decrement lives
 	ld a, [wLives]
 	dec a
-	jr z, Func_18757
+	jr z, GameOver
 	ld [wLives], a
 
 	ld a, [wStage]
@@ -913,7 +913,7 @@ _LoseLife::
 	ld [hHUDFlags], a
 	ld a, [wMaxHP]
 	ld [wHP], a
-	jp Func_1e6
+	jp ResetStage
 
 Data_1874d:
 	table_width 1, Data_1874d
@@ -929,12 +929,14 @@ Data_1874d:
 	db MT_DEDEDE_4 ; MT_DEDEDE_9
 	assert_table_length NUM_MT_DEDEDE_AREAS
 
-Func_18757:
+GameOver:
 	call FadeOut
 	call HideWindow
 	call ResetTimer
+
 	ld a, $0a
 	call Func_21fb
+
 	ld hl, $4665
 	debgcoord 0, 0
 	ld c, $03
@@ -943,8 +945,10 @@ Func_18757:
 	ld de, vTiles1 tile $60
 	ld c, $03
 	call FarDecompress
-	ld a, $03
+
+	ld a, MUSIC_GAME_OVER
 	call PlayMusic
+
 	xor a
 	ld [wSCX], a
 	ld [wSCY], a
@@ -965,7 +969,7 @@ Func_18757:
 	jr nz, .asm_1879c
 	ld a, [hJoypadPressed]
 	bit START_F, a
-	jr nz, .break
+	jr nz, .start_pressed
 	dec bc
 	ld a, b
 	and a
@@ -974,21 +978,24 @@ Func_18757:
 	and a
 	jr nz, .loop
 
-.break
+.start_pressed
 	ld hl, hff95
 	set 0, [hl]
 	call FadeOut
 	call HideWindow
 	call ResetTimer
 	call ClearAllObjects
-	inc a
+
+	inc a ; $1
 	ld [wd051], a
 	ld [wd052], a
+
 	ld a, $0b
 	call Func_21fb
 	ld a, $ff
 	ld [wd096], a
 	call ClearSprites
+
 	ld hl, $77e9
 	ld de, vTiles1 tile $60
 	ld c, $02
@@ -1001,12 +1008,15 @@ Func_18757:
 	debgcoord 0, 0
 	ld c, $03
 	call FarDecompress
+
 	xor a
 	ld [wOAMFlagsOverride], a
 	ld [wSCX], a
 	ld [wSCY], a
-	ld a, $04
+
+	ld a, MUSIC_SPARKLING_STAR
 	call PlayMusic
+
 	call StopTimerAndSwitchOnLCD
 	call FadeIn
 .asm_1880b
@@ -1019,11 +1029,13 @@ Func_18757:
 	ld a, [wd3d0]
 	and a
 	jr z, .asm_1880b
+
 	ld hl, hff95
 	res 0, [hl]
 	ld a, [wd3cf]
 	and a
-	jp nz, .asm_1885e
+	jp nz, .reset_game
+
 	ld a, [wConfigLives]
 	ld [wLives], a
 	call SetFullHP
@@ -1037,6 +1049,7 @@ Func_18757:
 	ld [hld], a
 	ld [hld], a
 .asm_1883e
+	; halve score
 	ld hl, wScore + $2
 	ld a, [hl]
 	srl a
@@ -1052,9 +1065,9 @@ Func_18757:
 	call StartStage
 	ld a, [wMusic]
 	call PlayMusic
-	jp Func_1e6
+	jp ResetStage
 
-.asm_1885e
+.reset_game
 	ld a, 60
 	call DoFrames
 	call FadeOut
@@ -1430,7 +1443,7 @@ Func_1886c:
 	ld [wd061], a
 	ld [wd054], a ; unnecessary
 	ld [wd065], a
-	ld [wSoundCheckMusic], a
+	ld [wd067], a
 
 	ld a, [hff91]
 	res 2, a
@@ -1445,7 +1458,7 @@ Func_1886c:
 	jr nz, .asm_18b50
 	call Func_19098
 
-	ld a, [wSoundCheckMusic]
+	ld a, [wd067]
 	and a
 	jp nz, .Func_18c5c
 	ld a, [wd065]
@@ -1468,9 +1481,11 @@ Func_1886c:
 .Func_18b85:
 	ld a, [wKirbyScreenDeltaY]
 	ld b, a
-	ld a, $01
+	ld a, 1
 	sub b
 	ld [wKirbyScreenDeltaY], a
+	; wKirbyScreenDeltaY = 1 - wKirbyScreenDeltaY
+
 	ld hl, wBGQueue
 	ld b, $0a
 .asm_18b94
@@ -1518,11 +1533,11 @@ Func_1886c:
 	ld l, a
 	ld bc, $c
 	add hl, bc
-	ld a, $a0
+	ld a, HIGH(vEnd)
 	cp h
-	jr nz, .asm_18bed
+	jr nz, .got_bg_map_ptr
 	hlbgcoord 0, 0, vBGMap1
-.asm_18bed
+.got_bg_map_ptr
 	ld a, h
 	ld [wd084 + 0], a
 	ld a, l
@@ -2236,11 +2251,11 @@ Data_1926a:
 
 .GreenGreens:
 	table_width 2, Data_1926a.GreenGreens
-	dw $404b ; GREEN_GREENS_0
+	dw GfxScript_2004b ; GREEN_GREENS_0
 	dw NULL ; GREEN_GREENS_1
 	dw NULL ; GREEN_GREENS_2
 	dw NULL ; GREEN_GREENS_3
-	dw $41b7 ; GREEN_GREENS_4
+	dw GfxScript_201b7 ; GREEN_GREENS_4
 	assert_table_length NUM_GREEN_GREENS_AREAS
 
 .CastleLololo:
@@ -2252,15 +2267,15 @@ Data_1926a:
 	dw NULL ; CASTLE_LOLOLO_04
 	dw NULL ; CASTLE_LOLOLO_05
 	dw NULL ; CASTLE_LOLOLO_06
-	dw $4073 ; CASTLE_LOLOLO_07
-	dw $4000 ; CASTLE_LOLOLO_08
-	dw $4000 ; CASTLE_LOLOLO_09
+	dw GfxScript_20073 ; CASTLE_LOLOLO_07
+	dw GfxScript_20000 ; CASTLE_LOLOLO_08
+	dw GfxScript_20000 ; CASTLE_LOLOLO_09
 	dw NULL ; CASTLE_LOLOLO_10
 	dw NULL ; CASTLE_LOLOLO_11
 	dw NULL ; CASTLE_LOLOLO_12
 	dw NULL ; CASTLE_LOLOLO_13
-	dw $4000 ; CASTLE_LOLOLO_14
-	dw $41b7 ; CASTLE_LOLOLO_15
+	dw GfxScript_20000 ; CASTLE_LOLOLO_14
+	dw GfxScript_201b7 ; CASTLE_LOLOLO_15
 	assert_table_length NUM_CASTLE_LOLOLO_AREAS
 
 .FloatIslands:
@@ -2270,9 +2285,9 @@ Data_1926a:
 	dw NULL ; FLOAT_ISLANDS_2
 	dw NULL ; FLOAT_ISLANDS_3
 	dw NULL ; FLOAT_ISLANDS_4
-	dw $40a3 ; FLOAT_ISLANDS_5
+	dw GfxScript_200a3 ; FLOAT_ISLANDS_5
 	dw NULL ; FLOAT_ISLANDS_6
-	dw $41b7 ; FLOAT_ISLANDS_7
+	dw GfxScript_201b7 ; FLOAT_ISLANDS_7
 	assert_table_length NUM_FLOAT_ISLANDS_AREAS
 
 .BubblyClouds:
@@ -2281,26 +2296,26 @@ Data_1926a:
 	dw NULL ; BUBBLY_CLOUDS_1
 	dw NULL ; BUBBLY_CLOUDS_2
 	dw NULL ; BUBBLY_CLOUDS_3
-	dw $40b4 ; BUBBLY_CLOUDS_4
+	dw GfxScript_200b4 ; BUBBLY_CLOUDS_4
 	dw NULL ; BUBBLY_CLOUDS_5
 	dw NULL ; BUBBLY_CLOUDS_6
 	dw NULL ; BUBBLY_CLOUDS_7
 	dw NULL ; BUBBLY_CLOUDS_8
-	dw $41b7 ; BUBBLY_CLOUDS_9
+	dw GfxScript_201b7 ; BUBBLY_CLOUDS_9
 	assert_table_length NUM_BUBBLY_CLOUDS_AREAS
 
 .MtDedede:
 	table_width 2, Data_1926a.MtDedede
-	dw $4206 ; MT_DEDEDE_0
+	dw GfxScript_20206 ; MT_DEDEDE_0
 	dw NULL ; MT_DEDEDE_1
 	dw NULL ; MT_DEDEDE_2
 	dw NULL ; MT_DEDEDE_3
 	dw NULL ; MT_DEDEDE_4
-	dw $404a ; MT_DEDEDE_5
-	dw $404a ; MT_DEDEDE_6
-	dw $404a ; MT_DEDEDE_7
-	dw $404a ; MT_DEDEDE_8
-	dw $404a ; MT_DEDEDE_9
+	dw GfxScript_2004a ; MT_DEDEDE_5
+	dw GfxScript_2004a ; MT_DEDEDE_6
+	dw GfxScript_2004a ; MT_DEDEDE_7
+	dw GfxScript_2004a ; MT_DEDEDE_8
+	dw GfxScript_2004a ; MT_DEDEDE_9
 	assert_table_length NUM_MT_DEDEDE_AREAS
 
 BG_192d6:
