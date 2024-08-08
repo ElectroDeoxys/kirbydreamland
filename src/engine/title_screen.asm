@@ -98,9 +98,9 @@ TitleScreen::
 	jr nz, .loop_copy_text
 	xor a ; terminating byte
 	ld [wBGQueue + (.text_end - .text) * $3], a
-	ld a, [hff91]
-	set 2, a
-	ld [hff91], a
+	ld a, [hEngineFlags]
+	set PROCESS_BG_QUEUE_F, a
+	ld [hEngineFlags], a
 	ret
 
 .text

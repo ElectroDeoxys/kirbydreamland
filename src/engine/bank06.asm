@@ -44,7 +44,7 @@ StartStage::
 	push hl
 	xor a
 	ld [hVBlankFlags], a
-	ld [hff8d], a
+	ld [hKirbyFlags1], a
 
 	call FadeOut
 	ld a, SFX_NONE
@@ -96,17 +96,17 @@ StartStage::
 	ld [wd065], a
 
 	xor a
-	ld hl, wd082
+	ld hl, wKirbyGfxScript
 	ld [hli], a
-	ld [hl], a ; wHP
-	ld [hff8d], a
-	ld [hff8e], a
-	ld [hff92], a
+	ld [hl], a
+	ld [hKirbyFlags1], a
+	ld [hKirbyFlags2], a
+	ld [hKirbyFlags3], a
 	ld [hff93], a
 	ld [wd064], a
 	ld [wSCX ], a
 	ld [wSCY], a
-	ld [wd054], a
+	ld [wKirbyXAcc], a
 	ld [wd056], a
 	ld [wd078], a
 	ld [wd079], a
@@ -590,9 +590,9 @@ Func_183bf::
 .Func_184f4:
 	push af
 	ld a, [hli]
-	ld [wd074], a
+	ld [wKirbyXVel + 0], a
 	ld a, [hli]
-	ld [wd075], a
+	ld [wKirbyXVel + 1], a
 	xor a
 	ld [wd076], a
 	ld [wd077], a
@@ -602,12 +602,12 @@ Func_183bf::
 .Func_18506:
 	push af
 	push hl
-	ld a, [wd075]
+	ld a, [wKirbyXVel + 1]
 	ld e, a
 	ld a, [wd077]
 	add e
 	ld [wd077], a
-	ld a, [wd074]
+	ld a, [wKirbyXVel + 0]
 	ld e, a
 	ld a, [wd076]
 	adc e
@@ -621,12 +621,12 @@ Func_183bf::
 
 .Func_18528:
 	push hl
-	ld a, [wd075]
+	ld a, [wKirbyXVel + 1]
 	ld e, a
 	ld a, [wd077]
 	add e
 	ld [wd077], a
-	ld a, [wd074]
+	ld a, [wKirbyXVel + 0]
 	ld e, a
 	ld a, [wd076]
 	adc e
@@ -706,11 +706,11 @@ Pause::
 	ld a, [hff94]
 	bit 0, a
 	jr nz, .skip_animation
-	ld a, [hff8e]
-	and $9c
+	ld a, [hKirbyFlags2]
+	and KIRBY2F_UNK2 | KIRBY2F_MOUTHFUL | KIRBY2F_INHALE | KIRBY2F_HOVER
 	jr nz, .show_sprites
-	ld a, [hff92]
-	and KIRBY2F_LAND
+	ld a, [hKirbyFlags3]
+	and KIRBY3F_LAND
 	jr nz, .show_sprites
 	ld a, [hff93]
 	and $38
@@ -731,8 +731,8 @@ Pause::
 	ld a, [hl]
 	cp $b0
 	jr c, .show_sprites
-	ld hl, hff91
-	set 4, [hl]
+	ld hl, hEngineFlags
+	set PAUSE_ANIMATION_F, [hl]
 .show_sprites
 	xor a
 	ld [wVirtualOAMSize], a
@@ -752,8 +752,8 @@ Pause::
 	ld a, [hff93]
 	and $fa
 	ld [hff93], a
-	ld hl, hff91
-	res 4, [hl]
+	ld hl, hEngineFlags
+	res PAUSE_ANIMATION_F, [hl]
 	ld hl, hff94
 	res 0, [hl]
 	ld a, 30
@@ -761,9 +761,9 @@ Pause::
 	ret
 
 .skip_animation
-	ld a, [hff91]
-	res 4, a
-	ld [hff91], a
+	ld a, [hEngineFlags]
+	res PAUSE_ANIMATION_F, a
+	ld [hEngineFlags], a
 	jr .show_sprites
 
 _SetHPToZeroAndLoseLife::
@@ -894,9 +894,9 @@ _LoseLife::
 	ld a, [hli]
 	ld [wKirbyScreenY], a
 	xor a
-	ld [hff8d], a
-	ld [hff8e], a
-	ld [hff92], a
+	ld [hKirbyFlags1], a
+	ld [hKirbyFlags2], a
+	ld [hKirbyFlags3], a
 	call Func_139b
 	ld a, [wStage]
 	cp MT_DEDEDE
@@ -904,9 +904,9 @@ _LoseLife::
 	ld a, [wMusic]
 	call PlayMusic
 .asm_18731
-	ld a, [hff91]
-	res 6, a
-	ld [hff91], a
+	ld a, [hEngineFlags]
+	res ENGINEF_UNK6_F, a
+	ld [hEngineFlags], a
 	call Func_3d92
 	ld a, [hHUDFlags]
 	set HUD_UPDATE_LIVES_F, a
@@ -1060,8 +1060,8 @@ GameOver:
 	ld a, [hl]
 	rr a
 	ld [hl], a
-	ld hl, hff91
-	set 5, [hl]
+	ld hl, hEngineFlags
+	set ENGINEF_UNK5_F, [hl]
 	call StartStage
 	ld a, [wMusic]
 	call PlayMusic
@@ -1266,9 +1266,9 @@ Func_1886c:
 	call FadeIn
 	pop de
 	hlbgcoord 0, 31
-	ld a, [hff91]
-	res 2, a
-	ld [hff91], a
+	ld a, [hEngineFlags]
+	res PROCESS_BG_QUEUE_F, a
+	ld [hEngineFlags], a
 .asm_18a09
 	ld a, [hVBlankFlags]
 	set 6, a
@@ -1320,10 +1320,10 @@ Func_1886c:
 	xor a
 	ld [bc], a
 	ld bc, $34
-	call SubtractBCFromHL
-	ld a, [hff91]
-	set 2, a
-	ld [hff91], a
+	call HLMinusBC
+	ld a, [hEngineFlags]
+	set PROCESS_BG_QUEUE_F, a
+	ld [hEngineFlags], a
 	jr .asm_18a09
 
 .asm_18a65
@@ -1434,20 +1434,20 @@ Func_1886c:
 	ld [wd084 + 1], a
 	ld hl, $5ed6
 	ld a, h
-	ld [wd082 + 0], a
+	ld [wKirbyGfxScript + 0], a
 	ld a, l
-	ld [wd082 + 1], a
+	ld [wKirbyGfxScript + 1], a
 	xor a
-	ld [wd054], a
+	ld [wKirbyXAcc], a
 	ld [wKirbyScreenDeltaY], a
 	ld [wd061], a
-	ld [wd054], a ; unnecessary
+	ld [wKirbyXAcc], a ; unnecessary
 	ld [wd065], a
 	ld [wd067], a
 
-	ld a, [hff91]
-	res 2, a
-	ld [hff91], a
+	ld a, [hEngineFlags]
+	res PROCESS_BG_QUEUE_F, a
+	ld [hEngineFlags], a
 .asm_18b48
 	ld a, [hVBlankFlags]
 	set 6, a
@@ -1464,13 +1464,13 @@ Func_1886c:
 	ld a, [wd065]
 	and a
 	call nz, .Func_18b85
-	ld a, [wd054]
+	ld a, [wKirbyXAcc]
 	inc a
-	ld [wd054], a
+	ld [wKirbyXAcc], a
 	cp $04
 	jr c, .asm_18b48
 	xor a
-	ld [wd054], a
+	ld [wKirbyXAcc], a
 	ld a, [wSCX]
 	dec a
 	ld [wSCX], a
@@ -1500,17 +1500,17 @@ Func_1886c:
 	ld [wd084 + 0], a
 	ld a, e
 	ld [wd084 + 1], a
-	ld a, [wd082 + 0]
+	ld a, [wKirbyGfxScript + 0]
 	ld d, a
-	ld a, [wd082 + 1]
+	ld a, [wKirbyGfxScript + 1]
 	ld e, a
 	ld a, [de]
 	ld [hli], a
 	inc de
 	ld a, d
-	ld [wd082 + 0], a
+	ld [wKirbyGfxScript + 0], a
 	ld a, e
-	ld [wd082 + 1], a
+	ld [wKirbyGfxScript + 1], a
 	dec b
 	jr nz, .asm_18b94
 	ld a, [wd061]
@@ -1521,9 +1521,9 @@ Func_1886c:
 	ld [wd065], a
 .asm_18bc9
 	ld [wd061], a
-	ld a, [hff91]
-	set 2, a
-	ld [hff91], a
+	ld a, [hEngineFlags]
+	set PROCESS_BG_QUEUE_F, a
+	ld [hEngineFlags], a
 	ld a, [wKirbyScreenDeltaY]
 	and a
 	ret nz
@@ -1589,9 +1589,9 @@ Func_1886c:
 	jr nz, .asm_18c09
 	xor a
 	ld [bc], a
-	ld a, [hff91]
-	set 2, a
-	ld [hff91], a
+	ld a, [hEngineFlags]
+	set PROCESS_BG_QUEUE_F, a
+	ld [hEngineFlags], a
 	ld a, [wBGPtr_d06b + 0]
 	ld h, a
 	ld a, [wBGPtr_d06b + 1]

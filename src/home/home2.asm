@@ -10,16 +10,16 @@ StopTimerAndSwitchOnLCD::
 ResetTimer::
 	ld hl, hLCDC
 	res LCDCB_ON, [hl]
-	ld hl, hff91
-	set 3, [hl]
+	ld hl, hEngineFlags
+	set ENGINEF_UNK3_F, [hl]
 .asm_1e7e
-	bit 3, [hl]
+	bit ENGINEF_UNK3_F, [hl]
 	jr nz, .asm_1e7e
 	ld a, TACF_STOP
 	ldh [rTAC], a
 	; sets timer to interrupt at
 	; 4k Hz / 68 ~ 60 Hz
-	ld a, $100 - 68
+	ld a, -68
 	ldh [rTMA], a
 	ld a, TACF_4KHZ | TACF_START
 	ldh [rTAC], a
@@ -718,9 +718,9 @@ ASSERT Data_1c000 == Data_3c000
 	ld [hli], a
 	ld [hl], a ; wd038
 
-	ld a, [hff91]
-	and $fc
-	ld [hff91], a
+	ld a, [hEngineFlags]
+	and ~(ENGINEF_UNK0 | ENGINEF_UNK1)
+	ld [hEngineFlags], a
 
 	ld a, [wd03f]
 	ld l, a
@@ -2052,8 +2052,8 @@ Func_29b7:
 	ld a, c
 	and a
 	jr nz, .asm_29ce
-	ld hl, hff91
-	bit 4, [hl]
+	ld hl, hEngineFlags
+	bit PAUSE_ANIMATION_F, [hl]
 	jr nz, .asm_29d4
 .asm_29ce
 	ld hl, hff93
@@ -2289,8 +2289,8 @@ Func_2b26:
 	ld hl, wObjectXVels
 	call ApplyObjectVelocity
 
-	ld hl, hff91
-	bit 7, [hl]
+	ld hl, hEngineFlags
+	bit ENGINEF_UNK7_F, [hl]
 	jr z, .y_velocity
 	ld hl, wd190
 	add hl, bc
@@ -2341,8 +2341,8 @@ Func_2b26:
 	add hl, bc
 	bit 0, [hl]
 	jr z, .asm_2bf9
-	ld hl, hff91
-	bit 7, [hl]
+	ld hl, hEngineFlags
+	bit ENGINEF_UNK7_F, [hl]
 	jr nz, .asm_2bca
 	ld hl, wObjectXCoords + $1
 	add hl, bc
@@ -2657,8 +2657,8 @@ Func_2d2d:
 	cp $b0
 	jr c, .asm_2da5
 .asm_2d69
-	ld a, [hff91]
-	bit 7, a
+	ld a, [hEngineFlags]
+	bit ENGINEF_UNK7_F, a
 	jr z, .asm_2da2
 	ld a, [wd3db]
 	ld b, a
@@ -2984,8 +2984,8 @@ Func_2f34:
 	jr z, .asm_2fa2
 	dec a
 	ld [wd3d4], a
-	ld hl, hff91
-	bit 1, [hl]
+	ld hl, hEngineFlags
+	bit ENGINEF_UNK1_F, [hl]
 	jr z, .asm_2f57
 	ld a, [wd3d4]
 	and a
@@ -3082,8 +3082,8 @@ Func_2fdf:
 	res OBJFLAG_BLINKING_F, [hl]
 .asm_2fff
 	call .Func_303a
-	ld a, [hff91]
-	bit 0, a
+	ld a, [hEngineFlags]
+	bit ENGINEF_UNK0_F, a
 	ret nz
 	ld hl, wMintLeafCounter
 	call .Func_3047
@@ -3095,13 +3095,13 @@ Func_2fdf:
 	ld hl, wd3be
 	bit 0, [hl]
 	jr z, .asm_3030
-	ld hl, hff8e
-	set 2, [hl]
+	ld hl, hKirbyFlags2
+	set KIRBY2F_UNK2_F, [hl]
 	ld hl, hPalFadeFlags
 	set FADE_3_F, [hl]
-	ld a, [hff91]
-	and $fc
-	ld [hff91], a
+	ld a, [hEngineFlags]
+	and ~(ENGINEF_UNK0 | ENGINEF_UNK1)
+	ld [hEngineFlags], a
 .asm_3030
 	ld a, [hff95]
 	and $83
@@ -3591,8 +3591,8 @@ Func_319f:
 	ld [wd06c], a
 	ld a, [hli]
 	ld d, a ; x
-	ld a, [hff91]
-	bit 7, a
+	ld a, [hEngineFlags]
+	bit ENGINEF_UNK7_F, a
 	jr nz, .asm_3350
 	ld a, [wd051]
 	sub $03
@@ -3883,13 +3883,13 @@ Func_3768::
 	set OBJFLAG_FLASHING_F, [hl]
 	ld a, $40
 	ld [hff95], a
-	ld hl, hff8d
+	ld hl, hKirbyFlags1
 	res KIRBY1F_AIRBORNE_F, [hl]
-	ld a, [hff92]
-	and $ff ^ (KIRBY2F_UNK2 | KIRBY2F_UNK3 | KIRBY2F_DUCK | KIRBY2F_LAND)
-	ld [hff92], a
-	ld a, $80
-	ld [hff8e], a
+	ld a, [hKirbyFlags3]
+	and $ff ^ (KIRBY3F_UNK2 | KIRBY3F_DIVE | KIRBY3F_DUCK | KIRBY3F_LAND)
+	ld [hKirbyFlags3], a
+	ld a, KIRBY2F_HOVER
+	ld [hKirbyFlags2], a
 	xor a
 	ld [hff93], a
 	ld a, $01
@@ -4024,8 +4024,8 @@ Func_385b::
 	ld hl, Data_1c19c
 	call CreateObject_Group2
 	jr c, Func_388a
-	ld a, [hff91]
-	bit 0, a
+	ld a, [hEngineFlags]
+	bit ENGINEF_UNK0_F, a
 	jr nz, Func_3873
 	ld hl, wd1b0
 	add hl, bc
@@ -4298,9 +4298,9 @@ Func_3d48::
 	ld a, $16
 	ld [wd065], a
 	xor a
-	ld [hff8d], a
-	ld [hff8e], a
-	ld [hff92], a
+	ld [hKirbyFlags1], a
+	ld [hKirbyFlags2], a
+	ld [hKirbyFlags3], a
 	ld [hff93], a
 	ld [wd064], a
 	ld [wd078], a
@@ -4320,7 +4320,7 @@ Func_3d48::
 	ld a, $00
 	ld [wd07b], a
 	xor a
-	ld hl, wd082
+	ld hl, wKirbyGfxScript
 	ld [hli], a
 	ld [hl], a
 	ret

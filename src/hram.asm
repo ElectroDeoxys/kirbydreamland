@@ -9,10 +9,10 @@ hJoypadPressed:: ; ff8b
 hVBlankFlags:: ; ff8c
 	db
 
-hff8d:: ; ff8d
+hKirbyFlags1:: ; ff8d
 	db
 
-hff8e:: ; ff8e
+hKirbyFlags2:: ; ff8e
 	db
 
 hHUDFlags:: ; ff8f
@@ -21,10 +21,10 @@ hHUDFlags:: ; ff8f
 hPalFadeFlags:: ; ff90
 	db
 
-hff91:: ; ff91
+hEngineFlags:: ; ff91
 	db
 
-hff92:: ; ff92
+hKirbyFlags3:: ; ff92
 	db
 
 hff93:: ; ff93

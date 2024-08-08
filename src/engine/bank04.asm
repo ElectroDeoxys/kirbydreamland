@@ -43,7 +43,7 @@ MotionScript_10162:
 SECTION "Bank 4@422a", ROMX[$422a], BANK[$4]
 
 MotionScript_1022a:
-	jump_if_not_flags hff92, KIRBY2F_FACE_LEFT, .script_1023a
+	jump_if_not_flags hKirbyFlags3, KIRBY3F_FACE_LEFT, .script_1023a
 	set_velocities  8, $8c, $00
 	set_velocities  8, $8a, $00
 	set_velocities 10, $86, $00
@@ -56,7 +56,22 @@ MotionScript_1022a:
 	script_end
 ; 0x10244
 
-SECTION "Bank 4@42c8", ROMX[$42c8], BANK[$4]
+SECTION "Bank 4@428c", ROMX[$428c], BANK[$4]
+
+MotionScript_1028c::
+	set_velocities  2, $7c, $00
+	set_velocities  4, $00, $00
+	set_velocities  2, $8c, $00
+	set_velocities  0, $00, $00
+; 0x10298
+
+SECTION "Bank 4@42bc", ROMX[$42bc], BANK[$4]
+
+MotionScript_102bc::
+	set_velocities  2, $8c, $00
+	set_velocities  4, $00, $00
+	set_velocities  2, $7c, $00
+	set_velocities  0, $00, $00
 
 MotionScript_102c8:
 	set_velocities 0, $85, $00
@@ -69,7 +84,7 @@ MotionScript_102fb:
 	dw MotionScript_1030b, MotionScript_10308
 
 MotionScript_10302:
-	jump_if_not_flags hff92, KIRBY2F_FACE_LEFT, MotionScript_1030b
+	jump_if_not_flags hKirbyFlags3, KIRBY3F_FACE_LEFT, MotionScript_1030b
 
 MotionScript_10308:
 	set_velocities 0, $8b, $00
@@ -101,7 +116,7 @@ SECTION "Bank 4@4370", ROMX[$4370], BANK[$4]
 MotionScript_10370:
 	set_value wd3bf, $01
 	set_flags hff94, $ff, $20
-	jump_if_not_flags hff92, KIRBY2F_FACE_LEFT, .script_1038d
+	jump_if_not_flags hKirbyFlags3, KIRBY3F_FACE_LEFT, .script_1038d
 	position_offset $00, $06
 	set_velocities  2, $8a, $00
 	set_velocities  2, $88, $00

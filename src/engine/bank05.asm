@@ -70,8 +70,8 @@ Func_1401a:
 	jr nz, .asm_14075
 	call DestroyObject
 .asm_1407f
-	ld hl, hff8e
-	set 3, [hl]
+	ld hl, hKirbyFlags2
+	set KIRBY2F_MOUTHFUL_F, [hl]
 	ld hl, hff93
 	bit 5, [hl]
 	jr nz, .asm_14090
@@ -85,8 +85,8 @@ Func_1401a:
 	ld [wd3f7], a
 	ld hl, hff94
 	res 7, [hl]
-	ld hl, hff8e
-	res 4, [hl]
+	ld hl, hKirbyFlags2
+	res KIRBY2F_INHALE_F, [hl]
 	ld hl, hff93
 	set 1, [hl]
 	ld a, SFX_02
@@ -228,8 +228,8 @@ Func_142a3:
 	add hl, bc
 	add hl, bc
 	ld [hl], a
-	ld hl, hff92
-	bit KIRBY2F_UNK3_F, [hl]
+	ld hl, hKirbyFlags3
+	bit KIRBY3F_DIVE_F, [hl]
 	jp z, DestroyObject
 	ret
 ; 0x142c2
@@ -245,13 +245,13 @@ Func_1432c::
 .Func_14336:
 	ld c, -4
 	ld de, $505
-	ld a, [hff8e]
-	and $98
+	ld a, [hKirbyFlags2]
+	and KIRBY2F_MOUTHFUL | KIRBY2F_INHALE | KIRBY2F_HOVER
 	jr nz, .asm_14353
 	ld c, 0
 	ld de, $303
-	ld hl, hff92
-	bit KIRBY2F_DUCK_F, [hl]
+	ld hl, hKirbyFlags3
+	bit KIRBY3F_DUCK_F, [hl]
 	jr z, .asm_14353
 	ld c, 6
 	ld de, $201
@@ -378,8 +378,8 @@ Func_1432c::
 	ld [wd3f5], a
 	ld hl, wd1a0 + OBJECT_SLOT_00
 	set OBJFLAG_BLINKING_F, [hl]
-	ld a, [hff91]
-	bit 0, a
+	ld a, [hEngineFlags]
+	bit ENGINEF_UNK0_F, a
 	jr nz, .asm_14453
 	ld hl, hff94
 	set 3, [hl]
@@ -512,12 +512,12 @@ Func_1432c::
 	jr z, .asm_1453b
 	bit 1, [hl]
 	jr nz, .asm_1453b
-	ld a, [hff92]
-	and KIRBY2F_FACE_LEFT
+	ld a, [hKirbyFlags3]
+	and KIRBY3F_FACE_LEFT
 	push af
 	call Func_3d48
 	pop af
-	ld [hff92], a
+	ld [hKirbyFlags3], a
 	ld hl, hPalFadeFlags
 	set FADE_3_F, [hl]
 .asm_1453b
@@ -569,8 +569,8 @@ Func_1432c::
 	ld [wd3c2], a
 	ld a, c
 	ld [wd3d5], a
-	ld hl, hff91
-	bit 1, [hl]
+	ld hl, hEngineFlags
+	bit ENGINEF_UNK1_F, [hl]
 	jr z, .asm_145aa
 	ld hl, wd190
 	ld b, $00
@@ -809,20 +809,20 @@ Func_14600:
 	jr z, .asm_14730
 	jr .DestroyObject
 .asm_14730
-	ld a, [hff8e]
-	bit 7, a
+	ld a, [hKirbyFlags2]
+	bit KIRBY2F_HOVER_F, a
 	jr z, .asm_14748
-	ld a, [hff92]
-	and KIRBY2F_FACE_LEFT
+	ld a, [hKirbyFlags3]
+	and KIRBY3F_FACE_LEFT
 	push af
 	call Func_3d48
 	pop af
-	ld [hff92], a
+	ld [hKirbyFlags3], a
 	xor a
 	ld [wd094], a
 .asm_14748
-	ld a, $08
-	ld [hff8e], a
+	ld a, KIRBY2F_MOUTHFUL
+	ld [hKirbyFlags2], a
 	jr .DestroyObject
 
 .asm_1474f
@@ -852,10 +852,10 @@ ASSERT FLOAT_ISLANDS_7 == MT_DEDEDE_7
 	cp MT_DEDEDE
 	jr nz, .not_kaboola_fight
 .kaboola_fight
-	ld a, [hff91]
-	and $bf
-	or $03
-	ld [hff91], a
+	ld a, [hEngineFlags]
+	and ~ENGINEF_UNK6
+	or ENGINEF_UNK0 | ENGINEF_UNK1
+	ld [hEngineFlags], a
 	ld hl, hPalFadeFlags
 	set FADE_5_F, [hl]
 .not_kaboola_fight
@@ -916,10 +916,10 @@ ConsumeItem:
 
 Func_147e4::
 	call .Func_1489b
-	ld a, [hff8e]
-	bit 4, a
+	ld a, [hKirbyFlags2]
+	bit KIRBY2F_INHALE_F, a
 	ret z
-	bit 2, a
+	bit KIRBY2F_UNK2_F, a
 	ret nz
 	call Func_14993
 	ld hl, hff94
@@ -979,13 +979,13 @@ Func_147e4::
 .asm_14850
 	cp $14
 	jr nc, .asm_1488d
-	ld a, [hff92]
+	ld a, [hKirbyFlags3]
 	ld e, a
 	ld hl, wd140
 	ld a, [hl]
 	add hl, bc
 	sub [hl]
-	bit KIRBY2F_FACE_LEFT_F, e
+	bit KIRBY3F_FACE_LEFT_F, e
 	jr nz, .asm_14864
 	cpl
 	inc a
@@ -1107,8 +1107,8 @@ Func_148ea:
 	pop bc
 	push bc
 	ld c, $03
-	ld a, [hff92]
-	bit KIRBY2F_FACE_LEFT_F, a
+	ld a, [hKirbyFlags3]
+	bit KIRBY3F_FACE_LEFT_F, a
 	jr nz, .asm_1494a
 	jr .asm_14933
 .asm_1492b
@@ -1215,8 +1215,8 @@ Func_14993:
 	add hl, bc
 	push hl
 	ld a, [de]
-	ld hl, hff92
-	bit KIRBY2F_FACE_LEFT_F, [hl]
+	ld hl, hKirbyFlags3
+	bit KIRBY3F_FACE_LEFT_F, [hl]
 	jr z, .asm_149ca
 	cpl
 	inc a
@@ -1343,8 +1343,8 @@ Func_14a5f::
 	add hl, bc
 	add hl, bc
 	ld c, $0a
-	ld a, [hff92]
-	bit KIRBY2F_FACE_LEFT_F, a
+	ld a, [hKirbyFlags3]
+	bit KIRBY3F_FACE_LEFT_F, a
 	jr z, .asm_14a77
 	ld c, $f6
 .asm_14a77
@@ -1442,7 +1442,7 @@ InitRAM::
 	ld a, $01
 	ld [wd051], a
 	ld [wd052], a
-	ld [wd074], a
+	ld [wKirbyXVel + 0], a
 	ld a, $30
 	ld [wKirbyScreenX], a
 	ld a, $00
@@ -1459,7 +1459,7 @@ InitRAM::
 	ld a, VBLANK_6 | VBLANK_7
 	ld [hVBlankFlags], a
 	ld a, $00
-	ld [hff8d], a
+	ld [hKirbyFlags1], a
 	ld a, SELECT | START
 	ld [wd050], a
 	ld a, $01

@@ -99,7 +99,8 @@ wd052:: ; d052
 	db
 
 wSCX:: db ; d053
-wd054:: db ; d054
+; Kirby's x acceleration
+wKirbyXAcc:: db ; d054
 wSCY:: db ; d055
 wd056:: db ; d056
 
@@ -186,11 +187,10 @@ wd06e:: ; d06e
 wScoreDigits:: ; d06f
 	ds $5
 
-wd074:: ; d074
-	db
-
-wd075:: ; d075
-	db
+; absolute value of Kirby's x velocity
+; in big endian
+wKirbyXVel:: ; d074
+	dw
 
 wd076:: ; d076
 	db
@@ -225,7 +225,7 @@ wd07f:: ; d07f
 wBGP:: db ; d080
 wOBP:: db ; d081
 
-wd082:: ; d082
+wKirbyGfxScript:: ; d082
 	dw
 
 wd084:: ; d084

@@ -6,9 +6,9 @@ VBlank:
 	ld hl, hVBlankFlags
 	bit VBLANK_6_F, [hl]
 	jp z, .waste_cycles
-	ld hl, hff91
-	bit 2, [hl]
-	jp nz, .asm_1da4
+	ld hl, hEngineFlags
+	bit PROCESS_BG_QUEUE_F, [hl]
+	jp nz, .process_bg_queue
 
 	ld hl, wUnkTimer
 	inc [hl]
@@ -36,32 +36,35 @@ VBlank:
 .asm_1d53
 	call ApplyLCDCScrollAndBGPalette
 .asm_1d56
-	ld hl, hff91
-	res 3, [hl]
+	ld hl, hEngineFlags
+	res ENGINEF_UNK3_F, [hl]
 	ld hl, wd037
 	dec [hl]
 	jr nz, .asm_1d6f
-	ld d, $02
+	ld d, 2
 	ld a, [wd036]
-	xor $01
+	xor $1
 	ld [wd036], a
 	jr z, .asm_1d6e
 	inc d
 .asm_1d6e
+	; d = (wd036) ? 3 : 2
 	ld [hl], d
 .asm_1d6f
 	inc hl
 	dec [hl] ; wd038
-	jr nz, .asm_1d82
-	ld d, $04
+	jr nz, .update_audio
+	ld d, 4
 	ld a, [wd036]
-	xor $02
+	xor $2
 	ld [wd036], a
 	jr z, .asm_1d81
-	ld d, $06
+	ld d, 6
 .asm_1d81
+	; d = (wd036) ? 6 : 4
 	ld [hl], d
-.asm_1d82
+
+.update_audio
 	ld a, [wROMBank]
 	push af
 	ld a, BANK(UpdateAudio)
@@ -82,7 +85,7 @@ VBlank:
 	jr nz, .loop_waste_cycles
 	jr .asm_1d53
 
-.asm_1da4
+.process_bg_queue
 	ld a, [wSCX]
 	ldh [rSCX], a
 	ld a, [wSCY]
@@ -100,7 +103,7 @@ VBlank:
 	ld [bc], a
 	jr .loop_queue
 .done_tile_queue
-	ld hl, hff91
-	res 2, [hl]
+	ld hl, hEngineFlags
+	res PROCESS_BG_QUEUE_F, [hl]
 	jr .asm_1d53
 ; 0x1dc3

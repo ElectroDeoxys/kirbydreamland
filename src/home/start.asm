@@ -106,8 +106,8 @@ Func_1f2:
 	jp Func_4783
 
 .check_pause
-	ldh a, [hff8e]
-	bit 4, a
+	ldh a, [hKirbyFlags2]
+	bit KIRBY2F_INHALE_F, a
 	jr z, .check_start_btn
 	ldh a, [hJoypadPressed]
 	and $ff ^ (A_BUTTON | D_RIGHT | D_LEFT | D_DOWN)

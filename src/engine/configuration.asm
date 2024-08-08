@@ -155,9 +155,9 @@ ConfigurationMenu:
 	ld hl, wQueuedBG000TileID
 	add hl, bc
 	ld [hl], $c6 ; cursor tile ID
-	ld a, [hff91]
-	set 2, a
-	ld [hff91], a
+	ld a, [hEngineFlags]
+	set PROCESS_BG_QUEUE_F, a
+	ld [hEngineFlags], a
 	ret
 
 .config_a_btn
@@ -216,9 +216,9 @@ ConfigurationMenu:
 	ld [wQueuedBG000BGPtr + 1], a
 	xor a
 	ld [wQueuedBG001BGPtr + 0], a
-	ld a, [hff91]
-	set 2, a
-	ld [hff91], a
+	ld a, [hEngineFlags]
+	set PROCESS_BG_QUEUE_F, a
+	ld [hEngineFlags], a
 	ret
 
 .decr_lives
@@ -244,9 +244,9 @@ ConfigurationMenu:
 	ld [wQueuedBG001BGPtr + 1], a
 	xor a
 	ld [wQueuedBG002BGPtr + 0], a
-	ld a, [hff91]
-	set 2, a
-	ld [hff91], a
+	ld a, [hEngineFlags]
+	set PROCESS_BG_QUEUE_F, a
+	ld [hEngineFlags], a
 	ret
 
 .SoundTest:
@@ -413,9 +413,9 @@ ConfigurationMenu:
 	ld [wQueuedBG001BGPtr + 1], a
 	xor a
 	ld [wQueuedBG002BGPtr + 0], a
-	ld a, [hff91]
-	set 2, a
-	ld [hff91], a
+	ld a, [hEngineFlags]
+	set PROCESS_BG_QUEUE_F, a
+	ld [hEngineFlags], a
 	ret
 
 .UpdateSoundCheckSFXNumber:
@@ -435,9 +435,9 @@ ConfigurationMenu:
 	ld [wQueuedBG001BGPtr + 1], a
 	xor a
 	ld [wQueuedBG002BGPtr + 0], a
-	ld a, [hff91]
-	set 2, a
-	ld [hff91], a
+	ld a, [hEngineFlags]
+	set PROCESS_BG_QUEUE_F, a
+	ld [hEngineFlags], a
 	ret
 
 .UpdateSoundCheckCursor:
@@ -458,9 +458,9 @@ ConfigurationMenu:
 	ld [wQueuedBG001TileID], a
 	xor a
 	ld [wQueuedBG002BGPtr + 0], a
-	ld a, [hff91]
-	set 2, a
-	ld [hff91], a
+	ld a, [hEngineFlags]
+	set PROCESS_BG_QUEUE_F, a
+	ld [hEngineFlags], a
 	ret
 
 .cursor_on_sfx
@@ -478,8 +478,8 @@ ConfigurationMenu:
 	ld [wQueuedBG001TileID], a
 	xor a
 	ld [wQueuedBG002BGPtr + 0], a
-	ld a, [hff91]
-	set 2, a
-	ld [hff91], a
+	ld a, [hEngineFlags]
+	set PROCESS_BG_QUEUE_F, a
+	ld [hEngineFlags], a
 	ret
 ; 0x1a727
