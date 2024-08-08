@@ -175,7 +175,7 @@ SECTION "Bank 4@467d", ROMX[$467d], BANK[$4]
 
 MotionScript_1067d:
 .loop
-	set_gfx_script AnimScript_2063b
+	set_anim_script AnimScript_2063b
 	set_velocities  6, $87, $89
 	set_velocities  6, $87, $87
 	set_velocities  6, $87, $85
@@ -764,12 +764,12 @@ SECTION "Bank 4@4cf4", ROMX[$4cf4], BANK[$4]
 
 MotionScript_10cf4:
 	set_velocities 80, $00, $00
-	set_gfx_script AnimScript_20647
+	set_anim_script AnimScript_20647
 	set_velocities 16, $00, $86
 	set_velocities 16, $00, $85
 	set_velocities 16, $00, $84
 	set_velocities 80, $00, $74
-	set_gfx_script AnimScript_20647
+	set_anim_script AnimScript_20647
 	set_velocities  8, $86, $00
 	set_velocities  8, $88, $00
 	set_velocities 0, $87, $00
@@ -782,7 +782,7 @@ MotionScript_10d16:
 	jump_abs .loop
 
 .script_10d23
-	set_gfx_script AnimScript_20662
+	set_anim_script AnimScript_20662
 	set_velocities 16, $00, $78
 	set_velocities  8, $84, $75
 	set_velocities  8, $86, $73
@@ -793,7 +793,7 @@ MotionScript_10d16:
 	set_velocities  0, $78, $00
 
 .script_10d40
-	set_gfx_script AnimScript_20659
+	set_anim_script AnimScript_20659
 	set_velocities 16, $00, $78
 	set_velocities  8, $74, $75
 	set_velocities  8, $76, $73
@@ -938,12 +938,12 @@ MotionScript_10e87:
 	jump_abs .loop
 
 MotionScript_10e96:
-	set_gfx_script AnimScript_20d3f
+	set_anim_script AnimScript_20d3f
 	script_repeat 2
 	script_call MotionSubScript_10ecb
 	script_repeat_end
 MotionScript_10ea1:
-	set_gfx_script AnimScript_20d47
+	set_anim_script AnimScript_20d47
 	script_repeat 2
 	script_call MotionSubScript_10ede
 	script_repeat_end
@@ -951,11 +951,11 @@ MotionScript_10ea1:
 
 MotionScript_10eae:
 .loop
-	set_gfx_script AnimScript_20d3f
+	set_anim_script AnimScript_20d3f
 	script_repeat 4
 	script_call MotionSubScript_10ecb
 	script_repeat_end
-	set_gfx_script AnimScript_20d47
+	set_anim_script AnimScript_20d47
 	script_repeat 4
 	script_call MotionSubScript_10ede
 	script_repeat_end

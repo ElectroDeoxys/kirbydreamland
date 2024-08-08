@@ -84,7 +84,7 @@ commands = {
     0xfe: ("calltable_random", 1, parseByte),
 
     # higher order commands
-    0x100: ("set_gfx_script", 2, None),
+    0x100: ("set_anim_script", 2, None),
     0x101: ("set_motion_script", 2, None),
     0x102: ("play_sfx", 1, None),
     0x103: ("set_object_properties", 2, None),

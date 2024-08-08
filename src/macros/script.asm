@@ -211,7 +211,7 @@ MACRO set_velocities
 	db \3 ; y vel
 ENDM
 
-MACRO set_gfx_script
+MACRO set_anim_script
 	set_scripts \1, :+
 :
 ENDM

@@ -1322,7 +1322,7 @@ Func_4bb4::
 	res 0, [hl]
 	set 3, [hl]
 	bit 7, [hl]
-	jr nz, .skip_overwrite_gfx_script
+	jr nz, .skip_overwrite_anim_script
 	ld a, [wKirbyAnimScript + 1]
 	push af
 	ld a, [wKirbyAnimScript + 0]
@@ -1338,7 +1338,7 @@ Func_4bb4::
 	ld a, HIGH(AnimScript_20405)
 	ld [wObjectAnimScriptPtrs + OBJECT_SLOT_00 + 1], a
 
-.skip_overwrite_gfx_script
+.skip_overwrite_anim_script
 	ld bc, OBJECT_SLOT_01
 .loop_objects
 	push bc

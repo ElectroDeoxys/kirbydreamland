@@ -3,9 +3,9 @@ SECTION "Bank 1", ROMX
 INCLUDE "engine/bank01.asm"
 
 
-SECTION "Bank 4", ROMX
+SECTION "Motion Scripts", ROMX
 
-INCLUDE "engine/bank04.asm"
+INCLUDE "data/scripts/motion_scripts.asm"
 
 
 SECTION "Bank 5", ROMX
@@ -23,9 +23,9 @@ SECTION "Bank 7", ROMX
 INCLUDE "engine/bank07.asm"
 
 
-SECTION "Bank 8", ROMX
+SECTION "Animation Scripts", ROMX
 
-INCLUDE "engine/bank08.asm"
+INCLUDE "data/scripts/anim_scripts.asm"
 
 
 SECTION "Bank F", ROMX

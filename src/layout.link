@@ -14,7 +14,7 @@ ROM0
 ROMX $1
 	"Bank 1"
 ROMX $4
-	"Bank 4"
+	"Motion Scripts"
 ROMX $5
 	"Bank 5"
 	org $4c4a
@@ -24,7 +24,7 @@ ROMX $6
 ROMX $7
 	"Bank 7"
 ROMX $8
-	"Bank 8"
+	"Animation Scripts"
 ROMX $f
 	"Bank F"
 WRAM0
