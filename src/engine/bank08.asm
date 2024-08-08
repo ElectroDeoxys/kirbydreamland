@@ -1,94 +1,94 @@
-GfxScript_20000:
+AnimScript_20000:
 	frame  0, $58b8
 
-GfxScript_20003:
+AnimScript_20003:
 	script_delay 0
 
-GfxScript_20005:
+AnimScript_20005:
 	set_object_properties Data_35b7
-	set_custom_func Func_141b1, GfxScript_20ba2
+	set_custom_func Func_141b1, AnimScript_20ba2
 	script_exec Func_4adf
-	set_scripts GfxScript_203be, MotionScript_102fb
+	set_scripts AnimScript_203be, MotionScript_102fb
 
-GfxScript_20017:
+AnimScript_20017:
 	set_object_properties Data_35b7
-	set_custom_func Func_141b1, GfxScript_20ba2
-	set_scripts GfxScript_203be, MotionScript_10008
+	set_custom_func Func_141b1, AnimScript_20ba2
+	set_scripts AnimScript_203be, MotionScript_10008
 
-GfxScript_20026:
+AnimScript_20026:
 	jump_if_flags hEngineFlags, ENGINEF_UNK0, .script_20034
-	create_object GfxScript_20a01, MotionScript_10008, Data_3421
+	create_object AnimScript_20a01, MotionScript_10008, Data_3421
 	script_end
 .script_20034
-	create_object GfxScript_21aa8, MotionScript_10008, Data_3425
+	create_object AnimScript_21aa8, MotionScript_10008, Data_3425
 	script_end
 
-GfxScript_2003c:
-	create_object GfxScript_20044, MotionScript_10008, Data_3421
+AnimScript_2003c:
+	create_object AnimScript_20044, MotionScript_10008, Data_3421
 	script_end
 
-GfxScript_20044:
+AnimScript_20044:
 	frame  2, $5d29
 	frame  2, $5d31
-GfxScript_2004a:
+AnimScript_2004a:
 	script_end
 
-GfxScript_2004b:
+AnimScript_2004b:
 	set_motion_script MotionScript_1092a
 	frame 60, $5c01
 	frame  6, $5c01
 	script_repeat 15
 	frame  8, $5c01
-	create_object GfxScript_208f1, MotionScript_135bc, Data_3425
+	create_object AnimScript_208f1, MotionScript_135bc, Data_3425
 	script_repeat_end
 	frame 16, $58b8
 	play_sfx SFX_13
 	frame 16, $58b8
 	frame 128, $5c1d
-	jump_abs GfxScript_209f6
-GfxScript_20073:
+	jump_abs AnimScript_209f6
+AnimScript_20073:
 	set_motion_script MotionScript_1096c
 	frame 44, $5c01
 	frame 40, $5c01
-	create_object GfxScript_203be, MotionScript_135bc, Data_3425
+	create_object AnimScript_203be, MotionScript_135bc, Data_3425
 	frame 88, $5c01
 .loop
 	frame  4, $5c01
-	create_object GfxScript_203be, MotionScript_10317, Data_3425
-	create_object GfxScript_203be, MotionScript_135bc, Data_3425
-	create_object GfxScript_203be, MotionScript_135bc, Data_3425
+	create_object AnimScript_203be, MotionScript_10317, Data_3425
+	create_object AnimScript_203be, MotionScript_135bc, Data_3425
+	create_object AnimScript_203be, MotionScript_135bc, Data_3425
 	jump_abs .loop
 
-GfxScript_200a3:
+AnimScript_200a3:
 	set_motion_script MotionScript_109a3
 	frame 100, $5c01
 	frame 142, $5c01
 	frame 20, $58b8
 	frame  0, $5c1d
 
-GfxScript_200b4:
+AnimScript_200b4:
 	set_motion_script MotionScript_10a29
 	frame 80, $5c01
 	script_repeat 21
-	create_object GfxScript_208f1, MotionScript_10a13, Data_3425
+	create_object AnimScript_208f1, MotionScript_10a13, Data_3425
 	frame  4, $5c01
 	script_repeat_end
 	frame 20, $5c01
-	create_object GfxScript_20af2, MotionScript_10713, Data_3425
-	create_object GfxScript_20af2, MotionScript_1071f, Data_3425
-	create_object GfxScript_20af2, MotionScript_1072b, Data_3425
-	create_object GfxScript_20af2, MotionScript_10737, Data_3425
-	create_object GfxScript_20af2, MotionScript_10743, Data_3425
-	create_object GfxScript_20af2, MotionScript_10767, Data_3425
-	create_object GfxScript_20af2, MotionScript_1074f, Data_3425
-	create_object GfxScript_20af2, MotionScript_1075b, Data_3425
-	create_object GfxScript_20138, MotionScript_10008, Data_3425
+	create_object AnimScript_20af2, MotionScript_10713, Data_3425
+	create_object AnimScript_20af2, MotionScript_1071f, Data_3425
+	create_object AnimScript_20af2, MotionScript_1072b, Data_3425
+	create_object AnimScript_20af2, MotionScript_10737, Data_3425
+	create_object AnimScript_20af2, MotionScript_10743, Data_3425
+	create_object AnimScript_20af2, MotionScript_10767, Data_3425
+	create_object AnimScript_20af2, MotionScript_1074f, Data_3425
+	create_object AnimScript_20af2, MotionScript_1075b, Data_3425
+	create_object AnimScript_20138, MotionScript_10008, Data_3425
 	script_end
 ; 0x2010c
 
 SECTION "Bank 8@4138", ROMX[$4138], BANK[$8]
 
-GfxScript_20138:
+AnimScript_20138:
 	script_repeat 2
 	frame  2, $5c91
 	frame  2, $5c9d
@@ -101,43 +101,43 @@ GfxScript_20138:
 	script_repeat_end
 	script_end
 
-GfxScript_20154:
-	create_object GfxScript_20af2, MotionScript_10713, Data_3425
-	create_object GfxScript_20af2, MotionScript_1071f, Data_3425
-	create_object GfxScript_20af2, MotionScript_1072b, Data_3425
-	create_object GfxScript_20af2, MotionScript_10737, Data_3425
-	create_object GfxScript_20af2, MotionScript_10743, Data_3425
-	create_object GfxScript_20af2, MotionScript_10767, Data_3425
-	create_object GfxScript_20af2, MotionScript_1074f, Data_3425
-	create_object GfxScript_20af2, MotionScript_1075b, Data_3425
+AnimScript_20154:
+	create_object AnimScript_20af2, MotionScript_10713, Data_3425
+	create_object AnimScript_20af2, MotionScript_1071f, Data_3425
+	create_object AnimScript_20af2, MotionScript_1072b, Data_3425
+	create_object AnimScript_20af2, MotionScript_10737, Data_3425
+	create_object AnimScript_20af2, MotionScript_10743, Data_3425
+	create_object AnimScript_20af2, MotionScript_10767, Data_3425
+	create_object AnimScript_20af2, MotionScript_1074f, Data_3425
+	create_object AnimScript_20af2, MotionScript_1075b, Data_3425
 .loop
 	frame  8, $5bf9
-	create_object GfxScript_20ae6, MotionScript_107c3, Data_3425
+	create_object AnimScript_20ae6, MotionScript_107c3, Data_3425
 	frame  8, $5be9
-	create_object GfxScript_20ae6, MotionScript_107c3, Data_3425
+	create_object AnimScript_20ae6, MotionScript_107c3, Data_3425
 	frame  8, $5be1
-	create_object GfxScript_20ae6, MotionScript_107c3, Data_3425
+	create_object AnimScript_20ae6, MotionScript_107c3, Data_3425
 	frame  8, $5bf1
-	create_object GfxScript_20ae6, MotionScript_107c3, Data_3425
+	create_object AnimScript_20ae6, MotionScript_107c3, Data_3425
 	jump_abs .loop
 
-GfxScript_201b7:
+AnimScript_201b7:
 	script_f2
 	set_object_properties Data_3483
-	set_custom_func Func_141b1, GfxScript_2073c
+	set_custom_func Func_141b1, AnimScript_2073c
 	jump_if_not_flags hKirbyFlags3, KIRBY3F_FACE_LEFT, .script_201d2
 	set_motion_script MotionScript_10a92
 .loop_1
-	script_call GfxScript_208cb
+	script_call AnimScript_208cb
 	jump_rel .loop_1
 
 .script_201d2
 	set_motion_script MotionScript_10abd
 .loop_2
-	script_call GfxScript_208b8
+	script_call AnimScript_208b8
 	jump_rel .loop_2
 
-GfxScript_201dc:
+AnimScript_201dc:
 	script_delay 0
 
 	script_repeat 10
@@ -155,34 +155,34 @@ GfxScript_201dc:
 	set_flags hff94, $df, $00
 	script_delay 0
 
-GfxScript_20206:
+AnimScript_20206:
 	set_flags hEngineFlags, $ff, ENGINEF_UNK5
 	jump_if_flags hff95, $80, $4008 ; bug?
 	set_motion_script MotionScript_135d2
-	create_object GfxScript_203be, MotionScript_10008, Data_3425
+	create_object AnimScript_203be, MotionScript_10008, Data_3425
 	frame  4, $5c01
-	create_object GfxScript_203be, MotionScript_10008, Data_3425
+	create_object AnimScript_203be, MotionScript_10008, Data_3425
 	frame  4, $5c01
-	create_object GfxScript_203be, MotionScript_10008, Data_3425
+	create_object AnimScript_203be, MotionScript_10008, Data_3425
 	frame  8, $5c01
-	create_object GfxScript_203be, MotionScript_10008, Data_3425
+	create_object AnimScript_203be, MotionScript_10008, Data_3425
 	frame 80, $5c01
 	script_repeat 4
-	create_object GfxScript_22f63, MotionScript_135bc, Data_3425
+	create_object AnimScript_22f63, MotionScript_135bc, Data_3425
 	play_sfx SFX_DAMAGE
 	script_delay 4
 	script_repeat_end
 	script_delay 16
 	script_repeat 8
-	create_object GfxScript_22f69, MotionScript_135bc, Data_3425
+	create_object AnimScript_22f69, MotionScript_135bc, Data_3425
 	play_sfx SFX_20
 	script_delay 4
 	script_repeat_end
 	play_sfx SFX_ENTER_DOOR
-	create_object GfxScript_208f1, MotionScript_106eb, Data_3425
-	create_object GfxScript_208f1, MotionScript_106f5, Data_3425
-	create_object GfxScript_208f1, MotionScript_106ff, Data_3425
-	create_object GfxScript_208f1, MotionScript_10709, Data_3425
+	create_object AnimScript_208f1, MotionScript_106eb, Data_3425
+	create_object AnimScript_208f1, MotionScript_106f5, Data_3425
+	create_object AnimScript_208f1, MotionScript_106ff, Data_3425
+	create_object AnimScript_208f1, MotionScript_10709, Data_3425
 .loop
 	frame 10, $5be1
 	frame 10, $5bf1
@@ -193,7 +193,7 @@ GfxScript_20206:
 
 SECTION "Bank 8@42b6", ROMX[$42b6], BANK[$8]
 
-GfxScript_202b6::
+AnimScript_202b6::
 	frame 26, $58c1
 	frame 18, $58c9
 	frame 18, $58d1
@@ -226,7 +226,7 @@ GfxScript_202b6::
 	set_flags hff94, $fe, $01
 	script_delay 1
 
-GfxScript_20311::
+AnimScript_20311::
 	frame 26, $58f1
 	frame 18, $58f9
 	frame 18, $5901
@@ -259,13 +259,13 @@ GfxScript_20311::
 	set_flags hff94, $ff, $01
 	script_delay 1
 
-GfxScript_2036c:
-	create_object GfxScript_20a01, MotionScript_10008, Data_3421
+AnimScript_2036c:
+	create_object AnimScript_20a01, MotionScript_10008, Data_3421
 	frame 16, $58b8
 	set_flags wd3bf, $ff, $02
 	script_end
 
-GfxScript_2037c:
+AnimScript_2037c:
 	frame  2, $5c91
 	frame  2, $5c9d
 	frame  2, $5ca9
@@ -288,7 +288,7 @@ GfxScript_2037c:
 
 SECTION "Bank 8@43be", ROMX[$43be], BANK[$8]
 
-GfxScript_203be:
+AnimScript_203be:
 	play_sfx SFX_10
 	script_repeat 2
 	frame  2, $5d39
@@ -305,7 +305,7 @@ GfxScript_203be:
 
 SECTION "Bank 8@4405", ROMX[$4405], BANK[$8]
 
-GfxScript_20405:
+AnimScript_20405:
 	jump_if_not_flags hKirbyFlags3, KIRBY3F_FACE_LEFT, .script_20419
 	frame  6, $5af1
 	frame  6, $5ae9
@@ -320,12 +320,12 @@ GfxScript_20405:
 
 SECTION "Bank 8@4477", ROMX[$4477], BANK[$8]
 
-GfxScript_20477:
+AnimScript_20477:
 	play_sfx SFX_15
-	jump_if_flags wd3be, $02, GfxScript_20bc9
-	jump_if_flags wd3be, $04, GfxScript_20bb7
+	jump_if_flags wd3be, $02, AnimScript_20bc9
+	jump_if_flags wd3be, $04, AnimScript_20bb7
 	jump_if_flags hEngineFlags, ENGINEF_UNK0, .script_2049e
-	set_custom_func Func_141b1, GfxScript_20b9a
+	set_custom_func Func_141b1, AnimScript_20b9a
 .check_land
 	jump_if_not_flags hKirbyFlags3, KIRBY3F_FACE_LEFT, .script_2049b
 	frame  0, $5cf9
@@ -339,18 +339,18 @@ GfxScript_20477:
 
 SECTION "Bank 8@4566", ROMX[$4566], BANK[$8]
 
-GfxScript_20566::
+AnimScript_20566::
 	frame  4, $5b81
 	frame  0, $5b89
 
-GfxScript_2056c::
+AnimScript_2056c::
 	frame  4, $5b99
 	frame  0, $5ba1
 ; 0x20572
 
 SECTION "Bank 8@4587", ROMX[$4587], BANK[$8]
 
-GfxScript_20587:
+AnimScript_20587:
 .loop
 	frame 16, $5e55
 	frame 16, $5e5d
@@ -359,7 +359,7 @@ GfxScript_20587:
 
 SECTION "Bank 8@45ae", ROMX[$45ae], BANK[$8]
 
-GfxScript_205ae:
+AnimScript_205ae:
 .loop
 	frame 10, $5e55
 	frame 10, $5e5d
@@ -372,7 +372,7 @@ GfxScript_205ae:
 	frame 10, $5e55
 	jump_abs .loop
 
-GfxScript_205cc:
+AnimScript_205cc:
 .loop
 	frame 64, $5e55
 	frame  8, $5e5d
@@ -385,14 +385,14 @@ GfxScript_205cc:
 
 SECTION "Bank 8@463b", ROMX[$463b], BANK[$8]
 
-GfxScript_2063b:
+AnimScript_2063b:
 	frame  8, $5ecd
 	frame  0, $5ec5
 
 	frame  8, $5edd
 	frame  0, $5ed5
 
-GfxScript_20647:
+AnimScript_20647:
 .loop
 	frame 10, $5ec5
 	frame 10, $5ecd
@@ -401,13 +401,13 @@ GfxScript_20647:
 
 SECTION "Bank 8@4659", ROMX[$4659], BANK[$8]
 
-GfxScript_20659:
+AnimScript_20659:
 .loop
 	frame  5, $5ec5
 	frame  5, $5ecd
 	jump_abs .loop
 
-GfxScript_20662:
+AnimScript_20662:
 .loop
 	frame  5, $5ed5
 	frame  5, $5edd
@@ -416,7 +416,7 @@ GfxScript_20662:
 
 SECTION "Bank 8@473c", ROMX[$473c], BANK[$8]
 
-GfxScript_2073c:
+AnimScript_2073c:
 	script_f3
 	set_object_properties Data_3425
 	script_exec Func_49fb
@@ -438,33 +438,33 @@ GfxScript_2073c:
 	frame  6, $58c9
 	jump_rel .loop_2
 
-GfxScript_20771:
+AnimScript_20771:
 	set_motion_script MotionScript_10008
-	create_object GfxScript_20799, MotionScript_10008, Data_3425
-	create_object GfxScript_207a5, MotionScript_10008, Data_3425
-	script_call GfxScript_208b8
+	create_object AnimScript_20799, MotionScript_10008, Data_3425
+	create_object AnimScript_207a5, MotionScript_10008, Data_3425
+	script_call AnimScript_208b8
 	frame 55, $58e1
 	play_music MUSIC_VICTORY
-GfxScript_2078e:
+AnimScript_2078e:
 	jumptable wStage
-	dw GfxScript_207b1 ; GREEN_GREENS
-	dw GfxScript_207f8 ; CASTLE_LOLOLO
-	dw GfxScript_2084b ; FLOAT_ISLANDS
-	dw GfxScript_20883 ; BUBBLY_CLOUDS
+	dw AnimScript_207b1 ; GREEN_GREENS
+	dw AnimScript_207f8 ; CASTLE_LOLOLO
+	dw AnimScript_2084b ; FLOAT_ISLANDS
+	dw AnimScript_20883 ; BUBBLY_CLOUDS
 
-GfxScript_20799:
+AnimScript_20799:
 	position_offset $e2, $00
-	script_call GfxScript_208de
+	script_call AnimScript_208de
 	frame 55, $58e1
-	jump_abs GfxScript_2078e
+	jump_abs AnimScript_2078e
 
-GfxScript_207a5:
+AnimScript_207a5:
 	position_offset $1e, $00
-	script_call GfxScript_208de
+	script_call AnimScript_208de
 	frame 55, $58e1
-	jump_abs GfxScript_2078e
+	jump_abs AnimScript_2078e
 
-GfxScript_207b1:
+AnimScript_207b1:
 	set_motion_script MotionScript_10b05
 	script_repeat 2
 	frame 10, $58d1
@@ -474,8 +474,8 @@ GfxScript_207b1:
 	script_repeat_end
 	frame  9, $58d1
 	frame  5, $58c9
-	script_call GfxScript_208b8
-	script_call GfxScript_208b8
+	script_call AnimScript_208b8
+	script_call AnimScript_208b8
 	frame 31, $58e1
 	frame 24, $58d9
 	frame 55, $5b69
@@ -484,13 +484,13 @@ GfxScript_207b1:
 	frame  8, $5bc5
 	frame  4, $58b9
 	frame  8, $5bc9
-	script_call GfxScript_208cb
+	script_call AnimScript_208cb
 	frame 23, $5bad
 	frame 60, $5911
 	set_value wd3dd, $01
 	script_delay 0
 
-GfxScript_207f8:
+AnimScript_207f8:
 	set_motion_script MotionScript_10b38
 	frame 10, $5909
 	frame 10, $5ba9
@@ -516,12 +516,12 @@ GfxScript_207f8:
 	frame  6, $5bf9
 	frame  6, $5bf1
 	script_repeat_end
-	script_call GfxScript_208b8
+	script_call AnimScript_208b8
 	frame 60, $58e1
 	set_value wd3dd, $01
 	script_delay 0
 
-GfxScript_2084b:
+AnimScript_2084b:
 	set_motion_script MotionScript_10b98
 	frame 60, $5909
 	frame 20, $5bad
@@ -536,14 +536,14 @@ GfxScript_2084b:
 	frame 10, $5909
 	frame 30, $5b71
 	script_repeat_end
-	script_call GfxScript_208b8
-	script_call GfxScript_208b8
+	script_call AnimScript_208b8
+	script_call AnimScript_208b8
 	frame 32, $5bad
 	frame 60, $5911
 	set_value wd3dd, $01
 	script_delay 0
 
-GfxScript_20883:
+AnimScript_20883:
 	set_motion_script MotionScript_10bda
 	frame 60, $5bc5
 	frame 20, $5bc9
@@ -555,14 +555,14 @@ GfxScript_20883:
 	frame 20, $5ba9
 	frame 20, $5909
 	frame 20, $5ba9
-	script_call GfxScript_208cb
-	script_call GfxScript_208cb
+	script_call AnimScript_208cb
+	script_call AnimScript_208cb
 	frame 32, $5bad
 	frame 60, $5911
 	set_value wd3dd, $01
 	script_delay 0
 
-GfxScript_208b8:
+AnimScript_208b8:
 	frame  4, $58d1
 	frame  4, $5b81
 	frame  4, $5b89
@@ -571,7 +571,7 @@ GfxScript_208b8:
 	frame  4, $5901
 	script_ret
 
-GfxScript_208cb:
+AnimScript_208cb:
 	frame  4, $5901
 	frame  4, $5b99
 	frame  4, $5ba1
@@ -580,7 +580,7 @@ GfxScript_208cb:
 	frame  4, $58d1
 	script_ret
 
-GfxScript_208de:
+AnimScript_208de:
 	frame  4, $5c91
 	frame  4, $5c9d
 	frame  4, $5ca9
@@ -592,13 +592,13 @@ GfxScript_208de:
 
 SECTION "Bank 8@48f1", ROMX[$48f1], BANK[$8]
 
-GfxScript_208f1:
+AnimScript_208f1:
 	frame  0, $5c1d
 ; 0x208f4
 
 SECTION "Bank 8@48fc", ROMX[$48fc], BANK[$8]
 
-GfxScript_208fc:
+AnimScript_208fc:
 	frame 162, $5c4d
 .loop
 	frame  2, $5c55
@@ -608,14 +608,14 @@ GfxScript_208fc:
 
 SECTION "Bank 8@4925", ROMX[$4925], BANK[$8]
 
-GfxScript_20925:
+AnimScript_20925:
 	script_exec Func_4ad6
 	frame  0, $5c75
 ; 0x2092b
 
 SECTION "Bank 8@492e", ROMX[$492e], BANK[$8]
 
-GfxScript_2092e:
+AnimScript_2092e:
 	script_exec Func_4ad6
 	frame  0, $5c7d
 
@@ -631,7 +631,7 @@ GfxScript_2092e:
 
 SECTION "Bank 8@4958", ROMX[$4958], BANK[$8]
 
-GfxScript_20958:
+AnimScript_20958:
 .loop
 	frame 20, $5c25
 	frame 20, $5c2d
@@ -642,7 +642,7 @@ GfxScript_20958:
 
 SECTION "Bank 8@49f6", ROMX[$49f6], BANK[$8]
 
-GfxScript_209f6:
+AnimScript_209f6:
 	frame  4, $5d21
 	frame  4, $5d29
 	frame  4, $5d31
@@ -651,62 +651,62 @@ GfxScript_209f6:
 
 SECTION "Bank 8@4a01", ROMX[$4a01], BANK[$8]
 
-GfxScript_20a01:
+AnimScript_20a01:
 	play_sfx SFX_28
 	jumptable_random %11
-	dw GfxScript_20a0f
-	dw GfxScript_20a3b
-	dw GfxScript_20a76
-	dw GfxScript_20ab7
+	dw AnimScript_20a0f
+	dw AnimScript_20a3b
+	dw AnimScript_20a76
+	dw AnimScript_20ab7
 
-GfxScript_20a0f:
-	create_object GfxScript_208f1, MotionScript_1083f, Data_3421
-	create_object GfxScript_208f1, MotionScript_10850, Data_3421
+AnimScript_20a0f:
+	create_object AnimScript_208f1, MotionScript_1083f, Data_3421
+	create_object AnimScript_208f1, MotionScript_10850, Data_3421
 	frame  3, $5c25
 	frame  3, $5c2d
-	create_object GfxScript_208f1, MotionScript_10835, Data_3421
-	create_object GfxScript_208f1, MotionScript_10846, Data_3421
+	create_object AnimScript_208f1, MotionScript_10835, Data_3421
+	create_object AnimScript_208f1, MotionScript_10846, Data_3421
 	frame  3, $5c3d
 	frame  3, $5c45
 	frame  3, $5c25
 	script_end
 
-GfxScript_20a3b:
-	create_object GfxScript_208f1, MotionScript_10857, Data_3421
-	create_object GfxScript_208f1, MotionScript_1086b, Data_3421
-	create_object GfxScript_208f1, MotionScript_1087f, Data_3421
-	create_object GfxScript_208f1, MotionScript_10893, Data_3421
+AnimScript_20a3b:
+	create_object AnimScript_208f1, MotionScript_10857, Data_3421
+	create_object AnimScript_208f1, MotionScript_1086b, Data_3421
+	create_object AnimScript_208f1, MotionScript_1087f, Data_3421
+	create_object AnimScript_208f1, MotionScript_10893, Data_3421
 	script_delay 9
-	create_object GfxScript_208f1, MotionScript_10861, Data_3421
-	create_object GfxScript_208f1, MotionScript_10875, Data_3421
-	create_object GfxScript_208f1, MotionScript_10889, Data_3421
-	create_object GfxScript_208f1, MotionScript_1089d, Data_3421
+	create_object AnimScript_208f1, MotionScript_10861, Data_3421
+	create_object AnimScript_208f1, MotionScript_10875, Data_3421
+	create_object AnimScript_208f1, MotionScript_10889, Data_3421
+	create_object AnimScript_208f1, MotionScript_1089d, Data_3421
 	script_end
 
-GfxScript_20a76:
+AnimScript_20a76:
 	script_exec Func_30b2
 	dw .script_20a7d, .script_20a9a
 .script_20a7d
-	create_object GfxScript_208f1, MotionScript_108a7, Data_3421
-	create_object GfxScript_208f1, MotionScript_108b4, Data_3421
-	create_object GfxScript_208f1, MotionScript_108c1, Data_3421
-	create_object GfxScript_208f1, MotionScript_108ce, Data_3421
+	create_object AnimScript_208f1, MotionScript_108a7, Data_3421
+	create_object AnimScript_208f1, MotionScript_108b4, Data_3421
+	create_object AnimScript_208f1, MotionScript_108c1, Data_3421
+	create_object AnimScript_208f1, MotionScript_108ce, Data_3421
 	script_end
 .script_20a9a
-	create_object GfxScript_208f1, MotionScript_108db, Data_3421
-	create_object GfxScript_208f1, MotionScript_108e8, Data_3421
-	create_object GfxScript_208f1, MotionScript_108f5, Data_3421
-	create_object GfxScript_208f1, MotionScript_10902, Data_3421
+	create_object AnimScript_208f1, MotionScript_108db, Data_3421
+	create_object AnimScript_208f1, MotionScript_108e8, Data_3421
+	create_object AnimScript_208f1, MotionScript_108f5, Data_3421
+	create_object AnimScript_208f1, MotionScript_10902, Data_3421
 	script_end
 
-GfxScript_20ab7:
-	create_object GfxScript_20ad4, MotionScript_1090f, Data_3421
-	create_object GfxScript_20ad4, MotionScript_10915, Data_3421
-	create_object GfxScript_20ad4, MotionScript_1091b, Data_3421
-	create_object GfxScript_20ad4, MotionScript_10921, Data_3421
+AnimScript_20ab7:
+	create_object AnimScript_20ad4, MotionScript_1090f, Data_3421
+	create_object AnimScript_20ad4, MotionScript_10915, Data_3421
+	create_object AnimScript_20ad4, MotionScript_1091b, Data_3421
+	create_object AnimScript_20ad4, MotionScript_10921, Data_3421
 	script_end
 
-GfxScript_20ad4:
+AnimScript_20ad4:
 	frame 10, $5c1d
 	set_motion_script MotionScript_10008
 	script_delay 10
@@ -715,13 +715,13 @@ GfxScript_20ad4:
 
 SECTION "Bank 8@4ae6", ROMX[$4ae6], BANK[$8]
 
-GfxScript_20ae6:
+AnimScript_20ae6:
 	set_value wd414, $01
 	frame 24, $5c1d
 	set_value wd414, $00
 	script_end
 
-GfxScript_20af2:
+AnimScript_20af2:
 	frame  4, $5c1d
 	frame  5, $5c25
 	frame  5, $5c2d
@@ -733,33 +733,33 @@ GfxScript_20af2:
 
 SECTION "Bank 8@4b9a", ROMX[$4b9a], BANK[$8]
 
-GfxScript_20b9a:
+AnimScript_20b9a:
 	script_exec Func_4a1c
-	set_scripts GfxScript_209f6, MotionScript_10008
+	set_scripts AnimScript_209f6, MotionScript_10008
 
-GfxScript_20ba2:
+AnimScript_20ba2:
 	script_exec Func_4a1c
 	set_object_properties Data_35b7
-	set_scripts GfxScript_203be, MotionScript_10008
+	set_scripts AnimScript_203be, MotionScript_10008
 	set_custom_func Func_142a3, NULL
-	jump_abs GfxScript_20000
+	jump_abs AnimScript_20000
 
-GfxScript_20bb7:
+AnimScript_20bb7:
 	set_flags wd3be, $01, $00
 	script_exec Func_4adf
-	set_custom_func Func_141b1, GfxScript_20ba2
-	set_scripts GfxScript_208fc, MotionScript_10302
+	set_custom_func Func_141b1, AnimScript_20ba2
+	set_scripts AnimScript_208fc, MotionScript_10302
 
-GfxScript_20bc9:
+AnimScript_20bc9:
 	set_flags wd3be, $01, $00
 	play_sfx SFX_00
 	script_exec Func_4ae6
-	set_scripts GfxScript_20925, MotionScript_10370
+	set_scripts AnimScript_20925, MotionScript_10370
 
-GfxScript_20bda:
+AnimScript_20bda:
 	position_offset $00, $05
 	play_sfx SFX_19
-	set_custom_func Func_141b1, GfxScript_20b9a
+	set_custom_func Func_141b1, AnimScript_20b9a
 	jump_if_not_flags hKirbyFlags3, KIRBY3F_FACE_LEFT, .loop_2
 
 .loop_1
@@ -775,13 +775,13 @@ GfxScript_20bda:
 
 SECTION "Bank 8@4c52", ROMX[$4c52], BANK[$8]
 
-GfxScript_20c52:
+AnimScript_20c52:
 .loop
 	frame 12, $41fc
 	frame 24, $4204
 	jump_abs .loop
 
-GfxScript_20c5b:
+AnimScript_20c5b:
 .loop
 	frame 80, $41f4
 	frame  8, $41fc
@@ -790,13 +790,13 @@ GfxScript_20c5b:
 	frame 40, $4204
 	jump_abs .loop
 
-GfxScript_20c6d:
-	create_object GfxScript_20c7e, MotionScript_10008, Data_3421
+AnimScript_20c6d:
+	create_object AnimScript_20c7e, MotionScript_10008, Data_3421
 	play_sfx SFX_30
 	frame 1, $41cc
 	script_exec Func_4afb
 
-GfxScript_20c7e:
+AnimScript_20c7e:
 	set_custom_func Func_14105, NULL
 	script_exec Func_48e1
 	script_exec Func_30b2
@@ -809,26 +809,26 @@ GfxScript_20c7e:
 	script_repeat_end
 	script_exec Func_48e8
 	set_object_properties CappyProperties
-	set_scripts GfxScript_20cc3, MotionScript_10ddf
+	set_scripts AnimScript_20cc3, MotionScript_10ddf
 .branch_2
-	set_scripts GfxScript_20cad, MotionScript_10dcb
+	set_scripts AnimScript_20cad, MotionScript_10dcb
 
-GfxScript_20cad:
+AnimScript_20cad:
 	script_repeat 6
 	frame 4, $41b4
 	frame 4, $41ac
 	script_repeat_end
 	script_exec Func_48e8
 	set_object_properties CappyProperties
-	set_scripts GfxScript_20ccb, MotionScript_10de7
+	set_scripts AnimScript_20ccb, MotionScript_10de7
 
-GfxScript_20cc3:
+AnimScript_20cc3:
 .loop
 	script_call GfxSubScript_20cd3
 	script_call GfxSubScript_20cdd
 	jump_rel .loop
 
-GfxScript_20ccb:
+AnimScript_20ccb:
 .loop
 	script_call GfxSubScript_20cdd
 	script_call GfxSubScript_20cd3
@@ -848,7 +848,7 @@ GfxSubScript_20cdd:
 	script_repeat_end
 	script_ret
 
-GfxScript_20ce7:
+AnimScript_20ce7:
 .loop
 	script_call GfxSubScript_20cf7
 	script_call GfxSubScript_20d01
@@ -871,14 +871,14 @@ GfxSubScript_20d01:
 	script_repeat_end
 	script_ret
 
-GfxScript_20d0b:
-	set_custom_func Func_140c2, GfxScript_20c6d
+AnimScript_20d0b:
+	set_custom_func Func_140c2, AnimScript_20c6d
 .loop
 	frame 20, $41c4
 	frame 20, $41bc
 	jump_abs .loop
 
-GfxScript_20d19:
+AnimScript_20d19:
 .loop
 	frame 20, $41c4
 	frame 20, $41bc
@@ -887,7 +887,7 @@ GfxScript_20d19:
 
 SECTION "Bank 8@4d28", ROMX[$4d28], BANK[$8]
 
-GfxScript_20d28:
+AnimScript_20d28:
 	script_repeat 10
 	frame 10, $5ec5
 	frame 10, $5ecd
@@ -898,68 +898,68 @@ GfxScript_20d28:
 	frame  7, $5ecd
 	jump_abs .loop
 
-GfxScript_20d3f:
+AnimScript_20d3f:
 .loop
 	frame  9, $417c
 	frame  9, $4184
 	jump_rel .loop
 
-GfxScript_20d47:
+AnimScript_20d47:
 .loop
 	frame  9, $418c
 	frame  9, $4194
 	jump_rel .loop
 
-GfxScript_20d4f:
+AnimScript_20d4f:
 	position_offset 0, -10
 	set_object_properties Data_352c
-	set_custom_func Func_141b1, GfxScript_20d79
+	set_custom_func Func_141b1, AnimScript_20d79
 	set_motion_script MotionScript_10ef1
 	frame  0, $417c
 
-GfxScript_20d64:
+AnimScript_20d64:
 	position_offset 0, -10
 	set_object_properties Data_352c
-	set_custom_func Func_141b1, GfxScript_20d83
+	set_custom_func Func_141b1, AnimScript_20d83
 	set_motion_script MotionScript_10ef1
 	frame  0, $418c
 
-GfxScript_20d79:
+AnimScript_20d79:
 	set_object_properties Data_3523
-	set_scripts GfxScript_20d3f, MotionScript_10e96
+	set_scripts AnimScript_20d3f, MotionScript_10e96
 
-GfxScript_20d83:
+AnimScript_20d83:
 	set_object_properties Data_3523
-	set_scripts GfxScript_20d47, MotionScript_10ea1
+	set_scripts AnimScript_20d47, MotionScript_10ea1
 ; 0x20d8d
 
 SECTION "Bank 8@4d92", ROMX[$4d92], BANK[$8]
 
-GfxScript_20d92:
+AnimScript_20d92:
 	set_motion_script MotionScript_10f06
 .loop
-	script_call GfxScript_20db1
-	script_call GfxScript_20dbb
+	script_call AnimScript_20db1
+	script_call AnimScript_20dbb
 	jump_rel .loop
 ; 0x20d9f
 
 SECTION "Bank 8@4db1", ROMX[$4db1], BANK[$8]
 
-GfxScript_20db1:
+AnimScript_20db1:
 	script_repeat 9
 	frame  3, $4224
 	frame 16, $423c
 	script_repeat_end
 	script_ret
 
-GfxScript_20dbb:
+AnimScript_20dbb:
 	script_repeat 9
 	frame  3, $426c
 	frame 16, $4284
 	script_repeat_end
 	script_ret
 
-GfxScript_20dc5:
+AnimScript_20dc5:
 .loop
 	script_repeat 3
 	frame  3, $4224
@@ -974,45 +974,45 @@ GfxScript_20dc5:
 
 SECTION "Bank 8@4de5", ROMX[$4de5], BANK[$8]
 
-GfxScript_20de5:
+AnimScript_20de5:
 	script_exec Func_30b2
 	dw $4dec, $4dfe
 	set_motion_script MotionScript_10f3c
 	frame 30, $4254
 	set_object_properties $3535
-	set_scripts GfxScript_20dc5, MotionScript_10f5a
+	set_scripts AnimScript_20dc5, MotionScript_10f5a
 ; 0x20e03
 
 SECTION "Bank 8@4e20", ROMX[$4e20], BANK[$8]
 
 GfxSubScript_20e20:
-	set_custom_func Func_140c2, GfxScript_20e2f
+	set_custom_func Func_140c2, AnimScript_20e2f
 	script_repeat 9
 	frame  3, $42d4
 	frame 16, $42b4
 	script_repeat_end
 	script_ret
 
-GfxScript_20e2f:
-	create_object GfxScript_20de5, MotionScript_10008, $353e
+AnimScript_20e2f:
+	create_object AnimScript_20de5, MotionScript_10008, $353e
 	position_offset $00, $f0
-	jump_abs GfxScript_20e8d
+	jump_abs AnimScript_20e8d
 
 GfxSubScript_20e3c:
-	set_custom_func Func_140c2, GfxScript_20e4b
+	set_custom_func Func_140c2, AnimScript_20e4b
 	script_repeat 9
 	frame  3, $4334
 	frame 16, $4354
 	script_repeat_end
 	script_ret
 
-GfxScript_20e4b:
-	create_object GfxScript_20de5, MotionScript_10008, $353e
+AnimScript_20e4b:
+	create_object AnimScript_20de5, MotionScript_10008, $353e
 	position_offset $00, $f0
-	jump_abs GfxScript_20e92
+	jump_abs AnimScript_20e92
 
-GfxScript_20e58:
-	set_custom_func Func_140c2, GfxScript_20e83
+AnimScript_20e58:
+	set_custom_func Func_140c2, AnimScript_20e83
 .loop
 	frame 10, $4324
 	frame 10, $4314
@@ -1028,19 +1028,19 @@ GfxScript_20e58:
 	frame 10, $4324
 	jump_rel .loop
 
-GfxScript_20e83:
-	create_object GfxScript_20e9d, MotionScript_10f9c, Data_3559
+AnimScript_20e83:
+	create_object AnimScript_20e9d, MotionScript_10f9c, Data_3559
 	position_offset 0, -16
-GfxScript_20e8d:
+AnimScript_20e8d:
 	frame  1, $417c
-	jump_rel GfxScript_20e95
-GfxScript_20e92:
+	jump_rel AnimScript_20e95
+AnimScript_20e92:
 	frame  1, $418c
-GfxScript_20e95:
+AnimScript_20e95:
 	set_object_properties Data_3523
 	script_exec Func_4afb
 
-GfxScript_20e9d:
+AnimScript_20e9d:
 	script_repeat 2
 	frame  2, $41d4
 	frame  2, $41ec
@@ -1060,16 +1060,16 @@ GfxScript_20e9d:
 	script_exec Func_30b2
 	dw .script_20ed1, .script_20edb
 .script_20ed1
-	create_object GfxScript_20d4f, MotionScript_10008, Data_3523
-	jump_abs GfxScript_20a0f
+	create_object AnimScript_20d4f, MotionScript_10008, Data_3523
+	jump_abs AnimScript_20a0f
 .script_20edb
-	create_object GfxScript_20d64, MotionScript_10008, Data_3523
-	jump_abs GfxScript_20a0f
+	create_object AnimScript_20d64, MotionScript_10008, Data_3523
+	jump_abs AnimScript_20a0f
 ; 0x20ee5
 
 SECTION "Bank 8@4f14", ROMX[$4f14], BANK[$8]
 
-GfxScript_20f14:
+AnimScript_20f14:
 	jump_if_equal wd3f1, $00, .start_battle
 	script_end
 .start_battle
@@ -1077,7 +1077,7 @@ GfxScript_20f14:
 	script_exec Func_4a82
 	set_value wBossHPCounter, 3
 	set_value wd3c1, $01
-	create_object GfxScript_21195, MotionScript_10008, Data_3421
+	create_object AnimScript_21195, MotionScript_10008, Data_3421
 	frame 45, $4088
 .loop
 	; scripted attacks
@@ -1137,7 +1137,7 @@ GfxSubScript_20fa3:
 	frame  3, $4144
 	frame  3, $4128
 	play_sfx SFX_28
-	create_object GfxScript_2101d, MotionScript_110d7, Data_3574
+	create_object AnimScript_2101d, MotionScript_110d7, Data_3574
 	frame  3, $40dc
 	frame  8, $40c8
 	frame 21, $4088
@@ -1154,7 +1154,7 @@ GfxSubScript_20fd5:
 	frame  3, $4144
 	frame  3, $4128
 	play_sfx SFX_28
-	create_object GfxScript_2101d, MotionScript_110ba, Data_3574
+	create_object AnimScript_2101d, MotionScript_110ba, Data_3574
 	frame  3, $40dc
 	frame  8, $40c8
 	script_ret
@@ -1162,14 +1162,14 @@ GfxSubScript_20fd5:
 
 SECTION "Bank 8@501d", ROMX[$501d], BANK[$8]
 
-GfxScript_2101d:
+AnimScript_2101d:
 	position_offset -16, 8
 	frame  0, $5c4d
 ; 0x21023
 
 SECTION "Bank 8@5195", ROMX[$5195], BANK[$8]
 
-GfxScript_21195:
+AnimScript_21195:
 	frame  1, $58b8
 	script_f3
 	script_f0 $14, $14
@@ -1189,7 +1189,7 @@ GfxScript_21195:
 
 SECTION "Bank 8@5aa8", ROMX[$5aa8], BANK[$8]
 
-GfxScript_21aa8:
+AnimScript_21aa8:
 	play_sfx SFX_28
 	frame  6, $5d21
 	frame  2, $5d29
@@ -1200,59 +1200,59 @@ GfxScript_21aa8:
 SECTION "Bank 8@5eae", ROMX[$5eae], BANK[$8]
 
 ; TODO unreferenced?
-GfxScript_21eae:
-	script_call GfxScript_21f0a
+AnimScript_21eae:
+	script_call AnimScript_21f0a
 	script_exec Func_30b2
-	dw GfxScript_21eb8, GfxScript_21efa
+	dw AnimScript_21eb8, AnimScript_21efa
 
-GfxScript_21eb8:
-	script_call GfxScript_21f0a
+AnimScript_21eb8:
+	script_call AnimScript_21f0a
 	script_exec Func_30b2
-	dw GfxScript_21ec2, GfxScript_21ef0
+	dw AnimScript_21ec2, AnimScript_21ef0
 
-GfxScript_21ec2:
-	script_call GfxScript_21f0a
+AnimScript_21ec2:
+	script_call AnimScript_21f0a
 	script_exec Func_30b2
-	dw GfxScript_21ecc, GfxScript_21ee6
+	dw AnimScript_21ecc, AnimScript_21ee6
 
-GfxScript_21ecc:
-	script_call GfxScript_21f0a
-GfxScript_21ecf:
+AnimScript_21ecc:
+	script_call AnimScript_21f0a
+AnimScript_21ecf:
 	script_exec Func_30b2
-	dw GfxScript_21ed6, GfxScript_21edc
+	dw AnimScript_21ed6, AnimScript_21edc
 
-GfxScript_21ed6:
-	script_call GfxScript_21f0f
-	jump_abs GfxScript_21ecf
+AnimScript_21ed6:
+	script_call AnimScript_21f0f
+	jump_abs AnimScript_21ecf
 
-GfxScript_21edc:
-	script_call GfxScript_21f4d
+AnimScript_21edc:
+	script_call AnimScript_21f4d
 	script_exec Func_30b2
-	dw GfxScript_21ecc, GfxScript_21ee6
+	dw AnimScript_21ecc, AnimScript_21ee6
 
-GfxScript_21ee6:
-	script_call GfxScript_21f4d
+AnimScript_21ee6:
+	script_call AnimScript_21f4d
 	script_exec Func_30b2
-	dw GfxScript_21ec2, GfxScript_21ef0
+	dw AnimScript_21ec2, AnimScript_21ef0
 
-GfxScript_21ef0:
-	script_call GfxScript_21f4d
+AnimScript_21ef0:
+	script_call AnimScript_21f4d
 	script_exec Func_30b2
-	dw GfxScript_21eb8, GfxScript_21efa
+	dw AnimScript_21eb8, AnimScript_21efa
 
-GfxScript_21efa:
-	script_call GfxScript_21f4d
-GfxScript_21efd:
+AnimScript_21efa:
+	script_call AnimScript_21f4d
+AnimScript_21efd:
 	script_exec Func_30b2
-	dw GfxScript_21eae, GfxScript_21f04
+	dw AnimScript_21eae, AnimScript_21f04
 
-GfxScript_21f04:
-	script_call GfxScript_21f52
-	jump_abs GfxScript_21efd
+AnimScript_21f04:
+	script_call AnimScript_21f52
+	jump_abs AnimScript_21efd
 
-GfxScript_21f0a:
+AnimScript_21f0a:
 	set_motion_script $42ce
-GfxScript_21f0f:
+AnimScript_21f0f:
 	script_repeat 3
 	frame 10, $4724
 	frame 10, $472c
@@ -1267,9 +1267,9 @@ GfxScript_21f0f:
 
 SECTION "Bank 8@5f4d", ROMX[$5f4d], BANK[$8]
 
-GfxScript_21f4d:
+AnimScript_21f4d:
 	set_motion_script $42d1
-GfxScript_21f52:
+AnimScript_21f52:
 	script_repeat 3
 	frame 10, $4744
 	frame 10, $474c
@@ -1284,9 +1284,9 @@ GfxScript_21f52:
 
 SECTION "Bank 8@6114", ROMX[$6114], BANK[$8]
 
-GfxScript_22114:
+AnimScript_22114:
 	frame 40, $58b8
-	create_object GfxScript_22239, MotionScript_10008, Data_3425
+	create_object AnimScript_22239, MotionScript_10008, Data_3425
 	script_repeat 2
 	frame 40, $5c01
 	frame 10, $5c2d
@@ -1298,13 +1298,13 @@ GfxScript_22114:
 	script_repeat_end
 	frame  0, $5c01
 
-GfxScript_22139:
+AnimScript_22139:
 .loop
 	frame 170, $58b8
-	create_object GfxScript_22145, MotionScript_1200f, Data_3425
+	create_object AnimScript_22145, MotionScript_1200f, Data_3425
 	jump_rel .loop
 
-GfxScript_22145:
+AnimScript_22145:
 	script_repeat 2
 	frame 18, $58c1
 	frame 11, $58c9
@@ -1351,14 +1351,14 @@ GfxScript_22145:
 	frame 10, $5931
 	jump_rel .loop
 
-GfxScript_221b9:
+AnimScript_221b9:
 	frame 200, $58b8
 .loop
 	frame 30, $58b8
-	create_object GfxScript_221c9, MotionScript_10008, Data_3425
+	create_object AnimScript_221c9, MotionScript_10008, Data_3425
 	jump_abs .loop
 
-GfxScript_221c9:
+AnimScript_221c9:
 	jumptable_random $0f
 	dw .script_221eb
 	dw .script_221f0
@@ -1379,90 +1379,90 @@ GfxScript_221c9:
 
 .script_221eb
 	position_offset $14, $0a
-	jump_rel GfxScript_22239
+	jump_rel AnimScript_22239
 
 .script_221f0
 	position_offset $28, $14
-	jump_rel GfxScript_22239
+	jump_rel AnimScript_22239
 
 .script_221f5
 	position_offset $3c, $0a
-	jump_rel GfxScript_22239
+	jump_rel AnimScript_22239
 
 .script_221fa
 	position_offset $50, $14
-	jump_rel GfxScript_22239
+	jump_rel AnimScript_22239
 
 .script_221ff
 	position_offset $64, $0a
-	jump_rel GfxScript_22239
+	jump_rel AnimScript_22239
 
 .script_22204
 	position_offset $78, $14
-	jump_rel GfxScript_22239
+	jump_rel AnimScript_22239
 
 .script_22209
 	position_offset $3c, $14
-	jump_rel GfxScript_22239
+	jump_rel AnimScript_22239
 
 .script_2220e
 	position_offset $14, $1e
-	jump_rel GfxScript_22239
+	jump_rel AnimScript_22239
 
 .script_22213
 	position_offset $28, $28
-	jump_rel GfxScript_22239
+	jump_rel AnimScript_22239
 
 .script_22218
 	position_offset $3c, $1e
-	jump_rel GfxScript_22239
+	jump_rel AnimScript_22239
 
 .script_2221d
 	position_offset $50, $28
-	jump_rel GfxScript_22239
+	jump_rel AnimScript_22239
 
 .script_22222
 	position_offset $64, $1e
-	jump_rel GfxScript_22239
+	jump_rel AnimScript_22239
 
 .script_22227
 	position_offset $78, $28
-	jump_rel GfxScript_22239
+	jump_rel AnimScript_22239
 
 .script_2222c
 	position_offset $78, $1e
-	jump_rel GfxScript_22239
+	jump_rel AnimScript_22239
 
 .script_22231
 	position_offset $32, $23
-	jump_rel GfxScript_22239
+	jump_rel AnimScript_22239
 
 .script_22236
 	position_offset $46, $23
 
-GfxScript_22239:
-	create_object GfxScript_22265, MotionScript_1083f, Data_3421
-	create_object GfxScript_22265, MotionScript_10850, Data_3421
+AnimScript_22239:
+	create_object AnimScript_22265, MotionScript_1083f, Data_3421
+	create_object AnimScript_22265, MotionScript_10850, Data_3421
 	frame  3, $5c25
 	frame  3, $5c2d
-	create_object GfxScript_22265, MotionScript_10835, Data_3421
-	create_object GfxScript_22265, MotionScript_10846, Data_3421
+	create_object AnimScript_22265, MotionScript_10835, Data_3421
+	create_object AnimScript_22265, MotionScript_10846, Data_3421
 	frame  3, $5c3d
 	frame  3, $5c45
 	frame  3, $5c25
 	script_end
 
-GfxScript_22265:
+AnimScript_22265:
 	frame  0, $4ba8
 ; 0x22268
 
 SECTION "Bank 8@6f63", ROMX[$6f63], BANK[$8]
 
-GfxScript_22f63:
+AnimScript_22f63:
 	position_offset $00, $fa
-	jump_abs GfxScript_208f1
+	jump_abs AnimScript_208f1
 
-GfxScript_22f69:
+AnimScript_22f69:
 	position_offset $00, $06
-	jump_abs GfxScript_208f1
+	jump_abs AnimScript_208f1
 ; 0x22f6f

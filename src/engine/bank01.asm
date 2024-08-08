@@ -1303,7 +1303,7 @@ Func_4afb:
 	ld hl, wd1a0
 	add hl, bc
 	set OBJFLAG_0_F, [hl]
-	ld hl, GfxScript_20003
+	ld hl, AnimScript_20003
 	ld de, MotionScript_10000
 	call Func_21e6
 	ld hl, hff94
@@ -1323,20 +1323,20 @@ Func_4bb4::
 	set 3, [hl]
 	bit 7, [hl]
 	jr nz, .skip_overwrite_gfx_script
-	ld a, [wKirbyGfxScript + 1]
+	ld a, [wKirbyAnimScript + 1]
 	push af
-	ld a, [wKirbyGfxScript + 0]
+	ld a, [wKirbyAnimScript + 0]
 	push af
-	ld a, [wObjectGfxScriptPtrs + OBJECT_SLOT_00 + 0]
+	ld a, [wObjectAnimScriptPtrs + OBJECT_SLOT_00 + 0]
 	push af
-	ld a, [wObjectGfxScriptPtrs + OBJECT_SLOT_00 + 1]
+	ld a, [wObjectAnimScriptPtrs + OBJECT_SLOT_00 + 1]
 	push af
 	ld a, 1
-	ld [wObjectGfxScriptTimers + OBJECT_SLOT_00], a
-	ld a, LOW(GfxScript_20405)
-	ld [wObjectGfxScriptPtrs + OBJECT_SLOT_00 + 0], a
-	ld a, HIGH(GfxScript_20405)
-	ld [wObjectGfxScriptPtrs + OBJECT_SLOT_00 + 1], a
+	ld [wObjectAnimScriptTimers + OBJECT_SLOT_00], a
+	ld a, LOW(AnimScript_20405)
+	ld [wObjectAnimScriptPtrs + OBJECT_SLOT_00 + 0], a
+	ld a, HIGH(AnimScript_20405)
+	ld [wObjectAnimScriptPtrs + OBJECT_SLOT_00 + 1], a
 
 .skip_overwrite_gfx_script
 	ld bc, OBJECT_SLOT_01
@@ -1352,7 +1352,7 @@ Func_4bb4::
 	ld hl, wd1b0
 	add hl, bc
 	ld a, [hl]
-	ld hl, GfxScript_2037c
+	ld hl, AnimScript_2037c
 	bit 2, a
 	jr nz, .asm_4c39
 	ld hl, wd190
@@ -1389,7 +1389,7 @@ Func_4bb4::
 	ld a, [wScoreToAdd]
 	add a
 	call AddToScore
-	ld hl, GfxScript_2036c
+	ld hl, AnimScript_2036c
 .asm_4c39
 	ld de, MotionScript_10008
 	call Func_21e6
@@ -1416,15 +1416,15 @@ Func_4bb4::
 	ld hl, hff94
 	res 5, [hl]
 	ld a, 1
-	ld [wObjectGfxScriptTimers + OBJECT_SLOT_00], a
+	ld [wObjectAnimScriptTimers + OBJECT_SLOT_00], a
 	pop af
-	ld [wObjectGfxScriptPtrs + OBJECT_SLOT_00 + 1], a
+	ld [wObjectAnimScriptPtrs + OBJECT_SLOT_00 + 1], a
 	pop af
-	ld [wObjectGfxScriptPtrs + OBJECT_SLOT_00 + 0], a
+	ld [wObjectAnimScriptPtrs + OBJECT_SLOT_00 + 0], a
 	pop af
-	ld [wKirbyGfxScript + 0], a
+	ld [wKirbyAnimScript + 0], a
 	pop af
-	ld [wKirbyGfxScript + 1], a
+	ld [wKirbyAnimScript + 1], a
 	ret
 ; 0x4c7b
 
@@ -1451,7 +1451,7 @@ Func_4c9b::
 	call PlaySFX
 
 	ld de, MotionScript_10162
-	ld hl, GfxScript_201dc
+	ld hl, AnimScript_201dc
 	ld bc, OBJECT_SLOT_00
 	call Func_21e6
 
@@ -1462,7 +1462,7 @@ Func_4c9b::
 	bit 5, a
 	jr nz, .asm_4cd0
 	ld a, $01
-	ld [wKirbyGfxScript + 0], a
+	ld [wKirbyAnimScript + 0], a
 	ld a, $01
 	ld [wd078], a
 	ld a, $80
@@ -1489,7 +1489,7 @@ Func_4ced::
 	set OBJFLAG_BLINKING_F, a
 	ld [wd1a0 + OBJECT_SLOT_00], a
 	ld de, MotionScript_10149
-	ld hl, GfxScript_201dc
+	ld hl, AnimScript_201dc
 	ld bc, OBJECT_SLOT_00
 	call Func_21e6
 .asm_4d20
@@ -1499,7 +1499,7 @@ Func_4ced::
 	bit 5, a
 	jr nz, .asm_4d20
 	ld a, $01
-	ld [wKirbyGfxScript + 0], a
+	ld [wKirbyAnimScript + 0], a
 	ld a, $fe
 	ld [wd078], a
 	ld a, $80
@@ -1512,8 +1512,8 @@ Func_4ced::
 
 Func_4d3f::
 	xor a
-	ld [wKirbyGfxScript + 0], a
-	ld [wKirbyGfxScript + 1], a
+	ld [wKirbyAnimScript + 0], a
+	ld [wKirbyAnimScript + 1], a
 	xor a ; unnecessary
 	ld [wSCX], a
 	ld [wSCY], a

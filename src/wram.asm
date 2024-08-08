@@ -225,7 +225,7 @@ wd07f:: ; d07f
 wBGP:: db ; d080
 wOBP:: db ; d081
 
-wKirbyGfxScript:: ; d082
+wKirbyAnimScript:: ; d082
 	dw
 
 wd084:: ; d084
@@ -301,7 +301,7 @@ wObjectActiveStates:: ; d160
 wObjectMotionScriptTimers:: ; d170
 	ds NUM_OBJECT_SLOTS
 
-wObjectGfxScriptTimers:: ; d180
+wObjectAnimScriptTimers:: ; d180
 	ds NUM_OBJECT_SLOTS
 
 wd190:: ; d190
@@ -342,7 +342,7 @@ wd29a:: ; d29a
 wd2aa:: ; d2aa
 	ds NUM_OBJECT_SLOTS
 
-wObjectGfxScriptPtrs:: ; d2ba
+wObjectAnimScriptPtrs:: ; d2ba
 	ds $2 * NUM_OBJECT_SLOTS
 
 wd2da:: ; d2da

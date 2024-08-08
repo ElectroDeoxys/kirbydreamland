@@ -175,7 +175,7 @@ SECTION "Bank 4@467d", ROMX[$467d], BANK[$4]
 
 MotionScript_1067d:
 .loop
-	set_gfx_script GfxScript_2063b
+	set_gfx_script AnimScript_2063b
 	set_velocities  6, $87, $89
 	set_velocities  6, $87, $87
 	set_velocities  6, $87, $85
@@ -504,7 +504,7 @@ MotionScript_1096c:
 	script_repeat 22
 	set_velocities  2, $79, $88
 	set_velocities  2, $7a, $78
-	create_object GfxScript_208f1, MotionScript_135bc, Data_3425
+	create_object AnimScript_208f1, MotionScript_135bc, Data_3425
 	script_repeat_end
 	set_velocities  0, $87, $00
 
@@ -523,19 +523,19 @@ MotionScript_109a3:
 	set_velocities 16, $00, $70
 	play_sfx SFX_WARP_STAR
 	script_repeat 15
-	create_object GfxScript_208f1, $4a13, Data_3425
+	create_object AnimScript_208f1, $4a13, Data_3425
 	set_velocities  2, $70, $8a
 	set_velocities  2, $70, $7a
 	script_repeat_end
 	create_object $43be, $4a13, Data_3425
 	script_repeat 8
 	set_velocities  6, $70, $74
-	create_object GfxScript_208f1, $4a13, Data_3425
+	create_object AnimScript_208f1, $4a13, Data_3425
 	script_repeat_end
 	set_velocities  8, $83, $88
-	create_object GfxScript_208f1, $4a13, Data_3425
+	create_object AnimScript_208f1, $4a13, Data_3425
 	set_velocities  8, $85, $8a
-	create_object GfxScript_208f1, $4a13, Data_3425
+	create_object AnimScript_208f1, $4a13, Data_3425
 	set_velocities 20, $86, $8c
 	script_f0 $68, $08
 	set_velocities 20, $00, $00
@@ -586,17 +586,17 @@ MotionScript_10a29:
 	set_velocities  0, $00, $86
 
 MotionScript_10a75:
-	create_object GfxScript_208f1, MotionScript_106eb, Data_3425
-	create_object GfxScript_208f1, MotionScript_106f5, Data_3425
-	create_object GfxScript_208f1, MotionScript_106ff, Data_3425
-	create_object GfxScript_208f1, MotionScript_10709, Data_3425
+	create_object AnimScript_208f1, MotionScript_106eb, Data_3425
+	create_object AnimScript_208f1, MotionScript_106f5, Data_3425
+	create_object AnimScript_208f1, MotionScript_106ff, Data_3425
+	create_object AnimScript_208f1, MotionScript_10709, Data_3425
 	script_ret
 
 MotionScript_10a92:
-	create_object GfxScript_208f1, MotionScript_106eb, Data_3425
-	create_object GfxScript_208f1, MotionScript_106f5, Data_3425
-	create_object GfxScript_208f1, MotionScript_106ff, Data_3425
-	create_object GfxScript_208f1, MotionScript_10709, Data_3425
+	create_object AnimScript_208f1, MotionScript_106eb, Data_3425
+	create_object AnimScript_208f1, MotionScript_106f5, Data_3425
+	create_object AnimScript_208f1, MotionScript_106ff, Data_3425
+	create_object AnimScript_208f1, MotionScript_10709, Data_3425
 	set_velocities  6, $85, $00
 	set_velocities  6, $85, $74
 	set_velocities  6, $85, $76
@@ -604,10 +604,10 @@ MotionScript_10a92:
 	set_velocities  0, $85, $79
 
 MotionScript_10abd:
-	create_object GfxScript_208f1, MotionScript_106eb, Data_3425
-	create_object GfxScript_208f1, MotionScript_106f5, Data_3425
-	create_object GfxScript_208f1, MotionScript_106ff, Data_3425
-	create_object GfxScript_208f1, MotionScript_10709, Data_3425
+	create_object AnimScript_208f1, MotionScript_106eb, Data_3425
+	create_object AnimScript_208f1, MotionScript_106f5, Data_3425
+	create_object AnimScript_208f1, MotionScript_106ff, Data_3425
+	create_object AnimScript_208f1, MotionScript_10709, Data_3425
 	set_velocities  6, $75, $00
 	set_velocities  6, $75, $74
 	set_velocities  6, $75, $76
@@ -764,12 +764,12 @@ SECTION "Bank 4@4cf4", ROMX[$4cf4], BANK[$4]
 
 MotionScript_10cf4:
 	set_velocities 80, $00, $00
-	set_gfx_script GfxScript_20647
+	set_gfx_script AnimScript_20647
 	set_velocities 16, $00, $86
 	set_velocities 16, $00, $85
 	set_velocities 16, $00, $84
 	set_velocities 80, $00, $74
-	set_gfx_script GfxScript_20647
+	set_gfx_script AnimScript_20647
 	set_velocities  8, $86, $00
 	set_velocities  8, $88, $00
 	set_velocities 0, $87, $00
@@ -782,7 +782,7 @@ MotionScript_10d16:
 	jump_abs .loop
 
 .script_10d23
-	set_gfx_script GfxScript_20662
+	set_gfx_script AnimScript_20662
 	set_velocities 16, $00, $78
 	set_velocities  8, $84, $75
 	set_velocities  8, $86, $73
@@ -793,7 +793,7 @@ MotionScript_10d16:
 	set_velocities  0, $78, $00
 
 .script_10d40
-	set_gfx_script GfxScript_20659
+	set_gfx_script AnimScript_20659
 	set_velocities 16, $00, $78
 	set_velocities  8, $74, $75
 	set_velocities  8, $76, $73
@@ -938,12 +938,12 @@ MotionScript_10e87:
 	jump_abs .loop
 
 MotionScript_10e96:
-	set_gfx_script GfxScript_20d3f
+	set_gfx_script AnimScript_20d3f
 	script_repeat 2
 	script_call MotionSubScript_10ecb
 	script_repeat_end
 MotionScript_10ea1:
-	set_gfx_script GfxScript_20d47
+	set_gfx_script AnimScript_20d47
 	script_repeat 2
 	script_call MotionSubScript_10ede
 	script_repeat_end
@@ -951,11 +951,11 @@ MotionScript_10ea1:
 
 MotionScript_10eae:
 .loop
-	set_gfx_script GfxScript_20d3f
+	set_gfx_script AnimScript_20d3f
 	script_repeat 4
 	script_call MotionSubScript_10ecb
 	script_repeat_end
-	set_gfx_script GfxScript_20d47
+	set_gfx_script AnimScript_20d47
 	script_repeat 4
 	script_call MotionSubScript_10ede
 	script_repeat_end
@@ -1181,7 +1181,7 @@ MotionScript_110ba:
 	set_velocities  8, $89, $84
 	set_velocities  8, $89, $74
 	set_velocities  8, $89, $78
-	create_object GfxScript_203be, MotionScript_10008, Data_35bb
+	create_object AnimScript_203be, MotionScript_10008, Data_35bb
 	script_end
 
 MotionScript_110d7:
@@ -1192,7 +1192,7 @@ MotionScript_110d7:
 	set_velocities  8, $89, $86
 	set_velocities  8, $89, $76
 	set_velocities  8, $89, $7a
-	create_object GfxScript_203be, MotionScript_10008, Data_35bb
+	create_object AnimScript_203be, MotionScript_10008, Data_35bb
 	script_end
 ; 0x110f4
 

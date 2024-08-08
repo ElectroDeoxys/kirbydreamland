@@ -96,7 +96,7 @@ StartStage::
 	ld [wd065], a
 
 	xor a
-	ld hl, wKirbyGfxScript
+	ld hl, wKirbyAnimScript
 	ld [hli], a
 	ld [hl], a
 	ld [hKirbyFlags1], a
@@ -827,7 +827,7 @@ _LoseLife::
 	xor a
 	ld [wd3cc], a
 	ld bc, OBJECT_SLOT_00
-	ld hl, GfxScript_20154
+	ld hl, AnimScript_20154
 	ld de, MotionScript_10137
 	call Func_21e6
 
@@ -1434,9 +1434,9 @@ Func_1886c:
 	ld [wd084 + 1], a
 	ld hl, $5ed6
 	ld a, h
-	ld [wKirbyGfxScript + 0], a
+	ld [wKirbyAnimScript + 0], a
 	ld a, l
-	ld [wKirbyGfxScript + 1], a
+	ld [wKirbyAnimScript + 1], a
 	xor a
 	ld [wKirbyXAcc], a
 	ld [wKirbyScreenDeltaY], a
@@ -1500,17 +1500,17 @@ Func_1886c:
 	ld [wd084 + 0], a
 	ld a, e
 	ld [wd084 + 1], a
-	ld a, [wKirbyGfxScript + 0]
+	ld a, [wKirbyAnimScript + 0]
 	ld d, a
-	ld a, [wKirbyGfxScript + 1]
+	ld a, [wKirbyAnimScript + 1]
 	ld e, a
 	ld a, [de]
 	ld [hli], a
 	inc de
 	ld a, d
-	ld [wKirbyGfxScript + 0], a
+	ld [wKirbyAnimScript + 0], a
 	ld a, e
-	ld [wKirbyGfxScript + 1], a
+	ld [wKirbyAnimScript + 1], a
 	dec b
 	jr nz, .asm_18b94
 	ld a, [wd061]
@@ -2251,11 +2251,11 @@ Data_1926a:
 
 .GreenGreens:
 	table_width 2, Data_1926a.GreenGreens
-	dw GfxScript_2004b ; GREEN_GREENS_0
+	dw AnimScript_2004b ; GREEN_GREENS_0
 	dw NULL ; GREEN_GREENS_1
 	dw NULL ; GREEN_GREENS_2
 	dw NULL ; GREEN_GREENS_3
-	dw GfxScript_201b7 ; GREEN_GREENS_4
+	dw AnimScript_201b7 ; GREEN_GREENS_4
 	assert_table_length NUM_GREEN_GREENS_AREAS
 
 .CastleLololo:
@@ -2267,15 +2267,15 @@ Data_1926a:
 	dw NULL ; CASTLE_LOLOLO_04
 	dw NULL ; CASTLE_LOLOLO_05
 	dw NULL ; CASTLE_LOLOLO_06
-	dw GfxScript_20073 ; CASTLE_LOLOLO_07
-	dw GfxScript_20000 ; CASTLE_LOLOLO_08
-	dw GfxScript_20000 ; CASTLE_LOLOLO_09
+	dw AnimScript_20073 ; CASTLE_LOLOLO_07
+	dw AnimScript_20000 ; CASTLE_LOLOLO_08
+	dw AnimScript_20000 ; CASTLE_LOLOLO_09
 	dw NULL ; CASTLE_LOLOLO_10
 	dw NULL ; CASTLE_LOLOLO_11
 	dw NULL ; CASTLE_LOLOLO_12
 	dw NULL ; CASTLE_LOLOLO_13
-	dw GfxScript_20000 ; CASTLE_LOLOLO_14
-	dw GfxScript_201b7 ; CASTLE_LOLOLO_15
+	dw AnimScript_20000 ; CASTLE_LOLOLO_14
+	dw AnimScript_201b7 ; CASTLE_LOLOLO_15
 	assert_table_length NUM_CASTLE_LOLOLO_AREAS
 
 .FloatIslands:
@@ -2285,9 +2285,9 @@ Data_1926a:
 	dw NULL ; FLOAT_ISLANDS_2
 	dw NULL ; FLOAT_ISLANDS_3
 	dw NULL ; FLOAT_ISLANDS_4
-	dw GfxScript_200a3 ; FLOAT_ISLANDS_5
+	dw AnimScript_200a3 ; FLOAT_ISLANDS_5
 	dw NULL ; FLOAT_ISLANDS_6
-	dw GfxScript_201b7 ; FLOAT_ISLANDS_7
+	dw AnimScript_201b7 ; FLOAT_ISLANDS_7
 	assert_table_length NUM_FLOAT_ISLANDS_AREAS
 
 .BubblyClouds:
@@ -2296,26 +2296,26 @@ Data_1926a:
 	dw NULL ; BUBBLY_CLOUDS_1
 	dw NULL ; BUBBLY_CLOUDS_2
 	dw NULL ; BUBBLY_CLOUDS_3
-	dw GfxScript_200b4 ; BUBBLY_CLOUDS_4
+	dw AnimScript_200b4 ; BUBBLY_CLOUDS_4
 	dw NULL ; BUBBLY_CLOUDS_5
 	dw NULL ; BUBBLY_CLOUDS_6
 	dw NULL ; BUBBLY_CLOUDS_7
 	dw NULL ; BUBBLY_CLOUDS_8
-	dw GfxScript_201b7 ; BUBBLY_CLOUDS_9
+	dw AnimScript_201b7 ; BUBBLY_CLOUDS_9
 	assert_table_length NUM_BUBBLY_CLOUDS_AREAS
 
 .MtDedede:
 	table_width 2, Data_1926a.MtDedede
-	dw GfxScript_20206 ; MT_DEDEDE_0
+	dw AnimScript_20206 ; MT_DEDEDE_0
 	dw NULL ; MT_DEDEDE_1
 	dw NULL ; MT_DEDEDE_2
 	dw NULL ; MT_DEDEDE_3
 	dw NULL ; MT_DEDEDE_4
-	dw GfxScript_2004a ; MT_DEDEDE_5
-	dw GfxScript_2004a ; MT_DEDEDE_6
-	dw GfxScript_2004a ; MT_DEDEDE_7
-	dw GfxScript_2004a ; MT_DEDEDE_8
-	dw GfxScript_2004a ; MT_DEDEDE_9
+	dw AnimScript_2004a ; MT_DEDEDE_5
+	dw AnimScript_2004a ; MT_DEDEDE_6
+	dw AnimScript_2004a ; MT_DEDEDE_7
+	dw AnimScript_2004a ; MT_DEDEDE_8
+	dw AnimScript_2004a ; MT_DEDEDE_9
 	assert_table_length NUM_MT_DEDEDE_AREAS
 
 BG_192d6:

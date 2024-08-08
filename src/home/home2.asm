@@ -615,7 +615,7 @@ DestroyObject::
 SECTION "Home@21e6", ROM0[$21e6]
 
 ; input:
-; - hl = gfx script
+; - hl = anim script
 ; - de = motion script
 ; - bc = object slot
 Func_21e6::
@@ -627,7 +627,7 @@ Func_21e6::
 	ld [hli], a
 	ld [hl], d
 	pop de
-	ld hl, wObjectGfxScriptPtrs
+	ld hl, wObjectAnimScriptPtrs
 	add hl, bc
 	add hl, bc
 	ld a, e
@@ -936,7 +936,7 @@ Func_23af::
 	bankswitch
 	ld a, [de]
 	inc de
-	ld hl, wObjectGfxScriptPtrs
+	ld hl, wObjectAnimScriptPtrs
 	add hl, bc
 	add hl, bc
 	ld [hli], a
@@ -1012,7 +1012,7 @@ Func_2419:
 	ld [hl], 1
 ;	fallthrough
 Func_241f::
-	ld hl, wObjectGfxScriptTimers
+	ld hl, wObjectAnimScriptTimers
 	add hl, bc
 	ld [hl], 1
 
@@ -1722,7 +1722,7 @@ DoMotionScriptCommand:
 	jr nz, .asm_2813
 	ld d, h
 	ld e, l
-	ld hl, wObjectGfxScriptPtrs
+	ld hl, wObjectAnimScriptPtrs
 	add hl, bc
 	add hl, bc
 	ld a, [de]
@@ -1736,7 +1736,7 @@ DoMotionScriptCommand:
 	inc de
 	ld a, [de]
 	ld [wScriptPtr + 1], a
-	ld hl, wObjectGfxScriptTimers
+	ld hl, wObjectAnimScriptTimers
 	add hl, bc
 	ld [hl], 1
 	ld hl, wObjectMotionScriptTimers
@@ -1810,7 +1810,7 @@ DoMotionScriptCommand:
 	call DoCommonScriptCommand
 	ret
 
-DoGfxScriptCommand:
+DoAnimScriptCommand:
 	inc hl
 	cp SCRIPT_CALL_RANDOM
 	jr nz, .asm_2886
@@ -1894,7 +1894,7 @@ DoGfxScriptCommand:
 	inc de
 	ld a, [de]
 	ld [hl], a
-	ld hl, wObjectGfxScriptTimers
+	ld hl, wObjectAnimScriptTimers
 	add hl, bc
 	ld [hl], 1
 	ld hl, wObjectMotionScriptTimers
@@ -2175,7 +2175,7 @@ Func_29b7:
 	ld a, $09
 .asm_2a8a
 	bankswitch
-	ld hl, wObjectGfxScriptTimers
+	ld hl, wObjectAnimScriptTimers
 	add hl, bc
 	ld a, [hl]
 	and a
@@ -2185,7 +2185,7 @@ Func_29b7:
 	ld [hl], a
 	ret
 .read_command
-	ld hl, wObjectGfxScriptPtrs
+	ld hl, wObjectAnimScriptPtrs
 	add hl, bc
 	add hl, bc
 	ld a, [hli]
@@ -2210,12 +2210,12 @@ Func_29b7:
 	ld [wScriptPtr + 0], a
 	ld a, h
 	ld [wScriptPtr + 1], a
-	ld hl, wObjectGfxScriptTimers
+	ld hl, wObjectAnimScriptTimers
 	add hl, bc
 	ld [hl], d
 	jr .asm_2b18
 .read_cmd
-	call DoGfxScriptCommand
+	call DoAnimScriptCommand
 	ld a, [wScriptCommand]
 	cp $ff
 	ret z ; animation ended
@@ -2223,7 +2223,7 @@ Func_29b7:
 
 .duration
 	ld a, [wScriptCommand]
-	ld hl, wObjectGfxScriptTimers
+	ld hl, wObjectAnimScriptTimers
 	add hl, bc
 	ld [hl], a
 	ld a, [wScriptPtr + 0]
@@ -2263,7 +2263,7 @@ Func_29b7:
 	ld [wScriptPtr + 1], a
 .asm_2b18
 	ld a, [wScriptPtr + 0]
-	ld hl, wObjectGfxScriptPtrs
+	ld hl, wObjectAnimScriptPtrs
 	add hl, bc
 	add hl, bc
 	ld [hli], a
@@ -4320,7 +4320,7 @@ Func_3d48::
 	ld a, $00
 	ld [wd07b], a
 	xor a
-	ld hl, wKirbyGfxScript
+	ld hl, wKirbyAnimScript
 	ld [hli], a
 	ld [hl], a
 	ret

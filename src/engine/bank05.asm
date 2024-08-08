@@ -185,7 +185,7 @@ Func_14105:
 SECTION "Bank 5@415e", ROMX[$415e], BANK[$5]
 
 Func_1415e:
-	ld hl, wObjectGfxScriptPtrs
+	ld hl, wObjectAnimScriptPtrs
 	add hl, bc
 	add hl, bc
 	ld d, h
@@ -459,7 +459,7 @@ Func_1432c::
 	jr nz, .asm_144ee
 	bit 3, a
 	jr z, .asm_144c5
-	ld hl, GfxScript_2003c
+	ld hl, AnimScript_2003c
 	jr .asm_144e4
 .asm_144c5
 	call .Func_14579
@@ -475,7 +475,7 @@ Func_1432c::
 	call Func_23af
 	jr .asm_144ee
 .asm_144e1
-	ld hl, GfxScript_20026
+	ld hl, AnimScript_20026
 .asm_144e4
 	ld de, MotionScript_10008
 	ld a, [wd411]
@@ -494,13 +494,13 @@ Func_1432c::
 	ld a, [wd410]
 	bit 0, a
 	jr nz, .asm_1451b
-	ld hl, GfxScript_2003c
+	ld hl, AnimScript_2003c
 	bit 3, a
 	jr nz, .asm_14515
-	ld hl, GfxScript_20017
+	ld hl, AnimScript_20017
 	bit 4, a
 	jr nz, .asm_14515
-	ld hl, GfxScript_20026
+	ld hl, AnimScript_20026
 .asm_14515
 	ld de, MotionScript_10008
 	jp Func_21e6
@@ -540,7 +540,7 @@ Func_1432c::
 .asm_14560
 	ld a, [wd411]
 	ld c, a
-	ld hl, GfxScript_20005
+	ld hl, AnimScript_20005
 	ld de, MotionScript_10008
 	jp Func_21e6
 
@@ -1002,7 +1002,7 @@ Func_147e4::
 	ld a, [hl]
 	and $22
 	jr nz, .asm_1488d
-	ld hl, GfxScript_20003
+	ld hl, AnimScript_20003
 	ld de, MotionScript_10000
 	call Func_21e6
 	ld hl, hff94

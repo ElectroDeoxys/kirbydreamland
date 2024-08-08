@@ -225,7 +225,7 @@ for o in args.offsets:
         for k, v in addressLabels.items():
             addressLabels[k] = ".loop"
 
-    label = "MotionScript" if isMotionScript else "GfxScript"
+    label = "MotionScript" if isMotionScript else "AnimScript"
     outStr = label + "_{}:\n".format(o)
     for cmdByte, cmdPos, args in parsedCommands:
         if cmdPos in addressLabels:

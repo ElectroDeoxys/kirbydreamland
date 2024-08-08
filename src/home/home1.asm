@@ -433,16 +433,16 @@ ProcessDoorConnection::
 	jr nz, .asm_54d
 .asm_566
 	xor a
-	ld [wKirbyGfxScript + 0], a
-	ld [wKirbyGfxScript + 1], a
+	ld [wKirbyAnimScript + 0], a
+	ld [wKirbyAnimScript + 1], a
 
 	ldh a, [hKirbyFlags3]
 	bit KIRBY3F_FACE_LEFT_F, a
 	jr nz, .asm_578
-	ld hl, GfxScript_20566
+	ld hl, AnimScript_20566
 	jr .asm_57b
 .asm_578
-	ld hl, GfxScript_2056c
+	ld hl, AnimScript_2056c
 .asm_57b
 	ld de, MotionScript_157a
 	ld bc, OBJECT_SLOT_00
@@ -2513,10 +2513,10 @@ Func_139b::
 	ldh a, [hKirbyFlags3]
 	bit KIRBY3F_FACE_LEFT_F, a
 	jr nz, .asm_13c4
-	ld hl, GfxScriptPointers_157d
+	ld hl, AnimScriptPointers_157d
 	jr .got_gfx_script_pointers
 .asm_13c4
-	ld hl, GfxScriptPointers_15b7
+	ld hl, AnimScriptPointers_15b7
 .got_gfx_script_pointers
 	ld c, KIRBY_IDLE
 	ldh a, [hKirbyFlags1]
@@ -2734,7 +2734,7 @@ Func_139b::
 	bit 6, a
 	jr nz, .asm_1546
 	pop af
-	ld hl, wKirbyGfxScript
+	ld hl, wKirbyAnimScript
 	cp [hl]
 	jr nz, .got_motion_script
 	ld a, c
@@ -2757,10 +2757,10 @@ Func_139b::
 .got_motion_script
 	ld a, b
 	ld h, a
-	ld [wKirbyGfxScript + 0], a
+	ld [wKirbyAnimScript + 0], a
 	ld a, c
 	ld l, a
-	ld [wKirbyGfxScript + 1], a
+	ld [wKirbyAnimScript + 1], a
 	ld bc, OBJECT_SLOT_00
 	call Func_21e6
 
@@ -2778,72 +2778,72 @@ SetFullHP::
 MotionScript_157a::
 	set_velocities 0, $00, $00
 
-GfxScriptPointers_157d:
-	dw GfxScript_15f1 ; KIRBY_IDLE
-	dw GfxScript_15f4 ; KIRBY_WALK
-	dw GfxScript_1602 ; KIRBY_JUMP
-	dw GfxScript_1605 ; KIRBY_START_INHALE
-	dw GfxScript_1623 ; KIRBY_HOVER
-	dw GfxScript_162b ; KIRBY_PUFF
-	dw GfxScript_202b6 ; KIRBY_PAUSE_DANCE
-	dw GfxScript_163f ; KIRBY_SQUISH_DOWN
-	dw GfxScript_1653 ; KIRBY_SQUISH_UP
-	dw GfxScript_1667 ; KIRBY_SQUISH_FRONT
-	dw GfxScript_167b ; KIRBY_SQUISH_BACK
-	dw GfxScript_168f ; KIRBY_DUCK
-	dw GfxScript_1692 ; KIRBY_WALK_SLOW
-	dw GfxScript_16a0 ; KIRBY_STEP
-	dw GfxScript_16ab ; KIRBY_DIVE
-	dw GfxScript_16ae ; KIRBY_UNK_0F
-	dw GfxScript_16ce ; KIRBY_INHALE
-	dw GfxScript_16de ; KIRBY_GET_MOUTHFUL
-	dw GfxScript_16f2 ; KIRBY_MOUTHFUL
-	dw GfxScript_16fa ; KIRBY_MOUTHFUL_WALK
-	dw GfxScript_1707 ; KIRBY_MOUTHFUL_JUMP
-	dw GfxScript_170f ; KIRBY_SPIT
-	dw GfxScript_1723 ; KIRBY_AFTER_SPIT
-	dw GfxScript_1726 ; KIRBY_UNK_17
-	dw GfxScript_1732 ; KIRBY_UNK_18
-	dw GfxScript_1747 ; KIRBY_START_HOVER
-	dw GfxScript_1753 ; KIRBY_UNK_1A
-	dw GfxScript_175d ; KIRBY_UNK_1B
-	dw GfxScript_176a ; KIRBY_WALK_FAST
+AnimScriptPointers_157d:
+	dw AnimScript_15f1 ; KIRBY_IDLE
+	dw AnimScript_15f4 ; KIRBY_WALK
+	dw AnimScript_1602 ; KIRBY_JUMP
+	dw AnimScript_1605 ; KIRBY_START_INHALE
+	dw AnimScript_1623 ; KIRBY_HOVER
+	dw AnimScript_162b ; KIRBY_PUFF
+	dw AnimScript_202b6 ; KIRBY_PAUSE_DANCE
+	dw AnimScript_163f ; KIRBY_SQUISH_DOWN
+	dw AnimScript_1653 ; KIRBY_SQUISH_UP
+	dw AnimScript_1667 ; KIRBY_SQUISH_FRONT
+	dw AnimScript_167b ; KIRBY_SQUISH_BACK
+	dw AnimScript_168f ; KIRBY_DUCK
+	dw AnimScript_1692 ; KIRBY_WALK_SLOW
+	dw AnimScript_16a0 ; KIRBY_STEP
+	dw AnimScript_16ab ; KIRBY_DIVE
+	dw AnimScript_16ae ; KIRBY_UNK_0F
+	dw AnimScript_16ce ; KIRBY_INHALE
+	dw AnimScript_16de ; KIRBY_GET_MOUTHFUL
+	dw AnimScript_16f2 ; KIRBY_MOUTHFUL
+	dw AnimScript_16fa ; KIRBY_MOUTHFUL_WALK
+	dw AnimScript_1707 ; KIRBY_MOUTHFUL_JUMP
+	dw AnimScript_170f ; KIRBY_SPIT
+	dw AnimScript_1723 ; KIRBY_AFTER_SPIT
+	dw AnimScript_1726 ; KIRBY_UNK_17
+	dw AnimScript_1732 ; KIRBY_UNK_18
+	dw AnimScript_1747 ; KIRBY_START_HOVER
+	dw AnimScript_1753 ; KIRBY_UNK_1A
+	dw AnimScript_175d ; KIRBY_UNK_1B
+	dw AnimScript_176a ; KIRBY_WALK_FAST
 
-GfxScriptPointers_15b7:
-	dw GfxScript_1778 ; KIRBY_IDLE
-	dw GfxScript_177b ; KIRBY_WALK
-	dw GfxScript_1789 ; KIRBY_JUMP
-	dw GfxScript_178c ; KIRBY_START_INHALE
-	dw GfxScript_17aa ; KIRBY_HOVER
-	dw GfxScript_17b2 ; KIRBY_PUFF
-	dw GfxScript_20311 ; KIRBY_PAUSE_DANCE
-	dw GfxScript_17c6 ; KIRBY_SQUISH_DOWN
-	dw GfxScript_17da ; KIRBY_SQUISH_UP
-	dw GfxScript_17ee ; KIRBY_SQUISH_FRONT
-	dw GfxScript_1802 ; KIRBY_SQUISH_BACK
-	dw GfxScript_1816 ; KIRBY_DUCK
-	dw GfxScript_1819 ; KIRBY_WALK_SLOW
-	dw GfxScript_1827 ; KIRBY_STEP
-	dw GfxScript_1832 ; KIRBY_DIVE
-	dw GfxScript_1835 ; KIRBY_UNK_0F
-	dw GfxScript_1855 ; KIRBY_INHALE
-	dw GfxScript_1865 ; KIRBY_GET_MOUTHFUL
-	dw GfxScript_1879 ; KIRBY_MOUTHFUL
-	dw GfxScript_1881 ; KIRBY_MOUTHFUL_WALK
-	dw GfxScript_188e ; KIRBY_MOUTHFUL_JUMP
-	dw GfxScript_1896 ; KIRBY_SPIT
-	dw GfxScript_18aa ; KIRBY_AFTER_SPIT
-	dw GfxScript_18ad ; KIRBY_UNK_17
-	dw GfxScript_18b9 ; KIRBY_UNK_18
-	dw GfxScript_18ce ; KIRBY_START_HOVER
-	dw GfxScript_18da ; KIRBY_UNK_1A
-	dw GfxScript_18e4 ; KIRBY_UNK_1B
-	dw GfxScript_18f1 ; KIRBY_WALK_FAST
+AnimScriptPointers_15b7:
+	dw AnimScript_1778 ; KIRBY_IDLE
+	dw AnimScript_177b ; KIRBY_WALK
+	dw AnimScript_1789 ; KIRBY_JUMP
+	dw AnimScript_178c ; KIRBY_START_INHALE
+	dw AnimScript_17aa ; KIRBY_HOVER
+	dw AnimScript_17b2 ; KIRBY_PUFF
+	dw AnimScript_20311 ; KIRBY_PAUSE_DANCE
+	dw AnimScript_17c6 ; KIRBY_SQUISH_DOWN
+	dw AnimScript_17da ; KIRBY_SQUISH_UP
+	dw AnimScript_17ee ; KIRBY_SQUISH_FRONT
+	dw AnimScript_1802 ; KIRBY_SQUISH_BACK
+	dw AnimScript_1816 ; KIRBY_DUCK
+	dw AnimScript_1819 ; KIRBY_WALK_SLOW
+	dw AnimScript_1827 ; KIRBY_STEP
+	dw AnimScript_1832 ; KIRBY_DIVE
+	dw AnimScript_1835 ; KIRBY_UNK_0F
+	dw AnimScript_1855 ; KIRBY_INHALE
+	dw AnimScript_1865 ; KIRBY_GET_MOUTHFUL
+	dw AnimScript_1879 ; KIRBY_MOUTHFUL
+	dw AnimScript_1881 ; KIRBY_MOUTHFUL_WALK
+	dw AnimScript_188e ; KIRBY_MOUTHFUL_JUMP
+	dw AnimScript_1896 ; KIRBY_SPIT
+	dw AnimScript_18aa ; KIRBY_AFTER_SPIT
+	dw AnimScript_18ad ; KIRBY_UNK_17
+	dw AnimScript_18b9 ; KIRBY_UNK_18
+	dw AnimScript_18ce ; KIRBY_START_HOVER
+	dw AnimScript_18da ; KIRBY_UNK_1A
+	dw AnimScript_18e4 ; KIRBY_UNK_1B
+	dw AnimScript_18f1 ; KIRBY_WALK_FAST
 
-GfxScript_15f1:
+AnimScript_15f1:
 	frame  0, $58b9
 
-GfxScript_15f4:
+AnimScript_15f4:
 .loop
 	frame 11, $58c1
 	frame  8, $58c9
@@ -2851,10 +2851,10 @@ GfxScript_15f4:
 	frame  8, $58c9
 	jump_rel .loop
 
-GfxScript_1602:
+AnimScript_1602:
 	frame  0, $58d9
 
-GfxScript_1605:
+AnimScript_1605:
 	jump_if_equal wd094, $02, .loop
 	frame 10, $5a69
 	frame 10, $5a71
@@ -2866,13 +2866,13 @@ GfxScript_1605:
 	frame  4, $5931
 	jump_rel .loop
 
-GfxScript_1623:
+AnimScript_1623:
 .loop
 	frame 20, $5919
 	frame 20, $5931
 	jump_rel .loop
 
-GfxScript_162b:
+AnimScript_162b:
 	frame 10, $5a81
 	frame 10, $5a99
 	frame 10, $5a69
@@ -2880,38 +2880,38 @@ GfxScript_162b:
 	set_value wd094, $01
 	script_delay 1
 
-GfxScript_163f:
+AnimScript_163f:
 	set_flags hKirbyFlags2, $ff, KIRBY2F_UNK1
 	frame  6, $5bc9
 	set_flags hKirbyFlags3, $7f, $00
 	set_flags hKirbyFlags2, $fc, $00
 	script_delay 1
 
-GfxScript_1653:
+AnimScript_1653:
 	set_flags hKirbyFlags2, $ff, KIRBY2F_UNK1
 	frame  6, $5bd1
 	set_flags hKirbyFlags3, $7f, $00
 	set_flags hKirbyFlags2, $fc, $00
 	script_delay 1
 
-GfxScript_1667:
+AnimScript_1667:
 	set_flags hKirbyFlags2, $ff, KIRBY2F_UNK1
 	frame  6, $5bd9
 	set_flags hKirbyFlags3, $7f, $00
 	set_flags hKirbyFlags2, $fc, $00
 	script_delay 1
 
-GfxScript_167b:
+AnimScript_167b:
 	set_flags hKirbyFlags2, $ff, KIRBY2F_UNK1
 	frame  6, $5bdd
 	set_flags hKirbyFlags3, $7f, $00
 	set_flags hKirbyFlags2, $fc, $00
 	script_delay 1
 
-GfxScript_168f:
+AnimScript_168f:
 	frame  0, $5bc9
 
-GfxScript_1692:
+AnimScript_1692:
 .loop
 	frame 16, $58c1
 	frame 12, $58c9
@@ -2919,17 +2919,17 @@ GfxScript_1692:
 	frame 12, $58c9
 	jump_rel .loop
 
-GfxScript_16a0:
+AnimScript_16a0:
 .loop
 	frame  8, $58c1
 	frame  8, $58c9
 	frame 16, $58d1
 	jump_rel .loop
 
-GfxScript_16ab:
+AnimScript_16ab:
 	frame  0, $5b69
 
-GfxScript_16ae:
+AnimScript_16ae:
 	set_flags hKirbyFlags2, $ff, KIRBY2F_UNK1
 	frame  5, $5b69
 	frame  6, $5bc9
@@ -2939,14 +2939,14 @@ GfxScript_16ae:
 	set_flags hKirbyFlags2, $fc, $00
 	script_delay 1
 
-GfxScript_16ce:
+AnimScript_16ce:
 	jump_if_equal wd094, $03, .script_16db
 	frame  8, $5a69
 	set_value wd094, $03
 .script_16db
 	frame  0, $5a71
 
-GfxScript_16de:
+AnimScript_16de:
 	frame  8, $5a71
 	frame  6, $5a69
 	set_flags hKirbyFlags2, $60, $00
@@ -2954,22 +2954,22 @@ GfxScript_16de:
 	set_value wd094, $01
 	script_delay 1
 
-GfxScript_16f2:
+AnimScript_16f2:
 	set_flags hKirbyFlags2, $ec, $00
 	frame  0, $5979
 
-GfxScript_16fa:
+AnimScript_16fa:
 	set_flags hKirbyFlags2, $ec, $00
 .loop
 	frame 12, $59a9
 	frame 12, $59c1
 	jump_rel .loop
 
-GfxScript_1707:
+AnimScript_1707:
 	set_flags hKirbyFlags2, $ec, $00
 	frame  0, $59d9
 
-GfxScript_170f:
+AnimScript_170f:
 	frame  5, $5ab1
 	frame  5, $5a71
 	frame  6, $5a69
@@ -2977,16 +2977,16 @@ GfxScript_170f:
 	set_value wd094, $01
 	script_delay 1
 
-GfxScript_1723:
+AnimScript_1723:
 	frame  0, $5ab1
 
-GfxScript_1726:
+AnimScript_1726:
 	frame 10, $5ac9
 	frame 10, $5991
 	set_value wd094, $04
 	script_delay 1
 
-GfxScript_1732:
+AnimScript_1732:
 	frame  5, $5991
 	frame  3, $5ac9
 	frame  3, $5ae1
@@ -2994,24 +2994,24 @@ GfxScript_1732:
 	set_flags hff93, $ef, $00
 	script_delay 1
 
-GfxScript_1747:
+AnimScript_1747:
 	frame  8, $5a71
 	frame  8, $5a71
 	set_value wd094, $06
 	script_delay 1
 
-GfxScript_1753:
+AnimScript_1753:
 	frame  5, $5a69
 	set_flags hff95, $ef, $00
 	script_delay 1
 
-GfxScript_175d:
+AnimScript_175d:
 	frame  3, $5a81
 	frame  3, $5a99
 	set_flags hff95, $fb, $00
 	script_delay 1
 
-GfxScript_176a:
+AnimScript_176a:
 .loop
 	frame  3, $58c1
 	frame  2, $58c9
@@ -3019,10 +3019,10 @@ GfxScript_176a:
 	frame  2, $58c9
 	jump_rel .loop
 
-GfxScript_1778:
+AnimScript_1778:
 	frame  0, $58e9
 
-GfxScript_177b:
+AnimScript_177b:
 .loop
 	frame 11, $58f1
 	frame  8, $58f9
@@ -3030,10 +3030,10 @@ GfxScript_177b:
 	frame  8, $58f9
 	jump_rel .loop
 
-GfxScript_1789:
+AnimScript_1789:
 	frame  0, $5909
 
-GfxScript_178c:
+AnimScript_178c:
 	jump_if_equal wd094, $02, .loop
 	frame 10, $5ae9
 	frame 10, $5af1
@@ -3045,13 +3045,13 @@ GfxScript_178c:
 	frame  4, $5961
 	jump_rel .loop
 
-GfxScript_17aa:
+AnimScript_17aa:
 .loop
 	frame 20, $5949
 	frame 20, $5961
 	jump_rel .loop
 
-GfxScript_17b2:
+AnimScript_17b2:
 	frame 10, $5b01
 	frame 10, $5b19
 	frame 10, $5ae9
@@ -3059,38 +3059,38 @@ GfxScript_17b2:
 	set_value wd094, $01
 	script_delay 1
 
-GfxScript_17c6:
+AnimScript_17c6:
 	set_flags hKirbyFlags2, $ff, KIRBY2F_UNK1
 	frame  6, $5bad
 	set_flags hKirbyFlags3, $7f, $00
 	set_flags hKirbyFlags2, $fc, $00
 	script_delay 1
 
-GfxScript_17da:
+AnimScript_17da:
 	set_flags hKirbyFlags2, $ff, KIRBY2F_UNK1
 	frame  6, $5bb5
 	set_flags hKirbyFlags3, $7f, $00
 	set_flags hKirbyFlags2, $fc, $00
 	script_delay 1
 
-GfxScript_17ee:
+AnimScript_17ee:
 	set_flags hKirbyFlags2, $ff, KIRBY2F_UNK1
 	frame  6, $5bbd
 	set_flags hKirbyFlags3, $7f, $00
 	set_flags hKirbyFlags2, $fc, $00
 	script_delay 1
 
-GfxScript_1802:
+AnimScript_1802:
 	set_flags hKirbyFlags2, $ff, KIRBY2F_UNK1
 	frame  6, $5bc1
 	set_flags hKirbyFlags3, $7f, $00
 	set_flags hKirbyFlags2, $fc, $00
 	script_delay 1
 
-GfxScript_1816:
+AnimScript_1816:
 	frame  0, $5bad
 
-GfxScript_1819:
+AnimScript_1819:
 .loop
 	frame 16, $58f1
 	frame 12, $58f9
@@ -3098,17 +3098,17 @@ GfxScript_1819:
 	frame 12, $58f9
 	jump_rel .loop
 
-GfxScript_1827:
+AnimScript_1827:
 .loop
 	frame  8, $58f1
 	frame  8, $58f9
 	frame 16, $5901
 	jump_rel .loop
 
-GfxScript_1832:
+AnimScript_1832:
 	frame  0, $5b71
 
-GfxScript_1835:
+AnimScript_1835:
 	set_flags hKirbyFlags2, $ff, KIRBY2F_UNK1
 	frame  5, $5b71
 	frame  6, $5bad
@@ -3118,14 +3118,14 @@ GfxScript_1835:
 	set_flags hKirbyFlags2, $fc, $00
 	script_delay 1
 
-GfxScript_1855:
+AnimScript_1855:
 	jump_if_equal wd094, $03, .script_1862
 	frame  8, $5ae9
 	set_value wd094, $03
 .script_1862
 	frame  0, $5af1
 
-GfxScript_1865:
+AnimScript_1865:
 	frame  8, $5af1
 	frame  6, $5ae9
 	set_flags hKirbyFlags2, $60, $00
@@ -3133,22 +3133,22 @@ GfxScript_1865:
 	set_value wd094, $01
 	script_delay 1
 
-GfxScript_1879:
+AnimScript_1879:
 	set_flags hKirbyFlags2, $ec, $00
 	frame  0, $59f1
 
-GfxScript_1881:
+AnimScript_1881:
 	set_flags hKirbyFlags2, $ec, $00
 .loop
 	frame 12, $5a21
 	frame 12, $5a39
 	jump_rel .loop
 
-GfxScript_188e:
+AnimScript_188e:
 	set_flags hKirbyFlags2, $ec, $00
 	frame  0, $5a51
 
-GfxScript_1896:
+AnimScript_1896:
 	frame  5, $5b31
 	frame  5, $5af1
 	frame  6, $5ae9
@@ -3156,16 +3156,16 @@ GfxScript_1896:
 	set_value wd094, $01
 	script_delay 1
 
-GfxScript_18aa:
+AnimScript_18aa:
 	frame  0, $5b31
 
-GfxScript_18ad:
+AnimScript_18ad:
 	frame 10, $5b49
 	frame 10, $5a09
 	set_value wd094, $04
 	script_delay 1
 
-GfxScript_18b9:
+AnimScript_18b9:
 	frame  5, $5a09
 	frame  3, $5b49
 	frame  3, $5b61
@@ -3173,24 +3173,24 @@ GfxScript_18b9:
 	set_flags hff93, $ef, $00
 	script_delay 1
 
-GfxScript_18ce:
+AnimScript_18ce:
 	frame  8, $5af1
 	frame  8, $5af1
 	set_value wd094, $06
 	script_delay 1
 
-GfxScript_18da:
+AnimScript_18da:
 	frame  5, $5ae9
 	set_flags hff95, $ef, $00
 	script_delay 1
 
-GfxScript_18e4:
+AnimScript_18e4:
 	frame  3, $5b01
 	frame  3, $5b19
 	set_flags hff95, $fb, $00
 	script_delay 1
 
-GfxScript_18f1:
+AnimScript_18f1:
 .loop
 	frame  3, $58f1
 	frame  2, $58f9
