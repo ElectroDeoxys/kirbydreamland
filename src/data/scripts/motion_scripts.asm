@@ -1,9 +1,6 @@
 MotionScript_10000:
-	set_custom_func Func_1401a
+	set_custom_func Func_1401a, NULL
 	set_velocities 0, $00, $00
-; 0x10006
-
-SECTION "Bank 4@4008", ROMX[$4008], BANK[$4]
 
 MotionScript_10008:
 	set_velocities 0, $00, $00
@@ -117,7 +114,7 @@ MotionScript_10370:
 	set_value wd3bf, $01
 	set_flags hff94, $ff, $20
 	jump_if_not_flags hKirbyFlags3, KIRBY3F_FACE_LEFT, .script_1038d
-	position_offset $00, $06
+	position_offset 0, 6
 	set_velocities  2, $8a, $00
 	set_velocities  2, $88, $00
 	set_velocities  4, $86, $00
@@ -191,25 +188,25 @@ MotionScript_1067d:
 SECTION "Bank 4@46eb", ROMX[$46eb], BANK[$4]
 
 MotionScript_106eb:
-	position_offset $fc, $fc
+	position_offset -4, -4
 	set_velocities  8, $87, $87
 	set_velocities 48, $84, $85
 	script_end
 
 MotionScript_106f5:
-	position_offset $04, $fc
+	position_offset 4, -4
 	set_velocities  8, $77, $87
 	set_velocities 48, $74, $85
 	script_end
 
 MotionScript_106ff:
-	position_offset $fa, $00
+	position_offset -6, 0
 	set_velocities  8, $89, $00
 	set_velocities 48, $85, $00
 	script_end
 
 MotionScript_10709:
-	position_offset $06, $00
+	position_offset 6, 0
 	set_velocities  8, $79, $00
 	set_velocities 48, $75, $00
 	script_end
@@ -277,49 +274,49 @@ MotionScript_107c3:
 	dw .script_10829
 
 .script_107d5
-	position_offset $00, $fa
+	position_offset 0, -6
 	set_velocities  3, $00, $8b
 	set_velocities  3, $00, $8a
 	set_velocities  0, $00, $00
 
 .script_107e1
-	position_offset $05, $fb
+	position_offset 5, -5
 	set_velocities  3, $7a, $8a
 	set_velocities  3, $79, $89
 	set_velocities  0, $00, $00
 
 .script_107ed
-	position_offset $06, $00
+	position_offset 6, 0
 	set_velocities  3, $7b, $00
 	set_velocities  3, $7a, $00
 	set_velocities  0, $00, $00
 
 .script_107f9
-	position_offset $05, $05
+	position_offset 5, 5
 	set_velocities  3, $7a, $7a
 	set_velocities  3, $79, $79
 	set_velocities  0, $00, $00
 
 .script_10805
-	position_offset $00, $06
+	position_offset 0, 6
 	set_velocities  3, $00, $7b
 	set_velocities  3, $00, $7a
 	set_velocities  0, $00, $00
 
 .script_10811
-	position_offset $fb, $05
+	position_offset -5, 5
 	set_velocities  3, $8a, $7a
 	set_velocities  3, $89, $79
 	set_velocities  0, $00, $00
 
 .script_1081d
-	position_offset $fa, $00
+	position_offset -6, 0
 	set_velocities  3, $8b, $00
 	set_velocities  3, $8a, $00
 	set_velocities  0, $00, $00
 
 .script_10829
-	position_offset $fb, $fb
+	position_offset -5, -5
 	set_velocities  3, $8a, $8a
 	set_velocities  3, $89, $89
 	set_velocities  0, $00, $00

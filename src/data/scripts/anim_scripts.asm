@@ -453,13 +453,13 @@ AnimScript_2078e:
 	dw AnimScript_20883 ; BUBBLY_CLOUDS
 
 AnimScript_20799:
-	position_offset $e2, $00
+	position_offset -30, 0
 	script_call AnimScript_208de
 	frame 55, $58e1
 	jump_abs AnimScript_2078e
 
 AnimScript_207a5:
-	position_offset $1e, $00
+	position_offset 30, 0
 	script_call AnimScript_208de
 	frame 55, $58e1
 	jump_abs AnimScript_2078e
@@ -757,7 +757,7 @@ AnimScript_20bc9:
 	set_scripts AnimScript_20925, MotionScript_10370
 
 AnimScript_20bda:
-	position_offset $00, $05
+	position_offset 0, 5
 	play_sfx SFX_19
 	set_custom_func Func_141b1, AnimScript_20b9a
 	jump_if_not_flags hKirbyFlags3, KIRBY3F_FACE_LEFT, .loop_2
@@ -995,7 +995,7 @@ GfxSubScript_20e20:
 
 AnimScript_20e2f:
 	create_object AnimScript_20de5, MotionScript_10008, $353e
-	position_offset $00, $f0
+	position_offset 0, -16
 	jump_abs AnimScript_20e8d
 
 GfxSubScript_20e3c:
@@ -1008,7 +1008,7 @@ GfxSubScript_20e3c:
 
 AnimScript_20e4b:
 	create_object AnimScript_20de5, MotionScript_10008, $353e
-	position_offset $00, $f0
+	position_offset 0, -16
 	jump_abs AnimScript_20e92
 
 AnimScript_20e58:
@@ -1378,67 +1378,67 @@ AnimScript_221c9:
 	dw .script_22236
 
 .script_221eb
-	position_offset $14, $0a
+	position_offset 20, 10
 	jump_rel AnimScript_22239
 
 .script_221f0
-	position_offset $28, $14
+	position_offset 40, 20
 	jump_rel AnimScript_22239
 
 .script_221f5
-	position_offset $3c, $0a
+	position_offset 60, 10
 	jump_rel AnimScript_22239
 
 .script_221fa
-	position_offset $50, $14
+	position_offset 80, 20
 	jump_rel AnimScript_22239
 
 .script_221ff
-	position_offset $64, $0a
+	position_offset 100, 10
 	jump_rel AnimScript_22239
 
 .script_22204
-	position_offset $78, $14
+	position_offset 120, 20
 	jump_rel AnimScript_22239
 
 .script_22209
-	position_offset $3c, $14
+	position_offset 60, 20
 	jump_rel AnimScript_22239
 
 .script_2220e
-	position_offset $14, $1e
+	position_offset 20, 30
 	jump_rel AnimScript_22239
 
 .script_22213
-	position_offset $28, $28
+	position_offset 40, 40
 	jump_rel AnimScript_22239
 
 .script_22218
-	position_offset $3c, $1e
+	position_offset 60, 30
 	jump_rel AnimScript_22239
 
 .script_2221d
-	position_offset $50, $28
+	position_offset 80, 40
 	jump_rel AnimScript_22239
 
 .script_22222
-	position_offset $64, $1e
+	position_offset 100, 30
 	jump_rel AnimScript_22239
 
 .script_22227
-	position_offset $78, $28
+	position_offset 120, 40
 	jump_rel AnimScript_22239
 
 .script_2222c
-	position_offset $78, $1e
+	position_offset 120, 30
 	jump_rel AnimScript_22239
 
 .script_22231
-	position_offset $32, $23
+	position_offset 50, 35
 	jump_rel AnimScript_22239
 
 .script_22236
-	position_offset $46, $23
+	position_offset 70, 35
 
 AnimScript_22239:
 	create_object AnimScript_22265, MotionScript_1083f, Data_3421
@@ -1459,10 +1459,10 @@ AnimScript_22265:
 SECTION "Bank 8@6f63", ROMX[$6f63], BANK[$8]
 
 AnimScript_22f63:
-	position_offset $00, $fa
+	position_offset 0, -6
 	jump_abs AnimScript_208f1
 
 AnimScript_22f69:
-	position_offset $00, $06
+	position_offset 0, 6
 	jump_abs AnimScript_208f1
 ; 0x22f6f

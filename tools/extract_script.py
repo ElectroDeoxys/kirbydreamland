@@ -15,10 +15,12 @@ with open("kirbydreamland.sym", "r") as file:
         if len(line) != 2:
             continue
         offs = int(line[1][0:4], 16)
-        if int(line[0], 16) != 0 and int(line[0], 16) != 1:
+        bank = int(line[0], 16)
+        if bank not in [0, 1, 4, 5, 8]:
             continue
+        absOffs = offs + (bank - 1) * 0x4000 if bank > 1 else offs
         symString = line[1].split()[1]
-        symbols[offs] = symString
+        symbols[absOffs] = symString
 
 def parseByte(args):
     return args
@@ -92,7 +94,8 @@ commands = {
 
 commandsWithNum = { 0xe6, 0xec, 0xed }
 commandsWithByte = { 0xfb, 0xfd, 0xfe }
-commandsWith2Bytes = { 0xf0, 0xf1 }
+commandsWith2Bytes = { 0xf0 }
+commandsWith2Offsets = { 0xf1 }
 commandsWithAddressAndByte = { 0xe9, 0xf4 }
 commandsWithByteAndAddress = { 0xfa }
 commandsWithAddressByteAddress = { 0xea, 0xf7, 0xf8 }
@@ -101,7 +104,7 @@ commandsWith2Addresses = { 0xe5, 0xee }
 commandsWithAddressAnd2Bytes = { 0xf9 }
 
 def getCommandString(cmdByte, args, addressLabels):
-    cmdStr, nArgBytes, parseFunc = commands[cmdByte]
+    cmdStr, nArgBytes, _ = commands[cmdByte]
     resStr = cmdStr
     if nArgBytes == 0:
         return resStr
@@ -111,8 +114,16 @@ def getCommandString(cmdByte, args, addressLabels):
             return addressLabels[a]
         elif a in symbols:
             return symbols[a]
+        elif a == 0x0000:
+            return "NULL"
         else:
             return "${:04x}".format(a)
+
+    def convertToSignedInt(b):
+        if b >= 0x80:
+            return b - 0x100
+        else:
+            return b
 
     if cmdByte in commandsWithNum:
         return resStr + " {}".format(args[0])
@@ -122,6 +133,9 @@ def getCommandString(cmdByte, args, addressLabels):
 
     if cmdByte in commandsWith2Bytes:
         return resStr + " ${:02x}, ".format(args[0]) + "${:02x}".format(args[1])
+
+    if cmdByte in commandsWith2Offsets:
+        return resStr + " {}, ".format(convertToSignedInt(args[0])) + "{}".format(convertToSignedInt(args[1]))
 
     if cmdByte in commandsWithAddressAndByte:
         return resStr + " " + parseAddress(args[0]) + ", ${:02x}".format(args[1])
@@ -201,17 +215,24 @@ for o in args.offsets:
                 if isMotionScript:
                     if motionScriptAddr == pos + 0x4000:
                         cmdByte = 0x100
-                        parsedCommands[-1] = (cmdByte, parsedCommands[-1][1], [gfxScriptAddr])
+                        parsedCommands[-1] = (cmdByte, cmdPos, [gfxScriptAddr])
                 else:
                     if gfxScriptAddr == pos + 0x4000:
                         cmdByte = 0x101
-                        parsedCommands[-1] = (cmdByte, parsedCommands[-1][1], [motionScriptAddr])
+                        parsedCommands[-1] = (cmdByte, cmdPos, [motionScriptAddr])
 
             elif cmdByte == 0xe8:
                 funcAddr = parsedCommands[-1][2][0]
                 if funcAddr in symbols and symbols[funcAddr] == "SetObjectProperties":
-                    parsedCommands[-1] = (0x103, parsedCommands[-1][1], parseWord(source[pos : pos + 2]))
+                    parsedCommands[-1] = (0x103, cmdPos, parseWord(source[pos : pos + 2]))
                     pos += 2
+
+            elif cmdByte == 0xee:
+                def convertAddress(addr):
+                    return addr + (5 - 1) * 0x4000 if addr != 0x0000 else addr
+                funcAddr1 = convertAddress(parsedCommands[-1][2][0])
+                funcAddr2 = convertAddress(parsedCommands[-1][2][1])
+                parsedCommands[-1] = (cmdByte, cmdPos, [funcAddr1, funcAddr2])
 
             if cmdByte == 0xe0 or cmdByte == 0xe4 or cmdByte == 0xe5:
                 break # end of script
@@ -223,7 +244,8 @@ for o in args.offsets:
     # for the common case where the animation is a simple loop
     if len(addressLabels) == 1:
         for k, v in addressLabels.items():
-            addressLabels[k] = ".loop"
+            if k >= offset and k < offset + pos:
+                addressLabels[k] = ".loop"
 
     label = "MotionScript" if isMotionScript else "AnimScript"
     outStr = label + "_{}:\n".format(o)
