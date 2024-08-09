@@ -4597,9 +4597,21 @@ DestroyObject::
 	add hl, bc
 	ld [hl], OBJECT_NOT_ACTIVE
 	ret
-; 0x21d5
 
-SECTION "Home@21e6", ROM0[$21e6]
+Func_21d5::
+	ld hl, wObjectActiveStates
+	add hl, bc
+	ld [hl], 255
+	ret
+
+Func_21dc::
+	ld hl, wObjectActiveStates
+	add hl, bc
+	ld a, [hl]
+	and a
+	ret z
+	ld [hl], 1
+	ret
 
 ; input:
 ; - hl = anim script
@@ -5526,7 +5538,7 @@ DoCommonScriptCommand:
 	push af
 	ld a, [wROMBank]
 	ld [wd3f0], a
-	call .Func_2708
+	call Func_2708
 	pop af
 	ld [wd3f0], a
 	pop hl
@@ -5540,7 +5552,7 @@ DoCommonScriptCommand:
 .done
 	ret
 
-.Func_2708:
+Func_2708::
 	push bc
 	lb de, $0, $0
 	call CreateObject_Group1
@@ -5851,7 +5863,7 @@ DoAnimScriptCommand:
 .asm_28b7
 	ld [hli], a
 	ld a, [wScriptPtr + 1]
-	adc $00
+	adc 0
 	ld [hl], a
 	pop hl
 	jp SetScriptPtr

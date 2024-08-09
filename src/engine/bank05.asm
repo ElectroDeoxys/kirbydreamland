@@ -199,7 +199,32 @@ Func_1415e:
 	ld a, [hl]
 	ld [de], a
 	jp Func_241f
-; 0x14172
+
+Func_14172:
+	ld hl, wd1b0
+	add hl, bc
+	bit 7, [hl]
+	ret z
+	res 7, [hl]
+	ld a, [wd3cd]
+	and a
+	ret z
+	ld hl, wd37a
+	add hl, bc
+	add hl, bc
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	call Func_2708
+	push bc
+	jr c, .asm_14195
+	ld a, [wd3ba]
+	ld c, a
+	call Func_21d5
+.asm_14195
+	pop bc
+	ret
+; 0x14197
 
 SECTION "Bank 5@41b1", ROMX[$41b1], BANK[$5]
 

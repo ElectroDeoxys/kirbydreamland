@@ -137,11 +137,17 @@ Data_1c154::
 SECTION "Bank 7@4196", ROMX[$4196], BANK[$7]
 
 Data_1c196::
-	dw AnimScript_20bda, $422a, $35b3
+	dw AnimScript_20bda, MotionScript_1022a, $35b3
 
 Data_1c19c::
-	dw AnimScript_20477, $4244, $35b3
+	dw AnimScript_20477, MotionScript_10244, $35b3
 ; 0x1c1a2
+
+SECTION "Bank 7@41c6", ROMX[$41c6], BANK[$7]
+
+Data_1c1c6::
+	dw AnimScript_210e7, MotionScript_10008, $358f
+; 0x1c1cc
 
 SECTION "Bank 7@4202", ROMX[$4202], BANK[$7]
 
@@ -248,8 +254,8 @@ Data_1c2d4:
 
 Data_1c2f9:
 	dbw $00, NULL
-	dbw $16, $459e
-	dbw $1a, $45a8
+	dbw $16, Data_1c59e
+	dbw $1a, Data_1c5a8
 	db $ff
 
 	db $ff
@@ -351,7 +357,7 @@ Data_1c4ca:
 ; unreferenced
 	object $3b, $06, $f8, $00, AnimScript_20d0b, MotionScript_111e4, CappyProperties
 Data_1c4de:
-	object $3f, $06, $00, $00, $4e10, MotionScript_10f06, Data_3547
+	object $3f, $06, $00, $00, AnimScript_20e10, MotionScript_10f06, Data_3547
 Data_1c4e8:
 	object $41, $06, $f0, $00, AnimScript_2063b, MotionScript_10cf4, WaddleDeeProperties
 Data_1c4f2:
@@ -363,7 +369,7 @@ Data_1c506:
 Data_1c510:
 	object $46, $06, $08, $00, AnimScript_20d0b, MotionScript_111e4, CappyProperties
 Data_1c51a:
-	object $4c, $06, $00, $00, $4e10, MotionScript_10f06, Data_3547
+	object $4c, $06, $00, $00, AnimScript_20e10, MotionScript_10f06, Data_3547
 
 Data_1c524:
 	object $06, $04, $00, $00, AnimScript_20c5b, MotionScript_10d99, TwizzyProperties
@@ -372,27 +378,30 @@ Data_1c52e:
 Data_1c538:
 	object $0a, $07, $00, $00, AnimScript_205cc, MotionScript_1042f, WaddleDeeProperties
 Data_1c542:
-	object $0b, $13, $f9, $00, $4cef, MotionScript_10e3b, Data_3508
+	object $0b, $13, $f9, $00, AnimScript_20cef, MotionScript_10e3b, Data_3508
 Data_1c54c:
-	object $0c, $13, $f9, $00, $4cef, MotionScript_10e3b, Data_3508
+	object $0c, $13, $f9, $00, AnimScript_20cef, MotionScript_10e3b, Data_3508
 Data_1c556:
-	object $01, $0e, $08, $00, $4934, MotionScript_10008, MaximTomatoProperties, 4
+	object $01, $0e, $08, $00, AnimScript_20934, MotionScript_10008, MaximTomatoProperties, 4
 	db $00
 Data_1c562:
 	object $07, $13, $00, $00, AnimScript_20c5b, MotionScript_10d99, TwizzyProperties
 Data_1c56c:
-	object $06, $17, $02, $00, $4ccb, MotionScript_10de7, Data_3508
+	object $06, $17, $02, $00, AnimScript_20ccb, MotionScript_10de7, Data_3508
 ; unreferenced
-	object $0e, $17, $02, $00, $4dda, MotionScript_10008, Data_3508
+	object $0e, $17, $02, $00, AnimScript_20dda, MotionScript_10008, Data_3508
 Data_1c580:
 	object $0b, $1c, $00, $00, AnimScript_20d92, MotionScript_10f06, Data_3535
 Data_1c58a:
-	object $03, $20, $00, $00, $4da4, MotionScript_10f0e, Data_3535
+	object $03, $20, $00, $00, AnimScript_20da4, MotionScript_10f0e, Data_3535
 Data_1c594:
-	object $02, $25, $00, $00, $4ccb, MotionScript_10de7, Data_3508
+	object $02, $25, $00, $00, AnimScript_20ccb, MotionScript_10de7, Data_3508
 
 Data_1c59e:
-	object $07, $16, $02, $d5, $5023, MotionScript_10008, Data_3421
+	object $07, $16, $02, $d5, AnimScript_WhispyWoods, MotionScript_10008, Data_3421
+
+Data_1c5a8:
+	object $00, $1a, $00, $00, AnimScript_21181, MotionScript_10008, Data_3421
 
 SECTION "Bank 7@558f", ROMX[$558f], BANK[$7]
 

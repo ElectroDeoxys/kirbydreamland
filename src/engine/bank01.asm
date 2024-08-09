@@ -1142,7 +1142,22 @@ Data_488c::
 	db $01
 	db $01
 	db $01
-; 0x4896
+	db $00
+
+Func_4897:
+	push bc
+	ld a, [wd3ba]
+	ld c, a
+	ld b, $00
+	call Func_21dc
+	pop bc
+	ret
+
+Func_48a3:
+	ld a, c
+	ld [wd3ba], a
+	ret
+; 0x48a8
 
 SECTION "Bank 1@48e1", ROMX[$48e1], BANK[$1]
 
@@ -1244,7 +1259,7 @@ Func_4a1c:
 	call PlaySFX
 	ret
 
-Func_4a82:
+LockScrolling:
 	ld hl, hPalFadeFlags
 	set FADE_4_F, [hl]
 	ret

@@ -372,7 +372,10 @@ wd39a:: ; d39a
 wd3aa:: ; d3aa
 	ds $10
 
-	ds $4
+wd3ba:: ; d3ba
+	db
+
+	ds $3
 
 wd3be:: ; d3be
 	db
@@ -405,7 +408,8 @@ wConsumedItems:: ; d3c4
 wd3cc:: ; d3cc
 	db
 
-	ds $1
+wd3cd:: ; d3cd
+	db
 
 wd3ce:: ; d3ce
 	db

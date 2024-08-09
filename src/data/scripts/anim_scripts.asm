@@ -619,6 +619,7 @@ AnimScript_2092e:
 	script_exec Func_4ad6
 	frame  0, $5c7d
 
+AnimScript_20934:
 	frame  0, $5c81
 
 .loop
@@ -853,9 +854,12 @@ AnimScript_20ce7:
 	script_call GfxSubScript_20cf7
 	script_call GfxSubScript_20d01
 	jump_rel .loop
-; 0x20cef
 
-SECTION "Bank 8@4cf7", ROMX[$4cf7], BANK[$8]
+AnimScript_20cef:
+.loop
+	script_call GfxSubScript_20d01
+	script_call GfxSubScript_20cf7
+	jump_rel .loop
 
 GfxSubScript_20cf7:
 	script_repeat 3
@@ -943,7 +947,14 @@ AnimScript_20d92:
 	jump_rel .loop
 ; 0x20d9f
 
-SECTION "Bank 8@4db1", ROMX[$4db1], BANK[$8]
+SECTION "Bank 8@4da4", ROMX[$4da4], BANK[$8]
+
+AnimScript_20da4:
+	set_motion_script $4f0e
+.loop
+	script_call AnimScript_20dbb
+	script_call AnimScript_20db1
+	jump_rel .loop
 
 AnimScript_20db1:
 	script_repeat 9
@@ -970,7 +981,10 @@ AnimScript_20dc5:
 	frame 16, $4284
 	script_repeat_end
 	jump_abs .loop
-; 0x20dda
+
+AnimScript_20dda:
+	frame  0, $4224
+; 0x20ddd
 
 SECTION "Bank 8@4de5", ROMX[$4de5], BANK[$8]
 
@@ -982,6 +996,15 @@ AnimScript_20de5:
 	set_object_properties $3535
 	set_scripts AnimScript_20dc5, MotionScript_10f5a
 ; 0x20e03
+
+SECTION "Bank 8@4e10", ROMX[$4e10], BANK[$8]
+
+AnimScript_20e10:
+.loop
+	script_call GfxSubScript_20e20
+	script_call GfxSubScript_20e3c
+	jump_rel .loop
+; 0x20e18
 
 SECTION "Bank 8@4e20", ROMX[$4e20], BANK[$8]
 
@@ -1070,11 +1093,12 @@ AnimScript_20e9d:
 SECTION "Bank 8@4f14", ROMX[$4f14], BANK[$8]
 
 AnimScript_20f14:
-	jump_if_equal wd3f1, $00, .start_battle
+	jump_if_equal wd3f1, $00, .init
 	script_end
-.start_battle
+
+.init
 	set_object_properties Data_356b
-	script_exec Func_4a82
+	script_exec LockScrolling
 	set_value wBossHPCounter, 3
 	set_value wd3c1, $01
 	create_object AnimScript_21195, MotionScript_10008, Data_3421
@@ -1165,7 +1189,152 @@ SECTION "Bank 8@501d", ROMX[$501d], BANK[$8]
 AnimScript_2101d:
 	position_offset -16, 8
 	frame  0, $5c4d
-; 0x21023
+
+AnimScript_WhispyWoods:
+.loop_wait
+	jump_if_equal wd052, $11, .init
+	frame  1, $4000
+	jump_abs .loop_wait
+
+.init
+	set_object_properties $3586
+	set_value wBossHPCounter, 6
+	set_value wd3c1, $01
+	create_object AnimScript_21195, MotionScript_10008, Data_3421
+	frame 60, $4000
+	script_exec Func_48a3
+	set_value wd3cd, $01
+	set_custom_func Func_14172, Data_1c1c6
+	script_call .BlinkTwice
+	jump_random 50 percent + 1, .spawn_apples
+
+.shoot_two_puffs
+	script_repeat 2
+	script_call .ShootPuff_Slow
+	script_repeat_end
+	script_call .BlinkTwice
+	jump_random 13 percent - 1, .shoot_four_puffs
+	jump_rel .spawn_apples
+
+.shoot_four_puffs
+	script_repeat 4
+	script_call .ShootPuff_Fast
+	frame 10, $4000
+	script_repeat_end
+	jump_random 25 percent + 1, .shoot_two_puffs
+
+.spawn_apples
+	script_repeat 3
+	create_object AnimScript_21119, MotionScript_11124, $359d
+	frame 30, $4000
+	frame  4, $400c
+	frame  6, $4018
+	frame  4, $400c
+	frame  6, $4000
+	frame 40, $4000
+	script_repeat_end
+	script_call .BlinkTwice
+	jump_random 25 percent + 1, .spawn_apples
+	jump_rel .shoot_two_puffs
+
+.BlinkTwice
+	frame 20, $4000
+	frame  3, $400c
+	frame  6, $4018
+	frame  3, $400c
+	frame  4, $4000
+	frame 20, $4000
+	frame  3, $400c
+	frame  8, $4018
+	frame  3, $400c
+	frame 10, $4000
+	script_ret
+
+.ShootPuff_Slow
+	frame  1, $4068
+	frame 10, $4078
+	create_object AnimScript_21116, MotionScript_110f4, $3596
+	frame 14, $4078
+	frame  1, $4068
+	frame  1, $4058
+	script_ret
+
+.ShootPuff_Fast
+	frame  1, $4068
+	frame  5, $4078
+	create_object AnimScript_21116, MotionScript_110f4, $3596
+	frame  5, $4078
+	frame  1, $4068
+	frame  1, $4058
+	script_ret
+
+AnimScript_210e7:
+	frame  6, $4034
+	frame 28, $4024
+	script_exec Func_4897
+	script_end
+; 0x210f1
+
+SECTION "Bank 8@5116", ROMX[$5116], BANK[$8]
+
+AnimScript_21116:
+	frame  0, $5cf9
+
+AnimScript_21119:
+	frame  1, $41d4
+	script_repeat 3
+	script_exec Func_4aba
+	script_delay 4
+	script_exec Func_4ab3
+	script_delay 4
+	script_repeat_end
+	frame 42, $41d4
+	script_end
+
+AnimScript_2112d:
+	play_sfx SFX_30
+	frame 10, $41ec
+	frame 10, $41e4
+	frame 10, $41dc
+	frame 10, $41d4
+	frame  6, $41ec
+	frame  6, $41e4
+	frame  6, $41dc
+	frame  6, $41d4
+.loop
+	frame  8, $41ec
+	frame  8, $41e4
+	frame  8, $41dc
+	frame  8, $41d4
+	jump_rel .loop
+
+AnimScript_21157:
+	play_sfx SFX_30
+	frame 10, $41d4
+	frame 10, $41dc
+	frame 10, $41e4
+	frame 10, $41ec
+	frame  6, $41d4
+	frame  6, $41dc
+	frame  6, $41e4
+	frame  6, $41ec
+.loop
+	frame  8, $41d4
+	frame  8, $41dc
+	frame  8, $41e4
+	frame  8, $41ec
+	jump_rel .loop
+
+AnimScript_21181:
+.loop
+	jump_if_equal wd052, $11, .script_2118d
+	frame  1, $58b8
+	jump_abs .loop
+
+.script_2118d
+	script_exec LockScrolling
+	script_end
+; 0x21191
 
 SECTION "Bank 8@5195", ROMX[$5195], BANK[$8]
 

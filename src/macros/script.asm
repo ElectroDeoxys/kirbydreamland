@@ -91,10 +91,8 @@ ENDM
 	const SCRIPT_SET_CUSTOM_FUNC ; $ee
 MACRO set_custom_func
 	db SCRIPT_SET_CUSTOM_FUNC
-	dw \1 ; value 1
-IF _NARG == 2
-	dw \2 ; value 2
-ENDC
+	dw \1 ; function
+	dw \2 ; argument
 ENDM
 
 	const SCRIPT_CLEAR_CUSTOM_FUNC ; $ef

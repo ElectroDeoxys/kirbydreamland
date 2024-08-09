@@ -117,7 +117,7 @@ def getCommandString(cmdByte, args, addressLabels):
         elif a == 0x0000:
             return "NULL"
         else:
-            return "${:04x}".format(a)
+            return "${:04x}".format(a % 0x8000)
 
     def convertToSignedInt(b):
         if b >= 0x80:
