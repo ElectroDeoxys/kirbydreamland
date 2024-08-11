@@ -467,7 +467,7 @@ ProcessDoorConnection::
 	ld a, [wd03f]
 	ld b, a
 	push de
-	call CalculateBCPercentage
+	call BCFractionE
 	pop de
 	ld a, d
 	add c
@@ -558,7 +558,7 @@ Func_648::
 	and ~PROCESS_BG_QUEUE
 	ldh [hEngineFlags], a
 	ldh a, [hScrollingFlags]
-	or $c8
+	or SCROLLINGF_UNK3 | SCROLLINGF_UNK6 | SCROLLINGF_UNK7
 	ldh [hScrollingFlags], a
 .asm_655
 	xor a
@@ -571,7 +571,7 @@ Func_648::
 	bit VBLANK_6_F, [hl]
 	jr nz, .asm_664
 	ldh a, [hScrollingFlags]
-	bit 7, a
+	bit SCROLLINGF_UNK7_F, a
 	jr nz, .asm_655
 	pop hl
 	ret
@@ -581,8 +581,8 @@ Func_670::
 	and ~PROCESS_BG_QUEUE
 	ldh [hEngineFlags], a
 	ldh a, [hScrollingFlags]
-	and $3c
-	or $88
+	and $ff ^ (SCROLLINGF_UNK0 | SCROLLINGF_UNK1 | SCROLLINGF_UNK6 | SCROLLINGF_UNK7)
+	or SCROLLINGF_UNK3 | SCROLLINGF_UNK7
 	ldh [hScrollingFlags], a
 .asm_67e
 	ld hl, hVBlankFlags
@@ -591,7 +591,7 @@ Func_670::
 	bit VBLANK_6_F, [hl]
 	jr nz, .asm_683
 	ldh a, [hScrollingFlags]
-	bit 7, a
+	bit SCROLLINGF_UNK7_F, a
 	jr nz, .asm_67e
 	ret
 
@@ -675,7 +675,7 @@ Func_6ec::
 	ret nz
 	ldh [hVBlankFlags], a
 	ld hl, hScrollingFlags
-	bit 4, [hl]
+	bit SCROLL_LOCKED_F, [hl]
 	jr nz, .asm_708
 	ld hl, hEngineFlags
 	ld a, [wKirbyScreenX]
@@ -707,7 +707,7 @@ Func_6ec::
 	ret
 .asm_733
 	jr z, .asm_708
-	bit 7, [hl]
+	bit ENGINEF_UNK7_F, [hl]
 	jr nz, .asm_747
 	ld a, [wd042]
 	and a
@@ -811,7 +811,7 @@ Func_7cd:
 	ld b, a
 	ld a, [wd03f]
 	ld e, a
-	call CalculateBCPercentage
+	call BCFractionE
 	ld hl, wc100
 	add hl, bc
 	push hl
@@ -864,7 +864,7 @@ Func_819::
 	ld b, c
 	ld a, [wd03f]
 	ld e, a
-	call CalculateBCPercentage
+	call BCFractionE
 	ld hl, wc100
 	add hl, bc
 	ldh a, [hEngineFlags]
@@ -1006,7 +1006,7 @@ Func_8dc::
 
 Func_917::
 	ldh a, [hScrollingFlags]
-	bit 5, a
+	bit SCROLLINGF_UNK5_F, a
 	jr nz, .asm_97b
 	ldh a, [hKirbyFlags1]
 	bit KIRBY1F_WALK_F, a
@@ -1074,7 +1074,7 @@ Func_998:
 	bit 6, [hl]
 	jr z, .asm_9c0
 	ldh a, [hScrollingFlags]
-	bit 5, a
+	bit SCROLLINGF_UNK5_F, a
 	jr z, .asm_9c0
 	ld a, [wStage]
 	cp FLOAT_ISLANDS
@@ -1116,7 +1116,7 @@ Func_9de:
 	res 7, a
 	ldh [hff93], a
 	ldh a, [hScrollingFlags]
-	bit 5, a
+	bit SCROLLINGF_UNK5_F, a
 	jp nz, .asm_ab8
 	ld a, [wKirbyScreenY]
 	ld [wd05f], a
@@ -1233,8 +1233,8 @@ Func_9de:
 	ld [wd061], a
 	ld b, a
 	ldh a, [hScrollingFlags]
-	bit 4, a
-	jr nz, .asm_ad6
+	bit SCROLL_LOCKED_F, a
+	jr nz, .scroll_locked
 	ld c, $4c
 	ld a, [wd052]
 	cp $01
@@ -1242,7 +1242,7 @@ Func_9de:
 	ld a, [wSCY]
 	and $0f
 	jr nz, .asm_ad8
-.asm_ad6
+.scroll_locked
 	ld c, $10
 .asm_ad8
 	ld a, [wKirbyScreenY]
@@ -1268,7 +1268,7 @@ Func_9de:
 .asm_b08
 	call MoveKirbyDown
 	ldh a, [hScrollingFlags]
-	bit 4, a
+	bit SCROLL_LOCKED_F, a
 	jp nz, .asm_bba
 	ld a, [wKirbyScreenDeltaY]
 	ld b, a
@@ -1332,7 +1332,7 @@ Func_9de:
 	ld e, a
 	ld a, [wd03f]
 	ld b, a
-	call CalculateBCPercentage
+	call BCFractionE
 	ld hl, wc100
 	add hl, bc
 	ld b, $00
@@ -1407,7 +1407,7 @@ Func_9de:
 	ld a, $33
 	ld [wd077], a
 	ldh a, [hScrollingFlags]
-	res 3, a
+	res SCROLLINGF_UNK3_F, a
 	ldh [hScrollingFlags], a
 	ldh a, [hKirbyFlags3]
 	res KIRBY3F_UNK6_F, a
@@ -1476,7 +1476,7 @@ Func_c85:
 
 Func_caf:
 	ldh a, [hScrollingFlags]
-	bit 3, a
+	bit SCROLLINGF_UNK3_F, a
 	jr nz, .asm_cba
 	ldh a, [hVBlankFlags]
 	bit VBLANK_3_F, a
@@ -1486,9 +1486,9 @@ Func_caf:
 	res 6, a
 	ldh [hff93], a
 	ldh a, [hScrollingFlags]
-	res 3, a
+	res SCROLLINGF_UNK3_F, a
 	ldh [hScrollingFlags], a
-	bit 5, a
+	bit SCROLLINGF_UNK5_F, a
 	jp nz, .asm_ee0
 	ld a, [wKirbyScreenY]
 	cp $71
@@ -1803,8 +1803,8 @@ Func_caf:
 	ld [wKirbyScreenDeltaY], a
 	ld b, a
 	ldh a, [hScrollingFlags]
-	bit 4, a
-	jr nz, .asm_f31
+	bit SCROLL_LOCKED_F, a
+	jr nz, .scroll_locked
 	ld c, $54
 	ld a, [wd040]
 	sub $07
@@ -1812,7 +1812,7 @@ Func_caf:
 	ld a, [wd052]
 	cp d
 	jr nz, .asm_f3b
-.asm_f31
+.scroll_locked
 	ld c, $90
 	ldh a, [hff95]
 	bit 6, a
@@ -1919,7 +1919,7 @@ Func_caf:
 	ld e, a
 	ld a, [wd03f]
 	ld b, a
-	call CalculateBCPercentage
+	call BCFractionE
 	ld hl, wc100
 	add hl, bc
 	ld b, $00
@@ -1968,7 +1968,7 @@ Func_1046:
 	ld b, a
 	ld a, [wd03f]
 	ld e, a
-	call CalculateBCPercentage
+	call BCFractionE
 	add hl, bc
 	ld b, $00
 	ld a, [wd051]
@@ -1980,7 +1980,7 @@ Func_1046:
 
 Func_1062::
 	ldh a, [hScrollingFlags]
-	bit 4, a
+	bit SCROLL_LOCKED_F, a
 	ret nz
 	ld a, [wd063]
 	and a
@@ -2078,10 +2078,10 @@ SECTION "Home@110b", ROM0[$110b]
 
 Func_110b:
 	ldh a, [hScrollingFlags]
-	bit 4, a
+	bit SCROLL_LOCKED_F, a
 	ret nz
 	ldh a, [hScrollingFlags]
-	bit 5, a
+	bit SCROLLINGF_UNK5_F, a
 	ret nz
 	ld hl, hff94
 	bit 3, [hl]
@@ -2393,7 +2393,7 @@ Func_12b4::
 	ld e, c
 	ld a, [wd03f]
 	ld b, a
-	call CalculateBCPercentage
+	call BCFractionE
 	ld hl, wc100
 	add hl, bc
 	pop de
@@ -3278,8 +3278,8 @@ Func_1964::
 	ld [wXCoord], a
 	ld [wYCoord], a
 	ld de, wBGQueue
-	ld a, $0a
-	ld b, a
+	ld a, $0a ; can be ld b, $0a
+	ld b, a   ;
 .loop_rows
 	ld a, [wd03f]
 	cp $0a
@@ -3332,7 +3332,7 @@ Func_1964::
 
 Func_19c9::
 	ldh a, [hScrollingFlags]
-	and $08
+	and SCROLLINGF_UNK3
 	ldh [hScrollingFlags], a
 	ld hl, Data_38b1
 	ld a, [wStage]
@@ -3359,7 +3359,7 @@ Func_19c9::
 	and a
 	jr z, .asm_19f8
 	ldh a, [hScrollingFlags]
-	set 2, a
+	set SCROLLINGF_UNK2_F, a
 	ldh [hScrollingFlags], a
 .asm_19f8
 	ret
@@ -3421,16 +3421,16 @@ Func_19f9::
 	and $15
 	jr z, .asm_1a6e
 	bit 0, a
-	jr nz, .asm_1a60
+	jr nz, .lock_scroll
 	bit 4, a
 	jr nz, .asm_1a68
 	ldh a, [hEngineFlags]
 	set ENGINEF_UNK7_F, a
 	ldh [hEngineFlags], a
 	jr .asm_1a6e
-.asm_1a60
+.lock_scroll
 	ldh a, [hScrollingFlags]
-	set 4, a
+	set SCROLL_LOCKED_F, a
 	ldh [hScrollingFlags], a
 	jr .asm_1a6e
 
@@ -3457,7 +3457,7 @@ Func_19f9::
 	and a
 	jr nz, .asm_1b09
 	ldh a, [hScrollingFlags]
-	set 4, a
+	set SCROLL_LOCKED_F, a
 	ldh [hScrollingFlags], a
 	ld a, [wMtDededeDefeatedBosses + MT_DEDEDE_1]
 	and a
@@ -3734,7 +3734,7 @@ Func_1c0a::
 ; - e = percentage
 ; output:
 ; - bc = result
-CalculateBCPercentage::
+BCFractionE::
 	push af
 	push hl
 	ld hl, 0
@@ -6862,7 +6862,7 @@ Func_2e20:
 Func_2e7f::
 	ld a, [wd03f]
 	ld b, a
-	call CalculateBCPercentage
+	call BCFractionE
 	ld hl, wc100
 	add hl, bc
 	ld e, d

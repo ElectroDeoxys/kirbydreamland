@@ -121,7 +121,7 @@ Func_4000::
 	ld [wKirbyScreenDeltaX], a
 .asm_40e1
 	ldh a, [hPalFadeFlags]
-	bit FADE_4_F, a
+	bit SCROLL_LOCKED_F, a
 	jr nz, .asm_4115
 	ld hl, hff94
 	bit 3, [hl]
@@ -320,7 +320,7 @@ Func_417c::
 	ld a, [wd063]
 	ld b, a
 	ldh a, [hPalFadeFlags]
-	bit FADE_4_F, a
+	bit SCROLL_LOCKED_F, a
 	jr nz, .asm_427e
 	ld hl, hff94
 	bit 3, [hl]
@@ -1261,7 +1261,7 @@ Func_4a1c:
 
 LockScrolling:
 	ld hl, hPalFadeFlags
-	set FADE_4_F, [hl]
+	set SCROLL_LOCKED_F, [hl]
 	ret
 ; 0x4a88
 
@@ -1558,7 +1558,7 @@ Func_4d3f::
 	ld a, [wd052]
 	dec a
 	ld e, a
-	call CalculateBCPercentage
+	call BCFractionE
 	ld h, $00
 	ld a, [wd051]
 	dec a

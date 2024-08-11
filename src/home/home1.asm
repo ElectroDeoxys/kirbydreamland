@@ -673,7 +673,7 @@ Func_6ec::
 	ret nz
 	ldh [hVBlankFlags], a
 	ld hl, hPalFadeFlags
-	bit FADE_4_F, [hl]
+	bit SCROLL_LOCKED_F, [hl]
 	jr nz, .asm_708
 	ld hl, hEngineFlags
 	ld a, [wKirbyScreenX]
@@ -1231,7 +1231,7 @@ Func_9de:
 	ld [wd061], a
 	ld b, a
 	ldh a, [hPalFadeFlags]
-	bit FADE_4_F, a
+	bit SCROLL_LOCKED_F, a
 	jr nz, .asm_ad6
 	ld c, $4c
 	ld a, [wd052]
@@ -1266,7 +1266,7 @@ Func_9de:
 .asm_b08
 	call MoveKirbyDown
 	ldh a, [hPalFadeFlags]
-	bit FADE_4_F, a
+	bit SCROLL_LOCKED_F, a
 	jp nz, .asm_bba
 	ld a, [wKirbyScreenDeltaY]
 	ld b, a
@@ -1801,7 +1801,7 @@ Func_caf:
 	ld [wKirbyScreenDeltaY], a
 	ld b, a
 	ldh a, [hPalFadeFlags]
-	bit FADE_4_F, a
+	bit SCROLL_LOCKED_F, a
 	jr nz, .asm_f31
 	ld c, $54
 	ld a, [wd040]
@@ -1978,7 +1978,7 @@ Func_1046:
 
 Func_1062::
 	ldh a, [hPalFadeFlags]
-	bit FADE_4_F, a
+	bit SCROLL_LOCKED_F, a
 	ret nz
 	ld a, [wd063]
 	and a
@@ -2073,7 +2073,7 @@ Func_1062::
 
 Func_110b:
 	ldh a, [hPalFadeFlags]
-	bit FADE_4_F, a
+	bit SCROLL_LOCKED_F, a
 	ret nz
 	ldh a, [hPalFadeFlags]
 	bit FADE_5_F, a
@@ -3428,7 +3428,7 @@ Func_19f9::
 	jr .asm_1a6e
 .asm_1a60
 	ldh a, [hPalFadeFlags]
-	set FADE_4_F, a
+	set SCROLL_LOCKED_F, a
 	ldh [hPalFadeFlags], a
 	jr .asm_1a6e
 
@@ -3455,7 +3455,7 @@ Func_19f9::
 	and a
 	jr nz, .asm_1b09
 	ldh a, [hPalFadeFlags]
-	set FADE_4_F, a
+	set SCROLL_LOCKED_F, a
 	ldh [hPalFadeFlags], a
 	ld a, [wMtDededeDefeatedBosses + MT_DEDEDE_1]
 	and a

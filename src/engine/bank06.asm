@@ -420,7 +420,7 @@ Func_183bf::
 	ld [wd042], a
 	call .Func_1844f
 	ld hl, hPalFadeFlags
-	res FADE_4_F, [hl]
+	res SCROLL_LOCKED_F, [hl]
 
 	ld a, [wStage]
 	add a ; *2
@@ -554,7 +554,7 @@ Func_183bf::
 	ld b, a
 	ld a, [wd03f]
 	ld e, a
-	call CalculateBCPercentage
+	call BCFractionE
 	ld a, [wd051]
 	dec a
 	ld l, a
@@ -661,7 +661,7 @@ Func_183bf::
 	ld e, a
 	ld a, [wd03f]
 	ld b, a
-	call CalculateBCPercentage
+	call BCFractionE
 	ld hl, wc100
 	add hl, bc
 	ld b, $00
