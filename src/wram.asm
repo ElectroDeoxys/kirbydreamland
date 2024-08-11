@@ -11,16 +11,23 @@ wVirtualOAMEnd::
 wc100:: ; c100
 	ds $500
 
-wc600:: ; c600
+wBlockTileMap:: ; c600
 	ds $4 * $100
 
 wca00:: ; ca00
 	ds $100
 
+UNION
 wBGQueue:: ; cb00
 FOR n, $100
 wQueuedBG{03d:n}:: queued_bg_struct wQueuedBG{03d:n}
 ENDR
+NEXTU
+wBlockQueue:: ; cb00
+FOR n, $80
+wQueuedBlock{03d:n}:: queued_block_struct wQueuedBlock{03d:n}
+ENDR
+ENDU
 
 SECTION "WRAM1", WRAMX
 

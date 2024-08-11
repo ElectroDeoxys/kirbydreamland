@@ -47,18 +47,18 @@ ConfigurationMenu:
 	call .UpdateNumLives
 
 	ld hl, hVBlankFlags
-	set VBLANK_6_F, [hl]
+	set VBLANK_PENDING_F, [hl]
 .asm_1a3f2
-	bit VBLANK_6_F, [hl]
+	bit VBLANK_PENDING_F, [hl]
 	jr nz, .asm_1a3f2
 
-	call .config_update_cursor
+	call .ConfigUpdateCursor
 
 .input_ret
 	ld hl, hVBlankFlags
-	set VBLANK_6_F, [hl]
+	set VBLANK_PENDING_F, [hl]
 .asm_1a3fe
-	bit VBLANK_6_F, [hl]
+	bit VBLANK_PENDING_F, [hl]
 	jr nz, .asm_1a3fe
 
 	call Func_19098
@@ -118,7 +118,7 @@ ConfigurationMenu:
 	ld [wMenuCursorPos], a
 	ld a, SFX_CURSOR
 	call PlaySFX
-.config_update_cursor
+.ConfigUpdateCursor
 	ld a, HIGH(vBGMap0 + $e4)
 	ld [wQueuedBG000BGPtr + 0], a
 	ld a, LOW(vBGMap0 + $e4)
@@ -274,9 +274,9 @@ ConfigurationMenu:
 
 .asm_1a58a
 	ld hl, hVBlankFlags
-	set VBLANK_6_F, [hl]
+	set VBLANK_PENDING_F, [hl]
 .asm_1a58f
-	bit VBLANK_6_F, [hl]
+	bit VBLANK_PENDING_F, [hl]
 	jr nz, .asm_1a58f
 
 	call Func_19098

@@ -1,6 +1,11 @@
 MACRO queued_bg_struct
-\1BGPtr::  dw
+\1BGPtr::  dw ; big-endian
 \1TileID:: db
+ENDM
+
+MACRO queued_block_struct
+\1BGPtr::   dw ; big-endian
+\1TileIDs:: ds 4
 ENDM
 
 MACRO channel1_struct

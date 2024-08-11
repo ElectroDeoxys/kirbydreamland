@@ -58,9 +58,9 @@ ASSERT BANK(Func_1432c) == BANK(Func_147e4)
 	jr z, .asm_2d1
 	ld hl, hVBlankFlags
 .asm_2b7
-	set VBLANK_6_F, [hl]
+	set VBLANK_PENDING_F, [hl]
 .asm_2b9
-	bit VBLANK_6_F, [hl]
+	bit VBLANK_PENDING_F, [hl]
 	jr nz, .asm_2b9
 	push hl
 	xor a
@@ -104,7 +104,7 @@ ASSERT BANK(Func_1432c) == BANK(Func_147e4)
 	ld [wKirbyXVel + 0], a
 .asm_30a
 	ldh a, [hVBlankFlags]
-	set VBLANK_6_F, a
+	set VBLANK_PENDING_F, a
 	ldh [hVBlankFlags], a
 	jp Func_1f2
 .asm_313
@@ -536,11 +536,11 @@ ProcessDoorConnection::
 	ld a, $08
 	ldh [hVBlankFlags], a
 	ld a, [wd03d]
-	cp $ff
+	cp MUSIC_NONE
 	jr z, .asm_641
 	ld [wMusic], a
 	call PlayMusic
-	ld a, $ff
+	ld a, MUSIC_NONE
 	ld [wd03d], a
 .asm_641
 	xor a
@@ -566,9 +566,9 @@ Func_648::
 	call Func_2e9c
 	call ClearSprites
 	ld hl, hVBlankFlags
-	set VBLANK_6_F, [hl]
+	set VBLANK_PENDING_F, [hl]
 .asm_664
-	bit VBLANK_6_F, [hl]
+	bit VBLANK_PENDING_F, [hl]
 	jr nz, .asm_664
 	ldh a, [hScrollingFlags]
 	bit SCROLLINGF_UNK7_F, a
@@ -586,9 +586,9 @@ Func_670::
 	ldh [hScrollingFlags], a
 .asm_67e
 	ld hl, hVBlankFlags
-	set VBLANK_6_F, [hl]
+	set VBLANK_PENDING_F, [hl]
 .asm_683
-	bit VBLANK_6_F, [hl]
+	bit VBLANK_PENDING_F, [hl]
 	jr nz, .asm_683
 	ldh a, [hScrollingFlags]
 	bit SCROLLINGF_UNK7_F, a
@@ -2325,7 +2325,7 @@ Func_1292:
 	push bc
 	ld de, wBGQueue
 	ld c, $09
-.asm_1298
+.loop
 	ld a, [hl]
 	call Func_131a
 	push bc
@@ -2338,7 +2338,7 @@ Func_1292:
 	add $10
 	ld [wYCoord], a
 	dec c
-	jr nz, .asm_1298
+	jr nz, .loop
 	xor a
 	ld [de], a
 	pop bc
@@ -2414,7 +2414,8 @@ Func_12b4::
 	ret
 
 ; input:
-; - a = index in wc600
+; - a = index in wBlockTileMap
+; - de = 
 Func_131a:
 	push bc
 	push hl
@@ -2422,7 +2423,7 @@ Func_131a:
 	ld h, $00
 	add hl, hl
 	add hl, hl ; *4
-	ld bc, wc600
+	ld bc, wBlockTileMap
 	add hl, bc
 	ld a, [wXCoord]
 	ld [wd06b], a
@@ -3320,7 +3321,7 @@ Func_1964::
 	ldh [rSCX], a
 	ldh [rSCY], a
 	ldh a, [hVBlankFlags]
-	or VBLANK_5 | VBLANK_6
+	or VBLANK_5 | VBLANK_PENDING
 	ldh [hVBlankFlags], a
 	call Func_1ee3
 	ld a, [wd06b]
@@ -3368,7 +3369,7 @@ Func_19f9::
 	push bc
 	push hl
 	ld a, $ff
-	ld [wd03d], a
+	ld [wd03d], a ; MUSIC_NONE
 	ld [wd096], a
 	call ResetTimer
 	ld hl, Data_38b1
@@ -3442,7 +3443,7 @@ Func_19f9::
 	bit 3, [hl]
 	jr z, .asm_1a79
 	push hl
-	ld a, $08
+	ld a, MUSIC_BOSS_BATTLE
 	ld [wd03d], a
 	pop hl
 .asm_1a79
@@ -3535,7 +3536,7 @@ Func_19f9::
 	add hl, bc
 	ld a, [hl]
 	ld [wd06c], a
-	cp $04
+	cp MT_DEDEDE
 	jr z, .asm_1b69
 
 	push af
@@ -3596,13 +3597,14 @@ Func_19f9::
 	ld a, [wd06b]
 	ld c, a
 	call FarDecompress
+
 	ld a, [wd06c]
 	ld c, a
 	add a
 	add c ; *3
 	ld b, $00
 	ld c, a
-	ld hl, Data_20a2
+	ld hl, StageBlockTileMaps
 	add hl, bc
 	ld a, [hli]
 	ld c, a
@@ -3612,12 +3614,13 @@ Func_19f9::
 	ld e, a
 	ld h, d
 	ld l, e
-	ld de, wc600
+	ld de, wBlockTileMap
 	call FarDecompress
+
 	ld hl, hEngineFlags
 	bit ENGINEF_UNK5_F, [hl]
 	jr z, .done
-	ld hl, Data_1bcf
+	ld hl, MtDededeAreaMusics
 	ld a, [wArea]
 	ld c, a
 	ld b, $00
@@ -3643,18 +3646,18 @@ Data_1bc5:
 	db BUBBLY_CLOUDS ; MT_DEDEDE_9
 	assert_table_length NUM_MT_DEDEDE_AREAS
 
-Data_1bcf:
-	table_width 1, Data_1bcf
-	db $12 ; MT_DEDEDE_0
-	db $0d ; MT_DEDEDE_1
-	db $10 ; MT_DEDEDE_2
-	db $0e ; MT_DEDEDE_3
-	db $0f ; MT_DEDEDE_4
-	db $11 ; MT_DEDEDE_5
-	db $0d ; MT_DEDEDE_6
-	db $0e ; MT_DEDEDE_7
-	db $10 ; MT_DEDEDE_8
-	db $0f ; MT_DEDEDE_9
+MtDededeAreaMusics:
+	table_width 1, MtDededeAreaMusics
+	db MUSIC_MT_DEDEDE     ; MT_DEDEDE_0
+	db MUSIC_GREEN_GREENS  ; MT_DEDEDE_1
+	db MUSIC_CASTLE_LOLOLO ; MT_DEDEDE_2
+	db MUSIC_FLOAT_ISLANDS ; MT_DEDEDE_3
+	db MUSIC_BUBBLY_CLOUDS ; MT_DEDEDE_4
+	db MUSIC_DEDEDE_BATTLE ; MT_DEDEDE_5
+	db MUSIC_GREEN_GREENS  ; MT_DEDEDE_6
+	db MUSIC_FLOAT_ISLANDS ; MT_DEDEDE_7
+	db MUSIC_CASTLE_LOLOLO ; MT_DEDEDE_8
+	db MUSIC_BUBBLY_CLOUDS ; MT_DEDEDE_9
 	assert_table_length NUM_MT_DEDEDE_AREAS
 
 GetScoreDigitTiles:
@@ -3905,9 +3908,9 @@ DoFrames::
 	push hl
 	ld hl, hVBlankFlags
 .loop
-	set VBLANK_6_F, [hl]
+	set VBLANK_PENDING_F, [hl]
 .asm_1dc9
-	bit VBLANK_6_F, [hl]
+	bit VBLANK_PENDING_F, [hl]
 	jr nz, .asm_1dc9
 	push hl
 	push af
@@ -3928,9 +3931,9 @@ WaitAFrames::
 	push hl
 	ld hl, hVBlankFlags
 .asm_1de4
-	set VBLANK_6_F, [hl]
+	set VBLANK_PENDING_F, [hl]
 .asm_1de6
-	bit VBLANK_6_F, [hl]
+	bit VBLANK_PENDING_F, [hl]
 	jr nz, .asm_1de6
 	dec a
 	jr nz, .asm_1de4
@@ -4061,12 +4064,12 @@ PlayMusic::
 
 Func_1ee3:
 	ldh a, [hVBlankFlags]
-	bit VBLANK_6_F, a
+	bit VBLANK_PENDING_F, a
 	ret z
 	bit VBLANK_5_F, a
 	ret z
-	ld bc, wBGQueue
-.asm_1eee
+	ld bc, wBlockQueue
+.loop_queue
 	ld a, [bc]
 	inc bc
 	ld h, a
@@ -4083,13 +4086,13 @@ Func_1ee3:
 	ld [hl], a
 	ld a, [bc]
 	inc bc
-	ld de, $1f
+	ld de, SCRN_VX_B - 1
 	add hl, de
 	ld [hli], a
 	ld a, [bc]
 	inc bc
 	ld [hl], a
-	jr .asm_1eee
+	jr .loop_queue
 
 FadePalettes:
 	; fade only ticks every 5 frames
@@ -4363,8 +4366,8 @@ MACRO data_20a2
 	bigdw \2
 ENDM
 
-Data_20a2::
-	table_width 3, Data_20a2
+StageBlockTileMaps::
+	table_width 3, StageBlockTileMaps
 	data_20a2 $03, $46e0 ; GREEN_GREENS
 	data_20a2 $03, $4ac3 ; CASTLE_LOLOLO
 	data_20a2 $03, $48d9 ; FLOAT_ISLANDS

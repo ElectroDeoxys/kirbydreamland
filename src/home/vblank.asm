@@ -4,7 +4,7 @@ VBlank:
 	push de
 	push hl
 	ld hl, hVBlankFlags
-	bit VBLANK_6_F, [hl]
+	bit VBLANK_PENDING_F, [hl]
 	jp z, .waste_cycles
 	ld hl, hEngineFlags
 	bit PROCESS_BG_QUEUE_F, [hl]
@@ -25,7 +25,7 @@ VBlank:
 	call hTransferVirtualOAM
 
 	ldh a, [hVBlankFlags]
-	and ~(VBLANK_5 | VBLANK_6)
+	and ~(VBLANK_5 | VBLANK_PENDING)
 	ldh [hVBlankFlags], a
 
 	call ApplyLCDCScrollAndBGPalette

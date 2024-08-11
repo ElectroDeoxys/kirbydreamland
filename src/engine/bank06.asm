@@ -75,7 +75,7 @@ StartStage::
 	add c
 	ld b, $00
 	ld c, a
-	ld hl, Data_20a2
+	ld hl, StageBlockTileMaps
 	add hl, bc
 	ld a, [hli]
 	ld c, a
@@ -85,7 +85,7 @@ StartStage::
 	ld e, a
 	ld h, d
 	ld l, e
-	ld de, wc600
+	ld de, wBlockTileMap
 	call FarDecompress
 
 	ld a, HUD_UPDATE_LABEL | HUD_UPDATE_LIVES | HUD_UPDATE_SCORE_DIGITS
@@ -387,11 +387,12 @@ StageIntro:
 	ld d, [hl]
 .loop
 	ld hl, hVBlankFlags
-	set VBLANK_6_F, [hl]
-.asm_1839b
+	set VBLANK_PENDING_F, [hl]
+.wait_vblank
 	halt
-	bit VBLANK_6_F, [hl]
-	jr nz, .asm_1839b
+	bit VBLANK_PENDING_F, [hl]
+	jr nz, .wait_vblank
+
 	call Func_19098
 	ld a, [hJoypadPressed]
 	bit START_F, a
@@ -1157,7 +1158,7 @@ Func_1886c:
 	ld c, $02
 	call FarDecompress
 	ld hl, $777c
-	ld de, wc600
+	ld de, wBlockTileMap
 	ld c, $06
 	call FarDecompress
 	ld hl, $71e2
@@ -1578,13 +1579,13 @@ Func_1886c:
 	inc bc
 	inc de
 	push bc
-	ld bc, $20
+	ld bc, SCRN_VX_B
 	add hl, bc
 	pop bc
-	ld a, $cb
+	ld a, HIGH(wQueuedBG014BGPtr)
 	cp b
 	jr nz, .asm_18c09
-	ld a, $2a
+	ld a, LOW(wQueuedBG014BGPtr)
 	cp c
 	jr nz, .asm_18c09
 	xor a

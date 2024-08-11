@@ -1470,14 +1470,14 @@ InitRAM::
 	ld [wKirbyScreenY], a
 	ld a, $ff
 	ld [wd096], a
-	ld [wd03d], a
+	ld [wd03d], a ; MUSIC_NONE
 	xor a
 	ld [hl], a
 	ld a, $e4
 	ld [wBGP], a
 	ld a, $d0
 	ld [wOBP], a
-	ld a, VBLANK_6 | VBLANK_7
+	ld a, VBLANK_PENDING | VBLANK_7
 	ld [hVBlankFlags], a
 	ld a, $00
 	ld [hKirbyFlags1], a

@@ -86,7 +86,7 @@ Func_1f2:
 	ldh a, [hVBlankFlags]
 	bit VBLANK_5_F, a
 	jr nz, .asm_1f7
-	bit VBLANK_6_F, a
+	bit VBLANK_PENDING_F, a
 	jr nz, .asm_1f7
 	bit VBLANK_4_F, a
 	jr z, .asm_20c
