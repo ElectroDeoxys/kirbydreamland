@@ -679,9 +679,7 @@ Func_14600:
 	ld a, [hli]
 	add $03
 	ld h, [hl]
-	jr nc, .asm_1460f
-	inc h
-.asm_1460f
+	incc h
 	ld l, a
 	ld a, [hl]
 	and a
@@ -1094,9 +1092,7 @@ Func_148dc:
 	ld a, [hli]
 	add $05
 	ld h, [hl]
-	jr nc, .asm_148e8
-	inc h
-.asm_148e8
+	incc h
 	ld l, a
 	ret
 

@@ -235,9 +235,7 @@ InitChannel:
 	add LOW(ChannelSelectorOffsets)
 	ld l, a
 	ld h, HIGH(ChannelSelectorOffsets)
-	jr nc, .no_overflow
-	inc h
-.no_overflow
+	incc h
 	ld a, [hl]
 	ld hl, wChannelSelectorOffsets
 	add hl, bc
@@ -588,9 +586,7 @@ ExecuteAudioCommands:
 	add $a0
 	ld l, a
 	ld h, $54
-	jr nc, .asm_14f90
-	inc h
-.asm_14f90
+	incc h
 	ld c, [hl]
 	ld a, CHANNEL4_FREQUENCY
 	call GetPointerToChannelConfig
@@ -683,9 +679,7 @@ ExecuteAudioCommands:
 	add $d3
 	ld e, a
 	ld d, $78
-	jr nc, .asm_15011
-	inc d
-.asm_15011
+	incc d
 	ld h, HIGH(wde72)
 	ld a, LOW(wde72)
 	add b
@@ -702,9 +696,7 @@ ExecuteAudioCommands:
 	ld a, $96
 	add b
 	ld l, a
-	jr nc, .asm_15029
-	inc h
-.asm_15029
+	incc h
 	ld c, [hl]
 	ld h, HIGH(wdec2)
 	ld a, LOW(wdec2)

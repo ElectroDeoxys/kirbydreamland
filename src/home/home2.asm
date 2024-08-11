@@ -4871,8 +4871,7 @@ CreateObject:
 	add c
 	ld l, a
 	ld h, HIGH(wObjectActiveStates)
-	jr nc, .loop
-	inc h
+	incc h
 .loop
 	ld a, [hli]
 	and a
@@ -6566,9 +6565,7 @@ Func_2ce5:
 	ld a, [hli]
 	add $05
 	ld h, [hl]
-	jr nc, .asm_2d04
-	inc h
-.asm_2d04
+	incc h
 	ld l, a
 	bit 0, [hl]
 	jr nz, .no_carry
@@ -7003,9 +7000,7 @@ Func_2f34:
 	add e
 	ld e, a
 	ld d, HIGH(.data_1)
-	jr nc, .asm_2f61
-	inc d
-.asm_2f61
+	incc d
 	ld a, [de]
 	ld e, a
 	ld d, 0
@@ -7032,9 +7027,7 @@ Func_2f34:
 	add e
 	ld e, a
 	ld d, HIGH(.data_2)
-	jr nc, .asm_2f88
-	inc d
-.asm_2f88
+	incc d
 	ld a, [de]
 	ld e, a
 	ld d, 0

@@ -25,9 +25,7 @@ Func_4000::
 	ld a, [wKirbyXAcc]
 	add b
 	ld [wKirbyXAcc], a
-	jr nc, .got_x_vel
-	inc e
-.got_x_vel
+	incc e
 	ld a, e
 	and a
 	ret z ; no delta x
@@ -227,9 +225,7 @@ Func_417c::
 	ld a, [wKirbyXAcc]
 	sub b
 	ld [wKirbyXAcc], a
-	jr nc, .got_x_vel
-	inc e
-.got_x_vel
+	incc e
 	ld a, e
 	ld [wd063], a
 	and a
@@ -1381,9 +1377,7 @@ Func_4bb4::
 	ld a, [hli]
 	add $05
 	ld h, [hl]
-	jr nc, .asm_4c10
-	inc h
-.asm_4c10
+	incc h
 	ld l, a
 	ld a, [hli]
 	bit 3, a
