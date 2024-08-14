@@ -20,8 +20,8 @@ ASSERT BANK(Func_1432c) == BANK(Func_147e4)
 	call Func_2e9c
 	call ClearSprites
 
-	ld hl, hff95
-	bit 3, [hl]
+	ld hl, hKirbyFlags6
+	bit KIRBY6F_UNK3_F, [hl]
 	jr z, .asm_280
 	ld a, [wd06a]
 	inc a
@@ -45,16 +45,16 @@ ASSERT BANK(Func_1432c) == BANK(Func_147e4)
 	res HUD_UPDATE_SCORE_DIGITS_F, [hl]
 	call GetScoreDigitTiles
 .asm_29b
-	ldh a, [hff94]
-	bit 2, a
+	ldh a, [hKirbyFlags5]
+	bit KIRBY5F_UNK2_F, a
 	jp z, .asm_2ad ; can be jr
 	ld a, BANK(Func_183bf)
 	bankswitch
 	jp Func_183bf
 
 .asm_2ad
-	ld hl, hff94
-	bit 5, [hl]
+	ld hl, hKirbyFlags5
+	bit KIRBY5F_UNK5_F, [hl]
 	jr z, .asm_2d1
 	ld hl, hVBlankFlags
 .asm_2b7
@@ -68,13 +68,13 @@ ASSERT BANK(Func_1432c) == BANK(Func_147e4)
 	call Func_2e9c
 	call ClearSprites
 	pop hl
-	ldh a, [hff94]
-	bit 5, a
+	ldh a, [hKirbyFlags5]
+	bit KIRBY5F_UNK5_F, a
 	jr nz, .asm_2b7
 	jr .asm_29b
 .asm_2d1
-	ld hl, hff94
-	bit 3, [hl]
+	ld hl, hKirbyFlags5
+	bit KIRBY5F_UNK3_F, [hl]
 	jr z, .asm_30a
 	ldh a, [hVBlankFlags]
 	and VBLANK_5
@@ -92,8 +92,8 @@ ASSERT BANK(Func_1432c) == BANK(Func_147e4)
 	ld [wKirbyXVel + 0], a
 	xor a
 	ld [wKirbyXVel + 1], a
-	ld hl, hff94
-	bit 4, [hl]
+	ld hl, hKirbyFlags5
+	bit KIRBY5F_UNK4_F, [hl]
 	jr nz, .asm_303
 	call Func_4000
 	jr .asm_306
@@ -108,8 +108,8 @@ ASSERT BANK(Func_1432c) == BANK(Func_147e4)
 	ldh [hVBlankFlags], a
 	jp Func_1f2
 .asm_313
-	ld hl, hff94
-	res 3, [hl]
+	ld hl, hKirbyFlags5
+	res KIRBY5F_UNK3_F, [hl]
 	ld hl, hEngineFlags
 	set ENGINEF_UNK6_F, [hl]
 	xor a
@@ -121,10 +121,10 @@ Func_326::
 	ldh a, [hKirbyFlags2]
 	bit KIRBY2F_UNK6_F, a
 	ret nz
-	ld hl, hff95
-	bit 5, [hl]
+	ld hl, hKirbyFlags6
+	bit KIRBY6F_UNK5_F, [hl]
 	jr z, .asm_354
-	res 5, [hl]
+	res KIRBY6F_UNK5_F, [hl]
 	ld a, SFX_LOSE_LIFE
 	call PlaySFX
 	ld a, [wCurMusic]
@@ -395,11 +395,11 @@ ProcessDoorConnection::
 .enter_door
 	ld a, SFX_ENTER_DOOR
 	call PlaySFX
-	ld hl, hff93
-	bit 4, [hl]
+	ld hl, hKirbyFlags4
+	bit KIRBY4F_UNK4_F, [hl]
 	jr nz, .asm_566
-	ldh a, [hff95]
-	bit 5, a
+	ldh a, [hKirbyFlags6]
+	bit KIRBY6F_UNK5_F, a
 	jr nz, .asm_548
 	ld hl, hKirbyFlags2
 	ld a, [hl]
@@ -455,7 +455,7 @@ ProcessDoorConnection::
 	xor a
 	ldh [hVBlankFlags], a
 	ldh [hKirbyFlags1], a
-	ldh [hff93], a
+	ldh [hKirbyFlags4], a
 	call Func_19c9
 	call Func_648
 	call Func_19f9
@@ -652,7 +652,7 @@ ENDR
 .no_reset
 	ld a, [wd050]
 	ld c, a
-	ldh a, [hff93]
+	ldh a, [hKirbyFlags4]
 	and B_BUTTON
 	or c
 	ld c, a
@@ -1070,8 +1070,8 @@ Func_990:
 ;	fallthrough
 
 Func_998:
-	ld hl, hff95
-	bit 6, [hl]
+	ld hl, hKirbyFlags6
+	bit KIRBY6F_UNK6_F, [hl]
 	jr z, .asm_9c0
 	ldh a, [hScrollingFlags]
 	bit SCROLLINGF_UNK5_F, a
@@ -1112,9 +1112,9 @@ Func_9de:
 	ldh a, [hVBlankFlags]
 	bit VBLANK_2_F, a
 	jp z, Func_caf
-	ldh a, [hff93]
-	res 7, a
-	ldh [hff93], a
+	ldh a, [hKirbyFlags4]
+	res KIRBY4F_UNK7_F, a
+	ldh [hKirbyFlags4], a
 	ldh a, [hScrollingFlags]
 	bit SCROLLINGF_UNK5_F, a
 	jp nz, .asm_ab8
@@ -1155,9 +1155,9 @@ Func_9de:
 	jr z, .asm_a3f
 	cp $07
 	jr nz, .asm_a63
-	ldh a, [hff93]
-	set 6, a
-	ldh [hff93], a
+	ldh a, [hKirbyFlags4]
+	set KIRBY4F_UNK6_F, a
+	ldh [hKirbyFlags4], a
 .asm_a3f
 	ld a, [wKirbyScreenX]
 	add $0c
@@ -1172,9 +1172,9 @@ Func_9de:
 	jp z, .asm_ab8
 	cp $07
 	jr nz, .asm_a63
-	ldh a, [hff93]
-	set 6, a
-	ldh [hff93], a
+	ldh a, [hKirbyFlags4]
+	set KIRBY4F_UNK6_F, a
+	ldh [hKirbyFlags4], a
 .asm_a63
 	ld a, [wKirbyScreenY]
 	cp $10
@@ -1357,8 +1357,8 @@ Func_9de:
 	set VBLANK_4_F, a
 	res VBLANK_2_F, a
 	ldh [hVBlankFlags], a
-	ldh a, [hff93]
-	bit 6, a
+	ldh a, [hKirbyFlags4]
+	bit KIRBY4F_UNK6_F, a
 	jr z, .asm_be0
 	ld a, [wd3f5]
 	ld hl, wInvincibilityCounter
@@ -1391,8 +1391,8 @@ Func_9de:
 	ldh a, [hKirbyFlags2]
 	and $ff ^ (KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_UNK5 | KIRBY2F_UNK6)
 	ldh [hKirbyFlags2], a
-	ldh a, [hff95]
-	bit 6, a
+	ldh a, [hKirbyFlags6]
+	bit KIRBY6F_UNK6_F, a
 	jr nz, .asm_c82
 	ldh a, [hKirbyFlags2]
 	bit KIRBY2F_HOVER_F, a
@@ -1482,9 +1482,9 @@ Func_caf:
 	bit VBLANK_3_F, a
 	ret z
 .asm_cba
-	ldh a, [hff93]
-	res 6, a
-	ldh [hff93], a
+	ldh a, [hKirbyFlags4]
+	res KIRBY4F_UNK6_F, a
+	ldh [hKirbyFlags4], a
 	ldh a, [hScrollingFlags]
 	res SCROLLINGF_UNK3_F, a
 	ldh [hScrollingFlags], a
@@ -1532,9 +1532,9 @@ Func_caf:
 	call Func_326
 	jr .asm_d24
 .asm_d1e
-	ldh a, [hff93]
-	set 7, a
-	ldh [hff93], a
+	ldh a, [hKirbyFlags4]
+	set KIRBY4F_UNK7_F, a
+	ldh [hKirbyFlags4], a
 .asm_d24
 	ld a, [wKirbyScreenX]
 	add $0c
@@ -1552,9 +1552,9 @@ Func_caf:
 	call Func_326
 	jp .asm_ee0
 .asm_d46
-	ldh a, [hff93]
-	set 7, a
-	ldh [hff93], a
+	ldh a, [hKirbyFlags4]
+	set KIRBY4F_UNK7_F, a
+	ldh [hKirbyFlags4], a
 	jp .asm_ee0
 
 .asm_d4f
@@ -1609,8 +1609,8 @@ Func_caf:
 .asm_da7
 	bit 3, a
 	jp nz, .asm_e7f
-	ldh a, [hff93]
-	bit 4, a
+	ldh a, [hKirbyFlags4]
+	bit KIRBY4F_UNK4_F, a
 	jr nz, .asm_df4
 	ldh a, [hJoypadPressed]
 	bit D_DOWN_F, a
@@ -1633,8 +1633,8 @@ Func_caf:
 .asm_dd1
 	xor a
 	ld [wd064], a
-	ld hl, hff93
-	res 4, [hl]
+	ld hl, hKirbyFlags4
+	res KIRBY4F_UNK4_F, [hl]
 	ldh a, [hKirbyFlags3]
 	and ~(KIRBY3F_UNK0 | KIRBY3F_UNK1 | KIRBY3F_UNK2 | KIRBY3F_DIVE | KIRBY3F_DUCK)
 	or KIRBY3F_LAND
@@ -1655,12 +1655,12 @@ Func_caf:
 	jr z, .asm_e1b
 	bit KIRBY2F_HOVER_F, [hl]
 	jp nz, .asm_e4f
-	ldh a, [hff93]
-	bit 4, a
+	ldh a, [hKirbyFlags4]
+	bit KIRBY4F_UNK4_F, a
 	jp nz, .asm_ece
-	ldh a, [hff93]
-	set 4, a
-	ldh [hff93], a
+	ldh a, [hKirbyFlags4]
+	set KIRBY4F_UNK4_F, a
+	ldh [hKirbyFlags4], a
 	xor a
 	ld [wd3be], a
 	push de
@@ -1678,8 +1678,8 @@ Func_caf:
 	ldh a, [hKirbyFlags3]
 	and KIRBY3F_DIVE
 	jp nz, .asm_ece
-	ldh a, [hff95]
-	and $7e
+	ldh a, [hKirbyFlags6]
+	and KIRBY6F_UNK1 | KIRBY6F_UNK2 | KIRBY6F_UNK3 | KIRBY6F_UNK4 | KIRBY6F_UNK5 | KIRBY6F_UNK6
 	jp nz, .asm_ece
 	ldh a, [hKirbyFlags3]
 	and $ff ^ (KIRBY3F_UNK0 | KIRBY3F_UNK1 | KIRBY3F_UNK2 | KIRBY3F_DIVE | KIRBY3F_LAND)
@@ -1726,8 +1726,8 @@ Func_caf:
 	ldh a, [hKirbyFlags2]
 	and KIRBY2F_MOUTHFUL | KIRBY2F_INHALE | KIRBY2F_UNK5 | KIRBY2F_UNK6 | KIRBY2F_HOVER
 	jr nz, .asm_ec8
-	ldh a, [hff95]
-	bit 6, a
+	ldh a, [hKirbyFlags6]
+	bit KIRBY6F_UNK6_F, a
 	jr nz, .asm_ec8
 	ldh a, [hKirbyFlags3]
 	set KIRBY3F_UNK2_F, a
@@ -1776,8 +1776,8 @@ Func_caf:
 	ldh a, [hKirbyFlags2]
 	and KIRBY2F_UNK5 | KIRBY2F_UNK6 | KIRBY2F_HOVER
 	jr nz, .asm_f0f
-	ldh a, [hff95]
-	and $40
+	ldh a, [hKirbyFlags6]
+	and KIRBY6F_UNK6
 	jr nz, .asm_f0f
 	ld hl, hKirbyFlags3
 	ld a, [hl]
@@ -1814,8 +1814,8 @@ Func_caf:
 	jr nz, .asm_f3b
 .scroll_locked
 	ld c, $90
-	ldh a, [hff95]
-	bit 6, a
+	ldh a, [hKirbyFlags6]
+	bit KIRBY6F_UNK6_F, a
 	jr z, .asm_f3b
 	ld c, $80
 .asm_f3b
@@ -1943,8 +1943,8 @@ Func_caf:
 	set VBLANK_4_F, a
 	res VBLANK_3_F, a
 	ldh [hVBlankFlags], a
-	ldh a, [hff93]
-	bit 7, a
+	ldh a, [hKirbyFlags4]
+	bit KIRBY4F_UNK7_F, a
 	ret z
 	ld a, [wd3f5]
 	ld hl, wInvincibilityCounter
@@ -2083,8 +2083,8 @@ Func_110b:
 	ldh a, [hScrollingFlags]
 	bit SCROLLINGF_UNK5_F, a
 	ret nz
-	ld hl, hff94
-	bit 3, [hl]
+	ld hl, hKirbyFlags5
+	bit KIRBY5F_UNK3_F, [hl]
 	ret nz
 	ld a, [wKirbyScreenDeltaX]
 	ld b, a
@@ -2500,8 +2500,8 @@ LoseLife:
 	jp _LoseLife
 
 Func_139b::
-	ld hl, hff94
-	bit 5, [hl]
+	ld hl, hKirbyFlags5
+	bit KIRBY5F_UNK5_F, [hl]
 	ret nz
 	ld a, $01
 	ld [rROMB0 + $100], a
@@ -2541,8 +2541,8 @@ Func_139b::
 	ldh a, [hKirbyFlags2]
 	bit KIRBY2F_HOVER_F, a
 	jr z, .not_hovering_or_puffing
-	ldh a, [hff95]
-	bit 2, a
+	ldh a, [hKirbyFlags6]
+	bit KIRBY6F_UNK2_F, a
 	jr nz, .asm_13fe
 	ld a, [wd094]
 	cp $02
@@ -2555,8 +2555,8 @@ Func_139b::
 	ld c, KIRBY_START_INHALE
 	jr .asm_1408
 .asm_13fe
-	ldh a, [hff95]
-	bit 1, a
+	ldh a, [hKirbyFlags6]
+	bit KIRBY6F_UNK1_F, a
 	jr nz, .asm_1408
 	ld c, KIRBY_UNK_1B
 	jr .asm_1408
@@ -2644,8 +2644,8 @@ Func_139b::
 	ld c, KIRBY_AFTER_SPIT
 	jr .asm_14dc
 .asm_1495
-	ldh a, [hff93]
-	bit 3, a
+	ldh a, [hKirbyFlags4]
+	bit KIRBY4F_UNK3_F, a
 	jr z, .asm_14dc
 	ld c, KIRBY_START_HOVER
 	jr .asm_14dc
@@ -2680,18 +2680,18 @@ Func_139b::
 	jr z, .asm_14d4
 	ld c, KIRBY_SPIT
 .asm_14d4
-	ldh a, [hff93]
-	bit 4, a
+	ldh a, [hKirbyFlags4]
+	bit KIRBY4F_UNK4_F, a
 	jr z, .asm_14dc
 	ld c, KIRBY_UNK_18
 .asm_14dc
 	ldh a, [hKirbyFlags2]
 	and KIRBY2F_MOUTHFUL | KIRBY2F_INHALE | KIRBY2F_UNK5 | KIRBY2F_UNK6 | KIRBY2F_HOVER
 	jr nz, .asm_14f0
-	ldh a, [hff95]
-	bit 1, a
+	ldh a, [hKirbyFlags6]
+	bit KIRBY6F_UNK1_F, a
 	jr nz, .asm_1510
-	bit 4, a
+	bit KIRBY6F_UNK4_F, a
 	jr z, .asm_14f0
 	ld c, KIRBY_UNK_1A
 	jr .asm_1510
@@ -2702,21 +2702,21 @@ Func_139b::
 	ldh a, [hKirbyFlags3]
 	and KIRBY3F_UNK2 | KIRBY3F_DIVE | KIRBY3F_DUCK | KIRBY3F_LAND
 	jr nz, .asm_1510
-	ldh a, [hff95]
-	bit 5, a
+	ldh a, [hKirbyFlags6]
+	bit KIRBY6F_UNK5_F, a
 	jr z, .asm_1510
 	ldh a, [hKirbyFlags2]
 	and $ff ^ (KIRBY2F_MOUTHFUL | KIRBY2F_INHALE)
 	ldh [hKirbyFlags2], a
-	ldh a, [hff93]
-	res 4, a
-	ldh [hff93], a
+	ldh a, [hKirbyFlags4]
+	res KIRBY4F_UNK4_F, a
+	ldh [hKirbyFlags4], a
 	ld c, KIRBY_WALK_FAST
 .asm_1510
-	ldh a, [hff93]
-	bit 2, a
+	ldh a, [hKirbyFlags4]
+	bit KIRBY4F_UNK2_F, a
 	jr z, .asm_1524
-	bit 0, a
+	bit KIRBY4F_UNK0_F, a
 	jr z, .asm_1524
 	ld c, KIRBY_IDLE
 	ldh a, [hEngineFlags]
@@ -2736,8 +2736,8 @@ Func_139b::
 	ld a, [hl]
 	ld b, a
 	push af
-	ldh a, [hff94]
-	bit 6, a
+	ldh a, [hKirbyFlags5]
+	bit KIRBY5F_UNK6_F, a
 	jr nz, .asm_1546
 	pop af
 	ld hl, wKirbyAnimScript
@@ -2749,8 +2749,8 @@ Func_139b::
 	jr nz, .got_motion_script
 	jr .finish
 .asm_1546
-	res 6, a
-	ldh [hff94], a
+	res KIRBY5F_UNK6_F, a
+	ldh [hKirbyFlags5], a
 	pop af
 
 	ldh a, [hKirbyFlags3]
@@ -2997,7 +2997,7 @@ AnimScript_1732:
 	frame  3, $5ac9
 	frame  3, $5ae1
 	set_flags hKirbyFlags2, $60, $00
-	set_flags hff93, $ef, $00
+	set_flags hKirbyFlags4, $ef, $00
 	script_delay 1
 
 AnimScript_1747:
@@ -3008,13 +3008,13 @@ AnimScript_1747:
 
 AnimScript_1753:
 	frame  5, $5a69
-	set_flags hff95, $ef, $00
+	set_flags hKirbyFlags6, $ef, $00
 	script_delay 1
 
 AnimScript_175d:
 	frame  3, $5a81
 	frame  3, $5a99
-	set_flags hff95, $fb, $00
+	set_flags hKirbyFlags6, $fb, $00
 	script_delay 1
 
 AnimScript_176a:
@@ -3176,7 +3176,7 @@ AnimScript_18b9:
 	frame  3, $5b49
 	frame  3, $5b61
 	set_flags hKirbyFlags2, $60, $00
-	set_flags hff93, $ef, $00
+	set_flags hKirbyFlags4, $ef, $00
 	script_delay 1
 
 AnimScript_18ce:
@@ -3187,13 +3187,13 @@ AnimScript_18ce:
 
 AnimScript_18da:
 	frame  5, $5ae9
-	set_flags hff95, $ef, $00
+	set_flags hKirbyFlags6, $ef, $00
 	script_delay 1
 
 AnimScript_18e4:
 	frame  3, $5b01
 	frame  3, $5b19
-	set_flags hff95, $fb, $00
+	set_flags hKirbyFlags6, $fb, $00
 	script_delay 1
 
 AnimScript_18f1:
@@ -4665,8 +4665,8 @@ ASSERT Data_1c0ce == Data_3c0ce
 	ld hl, Data_1c0ce ; aka Data_3c0ce
 	jr .asm_2249
 .asm_222b
-	ld hl, hff94
-	bit 1, [hl]
+	ld hl, hKirbyFlags5
+	bit KIRBY5F_UNK1_F, [hl]
 	jr z, .asm_223a
 ASSERT Data_1c13a == Data_3c13a
 	ld hl, Data_1c13a ; aka Data_3c13a
@@ -4738,8 +4738,8 @@ ASSERT Data_1c000 == Data_3c000
 	ld a, [wd3f2]
 	and a
 	jr nz, .asm_22c5
-	ld a, [hff94]
-	and $02
+	ld a, [hKirbyFlags5]
+	and KIRBY5F_UNK1
 	jr nz, .asm_22c5
 	ld hl, Data_1c14e
 	lb de, $80, $80
@@ -4761,19 +4761,19 @@ ASSERT Data_1c000 == Data_3c000
 	xor a
 	ld [wd3f6], a
 	ld [wd3cc], a
-	ld hl, hff95
-	bit 0, [hl]
+	ld hl, hKirbyFlags6
+	bit KIRBY6F_UNK0_F, [hl]
 	ret nz
-	ld hl, hff94
-	bit 1, [hl]
+	ld hl, hKirbyFlags5
+	bit KIRBY5F_UNK1_F, [hl]
 	ret nz
 	ld b, $00
 	ld hl, wMintLeafCounter
 	ld a, [hli]
 	or [hl]
 	jr z, .asm_2305
-	ld hl, hff95
-	bit 6, [hl]
+	ld hl, hKirbyFlags6
+	bit KIRBY6F_UNK6_F, [hl]
 	jr z, .asm_2303
 	call Func_3768
 .asm_2303
@@ -5038,7 +5038,7 @@ Func_241f::
 
 DoCommonScriptCommand:
 	cp $ef
-	jp nc, .asm_253f
+	jp nc, .set_position_cmd
 	cp SCRIPT_END
 	jr nz, .jump_cmd
 	ld hl, wObjectActiveStates
@@ -5201,7 +5201,7 @@ DoCommonScriptCommand:
 
 .clear_custom_func_cmd
 	cp SCRIPT_CLEAR_CUSTOM_FUNC
-	jr nz, .asm_253f
+	jr nz, .set_position_cmd
 	ld a, l
 	ld [wScriptPtr + 0], a
 	ld a, h
@@ -5214,8 +5214,8 @@ DoCommonScriptCommand:
 	ld [hl], a
 	ret
 
-.asm_253f
-	cp SCRIPT_F0
+.set_position_cmd
+	cp SCRIPT_SET_POSITION
 	jr nz, .asm_2568
 	ld d, h
 	ld e, l
@@ -6057,8 +6057,8 @@ Func_29b7:
 	bit PAUSE_ANIMATION_F, [hl]
 	jr nz, .asm_29d4
 .asm_29ce
-	ld hl, hff93
-	bit 2, [hl]
+	ld hl, hKirbyFlags4
+	bit KIRBY4F_UNK2_F, [hl]
 	ret nz
 .asm_29d4
 	call Func_2ce5
@@ -6274,8 +6274,8 @@ Func_29b7:
 	ret
 
 Func_2b26:
-	ld hl, hff93
-	bit 2, [hl]
+	ld hl, hKirbyFlags4
+	bit KIRBY4F_UNK2_F, [hl]
 	jp nz, .asm_2c5b
 	ld hl, wd1a0
 	add hl, bc
@@ -6488,8 +6488,8 @@ Func_2b26:
 	and a
 	jr nz, .asm_2c96
 	ld b, $90
-	ld hl, hff94
-	bit 1, [hl]
+	ld hl, hKirbyFlags5
+	bit KIRBY5F_UNK1_F, [hl]
 	jr z, .asm_2c96
 	ld a, [wStage]
 	cp MT_DEDEDE
@@ -6518,8 +6518,8 @@ Func_2b26:
 	ld a, [hl]
 	and OAMF_PAL1 | OAMF_PRI
 	ld [wOAMFlagsOverride], a
-	ld hl, hff94
-	bit 5, [hl]
+	ld hl, hKirbyFlags5
+	bit KIRBY5F_UNK5_F, [hl]
 	jr nz, .add_sprite
 	ld hl, wd1a0
 	add hl, de
@@ -6919,8 +6919,8 @@ Func_2e9c::
 	dec b
 	jr nz, .loop_objects_1
 
-	ld hl, hff93
-	bit 2, [hl]
+	ld hl, hKirbyFlags4
+	bit KIRBY4F_UNK2_F, [hl]
 	jr nz, .asm_2f15
 
 	ld a, [wROMBank]
@@ -7061,11 +7061,11 @@ Func_2f34:
 	db -1,  1,  1,  1, -1, -1, -1,  1,  1, -1, -2,  2,  2,  2, -2, -2, -2,  2,  2, -2, -1,  1,  1,  1, -1, -1, -1,  1,  1, -1
 
 Func_2fdf:
-	ld a, [hff93]
-	bit 2, a
+	ld a, [hKirbyFlags4]
+	bit KIRBY4F_UNK2_F, a
 	ret nz
-	ld a, [hff94]
-	bit 5, a
+	ld a, [hKirbyFlags5]
+	bit KIRBY5F_UNK5_F, a
 	ret nz
 	call .Func_3059
 	ld a, [wd3f5]
@@ -7099,9 +7099,9 @@ Func_2fdf:
 	and ~(ENGINEF_UNK0 | ENGINEF_UNK1)
 	ld [hEngineFlags], a
 .asm_3030
-	ld a, [hff95]
-	and $83
-	ld [hff95], a
+	ld a, [hKirbyFlags6]
+	and KIRBY6F_UNK0 | KIRBY6F_UNK1 | KIRBY6F_UNK7
+	ld [hKirbyFlags6], a
 	jr .clear_kirby_flashing
 
 .Func_303a:
@@ -7877,8 +7877,8 @@ Func_375d::
 Func_3768::
 	ld hl, wd1a0 + OBJECT_SLOT_00
 	set OBJFLAG_FLASHING_F, [hl]
-	ld a, $40
-	ld [hff95], a
+	ld a, KIRBY6F_UNK6
+	ld [hKirbyFlags6], a
 	ld hl, hKirbyFlags1
 	res KIRBY1F_AIRBORNE_F, [hl]
 	ld a, [hKirbyFlags3]
@@ -7887,7 +7887,7 @@ Func_3768::
 	ld a, KIRBY2F_HOVER
 	ld [hKirbyFlags2], a
 	xor a
-	ld [hff93], a
+	ld [hKirbyFlags4], a
 	ld a, $01
 	ld [wd07a], a
 	ld a, $33
@@ -8275,8 +8275,8 @@ DoorConnections:
 	db $ff
 
 Func_3d2d::
-	ld hl, hff94
-	res 2, [hl]
+	ld hl, hKirbyFlags5
+	res KIRBY5F_UNK2_F, [hl]
 ;	fallthrough
 
 Func_3d32::
@@ -8297,7 +8297,7 @@ Func_3d48::
 	ld [hKirbyFlags1], a
 	ld [hKirbyFlags2], a
 	ld [hKirbyFlags3], a
-	ld [hff93], a
+	ld [hKirbyFlags4], a
 	ld [wd064], a
 	ld [wd078], a
 	ld [wd079], a

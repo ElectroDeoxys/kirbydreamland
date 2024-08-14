@@ -95,8 +95,8 @@ Func_1f2:
 	xor a
 	ldh [hVBlankFlags], a
 .asm_20c
-	ldh a, [hff94]
-	bit 3, a
+	ldh a, [hKirbyFlags5]
+	bit KIRBY5F_UNK3_F, a
 	jr z, .check_pause
 	xor a
 	ldh [hJoypadPressed], a

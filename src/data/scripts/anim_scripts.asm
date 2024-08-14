@@ -152,12 +152,12 @@ AnimScript_201dc:
 	script_repeat_end
 	frame  1, $58d9
 	script_exec Func_4ac1
-	set_flags hff94, $df, $00
+	set_flags hKirbyFlags5, $df, $00
 	script_delay 0
 
 AnimScript_20206:
 	set_flags hEngineFlags, $ff, ENGINEF_UNK5
-	jump_if_flags hff95, $80, $4008 ; bug?
+	jump_if_flags hKirbyFlags6, KIRBY6F_UNK7, $4008 ; bug?
 	set_motion_script MotionScript_135d2
 	create_object AnimScript_203be, MotionScript_10008, Data_3425
 	frame  4, $5c01
@@ -223,7 +223,7 @@ AnimScript_202b6::
 	script_call $48b8
 	script_call $48b8
 	frame  1, $58d9
-	set_flags hff94, $fe, $01
+	set_flags hKirbyFlags5, $fe, KIRBY5F_UNK0
 	script_delay 1
 
 AnimScript_20311::
@@ -256,7 +256,7 @@ AnimScript_20311::
 	script_call $48cb
 	script_call $48cb
 	frame  1, $5909
-	set_flags hff94, $ff, $01
+	set_flags hKirbyFlags5, $ff, KIRBY5F_UNK0
 	script_delay 1
 
 AnimScript_2036c:
@@ -1225,7 +1225,7 @@ AnimScript_WhispyWoods:
 
 .spawn_apples
 	script_repeat 3
-	create_object AnimScript_21119, MotionScript_11124, $359d
+	create_object AnimScript_WhispyWoodsApple_Fall, MotionScript_WhispyWoodsApple, $359d
 	frame 30, $4000
 	frame  4, $400c
 	frame  6, $4018
@@ -1253,7 +1253,7 @@ AnimScript_WhispyWoods:
 .ShootPuff_Slow
 	frame  1, $4068
 	frame 10, $4078
-	create_object AnimScript_21116, MotionScript_110f4, $3596
+	create_object AnimScript_WhispyWoodsPuff, MotionScript_WhispyWoodsPuff, $3596
 	frame 14, $4078
 	frame  1, $4068
 	frame  1, $4058
@@ -1262,7 +1262,7 @@ AnimScript_WhispyWoods:
 .ShootPuff_Fast
 	frame  1, $4068
 	frame  5, $4078
-	create_object AnimScript_21116, MotionScript_110f4, $3596
+	create_object AnimScript_WhispyWoodsPuff, MotionScript_WhispyWoodsPuff, $3596
 	frame  5, $4078
 	frame  1, $4068
 	frame  1, $4058
@@ -1277,10 +1277,10 @@ AnimScript_210e7:
 
 SECTION "Bank 8@5116", ROMX[$5116], BANK[$8]
 
-AnimScript_21116:
+AnimScript_WhispyWoodsPuff:
 	frame  0, $5cf9
 
-AnimScript_21119:
+AnimScript_WhispyWoodsApple_Fall:
 	frame  1, $41d4
 	script_repeat 3
 	script_exec Func_4aba
@@ -1291,7 +1291,7 @@ AnimScript_21119:
 	frame 42, $41d4
 	script_end
 
-AnimScript_2112d:
+AnimScript_WhispyWoodsApple_RollLeft:
 	play_sfx SFX_30
 	frame 10, $41ec
 	frame 10, $41e4
@@ -1308,7 +1308,7 @@ AnimScript_2112d:
 	frame  8, $41d4
 	jump_rel .loop
 
-AnimScript_21157:
+AnimScript_WhispyWoodsApple_RollRight:
 	play_sfx SFX_30
 	frame 10, $41d4
 	frame 10, $41dc
@@ -1341,7 +1341,7 @@ SECTION "Bank 8@5195", ROMX[$5195], BANK[$8]
 AnimScript_21195:
 	frame  1, $58b8
 	script_f3
-	script_f0 $14, $14
+	set_position $14, $14
 	set_value wBossHP, 0
 	set_flags hHUDFlags, $ff, HUD_UPDATE_LABEL | HUD_BOSS_BATTLE
 .loop

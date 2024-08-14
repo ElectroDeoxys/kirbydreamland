@@ -121,8 +121,8 @@ Func_4000::
 	ldh a, [hPalFadeFlags]
 	bit SCROLL_LOCKED_F, a
 	jr nz, .asm_4115
-	ld hl, hff94
-	bit 3, [hl]
+	ld hl, hKirbyFlags5
+	bit KIRBY5F_UNK3_F, [hl]
 	jr nz, .asm_4115
 	ld hl, hEngineFlags
 	bit ENGINEF_UNK6_F, [hl]
@@ -318,8 +318,8 @@ Func_417c::
 	ldh a, [hPalFadeFlags]
 	bit SCROLL_LOCKED_F, a
 	jr nz, .asm_427e
-	ld hl, hff94
-	bit 3, [hl]
+	ld hl, hKirbyFlags5
+	bit KIRBY5F_UNK3_F, [hl]
 	jr nz, .asm_427e
 	ld c, $44
 	ldh a, [hPalFadeFlags]
@@ -384,8 +384,8 @@ Func_42bf::
 	ldh a, [hKirbyFlags2]
 	bit KIRBY2F_HOVER_F, a
 	jr nz, .not_ducking
-	ldh a, [hff95]
-	and $60
+	ldh a, [hKirbyFlags6]
+	and KIRBY6F_UNK5 | KIRBY6F_UNK6
 	jp nz, .not_ducking
 	ld hl, hKirbyFlags2
 	bit KIRBY2F_UNK2_F, [hl]
@@ -483,8 +483,8 @@ Func_42bf::
 	ld a, [wd094]
 	cp $02
 	jp nz, .asm_4492
-	ld hl, hff95
-	bit 6, [hl]
+	ld hl, hKirbyFlags6
+	bit KIRBY6F_UNK6_F, [hl]
 	jr nz, .asm_43e8
 	ldh a, [hKirbyFlags2]
 	bit KIRBY2F_UNK6_F, a
@@ -515,24 +515,24 @@ Func_42bf::
 	ldh [hKirbyFlags3], a
 	xor a
 	ld [wd064], a
-	ld hl, hff95
-	bit 5, [hl]
+	ld hl, hKirbyFlags6
+	bit KIRBY6F_UNK5_F, [hl]
 	jr nz, .asm_4403
 .asm_43e8
-	bit 3, [hl]
+	bit KIRBY6F_UNK3_F, [hl]
 	jp nz, .asm_4492
-	set 3, [hl]
-	set 2, [hl]
+	set KIRBY6F_UNK3_F, [hl]
+	set KIRBY6F_UNK2_F, [hl]
 	xor a
 	ld [wd06a], a
 	call Func_385b
 	jp nc, .asm_4492
-	ld hl, hff95
-	res 2, [hl]
+	ld hl, hKirbyFlags6
+	res KIRBY6F_UNK2_F, [hl]
 	jp .asm_4492
 .asm_4403
-	ld hl, hff93
-	res 1, [hl]
+	ld hl, hKirbyFlags4
+	res KIRBY4F_UNK1_F, [hl]
 	jp .asm_447d
 
 .asm_440b
@@ -540,17 +540,17 @@ Func_42bf::
 	jr .asm_43cd
 
 .asm_4410
-	ldh a, [hff95]
-	bit 5, a
+	ldh a, [hKirbyFlags6]
+	bit KIRBY6F_UNK5_F, a
 	jr nz, .asm_446a
 	ldh a, [hKirbyFlags2]
 	bit KIRBY2F_MOUTHFUL_F, a
 	jr nz, .asm_444e
 	bit D_UP_F, c
 	jp nz, .asm_4492
-	ld hl, hff93
-	res 1, [hl]
-	and $f7
+	ld hl, hKirbyFlags4
+	res KIRBY4F_UNK1_F, [hl]
+	and $ff ^ (KIRBY4F_UNK3)
 	jr nz, .asm_4492
 	ldh a, [hKirbyFlags3]
 	and KIRBY3F_UNK2 | KIRBY3F_DUCK | KIRBY3F_LAND
@@ -575,8 +575,8 @@ Func_42bf::
 	ld a, [wd094]
 	cp $04
 	jr nz, .asm_4492
-	ldh a, [hff93]
-	bit 4, a
+	ldh a, [hKirbyFlags4]
+	bit KIRBY4F_UNK4_F, a
 	jr nz, .asm_4492
 	ldh a, [hKirbyFlags2]
 	bit KIRBY2F_UNK2_F, a
@@ -586,13 +586,13 @@ Func_42bf::
 	call Func_380a
 	jr .asm_4492
 .asm_446a
-	bit 3, a
+	bit KIRBY6F_UNK3_F, a
 	jr nz, .asm_4492
-	set 3, a
-	set 4, a
-	ldh [hff95], a
-	ld hl, hff93
-	res 1, [hl]
+	set KIRBY6F_UNK3_F, a
+	set KIRBY6F_UNK4_F, a
+	ldh [hKirbyFlags6], a
+	ld hl, hKirbyFlags4
+	res KIRBY4F_UNK1_F, [hl]
 	xor a
 	ld [wJoypadDown], a
 .asm_447d
@@ -601,9 +601,9 @@ Func_42bf::
 	call Func_11c9
 	call Func_384e
 	jr nc, .asm_4492
-	ld hl, hff95
-	res 2, [hl]
-	res 4, [hl]
+	ld hl, hKirbyFlags6
+	res KIRBY6F_UNK2_F, [hl]
+	res KIRBY6F_UNK4_F, [hl]
 	jr .asm_4492 ; useless jump
 .asm_4492
 	ldh a, [hJoypadPressed]
@@ -649,10 +649,10 @@ Func_42bf::
 	set KIRBY2F_HOVER_F, a
 	and $ff ^ (KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_UNK2 | KIRBY2F_UNK5 | KIRBY2F_UNK6)
 	ldh [hKirbyFlags2], a
-	ld hl, hff93
-	set 1, [hl]
-	ld hl, hff95
-	res 2, [hl]
+	ld hl, hKirbyFlags4
+	set KIRBY4F_UNK1_F, [hl]
+	ld hl, hKirbyFlags6
+	res KIRBY6F_UNK2_F, [hl]
 	ldh a, [hKirbyFlags1]
 	and $ff ^ (KIRBY1F_UNK3 | KIRBY1F_GROUNDED | KIRBY1F_AIRBORNE)
 	ldh [hKirbyFlags1], a
@@ -675,20 +675,20 @@ Func_42bf::
 	ld [wd064], a
 	jr .check_d_left
 .asm_451a
-	ldh a, [hff94]
-	and $c0
+	ldh a, [hKirbyFlags5]
+	and KIRBY5F_UNK6 | KIRBY5F_UNK7
 	jr nz, .check_d_left
 	ld hl, hKirbyFlags2
 	set KIRBY2F_UNK2_F, [hl]
-	ld hl, hff93
-	set 1, [hl]
+	ld hl, hKirbyFlags4
+	set KIRBY4F_UNK1_F, [hl]
 
 .check_d_left
 	ldh a, [hJoypadPressed]
 	bit D_LEFT_F, a
 	jr z, .check_d_right
-	ldh a, [hff93]
-	bit 4, a
+	ldh a, [hKirbyFlags4]
+	bit KIRBY4F_UNK4_F, a
 	jr nz, .check_d_right
 	ldh a, [hKirbyFlags2]
 	bit KIRBY2F_INHALE_F, a
@@ -717,8 +717,8 @@ Func_42bf::
 	ldh a, [hJoypadPressed]
 	bit D_RIGHT_F, a
 	jr z, .asm_4590
-	ldh a, [hff93]
-	bit 4, a
+	ldh a, [hKirbyFlags4]
+	bit KIRBY4F_UNK4_F, a
 	jr nz, .asm_4590
 	ldh a, [hKirbyFlags2]
 	bit KIRBY2F_INHALE_F, a
@@ -851,8 +851,8 @@ Func_42bf::
 	jp .asm_45c0
 
 .asm_466a
-	ldh a, [hff95]
-	bit 6, a
+	ldh a, [hKirbyFlags6]
+	bit KIRBY6F_UNK6_F, a
 	jr nz, .asm_4692
 .asm_4670
 	ldh a, [hKirbyFlags2]
@@ -1002,8 +1002,8 @@ Func_4783::
 	ld [wd066], a
 	cp $1f
 	jr c, .asm_47ab
-	ldh a, [hff94]
-	bit 7, a
+	ldh a, [hKirbyFlags5]
+	bit KIRBY5F_UNK7_F, a
 	jr nz, .asm_47ab
 	ldh a, [hJoypadPressed]
 	bit B_BUTTON_F, a
@@ -1032,9 +1032,9 @@ Func_4783::
 	set KIRBY2F_HOVER_F, a
 	and $ff ^ (KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_UNK2 | KIRBY2F_UNK5 | KIRBY2F_UNK6)
 	ldh [hKirbyFlags2], a
-	ldh a, [hff93]
-	set 1, a
-	ldh [hff93], a
+	ldh a, [hKirbyFlags4]
+	set KIRBY4F_UNK1_F, a
+	ldh [hKirbyFlags4], a
 	ldh a, [hKirbyFlags1]
 	and $ff ^ (KIRBY1F_UNK3 | KIRBY1F_GROUNDED | KIRBY1F_AIRBORNE)
 	ldh [hKirbyFlags1], a
@@ -1317,7 +1317,7 @@ Func_4afb:
 	ld hl, AnimScript_20003
 	ld de, MotionScript_10000
 	call Func_21e6
-	ld hl, hff94
+	ld hl, hKirbyFlags5
 	set 7, [hl]
 	ld hl, wd3f6
 	inc [hl]
@@ -1422,7 +1422,7 @@ Func_4bb4::
 	bit 7, [hl]
 	ret nz ; skip loading backed up script
 
-	ld hl, hff94
+	ld hl, hKirbyFlags5
 	res 5, [hl]
 	ld a, 1
 	ld [wObjectAnimScriptTimers + OBJECT_SLOT_00], a
@@ -1467,8 +1467,8 @@ Func_4c9b::
 .asm_4cd0
 	ld a, 1
 	call DoFrames
-	ld hl, hff94
-	bit 5, a
+	ld hl, hKirbyFlags5
+	bit KIRBY5F_UNK5_F, a ; bug, should be [hl]
 	jr nz, .asm_4cd0
 	ld a, $01
 	ld [wKirbyAnimScript + 0], a
@@ -1504,8 +1504,8 @@ Func_4ced::
 .asm_4d20
 	ld a, 1
 	call DoFrames
-	ld hl, hff94
-	bit 5, a
+	ld hl, hKirbyFlags5
+	bit KIRBY5F_UNK5_F, a ; bug, should be [hl]
 	jr nz, .asm_4d20
 	ld a, $01
 	ld [wKirbyAnimScript + 0], a

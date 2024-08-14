@@ -100,9 +100,9 @@ MACRO clear_custom_func
 	db SCRIPT_CLEAR_CUSTOM_FUNC
 ENDM
 
-	const SCRIPT_F0 ; $f0
-MACRO script_f0
-	db SCRIPT_F0
+	const SCRIPT_SET_POSITION ; $f0
+MACRO set_position
+	db SCRIPT_SET_POSITION
 	db \1 ; value 1
 	db \2 ; value 2
 ENDM

@@ -27,13 +27,13 @@ hEngineFlags:: ; ff91
 hKirbyFlags3:: ; ff92
 	db
 
-hff93:: ; ff93
+hKirbyFlags4:: ; ff93
 	db
 
-hff94:: ; ff94
+hKirbyFlags5:: ; ff94
 	db
 
-hff95:: ; ff95
+hKirbyFlags6:: ; ff95
 	db
 
 hff96:: ; ff96

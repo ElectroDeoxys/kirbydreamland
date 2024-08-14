@@ -53,8 +53,8 @@ StartStage::
 	call PlayMusic
 	pop hl
 
-	ld a, [hff95]
-	bit 7, a
+	ld a, [hKirbyFlags6]
+	bit KIRBY6F_UNK7_F, a
 	jr nz, .skip_intro
 	call HideWindow
 	call StageIntro
@@ -102,7 +102,7 @@ StartStage::
 	ld [hKirbyFlags1], a
 	ld [hKirbyFlags2], a
 	ld [hKirbyFlags3], a
-	ld [hff93], a
+	ld [hKirbyFlags4], a
 	ld [wd064], a
 	ld [wSCX ], a
 	ld [wSCY], a
@@ -158,8 +158,8 @@ StartStage::
 	ld a, MT_DEDEDE
 	cp e ; wStage
 	jr nz, .asm_1821e
-	ld hl, hff95
-	bit 7, [hl]
+	ld hl, hKirbyFlags6
+	bit KIRBY6F_UNK7_F, [hl]
 	jr z, .asm_1821e
 	ld a, $33
 	ld [wd051], a
@@ -185,17 +185,17 @@ StartStage::
 	ld a, [wStage]
 	cp MT_DEDEDE
 	jr nz, .asm_1824a
-	ld hl, hff94
-	res 2, [hl]
-	ld a, [hff95]
-	bit 7, a
+	ld hl, hKirbyFlags5
+	res KIRBY5F_UNK2_F, [hl]
+	ld a, [hKirbyFlags6]
+	bit KIRBY6F_UNK7_F, a
 	jr nz, .asm_1824a
-	set 2, [hl]
+	set KIRBY5F_UNK2_F, [hl]
 .asm_1824a
-	ld hl, hff95
-	res 7, [hl]
-	ld a, [hff95]
-	bit 7, a
+	ld hl, hKirbyFlags6
+	res KIRBY6F_UNK7_F, [hl]
+	ld a, [hKirbyFlags6]
+	bit KIRBY6F_UNK7_F, a
 	jr z, .skip_music ; z is always set here
 
 	; unreachable
@@ -295,8 +295,8 @@ StageIntro:
 	inc a
 	ld [wd051], a
 	ld [wd052], a
-	ld hl, hff94
-	set 1, [hl]
+	ld hl, hKirbyFlags5
+	set KIRBY5F_UNK1_F, [hl]
 	call ClearSprites
 	call ResetTimer
 
@@ -403,8 +403,8 @@ StageIntro:
 	jr nz, .loop
 
 .start_btn
-	ld hl, hff94
-	res 1, [hl]
+	ld hl, hKirbyFlags5
+	res KIRBY5F_UNK1_F, [hl]
 	ret
 
 StageIntroDurations:
@@ -697,15 +697,15 @@ Pause::
 	ld [wPauseCounter + 1], a
 	ld [hJoypadPressed], a
 
-	ld a, [hff93]
-	set 2, a
-	ld [hff93], a
+	ld a, [hKirbyFlags4]
+	set KIRBY4F_UNK2_F, a
+	ld [hKirbyFlags4], a
 .loop
 	ld a, [hVBlankFlags]
 	bit 6, a
 	jr nz, .loop
-	ld a, [hff94]
-	bit 0, a
+	ld a, [hKirbyFlags5]
+	bit KIRBY5F_UNK0_F, a
 	jr nz, .skip_animation
 	ld a, [hKirbyFlags2]
 	and KIRBY2F_UNK2 | KIRBY2F_MOUTHFUL | KIRBY2F_INHALE | KIRBY2F_HOVER
@@ -713,11 +713,11 @@ Pause::
 	ld a, [hKirbyFlags3]
 	and KIRBY3F_LAND
 	jr nz, .show_sprites
-	ld a, [hff93]
-	and $38
+	ld a, [hKirbyFlags4]
+	and KIRBY4F_UNK3 | KIRBY4F_UNK4 | KIRBY4F_UNK5
 	jr nz, .show_sprites
-	ld hl, hff93
-	set 0, [hl]
+	ld hl, hKirbyFlags4
+	set KIRBY4F_UNK0_F, [hl]
 
 	; increment counter
 	ld hl, wPauseCounter
@@ -750,13 +750,13 @@ Pause::
 	; player pressed Start
 	ld a, SFX_PAUSE
 	call PlaySFX
-	ld a, [hff93]
-	and $fa
-	ld [hff93], a
+	ld a, [hKirbyFlags4]
+	and $ff ^ (KIRBY4F_UNK0 | KIRBY4F_UNK2)
+	ld [hKirbyFlags4], a
 	ld hl, hEngineFlags
 	res PAUSE_ANIMATION_F, [hl]
-	ld hl, hff94
-	res 0, [hl]
+	ld hl, hKirbyFlags5
+	res KIRBY5F_UNK0_F, [hl]
 	ld a, 30
 	call WaitAFrames
 	ret
@@ -807,11 +807,11 @@ _LoseLife::
 .asm_18678
 	xor a
 	ld [hVBlankFlags], a
-	ld [hff94], a
-	ld [hff93], a
-	ld a, [hff95]
-	and $81
-	ld [hff95], a
+	ld [hKirbyFlags5], a
+	ld [hKirbyFlags4], a
+	ld a, [hKirbyFlags6]
+	and KIRBY6F_UNK0 | KIRBY6F_UNK7
+	ld [hKirbyFlags6], a
 
 	call ClearConsumedItems
 
@@ -822,8 +822,8 @@ _LoseLife::
 	ld a, MUSIC_LIFE_LOST
 	call PlayMusic
 
-	ld hl, hff94
-	set 5, [hl]
+	ld hl, hKirbyFlags5
+	set KIRBY5F_UNK5_F, [hl]
 	call ClearObjectsExceptSlot00
 	xor a
 	ld [wd3cc], a
@@ -850,8 +850,8 @@ _LoseLife::
 	dec b
 	jr nz, .loop_wait_animation
 
-	ld hl, hff94
-	res 5, [hl]
+	ld hl, hKirbyFlags5
+	res KIRBY5F_UNK5_F, [hl]
 
 	; decrement lives
 	ld a, [wLives]
@@ -980,8 +980,8 @@ GameOver:
 	jr nz, .loop
 
 .start_pressed
-	ld hl, hff95
-	set 0, [hl]
+	ld hl, hKirbyFlags6
+	set KIRBY6F_UNK0_F, [hl]
 	call FadeOut
 	call HideWindow
 	call ResetTimer
@@ -1031,8 +1031,8 @@ GameOver:
 	and a
 	jr z, .asm_1880b
 
-	ld hl, hff95
-	res 0, [hl]
+	ld hl, hKirbyFlags6
+	res KIRBY6F_UNK0_F, [hl]
 	ld a, [wd3cf]
 	and a
 	jp nz, .reset_game

@@ -72,23 +72,23 @@ Func_1401a:
 .asm_1407f
 	ld hl, hKirbyFlags2
 	set KIRBY2F_MOUTHFUL_F, [hl]
-	ld hl, hff93
-	bit 5, [hl]
+	ld hl, hKirbyFlags4
+	bit KIRBY4F_UNK5_F, [hl]
 	jr nz, .asm_14090
-	ld hl, hff94
-	set 6, [hl]
+	ld hl, hKirbyFlags5
+	set KIRBY5F_UNK6_F, [hl]
 .asm_14090
 	ld hl, wd3f6
 	dec [hl]
 	jr nz, .asm_140c1
 	xor a
 	ld [wd3f7], a
-	ld hl, hff94
-	res 7, [hl]
+	ld hl, hKirbyFlags5
+	res KIRBY5F_UNK7_F, [hl]
 	ld hl, hKirbyFlags2
 	res KIRBY2F_INHALE_F, [hl]
-	ld hl, hff93
-	set 1, [hl]
+	ld hl, hKirbyFlags4
+	set KIRBY4F_UNK1_F, [hl]
 	ld a, SFX_02
 	call PlaySFX
 	ld hl, wd3be
@@ -97,16 +97,16 @@ Func_1401a:
 	bit 4, [hl]
 	jr z, .asm_140c1
 	res 4, [hl]
-	ld hl, hff93
-	set 4, [hl]
+	ld hl, hKirbyFlags4
+	set KIRBY4F_UNK4_F, [hl]
 .asm_140c1
 	ret
 
 Func_140c2:
 	call Func_140d5
 	ret c
-	ld hl, hff94
-	set 7, [hl]
+	ld hl, hKirbyFlags5
+	set KIRBY5F_UNK7_F, [hl]
 	jp Func_1415e
 ; 0x140ce
 
@@ -406,16 +406,16 @@ Func_1432c::
 	ld a, [hEngineFlags]
 	bit ENGINEF_UNK0_F, a
 	jr nz, .asm_14453
-	ld hl, hff94
-	set 3, [hl]
-	res 4, [hl]
+	ld hl, hKirbyFlags5
+	set KIRBY5F_UNK3_F, [hl]
+	res KIRBY5F_UNK4_F, [hl]
 	ld hl, wd140
 	ld a, [hl]
 	add hl, bc
 	cp [hl]
 	jr nc, .asm_14448
-	ld hl, hff94
-	set 4, [hl]
+	ld hl, hKirbyFlags5
+	set KIRBY5F_UNK4_F, [hl]
 .asm_14448
 	xor a
 	ld [wd069], a
@@ -742,9 +742,9 @@ Func_14600:
 .MintLeaf:
 	call ConsumeItem
 	call Func_147b5
-	ld hl, hff95
-	set 5, [hl]
-	res 6, [hl]
+	ld hl, hKirbyFlags6
+	set KIRBY6F_UNK5_F, [hl]
+	res KIRBY6F_UNK6_F, [hl]
 	ld a, SFX_POWER_UP
 	call PlaySFX
 	ld hl, wd1a0 + OBJECT_SLOT_00
@@ -787,8 +787,8 @@ Func_14600:
 	jp Restore1HP
 
 .WarpStar
-	ld hl, hff94
-	set 2, [hl]
+	ld hl, hKirbyFlags5
+	set KIRBY5F_UNK2_F, [hl]
 	ld a, SFX_WARP_STAR
 	call PlaySFX
 	ld hl, wd140
@@ -806,8 +806,8 @@ Func_14600:
 	jr .DestroyObject
 
 .asm_14704
-	ld hl, hff94
-	set 2, [hl]
+	ld hl, hKirbyFlags5
+	set KIRBY5F_UNK2_F, [hl]
 	ld a, SFX_POWER_UP
 	call PlaySFX
 
@@ -945,8 +945,8 @@ Func_147e4::
 	bit KIRBY2F_UNK2_F, a
 	ret nz
 	call Func_14993
-	ld hl, hff94
-	bit 7, [hl]
+	ld hl, hKirbyFlags5
+	bit KIRBY5F_UNK7_F, [hl]
 	call z, Func_148ea
 	ld bc, $1
 .loop
@@ -1028,8 +1028,8 @@ Func_147e4::
 	ld hl, AnimScript_20003
 	ld de, MotionScript_10000
 	call Func_21e6
-	ld hl, hff94
-	set 7, [hl]
+	ld hl, hKirbyFlags5
+	set KIRBY5F_UNK7_F, [hl]
 	ld hl, wd3f6
 	inc [hl]
 .asm_1488d
@@ -1045,8 +1045,8 @@ Func_147e4::
 	ret
 
 .Func_1489b:
-	ld hl, hff94
-	bit 7, [hl]
+	ld hl, hKirbyFlags5
+	bit KIRBY5F_UNK7_F, [hl]
 	jr z, .asm_148d7
 	ld bc, OBJECT_SLOT_01
 .loop_objects
@@ -1073,8 +1073,8 @@ Func_147e4::
 	inc a
 	cp 10
 	jr nz, .asm_148d3
-	ld hl, hff94
-	res 7, [hl]
+	ld hl, hKirbyFlags5
+	res KIRBY5F_UNK7_F, [hl]
 	xor a
 	ld [wd3f6], a
 .asm_148d3
@@ -1193,8 +1193,8 @@ Func_148ea:
 	ld hl, wd1a0
 	add hl, bc
 	set OBJFLAG_0_F, [hl]
-	ld hl, hff94
-	set 7, [hl]
+	ld hl, hKirbyFlags5
+	set KIRBY5F_UNK7_F, [hl]
 	ld hl, wd3f6
 	inc [hl]
 	pop de

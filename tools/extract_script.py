@@ -69,7 +69,7 @@ commands = {
     0xed: ("script_ed", 1, parseByte),
     0xee: ("set_custom_func", 4, parse2Words),
     0xef: ("clear_custom_func", 0, None),
-    0xf0: ("script_f0", 2, parseByte),
+    0xf0: ("set_position", 2, parseByte),
     0xf1: ("position_offset", 2, parseByte),
     0xf2: ("script_f2", 0, None),
     0xf3: ("script_f3", 0, None),

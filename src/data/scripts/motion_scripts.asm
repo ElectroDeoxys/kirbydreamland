@@ -17,23 +17,23 @@ MotionScript_10137:
 	set_velocities  0, $00, $7b
 
 MotionScript_10149:
-	set_flags hff94, $ff, $20
+	set_flags hKirbyFlags5, $ff, KIRBY5F_UNK5
 	script_repeat 3
 	set_velocities  1, $8a, $8c
 	set_velocities  1, $7a, $8a
 	script_repeat_end
 	script_exec Func_4ac1
-	set_flags hff94, $df, $00
+	set_flags hKirbyFlags5, $df, $00
 	set_velocities  0, $00, $00
 
 MotionScript_10162:
-	set_flags hff94, $ff, $20
+	set_flags hKirbyFlags5, $ff, KIRBY5F_UNK5
 	script_repeat 4
 	set_velocities  1, $8a, $79
 	set_velocities  1, $7a, $79
 	script_repeat_end
 	script_exec Func_4ac1
-	set_flags hff94, $df, $00
+	set_flags hKirbyFlags5, $df, $00
 	set_velocities  0, $00, $00
 ; 0x1017b
 
@@ -133,7 +133,7 @@ SECTION "Bank 4@4370", ROMX[$4370], BANK[$4]
 
 MotionScript_10370:
 	set_value wd3bf, $01
-	set_flags hff94, $ff, $20
+	set_flags hKirbyFlags5, $ff, KIRBY5F_UNK5
 	jump_if_not_flags hKirbyFlags3, KIRBY3F_FACE_LEFT, .script_1038d
 	position_offset 0, 6
 	set_velocities  2, $8a, $00
@@ -555,7 +555,7 @@ MotionScript_109a3:
 	set_velocities  8, $85, $8a
 	create_object AnimScript_208f1, $4a13, Data_3425
 	set_velocities 20, $86, $8c
-	script_f0 $68, $08
+	set_position $68, $08
 	set_velocities 20, $00, $00
 	play_sfx SFX_13
 	set_velocities  0, $73, $75
@@ -1213,7 +1213,7 @@ MotionScript_110d7:
 	create_object AnimScript_203be, MotionScript_10008, Data_35bb
 	script_end
 
-MotionScript_110f4:
+MotionScript_WhispyWoodsPuff:
 	jump_random 50 percent + 1, .script_1110e
 	position_offset -16, 24
 	play_sfx SFX_15
@@ -1232,51 +1232,44 @@ MotionScript_110f4:
 	set_velocities  8, $8b, $76
 	set_velocities  0, $8b, $77
 
-MotionScript_11124:
+MotionScript_WhispyWoodsApple:
 	calltable_random %111
-	dw .script_11138
-	dw .script_1113c
-	dw .script_11140
-	dw .script_11144
-	dw .script_11148
-	dw .script_1114c
-	dw .script_11150
-	dw .script_11154
-	jump_rel .script_11158
+	dw .position_1
+	dw .position_2
+	dw .position_3
+	dw .position_4
+	dw .position_5
+	dw .position_6
+	dw .position_7
+	dw .position_8
+	jump_rel .wait_and_fall
 
-.script_11138
-	script_f0 $30, $20
+.position_1
+	set_position $30, $20
+	script_ret
+.position_2
+	set_position $18, $20
+	script_ret
+.position_3
+	set_position $28, $20
+	script_ret
+.position_4
+	set_position $38, $20
+	script_ret
+.position_5
+	set_position $48, $20
+	script_ret
+.position_6
+	set_position $58, $20
+	script_ret
+.position_7
+	set_position $13, $20
+	script_ret
+.position_8
+	set_position $4d, $20
 	script_ret
 
-.script_1113c
-	script_f0 $18, $20
-	script_ret
-
-.script_11140
-	script_f0 $28, $20
-	script_ret
-
-.script_11144
-	script_f0 $38, $20
-	script_ret
-
-.script_11148
-	script_f0 $48, $20
-	script_ret
-
-.script_1114c
-	script_f0 $58, $20
-	script_ret
-
-.script_11150
-	script_f0 $13, $20
-	script_ret
-
-.script_11154
-	script_f0 $4d, $20
-	script_ret
-
-.script_11158
+.wait_and_fall
 	set_velocities 25, $00, $00
 	set_velocities  8, $00, $78
 	set_velocities  8, $00, $79
@@ -1284,10 +1277,10 @@ MotionScript_11124:
 	set_velocities  8, $00, $7b
 	set_velocities  8, $00, $7c
 	script_exec Func_30b2
-	dw .script_11171, .script_1119c
+	dw .roll_left, .roll_right
 
-.script_11171
-	set_anim_script AnimScript_2112d
+.roll_left
+	set_anim_script AnimScript_WhispyWoodsApple_RollLeft
 	set_velocities 10, $86, $8a
 	set_velocities 10, $86, $86
 	set_velocities 10, $86, $76
@@ -1303,8 +1296,8 @@ MotionScript_11124:
 	set_velocities 10, $87, $76
 	jump_rel .loop_1
 
-.script_1119c
-	set_anim_script AnimScript_21157
+.roll_right
+	set_anim_script AnimScript_WhispyWoodsApple_RollRight
 	set_velocities 10, $76, $8a
 	set_velocities 10, $76, $86
 	set_velocities 10, $76, $76
@@ -1467,7 +1460,7 @@ MotionScript_135bc:
 	set_velocities  0, $8b, $87
 
 MotionScript_135d2:
-	script_f0 $00, $70
+	set_position $00, $70
 	set_velocities 16, $7b, $00
 	set_velocities 16, $7a, $00
 	set_velocities 16, $79, $00
