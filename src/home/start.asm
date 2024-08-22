@@ -120,7 +120,7 @@ Func_1f2:
 	bankswitch
 	call Pause
 .no_pause
-	ld a, BANK(Func_42bf)
+	ld a, BANK(KirbyControl)
 	bankswitch
-	jp Func_42bf
+	jp KirbyControl
 ; 0x246

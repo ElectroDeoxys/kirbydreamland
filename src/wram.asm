@@ -150,7 +150,7 @@ wd064:: ; d064
 wd065:: ; d065
 	db
 
-wd066:: ; d066
+wInhaleDuration:: ; d066
 	db
 
 UNION
@@ -220,7 +220,7 @@ wd07b:: ; d07b
 wd07c:: ; d07c
 	db
 
-wd07d:: ; d07d
+wKirbyXDeceleration:: ; d07d
 	db
 
 wd07e:: ; d07e

@@ -942,7 +942,7 @@ Func_147e4::
 	ld a, [hKirbyFlags2]
 	bit KIRBY2F_INHALE_F, a
 	ret z
-	bit KIRBY2F_UNK2_F, a
+	bit KIRBY2F_INTERRUPT_INHALE_F, a
 	ret nz
 	call Func_14993
 	ld hl, hKirbyFlags5

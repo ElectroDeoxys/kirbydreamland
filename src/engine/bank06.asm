@@ -112,8 +112,8 @@ StartStage::
 	ld [wd079], a
 	ld a, $20
 	ld [wd07c], a
-	ld a, $0e
-	ld [wd07d], a
+	ld a, 14
+	ld [wKirbyXDeceleration], a
 	ld a, $01
 	ld [wd076], a
 	ld a, $33
@@ -641,7 +641,7 @@ Func_183bf::
 	ld c, a
 .asm_1854b
 	ld a, c
-	call Func_643
+	call Is4BitUnaligned
 	jr nc, .asm_18557
 	dec c
 	dec b
@@ -708,7 +708,7 @@ Pause::
 	bit KIRBY5F_UNK0_F, a
 	jr nz, .skip_animation
 	ld a, [hKirbyFlags2]
-	and KIRBY2F_UNK2 | KIRBY2F_MOUTHFUL | KIRBY2F_INHALE | KIRBY2F_HOVER
+	and KIRBY2F_INTERRUPT_INHALE | KIRBY2F_MOUTHFUL | KIRBY2F_INHALE | KIRBY2F_HOVER
 	jr nz, .show_sprites
 	ld a, [hKirbyFlags3]
 	and KIRBY3F_LAND
@@ -901,14 +901,14 @@ _LoseLife::
 	call Func_139b
 	ld a, [wStage]
 	cp MT_DEDEDE
-	jr z, .asm_18731
+	jr z, .skip_play_music
 	ld a, [wMusic]
 	call PlayMusic
-.asm_18731
+.skip_play_music
 	ld a, [hEngineFlags]
 	res ENGINEF_UNK6_F, a
 	ld [hEngineFlags], a
-	call Func_3d92
+	call StartLevelAfterContinue
 	ld a, [hHUDFlags]
 	set HUD_UPDATE_LIVES_F, a
 	ld [hHUDFlags], a
@@ -1468,7 +1468,7 @@ Func_1886c:
 	ld a, [wKirbyXAcc]
 	inc a
 	ld [wKirbyXAcc], a
-	cp $04
+	cp 4
 	jr c, .asm_18b48
 	xor a
 	ld [wKirbyXAcc], a

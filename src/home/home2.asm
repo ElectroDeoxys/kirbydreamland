@@ -147,7 +147,7 @@ Func_326::
 	set KIRBY2F_UNK5_F, a
 	bit KIRBY2F_INHALE_F, a
 	jr z, .asm_365
-	set KIRBY2F_UNK2_F, a
+	set KIRBY2F_INTERRUPT_INHALE_F, a
 .asm_365
 	ldh [hKirbyFlags2], a
 	bit KIRBY2F_HOVER_F, a
@@ -405,9 +405,9 @@ ProcessDoorConnection::
 	ld a, [hl]
 	and KIRBY2F_MOUTHFUL | KIRBY2F_HOVER
 	jr z, .asm_566
-	bit KIRBY2F_UNK2_F, [hl]
+	bit KIRBY2F_INTERRUPT_INHALE_F, [hl]
 	jr nz, .asm_566
-	set KIRBY2F_UNK2_F, [hl]
+	set KIRBY2F_INTERRUPT_INHALE_F, [hl]
 	ld a, [wd3be]
 	and $f9
 	ld [wd3be], a
@@ -514,8 +514,8 @@ ProcessDoorConnection::
 	ld [wVirtualOAMSize], a
 	ld a, $20
 	ld [wd07c], a
-	ld a, $0e
-	ld [wd07d], a
+	ld a, 14
+	ld [wKirbyXDeceleration], a
 	ld a, $15
 	ld [wd07e], a
 	ld a, $01
@@ -546,7 +546,10 @@ ProcessDoorConnection::
 	xor a
 	ret
 
-Func_643::
+; returns carry if value in a
+; is not aligned to 4 bits
+; (ie bottom 4 bits not zero)
+Is4BitUnaligned::
 	and $0f
 	ret z
 	scf
@@ -731,17 +734,19 @@ Func_6ec::
 	ld [wSCX], a
 	jr .asm_708
 
-Func_763:
+; output:
+; - hl = y coordinate
+GetKirbyLevelYCoord:
 	push bc
 	push de
 	ld a, [wd052]
-	sub $01
+	sub 1
 	ld l, a
 	ld h, $00
 	add hl, hl
 	add hl, hl
 	add hl, hl
-	add hl, hl
+	add hl, hl ; *16
 	ld b, $00
 	ld a, [wd05f]
 	ld c, a
@@ -751,15 +756,18 @@ Func_763:
 	ld b, $00
 	ld c, a
 	add hl, bc
+	; hl = (wd052 - 1) * 16 + wd05f + (wSCY & 0x0f)
 	pop de
 	pop bc
 	ret
 
-Func_784::
+; output:
+; - hl = x coordinate
+GetKirbyLevelXCoord::
 	push bc
 	push de
 	ld a, [wd051]
-	sub $01
+	sub 1
 	ld l, a
 	ld h, $00
 	add hl, hl
@@ -768,7 +776,7 @@ Func_784::
 	add hl, hl ; *16
 	ld b, $00
 	ld a, [wd05e]
-	sub $08
+	sub 8
 	ld c, a
 	add hl, bc
 	ld a, [wSCX]
@@ -776,13 +784,14 @@ Func_784::
 	ld b, $00
 	ld c, a
 	add hl, bc
+	; hl = (wd051 - 1) * 16 + (wd05e - 8) + (wSCX & 0x0f)
 	pop de
 	pop bc
 	ret
 
 Func_7a7:
 	ld [wd05f], a
-	call Func_763
+	call GetKirbyLevelYCoord
 	call Func_1ccb
 	ld a, c
 	dec a
@@ -790,7 +799,7 @@ Func_7a7:
 	jr Func_7bf
 Func_7b5:
 	ld [wd05f], a
-	call Func_763
+	call GetKirbyLevelYCoord
 	call Func_1ccb
 	ld a, c
 ;	fallthrough
@@ -815,7 +824,7 @@ Func_7cd:
 	ld hl, wc100
 	add hl, bc
 	push hl
-	call Func_784
+	call GetKirbyLevelXCoord
 	call Func_1ccb
 	pop hl
 	ld a, [wd03f]
@@ -859,7 +868,7 @@ Func_819::
 	push bc
 	push de
 	push hl
-	call Func_763
+	call GetKirbyLevelYCoord
 	call Func_1ccb
 	ld b, c
 	ld a, [wd03f]
@@ -931,24 +940,24 @@ Func_860:
 
 Func_88d:
 	ldh a, [hKirbyFlags1]
-	bit KIRBY1F_UNK5_F, a
-	jr nz, .asm_8a4
-	jr .asm_895 ; useless jump
-.asm_895
-	call .Func_8b3
+	bit KIRBY1F_WALK_LEFT_F, a
+	jr nz, .walking_left
+	jr .walking_right ; useless jump
+.walking_right
+	call .Decelerate
 	call Func_4000
 	jp nc, Func_990
 	call Func_1062
 	jp Func_990
-.asm_8a4
-	call .Func_8b3
+.walking_left
+	call .Decelerate
 	call Func_417c
 	jp nc, Func_9d6
 	call Func_110b
 	jp Func_9d6
 
-.Func_8b3:
-	ld a, [wd07d]
+.Decelerate:
+	ld a, [wKirbyXDeceleration]
 	ld b, a
 	ld a, [wKirbyXVel + 1]
 	sub b
@@ -1017,7 +1026,7 @@ Func_917::
 	swap a
 	ld b, a
 	ldh a, [hKirbyFlags1]
-	and KIRBY1F_UNK5
+	and KIRBY1F_WALK_LEFT
 	jr z, .asm_956
 	and b
 	jr nz, .asm_97b
@@ -1027,11 +1036,11 @@ Func_917::
 	bit VBLANK_4_F, b
 	jp z, Func_88d
 	ld a, [wKirbyXVel + 0]
-	cp $01
+	cp HIGH($100)
 	jp c, Func_88d
-	ld a, $00
+	ld a, HIGH($80)
 	ld [wKirbyXVel + 0], a
-	ld a, $80
+	ld a, LOW($80)
 	ld [wKirbyXVel + 1], a
 	jp Func_88d
 .asm_956
@@ -1043,13 +1052,14 @@ Func_917::
 	bit VBLANK_5_F, b
 	jp z, Func_88d
 	ld a, [wKirbyXVel + 0]
-	cp $01
+	cp HIGH($100)
 	jp c, Func_88d
-	ld a, $00
+	ld a, HIGH($80)
 	ld [wKirbyXVel + 0], a
-	ld a, $80
+	ld a, LOW($80)
 	ld [wKirbyXVel + 1], a
 	jp Func_88d
+
 .asm_97b
 	ldh a, [hVBlankFlags]
 	bit VBLANK_0_F, a
@@ -1120,21 +1130,23 @@ Func_9de:
 	jp nz, .asm_ab8
 	ld a, [wKirbyScreenY]
 	ld [wd05f], a
-	call Func_763
-	ld d, $00
+
+	call GetKirbyLevelYCoord
+	ld d, 0
 	ldh a, [hKirbyFlags1]
 	and UNK_BITMASK
 	jp z, .asm_ab8
 	ld e, a
 .asm_a05
 	ld a, l
-	call Func_643
+	call Is4BitUnaligned
 	jr nc, .asm_a13
 	dec hl
 	inc d
 	dec e
 	jr nz, .asm_a05
 	jp .asm_ab8
+
 .asm_a13
 	call Func_1ccb
 	ld a, c
@@ -1226,6 +1238,7 @@ Func_9de:
 	ld [wd079], a
 	ld a, d
 	jr .asm_abc
+
 .asm_ab8
 	ldh a, [hKirbyFlags1]
 	and UNK_BITMASK
@@ -1249,7 +1262,7 @@ Func_9de:
 	sub c
 	ld [wKirbyScreenDeltaY], a
 	sub b
-	jr c, .asm_b08
+	jr c, .move_down
 	ld a, [wd061]
 	ld [wKirbyScreenDeltaY], a
 	call MoveKirbyDown
@@ -1265,7 +1278,8 @@ Func_9de:
 	ld [wd078], a
 	ld [wd079], a
 	jp .asm_bba
-.asm_b08
+
+.move_down
 	call MoveKirbyDown
 	ldh a, [hScrollingFlags]
 	bit SCROLL_LOCKED_F, a
@@ -1281,7 +1295,7 @@ Func_9de:
 	ld c, a
 .asm_b25
 	ld a, c
-	call Func_643
+	call Is4BitUnaligned
 	jr nc, .asm_b68
 	dec c
 	dec b
@@ -1415,7 +1429,7 @@ Func_9de:
 	ldh a, [hKirbyFlags1]
 	set KIRBY1F_AIRBORNE_F, a
 	res KIRBY1F_GROUNDED_F, a
-	set KIRBY1F_UNK3_F, a
+	set KIRBY1F_JUMP_RISE_F, a
 	ldh [hKirbyFlags1], a
 	ld a, $16
 	xor a
@@ -1495,7 +1509,7 @@ Func_caf:
 	jp nc, .asm_ee0
 	ld a, [wKirbyScreenY]
 	ld [wd05f], a
-	call Func_763
+	call GetKirbyLevelYCoord
 	ld d, $00
 	ldh a, [hKirbyFlags1]
 	and UNK_BITMASK
@@ -1504,7 +1518,7 @@ Func_caf:
 	ld e, a
 .asm_ce7
 	ld a, l
-	call Func_643
+	call Is4BitUnaligned
 	jr nc, .asm_cf5
 	inc hl
 	inc d
@@ -1596,7 +1610,7 @@ Func_caf:
 	and KIRBY2F_MOUTHFUL | KIRBY2F_INHALE
 	jp nz, .asm_ec8
 	ldh a, [hKirbyFlags2]
-	set KIRBY2F_UNK2_F, a
+	set KIRBY2F_INTERRUPT_INHALE_F, a
 	ldh [hKirbyFlags2], a
 	bit KIRBY2F_INHALE_F, a
 	jp z, .asm_ece
@@ -1673,7 +1687,7 @@ Func_caf:
 	and KIRBY2F_MOUTHFUL | KIRBY2F_INHALE | KIRBY2F_HOVER
 	jp nz, .asm_ece
 	ldh a, [hKirbyFlags2]
-	and $ff ^(KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_UNK2)
+	and $ff ^(KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_INTERRUPT_INHALE)
 	ldh [hKirbyFlags2], a
 	ldh a, [hKirbyFlags3]
 	and KIRBY3F_DIVE
@@ -1686,7 +1700,7 @@ Func_caf:
 	or KIRBY3F_DUCK
 	ldh [hKirbyFlags3], a
 	ldh a, [hKirbyFlags1]
-	and $ff ^ (UNK_BITMASK | KIRBY1F_UNK3 | KIRBY1F_AIRBORNE)
+	and $ff ^ (UNK_BITMASK | KIRBY1F_JUMP_RISE | KIRBY1F_AIRBORNE)
 	or KIRBY1F_GROUNDED
 	ldh [hKirbyFlags1], a
 	xor a
@@ -1772,7 +1786,7 @@ Func_caf:
 
 .asm_ee0
 	ld hl, hKirbyFlags1
-	set KIRBY1F_UNK3_F, [hl]
+	set KIRBY1F_JUMP_RISE_F, [hl]
 	ldh a, [hKirbyFlags2]
 	and KIRBY2F_UNK5 | KIRBY2F_UNK6 | KIRBY2F_HOVER
 	jr nz, .asm_f0f
@@ -1855,7 +1869,7 @@ Func_caf:
 	ld c, a
 .asm_f80
 	ld a, c
-	call Func_643
+	call Is4BitUnaligned
 	jr nc, .asm_fc3
 	inc c
 	dec b
@@ -1991,7 +2005,7 @@ Func_1062::
 	ld c, a
 .asm_1072
 	ld a, c
-	call Func_643
+	call Is4BitUnaligned
 	jr nc, .asm_109b
 	inc c
 	dec b
@@ -2097,7 +2111,7 @@ Func_110b:
 	ld c, a
 .asm_112c
 	ld a, c
-	call Func_643
+	call Is4BitUnaligned
 	jr nc, .asm_115d
 	dec c
 	dec b
@@ -2184,7 +2198,7 @@ Func_11c9::
 	res KIRBY3F_UNK2_F, a
 	ldh [hKirbyFlags3], a
 	ldh a, [hKirbyFlags2]
-	res KIRBY2F_UNK2_F, a
+	res KIRBY2F_INTERRUPT_INHALE_F, a
 	ldh [hKirbyFlags2], a
 	ret
 
@@ -2195,7 +2209,7 @@ Func_11de:
 	ld c, a
 .asm_11e5
 	ld a, c
-	call Func_643
+	call Is4BitUnaligned
 	jr nc, .asm_11f6
 	inc c
 	dec b
@@ -2562,7 +2576,7 @@ Func_139b::
 	jr .asm_1408
 .asm_1408
 	ldh a, [hKirbyFlags2]
-	bit KIRBY2F_UNK2_F, a
+	bit KIRBY2F_INTERRUPT_INHALE_F, a
 	jr z, .not_hovering_or_puffing
 	ld c, KIRBY_PUFF
 .not_hovering_or_puffing
@@ -2615,7 +2629,7 @@ Func_139b::
 	ld c, KIRBY_IDLE
 	jr .asm_146b
 .asm_1465
-	bit KIRBY2F_UNK2_F, a
+	bit KIRBY2F_INTERRUPT_INHALE_F, a
 	jr z, .asm_146b
 	ld c, KIRBY_PUFF
 .asm_146b
@@ -2623,7 +2637,7 @@ Func_139b::
 	bit KIRBY3F_UNK2_F, a
 	jr z, .asm_147d
 	ldh a, [hKirbyFlags2]
-	bit KIRBY2F_UNK2_F, a
+	bit KIRBY2F_INTERRUPT_INHALE_F, a
 	jr nz, .asm_147b
 	ld c, KIRBY_DIVE
 	jr .asm_147d
@@ -2634,7 +2648,7 @@ Func_139b::
 	bit KIRBY2F_INHALE_F, a
 	jr z, .asm_149f
 	ld c, KIRBY_INHALE
-	bit KIRBY2F_UNK2_F, a
+	bit KIRBY2F_INTERRUPT_INHALE_F, a
 	jr z, .asm_148d
 	ld c, KIRBY_GET_MOUTHFUL
 	jr .asm_149f
@@ -2658,7 +2672,7 @@ Func_139b::
 	jr z, .asm_14b6
 	ld c, KIRBY_UNK_17
 	ldh a, [hKirbyFlags2]
-	res KIRBY2F_UNK2_F, a
+	res KIRBY2F_INTERRUPT_INHALE_F, a
 	ldh [hKirbyFlags2], a
 	jr .asm_14dc
 .asm_14b6
@@ -2676,7 +2690,7 @@ Func_139b::
 	ld c, KIRBY_MOUTHFUL_JUMP
 .asm_14cc
 	ldh a, [hKirbyFlags2]
-	bit KIRBY2F_UNK2_F, a
+	bit KIRBY2F_INTERRUPT_INHALE_F, a
 	jr z, .asm_14d4
 	ld c, KIRBY_SPIT
 .asm_14d4
@@ -3838,6 +3852,8 @@ GetScoreDigits:
 	ld [wScoreDigits + 2], a
 	ret
 
+; input:
+; - hl = level x coordinate
 Func_1ccb::
 	push af
 	ld a, l
@@ -3853,6 +3869,7 @@ Func_1ccb::
 	ld a, b
 	and $0f
 	ld b, a
+	; bc = hl >> 4
 	pop af
 	ret
 
@@ -7092,7 +7109,7 @@ Func_2fdf:
 	bit 0, [hl]
 	jr z, .asm_3030
 	ld hl, hKirbyFlags2
-	set KIRBY2F_UNK2_F, [hl]
+	set KIRBY2F_INTERRUPT_INHALE_F, [hl]
 	ld hl, hPalFadeFlags
 	set FADE_3_F, [hl]
 	ld a, [hEngineFlags]
@@ -7898,8 +7915,8 @@ Func_3768::
 	ld [wd077], a
 	ld a, $16
 	ld [wd07c], a
-	ld a, $09
-	ld [wd07d], a
+	ld a, 9
+	ld [wKirbyXDeceleration], a
 	ret
 
 Func_37a7::
@@ -8305,8 +8322,8 @@ Func_3d48::
 	set FADE_3_F, [hl]
 	ld a, $20
 	ld [wd07c], a
-	ld a, $0e
-	ld [wd07d], a
+	ld a, 14
+	ld [wKirbyXDeceleration], a
 	ld a, $01
 	ld [wd076], a
 	ld a, $33
@@ -8321,12 +8338,12 @@ Func_3d48::
 	ld [hl], a
 	ret
 
-Func_3d92::
+StartLevelAfterContinue::
 	ld a, [wROMBank]
 	push af
-	ld a, BANK(Func_4d3f)
+	ld a, BANK(_StartLevelAfterContinue)
 	bankswitch
-	call Func_4d3f
+	call _StartLevelAfterContinue
 	pop af
 	bankswitch
 	ret
