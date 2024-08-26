@@ -37,7 +37,7 @@ TitleScreen::
 	ld a, MUSIC_TITLESCREEN
 	call PlayMusic
 
-	ld a, $01
+	ld a, SCENE_TITLE_SCREEN
 	call Func_21fb
 
 	call StopTimerAndSwitchOnLCD

@@ -1,0 +1,29 @@
+	const_def 1
+	const SCENE_TITLE_SCREEN ; $01
+	const SCENE_SOUND_TEST ; $02
+	const SCENE_03 ; $03
+	const SCENE_04 ; $04
+	const SCENE_05 ; $05
+	const SCENE_06 ; $06
+	const SCENE_CREDITS ; $07
+	const SCENE_08 ; $08
+	const SCENE_09 ; $09
+	const SCENE_0A ; $0a
+	const SCENE_0B ; $0b
+	const SCENE_0C ; $0c
+	const SCENE_0D ; $0d
+	const SCENE_0E ; $0e
+	const SCENE_0F ; $0f
+	const SCENE_10 ; $10
+	const SCENE_11 ; $11
+	const SCENE_12 ; $12
+	const SCENE_13 ; $13
+	const SCENE_14 ; $14
+	const SCENE_15 ; $15
+	const SCENE_16 ; $16
+	const SCENE_17 ; $17
+	const SCENE_18 ; $18
+	const SCENE_19 ; $19
+	const SCENE_1A ; $1a
+	const SCENE_1B ; $1b
+DEF NUM_SCENES EQU const_value - 1

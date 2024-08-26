@@ -270,7 +270,7 @@ Func_18285:
 .asm_182d1
 	add hl, bc
 	ld a, [hli]
-	ld [wd06b], a
+	ld [wd06b + 0], a
 	ld a, [hli]
 	ld b, a
 	ld a, [hli]
@@ -281,7 +281,7 @@ Func_18285:
 	ld d, a
 	ld h, b
 	ld l, c
-	ld a, [wd06b]
+	ld a, [wd06b + 0]
 	ld c, a
 	call FarDecompress
 	ret
@@ -319,7 +319,7 @@ StageIntro:
 	ld hl, Data_2070
 	add hl, bc
 	ld a, [hli]
-	ld [wd06b], a
+	ld [wd06b + 0], a
 	ld a, [hli]
 	ld b, a
 	ld a, [hli]
@@ -330,7 +330,7 @@ StageIntro:
 	ld d, a
 	ld h, b
 	ld l, c
-	ld a, [wd06b]
+	ld a, [wd06b + 0]
 	ld c, a
 	call FarDecompress
 
@@ -427,7 +427,7 @@ Func_183bf::
 	add a ; *2
 	ld c, a
 	ld b, $00
-	ld hl, Data_190ca
+	ld hl, StageTransistions
 	add hl, bc
 	ld a, [hli]
 	ld c, a
@@ -469,11 +469,11 @@ Func_183bf::
 	bit 7, a
 	jp nz, Func_3d2d
 	bit 0, a
-	call nz, .Func_184f4
+	call nz, .SetKirbyXVel
 	bit 1, a
-	call nz, .Func_184f4
+	call nz, .SetKirbyXVel
 	bit 2, a
-	call nz, .Func_18485
+	call nz, .SetArea
 	bit 4, a
 	call nz, .Func_18473
 	bit 5, a
@@ -524,14 +524,14 @@ Func_183bf::
 	ld a, [hli]
 	ld d, a
 	push hl
-	ld hl, $410c
+	ld hl, AnimScript_2010c
 	ld bc, OBJECT_SLOT_00
 	call Func_21e6
 	pop hl
 	pop af
 	ret
 
-.Func_18485:
+.SetArea:
 	push af
 	ld a, [hli]
 	ld [wArea], a
@@ -588,7 +588,7 @@ Func_183bf::
 	pop af
 	ret
 
-.Func_184f4:
+.SetKirbyXVel:
 	push af
 	ld a, [hli]
 	ld [wKirbyXVel + 0], a
@@ -935,7 +935,7 @@ GameOver:
 	call HideWindow
 	call ResetTimer
 
-	ld a, $0a
+	ld a, SCENE_0A
 	call Func_21fb
 
 	ld hl, $4665
@@ -991,7 +991,7 @@ GameOver:
 	ld [wd051], a
 	ld [wd052], a
 
-	ld a, $0b
+	ld a, SCENE_0B
 	call Func_21fb
 	ld a, $ff
 	ld [wd096], a
@@ -1091,7 +1091,7 @@ Func_1886c:
 	inc a
 	ld [wd051], a
 	ld [wd052], a
-	ld a, $03
+	ld a, SCENE_03
 	call Func_21fb
 	call Func_19098
 	call HideWindow
@@ -1166,7 +1166,7 @@ Func_1886c:
 	ld c, $06
 	call FarDecompress
 
-	ld a, $04
+	ld a, SCENE_04
 	call Func_21fb
 	call Func_19098
 	ld a, $12
@@ -1195,7 +1195,7 @@ Func_1886c:
 	ld [wd096], a
 	call ClearSprites
 	call FadeOut
-	ld a, $05
+	ld a, SCENE_05
 	call Func_21fb
 	call Func_19098
 	call ResetTimer
@@ -1234,7 +1234,7 @@ Func_1886c:
 
 	call FadeOut
 	call ResetTimer
-	ld a, $06
+	ld a, SCENE_06
 	call Func_21fb
 	call Func_19098
 
@@ -1333,7 +1333,7 @@ Func_1886c:
 	call ClearSprites
 	call FadeOut
 	call ResetTimer
-	ld a, $07
+	ld a, SCENE_CREDITS
 	call Func_21fb
 	call Func_19098
 
@@ -1430,14 +1430,14 @@ Func_1886c:
 	ld a, LOW(vBGMap0 + $1f)
 	ld [wBGPtr_d06b + 1], a
 	ld a, HIGH(vBGMap1 + $80)
-	ld [wd084 + 0], a
+	ld [wCreditsBGMapPtr + 0], a
 	ld a, LOW(vBGMap1 + $80)
-	ld [wd084 + 1], a
-	ld hl, $5ed6
+	ld [wCreditsBGMapPtr + 1], a
+	ld hl, CreditsText
 	ld a, h
-	ld [wKirbyAnimScript + 0], a
+	ld [wCreditsTextPtr + 0], a
 	ld a, l
-	ld [wKirbyAnimScript + 1], a
+	ld [wCreditsTextPtr + 1], a
 	xor a
 	ld [wKirbyXAcc], a
 	ld [wKirbyScreenDeltaY], a
@@ -1449,7 +1449,7 @@ Func_1886c:
 	ld a, [hEngineFlags]
 	res PROCESS_BG_QUEUE_F, a
 	ld [hEngineFlags], a
-.asm_18b48
+.loop_credits
 	ld a, [hVBlankFlags]
 	set 6, a
 	ld [hVBlankFlags], a
@@ -1461,15 +1461,15 @@ Func_1886c:
 
 	ld a, [wd067]
 	and a
-	jp nz, .Func_18c5c
+	jp nz, .asm_18c5c
 	ld a, [wd065]
 	and a
-	call nz, .Func_18b85
+	call nz, .PrintText
 	ld a, [wKirbyXAcc]
 	inc a
 	ld [wKirbyXAcc], a
 	cp 4
-	jr c, .asm_18b48
+	jr c, .loop_credits
 	xor a
 	ld [wKirbyXAcc], a
 	ld a, [wSCX]
@@ -1477,9 +1477,9 @@ Func_1886c:
 	ld [wSCX], a
 	and $07
 	call z, .Func_18bf6
-	jr .asm_18b48
+	jr .loop_credits
 
-.Func_18b85:
+.PrintText:
 	ld a, [wKirbyScreenDeltaY]
 	ld b, a
 	ld a, 1
@@ -1487,33 +1487,34 @@ Func_1886c:
 	ld [wKirbyScreenDeltaY], a
 	; wKirbyScreenDeltaY = 1 - wKirbyScreenDeltaY
 
+	; queue 10 tiles to print from CreditsText
 	ld hl, wBGQueue
-	ld b, $0a
-.asm_18b94
-	ld a, [wd084 + 0]
+	ld b, 10
+.loop_queue_chars
+	ld a, [wCreditsBGMapPtr + 0]
 	ld [hli], a
 	ld d, a
-	ld a, [wd084 + 1]
+	ld a, [wCreditsBGMapPtr + 1]
 	ld [hli], a
 	ld e, a
 	inc de
 	ld a, d
-	ld [wd084 + 0], a
+	ld [wCreditsBGMapPtr + 0], a
 	ld a, e
-	ld [wd084 + 1], a
-	ld a, [wKirbyAnimScript + 0]
+	ld [wCreditsBGMapPtr + 1], a
+	ld a, [wCreditsTextPtr + 0]
 	ld d, a
-	ld a, [wKirbyAnimScript + 1]
+	ld a, [wCreditsTextPtr + 1]
 	ld e, a
 	ld a, [de]
 	ld [hli], a
 	inc de
 	ld a, d
-	ld [wKirbyAnimScript + 0], a
+	ld [wCreditsTextPtr + 0], a
 	ld a, e
-	ld [wKirbyAnimScript + 1], a
+	ld [wCreditsTextPtr + 1], a
 	dec b
-	jr nz, .asm_18b94
+	jr nz, .loop_queue_chars
 	ld a, [wd061]
 	inc a
 	cp $08
@@ -1528,11 +1529,11 @@ Func_1886c:
 	ld a, [wKirbyScreenDeltaY]
 	and a
 	ret nz
-	ld a, [wd084 + 0]
+	ld a, [wCreditsBGMapPtr + 0]
 	ld h, a
-	ld a, [wd084 + 1]
+	ld a, [wCreditsBGMapPtr + 1]
 	ld l, a
-	ld bc, $c
+	ld bc, SCRN_VX_B - 2 * 10
 	add hl, bc
 	ld a, HIGH(vEnd)
 	cp h
@@ -1540,9 +1541,9 @@ Func_1886c:
 	hlbgcoord 0, 0, vBGMap1
 .got_bg_map_ptr
 	ld a, h
-	ld [wd084 + 0], a
+	ld [wCreditsBGMapPtr + 0], a
 	ld a, l
-	ld [wd084 + 1], a
+	ld [wCreditsBGMapPtr + 1], a
 	ret
 
 .Func_18bf6:
@@ -1608,7 +1609,7 @@ Func_1886c:
 	ld [wd059 + 1], a
 	ret
 
-.Func_18c5c:
+.asm_18c5c
 	ld a, %10010000
 	ld [wBGP], a
 	ld a, %11010000
@@ -1634,7 +1635,7 @@ Func_1886c:
 
 	xor a
 	ld [wBGP], a
-	ld a, $08
+	ld a, SCENE_08
 	call Func_21fb
 	call Func_19098
 
@@ -1665,7 +1666,7 @@ Func_1886c:
 	jr nz, .asm_18cb8
 	call FadeOut
 	call ResetTimer
-	ld a, $09
+	ld a, SCENE_09
 	call Func_21fb
 	call Func_19098
 
@@ -1711,7 +1712,7 @@ Func_1886c:
 	xor a
 	ld [wStage], a
 	call Func_18275
-	ld a, $0c
+	ld a, SCENE_0C
 	call Func_21fb
 	call Func_19098
 
@@ -1730,7 +1731,7 @@ Func_1886c:
 	call .DoFrames
 	call FadeOut
 	call ResetTimer
-	ld a, $0d
+	ld a, SCENE_0D
 	call Func_21fb
 	call Func_19098
 
@@ -1749,7 +1750,7 @@ Func_1886c:
 	call .DoFrames
 	call FadeOut
 	call ResetTimer
-	ld a, $0e
+	ld a, SCENE_0E
 	call Func_21fb
 	call Func_19098
 
@@ -1773,7 +1774,7 @@ Func_1886c:
 	ld [wStage], a
 
 	call Func_18275
-	ld a, $0f
+	ld a, SCENE_0F
 	call Func_21fb
 	call Func_19098
 
@@ -1792,7 +1793,7 @@ Func_1886c:
 	call .DoFrames
 	call FadeOut
 	call ResetTimer
-	ld a, $10
+	ld a, SCENE_10
 	call Func_21fb
 	call Func_19098
 
@@ -1815,7 +1816,7 @@ Func_1886c:
 	ld a, FLOAT_ISLANDS
 	ld [wStage], a
 	call Func_18275
-	ld a, $11
+	ld a, SCENE_11
 	call Func_21fb
 	call Func_19098
 
@@ -1834,7 +1835,7 @@ Func_1886c:
 	call .DoFrames
 	call FadeOut
 	call ResetTimer
-	ld a, $12
+	ld a, SCENE_12
 	call Func_21fb
 	call Func_19098
 
@@ -1857,7 +1858,7 @@ Func_1886c:
 	ld a, BUBBLY_CLOUDS
 	ld [wStage], a
 	call Func_18275
-	ld a, $13
+	ld a, SCENE_13
 	call Func_21fb
 	call Func_19098
 
@@ -1876,7 +1877,7 @@ Func_1886c:
 	call .DoFrames
 	call FadeOut
 	call ResetTimer
-	ld a, $14
+	ld a, SCENE_14
 	call Func_21fb
 	call Func_19098
 
@@ -1898,7 +1899,7 @@ Func_1886c:
 	xor a
 	ld [wStage], a
 	call Func_18285
-	ld a, $15
+	ld a, SCENE_15
 	call Func_21fb
 	call Func_19098
 
@@ -1920,7 +1921,7 @@ Func_1886c:
 	ld a, CASTLE_LOLOLO
 	ld [wStage], a
 	call Func_18285
-	ld a, $16
+	ld a, SCENE_16
 	call Func_21fb
 	call Func_19098
 
@@ -1942,7 +1943,7 @@ Func_1886c:
 	ld a, FLOAT_ISLANDS
 	ld [wStage], a
 	call Func_18285
-	ld a, $17
+	ld a, SCENE_17
 	call Func_21fb
 	call Func_19098
 
@@ -1964,7 +1965,7 @@ Func_1886c:
 	ld a, BUBBLY_CLOUDS
 	ld [wStage], a
 	call Func_18285
-	ld a, $18
+	ld a, SCENE_18
 	call Func_21fb
 	call Func_19098
 
@@ -1989,7 +1990,7 @@ Func_1886c:
 	ld c, $02
 	call FarDecompress
 
-	ld a, $19
+	ld a, SCENE_19
 	call Func_21fb
 	call Func_19098
 
@@ -2029,7 +2030,7 @@ Func_1886c:
 	ld a, MUSIC_NONE
 	call PlayMusic
 
-	ld a, $1a
+	ld a, SCENE_1A
 	call Func_21fb
 	call Func_19098
 
@@ -2053,7 +2054,7 @@ Func_1886c:
 	ld a, MUSIC_NONE
 	call PlayMusic
 
-	ld a, $1b
+	ld a, SCENE_1B
 	call Func_21fb
 	call Func_19098
 
@@ -2094,18 +2095,18 @@ Func_19098:
 	push bc
 	push de
 	push hl
-	ld a, [wd06b]
+	ld a, [wd06b + 0]
 	push af
-	ld a, [wd06c]
+	ld a, [wd06b + 1]
 	push af
 	xor a
 	ld [wVirtualOAMSize], a
 	call Func_2e9c
 	call ClearSprites
 	pop af
-	ld [wd06c], a
+	ld [wd06b + 1], a
 	pop af
-	ld [wd06b], a
+	ld [wd06b + 0], a
 	pop hl
 	pop de
 	pop bc
@@ -2121,8 +2122,8 @@ Data_190bb:
 	db $06, $7a, $af ; MT_DEDEDE
 	assert_table_length NUM_STAGES
 
-Data_190ca:
-	table_width 2, Data_190ca
+StageTransistions:
+	table_width 2, StageTransistions
 	dw .GreenGreens  ; GREEN_GREENS
 	dw .CastleLololo ; CASTLE_LOLOLO
 	dw .FloatIslands ; FLOAT_ISLANDS
@@ -2131,115 +2132,200 @@ Data_190ca:
 	assert_table_length NUM_STAGES
 
 .GreenGreens:
-	table_width 2, Data_190ca.GreenGreens
-	dw Data_19138 ; GREEN_GREENS_0
-	dw Data_19136 ; GREEN_GREENS_1
-	dw Data_19136 ; GREEN_GREENS_2
-	dw Data_19136 ; GREEN_GREENS_3
-	dw Data_1916d ; GREEN_GREENS_4
+	table_width 2, StageTransistions.GreenGreens
+	dw .GreenGreens0 ; GREEN_GREENS_0
+	dw .NoTransition ; GREEN_GREENS_1
+	dw .NoTransition ; GREEN_GREENS_2
+	dw .NoTransition ; GREEN_GREENS_3
+	dw .GreenGreens4 ; GREEN_GREENS_4
 	assert_table_length NUM_GREEN_GREENS_AREAS
 
 .CastleLololo:
-	table_width 2, Data_190ca.CastleLololo
-	dw Data_19136 ; CASTLE_LOLOLO_00
-	dw Data_19136 ; CASTLE_LOLOLO_01
-	dw Data_19136 ; CASTLE_LOLOLO_02
-	dw Data_19136 ; CASTLE_LOLOLO_03
-	dw Data_19136 ; CASTLE_LOLOLO_04
-	dw Data_19136 ; CASTLE_LOLOLO_05
-	dw Data_19136 ; CASTLE_LOLOLO_06
-	dw Data_19175 ; CASTLE_LOLOLO_07
-	dw Data_191aa ; CASTLE_LOLOLO_08
-	dw Data_19136 ; CASTLE_LOLOLO_09
-	dw Data_19136 ; CASTLE_LOLOLO_10
-	dw Data_19136 ; CASTLE_LOLOLO_11
-	dw Data_19136 ; CASTLE_LOLOLO_12
-	dw Data_19136 ; CASTLE_LOLOLO_13
-	dw Data_191b7 ; CASTLE_LOLOLO_14
-	dw Data_191be ; CASTLE_LOLOLO_15
+	table_width 2, StageTransistions.CastleLololo
+	dw .NoTransition ; CASTLE_LOLOLO_00
+	dw .NoTransition ; CASTLE_LOLOLO_01
+	dw .NoTransition ; CASTLE_LOLOLO_02
+	dw .NoTransition ; CASTLE_LOLOLO_03
+	dw .NoTransition ; CASTLE_LOLOLO_04
+	dw .NoTransition ; CASTLE_LOLOLO_05
+	dw .NoTransition ; CASTLE_LOLOLO_06
+	dw .CastleLololo07 ; CASTLE_LOLOLO_07
+	dw .CastleLololo08 ; CASTLE_LOLOLO_08
+	dw .NoTransition ; CASTLE_LOLOLO_09
+	dw .NoTransition ; CASTLE_LOLOLO_10
+	dw .NoTransition ; CASTLE_LOLOLO_11
+	dw .NoTransition ; CASTLE_LOLOLO_12
+	dw .NoTransition ; CASTLE_LOLOLO_13
+	dw .CastleLololo14 ; CASTLE_LOLOLO_14
+	dw .CastleLololo15 ; CASTLE_LOLOLO_15
 	assert_table_length NUM_CASTLE_LOLOLO_AREAS
 
 .FloatIslands:
-	table_width 2, Data_190ca.FloatIslands
-	dw Data_19136 ; FLOAT_ISLANDS_0
-	dw Data_19136 ; FLOAT_ISLANDS_1
-	dw Data_19136 ; FLOAT_ISLANDS_2
-	dw Data_19136 ; FLOAT_ISLANDS_3
-	dw Data_19136 ; FLOAT_ISLANDS_4
-	dw Data_191c6 ; FLOAT_ISLANDS_5
-	dw Data_19136 ; FLOAT_ISLANDS_6
-	dw Data_191fe ; FLOAT_ISLANDS_7
+	table_width 2, StageTransistions.FloatIslands
+	dw .NoTransition ; FLOAT_ISLANDS_0
+	dw .NoTransition ; FLOAT_ISLANDS_1
+	dw .NoTransition ; FLOAT_ISLANDS_2
+	dw .NoTransition ; FLOAT_ISLANDS_3
+	dw .NoTransition ; FLOAT_ISLANDS_4
+	dw .FloatIslands5 ; FLOAT_ISLANDS_5
+	dw .NoTransition ; FLOAT_ISLANDS_6
+	dw .FloatIslands6 ; FLOAT_ISLANDS_7
 	assert_table_length NUM_FLOAT_ISLANDS_AREAS
 
 .BubblyClouds:
-	table_width 2, Data_190ca.BubblyClouds
-	dw Data_19136 ; BUBBLY_CLOUDS_0
-	dw Data_19136 ; BUBBLY_CLOUDS_1
-	dw Data_19136 ; BUBBLY_CLOUDS_2
-	dw Data_19136 ; BUBBLY_CLOUDS_3
-	dw Data_19206 ; BUBBLY_CLOUDS_4
-	dw Data_19136 ; BUBBLY_CLOUDS_5
-	dw Data_19136 ; BUBBLY_CLOUDS_6
-	dw Data_19136 ; BUBBLY_CLOUDS_7
-	dw Data_19136 ; BUBBLY_CLOUDS_8
-	dw Data_1922b ; BUBBLY_CLOUDS_9
+	table_width 2, StageTransistions.BubblyClouds
+	dw .NoTransition ; BUBBLY_CLOUDS_0
+	dw .NoTransition ; BUBBLY_CLOUDS_1
+	dw .NoTransition ; BUBBLY_CLOUDS_2
+	dw .NoTransition ; BUBBLY_CLOUDS_3
+	dw .BubbleClouds4 ; BUBBLY_CLOUDS_4
+	dw .NoTransition ; BUBBLY_CLOUDS_5
+	dw .NoTransition ; BUBBLY_CLOUDS_6
+	dw .NoTransition ; BUBBLY_CLOUDS_7
+	dw .NoTransition ; BUBBLY_CLOUDS_8
+	dw .BubbleClouds9 ; BUBBLY_CLOUDS_9
 	assert_table_length NUM_BUBBLY_CLOUDS_AREAS
 
 .MtDedede:
-	table_width 2, Data_190ca.MtDedede
-	dw Data_19233 ; MT_DEDEDE_0
-	dw Data_19136 ; MT_DEDEDE_1
-	dw Data_19136 ; MT_DEDEDE_2
-	dw Data_19136 ; MT_DEDEDE_3
-	dw Data_19136 ; MT_DEDEDE_4
-	dw Data_19268 ; MT_DEDEDE_5
-	dw Data_1925b ; MT_DEDEDE_6
-	dw Data_1925b ; MT_DEDEDE_7
-	dw Data_1925b ; MT_DEDEDE_8
-	dw Data_1925b ; MT_DEDEDE_9
+	table_width 2, StageTransistions.MtDedede
+	dw .MtDedede0 ; MT_DEDEDE_0
+	dw .NoTransition ; MT_DEDEDE_1
+	dw .NoTransition ; MT_DEDEDE_2
+	dw .NoTransition ; MT_DEDEDE_3
+	dw .NoTransition ; MT_DEDEDE_4
+	dw .MtDedede5 ; MT_DEDEDE_5
+	dw .MtDedede6 ; MT_DEDEDE_6
+	dw .MtDedede7 ; MT_DEDEDE_7
+	dw .MtDedede8 ; MT_DEDEDE_8
+	dw .MtDedede9 ; MT_DEDEDE_9
 	assert_table_length NUM_MT_DEDEDE_AREAS
 
-Data_19136:
-	db $01, $80
+.NoTransition:
+	trans_end 1
 
-Data_19138:
-	db $3c, $00, $0a, $01, $00, $80, $0a, $01, $01, $00, $0a, $01, $02, $00, $0b, $01, $03, $00, $56, $01, $04, $00, $0b, $01, $03, $00, $0a, $01, $02, $00, $0a, $01, $01, $00, $0a, $01, $00, $80, $78, $00, $01, $04, $02, $01, $01, $01, $10, $0b, $40, $ff, $00, $01, $80
+.GreenGreens0:
+	trans_wait 60
+	trans_move_kirby_1  $80, 10
+	trans_move_kirby_1 $100, 10
+	trans_move_kirby_1 $200, 10
+	trans_move_kirby_1 $300, 11
+	trans_move_kirby_1 $400, 86
+	trans_move_kirby_1 $300, 11
+	trans_move_kirby_1 $200, 10
+	trans_move_kirby_1 $100, 10
+	trans_move_kirby_1  $80, 10
+	trans_wait 120
+	trans_change_area GREEN_GREENS_2, $01, $01, 1
+	trans_set_motion_script MotionScript_1000b, 1
+	trans_wait 255
+	trans_end 1
 
-Data_1916d:
-	db $f0, $00, $f0, $00, $f0, $00, $01, $08
+.GreenGreens4:
+	trans_wait 240
+	trans_wait 240
+	trans_wait 240
+	trans_next_stage 1
 
-Data_19175:
-	db $3c, $00, $0a, $01, $00, $80, $0a, $01, $01, $00, $0a, $01, $02, $00, $0b, $01, $03, $00, $56, $01, $04, $00, $0b, $01, $03, $00, $0a, $01, $02, $00, $0a, $01, $01, $00, $0a, $01, $00, $80, $1e, $00, $01, $04, $08, $01, $01, $01, $10, $14, $40, $f0, $00, $01, $80
+.CastleLololo07:
+	trans_wait 60
+	trans_move_kirby_1  $80, 10
+	trans_move_kirby_1 $100, 10
+	trans_move_kirby_1 $200, 10
+	trans_move_kirby_1 $300, 11
+	trans_move_kirby_1 $400, 86
+	trans_move_kirby_1 $300, 11
+	trans_move_kirby_1 $200, 10
+	trans_move_kirby_1 $100, 10
+	trans_move_kirby_1  $80, 10
+	trans_wait 30
+	trans_change_area CASTLE_LOLOLO_08, $01, $01, 1
+	trans_set_motion_script MotionScript_10014, 1
+	trans_wait 240
+	trans_end 1
 
-Data_191aa:
-	db $01, $04, $09, $01, $09, $01, $10, $76, $42, $1e, $00, $01, $80
+.CastleLololo08:
+	trans_change_area CASTLE_LOLOLO_09, $01, $09, 1
+	trans_set_motion_script MotionScript_10276, 1
+	trans_wait 30
+	trans_end 1
 
-Data_191b7:
-	db $01, $04, $0f, $01, $01, $01, $80
+.CastleLololo14:
+	trans_change_area CASTLE_LOLOLO_15, $01, $01, 1
+	trans_end 1
 
-Data_191be:
-	db $f0, $00, $f0, $00, $f0, $00, $01, $08
+.CastleLololo15:
+	trans_wait 240
+	trans_wait 240
+	trans_wait 240
+	trans_next_stage 1
 
-Data_191c6:
-	db $a0, $00, $0a, $02, $01, $00, $0a, $02, $02, $00, $0a, $02, $03, $00, $22, $02, $04, $00, $0a, $02, $03, $00, $0a, $02, $02, $00, $0a, $02, $01, $00, $8c, $00, $01, $04, $06, $01, $01, $01, $10, $2f, $40, $c8, $00, $01, $04, $07, $01, $01, $01, $10, $56, $40, $ff, $00, $01, $80
+.FloatIslands5:
+	trans_wait 160
+	trans_move_kirby_2 $100, 10
+	trans_move_kirby_2 $200, 10
+	trans_move_kirby_2 $300, 10
+	trans_move_kirby_2 $400, 34
+	trans_move_kirby_2 $300, 10
+	trans_move_kirby_2 $200, 10
+	trans_move_kirby_2 $100, 10
+	trans_wait 140
+	trans_change_area FLOAT_ISLANDS_6, $01, $01, 1
+	trans_set_motion_script MotionScript_1002f, 1
+	trans_wait 200
+	trans_change_area FLOAT_ISLANDS_7, $01, $01, 1
+	trans_set_motion_script MotionScript_10056, 1
+	trans_wait 255
+	trans_end 1
 
-Data_191fe:
-	db $f0, $00, $f0, $00, $f0, $00, $01, $08
+.FloatIslands6:
+	trans_wait 240
+	trans_wait 240
+	trans_wait 240
+	trans_next_stage 1
 
-Data_19206:
-	db $64, $00, $0a, $02, $00, $80, $0a, $02, $01, $00, $0a, $02, $02, $00, $0b, $02, $03, $00, $2c, $02, $04, $00, $78, $00, $01, $04, $05, $01, $01, $01, $10, $bf, $40, $ff, $00, $01, $80
+.BubbleClouds4:
+	trans_wait 100
+	trans_move_kirby_2  $80, 10
+	trans_move_kirby_2 $100, 10
+	trans_move_kirby_2 $200, 10
+	trans_move_kirby_2 $300, 11
+	trans_move_kirby_2 $400, 44
+	trans_wait 120
+	trans_change_area BUBBLY_CLOUDS_5, $01, $01, 1
+	trans_set_motion_script MotionScript_100bf, 1
+	trans_wait 255
+	trans_end 1
 
-Data_1922b:
-	db $f0, $00, $f0, $00, $f0, $00, $01, $08
+.BubbleClouds9:
+	trans_wait 240
+	trans_wait 240
+	trans_wait 240
+	trans_next_stage 1
 
-Data_19233:
-	db $f0, $01, $01, $c0, $bc, $01, $01, $c0, $0a, $01, $01, $80, $0a, $01, $01, $40, $0a, $01, $01, $00, $0a, $01, $00, $c0, $0a, $01, $00, $80, $0a, $01, $00, $40, $0a, $01, $00, $00, $32, $00, $01, $80
+.MtDedede0:
+	trans_move_kirby_1 $1c0, 240
+	trans_move_kirby_1 $1c0, 188
+	trans_move_kirby_1 $180,  10
+	trans_move_kirby_1 $140,  10
+	trans_move_kirby_1 $100,  10
+	trans_move_kirby_1 $0c0,  10
+	trans_move_kirby_1  $80,  10
+	trans_move_kirby_1  $40,  10
+	trans_move_kirby_1   $0,  10
+	trans_wait 50
+	trans_end 1
 
-Data_1925b:
-	db $01, $04, $00, $33, $01, $01, $10, $1d, $41, $f0, $00, $01, $80
+.MtDedede6:
+.MtDedede7:
+.MtDedede8:
+.MtDedede9:
+	trans_change_area MT_DEDEDE_0, $33, $01, 1
+	trans_set_motion_script MotionScript_1011d, 1
+	trans_wait 240
+	trans_end 1
 
-Data_19268:
-	db $01, $20
+.MtDedede5:
+	trans_epilogue 1
 
 Data_1926a:
 	table_width 2, Data_1926a
@@ -2333,8 +2419,7 @@ SECTION "Bank 6@5e86", ROMX[$5e86], BANK[$6]
 
 BG_19e86:
 INCBIN "data/bg_19e86.bin"
-; 0x19ed6
 
-SECTION "Configuration", ROMX[$6386], BANK[$6]
+INCLUDE "data/credits.asm"
 
 INCLUDE "engine/configuration.asm"

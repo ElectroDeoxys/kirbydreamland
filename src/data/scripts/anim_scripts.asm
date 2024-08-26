@@ -84,7 +84,10 @@ AnimScript_200b4:
 	create_object AnimScript_20af2, MotionScript_1075b, Data_3425
 	create_object AnimScript_20138, MotionScript_10008, Data_3425
 	script_end
-; 0x2010c
+
+AnimScript_2010c:
+	frame  0, $5c01
+; 0x2010f
 
 SECTION "Bank 8@4138", ROMX[$4138], BANK[$8]
 
@@ -316,7 +319,36 @@ AnimScript_20405:
 	frame  6, $5a69
 	set_motion_script MotionScript_10c47
 	frame  0, $5a71
-; 0x20427
+
+AnimScript_20427:
+	script_exec_arg PlaySFX, SFX_16
+	jump_if_flags wd3be, $02, $4bc9
+	jump_if_flags wd3be, $04, $4bb7
+	set_custom_func Func_141b1, $4b9a
+	jump_if_not_flags hKirbyFlags3, KIRBY3F_FACE_LEFT, .script_2045b
+	script_repeat 2
+	frame  4, $5c25
+	frame  4, $5c45
+	frame  4, $5c3d
+	frame  4, $5c2d
+	script_repeat_end
+	frame  4, $5c25
+	frame  4, $5c45
+	frame  2, $5c1d
+	script_end
+
+.script_2045b
+	script_repeat 2
+	frame  4, $5c25
+	frame  4, $5c2d
+	frame  4, $5c3d
+	frame  4, $5c45
+	script_repeat_end
+	frame  4, $5c25
+	frame  4, $5c45
+	frame  4, $5c1d
+	script_end
+; 0x20474
 
 SECTION "Bank 8@4477", ROMX[$4477], BANK[$8]
 
@@ -588,9 +620,6 @@ AnimScript_208de:
 	frame  4, $5cc1
 	frame  4, $5ccd
 	script_ret
-; 0x208f1
-
-SECTION "Bank 8@48f1", ROMX[$48f1], BANK[$8]
 
 AnimScript_208f1:
 	frame  0, $5c1d
@@ -717,9 +746,9 @@ AnimScript_20ad4:
 SECTION "Bank 8@4ae6", ROMX[$4ae6], BANK[$8]
 
 AnimScript_20ae6:
-	set_value wd414, $01
+	set_value wDisableBumpStars, TRUE
 	frame 24, $5c1d
-	set_value wd414, $00
+	set_value wDisableBumpStars, FALSE
 	script_end
 
 AnimScript_20af2:
@@ -732,7 +761,11 @@ AnimScript_20af2:
 	script_end
 ; 0x20b05
 
-SECTION "Bank 8@4b9a", ROMX[$4b9a], BANK[$8]
+SECTION "Bank 8@4b96", ROMX[$4b96], BANK[$8]
+
+AnimScript_20b96:
+	frame  2, $58b8
+	script_end
 
 AnimScript_20b9a:
 	script_exec Func_4a1c
@@ -742,6 +775,7 @@ AnimScript_20ba2:
 	script_exec Func_4a1c
 	set_object_properties Data_35b7
 	set_scripts AnimScript_203be, MotionScript_10008
+AnimScript_20baf:
 	set_custom_func Func_142a3, NULL
 	jump_abs AnimScript_20000
 
@@ -772,7 +806,16 @@ AnimScript_20bda:
 	frame  2, $5d01
 	frame  2, $5d09
 	jump_abs .loop_2
-; 0x20bfe
+
+AnimScript_20bfe:
+	frame  0, $58d9
+; 0x20c01
+
+SECTION "Bank 8@4c10", ROMX[$4c10], BANK[$8]
+
+AnimScript_20c10:
+	frame  0, $5b69
+; 0x20c13
 
 SECTION "Bank 8@4c52", ROMX[$4c52], BANK[$8]
 
@@ -1453,9 +1496,9 @@ AnimScript_21f52:
 
 SECTION "Bank 8@6114", ROMX[$6114], BANK[$8]
 
-AnimScript_22114:
+AnimScript_TitleScreenWarpStarKirby:
 	frame 40, $58b8
-	create_object AnimScript_22239, MotionScript_10008, Data_3425
+	create_object AnimScript_TitleScreenStar, MotionScript_10008, Data_3425
 	script_repeat 2
 	frame 40, $5c01
 	frame 10, $5c2d
@@ -1467,13 +1510,13 @@ AnimScript_22114:
 	script_repeat_end
 	frame  0, $5c01
 
-AnimScript_22139:
+AnimScript_TitleScreenKirbySpawner:
 .loop
 	frame 170, $58b8
-	create_object AnimScript_22145, MotionScript_1200f, Data_3425
+	create_object AnimScript_TitleScreenKirby, MotionScript_TitleScreenKirby, Data_3425
 	jump_rel .loop
 
-AnimScript_22145:
+AnimScript_TitleScreenKirby:
 	script_repeat 2
 	frame 18, $58c1
 	frame 11, $58c9
@@ -1520,96 +1563,96 @@ AnimScript_22145:
 	frame 10, $5931
 	jump_rel .loop
 
-AnimScript_221b9:
+AnimScript_TitleScreenStarSpawner:
 	frame 200, $58b8
 .loop
 	frame 30, $58b8
-	create_object AnimScript_221c9, MotionScript_10008, Data_3425
+	create_object AnimScript_TitleScreenStar_RandomPosition, MotionScript_10008, Data_3425
 	jump_abs .loop
 
-AnimScript_221c9:
+AnimScript_TitleScreenStar_RandomPosition:
 	jumptable_random $0f
-	dw .script_221eb
-	dw .script_221f0
-	dw .script_221f5
-	dw .script_221fa
-	dw .script_221ff
-	dw .script_22204
-	dw .script_22209
-	dw .script_2220e
-	dw .script_22213
-	dw .script_22218
-	dw .script_2221d
-	dw .script_22222
-	dw .script_22227
-	dw .script_2222c
-	dw .script_22231
-	dw .script_22236
+	dw .position_1
+	dw .position_2
+	dw .position_3
+	dw .position_4
+	dw .position_5
+	dw .position_6
+	dw .position_7
+	dw .position_8
+	dw .position_9
+	dw .position_10
+	dw .position_11
+	dw .position_12
+	dw .position_13
+	dw .position_14
+	dw .position_15
+	dw .position_16
 
-.script_221eb
+.position_1
 	position_offset 20, 10
-	jump_rel AnimScript_22239
+	jump_rel AnimScript_TitleScreenStar
 
-.script_221f0
+.position_2
 	position_offset 40, 20
-	jump_rel AnimScript_22239
+	jump_rel AnimScript_TitleScreenStar
 
-.script_221f5
+.position_3
 	position_offset 60, 10
-	jump_rel AnimScript_22239
+	jump_rel AnimScript_TitleScreenStar
 
-.script_221fa
+.position_4
 	position_offset 80, 20
-	jump_rel AnimScript_22239
+	jump_rel AnimScript_TitleScreenStar
 
-.script_221ff
+.position_5
 	position_offset 100, 10
-	jump_rel AnimScript_22239
+	jump_rel AnimScript_TitleScreenStar
 
-.script_22204
+.position_6
 	position_offset 120, 20
-	jump_rel AnimScript_22239
+	jump_rel AnimScript_TitleScreenStar
 
-.script_22209
+.position_7
 	position_offset 60, 20
-	jump_rel AnimScript_22239
+	jump_rel AnimScript_TitleScreenStar
 
-.script_2220e
+.position_8
 	position_offset 20, 30
-	jump_rel AnimScript_22239
+	jump_rel AnimScript_TitleScreenStar
 
-.script_22213
+.position_9
 	position_offset 40, 40
-	jump_rel AnimScript_22239
+	jump_rel AnimScript_TitleScreenStar
 
-.script_22218
+.position_10
 	position_offset 60, 30
-	jump_rel AnimScript_22239
+	jump_rel AnimScript_TitleScreenStar
 
-.script_2221d
+.position_11
 	position_offset 80, 40
-	jump_rel AnimScript_22239
+	jump_rel AnimScript_TitleScreenStar
 
-.script_22222
+.position_12
 	position_offset 100, 30
-	jump_rel AnimScript_22239
+	jump_rel AnimScript_TitleScreenStar
 
-.script_22227
+.position_13
 	position_offset 120, 40
-	jump_rel AnimScript_22239
+	jump_rel AnimScript_TitleScreenStar
 
-.script_2222c
+.position_14
 	position_offset 120, 30
-	jump_rel AnimScript_22239
+	jump_rel AnimScript_TitleScreenStar
 
-.script_22231
+.position_15
 	position_offset 50, 35
-	jump_rel AnimScript_22239
+	jump_rel AnimScript_TitleScreenStar
 
-.script_22236
+.position_16
 	position_offset 70, 35
 
-AnimScript_22239:
+AnimScript_TitleScreenStar:
 	create_object AnimScript_22265, MotionScript_1083f, Data_3421
 	create_object AnimScript_22265, MotionScript_10850, Data_3421
 	frame  3, $5c25
@@ -1623,7 +1666,50 @@ AnimScript_22239:
 
 AnimScript_22265:
 	frame  0, $4ba8
-; 0x22268
+
+AnimScript_SoundTestNote:
+.loop
+	frame 150, $52b0
+	frame   8, $52b4
+	frame   8, $52b8
+	frame  20, $52bc
+	frame   8, $52b8
+	frame   8, $52b4
+	frame 200, $52b0
+	frame   8, $52b4
+	frame   8, $52b8
+	frame  20, $52bc
+	frame   8, $52b8
+	frame   8, $52b4
+	jump_abs .loop
+
+AnimScript_SoundTestKirbyEyes:
+.loop
+	frame   8, $52c0
+	frame 180, $58b8
+	frame   8, $52c0
+	frame  10, $58b8
+	frame   8, $52c0
+	frame 120, $58b8
+	jump_abs .loop
+; 0x222a4
+
+SECTION "Bank 8@64af", ROMX[$64af], BANK[$8]
+
+AnimScript_224af:
+	frame 80, $4d98
+	play_sfx SFX_23
+	frame 16, $4dcc
+	frame 16, $4e00
+	frame  0, $4e34
+; 0x224bf
+
+SECTION "Bank 8@64e4", ROMX[$64e4], BANK[$8]
+
+AnimScript_224e4:
+	frame 80, $58b8
+	frame  0, $4f90
+; 0x224ea
 
 SECTION "Bank 8@6f63", ROMX[$6f63], BANK[$8]
 

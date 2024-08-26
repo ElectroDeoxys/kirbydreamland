@@ -231,3 +231,54 @@ MACRO set_object_properties
 	script_exec SetObjectProperties
 	dw \1
 ENDM
+
+; stage transition scripting
+
+; \1 = duration
+MACRO trans_wait
+	db \1, $00
+ENDM
+
+; \1 = x velocity
+; \2 = duration
+MACRO trans_move_kirby_1
+	db \2, 1 << 0
+	bigdw \1
+ENDM
+
+; \1 = x velocity
+; \2 = duration
+MACRO trans_move_kirby_2
+	db \2, 1 << 1
+	bigdw \1
+ENDM
+
+; \1 = area
+; \2 = ?
+; \3 = ?
+; \4 = duration
+MACRO trans_change_area
+	db \4, 1 << 2, \1, \2, \3
+ENDM
+
+; \1 = duration
+MACRO trans_next_stage
+	db \1, 1 << 3
+ENDM
+
+; \1 = motion script
+; \2 = duration
+MACRO trans_set_motion_script
+	db \2, 1 << 4
+	dw \1
+ENDM
+
+; \1 = duration
+MACRO trans_epilogue
+	db \1, 1 << 5
+ENDM
+
+; \1 = duration
+MACRO trans_end
+	db \1, 1 << 7
+ENDM

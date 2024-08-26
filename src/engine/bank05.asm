@@ -405,24 +405,24 @@ Func_1432c::
 	set OBJFLAG_BLINKING_F, [hl]
 	ld a, [hEngineFlags]
 	bit ENGINEF_UNK0_F, a
-	jr nz, .asm_14453
+	jr nz, .no_knock_back
 	ld hl, hKirbyFlags5
-	set KIRBY5F_UNK3_F, [hl]
-	res KIRBY5F_UNK4_F, [hl]
+	set KIRBY5F_DAMAGED_F, [hl]
+	res KIRBY5F_DAMAGE_KNOCK_BACK_LEFT_F, [hl]
 	ld hl, wd140
 	ld a, [hl]
 	add hl, bc
 	cp [hl]
-	jr nc, .asm_14448
+	jr nc, .reset_damage_knock_back
 	ld hl, hKirbyFlags5
-	set KIRBY5F_UNK4_F, [hl]
-.asm_14448
+	set KIRBY5F_DAMAGE_KNOCK_BACK_LEFT_F, [hl]
+.reset_damage_knock_back
 	xor a
-	ld [wd069], a
+	ld [wDamageKnockBack], a
 	ld a, SFX_DAMAGE
 	call PlaySFX
 	jr .apply_damage
-.asm_14453
+.no_knock_back
 	ld a, SFX_08
 	call PlaySFX
 .apply_damage
@@ -672,7 +672,7 @@ Func_1432c::
 	ret
 
 Func_14600:
-	ld [wd06b], a
+	ld [wd06b + 0], a
 	ld hl, wObjectPropertyPtrs
 	add hl, bc
 	add hl, bc
@@ -827,7 +827,7 @@ Func_14600:
 .asm_14723
 	ld a, SFX_POWER_UP
 	call PlaySFX
-	ld a, [wd06b]
+	ld a, [wd06b + 0]
 	and a
 	jr z, .asm_14730
 	jr .DestroyObject
@@ -850,7 +850,7 @@ Func_14600:
 
 .asm_1474f
 	call ConsumeItem
-	ld a, [wd06b]
+	ld a, [wd06b + 0]
 	and a
 	jr z, Func_14761
 	ld a, $01
@@ -903,7 +903,7 @@ Restore1HP:
 	jp WaitAFrames
 
 Func_147b5:
-	ld a, [wd06b]
+	ld a, [wd06b + 0]
 	and a
 	ret z
 	ld hl, wd3be

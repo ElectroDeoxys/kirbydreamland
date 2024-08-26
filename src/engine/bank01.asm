@@ -109,7 +109,7 @@ Func_4000::
 	or b
 	ldh [hKirbyFlags3], a
 	push de
-	call Func_37ac
+	call SpawnBumpStar_WithSFX
 	pop de
 .asm_40d5
 	call StopKirbyWalking
@@ -122,7 +122,7 @@ Func_4000::
 	bit SCROLL_LOCKED_F, a
 	jr nz, .asm_4115
 	ld hl, hKirbyFlags5
-	bit KIRBY5F_UNK3_F, [hl]
+	bit KIRBY5F_DAMAGED_F, [hl]
 	jr nz, .asm_4115
 	ld hl, hEngineFlags
 	bit ENGINEF_UNK6_F, [hl]
@@ -190,7 +190,7 @@ Func_4000::
 	and KIRBY3F_DUCK | KIRBY3F_FACE_LEFT | KIRBY3F_UNK6 | KIRBY3F_LAND
 	or b
 	ldh [hKirbyFlags3], a
-	call Func_37ac
+	call SpawnBumpStar_WithSFX
 	ldh a, [hKirbyFlags1]
 	res KIRBY1F_WALK_F, a
 	ldh [hKirbyFlags1], a
@@ -304,7 +304,7 @@ Func_417c::
 	or b
 	ldh [hKirbyFlags3], a
 	push de
-	call Func_37ac
+	call SpawnBumpStar_WithSFX
 	pop de
 .asm_4245
 	call StopKirbyWalking
@@ -319,7 +319,7 @@ Func_417c::
 	bit SCROLL_LOCKED_F, a
 	jr nz, .asm_427e
 	ld hl, hKirbyFlags5
-	bit KIRBY5F_UNK3_F, [hl]
+	bit KIRBY5F_DAMAGED_F, [hl]
 	jr nz, .asm_427e
 	ld c, $44
 	ldh a, [hPalFadeFlags]
@@ -368,7 +368,7 @@ Func_42a1::
 	and KIRBY3F_DUCK | KIRBY3F_FACE_LEFT | KIRBY3F_UNK6 | KIRBY3F_LAND
 	or b
 	ldh [hKirbyFlags3], a
-	call Func_37ac
+	call SpawnBumpStar_WithSFX
 .stop_walking
 	call StopKirbyWalking
 	and a
@@ -448,7 +448,7 @@ KirbyControl::
 	set KIRBY1F_JUMP_RISE_F, a
 	ldh [hKirbyFlags1], a
 	xor a
-	ld [wd414], a
+	ld [wDisableBumpStars], a
 	ld [wd065], a
 	ld [wd064], a
 	ldh a, [hKirbyFlags3]
@@ -1074,7 +1074,7 @@ Func_4783::
 	ld a, [wGlobalCounter]
 	and %111
 	jr nz, .skip_spawn_star
-	call Func_37a7
+	call SpawnInvincibilityStar
 .skip_spawn_star
 	jp Func_246
 
@@ -1136,18 +1136,18 @@ Data_4860:
 	db $ff, $80
 	db $ff, $80
 
-Data_488c::
-	db $04
-	db $03
-	db $03
-	db $02
-	db $02
-	db $02
-	db $01
-	db $01
-	db $01
-	db $01
-	db $00
+DamageKnockBackVelocities::
+	db HIGH($400)
+	db HIGH($300)
+	db HIGH($300)
+	db HIGH($200)
+	db HIGH($200)
+	db HIGH($200)
+	db HIGH($100)
+	db HIGH($100)
+	db HIGH($100)
+	db HIGH($100)
+	db $00 ; end
 
 Func_4897:
 	push bc

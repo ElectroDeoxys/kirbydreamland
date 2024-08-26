@@ -90,33 +90,35 @@ Data_1c000::
 	assert_table_length NUM_MT_DEDEDE_AREAS
 
 Data_1c0ce::
-	dw Data_1d58f, Data_1d7e7 ; $01
-	dw $55ba, Data_1d7e7 ; $02
-	dw $55fd, Data_1d7e7 ; $03
-	dw $5607, Data_1d7e7 ; $04
-	dw $561d, Data_1d7e7 ; $05
-	dw $5624, Data_1d7e7 ; $06
-	dw $5631, Data_1d7e7 ; $07
-	dw $55c4, Data_1d7e7 ; $08
-	dw $55e0, Data_1d7e7 ; $09
-	dw $55f9, Data_1d7e7 ; $0a
-	dw $563e, Data_1d7e7 ; $0b
-	dw $57e7, Data_1d7e7 ; $0c
-	dw $57e7, Data_1d7e7 ; $0d
-	dw $57e7, Data_1d7e7 ; $0e
-	dw $57e7, Data_1d7e7 ; $0f
-	dw $57e7, Data_1d7e7 ; $10
-	dw $57e7, Data_1d7e7 ; $11
-	dw $57e7, Data_1d7e7 ; $12
-	dw $57e7, Data_1d7e7 ; $13
-	dw $57e7, Data_1d7e7 ; $14
-	dw $57e7, Data_1d7e7 ; $15
-	dw $57e7, Data_1d7e7 ; $16
-	dw $57e7, Data_1d7e7 ; $17
-	dw $57e7, Data_1d7e7 ; $18
-	dw $57e7, Data_1d7e7 ; $19
-	dw $57e7, Data_1d7e7 ; $1a
-	dw $57e7, Data_1d7e7 ; $1b
+	table_width 4, Data_1c0ce
+	dw Data_1d58f, Data_1d7e7 ; SCENE_TITLE_SCREEN
+	dw Data_1d5ba, Data_1d7e7 ; SCENE_SOUND_TEST
+	dw Data_1d5fd, Data_1d7e7 ; SCENE_03
+	dw $5607, Data_1d7e7 ; SCENE_04
+	dw $561d, Data_1d7e7 ; SCENE_05
+	dw $5624, Data_1d7e7 ; SCENE_06
+	dw $5631, Data_1d7e7 ; SCENE_CREDITS
+	dw $55c4, Data_1d7e7 ; SCENE_08
+	dw $55e0, Data_1d7e7 ; SCENE_09
+	dw $55f9, Data_1d7e7 ; SCENE_0A
+	dw $563e, Data_1d7e7 ; SCENE_0B
+	dw $57e7, Data_1d7e7 ; SCENE_0C
+	dw $57e7, Data_1d7e7 ; SCENE_0D
+	dw $57e7, Data_1d7e7 ; SCENE_0E
+	dw $57e7, Data_1d7e7 ; SCENE_0F
+	dw $57e7, Data_1d7e7 ; SCENE_10
+	dw $57e7, Data_1d7e7 ; SCENE_11
+	dw $57e7, Data_1d7e7 ; SCENE_12
+	dw $57e7, Data_1d7e7 ; SCENE_13
+	dw $57e7, Data_1d7e7 ; SCENE_14
+	dw $57e7, Data_1d7e7 ; SCENE_15
+	dw $57e7, Data_1d7e7 ; SCENE_16
+	dw $57e7, Data_1d7e7 ; SCENE_17
+	dw $57e7, Data_1d7e7 ; SCENE_18
+	dw $57e7, Data_1d7e7 ; SCENE_19
+	dw $57e7, Data_1d7e7 ; SCENE_1A
+	dw $57e7, Data_1d7e7 ; SCENE_1B
+	assert_table_length NUM_SCENES
 
 Data_1c13a::
 	table_width 4, Data_1c13a
@@ -134,7 +136,22 @@ Data_1c154::
 	dw AnimScript_20a01, MotionScript_10008, Data_35cd
 ; 0x1c15a
 
-SECTION "Bank 7@4196", ROMX[$4196], BANK[$7]
+SECTION "Bank 7@4178", ROMX[$4178], BANK[$7]
+
+Data_1c178::
+	dw AnimScript_20ae6, MotionScript_107c3, Data_3421
+
+Data_1c17e::
+	dw AnimScript_208f1, MotionScript_10c50, Data_3421
+
+Data_1c184::
+	dw AnimScript_20427, MotionScript_10302, Data_35a7
+
+Data_1c18a::
+	dw AnimScript_20baf, MotionScript_10008, Data_35af
+
+Data_1c190::
+	dw AnimScript_20b96, MotionScript_10008, Data_35ab
 
 Data_1c196::
 	dw AnimScript_20bda, MotionScript_1022a, $35b3
@@ -174,13 +191,13 @@ Data_1c202:
 	dbw $4a, Data_1c3cc
 	dbw $4f, Data_1c3d6
 	dbw $4e, Data_1c3e0
-	db $ff
+	db $ff ; end
 
 Data_1c245:
 	dbw $00, NULL
 	dbw $05, Data_1c3eb
 	dbw $0a, Data_1c3f6
-	db $ff
+	db $ff ; end
 
 Data_1c24f:
 	dbw $00, NULL
@@ -210,7 +227,7 @@ Data_1c24f:
 	dbw $45, Data_1c506
 	dbw $46, Data_1c510
 	dbw $4c, Data_1c51a
-	db $ff
+	db $ff ; end
 
 Data_1c2a1:
 	dbw $00, NULL
@@ -226,16 +243,16 @@ Data_1c2a1:
 	dbw $0b, Data_1c580
 	dbw $0b, Data_1c542
 	dbw $0c, Data_1c54c
-	db $ff
+	db $ff ; end
 
 Data_1c2c9:
 	dbw $00, NULL
 	dbw $07, Data_1c59e
-	db $ff
+	db $ff ; end
 
 Data_1c2d0:
 	dbw $00, NULL
-	db $ff
+	db $ff ; end
 
 Data_1c2d4:
 	dbw $00, NULL
@@ -250,15 +267,15 @@ Data_1c2d4:
 	dbw $1c, $4580
 	dbw $20, $458a
 	dbw $25, $4594
-	db $ff
+	db $ff ; end
 
 Data_1c2f9:
 	dbw $00, NULL
 	dbw $16, Data_1c59e
 	dbw $1a, Data_1c5a8
-	db $ff
+	db $ff ; end
 
-	db $ff
+	db $ff ; end
 
 Data_1c304:
 	object $0f, $05, $00, $00, AnimScript_20587, MotionScript_102c8, WaddleDeeProperties
@@ -410,19 +427,52 @@ Data_1d58f:
 	dbw $00, Data_1d5b0
 	dbw $00, Data_1d5a6
 	dbw $04, Data_1d59c
-	db $ff
+	db $ff ; end
 
 Data_1d59c:
-	object $04, $03, $0a, $e6, AnimScript_22114, MotionScript_11fc6, Data_3425
+	object $04, $03, $0a, $e6, AnimScript_TitleScreenWarpStarKirby, MotionScript_TitleScreenWarpStarKirby, Data_3425
 Data_1d5a6:
-	object $00, $07, $f0, $f8, AnimScript_22139, MotionScript_10008, Data_3425
+	object $00, $07, $f0, $f8, AnimScript_TitleScreenKirbySpawner, MotionScript_10008, Data_3425
 Data_1d5b0:
-	object $00, $00, $00, $00, AnimScript_221b9, MotionScript_10008, Data_3425
-; 0x1d5ba
+	object $00, $00, $00, $00, AnimScript_TitleScreenStarSpawner, MotionScript_10008, Data_3425
+
+Data_1d5ba:
+	dbw $00, NULL
+	dbw $06, Data_1d777
+	dbw $07, Data_1d781
+	db $ff ; end
+; 0x1d5c4
+
+SECTION "Bank 7@55fd", ROMX[$55fd], BANK[$7]
+
+Data_1d5fd:
+	dbw $00, NULL
+	dbw $05, Data_1d655
+	dbw $06, Data_1d64b
+	db $ff ; end
+; 0x1d607
+
+SECTION "Bank 7@564b", ROMX[$564b], BANK[$7]
+
+Data_1d64b:
+	object $06, $06, $f8, $00, AnimScript_224e4, MotionScript_124b9, Data_3425
+
+Data_1d655:
+	object $05, $06, $fb, $f8, AnimScript_224af, MotionScript_12491, Data_3425
+; 0x1d65f
+
+SECTION "Bank 7@5777", ROMX[$5777], BANK[$7]
+
+Data_1d777:
+	object $06, $06, $00, $00, AnimScript_SoundTestNote, MotionScript_SoundTestNote, Data_3425
+
+Data_1d781:
+	object $08, $07, $f0, $f8, AnimScript_SoundTestKirbyEyes, MotionScript_10008, Data_3425
+; 0x1d78b
 
 SECTION "Bank 7@57e7", ROMX[$57e7], BANK[$7]
 
 Data_1d7e7:
 	dbw $00, NULL
-	db $ff
+	db $ff ; end
 ; 0x1d7eb

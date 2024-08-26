@@ -15,6 +15,7 @@ INCLUDE "constants/item_constants.asm"
 INCLUDE "constants/kirby_constants.asm"
 INCLUDE "constants/menu_constants.asm"
 INCLUDE "constants/misc_constants.asm"
+INCLUDE "constants/scene_constants.asm"
 INCLUDE "constants/sound_constants.asm"
 INCLUDE "constants/stage_constants.asm"
 

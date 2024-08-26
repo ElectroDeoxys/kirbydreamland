@@ -162,7 +162,7 @@ NEXTU
 wd067:: dw ; d067
 ENDU
 
-wd069:: ; d069
+wDamageKnockBack:: ; d069
 	db
 
 wd06a:: ; d06a
@@ -173,10 +173,7 @@ UNION
 wOAMFlagsOverride::
 wMenuCursorPos::
 wd06b:: ; d06b
-	db
-
-wd06c:: ; d06c
-	db
+	dw
 
 NEXTU
 
@@ -233,9 +230,10 @@ wBGP:: db ; d080
 wOBP:: db ; d081
 
 wKirbyAnimScript:: ; d082
+wCreditsTextPtr:: ; d082
 	dw
 
-wd084:: ; d084
+wCreditsBGMapPtr:: ; d084
 	dw
 
 wHP::	db ; d086
@@ -549,7 +547,7 @@ wd412:: ; d412
 wd413:: ; d413
 	db
 
-wd414:: ; d414
+wDisableBumpStars:: ; d414
 	db
 
 	ds $7eb

@@ -75,7 +75,7 @@ Reset::
 	bankswitch
 	call StartStage
 ResetStage::
-	ld a, $01
+	ld a, BANK("Bank 1")
 	bankswitch
 	ld a, HUD_UPDATE_LABEL | HUD_UPDATE_LIVES | HUD_UPDATE_SCORE_DIGITS
 	ldh [hHUDFlags], a
@@ -96,7 +96,7 @@ Func_1f2:
 	ldh [hVBlankFlags], a
 .asm_20c
 	ldh a, [hKirbyFlags5]
-	bit KIRBY5F_UNK3_F, a
+	bit KIRBY5F_DAMAGED_F, a
 	jr z, .check_pause
 	xor a
 	ldh [hJoypadPressed], a

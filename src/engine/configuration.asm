@@ -253,7 +253,7 @@ ConfigurationMenu:
 	pop hl
 	call FadeOut
 	call ResetTimer
-	ld a, $02
+	ld a, SCENE_SOUND_TEST
 	call Func_21fb
 	call HideWindow
 

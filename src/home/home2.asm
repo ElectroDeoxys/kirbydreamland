@@ -1,7 +1,3 @@
-<<<<<<< HEAD:src/home/home2.asm
-=======
-SECTION "Home@0246", ROM0[$0246]
-
 Func_246::
 	xor a
 	ld [wVirtualOAMSize], a
@@ -72,50 +68,54 @@ ASSERT BANK(Func_1432c) == BANK(Func_147e4)
 	bit KIRBY5F_UNK5_F, a
 	jr nz, .asm_2b7
 	jr .asm_29b
+
 .asm_2d1
 	ld hl, hKirbyFlags5
-	bit KIRBY5F_UNK3_F, [hl]
-	jr z, .asm_30a
+	bit KIRBY5F_DAMAGED_F, [hl]
+	jr z, .skip_damage_knock_back
 	ldh a, [hVBlankFlags]
 	and VBLANK_5
-	jr nz, .asm_30a
-	ld a, [wd069]
+	jr nz, .skip_damage_knock_back
+	ld a, [wDamageKnockBack]
 	ld c, a
 	inc a
-	ld [wd069], a
+	ld [wDamageKnockBack], a
 	ld b, $00
-	ld hl, Data_488c
+	ld hl, DamageKnockBackVelocities
 	add hl, bc
 	ld a, [hl]
 	and a
-	jr z, .asm_313
+	jr z, .end_damage_knock_back
+	; apply damage knock back
 	ld [wKirbyXVel + 0], a
 	xor a
 	ld [wKirbyXVel + 1], a
 	ld hl, hKirbyFlags5
-	bit KIRBY5F_UNK4_F, [hl]
-	jr nz, .asm_303
+	bit KIRBY5F_DAMAGE_KNOCK_BACK_LEFT_F, [hl]
+	jr nz, .knock_back_left
+; knock back right
 	call Func_4000
-	jr .asm_306
-.asm_303
+	jr .reset_x_vel
+.knock_back_left
 	call Func_417c
-.asm_306
+.reset_x_vel
 	xor a
 	ld [wKirbyXVel + 0], a
-.asm_30a
+.skip_damage_knock_back
 	ldh a, [hVBlankFlags]
 	set VBLANK_PENDING_F, a
 	ldh [hVBlankFlags], a
 	jp Func_1f2
-.asm_313
+
+.end_damage_knock_back
 	ld hl, hKirbyFlags5
-	res KIRBY5F_UNK3_F, [hl]
+	res KIRBY5F_DAMAGED_F, [hl]
 	ld hl, hEngineFlags
 	set ENGINEF_UNK6_F, [hl]
 	xor a
 	ld [wKirbyXVel + 0], a
 	ld [wKirbyXVel + 1], a
-	jr .asm_30a
+	jr .skip_damage_knock_back
 
 Func_326::
 	ldh a, [hKirbyFlags2]
@@ -1481,7 +1481,7 @@ Func_c85:
 	and ~(KIRBY3F_UNK0 | KIRBY3F_UNK1)
 	or b
 	ldh [hKirbyFlags3], a
-	call Func_37ac
+	call SpawnBumpStar_WithSFX
 	xor a
 	ret
 .set_carry
@@ -1731,7 +1731,7 @@ Func_caf:
 	or KIRBY3F_LAND
 	ldh [hKirbyFlags3], a
 	push de
-	call Func_37ac
+	call SpawnBumpStar_WithSFX
 	pop de
 	jr .asm_ece
 .asm_e7f
@@ -1761,7 +1761,7 @@ Func_caf:
 	push de
 	ld a, SFX_30
 	call PlaySFX
-	call Func_37b1
+	call SpawnBumpStar
 	pop de
 	ldh a, [hKirbyFlags1]
 	res KIRBY1F_AIRBORNE_F, a
@@ -2098,7 +2098,7 @@ Func_110b:
 	bit SCROLLINGF_UNK5_F, a
 	ret nz
 	ld hl, hKirbyFlags5
-	bit KIRBY5F_UNK3_F, [hl]
+	bit KIRBY5F_DAMAGED_F, [hl]
 	ret nz
 	ld a, [wKirbyScreenDeltaX]
 	ld b, a
@@ -2440,9 +2440,9 @@ Func_131a:
 	ld bc, wBlockTileMap
 	add hl, bc
 	ld a, [wXCoord]
-	ld [wd06b], a
+	ld [wd06b + 0], a
 	ld a, [wYCoord]
-	ld [wd06c], a
+	ld [wd06b + 1], a
 	ld [wd07f], a
 	call GetBGCoordFromPosition
 	ld a, [hli]
@@ -2457,9 +2457,9 @@ Func_131a:
 	ld a, [hl]
 	ld [de], a
 	inc de
-	ld a, [wd06b]
+	ld a, [wd06b + 0]
 	ld [wXCoord], a
-	ld a, [wd06c]
+	ld a, [wd06b + 1]
 	ld [wYCoord], a
 	pop hl
 	pop bc
@@ -2860,7 +2860,7 @@ AnimScriptPointers_15b7:
 	dw AnimScript_18e4 ; KIRBY_UNK_1B
 	dw AnimScript_18f1 ; KIRBY_WALK_FAST
 
-AnimScript_15f1:
+AnimScript_15f1::
 	frame  0, $58b9
 
 AnimScript_15f4:
@@ -3338,7 +3338,7 @@ Func_1964::
 	or VBLANK_5 | VBLANK_PENDING
 	ldh [hVBlankFlags], a
 	call Func_1ee3
-	ld a, [wd06b]
+	ld a, [wd06b + 0]
 	xor a
 	ldh [hVBlankFlags], a
 	pop de
@@ -3549,7 +3549,7 @@ Func_19f9::
 	ld hl, Data_1bc5
 	add hl, bc
 	ld a, [hl]
-	ld [wd06c], a
+	ld [wd06b + 1], a
 	cp MT_DEDEDE
 	jr z, .asm_1b69
 
@@ -3597,7 +3597,7 @@ Func_19f9::
 .asm_1b7c
 	add hl, bc
 	ld a, [hli]
-	ld [wd06b], a
+	ld [wd06b + 0], a
 	ld a, [hli]
 	ld b, a
 	ld a, [hli]
@@ -3608,11 +3608,11 @@ Func_19f9::
 	ld d, a
 	ld h, b
 	ld l, c
-	ld a, [wd06b]
+	ld a, [wd06b + 0]
 	ld c, a
 	call FarDecompress
 
-	ld a, [wd06c]
+	ld a, [wd06b + 1]
 	ld c, a
 	add a
 	add c ; *3
@@ -4655,7 +4655,7 @@ Func_21e6::
 	jp Func_2419
 
 ; input:
-; - a = ?
+; - a = SCENE_* constant
 Func_21fb::
 	ld [wd3f2], a
 	ld a, $ff
@@ -6635,7 +6635,7 @@ ApplyObjectVelocity:
 
 Func_2d2d:
 	xor a
-	ld [wd06c], a
+	ld [wd06b + 1], a
 	push de
 	ld a, [wSCX]
 	and $0f
@@ -6756,7 +6756,7 @@ Func_2d2d:
 	ld c, a
 	cp $90
 	call nc, .Func_2de3
-	ld a, [wd06c]
+	ld a, [wd06b + 1]
 	and a
 	ret z
 	scf
@@ -6765,7 +6765,7 @@ Func_2d2d:
 .Func_2de3:
 	push af
 	ld a, $01
-	ld [wd06c], a
+	ld [wd06b + 1], a
 	pop af
 	ret
 
@@ -7597,11 +7597,11 @@ Func_319f:
 .Func_3329:
 	inc hl
 	ld a, [hli]
-	ld [wd06b], a
+	ld [wd06b + 0], a
 	ld h, [hl]
 	ld l, a
 	ld a, h
-	ld [wd06c], a
+	ld [wd06b + 1], a
 	ld a, [hli]
 	ld d, a ; x
 	ld a, [hEngineFlags]
@@ -7649,11 +7649,11 @@ Func_319f:
 	ld a, [de]
 	and a
 	jr z, .next_1 ; is inactive
-	ld a, [wd06b]
+	ld a, [wd06b + 0]
 	cp [hl]
 	jr nz, .next_1
 	inc hl
-	ld a, [wd06c]
+	ld a, [wd06b + 1]
 	cp [hl]
 	jr nz, .next_2
 	pop de
@@ -7751,9 +7751,9 @@ Func_319f:
 	ld hl, wd200
 	add hl, bc
 	add hl, bc
-	ld a, [wd06b]
+	ld a, [wd06b + 0]
 	ld [hli], a
-	ld a, [wd06c]
+	ld a, [wd06b + 1]
 	ld [hl], a
 	ret
 
@@ -7863,6 +7863,18 @@ Data_3574::
 	object_properties $01, $06, $06, 1, $01, $03, 10, $4160
 ; 0x357d
 
+SECTION "Home@35a7", ROM0[$35a7]
+
+Data_35a7::
+	db $0d, $0a, $0a, $01
+
+Data_35ab::
+	db $0d, $0a, $0e, $01
+
+Data_35af::
+	db $04, $0a, $0a, $01
+; 0x35b3
+
 SECTION "Home@35b7", ROM0[$35b7]
 
 Data_35b7::
@@ -7919,19 +7931,21 @@ Func_3768::
 	ld [wKirbyXDeceleration], a
 	ret
 
-Func_37a7::
-	ld hl, $417e
+SpawnInvincibilityStar::
+	ld hl, Data_1c17e
 	jr Func_37b9
-Func_37ac::
+
+SpawnBumpStar_WithSFX::
 	ld a, SFX_BUMP
 	call PlaySFX
 ;	fallthrough
-Func_37b1:
-	ld a, [wd414]
+SpawnBumpStar:
+	ld a, [wDisableBumpStars]
 	and a
 	ret nz
-	ld hl, $4178
+	ld hl, Data_1c178
 ;	fallthrough
+
 Func_37b9:
 	call CreateObject_Group1
 	ret c
@@ -7991,7 +8005,7 @@ Func_380a::
 	push hl
 	push bc
 	push de
-	ld hl, $4184
+	ld hl, Data_1c184
 	call CreateObject_Group2
 	jr c, Func_388a
 	ld a, [wROMBank]
@@ -8001,7 +8015,7 @@ Func_380a::
 	call Func_14a5f
 	pop af
 	bankswitch
-	ld hl, $4190
+	ld hl, Data_1c190
 	call CreateObject_Group2
 	jr c, Func_3889
 	ld hl, wd1b0
@@ -8013,7 +8027,7 @@ Func_383b:
 	push hl
 	push bc
 	push de
-	ld hl, $418a
+	ld hl, Data_1c18a
 	call CreateObject_Group2
 	jr c, Func_388a
 	ld hl, wd1b0
@@ -8301,7 +8315,7 @@ Func_3d32::
 	ld a, OBJECT_ACTIVE
 	ld [wObjectActiveStates + OBJECT_SLOT_00], a
 	call Func_139b
-	ld a, $01
+	ld a, BANK("Bank 1")
 	bankswitch
 	jp Func_1f2
 
