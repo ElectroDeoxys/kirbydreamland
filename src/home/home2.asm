@@ -147,7 +147,7 @@ Func_326::
 	set KIRBY2F_UNK5_F, a
 	bit KIRBY2F_INHALE_F, a
 	jr z, .asm_365
-	set KIRBY2F_INTERRUPT_INHALE_F, a
+	set KIRBY2F_SPIT_F, a
 .asm_365
 	ldh [hKirbyFlags2], a
 	bit KIRBY2F_HOVER_F, a
@@ -405,20 +405,23 @@ ProcessDoorConnection::
 	ld a, [hl]
 	and KIRBY2F_MOUTHFUL | KIRBY2F_HOVER
 	jr z, .asm_566
-	bit KIRBY2F_INTERRUPT_INHALE_F, [hl]
+	bit KIRBY2F_SPIT_F, [hl]
 	jr nz, .asm_566
-	set KIRBY2F_INTERRUPT_INHALE_F, [hl]
+	set KIRBY2F_SPIT_F, [hl]
 	ld a, [wd3be]
 	and $f9
 	ld [wd3be], a
 	ld a, $04
 	ld [wd094], a
+
+	; force a Star or Puff spit
 	ld a, [hl]
 	bit KIRBY2F_HOVER_F, a
-	push af
-	call z, Func_380a
-	pop af
-	call nz, Func_385b
+	push af ; unnecessary push/pop
+	call z, StarSpit
+	pop af ; unnecessary push/pop
+	call nz, PuffSpit
+
 .asm_548
 	call Func_139b
 	ld b, $13
@@ -1610,7 +1613,7 @@ Func_caf:
 	and KIRBY2F_MOUTHFUL | KIRBY2F_INHALE
 	jp nz, .asm_ec8
 	ldh a, [hKirbyFlags2]
-	set KIRBY2F_INTERRUPT_INHALE_F, a
+	set KIRBY2F_SPIT_F, a
 	ldh [hKirbyFlags2], a
 	bit KIRBY2F_INHALE_F, a
 	jp z, .asm_ece
@@ -1687,7 +1690,7 @@ Func_caf:
 	and KIRBY2F_MOUTHFUL | KIRBY2F_INHALE | KIRBY2F_HOVER
 	jp nz, .asm_ece
 	ldh a, [hKirbyFlags2]
-	and $ff ^(KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_INTERRUPT_INHALE)
+	and $ff ^(KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_SPIT)
 	ldh [hKirbyFlags2], a
 	ldh a, [hKirbyFlags3]
 	and KIRBY3F_DIVE
@@ -2198,7 +2201,7 @@ Func_11c9::
 	res KIRBY3F_UNK2_F, a
 	ldh [hKirbyFlags3], a
 	ldh a, [hKirbyFlags2]
-	res KIRBY2F_INTERRUPT_INHALE_F, a
+	res KIRBY2F_SPIT_F, a
 	ldh [hKirbyFlags2], a
 	ret
 
@@ -2576,7 +2579,7 @@ Func_139b::
 	jr .asm_1408
 .asm_1408
 	ldh a, [hKirbyFlags2]
-	bit KIRBY2F_INTERRUPT_INHALE_F, a
+	bit KIRBY2F_SPIT_F, a
 	jr z, .not_hovering_or_puffing
 	ld c, KIRBY_PUFF
 .not_hovering_or_puffing
@@ -2629,7 +2632,7 @@ Func_139b::
 	ld c, KIRBY_IDLE
 	jr .asm_146b
 .asm_1465
-	bit KIRBY2F_INTERRUPT_INHALE_F, a
+	bit KIRBY2F_SPIT_F, a
 	jr z, .asm_146b
 	ld c, KIRBY_PUFF
 .asm_146b
@@ -2637,7 +2640,7 @@ Func_139b::
 	bit KIRBY3F_UNK2_F, a
 	jr z, .asm_147d
 	ldh a, [hKirbyFlags2]
-	bit KIRBY2F_INTERRUPT_INHALE_F, a
+	bit KIRBY2F_SPIT_F, a
 	jr nz, .asm_147b
 	ld c, KIRBY_DIVE
 	jr .asm_147d
@@ -2648,7 +2651,7 @@ Func_139b::
 	bit KIRBY2F_INHALE_F, a
 	jr z, .asm_149f
 	ld c, KIRBY_INHALE
-	bit KIRBY2F_INTERRUPT_INHALE_F, a
+	bit KIRBY2F_SPIT_F, a
 	jr z, .asm_148d
 	ld c, KIRBY_GET_MOUTHFUL
 	jr .asm_149f
@@ -2672,7 +2675,7 @@ Func_139b::
 	jr z, .asm_14b6
 	ld c, KIRBY_UNK_17
 	ldh a, [hKirbyFlags2]
-	res KIRBY2F_INTERRUPT_INHALE_F, a
+	res KIRBY2F_SPIT_F, a
 	ldh [hKirbyFlags2], a
 	jr .asm_14dc
 .asm_14b6
@@ -2690,7 +2693,7 @@ Func_139b::
 	ld c, KIRBY_MOUTHFUL_JUMP
 .asm_14cc
 	ldh a, [hKirbyFlags2]
-	bit KIRBY2F_INTERRUPT_INHALE_F, a
+	bit KIRBY2F_SPIT_F, a
 	jr z, .asm_14d4
 	ld c, KIRBY_SPIT
 .asm_14d4
@@ -7109,9 +7112,9 @@ Func_2fdf:
 	bit 0, [hl]
 	jr z, .asm_3030
 	ld hl, hKirbyFlags2
-	set KIRBY2F_INTERRUPT_INHALE_F, [hl]
+	set KIRBY2F_SPIT_F, [hl]
 	ld hl, hPalFadeFlags
-	set FADE_3_F, [hl]
+	set SCROLLINGF_UNK3_F, [hl]
 	ld a, [hEngineFlags]
 	and ~(ENGINEF_UNK0 | ENGINEF_UNK1)
 	ld [hEngineFlags], a
@@ -8001,7 +8004,7 @@ Func_37b9:
 	pop bc
 	ret
 
-Func_380a::
+StarSpit::
 	push hl
 	push bc
 	push de
@@ -8044,7 +8047,7 @@ Func_384e::
 	jr c, Func_388a
 	jr Func_3873
 
-Func_385b::
+PuffSpit::
 	push hl
 	push bc
 	push de
@@ -8333,7 +8336,7 @@ Func_3d48::
 	ld [wd078], a
 	ld [wd079], a
 	ld hl, hPalFadeFlags
-	set FADE_3_F, [hl]
+	set SCROLLINGF_UNK3_F, [hl]
 	ld a, $20
 	ld [wd07c], a
 	ld a, 14

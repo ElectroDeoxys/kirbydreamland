@@ -389,7 +389,7 @@ KirbyControl::
 	and KIRBY6F_UNK5 | KIRBY6F_UNK6
 	jp nz, .not_ducking
 	ld hl, hKirbyFlags2
-	bit KIRBY2F_INTERRUPT_INHALE_F, [hl]
+	bit KIRBY2F_SPIT_F, [hl]
 	jp nz, .not_ducking
 	bit KIRBY2F_INHALE_F, [hl]
 	jr nz, .not_ducking
@@ -439,7 +439,7 @@ KirbyControl::
 
 	; do jump
 	ld hl, hPalFadeFlags
-	res FADE_3_F, [hl]
+	res SCROLLINGF_UNK3_F, [hl]
 	ld hl, hKirbyFlags3
 	res KIRBY3F_UNK6_F, [hl]
 	ldh a, [hKirbyFlags1]
@@ -479,7 +479,7 @@ KirbyControl::
 	ldh a, [hKirbyFlags2]
 	bit KIRBY2F_HOVER_F, a
 	jp z, .asm_4410
-	bit KIRBY2F_INTERRUPT_INHALE_F, a
+	bit KIRBY2F_SPIT_F, a
 	jp nz, .asm_4410
 	ld a, [wd094]
 	cp $02
@@ -508,7 +508,7 @@ KirbyControl::
 	ld [wd07e], a
 .asm_43cd
 	ld hl, hKirbyFlags2
-	set KIRBY2F_INTERRUPT_INHALE_F, [hl]
+	set KIRBY2F_SPIT_F, [hl]
 	ld a, $16
 	ld [wd065], a
 	ldh a, [hKirbyFlags3]
@@ -526,7 +526,7 @@ KirbyControl::
 	set KIRBY6F_UNK2_F, [hl]
 	xor a
 	ld [wd06a], a
-	call Func_385b
+	call PuffSpit
 	jp nc, .asm_4492
 	ld hl, hKirbyFlags6
 	res KIRBY6F_UNK2_F, [hl]
@@ -580,11 +580,11 @@ KirbyControl::
 	bit KIRBY4F_UNK4_F, a
 	jr nz, .asm_4492
 	ldh a, [hKirbyFlags2]
-	bit KIRBY2F_INTERRUPT_INHALE_F, a
+	bit KIRBY2F_SPIT_F, a
 	jr nz, .asm_4492
-	set KIRBY2F_INTERRUPT_INHALE_F, a
+	set KIRBY2F_SPIT_F, a
 	ldh [hKirbyFlags2], a
-	call Func_380a
+	call StarSpit
 	jr .asm_4492
 .asm_446a
 	bit KIRBY6F_UNK3_F, a
@@ -648,7 +648,7 @@ KirbyControl::
 
 	; do hover
 	set KIRBY2F_HOVER_F, a
-	and $ff ^ (KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_INTERRUPT_INHALE | KIRBY2F_UNK5 | KIRBY2F_UNK6)
+	and $ff ^ (KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_SPIT | KIRBY2F_UNK5 | KIRBY2F_UNK6)
 	ldh [hKirbyFlags2], a
 	ld hl, hKirbyFlags4
 	set KIRBY4F_UNK1_F, [hl]
@@ -680,7 +680,7 @@ KirbyControl::
 	and KIRBY5F_UNK6 | KIRBY5F_UNK7
 	jr nz, .check_d_left
 	ld hl, hKirbyFlags2
-	set KIRBY2F_INTERRUPT_INHALE_F, [hl]
+	set KIRBY2F_SPIT_F, [hl]
 	ld hl, hKirbyFlags4
 	set KIRBY4F_UNK1_F, [hl]
 
@@ -694,7 +694,7 @@ KirbyControl::
 	ldh a, [hKirbyFlags2]
 	bit KIRBY2F_INHALE_F, a
 	jr nz, .check_d_right
-	bit KIRBY2F_INTERRUPT_INHALE_F, a
+	bit KIRBY2F_SPIT_F, a
 	jr nz, .set_walking_flags_left
 	bit KIRBY2F_HOVER_F, a
 	jr z, .set_face_left
@@ -724,7 +724,7 @@ KirbyControl::
 	ldh a, [hKirbyFlags2]
 	bit KIRBY2F_INHALE_F, a
 	jr nz, .asm_4590
-	bit KIRBY2F_INTERRUPT_INHALE_F, a
+	bit KIRBY2F_SPIT_F, a
 	jr nz, .set_walking_flags_right
 	bit KIRBY2F_HOVER_F, a
 	jr z, .unset_face_left
@@ -800,7 +800,7 @@ KirbyControl::
 	ld [wd064], a
 	jp Func_426
 .asm_460c
-	bit KIRBY2F_INTERRUPT_INHALE_F, a
+	bit KIRBY2F_SPIT_F, a
 	jr nz, .asm_45c0
 	ld a, $ff
 	ld [wd078], a
@@ -859,7 +859,7 @@ KirbyControl::
 	ldh a, [hKirbyFlags2]
 	bit KIRBY2F_HOVER_F, a
 	jp z, .asm_4709
-	bit KIRBY2F_INTERRUPT_INHALE_F, a
+	bit KIRBY2F_SPIT_F, a
 	jp nz, .asm_4709
 	ldh a, [hJoypadPressed]
 	swap a
@@ -998,31 +998,31 @@ KirbyControl::
 Func_4783::
 	ldh a, [hKirbyFlags2]
 	bit KIRBY2F_INHALE_F, a
-	jr z, .skip_interrupt_inhale
+	jr z, .skip_spit
 
-	; can only interrupt inhale after
+	; can only spit after
 	; some minimum duration has elapsed
 	ld a, [wInhaleDuration]
 	inc a
 	ld [wInhaleDuration], a
 	cp 31
-	jr c, .skip_interrupt_inhale
+	jr c, .skip_spit
 
 	ldh a, [hKirbyFlags5]
 	bit KIRBY5F_UNK7_F, a
-	jr nz, .skip_interrupt_inhale
+	jr nz, .skip_spit
 	ldh a, [hJoypadPressed]
 	bit B_BUTTON_F, a
-	jr nz, .skip_interrupt_inhale
+	jr nz, .skip_spit
 
-	; interrupt inhale
+	; do spit
 	ldh a, [hKirbyFlags2]
-	set KIRBY2F_INTERRUPT_INHALE_F, a
+	set KIRBY2F_SPIT_F, a
 	ldh [hKirbyFlags2], a
 	ld a, SFX_NONE
 	call PlaySFX
 
-.skip_interrupt_inhale
+.skip_spit
 	ld a, [wd094]
 	cp $01
 	jr nz, .asm_47bf
@@ -1039,7 +1039,7 @@ Func_4783::
 	bit KIRBY2F_UNK6_F, a
 	jr nz, .asm_47fe
 	set KIRBY2F_HOVER_F, a
-	and $ff ^ (KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_INTERRUPT_INHALE | KIRBY2F_UNK5 | KIRBY2F_UNK6)
+	and $ff ^ (KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_SPIT | KIRBY2F_UNK5 | KIRBY2F_UNK6)
 	ldh [hKirbyFlags2], a
 	ldh a, [hKirbyFlags4]
 	set KIRBY4F_UNK1_F, a
@@ -1547,7 +1547,7 @@ _StartLevelAfterContinue::
 	ld [hKirbyFlags3], a
 
 	ld a, [hKirbyFlags2]
-	and $ff ^ (KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_INTERRUPT_INHALE | KIRBY2F_UNK5 | KIRBY2F_UNK6)
+	and $ff ^ (KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_SPIT | KIRBY2F_UNK5 | KIRBY2F_UNK6)
 	ld [hKirbyFlags2], a
 
 	; reset everything except KIRBY1F_WALK_LEFT
@@ -1611,3 +1611,10 @@ _StartLevelAfterContinue::
 	ld [wd03d], a
 	ret
 ; 0x4def
+
+REPT 120
+DS ALIGN[6]
+REPT $20
+	db $ff
+ENDR
+ENDR

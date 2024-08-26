@@ -1405,7 +1405,7 @@ Func_9de:
 	ld a, $33
 	ld [wd077], a
 	ldh a, [hPalFadeFlags]
-	res FADE_3_F, a
+	res SCROLLINGF_UNK3_F, a
 	ldh [hPalFadeFlags], a
 	ldh a, [hKirbyFlags3]
 	res KIRBY3F_UNK6_F, a
@@ -1474,7 +1474,7 @@ Func_c85:
 
 Func_caf:
 	ldh a, [hPalFadeFlags]
-	bit FADE_3_F, a
+	bit SCROLLINGF_UNK3_F, a
 	jr nz, .asm_cba
 	ldh a, [hVBlankFlags]
 	bit VBLANK_3_F, a
@@ -1484,7 +1484,7 @@ Func_caf:
 	res 6, a
 	ldh [hff93], a
 	ldh a, [hPalFadeFlags]
-	res FADE_3_F, a
+	res SCROLLINGF_UNK3_F, a
 	ldh [hPalFadeFlags], a
 	bit FADE_5_F, a
 	jp nz, .asm_ee0

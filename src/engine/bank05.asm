@@ -544,7 +544,7 @@ Func_1432c::
 	pop af
 	ld [hKirbyFlags3], a
 	ld hl, hPalFadeFlags
-	set FADE_3_F, [hl]
+	set SCROLLINGF_UNK3_F, [hl]
 .asm_1453b
 	call .Func_1456d
 	jr nz, .asm_144f9
@@ -942,7 +942,7 @@ Func_147e4::
 	ld a, [hKirbyFlags2]
 	bit KIRBY2F_INHALE_F, a
 	ret z
-	bit KIRBY2F_INTERRUPT_INHALE_F, a
+	bit KIRBY2F_SPIT_F, a
 	ret nz
 	call Func_14993
 	ld hl, hKirbyFlags5
@@ -1363,12 +1363,12 @@ Func_14a5f::
 	add hl, bc
 	add hl, bc
 	add hl, bc
-	ld c, $0a
+	ld c, 10
 	ld a, [hKirbyFlags3]
 	bit KIRBY3F_FACE_LEFT_F, a
-	jr z, .asm_14a77
-	ld c, $f6
-.asm_14a77
+	jr z, .facing_right
+	ld c, -10
+.facing_right
 	ld a, [wd140]
 	add c
 	ld c, a

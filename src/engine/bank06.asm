@@ -708,7 +708,7 @@ Pause::
 	bit KIRBY5F_UNK0_F, a
 	jr nz, .skip_animation
 	ld a, [hKirbyFlags2]
-	and KIRBY2F_INTERRUPT_INHALE | KIRBY2F_MOUTHFUL | KIRBY2F_INHALE | KIRBY2F_HOVER
+	and KIRBY2F_SPIT | KIRBY2F_MOUTHFUL | KIRBY2F_INHALE | KIRBY2F_HOVER
 	jr nz, .show_sprites
 	ld a, [hKirbyFlags3]
 	and KIRBY3F_LAND
