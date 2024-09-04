@@ -1,33 +1,45 @@
 InitAudio::
+	; enable sound
 	ld a, AUDENA_ON
 	ldh [rAUDENA], a
+
+	; set volume to maximum
 	ld a, MAX_VOLUME
 	ldh [rAUDVOL], a
+
+	; set panning
 	ld a, AUDTERM_1_RIGHT | AUDTERM_2_RIGHT | AUDTERM_3_RIGHT | AUDTERM_4_RIGHT | AUDTERM_1_LEFT | AUDTERM_2_LEFT | AUDTERM_3_LEFT | AUDTERM_4_LEFT
 	ldh [rAUDTERM], a
+
+
 	ld a, $ff
 	ld [wde01], a
 	ld [wde02], a
+	; undefined wave sample
 	ld [wWaveSample], a
 
-	ld hl, wChannel1
-	ld b, $14
-	ld a, $aa
+	; reset channel configurations
+	ld hl, wChannels
+	ld b, wChannelsEnd - wChannels
+	ld a, $aa ; invalid fill value
 .loop_fill
 	ld [hli], a
 	dec b
 	jr nz, .loop_fill
 
+	; loads triangle wave sample for Channel 3
 	ld hl, TriangleWaveSample
 	call LoadWaveSample
 
+	; no music and no SFX
 	ld a, MUSIC_NONE
-	call Func_14dc5
+	call _PlayMusic
 	ld a, SFX_NONE
-	call Func_14c9e
+	call _PlaySFX
 
-	call Func_14e76
+	call ApplyChannelConfigurations
 
+	; restart all channel frequencies
 	ld hl, rAUD1HIGH
 	set 7, [hl]
 	ld hl, rAUD2HIGH
@@ -45,48 +57,51 @@ InitAudio::
 
 ; input:
 ; - a = SFX_* constant
-Func_14c9e::
+_PlaySFX::
 	ld e, a
 	cp SFX_NONE
-	jp z, Func_14d2c
+	jp z, ClearAllSFXChannels
 	ld d, $00
-	ld a, [wde03]
+	ld a, [wSFXActiveChannelFlags]
 	and a
-	jr z, .asm_14cd8
-	ld hl, Data_17a61
+	jr z, .play_sfx
+	ld hl, SFXRequiredChannels
 	add hl, de
 	and [hl]
-	jr z, .asm_14cd8
-	ld bc, CHANNEL_4
-.asm_14cb6
-	ld hl, Data_17a61
+	jr z, .play_sfx ; no overlap
+
+	; SFX already playing, if it's higher priority
+	; then exit and don't play SFX
+	ld bc, CHANNEL4
+.loop_channel_priorities
+	ld hl, SFXRequiredChannels
 	add hl, de
 	ld a, [hl]
-	ld hl, wdeca
+	ld hl, wChannelSFXFlags
 	add hl, bc
 	and [hl]
-	jr z, .asm_14cd3
-	ld hl, wdece
+	jr z, .next_channel_priority
+	ld hl, wChannelSoundPriorities
 	add hl, bc
 	ld a, [hl]
-	ld hl, Data_17a85
+	ld hl, SFXPriorities
 	add hl, de
 	cp [hl]
-	ret c
-	ld hl, wde52
+	ret c ; current loaded SFX has higher priority
+	ld hl, wAudioCommandDurations
 	add hl, bc
 	ld [hl], CHANNEL_OFF
-.asm_14cd3
+.next_channel_priority
 	dec c
 	bit 7, c
-	jr z, .asm_14cb6
+	jr z, .loop_channel_priorities
 
-.asm_14cd8
-	ld hl, Data_17a61
+.play_sfx
+	ld hl, SFXRequiredChannels
 	add hl, de
 	ld a, [hl]
 	ld [wde04], a
-	ld hl, Data_17a85
+	ld hl, SFXPriorities
 	add hl, de
 	ld a, [hl]
 	ld c, a
@@ -97,69 +112,69 @@ Func_14c9e::
 	ld e, a
 	ld d, [hl]
 	ld a, [de]
-	ld h, a
-	ld l, c
+	ld h, a ; num channels
+	ld l, c ; sfx priority
 	push hl
-	ld bc, CHANNEL_4
-.asm_14cf5
-	ld hl, wde52
+	ld bc, CHANNEL4
+.loop_sfx_channels
+	ld hl, wAudioCommandDurations
 	add hl, bc
 	ld a, [hl]
 	and a
 	jr nz, .next_channel
-	call Func_14d67
+	call InitChannel
 	ld hl, sp+$00
 	ld a, [hl]
-	ld hl, wdece
+	ld hl, wChannelSoundPriorities
 	add hl, bc
 	ld [hl], a
 	ld a, [wde04]
-	ld hl, wdeca
+	ld hl, wChannelSFXFlags
 	add hl, bc
 	ld [hl], a
 	pop hl
 	dec h
 	push hl
-	jr z, .asm_14d1a
+	jr z, .done
 .next_channel
 	dec c
 	bit 7, c
-	jr z, .asm_14cf5
-.asm_14d1a
+	jr z, .loop_sfx_channels
+.done
 	pop hl
 ;	fallthrough
 
-Func_14d1b:
-	ld a, [wdeca + CHANNEL_1]
-	ld hl, wdeca + CHANNEL_2
+UpdateActiveSFXChannels:
+	ld a, [wChannelSFXFlags + CHANNEL1]
+	ld hl, wChannelSFXFlags + CHANNEL2
 	ld c, NUM_SFX_CHANNELS - 1
 .loop
 	or [hl]
 	inc hl
 	dec c
 	jr nz, .loop
-	ld [wde03], a
+	ld [wSFXActiveChannelFlags], a
 	ret
 
-Func_14d2c:
-	ld bc, CHANNEL_4
-.asm_14d2f
-	ld hl, wde52
+ClearAllSFXChannels:
+	ld bc, CHANNEL4
+.loop_sfx_channels
+	ld hl, wAudioCommandDurations
 	add hl, bc
 	ld [hl], b ; CHANNEL_OFF
-	ld hl, wdeca
+	ld hl, wChannelSFXFlags
 	add hl, bc
 	ld [hl], b ; 0
-	ld hl, wdece
+	ld hl, wChannelSoundPriorities
 	add hl, bc
-	ld [hl], $ff
+	ld [hl], SFX_MINIMUM_PRIORITY
 	dec c
 	bit 7, c
-	jr z, .asm_14d2f
+	jr z, .loop_sfx_channels
 
-	ld hl, Data_14d53
-	ld de, wde1a
-	ld c, $14
+	ld hl, ChannelDefaultConfigs
+	ld de, wSFXChannels
+	ld c, wSFXChannelsEnd - wSFXChannels
 .loop_copy
 	ld a, [hli]
 	ld [de], a
@@ -168,16 +183,16 @@ Func_14d2c:
 	jr nz, .loop_copy
 	ret
 
-Data_14d53:
+ChannelDefaultConfigs:
 	db AUD1SWEEP_DOWN, AUDLEN_DUTY_12_5, AUDENV_UP, $00, AUDHIGH_RESTART, $00
 	db AUDLEN_DUTY_12_5, AUDENV_UP, $00, AUDHIGH_RESTART
 	db AUD3ENA_ON, $00, AUD3LEVEL_MUTE, $00, AUDHIGH_RESTART, $00
 	db $00, AUDENV_UP, AUD4POLY_15STEP, $80
 
 ; input:
-; - [de] = ?
+; - [de] = audio commands
 ; - bc = channel
-Func_14d67:
+InitChannel:
 	ld hl, wde8a
 	add hl, bc
 	ld [hl], $24
@@ -197,52 +212,57 @@ Func_14d67:
 	ld hl, wdeb2
 	add hl, bc
 	ld [hl], a
-	ld hl, Data_1548e
+	ld hl, ChannelAudioStackOffsets
 	add hl, bc
 	ld a, [hl]
-	ld hl, wdeba
+	ld hl, wAudioStackPointers
 	add hl, bc
 	ld [hl], a
 	inc de
 	ld a, [de]
-	ld hl, wde5a
+	ld hl, wAudioCommandPointersLo
 	add hl, bc
 	ld [hl], a
 	inc de
 	ld a, [de]
-	ld hl, wde62
+	ld hl, wAudioCommandPointersHi
 	add hl, bc
 	ld [hl], a
 	inc de
 	ld a, [de]
 	sra a
-	sra a 
-	add LOW(Data_14dc0)
+	sra a ; /4
+	add LOW(ChannelSelectorOffsets)
 	ld l, a
-	ld h, HIGH(Data_14dc0)
-	jr nc, .asm_14dad
+	ld h, HIGH(ChannelSelectorOffsets)
+	jr nc, .no_overflow
 	inc h
-.asm_14dad
+.no_overflow
 	ld a, [hl]
-	ld hl, wde4a
+	ld hl, wChannelSelectorOffsets
 	add hl, bc
 	ld [hl], a
-	ld hl, wde52
+	; set this channel active
+	ld hl, wAudioCommandDurations
 	add hl, bc
-	ld [hl], CHANNEL_ON
+	ld [hl], 1
 	ld hl, wde82
 	add hl, bc
 	ld [hl], $01
 	ret
 
-Data_14dc0:
-	db $00, $05, $ff, $0f, $0a
+ChannelSelectorOffsets:
+	db CHANNEL1_LENGTH - 1
+	db CHANNEL2_LENGTH - 1
+	db $ff
+	db CHANNEL4_LENGTH - 1
+	db CHANNEL3_LENGTH - 1
 
 ; input:
 ; - a = MUSIC_* constant
-Func_14dc5::
+_PlayMusic::
 	ld b, a
-	ld hl, wde52 + CHANNEL_5
+	ld hl, wAudioCommandDurations + CHANNEL5
 	ld c, NUM_MUSIC_CHANNELS
 	xor a ; CHANNEL_OFF
 .loop_clear
@@ -250,9 +270,9 @@ Func_14dc5::
 	dec c
 	jr nz, .loop_clear
 
-	ld hl, Data_14d53
-	ld de, wde2e
-	ld c, $14
+	ld hl, ChannelDefaultConfigs
+	ld de, wMusicChannels
+	ld c, wMusicChannelsEnd - wMusicChannels
 .loop_copy
 	ld a, [hli]
 	ld [de], a
@@ -272,63 +292,65 @@ Func_14dc5::
 	ld e, a
 	ld d, [hl]
 	ld a, [de]
-	ld h, a
+	ld h, a ; num channels
 	push hl
-	ld bc, CHANNEL_8
+	ld bc, CHANNEL8
 .loop
-	ld hl, wde52
+	ld hl, wAudioCommandDurations
 	add hl, bc
 	ld a, [hl]
 	and a
 	jr nz, .next
-	call Func_14d67
+	call InitChannel
 	pop hl
 	dec h
 	push hl
 	jr z, .done
 .next
 	dec c
-	ld a, CHANNEL_5 - 1
+	ld a, CHANNEL5 - 1
 	cp c
 	jr nz, .loop
 .done
 	pop hl
 	ret
 
-Func_14e0b::
-	ld b, CHANNEL_8
-.asm_14e0d
-	ld h, HIGH(wde52)
-	ld a, LOW(wde52)
+UpdateAudio::
+	ld b, CHANNEL8
+.loop_channels
+	ld h, HIGH(wAudioCommandDurations)
+	ld a, LOW(wAudioCommandDurations)
 	add b
 	ld l, a
 	ld a, [hl]
 	and a
-	jr z, .asm_14e52
+	jr z, .next_channel ; inactive
 	ld a, b
-	cp $04
-	ld a, $1a
-	jr c, .asm_14e20
-	ld a, $2e
-.asm_14e20
-	ld [wdf80], a
-	ld h, HIGH(wde5a)
-	ld a, LOW(wde5a)
+	cp CHANNEL4 + 1
+	ld a, LOW(wSFXChannels) ; sfx
+	jr c, .got_channel_config_ptr
+	ld a, LOW(wMusicChannels) ; music
+.got_channel_config_ptr
+	ld [wChannelConfigLowByte], a
+
+	ld h, HIGH(wAudioCommandPointersLo)
+	ld a, LOW(wAudioCommandPointersLo)
 	add b
 	ld l, a
 	push hl
 	ld e, [hl]
-	add NUM_CHANNELS
-	ld l, a ; wde62
+	add wAudioCommandPointersHi - wAudioCommandPointersLo
+	ld l, a ; wAudioCommandPointersHi
 	push hl
 	ld d, [hl]
 	push bc
-	call Func_14f5d
+	call ExecuteAudioCommands
 	pop bc
 	pop hl
-	ld [hl], d
+	ld [hl], d ; wAudioCommandPointersHi
 	pop hl
-	ld [hl], e
+	ld [hl], e ; wAudioCommandPointersLo
+
 	call Func_15235
 	ld h, HIGH(wde72)
 	ld a, LOW(wde72)
@@ -336,7 +358,7 @@ Func_14e0b::
 	ld l, a
 	push hl
 	ld e, [hl]
-	add $08
+	add wde7a - wde72
 	ld l, a
 	push hl
 	ld d, [hl]
@@ -347,42 +369,45 @@ Func_14e0b::
 	ld [hl], d
 	pop hl
 	ld [hl], e
-.asm_14e52
+.next_channel
 	dec b
 	bit 7, b
-	jr z, .asm_14e0d
-	ld b, $03
-.asm_14e59
-	ld h, HIGH(wde52)
-	ld a, LOW(wde52)
+	jr z, .loop_channels
+
+	; reset unused sfx channels
+	ld b, CHANNEL4
+.loop_sfx_channels
+	ld h, HIGH(wAudioCommandDurations)
+	ld a, LOW(wAudioCommandDurations)
 	add b
 	ld l, a
 	ld a, [hl]
 	and a
-	jr nz, .asm_14e6e
-	ld a, $ce
+	jr nz, .next_sfx_channel
+	ld a, LOW(wChannelSoundPriorities)
 	add b
 	ld l, a
-	ld [hl], $ff
-	add $fc
+	ld [hl], SFX_MINIMUM_PRIORITY
+	add wChannelSFXFlags - wChannelSoundPriorities
 	ld l, a
 	ld [hl], $00
-.asm_14e6e
+.next_sfx_channel
 	dec b
 	bit 7, b
-	jr z, .asm_14e59
-	call Func_14d1b
+	jr z, .loop_sfx_channels
+	call UpdateActiveSFXChannels
 ;	fallthrough
 
-Func_14e76:
-	ld de, wde2e
-	ld a, [wde03]
-	bit 0, a
-	jr z, .asm_14e82
-	ld e, LOW(wde1a)
-.asm_14e82
+; actually applies the configurations of audio channels
+ApplyChannelConfigurations:
+	ld de, wMusicChannel1
+	ld a, [wSFXActiveChannelFlags]
+	bit SFXFLAG_SQUARE1_F, a
+	jr z, .no_sfx_1
+	ld e, LOW(wSFXChannel1)
+.no_sfx_1
 	ld b, FALSE
-	ld hl, wChannel1
+	ld hl, wChannels
 	ld c, LOW(rAUD1SWEEP)
 .loop_channel_1
 	ld a, [de]
@@ -409,12 +434,12 @@ Func_14e76:
 	ldh [rAUD1HIGH], a
 
 .channel_2
-	ld de, wde34
-	ld a, [wde03]
-	bit 1, a
-	jr z, .asm_14eb3
-	ld e, LOW(wde20)
-.asm_14eb3
+	ld de, wMusicChannel2
+	ld a, [wSFXActiveChannelFlags]
+	bit SFXFLAG_SQUARE2_F, a
+	jr z, .no_sfx_2
+	ld e, LOW(wSFXChannel2)
+.no_sfx_2
 	ld b, FALSE
 	ld hl, wChannel2
 	ld c, LOW(rAUD2LEN)
@@ -443,12 +468,12 @@ Func_14e76:
 	ldh [rAUD2HIGH], a
 
 .channel_3
-	ld de, wde38
-	ld a, [wde03]
-	bit 4, a
-	jr z, .asm_14ee4
-	ld e, LOW(wde24)
-.asm_14ee4
+	ld de, wMusicChannel3
+	ld a, [wSFXActiveChannelFlags]
+	bit SFXFLAG_WAVE_F, a
+	jr z, .no_sfx_3
+	ld e, LOW(wSFXChannel3)
+.no_sfx_3
 	ld hl, wChannel3
 	ld c, LOW(rAUD3ENA)
 .loop_channel_3
@@ -465,12 +490,12 @@ Func_14e76:
 	cp LOW(rAUD3HIGH + 1)
 	jr nz, .loop_channel_3
 
-	ld de, wde3e
-	ld a, [wde03]
-	bit 3, a
-	jr z, .asm_14f03
-	ld e, LOW(wde2a)
-.asm_14f03
+	ld de, wMusicChannel4
+	ld a, [wSFXActiveChannelFlags]
+	bit SFXFLAG_NOISE_F, a
+	jr z, .no_sfx_4
+	ld e, LOW(wSFXChannel4)
+.no_sfx_4
 	ld b, FALSE
 	ld hl, wChannel4
 	ld c, LOW(rAUD4LEN)
@@ -492,67 +517,68 @@ Func_14e76:
 	cp LOW(rAUD4GO + 1)
 	jr nz, .loop_channel_4
 	dec b
-	jr nz, .asm_14f28
+	jr nz, .pan
 	; envelope changed, need to restart
-	ld a, [wChannel4FreqHi]
+	ld a, [wChannel4Control]
 	set 7, a
 	ldh [rAUD4GO], a
 
-.asm_14f28
-	ld a, [wde03]
+.pan
+	ld a, [wSFXActiveChannelFlags]
 	ld c, a
-	ld a, [wde46]
-	bit 0, c
-	jr z, .asm_14f36
-	ld a, [wde42]
-.asm_14f36
+	ld a, [wChannelPans + CHANNEL5]
+	bit SFXFLAG_SQUARE1_F, c
+	jr z, .no_pan_sfx_1
+	ld a, [wChannelPans + CHANNEL1]
+.no_pan_sfx_1
 	ld b, a
-	ld a, [wde47]
-	bit 1, c
-	jr z, .asm_14f41
-	ld a, [wde43]
-.asm_14f41
+	ld a, [wChannelPans + CHANNEL6]
+	bit SFXFLAG_SQUARE2_F, c
+	jr z, .no_pan_sfx_2
+	ld a, [wChannelPans + CHANNEL2]
+.no_pan_sfx_2
 	or b
 	ld b, a
-	ld a, [wde48]
-	bit 4, c
-	jr z, .asm_14f4d
-	ld a, [wde44]
-.asm_14f4d
+	ld a, [wChannelPans + CHANNEL7]
+	bit SFXFLAG_WAVE_F, c
+	jr z, .no_pan_sfx_3
+	ld a, [wChannelPans + CHANNEL3]
+.no_pan_sfx_3
 	or b
 	ld b, a
-	ld a, [wde49]
-	bit 3, c
-	jr z, .asm_14f59
-	ld a, [wde45]
-.asm_14f59
+	ld a, [wChannelPans + CHANNEL8]
+	bit SFXFLAG_NOISE_F, c
+	jr z, .no_pan_sfx_4
+	ld a, [wChannelPans + CHANNEL4]
+.no_pan_sfx_4
 	or b
 	ldh [rAUDTERM], a
 	ret
 
-Func_14f5d:
-	ld h, HIGH(wde52)
-	ld a, LOW(wde52)
+ExecuteAudioCommands:
+	ld h, HIGH(wAudioCommandDurations)
+	ld a, LOW(wAudioCommandDurations)
 	add b
 	ld l, a
 	dec [hl]
-	jr z, .asm_14f68
-	ret
-.asm_14f67
+	jr z, .do_cmds
+	ret ; still waiting delay
+.next_cmd
 	inc de
-.asm_14f68
+.do_cmds
 	ld h, $de
 	ld a, [de]
 	ld c, a
 	and $e0
-	cp $e0
-	jp z, .asm_15064
-	ld a, $4a
+	cp AUDIO_COMMANDS_BEGIN
+	jp z, .audio_command
+	ld a, LOW(wChannelSelectorOffsets)
 	add b
 	ld l, a
 	ld a, [hl]
-	cp $0f
-	jr nz, .asm_14f9a
+	cp CHANNEL4_LENGTH - 1
+	jr nz, .not_noise_channel
+	; noise channel
 	bit 4, c
 	jp nz, .asm_14fcd
 	ld a, c
@@ -566,11 +592,11 @@ Func_14f5d:
 	inc h
 .asm_14f90
 	ld c, [hl]
-	ld a, $12
-	call Func_153cb
+	ld a, CHANNEL4_FREQUENCY
+	call GetPointerToChannelConfig
 	ld [hl], c
 	jp .asm_14fcd
-.asm_14f9a
+.not_noise_channel
 	ld a, c
 	and $1f
 	cp $10
@@ -580,7 +606,7 @@ Func_14f5d:
 	or $e0
 .asm_14fa7
 	ld c, a
-	ld a, $8a
+	ld a, LOW(wde8a)
 	add b
 	ld l, a
 	ld a, [hl]
@@ -603,7 +629,7 @@ Func_14f5d:
 .asm_14fc6
 	ld a, c
 	and a
-	jp z, .asm_14f67
+	jp z, .next_cmd
 	inc de
 	ret
 
@@ -615,7 +641,7 @@ Func_14f5d:
 	add b
 	ld l, a
 	ld [hl], $ff
-	add $10
+	add wde92 - wde82
 	ld l, a
 	ld a, [hl]
 	and a
@@ -649,10 +675,9 @@ Func_14f5d:
 	ld a, [hl]
 	bit 7, a
 	jr nz, .asm_15037
-
 .Func_15006:
 	add a
-	add a
+	add a ; *4
 .asm_15008
 	push de
 	add $d3
@@ -667,7 +692,7 @@ Func_14f5d:
 	ld l, a
 	ld a, [de]
 	ld [hl], a
-	ld a, $7a
+	ld a, LOW(wde7a)
 	add b
 	ld l, a
 	inc de
@@ -696,11 +721,11 @@ Func_14f5d:
 .Func_15038:
 	ld a, [de]
 	and $e0
-	cp $c0
+	cp AUDIOCMD_WAIT
 	jr nz, .asm_15043
 	inc de
 	ld a, [de]
-	jr .asm_1505a
+	jr .got_duration
 .asm_15043
 	ld h, HIGH(wdeaa)
 	ld a, LOW(wdeaa)
@@ -717,19 +742,19 @@ Func_14f5d:
 	adc $79
 	ld h, a
 	ld a, [hl]
-.asm_1505a
+.got_duration
 	ld c, a
-	ld h, HIGH(wde52)
-	ld a, LOW(wde52)
+	ld h, HIGH(wAudioCommandDurations)
+	ld a, LOW(wAudioCommandDurations)
 	add b
 	ld l, a
 	ld a, c
 	ld [hl], a
 	ret
 
-.asm_15064
+.audio_command
 	ld a, c
-	cp $f0
+	cp AUDIOCMD_F0
 	jr nz, .asm_15081
 	inc de
 	ld h, HIGH(wde9a)
@@ -746,9 +771,10 @@ Func_14f5d:
 	or c
 	ld [hl], a
 	call Func_15347
-	jp .asm_14f67
+	jp .next_cmd
+
 .asm_15081
-	cp $f1
+	cp AUDIOCMD_F1
 	jr nz, .asm_150a5
 	inc de
 	ld a, [de]
@@ -765,15 +791,16 @@ Func_14f5d:
 	jr nz, .asm_150a0
 	cp $10
 	jr c, .asm_150a3
-	ld a, $0f
+	ld a, 15 ; cap it to max 15
 	jr .asm_150a3
 .asm_150a0
 	jr c, .asm_150a3
-	xor a
+	xor a ; cap it to min 0
 .asm_150a3
 	jr .asm_15071
+
 .asm_150a5
-	cp $f2
+	cp AUDIOCMD_F2
 	jr nz, .asm_150ba
 	inc de
 	ld a, [de]
@@ -782,45 +809,49 @@ Func_14f5d:
 	add a
 	add c ; *6
 	ld hl, wdeaa
-.asm_150b2
+.set_channel_value
 	ld c, a
 	ld a, l
 	add b
 	ld l, a
 	ld [hl], c
-	jp .asm_14f67
+	jp .next_cmd
+
 .asm_150ba
-	cp $f3
+	cp AUDIOCMD_F3
 	jr nz, .asm_150cf
 	inc de
-	ld h, HIGH(wde52)
-	ld a, LOW(wde52)
+	ld h, HIGH(wAudioCommandDurations)
+	ld a, LOW(wAudioCommandDurations)
 	add b
 	ld l, a
 	ld a, [de]
 	ld [hl], a
-	ld a, $82
+	ld a, LOW(wde82)
 	add b
 	ld l, a
 	ld [hl], $ff
 	inc de
 	ret
+
 .asm_150cf
-	cp $f4
+	cp AUDIOCMD_F4
 	jr nz, .asm_150db
 	inc de
 	ld a, [de]
 	ld hl, wde92
-	jp .asm_150b2
+	jp .set_channel_value
+
 .asm_150db
-	cp $f5
+	cp AUDIOCMD_F5
 	jr nz, .asm_150e7
 	inc de
 	ld a, [de]
 	ld hl, wde8a
-	jp .asm_150b2
+	jp .set_channel_value
+
 .asm_150e7
-	cp $f6
+	cp AUDIOCMD_F6
 	jr nz, .asm_150fc
 	inc de
 	ld h, HIGH(wdea2)
@@ -831,16 +862,18 @@ Func_14f5d:
 	ld [hl], a
 	bit 7, a
 	call nz, .Func_15006
-	jp .asm_14f67
+	jp .next_cmd
+
 .asm_150fc
-	cp $f7
+	cp AUDIOCMD_F7
 	jr nz, .asm_15108
 	inc de
 	ld a, [de]
 	ld hl, wdeb2
-	jp .asm_150b2
+	jp .set_channel_value
+
 .asm_15108
-	cp $e2
+	cp AUDIOCMD_SET_FREQUENCY
 	jr nz, .asm_1511e
 	inc de
 	ld a, [de]
@@ -850,12 +883,13 @@ Func_14f5d:
 	push de
 	ld d, a
 	ld e, c
-	call Func_15215
+	call SetChannelFrequency
 	call .Func_14ffb
 	pop de
-	jp .asm_14f67
+	jp .next_cmd
+
 .asm_1511e
-	cp $e3
+	cp AUDIOCMD_SUBTRACT_FREQUENCY
 	jr nz, .asm_15135
 	inc de
 	ld a, [de]
@@ -866,102 +900,109 @@ Func_14f5d:
 	ld d, $00
 	rla
 	jr nc, .asm_1512e
-	dec d
+	dec d ; $ff
 .asm_1512e
-	call Func_153b6
+	call AddToChannelFrequency
 	pop de
-	jp .asm_14f67
+	jp .next_cmd
+
 .asm_15135
-	cp $fe
+	cp AUDIOCMD_SET_PAN
 	jr nz, .asm_1516f
 	inc de
 	ld a, [de]
 	ld c, a
 	push de
-	ld h, HIGH(wde4a)
-	ld a, LOW(wde4a)
+	ld h, HIGH(wChannelSelectorOffsets)
+	ld a, LOW(wChannelSelectorOffsets)
 	add b
 	ld l, a
 	ld e, [hl]
 	srl e
 	srl e
 	ld d, $00
-	ld hl, wde42
+	ld hl, wChannelPans
 	add hl, de
 	ld a, c
 	rra
-	jr nc, .asm_15154
-	set 4, d
-.asm_15154
+	jr nc, .no_left_output
+	set 4, d ; left
+.no_left_output
 	rra
-	jr nc, .asm_15158
-	inc d
-.asm_15158
+	jr nc, .no_right_output
+	inc d ; right
+.no_right_output
 	inc e
 	dec e
-	jr z, .asm_15161
-.asm_1515c
+	jr z, .got_final_pan ; is channel 1
+	; not channel 1, then need to shift
+	; left to get correct channel sound output
+.loop_pan_shift
 	rlc d
 	dec e
-	jr nz, .asm_1515c
-.asm_15161
+	jr nz, .loop_pan_shift
+.got_final_pan
 	ld a, b
-	cp $04
-	jr c, .asm_1516a
+	cp CHANNEL4 + 1
+	jr c, .sfx_panning
+REPT NUM_SFX_CHANNELS
 	inc l
-	inc l
-	inc l
-	inc l
-.asm_1516a
+ENDR
+.sfx_panning
 	ld [hl], d
 	pop de
-	jp .asm_14f67
+	jp .next_cmd
+
 .asm_1516f
-	cp $e1
+	cp AUDIOCMD_E1
 	jr nz, .asm_1517b
 	inc de
 	ld a, [de]
 	ld [wde00], a
-	jp .asm_14f67
+	jp .next_cmd
+
 .asm_1517b
-	cp $ff
-	jr nz, .asm_1518f
-	ld h, HIGH(wde52)
-	ld a, LOW(wde52)
+	cp AUDIOCMD_FF
+	jr nz, .stack_commands
+	ld h, HIGH(wAudioCommandDurations)
+	ld a, LOW(wAudioCommandDurations)
 	add b
 	ld l, a
-	ld [hl], $00
-	add $18
+	ld [hl], 0
+	add wde6a - wAudioCommandDurations
 	ld l, a
 	xor a
 	ld [hl], a
 	jp Func_1533b
-.asm_1518f
-	ld hl, wdeba
-	call Func_15198
-	jp .asm_14f68
 
-Func_15198:
+.stack_commands
+	ld hl, wAudioStackPointers
+	call ExecuteStackAudioCommands
+	jp .do_cmds
+
+; input:
+; - hl = ?
+ExecuteStackAudioCommands:
 	ld a, l
 	add b
 	ld l, a
 	push hl
-	ld a, $00
+	ld a, LOW(wAudioStack)
 	add [hl]
 	ld l, a
-	ld a, $df
-	adc $00
+	ld a, HIGH(wAudioStack)
+	adc 0
 	ld h, a
-	call .Func_151ae
+	call .ExecuteCommand
 	ld a, l
-	sub $00
+	sub $00 ; what?
 	pop hl
 	ld [hl], a
 	ret
 
-.Func_151ae:
+.ExecuteCommand:
 	ld a, [de]
-	cp $f8
+	cp AUDIOCMD_JUMP
 	jr nz, .asm_151bb
 	inc de
 	ld a, [de]
@@ -971,8 +1012,9 @@ Func_15198:
 	ld d, a
 	ld e, c
 	ret
+
 .asm_151bb
-	cp $fa
+	cp AUDIOCMD_CALL
 	jr nz, .asm_151ce
 	inc de
 	inc de
@@ -989,16 +1031,18 @@ Func_15198:
 	ld e, a
 	ld d, c
 	ret
+
 .asm_151ce
-	cp $fb
+	cp AUDIOCMD_RET
 	jr nz, .asm_151d7
 	ld e, [hl]
 	inc hl
 	ld d, [hl]
 	inc hl
 	ret
+
 .asm_151d7
-	cp $fc
+	cp AUDIOCMD_REPEAT
 	jr nz, .asm_151e6
 	inc de
 	ld a, [de]
@@ -1011,8 +1055,9 @@ Func_15198:
 	dec hl
 	ld [hl], c
 	ret
+
 .asm_151e6
-	cp $fd
+	cp AUDIOCMD_REPEAT_END
 	jr nz, .asm_151f8
 	dec [hl]
 	jr z, .asm_151f4
@@ -1033,18 +1078,18 @@ Func_15198:
 
 Func_151f9:
 	ld e, a
-	ld a, $b2
+	ld a, LOW(wdeb2)
 	add b
 	ld l, a
 	ld a, [hl]
-	add a
+	add a ; *2
 	add $9e
 	ld l, a
 	ld a, $00
 	adc $54
 	ld h, a
 	ld a, [hli]
-	rlc e
+	rlc e ; *2
 	add e
 	ld e, a
 	ld a, [hl]
@@ -1054,26 +1099,31 @@ Func_151f9:
 	ld a, [hli]
 	ld d, a
 	ld e, [hl]
+;	fallthrough
 
-Func_15215:
-	ld h, HIGH(wde4a)
-	ld a, LOW(wde4a)
+; input:
+; - b = channel
+; - de = frequency
+SetChannelFrequency:
+	ld h, HIGH(wChannelSelectorOffsets)
+	ld a, LOW(wChannelSelectorOffsets)
 	add b
 	ld l, a
 	ld a, [hl]
-	cp $0a
-	jr z, .asm_15227
-	ld a, $03
-	call Func_153ca
-	jr .asm_15231
-.asm_15227
-	ld a, $00
-	call Func_153ca
-	ld [hl], $80
+	cp CHANNEL3_LENGTH - 1
+	jr z, .channel_3
+	ld a, CHANNEL_SELECTOR_FREQUENCY
+	call GetPointerToChannelProperty_GotOffset
+	jr .set_frequency
+.channel_3
+	; channel 3 needs to be enabled as well
+	ld a, CHANNEL_SELECTOR_ENABLED
+	call GetPointerToChannelProperty_GotOffset
+	ld [hl], AUD3ENA_ON
 	inc l
 	inc l
 	inc l
-.asm_15231
+.set_frequency
 	ld a, e
 	ld [hli], a
 	ld [hl], d
@@ -1091,14 +1141,14 @@ Func_15235:
 	ret z
 	dec [hl]
 	ret nz
-	ld a, $a2
+	ld a, LOW(wdea2)
 	add b
 	ld l, a
 	ld a, [hl]
 	add a
 	add a
-	add $02
-	jp Func_14f5d.asm_15008
+	add $02 ; a = a*4 + 2
+	jp ExecuteAudioCommands.asm_15008
 
 Func_1524f:
 	ld h, HIGH(wde6a)
@@ -1132,7 +1182,7 @@ Func_1525a:
 	push bc
 	push de
 	call Func_153a8
-	call Func_153b6
+	call AddToChannelFrequency
 	pop de
 	pop bc
 
@@ -1183,15 +1233,15 @@ Func_1525a:
 .asm_152ba
 	cp $80
 	jr nz, Func_15311
-	ld h, HIGH(wde4a)
-	ld a, LOW(wde4a)
+	ld h, HIGH(wChannelSelectorOffsets)
+	ld a, LOW(wChannelSelectorOffsets)
 	add b
 	ld l, a
 	ld a, [hl]
-	cp $0a
+	cp CHANNEL3_LENGTH - 1
 	jr z, .asm_152dc
-	ld a, $01
-	call Func_153ca
+	ld a, CHANNEL_SELECTOR_LENGTH
+	call GetPointerToChannelProperty_GotOffset
 	ld a, c
 	rrca
 	rrca
@@ -1249,8 +1299,8 @@ Func_15311:
 	inc de
 	ld a, [de]
 	ld c, a
-	ld a, $00
-	call Func_153c2
+	ld a, CHANNEL_SELECTOR_ENABLED
+	call GetPointerToChannelProperty
 	ld [hl], c
 	jp Func_15259
 .asm_15326
@@ -1263,7 +1313,7 @@ Func_15311:
 	ret
 .asm_15331
 	ld hl, wdec2
-	call Func_15198
+	call ExecuteStackAudioCommands
 	jp Func_1525a
 .asm_1533a
 	ret
@@ -1282,6 +1332,8 @@ Func_1533b:
 
 Func_15347:
 	push de
+	; subtracts from $ff each nybble in [hl]
+	; so you get e = ($f - high nybble [hl]) - ($f - low nybble [hl])
 	ld a, $ff
 	sub [hl]
 	swap a
@@ -1291,16 +1343,16 @@ Func_15347:
 	and $0f
 	sub e
 	ld e, a
-	jr nc, .asm_15359
-	ld e, $00
-.asm_15359
+	jr nc, .no_underflow
+	ld e, $00 ; minimum of 0
+.no_underflow
 	push hl
 	ld hl, wde01
 	ld a, b
-	cp $04
-	jr c, .asm_15363
-	inc l
-.asm_15363
+	cp CHANNEL4 + 1
+	jr c, .is_sfx
+	inc l ; wde02
+.is_sfx
 	ld a, $ff
 	sub [hl]
 	swap a
@@ -1309,18 +1361,19 @@ Func_15347:
 	pop hl
 	ld a, e
 	sub d
-	jr nc, .asm_15371
-	xor a
-.asm_15371
+	jr nc, .set_envelope_or_level
+	xor a ; minimum of 0
+.set_envelope_or_level
 	ld e, a
-	ld a, $4a
+	ld a, LOW(wChannelSelectorOffsets)
 	add b
 	ld l, a
 	ld a, [hl]
-	cp $0a
-	jr z, .asm_15389
-	ld a, $02
-	call Func_153ca
+	cp CHANNEL3_LENGTH - 1
+	jr z, .channel_3
+; set envelope
+	ld a, CHANNEL_SELECTOR_ENVELOPE
+	call GetPointerToChannelProperty_GotOffset
 	swap e
 	ld a, [hl]
 	and $0f
@@ -1328,19 +1381,34 @@ Func_15347:
 	ld [hl], a
 	pop de
 	ret
-.asm_15389
+.channel_3
 	ld d, $00
-	ld hl, Data_15398
+	ld hl, Channel3OutputLevels
 	add hl, de
 	ld e, [hl]
-	ld a, $02
-	call Func_153c2
+	ld a, CHANNEL_SELECTOR_ENVELOPE
+	call GetPointerToChannelProperty
 	ld [hl], e
 	pop de
 	ret
 
-Data_15398:
-	db $00, $60, $60, $60, $40, $40, $40, $40, $20, $20, $20, $20, $20, $20, $20, $20
+Channel3OutputLevels:
+	db AUD3LEVEL_MUTE ; $0
+	db AUD3LEVEL_25   ; $1
+	db AUD3LEVEL_25   ; $2
+	db AUD3LEVEL_25   ; $3
+	db AUD3LEVEL_50   ; $4
+	db AUD3LEVEL_50   ; $5
+	db AUD3LEVEL_50   ; $6
+	db AUD3LEVEL_50   ; $7
+	db AUD3LEVEL_100  ; $8
+	db AUD3LEVEL_100  ; $9
+	db AUD3LEVEL_100  ; $a
+	db AUD3LEVEL_100  ; $b
+	db AUD3LEVEL_100  ; $c
+	db AUD3LEVEL_100  ; $d
+	db AUD3LEVEL_100  ; $e
+	db AUD3LEVEL_100  ; $f
 
 Func_153a8:
 	ld a, c
@@ -1354,9 +1422,11 @@ Func_153a8:
 	ld e, a
 	ret
 
-Func_153b6:
-	ld a, $03
-	call Func_153c2
+; input:
+; - de = channel frequency to add
+AddToChannelFrequency:
+	ld a, CHANNEL_SELECTOR_FREQUENCY
+	call GetPointerToChannelProperty
 	ld a, e
 	add [hl]
 	ld [hli], a
@@ -1365,21 +1435,35 @@ Func_153b6:
 	ld [hl], a
 	ret
 
-Func_153c2:
+; selects a property of the current channel
+; and gets its pointer in hl
+; input:
+; - a = CHANNEL_SELECTOR_* constant
+GetPointerToChannelProperty:
 	push af
-	ld h, HIGH(wde4a)
-	ld a, LOW(wde4a)
+	ld h, HIGH(wChannelSelectorOffsets)
+	ld a, LOW(wChannelSelectorOffsets)
 	add b
 	ld l, a
 	pop af
 ;	fallthrough
-Func_153ca:
+
+; same as GetPointerToChannelProperty but
+; expects hl to already point to the channel specific offset
+; input:
+; - a = CHANNEL_SELECTOR_* constant
+; - hl = wChannelSelectorOffsets + channel
+GetPointerToChannelProperty_GotOffset:
 	add [hl]
-Func_153cb:
-	ld hl, wdf80
+;	fallthrough
+
+; input:
+; - a = CHANNEL_SELECTOR_* constant
+GetPointerToChannelConfig:
+	ld hl, wChannelConfigLowByte
 	add [hl]
 	ld l, a
-	ld h, $de
+	ld h, HIGH(wSFXChannels) ; aka HIGH(wMusicChannels)
 	ret
 
 Func_153d3:
@@ -1421,15 +1505,16 @@ Func_153d3:
 
 SECTION "Bank 5@548e", ROMX[$548e], BANK[$5]
 
-Data_1548e:
-	db $10 ; CHANNEL_1
-	db $20 ; CHANNEL_2
-	db $30 ; CHANNEL_3
-	db $40 ; CHANNEL_4
-	db $50 ; CHANNEL_5
-	db $60 ; CHANNEL_6
-	db $70 ; CHANNEL_7
-	db $80 ; CHANNEL_8
+; offsets in wAudioStack reserved for each channel
+ChannelAudioStackOffsets:
+	db LOW(wChannel1AudioStackBottom) ; CHANNEL1
+	db LOW(wChannel2AudioStackBottom) ; CHANNEL2
+	db LOW(wChannel3AudioStackBottom) ; CHANNEL3
+	db LOW(wChannel4AudioStackBottom) ; CHANNEL4
+	db LOW(wChannel5AudioStackBottom) ; CHANNEL5
+	db LOW(wChannel6AudioStackBottom) ; CHANNEL6
+	db LOW(wChannel7AudioStackBottom) ; CHANNEL7
+	db LOW(wChannel8AudioStackBottom) ; CHANNEL8
 ; 0x15496
 
 SECTION "Bank 5@54af", ROMX[$54af], BANK[$5]
@@ -1443,298 +1528,298 @@ WaveSamples:
 
 MusicHeader_BubblyCloudsIntro:
 	db $04
-	dwb $55cd, $00 ; CHANNEL_1
-	dwb $56ac, $04 ; CHANNEL_2
-	dwb $5780, $10 ; CHANNEL_3
-	dwb $5852, $0c ; CHANNEL_4
+	dwb $55cd, $00 ; CHANNEL1
+	dwb $56ac, $04 ; CHANNEL2
+	dwb $5780, $10 ; CHANNEL3
+	dwb $5852, $0c ; CHANNEL4
 
 MusicHeader_GreenGreensIntro:
 	db $04
-	dwb $587b, $10 ; CHANNEL_1
-	dwb $5949, $00 ; CHANNEL_2
-	dwb $5a22, $04 ; CHANNEL_3
-	dwb $5b0b, $0c ; CHANNEL_4
+	dwb $587b, $10 ; CHANNEL1
+	dwb $5949, $00 ; CHANNEL2
+	dwb $5a22, $04 ; CHANNEL3
+	dwb $5b0b, $0c ; CHANNEL4
 
 MusicHeader_InvincibilityCandy:
 	db $04
-	dwb $5b59, $00 ; CHANNEL_1
-	dwb $5b91, $10 ; CHANNEL_2
-	dwb $5bc9, $04 ; CHANNEL_3
-	dwb $5bf6, $0c ; CHANNEL_4
+	dwb $5b59, $00 ; CHANNEL1
+	dwb $5b91, $10 ; CHANNEL2
+	dwb $5bc9, $04 ; CHANNEL3
+	dwb $5bf6, $0c ; CHANNEL4
 
 MusicHeader_GameOver:
 	db $04
-	dwb $5c1f, $00 ; CHANNEL_1
-	dwb $5c47, $10 ; CHANNEL_2
-	dwb $5c75, $04 ; CHANNEL_3
-	dwb $5c99, $0c ; CHANNEL_4
+	dwb $5c1f, $00 ; CHANNEL1
+	dwb $5c47, $10 ; CHANNEL2
+	dwb $5c75, $04 ; CHANNEL3
+	dwb $5c99, $0c ; CHANNEL4
 
 MusicHeader_SparklingStar:
 	db $02
-	dwb $5cbc, $00 ; CHANNEL_1
-	dwb $5cd1, $04 ; CHANNEL_2
+	dwb $5cbc, $00 ; CHANNEL1
+	dwb $5cd1, $04 ; CHANNEL2
 
 MusicHeader_Titlescreen:
 	db $04
-	dwb $5ce1, $00 ; CHANNEL_1
-	dwb $5d55, $10 ; CHANNEL_2
-	dwb $5de2, $04 ; CHANNEL_3
-	dwb $5e5e, $0c ; CHANNEL_4
+	dwb $5ce1, $00 ; CHANNEL1
+	dwb $5d55, $10 ; CHANNEL2
+	dwb $5de2, $04 ; CHANNEL3
+	dwb $5e5e, $0c ; CHANNEL4
 
 MusicHeader_FloatIslandsIntro:
 	db $04
-	dwb $5e93, $10 ; CHANNEL_1
-	dwb $5f36, $00 ; CHANNEL_2
-	dwb $600e, $04 ; CHANNEL_3
-	dwb $6101, $0c ; CHANNEL_4
+	dwb $5e93, $10 ; CHANNEL1
+	dwb $5f36, $00 ; CHANNEL2
+	dwb $600e, $04 ; CHANNEL3
+	dwb $6101, $0c ; CHANNEL4
 
 MusicHeader_LifeLost:
 	db $03
-	dwb $6160, $00 ; CHANNEL_1
-	dwb $6180, $04 ; CHANNEL_2
-	dwb $6189, $10 ; CHANNEL_3
+	dwb $6160, $00 ; CHANNEL1
+	dwb $6180, $04 ; CHANNEL2
+	dwb $6189, $10 ; CHANNEL3
 
 MusicHeader_BossBattle:
 	db $04
-	dwb $61a3, $10 ; CHANNEL_1
-	dwb $6218, $00 ; CHANNEL_2
-	dwb $62a0, $04 ; CHANNEL_3
-	dwb $6322, $0c ; CHANNEL_4
+	dwb $61a3, $10 ; CHANNEL1
+	dwb $6218, $00 ; CHANNEL2
+	dwb $62a0, $04 ; CHANNEL3
+	dwb $6322, $0c ; CHANNEL4
 
 MusicHeader_MintLeaf:
 	db $04
-	dwb $639d, $10 ; CHANNEL_1
-	dwb $6418, $00 ; CHANNEL_2
-	dwb $6484, $04 ; CHANNEL_3
-	dwb $64ff, $0c ; CHANNEL_4
+	dwb $639d, $10 ; CHANNEL1
+	dwb $6418, $00 ; CHANNEL2
+	dwb $6484, $04 ; CHANNEL3
+	dwb $64ff, $0c ; CHANNEL4
 
 MusicHeader_Victory:
 	db $04
-	dwb $6569, $00 ; CHANNEL_1
-	dwb $6598, $04 ; CHANNEL_2
-	dwb $65c9, $10 ; CHANNEL_3
-	dwb $65f8, $0c ; CHANNEL_4
+	dwb $6569, $00 ; CHANNEL1
+	dwb $6598, $04 ; CHANNEL2
+	dwb $65c9, $10 ; CHANNEL3
+	dwb $65f8, $0c ; CHANNEL4
 
 MusicHeader_Credits:
 	db $04
-	dwb $6612, $10 ; CHANNEL_1
-	dwb $6729, $00 ; CHANNEL_2
-	dwb $6827, $04 ; CHANNEL_3
-	dwb $6958, $0c ; CHANNEL_4
+	dwb $6612, $10 ; CHANNEL1
+	dwb $6729, $00 ; CHANNEL2
+	dwb $6827, $04 ; CHANNEL3
+	dwb $6958, $0c ; CHANNEL4
 
 MusicHeader_CastleLololoIntro:
 	db $04
-	dwb $69f4, $10 ; CHANNEL_1
-	dwb $6a71, $00 ; CHANNEL_2
-	dwb $6b6f, $04 ; CHANNEL_3
-	dwb $6c4f, $0c ; CHANNEL_4
+	dwb $69f4, $10 ; CHANNEL1
+	dwb $6a71, $00 ; CHANNEL2
+	dwb $6b6f, $04 ; CHANNEL3
+	dwb $6c4f, $0c ; CHANNEL4
 
 MusicHeader_GreenGreens:
 	db $04
-	dwb $6ce7, $00 ; CHANNEL_1
-	dwb $6cef, $04 ; CHANNEL_2
-	dwb $6d03, $10 ; CHANNEL_3
-	dwb $6cf7, $0c ; CHANNEL_4
+	dwb $6ce7, $00 ; CHANNEL1
+	dwb $6cef, $04 ; CHANNEL2
+	dwb $6d03, $10 ; CHANNEL3
+	dwb $6cf7, $0c ; CHANNEL4
 
 MusicHeader_FloatIslands:
 	db $04
-	dwb $6d0a, $00 ; CHANNEL_1
-	dwb $6d11, $04 ; CHANNEL_2
-	dwb $6d18, $10 ; CHANNEL_3
-	dwb $6d27, $0c ; CHANNEL_4
+	dwb $6d0a, $00 ; CHANNEL1
+	dwb $6d11, $04 ; CHANNEL2
+	dwb $6d18, $10 ; CHANNEL3
+	dwb $6d27, $0c ; CHANNEL4
 
 MusicHeader_BubblyClouds:
 	db $04
-	dwb $6d34, $00 ; CHANNEL_1
-	dwb $6d3d, $04 ; CHANNEL_2
-	dwb $6d44, $10 ; CHANNEL_3
-	dwb $5852, $0c ; CHANNEL_4
+	dwb $6d34, $00 ; CHANNEL1
+	dwb $6d3d, $04 ; CHANNEL2
+	dwb $6d44, $10 ; CHANNEL3
+	dwb $5852, $0c ; CHANNEL4
 
 MusicHeader_CastleLololo:
 	db $04
-	dwb $6d53, $00 ; CHANNEL_1
-	dwb $6d5a, $04 ; CHANNEL_2
-	dwb $6d5f, $10 ; CHANNEL_3
-	dwb $6d6c, $0c ; CHANNEL_4
+	dwb $6d53, $00 ; CHANNEL1
+	dwb $6d5a, $04 ; CHANNEL2
+	dwb $6d5f, $10 ; CHANNEL3
+	dwb $6d6c, $0c ; CHANNEL4
 
 MusicHeader_DededeBattle:
 	db $04
-	dwb $6d77, $10 ; CHANNEL_1
-	dwb $6dda, $00 ; CHANNEL_2
-	dwb $6e4f, $04 ; CHANNEL_3
-	dwb $6ebf, $0c ; CHANNEL_4
+	dwb $6d77, $10 ; CHANNEL1
+	dwb $6dda, $00 ; CHANNEL2
+	dwb $6e4f, $04 ; CHANNEL3
+	dwb $6ebf, $0c ; CHANNEL4
 
 MusicHeader_MtDedede:
 	db $04
-	dwb $6eec, $10 ; CHANNEL_1
-	dwb $6f10, $00 ; CHANNEL_2
-	dwb $6f34, $04 ; CHANNEL_3
-	dwb $6f54, $0c ; CHANNEL_4
+	dwb $6eec, $10 ; CHANNEL1
+	dwb $6f10, $00 ; CHANNEL2
+	dwb $6f34, $04 ; CHANNEL3
+	dwb $6f54, $0c ; CHANNEL4
 ; 0x155cd
 
 SECTION "Bank 5@707e", ROMX[$707e], BANK[$5]
 
 SFXHeader_00:
 	db $02
-	dwb $7144, $00 ; CHANNEL_1
-	dwb $71da, $04 ; CHANNEL_2
+	dwb $7144, $00 ; CHANNEL1
+	dwb $71da, $04 ; CHANNEL2
 
 SFXHeader_Inhale:
 	db $02
-	dwb $71e0, $04 ; CHANNEL_1
-	dwb $721b, $0c ; CHANNEL_2
+	dwb $71e0, $04 ; CHANNEL1
+	dwb $721b, $0c ; CHANNEL2
 
 SFXHeader_02:
 	db $01
-	dwb $723b, $04 ; CHANNEL_1
+	dwb $723b, $04 ; CHANNEL1
 
 SFXHeader_Swallow:
 	db $01
-	dwb $725c, $04 ; CHANNEL_1
+	dwb $725c, $04 ; CHANNEL1
 
 SFXHeader_Jump:
 	db $01
-	dwb $728d, $04 ; CHANNEL_1
+	dwb $728d, $04 ; CHANNEL1
 
 SFXHeader_Bump:
 	db $01
-	dwb $72b0, $04 ; CHANNEL_1
+	dwb $72b0, $04 ; CHANNEL1
 
 SFXHeader_Damage:
 	db $02
-	dwb $72cd, $0c ; CHANNEL_1
-	dwb $72f6, $04 ; CHANNEL_2
+	dwb $72cd, $0c ; CHANNEL1
+	dwb $72f6, $04 ; CHANNEL2
 
 SFXHeader_EnterDoor:
 	db $02
-	dwb $7317, $04 ; CHANNEL_1
-	dwb $7356, $00 ; CHANNEL_2
+	dwb $7317, $04 ; CHANNEL1
+	dwb $7356, $00 ; CHANNEL2
 
 SFXHeader_08:
 	db $01
-	dwb $735f, $04 ; CHANNEL_1
+	dwb $735f, $04 ; CHANNEL1
 
 SFXHeader_PowerUp:
 	db $01
-	dwb $7378, $04 ; CHANNEL_1
+	dwb $7378, $04 ; CHANNEL1
 
 SFXHeader_10:
 	db $01
-	dwb $7394, $0c ; CHANNEL_1
+	dwb $7394, $0c ; CHANNEL1
 
 SFXHeader_RestoreHp:
 	db $01
-	dwb $73ba, $04 ; CHANNEL_1
+	dwb $73ba, $04 ; CHANNEL1
 
 SFXHeader_WarpStar:
 	db $02
-	dwb $73d4, $04 ; CHANNEL_1
-	dwb $743d, $00 ; CHANNEL_2
+	dwb $73d4, $04 ; CHANNEL1
+	dwb $743d, $00 ; CHANNEL2
 
 SFXHeader_13:
 	db $02
-	dwb $744a, $04 ; CHANNEL_1
-	dwb $74dc, $00 ; CHANNEL_2
+	dwb $744a, $04 ; CHANNEL1
+	dwb $74dc, $00 ; CHANNEL2
 
 SFXHeader_14:
 	db $01
-	dwb $74e4, $0c ; CHANNEL_1
+	dwb $74e4, $0c ; CHANNEL1
 
 SFXHeader_15:
 	db $01
-	dwb $74f8, $04 ; CHANNEL_1
+	dwb $74f8, $04 ; CHANNEL1
 
 SFXHeader_16:
 	db $01
-	dwb $7515, $04 ; CHANNEL_1
+	dwb $7515, $04 ; CHANNEL1
 
 SFXHeader_17:
 	db $01
-	dwb $7544, $0c ; CHANNEL_1
+	dwb $7544, $0c ; CHANNEL1
 
 SFXHeader_18:
 	db $01
-	dwb $7559, $04 ; CHANNEL_1
+	dwb $7559, $04 ; CHANNEL1
 
 SFXHeader_19:
 	db $01
-	dwb $757e, $0c ; CHANNEL_1
+	dwb $757e, $0c ; CHANNEL1
 
 SFXHeader_20:
 	db $01
-	dwb $7597, $0c ; CHANNEL_1
+	dwb $7597, $0c ; CHANNEL1
 
 SFXHeader_21:
 	db $01
-	dwb $75b6, $0c ; CHANNEL_1
+	dwb $75b6, $0c ; CHANNEL1
 
 SFXHeader_1Up:
 	db $02
-	dwb $75cf, $00 ; CHANNEL_1
-	dwb $75e7, $04 ; CHANNEL_2
+	dwb $75cf, $00 ; CHANNEL1
+	dwb $75e7, $04 ; CHANNEL2
 
 SFXHeader_23:
 	db $03
-	dwb $75ee, $0c ; CHANNEL_1
-	dwb $7602, $04 ; CHANNEL_2
-	dwb $7618, $00 ; CHANNEL_3
+	dwb $75ee, $0c ; CHANNEL1
+	dwb $7602, $04 ; CHANNEL2
+	dwb $7618, $00 ; CHANNEL3
 
 SFXHeader_Pause:
 	db $04
-	dwb $762e, $04 ; CHANNEL_1
-	dwb $7649, $00 ; CHANNEL_2
-	dwb $7678, $10 ; CHANNEL_3
-	dwb $767b, $0c ; CHANNEL_4
+	dwb $762e, $04 ; CHANNEL1
+	dwb $7649, $00 ; CHANNEL2
+	dwb $7678, $10 ; CHANNEL3
+	dwb $767b, $0c ; CHANNEL4
 
 SFXHeader_25:
 	db $01
-	dwb $767e, $0c ; CHANNEL_1
+	dwb $767e, $0c ; CHANNEL1
 
 SFXHeader_Cursor:
 	db $01
-	dwb $76a2, $04 ; CHANNEL_1
+	dwb $76a2, $04 ; CHANNEL1
 
 SFXHeader_GameStart:
 	db $01
-	dwb $76b0, $04 ; CHANNEL_1
+	dwb $76b0, $04 ; CHANNEL1
 
 SFXHeader_28:
 	db $01
-	dwb $76c1, $0c ; CHANNEL_1
+	dwb $76c1, $0c ; CHANNEL1
 
 SFXHeader_29:
 	db $03
-	dwb $76d6, $0c ; CHANNEL_1
-	dwb $76fa, $04 ; CHANNEL_2
-	dwb $7717, $00 ; CHANNEL_3
+	dwb $76d6, $0c ; CHANNEL1
+	dwb $76fa, $04 ; CHANNEL2
+	dwb $7717, $00 ; CHANNEL3
 
 SFXHeader_30:
 	db $01
-	dwb $7734, $04 ; CHANNEL_1
+	dwb $7734, $04 ; CHANNEL1
 
 SFXHeader_31:
 	db $01
-	dwb $7747, $04 ; CHANNEL_1
+	dwb $7747, $04 ; CHANNEL1
 
 SFXHeader_BossDefeat:
 	db $01
-	dwb $7768, $0c ; CHANNEL_1
+	dwb $7768, $0c ; CHANNEL1
 
 SFXHeader_33:
 	db $04
-	dwb $7798, $04 ; CHANNEL_1
-	dwb $77a0, $00 ; CHANNEL_2
-	dwb $77a8, $10 ; CHANNEL_3
-	dwb $77ad, $0c ; CHANNEL_4
+	dwb $7798, $04 ; CHANNEL1
+	dwb $77a0, $00 ; CHANNEL2
+	dwb $77a8, $10 ; CHANNEL3
+	dwb $77ad, $0c ; CHANNEL4
 
 SFXHeader_34:
 	db $02
-	dwb $77b2, $04 ; CHANNEL_1
-	dwb $721b, $0c ; CHANNEL_2
+	dwb $77b2, $04 ; CHANNEL1
+	dwb $721b, $0c ; CHANNEL2
 
 SFXHeader_35:
 	db $01
-	dwb $77b7, $04 ; CHANNEL_1
+	dwb $77b7, $04 ; CHANNEL1
 ; 0x17144
 
 SECTION "Bank 5@79f3", ROMX[$79f3], BANK[$5]
@@ -1802,84 +1887,87 @@ SFXHeaders:
 	dw SFXHeader_35         ; SFX_35
 	assert_table_length NUM_SFX
 
-Data_17a61:
-	table_width 1, Data_17a61
-	db $03 ; SFX_00
-	db $0a ; SFX_INHALE
-	db $02 ; SFX_02
-	db $02 ; SFX_SWALLOW
-	db $02 ; SFX_JUMP
-	db $02 ; SFX_BUMP
-	db $0a ; SFX_DAMAGE
-	db $03 ; SFX_ENTER_DOOR
-	db $02 ; SFX_08
-	db $02 ; SFX_POWER_UP
-	db $08 ; SFX_10
-	db $02 ; SFX_RESTORE_HP
-	db $03 ; SFX_WARP_STAR
-	db $03 ; SFX_13
-	db $08 ; SFX_14
-	db $02 ; SFX_15
-	db $02 ; SFX_16
-	db $08 ; SFX_17
-	db $02 ; SFX_18
-	db $08 ; SFX_19
-	db $08 ; SFX_20
-	db $08 ; SFX_21
-	db $03 ; SFX_1UP
-	db $0b ; SFX_23
-	db $1b ; SFX_PAUSE
-	db $08 ; SFX_25
-	db $02 ; SFX_CURSOR
-	db $02 ; SFX_GAME_START
-	db $08 ; SFX_28
-	db $03 ; SFX_29
-	db $02 ; SFX_30
-	db $02 ; SFX_31
-	db $08 ; SFX_BOSS_DEFEAT
-	db $1b ; SFX_33
-	db $0a ; SFX_34
-	db $02 ; SFX_35
+; for each SFX, lists the channels that are used
+SFXRequiredChannels:
+	table_width 1, SFXRequiredChannels
+	db SFXFLAG_SQUARE1 | SFXFLAG_SQUARE2 ; SFX_00
+	db SFXFLAG_SQUARE2 | SFXFLAG_NOISE ; SFX_INHALE
+	db SFXFLAG_SQUARE2 ; SFX_02
+	db SFXFLAG_SQUARE2 ; SFX_SWALLOW
+	db SFXFLAG_SQUARE2 ; SFX_JUMP
+	db SFXFLAG_SQUARE2 ; SFX_BUMP
+	db SFXFLAG_SQUARE2 | SFXFLAG_NOISE ; SFX_DAMAGE
+	db SFXFLAG_SQUARE1 | SFXFLAG_SQUARE2 ; SFX_ENTER_DOOR
+	db SFXFLAG_SQUARE2 ; SFX_08
+	db SFXFLAG_SQUARE2 ; SFX_POWER_UP
+	db SFXFLAG_NOISE ; SFX_10
+	db SFXFLAG_SQUARE2 ; SFX_RESTORE_HP
+	db SFXFLAG_SQUARE1 | SFXFLAG_SQUARE2 ; SFX_WARP_STAR
+	db SFXFLAG_SQUARE1 | SFXFLAG_SQUARE2 ; SFX_13
+	db SFXFLAG_NOISE ; SFX_14
+	db SFXFLAG_SQUARE2 ; SFX_15
+	db SFXFLAG_SQUARE2 ; SFX_16
+	db SFXFLAG_NOISE ; SFX_17
+	db SFXFLAG_SQUARE2 ; SFX_18
+	db SFXFLAG_NOISE ; SFX_19
+	db SFXFLAG_NOISE ; SFX_20
+	db SFXFLAG_NOISE ; SFX_21
+	db SFXFLAG_SQUARE1 | SFXFLAG_SQUARE2 ; SFX_1UP
+	db SFXFLAG_SQUARE1 | SFXFLAG_SQUARE2 | SFXFLAG_NOISE ; SFX_23
+	db SFXFLAG_SQUARE1 | SFXFLAG_SQUARE2 | SFXFLAG_NOISE | SFXFLAG_WAVE ; SFX_PAUSE
+	db SFXFLAG_NOISE ; SFX_25
+	db SFXFLAG_SQUARE2 ; SFX_CURSOR
+	db SFXFLAG_SQUARE2 ; SFX_GAME_START
+	db SFXFLAG_NOISE ; SFX_28
+	db SFXFLAG_SQUARE1 | SFXFLAG_SQUARE2 ; SFX_29
+	db SFXFLAG_SQUARE2 ; SFX_30
+	db SFXFLAG_SQUARE2 ; SFX_31
+	db SFXFLAG_NOISE ; SFX_BOSS_DEFEAT
+	db SFXFLAG_SQUARE1 | SFXFLAG_SQUARE2 | SFXFLAG_NOISE | SFXFLAG_WAVE ; SFX_33
+	db SFXFLAG_SQUARE2 | SFXFLAG_NOISE ; SFX_34
+	db SFXFLAG_SQUARE2 ; SFX_35
 	assert_table_length NUM_SFX
 
-Data_17a85:
-	table_width 1, Data_17a85
-	db $0a ; SFX_00
-	db $32 ; SFX_INHALE
-	db $32 ; SFX_02
-	db $32 ; SFX_SWALLOW
-	db $32 ; SFX_JUMP
-	db $33 ; SFX_BUMP
-	db $28 ; SFX_DAMAGE
-	db $14 ; SFX_ENTER_DOOR
-	db $28 ; SFX_08
-	db $2d ; SFX_POWER_UP
-	db $23 ; SFX_10
-	db $19 ; SFX_RESTORE_HP
-	db $00 ; SFX_WARP_STAR
-	db $00 ; SFX_13
-	db $32 ; SFX_14
-	db $32 ; SFX_15
-	db $32 ; SFX_16
-	db $37 ; SFX_17
-	db $37 ; SFX_18
-	db $32 ; SFX_19
-	db $1e ; SFX_20
-	db $05 ; SFX_21
-	db $00 ; SFX_1UP
-	db $14 ; SFX_23
-	db $00 ; SFX_PAUSE
-	db $09 ; SFX_25
-	db $32 ; SFX_CURSOR
-	db $32 ; SFX_GAME_START
-	db $31 ; SFX_28
-	db $05 ; SFX_29
-	db $32 ; SFX_30
-	db $32 ; SFX_31
-	db $23 ; SFX_BOSS_DEFEAT
-	db $01 ; SFX_33
-	db $31 ; SFX_34
-	db $31 ; SFX_35
+; priority values for each SFX
+; lower value means higher priority
+SFXPriorities:
+	table_width 1, SFXPriorities
+	db 10 ; SFX_00
+	db 50 ; SFX_INHALE
+	db 50 ; SFX_02
+	db 50 ; SFX_SWALLOW
+	db 50 ; SFX_JUMP
+	db 51 ; SFX_BUMP
+	db 40 ; SFX_DAMAGE
+	db 20 ; SFX_ENTER_DOOR
+	db 40 ; SFX_08
+	db 45 ; SFX_POWER_UP
+	db 35 ; SFX_10
+	db 25 ; SFX_RESTORE_HP
+	db  0 ; SFX_WARP_STAR
+	db  0 ; SFX_13
+	db 50 ; SFX_14
+	db 50 ; SFX_15
+	db 50 ; SFX_16
+	db 55 ; SFX_17
+	db 55 ; SFX_18
+	db 50 ; SFX_19
+	db 30 ; SFX_20
+	db  5 ; SFX_21
+	db  0 ; SFX_1UP
+	db 20 ; SFX_23
+	db  0 ; SFX_PAUSE
+	db  9 ; SFX_25
+	db 50 ; SFX_CURSOR
+	db 50 ; SFX_GAME_START
+	db 49 ; SFX_28
+	db  5 ; SFX_29
+	db 50 ; SFX_30
+	db 50 ; SFX_31
+	db 35 ; SFX_BOSS_DEFEAT
+	db  1 ; SFX_33
+	db 49 ; SFX_34
+	db 49 ; SFX_35
 	assert_table_length NUM_SFX
 
 ; triangle wave sample

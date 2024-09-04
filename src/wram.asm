@@ -561,7 +561,7 @@ wd414:: ; d414
 wdc00:: ; dc00
 	db
 
-	ds $1ff
+SECTION "Audio WRAM", WRAMX, ALIGN[8]
 
 wde00:: ; de00
 	db
@@ -572,7 +572,7 @@ wde01:: ; de01
 wde02:: ; de02
 	db
 
-wde03:: ; de03
+wSFXActiveChannelFlags:: ; de03
 	db
 
 wde04:: ; de04
@@ -580,110 +580,42 @@ wde04:: ; de04
 
 	ds $1
 
-wChannel1::
-wChannel1Sweep::    db ; de06
-wChannel1Length::   db ; de07
-wChannel1Envelope:: db ; de08
-wChannel1FreqLo::   db ; de09
-wChannel1FreqHi::   db ; de0a
+; these are the final channel configurations
+; that are applied to the actual hardware
+wChannels::
+wChannel1:: channel1_struct wChannel1 ; de06
+wChannel2:: channel2_struct wChannel2 ; de0c
+wChannel3:: channel3_struct wChannel3 ; de10
+wChannel4:: channel4_struct wChannel4 ; de16
+wChannelsEnd::
 
-	ds $1
+wSFXChannels::
+wSFXChannel1:: channel1_struct wSFXChannel1 ; de1a
+wSFXChannel2:: channel2_struct wSFXChannel2 ; de20
+wSFXChannel3:: channel3_struct wSFXChannel3 ; de24
+wSFXChannel4:: channel4_struct wSFXChannel4 ; de2a
+wSFXChannelsEnd::
 
-wChannel2::
-wChannel2Length::   db ; de0c
-wChannel2Envelope:: db ; de0d
-wChannel2FreqLo::   db ; de0e
-wChannel2FreqHi::   db ; de0f
+wMusicChannels::
+wMusicChannel1:: channel1_struct wMusicChannel1 ; de2e
+wMusicChannel2:: channel2_struct wMusicChannel2 ; de34
+wMusicChannel3:: channel3_struct wMusicChannel3 ; de38
+wMusicChannel4:: channel4_struct wMusicChannel4 ; de3e
+wMusicChannelsEnd::
 
-wChannel3::
-wChannel3Enabled:: db ; de10
-wChannel3Length::  db ; de11
-wChannel3Level::   db ; de12
-wChannel3FreqLo::  db ; de13
-wChannel3FreqHi::  db ; de14
-
-	ds $1
-
-wChannel4::
-wChannel4Length::   db ; de16
-wChannel4Envelope:: db ; de17
-wChannel4FreqLo::   db ; de18
-wChannel4FreqHi::   db ; de19
-
-wde1a:: ; de1a
-	db
-
-	ds $5
-
-wde20:: ; de20
-	db
-
-	ds $3
-
-wde24:: ; de24
-	db
-
-	ds $5
-
-wde2a:: ; de2a
-	db
-
-	ds $3
-
-wde2e:: ; de2e
-	db
-
-	ds $5
-
-wde34:: ; de34
-	db
-
-	ds $3
-
-wde38:: ; de38
-	db
-
-	ds $5
-
-wde3e:: ; de3e
-	db
-
-	ds $3
-
-wde42:: ; de42
-	db
-
-wde43:: ; de43
-	db
-
-wde44:: ; de44
-	db
-
-wde45:: ; de45
-	db
-
-wde46:: ; de46
-	db
-
-wde47:: ; de47
-	db
-
-wde48:: ; de48
-	db
-
-wde49:: ; de49
-	db
-
-wde4a:: ; de4a
+wChannelPans:: ; de42
 	ds NUM_CHANNELS
 
-wde52:: ; de52
+wChannelSelectorOffsets:: ; de4a
 	ds NUM_CHANNELS
 
-wde5a:: ; de5a
+wAudioCommandDurations:: ; de52
 	ds NUM_CHANNELS
 
-wde62:: ; de62
+wAudioCommandPointersLo:: ; de5a
+	ds NUM_CHANNELS
+
+wAudioCommandPointersHi:: ; de62
 	ds NUM_CHANNELS
 
 wde6a:: ; de6a
@@ -692,7 +624,8 @@ wde6a:: ; de6a
 wde72:: ; de72
 	ds NUM_CHANNELS
 
-	ds $8
+wde7a:: ; de7a
+	ds NUM_CHANNELS
 
 wde82:: ; de82
 	ds NUM_CHANNELS
@@ -715,16 +648,18 @@ wdeaa:: ; deaa
 wdeb2:: ; deb2
 	ds NUM_CHANNELS
 
-wdeba:: ; deba
+; low byte of the pointer in wAudioStack
+; corresponding to each channel
+wAudioStackPointers:: ; deba
 	ds NUM_CHANNELS
 
 wdec2:: ; dec2
 	ds NUM_CHANNELS
 
-wdeca:: ; deca
+wChannelSFXFlags:: ; deca
 	ds NUM_SFX_CHANNELS
 
-wdece:: ; dece
+wChannelSoundPriorities:: ; dece
 	ds NUM_MUSIC_CHANNELS
 
 wWaveSample:: ; ded2
@@ -736,7 +671,33 @@ wded3:: ; ded3
 wded4:: ; ded4
 	db
 
-	ds $ab
+	ds $2b
 
-wdf80:: ; df80
+wAudioStack:: ; df00
+wChannel1AudioStack:: ; df00
+	ds $10
+wChannel1AudioStackBottom:: ; df10
+wChannel2AudioStack:: ; df00
+	ds $10
+wChannel2AudioStackBottom:: ; df20
+wChannel3AudioStack:: ; df00
+	ds $10
+wChannel3AudioStackBottom:: ; df30
+wChannel4AudioStack:: ; df00
+	ds $10
+wChannel4AudioStackBottom:: ; df40
+wChannel5AudioStack:: ; df00
+	ds $10
+wChannel5AudioStackBottom:: ; df50
+wChannel6AudioStack:: ; df00
+	ds $10
+wChannel6AudioStackBottom:: ; df60
+wChannel7AudioStack:: ; df00
+	ds $10
+wChannel7AudioStackBottom:: ; df70
+wChannel8AudioStack:: ; df00
+	ds $10
+wChannel8AudioStackBottom:: ; df80
+
+wChannelConfigLowByte:: ; df80
 	db

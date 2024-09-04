@@ -66,9 +66,9 @@ VBlank:
 .asm_1d82
 	ld a, [wROMBank]
 	push af
-	ld a, BANK(Func_14e0b)
+	ld a, BANK(UpdateAudio)
 	bankswitch
-	call Func_14e0b
+	call UpdateAudio
 	pop af
 	bankswitch
 	pop hl

@@ -31,6 +31,8 @@ WRAM0
 	"WRAM0"
 WRAMX 1
 	"WRAM1"
+	org $de00
+	"Audio WRAM"
 VRAM $00
 	"VRAM0"
 HRAM

@@ -3593,10 +3593,10 @@ PlaySFX::
 	ld c, a
 	ld a, [wROMBank]
 	push af
-	ld a, $05
+	ld a, BANK(_PlaySFX)
 	bankswitch
 	ld a, c
-	call Func_14c9e
+	call _PlaySFX
 	pop af
 	bankswitch
 	pop bc
@@ -3618,11 +3618,11 @@ PlayMusic::
 .play_music
 	ld a, [wROMBank]
 	push af
-	ld a, BANK(Func_14dc5)
+	ld a, BANK(_PlayMusic)
 	bankswitch
 	ld a, c
 	ld [wCurMusic], a
-	call Func_14dc5
+	call _PlayMusic
 	pop af
 	bankswitch
 .skip
