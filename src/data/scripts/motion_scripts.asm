@@ -133,7 +133,7 @@ MotionScript_1022a:
 	script_end
 
 MotionScript_10244:
-	jump_if_flags hEngineFlags, ENGINEF_UNK0, .script_1026a
+	jump_if_flags hEngineFlags, KABOOLA_BATTLE, .script_1026a
 	jump_if_not_flags hKirbyFlags3, KIRBY3F_FACE_LEFT, .script_1025d
 	set_velocities 16, $8b, $00
 	set_velocities  8, $87, $00

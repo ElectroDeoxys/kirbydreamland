@@ -16,7 +16,7 @@ AnimScript_20017:
 	set_scripts AnimScript_203be, MotionScript_10008
 
 AnimScript_20026:
-	jump_if_flags hEngineFlags, ENGINEF_UNK0, .script_20034
+	jump_if_flags hEngineFlags, KABOOLA_BATTLE, .script_20034
 	create_object AnimScript_20a01, MotionScript_10008, Data_3421
 	script_end
 .script_20034
@@ -356,7 +356,7 @@ AnimScript_20477:
 	play_sfx SFX_15
 	jump_if_flags wd3be, $02, AnimScript_20bc9
 	jump_if_flags wd3be, $04, AnimScript_20bb7
-	jump_if_flags hEngineFlags, ENGINEF_UNK0, .script_2049e
+	jump_if_flags hEngineFlags, KABOOLA_BATTLE, .script_2049e
 	set_custom_func Func_141b1, AnimScript_20b9a
 .check_land
 	jump_if_not_flags hKirbyFlags3, KIRBY3F_FACE_LEFT, .script_2049b

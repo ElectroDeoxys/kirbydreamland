@@ -404,7 +404,7 @@ Func_1432c::
 	ld hl, wd1a0 + OBJECT_SLOT_00
 	set OBJFLAG_BLINKING_F, [hl]
 	ld a, [hEngineFlags]
-	bit ENGINEF_UNK0_F, a
+	bit KABOOLA_BATTLE_F, a
 	jr nz, .no_knock_back
 	ld hl, hKirbyFlags5
 	set KIRBY5F_DAMAGED_F, [hl]
@@ -877,7 +877,7 @@ ASSERT FLOAT_ISLANDS_7 == MT_DEDEDE_7
 .kaboola_fight
 	ld a, [hEngineFlags]
 	and ~ENGINEF_UNK6
-	or ENGINEF_UNK0 | ENGINEF_UNK1
+	or KABOOLA_BATTLE | ENGINEF_UNK1
 	ld [hEngineFlags], a
 	ld hl, hPalFadeFlags
 	set FADE_5_F, [hl]
@@ -1477,13 +1477,13 @@ InitRAM::
 	ld [wBGP], a
 	ld a, $d0
 	ld [wOBP], a
-	ld a, VBLANK_PENDING | VBLANK_7
+	ld a, VBLANK_PENDING | VBLANK_IGNORE_INPUT
 	ld [hVBlankFlags], a
 	ld a, $00
 	ld [hKirbyFlags1], a
 	ld a, SELECT | START
 	ld [wd050], a
-	ld a, $01
+	ld a, TRUE
 	ld [wMtDededeDefeatedBosses + MT_DEDEDE_5], a
 
 	; initial RNG seed

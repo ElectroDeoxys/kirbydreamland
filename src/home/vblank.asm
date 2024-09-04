@@ -37,7 +37,7 @@ VBlank:
 	call ApplyLCDCScrollAndBGPalette
 .asm_1d56
 	ld hl, hEngineFlags
-	res ENGINEF_UNK3_F, [hl]
+	res RESET_TIMER_PENDING_F, [hl]
 	ld hl, wd037
 	dec [hl]
 	jr nz, .asm_1d6f

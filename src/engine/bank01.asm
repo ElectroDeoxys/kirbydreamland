@@ -874,7 +874,7 @@ KirbyControl::
 	jr .asm_46fc
 .asm_4692
 	ld hl, hEngineFlags
-	bit ENGINEF_UNK0_F, [hl]
+	bit KABOOLA_BATTLE_F, [hl]
 	jr z, .asm_4670
 	ldh a, [hJoypadPressed]
 	swap a

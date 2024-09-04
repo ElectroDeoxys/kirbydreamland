@@ -445,13 +445,7 @@ Func_183bf::
 	ld [wd3dd], a
 
 .asm_183ec
-	ld a, [hVBlankFlags]
-	set 6, a
-	ld [hVBlankFlags], a
-.asm_183f4
-	ld a, [hVBlankFlags]
-	bit 6, a
-	jr nz, .asm_183f4
+	wait_vblank_a
 
 	push hl
 	call Func_319d
@@ -702,7 +696,7 @@ Pause::
 	ld [hKirbyFlags4], a
 .loop
 	ld a, [hVBlankFlags]
-	bit 6, a
+	bit VBLANK_PENDING_F, a
 	jr nz, .loop
 	ld a, [hKirbyFlags5]
 	bit KIRBY5F_UNK0_F, a
@@ -741,7 +735,7 @@ Pause::
 	call Func_139b
 	call ClearSprites
 	ld a, [hVBlankFlags]
-	set 6, a
+	set VBLANK_PENDING_F, a
 	ld [hVBlankFlags], a
 	ld a, [hJoypadPressed]
 	bit START_F, a
@@ -963,11 +957,7 @@ GameOver:
 	; unless Start is pressed
 	ld bc, 280
 .loop
-	ld hl, hVBlankFlags
-	set 6, [hl]
-.asm_1879c
-	bit 6, [hl]
-	jr nz, .asm_1879c
+	wait_vblank
 	ld a, [hJoypadPressed]
 	bit START_F, a
 	jr nz, .start_pressed
@@ -1021,11 +1011,7 @@ GameOver:
 	call StopTimerAndSwitchOnLCD
 	call FadeIn
 .asm_1880b
-	ld hl, hVBlankFlags
-	set 6, [hl]
-.asm_18810
-	bit 6, [hl]
-	jr nz, .asm_18810
+	wait_vblank
 	call Func_19098
 	ld a, [wd3d0]
 	and a
@@ -1126,16 +1112,16 @@ Func_1886c:
 	call FadeIn
 	ld de, 200
 	ld hl, hVBlankFlags
-.asm_188de
-	set 6, [hl]
-.asm_188e0
-	bit 6, [hl]
-	jr nz, .asm_188e0
+.loop_delay
+	set VBLANK_PENDING_F, [hl]
+.loop_wait_vblank
+	bit VBLANK_PENDING_F, [hl]
+	jr nz, .loop_wait_vblank
 	call Func_19098
 	dec de
 	ld a, d
 	or e
-	jr nz, .asm_188de
+	jr nz, .loop_delay
 
 	xor a
 	ld [hPalFadeFlags], a
@@ -1181,9 +1167,9 @@ Func_1886c:
 	ld de, 432 ; ~ 7 seconds
 	ld hl, hVBlankFlags
 .asm_18959
-	set 6, [hl]
+	set VBLANK_PENDING_F, [hl]
 .asm_1895b
-	bit 6, [hl]
+	bit VBLANK_PENDING_F, [hl]
 	jr nz, .asm_1895b
 	call Func_19098
 	dec de
@@ -1222,9 +1208,9 @@ Func_1886c:
 	ld de, 512
 	ld hl, hVBlankFlags
 .asm_189b5
-	set 6, [hl]
+	set VBLANK_PENDING_F, [hl]
 .asm_189b7
-	bit 6, [hl]
+	bit VBLANK_PENDING_F, [hl]
 	jr nz, .asm_189b7
 	call Func_19098
 	dec de
@@ -1271,13 +1257,7 @@ Func_1886c:
 	res PROCESS_BG_QUEUE_F, a
 	ld [hEngineFlags], a
 .asm_18a09
-	ld a, [hVBlankFlags]
-	set 6, a
-	ld [hVBlankFlags], a
-.asm_18a11
-	ld a, [hVBlankFlags]
-	bit 6, a
-	jr nz, .asm_18a11
+	wait_vblank_a
 	call Func_19098
 
 	ld a, [wSCY]
@@ -1450,13 +1430,7 @@ Func_1886c:
 	res PROCESS_BG_QUEUE_F, a
 	ld [hEngineFlags], a
 .loop_credits
-	ld a, [hVBlankFlags]
-	set 6, a
-	ld [hVBlankFlags], a
-.asm_18b50
-	ld a, [hVBlankFlags]
-	bit 6, a
-	jr nz, .asm_18b50
+	wait_vblank_a
 	call Func_19098
 
 	ld a, [wd067]
@@ -1655,9 +1629,9 @@ Func_1886c:
 	ld de, 324
 	ld hl, hVBlankFlags
 .asm_18cb8
-	set 6, [hl]
+	set VBLANK_PENDING_F, [hl]
 .asm_18cba
-	bit 6, [hl]
+	bit VBLANK_PENDING_F, [hl]
 	jr nz, .asm_18cba
 	call Func_19098
 	dec de
@@ -1684,9 +1658,9 @@ Func_1886c:
 	ld de, 420
 	ld hl, hVBlankFlags
 .asm_18cf1
-	set 6, [hl]
+	set VBLANK_PENDING_F, [hl]
 .asm_18cf3
-	bit 6, [hl]
+	bit VBLANK_PENDING_F, [hl]
 	jr nz, .asm_18cf3
 	call Func_19098
 	ld a, [hJoypadPressed]
@@ -2011,9 +1985,9 @@ Func_1886c:
 	ld de, 300
 	ld hl, hVBlankFlags
 .asm_19009
-	set 6, [hl]
+	set VBLANK_PENDING_F, [hl]
 .asm_1900b
-	bit 6, [hl]
+	bit VBLANK_PENDING_F, [hl]
 	jr nz, .asm_1900b
 	call Func_19098
 	ld a, [hJoypadPressed]
@@ -2079,9 +2053,9 @@ Func_1886c:
 .DoFrames:
 	ld hl, hVBlankFlags
 .asm_19089
-	set 6, [hl]
+	set VBLANK_PENDING_F, [hl]
 .asm_1908b
-	bit 6, [hl]
+	bit VBLANK_PENDING_F, [hl]
 	jr nz, .asm_1908b
 	call Func_19098
 	dec de

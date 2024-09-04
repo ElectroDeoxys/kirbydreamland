@@ -256,8 +256,8 @@ Func_426::
 	bit 7, a
 	jr z, .asm_455
 	ldh a, [hVBlankFlags]
-	and $f7
-	or $04
+	and $ff ^ VBLANK_3
+	or VBLANK_2
 	ldh [hVBlankFlags], a
 	ld a, [wd079]
 	cpl
@@ -278,8 +278,8 @@ Func_426::
 	jp Func_4783
 .asm_455
 	ldh a, [hVBlankFlags]
-	and $fb
-	or $08
+	and $ff ^ VBLANK_2
+	or VBLANK_3
 	ldh [hVBlankFlags], a
 	ld a, [wd079]
 	ld b, a
@@ -297,7 +297,7 @@ Func_426::
 	jp Func_4783
 .asm_47a
 	ldh a, [hVBlankFlags]
-	and $f3
+	and $ff ^ (VBLANK_2 | VBLANK_3)
 	ldh [hVBlankFlags], a
 	jp Func_4783
 
@@ -426,7 +426,7 @@ ProcessDoorConnection::
 	call Func_139b
 	ld b, $13
 .asm_54d
-	call Func_1def
+	call WaitVBlank
 	push bc
 	xor a
 	ld [wVirtualOAMSize], a
@@ -536,7 +536,7 @@ ProcessDoorConnection::
 	call ClearSprites
 	call StopTimerAndSwitchOnLCD
 	call Func_670
-	ld a, $08
+	ld a, VBLANK_3
 	ldh [hVBlankFlags], a
 	ld a, [wd03d]
 	cp MUSIC_NONE
@@ -571,11 +571,7 @@ Func_648::
 	ld [wVirtualOAMSize], a
 	call Func_2e9c
 	call ClearSprites
-	ld hl, hVBlankFlags
-	set VBLANK_PENDING_F, [hl]
-.asm_664
-	bit VBLANK_PENDING_F, [hl]
-	jr nz, .asm_664
+	wait_vblank
 	ldh a, [hScrollingFlags]
 	bit SCROLLINGF_UNK7_F, a
 	jr nz, .asm_655
@@ -591,11 +587,7 @@ Func_670::
 	or SCROLLINGF_UNK3 | SCROLLINGF_UNK7
 	ldh [hScrollingFlags], a
 .asm_67e
-	ld hl, hVBlankFlags
-	set VBLANK_PENDING_F, [hl]
-.asm_683
-	bit VBLANK_PENDING_F, [hl]
-	jr nz, .asm_683
+	wait_vblank
 	ldh a, [hScrollingFlags]
 	bit SCROLLINGF_UNK7_F, a
 	jr nz, .asm_67e
@@ -606,8 +598,8 @@ Func_670::
 ; one byte to contain all player input.
 ReadJoypad:
 	ldh a, [hVBlankFlags]
-	bit VBLANK_7_F, a
-	ret nz
+	bit VBLANK_IGNORE_INPUT_F, a
+	ret nz ; ignoring input
 
 ; can only get four inputs at a time
 ; take d-pad first
@@ -648,7 +640,7 @@ ENDR
 	jr nz, .no_reset
 
 ; soft reset game
-	ld a, VBLANK_7
+	ld a, VBLANK_IGNORE_INPUT
 	ldh [hVBlankFlags], a
 	ei
 	call Func_648
@@ -3960,13 +3952,11 @@ WaitAFrames::
 	pop hl
 	ret
 
-Func_1def:
+; waits for V-Blank
+; preserves all registers
+WaitVBlank:
 	push hl
-	ld hl, hVBlankFlags
-	set 6, [hl]
-.asm_1df5
-	bit 6, [hl]
-	jr nz, .asm_1df5
+	wait_vblank
 	pop hl
 	ret
 
@@ -4021,14 +4011,14 @@ ResetTimer::
 	ld hl, hLCDC
 	res LCDCB_ON, [hl]
 	ld hl, hEngineFlags
-	set ENGINEF_UNK3_F, [hl]
-.asm_1e7e
-	bit ENGINEF_UNK3_F, [hl]
-	jr nz, .asm_1e7e
+	set RESET_TIMER_PENDING_F, [hl]
+.loop_wait_vblank
+	bit RESET_TIMER_PENDING_F, [hl]
+	jr nz, .loop_wait_vblank
 	ld a, TACF_STOP
 	ldh [rTAC], a
 	; sets timer to interrupt at
-	; 4k Hz / 68 ~ 60 Hz
+	; 4k Hz / 68 ~ 59 Hz
 	ld a, -68
 	ldh [rTMA], a
 	ld a, TACF_4KHZ | TACF_START
@@ -4741,7 +4731,7 @@ ASSERT Data_1c000 == Data_3c000
 	ld [hl], a ; wd038
 
 	ld a, [hEngineFlags]
-	and ~(ENGINEF_UNK0 | ENGINEF_UNK1)
+	and ~(KABOOLA_BATTLE | ENGINEF_UNK1)
 	ld [hEngineFlags], a
 
 	ld a, [wd03f]
@@ -7099,7 +7089,7 @@ Func_2fdf:
 .asm_2fff
 	call .Func_303a
 	ld a, [hEngineFlags]
-	bit ENGINEF_UNK0_F, a
+	bit KABOOLA_BATTLE_F, a
 	ret nz
 	ld hl, wMintLeafCounter
 	call .Func_3047
@@ -7116,7 +7106,7 @@ Func_2fdf:
 	ld hl, hPalFadeFlags
 	set SCROLLINGF_UNK3_F, [hl]
 	ld a, [hEngineFlags]
-	and ~(ENGINEF_UNK0 | ENGINEF_UNK1)
+	and ~(KABOOLA_BATTLE | ENGINEF_UNK1)
 	ld [hEngineFlags], a
 .asm_3030
 	ld a, [hKirbyFlags6]
@@ -8055,7 +8045,7 @@ PuffSpit::
 	call CreateObject_Group2
 	jr c, Func_388a
 	ld a, [hEngineFlags]
-	bit ENGINEF_UNK0_F, a
+	bit KABOOLA_BATTLE_F, a
 	jr nz, Func_3873
 	ld hl, wd1b0
 	add hl, bc

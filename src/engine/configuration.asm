@@ -45,22 +45,11 @@ ConfigurationMenu:
 
 	ld a, [wConfigLives]
 	call .UpdateNumLives
-
-	ld hl, hVBlankFlags
-	set VBLANK_PENDING_F, [hl]
-.asm_1a3f2
-	bit VBLANK_PENDING_F, [hl]
-	jr nz, .asm_1a3f2
-
+	wait_vblank
 	call .ConfigUpdateCursor
 
 .input_ret
-	ld hl, hVBlankFlags
-	set VBLANK_PENDING_F, [hl]
-.asm_1a3fe
-	bit VBLANK_PENDING_F, [hl]
-	jr nz, .asm_1a3fe
-
+	wait_vblank
 	call Func_19098
 
 	ld hl, .input_ret
@@ -273,12 +262,7 @@ ConfigurationMenu:
 	call .UpdateSoundCheckCursor
 
 .asm_1a58a
-	ld hl, hVBlankFlags
-	set VBLANK_PENDING_F, [hl]
-.asm_1a58f
-	bit VBLANK_PENDING_F, [hl]
-	jr nz, .asm_1a58f
-
+	wait_vblank
 	call Func_19098
 
 	ld a, [hJoypadPressed]
