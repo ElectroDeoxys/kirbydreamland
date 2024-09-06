@@ -213,7 +213,7 @@ StartStage::
 	ret
 
 StageMusics:
-	table_width 1, StageMusics
+	table_width 1
 	db MUSIC_GREEN_GREENS
 	db MUSIC_CASTLE_LOLOLO
 	db MUSIC_FLOAT_ISLANDS
@@ -408,7 +408,7 @@ StageIntro:
 	ret
 
 StageIntroDurations:
-	table_width 2, StageIntroDurations
+	table_width 2
 	dw 320 ; GREEN_GREENS
 	dw 343 ; CASTLE_LOLOLO
 	dw 400 ; FLOAT_ISLANDS
@@ -911,7 +911,7 @@ _LoseLife::
 	jp ResetStage
 
 Data_1874d:
-	table_width 1, Data_1874d
+	table_width 1
 	db MT_DEDEDE_0 ; MT_DEDEDE_0
 	db MT_DEDEDE_1 ; MT_DEDEDE_1
 	db MT_DEDEDE_2 ; MT_DEDEDE_2
@@ -2088,7 +2088,7 @@ Func_19098:
 	ret
 
 Data_190bb:
-	table_width 3, Data_190bb
+	table_width 3
 	db $06, $78, $35 ; GREEN_GREENS
 	db $06, $78, $df ; CASTLE_LOLOLO
 	db $06, $79, $5d ; FLOAT_ISLANDS
@@ -2097,7 +2097,7 @@ Data_190bb:
 	assert_table_length NUM_STAGES
 
 StageTransistions:
-	table_width 2, StageTransistions
+	table_width 2
 	dw .GreenGreens  ; GREEN_GREENS
 	dw .CastleLololo ; CASTLE_LOLOLO
 	dw .FloatIslands ; FLOAT_ISLANDS
@@ -2106,7 +2106,7 @@ StageTransistions:
 	assert_table_length NUM_STAGES
 
 .GreenGreens:
-	table_width 2, StageTransistions.GreenGreens
+	table_width 2
 	dw .GreenGreens0 ; GREEN_GREENS_0
 	dw .NoTransition ; GREEN_GREENS_1
 	dw .NoTransition ; GREEN_GREENS_2
@@ -2115,7 +2115,7 @@ StageTransistions:
 	assert_table_length NUM_GREEN_GREENS_AREAS
 
 .CastleLololo:
-	table_width 2, StageTransistions.CastleLololo
+	table_width 2
 	dw .NoTransition ; CASTLE_LOLOLO_00
 	dw .NoTransition ; CASTLE_LOLOLO_01
 	dw .NoTransition ; CASTLE_LOLOLO_02
@@ -2135,7 +2135,7 @@ StageTransistions:
 	assert_table_length NUM_CASTLE_LOLOLO_AREAS
 
 .FloatIslands:
-	table_width 2, StageTransistions.FloatIslands
+	table_width 2
 	dw .NoTransition ; FLOAT_ISLANDS_0
 	dw .NoTransition ; FLOAT_ISLANDS_1
 	dw .NoTransition ; FLOAT_ISLANDS_2
@@ -2147,7 +2147,7 @@ StageTransistions:
 	assert_table_length NUM_FLOAT_ISLANDS_AREAS
 
 .BubblyClouds:
-	table_width 2, StageTransistions.BubblyClouds
+	table_width 2
 	dw .NoTransition ; BUBBLY_CLOUDS_0
 	dw .NoTransition ; BUBBLY_CLOUDS_1
 	dw .NoTransition ; BUBBLY_CLOUDS_2
@@ -2161,7 +2161,7 @@ StageTransistions:
 	assert_table_length NUM_BUBBLY_CLOUDS_AREAS
 
 .MtDedede:
-	table_width 2, StageTransistions.MtDedede
+	table_width 2
 	dw .MtDedede0 ; MT_DEDEDE_0
 	dw .NoTransition ; MT_DEDEDE_1
 	dw .NoTransition ; MT_DEDEDE_2
@@ -2302,7 +2302,7 @@ StageTransistions:
 	trans_epilogue 1
 
 Data_1926a:
-	table_width 2, Data_1926a
+	table_width 2
 	dw .GreenGreens ; GREEN_GREENS
 	dw .CastleLololo ; CASTLE_LOLOLO
 	dw .FloatIslands ; FLOAT_ISLANDS
@@ -2311,7 +2311,7 @@ Data_1926a:
 	assert_table_length NUM_STAGES
 
 .GreenGreens:
-	table_width 2, Data_1926a.GreenGreens
+	table_width 2
 	dw AnimScript_2004b ; GREEN_GREENS_0
 	dw NULL ; GREEN_GREENS_1
 	dw NULL ; GREEN_GREENS_2
@@ -2320,7 +2320,7 @@ Data_1926a:
 	assert_table_length NUM_GREEN_GREENS_AREAS
 
 .CastleLololo:
-	table_width 2, Data_1926a.CastleLololo
+	table_width 2
 	dw NULL ; CASTLE_LOLOLO_00
 	dw NULL ; CASTLE_LOLOLO_01
 	dw NULL ; CASTLE_LOLOLO_02
@@ -2340,7 +2340,7 @@ Data_1926a:
 	assert_table_length NUM_CASTLE_LOLOLO_AREAS
 
 .FloatIslands:
-	table_width 2, Data_1926a.FloatIslands
+	table_width 2
 	dw NULL ; FLOAT_ISLANDS_0
 	dw NULL ; FLOAT_ISLANDS_1
 	dw NULL ; FLOAT_ISLANDS_2
@@ -2352,7 +2352,7 @@ Data_1926a:
 	assert_table_length NUM_FLOAT_ISLANDS_AREAS
 
 .BubblyClouds:
-	table_width 2, Data_1926a.BubblyClouds
+	table_width 2
 	dw NULL ; BUBBLY_CLOUDS_0
 	dw NULL ; BUBBLY_CLOUDS_1
 	dw NULL ; BUBBLY_CLOUDS_2
@@ -2366,7 +2366,7 @@ Data_1926a:
 	assert_table_length NUM_BUBBLY_CLOUDS_AREAS
 
 .MtDedede:
-	table_width 2, Data_1926a.MtDedede
+	table_width 2
 	dw AnimScript_20206 ; MT_DEDEDE_0
 	dw NULL ; MT_DEDEDE_1
 	dw NULL ; MT_DEDEDE_2

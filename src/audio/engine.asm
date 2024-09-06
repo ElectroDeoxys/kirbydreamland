@@ -1626,7 +1626,7 @@ NoiseChannelPolynomialCounters:
 	db %101 | AUD4POLY_15STEP | (6 << 4)
 
 WaveSamples:
-	table_width 16, WaveSamples
+	table_width 16
 	dn  2,  2,  6,  6, 10, 10, 14, 14, 15, 15, 15, 15, 15, 14, 14, 10, 10,  6,  6,  6,  8, 10, 12, 15, 15, 14, 14, 12, 10,  6,  3,  3 ; WAVEFORM_M_SHAPE
 	dn 15, 15, 15, 15, 15, 15, 15, 15,  0,  0,  0,  0,  0,  0,  0,  0, 15, 15, 15, 15, 15, 15, 15, 15,  0,  0,  0,  0,  0,  0,  0,  0 ; WAVEFORM_SQUARE
 	dn  1,  3,  5,  7,  9, 11, 13, 15, 13, 11,  9,  7,  5,  3,  1,  0,  1,  3,  5,  7,  9, 11, 13, 15, 13, 11,  9,  7,  5,  3,  1,  0 ; WAVEFORM_SINE
@@ -1804,7 +1804,7 @@ MusicHeader_MtDedede:
 
 	db $30
 	audio_f4 $80
-	
+
 ; 0x155cd
 
 SECTION "Bank 5@6f6d", ROMX[$6f6d], BANK[$5]
@@ -2585,7 +2585,7 @@ AudioScript_178c9:
 	db $ff ; end
 
 Instruments:
-	table_width 4, Instruments
+	table_width 4
 	dw AudioScript_16f6d, AudioScript_16f79 ; INSTRUMENT_00
 	dw AudioScript_16f70, AudioScript_16f79 ; INSTRUMENT_01
 	dw AudioScript_16f73, AudioScript_16f79 ; INSTRUMENT_02
@@ -2643,7 +2643,7 @@ Instruments:
 	assert_table_length NUM_INSTRUMENTS
 
 TempoModeNoteDurations:
-	table_width 6, TempoModeNoteDurations
+	table_width 6
 	db  1,  2,  3,  4,  5,  6 ; TEMPO_00
 	db  5, 10, 15, 20, 30, 80 ; TEMPO_01
 	db  9, 18, 27, 36, 45, 54 ; TEMPO_02
@@ -2659,7 +2659,7 @@ TempoModeNoteDurations:
 	assert_table_length NUM_TEMPO_MODES
 
 MusicHeaders:
-	table_width 2, MusicHeaders
+	table_width 2
 	dw MusicHeader_BubblyCloudsIntro  ; MUSIC_BUBBLY_CLOUDS_INTRO
 	dw MusicHeader_GreenGreensIntro   ; MUSIC_GREEN_GREENS_INTRO
 	dw MusicHeader_InvincibilityCandy ; MUSIC_INVINCIBILITY_CANDY
@@ -2682,7 +2682,7 @@ MusicHeaders:
 	assert_table_length NUM_MUSICS
 
 SFXHeaders:
-	table_width 2, SFXHeaders
+	table_width 2
 	dw SFXHeader_00         ; SFX_00
 	dw SFXHeader_Inhale     ; SFX_INHALE
 	dw SFXHeader_02         ; SFX_02
@@ -2723,7 +2723,7 @@ SFXHeaders:
 
 ; for each SFX, lists the channels that are used
 SFXRequiredChannels:
-	table_width 1, SFXRequiredChannels
+	table_width 1
 	db SFXFLAG_SQUARE1 | SFXFLAG_SQUARE2 ; SFX_00
 	db SFXFLAG_SQUARE2 | SFXFLAG_NOISE ; SFX_INHALE
 	db SFXFLAG_SQUARE2 ; SFX_02
@@ -2765,7 +2765,7 @@ SFXRequiredChannels:
 ; priority values for each SFX
 ; lower value means higher priority
 SFXPriorities:
-	table_width 1, SFXPriorities
+	table_width 1
 	db 10 ; SFX_00
 	db 50 ; SFX_INHALE
 	db 50 ; SFX_02

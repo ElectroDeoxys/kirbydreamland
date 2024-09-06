@@ -12,7 +12,7 @@ ENDC
 ENDM
 
 Data_1c000::
-	table_width 2, Data_1c000
+	table_width 2
 	dw .GreenGreens ; GREEN_GREENS
 	dw .CastleLololo ; CASTLE_LOLOLO
 	dw .FloatIslands ; FLOAT_ISLANDS
@@ -21,7 +21,7 @@ Data_1c000::
 	assert_table_length NUM_STAGES
 
 .GreenGreens:
-	table_width 4, Data_1c000.GreenGreens
+	table_width 4
 	dw Data_1c202, Data_1c2d0 ; GREEN_GREENS_0
 	dw Data_1c245, Data_1c2d0 ; GREEN_GREENS_1
 	dw Data_1c24f, Data_1c2d0 ; GREEN_GREENS_2
@@ -30,7 +30,7 @@ Data_1c000::
 	assert_table_length NUM_GREEN_GREENS_AREAS
 
 .CastleLololo:
-	table_width 4, Data_1c000.CastleLololo
+	table_width 4
 	dw $45b2, $45b9 ; CASTLE_LOLOLO_00
 	dw $4621, $4625 ; CASTLE_LOLOLO_01
 	dw $4692, $46a2 ; CASTLE_LOLOLO_02
@@ -50,7 +50,7 @@ Data_1c000::
 	assert_table_length NUM_CASTLE_LOLOLO_AREAS
 
 .FloatIslands:
-	table_width 4, Data_1c000.FloatIslands
+	table_width 4
 	dw $4a39, $4aa9 ; FLOAT_ISLANDS_0
 	dw $4aad, $4ae4 ; FLOAT_ISLANDS_1
 	dw $4b1b, $4b31 ; FLOAT_ISLANDS_2
@@ -62,7 +62,7 @@ Data_1c000::
 	assert_table_length NUM_FLOAT_ISLANDS_AREAS
 
 .BubblyClouds:
-	table_width 4, Data_1c000.BubblyClouds
+	table_width 4
 	dw $4f48, $4fa3 ; BUBBLY_CLOUDS_0
 	dw $50d3, $510d ; BUBBLY_CLOUDS_1
 	dw $51c5, $51c9 ; BUBBLY_CLOUDS_2
@@ -76,7 +76,7 @@ Data_1c000::
 	assert_table_length NUM_BUBBLY_CLOUDS_AREAS
 
 .MtDedede:
-	table_width 4, Data_1c000.MtDedede
+	table_width 4
 	dw $5976, $5a22 ; MT_DEDEDE_0
 	dw $597a, $5a22 ; MT_DEDEDE_1
 	dw $5993, $59b2 ; MT_DEDEDE_2
@@ -90,7 +90,7 @@ Data_1c000::
 	assert_table_length NUM_MT_DEDEDE_AREAS
 
 Data_1c0ce::
-	table_width 4, Data_1c0ce
+	table_width 4
 	dw Data_1d58f, Data_1d7e7 ; SCENE_TITLE_SCREEN
 	dw Data_1d5ba, Data_1d7e7 ; SCENE_SOUND_TEST
 	dw Data_1d5fd, Data_1d7e7 ; SCENE_03
@@ -121,7 +121,7 @@ Data_1c0ce::
 	assert_table_length NUM_SCENES
 
 Data_1c13a::
-	table_width 4, Data_1c13a
+	table_width 4
 	dw $578b, Data_1d7e7 ; GREEN_GREENS
 	dw $57a7, Data_1d7e7 ; CASTLE_LOLOLO
 	dw $57bd, Data_1d7e7 ; FLOAT_ISLANDS

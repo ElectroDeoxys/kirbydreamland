@@ -1,5 +1,5 @@
 Data_3c000::
-	table_width 2, Data_3c000
+	table_width 2
 	dw .GreenGreens ; GREEN_GREENS
 	dw .CastleLololo ; CASTLE_LOLOLO
 	dw .FloatIslands ; FLOAT_ISLANDS
@@ -8,7 +8,7 @@ Data_3c000::
 	assert_table_length NUM_STAGES
 
 .GreenGreens:
-	table_width 4, Data_3c000.GreenGreens
+	table_width 4
 	dw $4202, $42d0 ; GREEN_GREENS_0
 	dw $4245, $42d0 ; GREEN_GREENS_1
 	dw $424f, $42d0 ; GREEN_GREENS_2
@@ -17,7 +17,7 @@ Data_3c000::
 	assert_table_length NUM_GREEN_GREENS_AREAS
 
 .CastleLololo:
-	table_width 4, Data_3c000.CastleLololo
+	table_width 4
 	dw $45b2, $45b9 ; CASTLE_LOLOLO_00
 	dw $4621, $4625 ; CASTLE_LOLOLO_01
 	dw $4692, $46a2 ; CASTLE_LOLOLO_02
@@ -37,7 +37,7 @@ Data_3c000::
 	assert_table_length NUM_CASTLE_LOLOLO_AREAS
 
 .FloatIslands:
-	table_width 4, Data_3c000.FloatIslands
+	table_width 4
 	dw $4a2c, $4a9c ; FLOAT_ISLANDS_0
 	dw $4aa0, $4ada ; FLOAT_ISLANDS_1
 	dw $4a9c, $4b14 ; FLOAT_ISLANDS_2
@@ -49,7 +49,7 @@ Data_3c000::
 	assert_table_length NUM_FLOAT_ISLANDS_AREAS
 
 .BubblyClouds:
-	table_width 4, Data_3c000.BubblyClouds
+	table_width 4
 	dw $4f37, $4f92 ; BUBBLY_CLOUDS_0
 	dw $50c2, $50fc ; BUBBLY_CLOUDS_1
 	dw $51b4, $51b8 ; BUBBLY_CLOUDS_2
@@ -63,7 +63,7 @@ Data_3c000::
 	assert_table_length NUM_BUBBLY_CLOUDS_AREAS
 
 .MtDedede:
-	table_width 4, Data_3c000.MtDedede
+	table_width 4
 	dw $5d88, $5e34 ; MT_DEDEDE_0
 	dw $5d8c, $5e34 ; MT_DEDEDE_1
 	dw $5da5, $5dc4 ; MT_DEDEDE_2

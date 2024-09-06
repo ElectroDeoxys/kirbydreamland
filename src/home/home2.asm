@@ -3642,7 +3642,7 @@ Func_19f9::
 	ret
 
 Data_1bc5:
-	table_width 1, Data_1bc5
+	table_width 1
 	db MT_DEDEDE     ; MT_DEDEDE_0
 	db GREEN_GREENS  ; MT_DEDEDE_1
 	db CASTLE_LOLOLO ; MT_DEDEDE_2
@@ -3656,7 +3656,7 @@ Data_1bc5:
 	assert_table_length NUM_MT_DEDEDE_AREAS
 
 MtDededeAreaMusics:
-	table_width 1, MtDededeAreaMusics
+	table_width 1
 	db MUSIC_MT_DEDEDE     ; MT_DEDEDE_0
 	db MUSIC_GREEN_GREENS  ; MT_DEDEDE_1
 	db MUSIC_CASTLE_LOLOLO ; MT_DEDEDE_2
@@ -4354,7 +4354,7 @@ MACRO data_2070
 ENDM
 
 Data_2070::
-	table_width 5, Data_2070
+	table_width 5
 	data_2070 $02, $4952, vTiles1 tile $2e ; GREEN_GREENS
 	data_2070 $02, $5266, vTiles1 tile $2e ; CASTLE_LOLOLO
 	data_2070 $02, $5b2c, vTiles1 tile $2e ; FLOAT_ISLANDS
@@ -4363,7 +4363,7 @@ Data_2070::
 	assert_table_length NUM_STAGES
 
 Data_2089::
-	table_width 5, Data_2089
+	table_width 5
 	data_2070 $0a, $51f5, vTiles1 tile $2e ; GREEN_GREENS
 	data_2070 $0a, $5b0b, vTiles1 tile $2e ; CASTLE_LOLOLO
 	data_2070 $0a, $63c1, vTiles1 tile $2e ; FLOAT_ISLANDS
@@ -4377,7 +4377,7 @@ MACRO data_20a2
 ENDM
 
 StageBlockTileMaps::
-	table_width 3, StageBlockTileMaps
+	table_width 3
 	data_20a2 $03, $46e0 ; GREEN_GREENS
 	data_20a2 $03, $4ac3 ; CASTLE_LOLOLO
 	data_20a2 $03, $48d9 ; FLOAT_ISLANDS
@@ -8069,7 +8069,7 @@ Func_388a:
 
 StageHeaders::
 ; starting area, ?, ?, starting X, starting Y, black/white fade, intro music
-	table_width 7, StageHeaders
+	table_width 7
 	db GREEN_GREENS_0,   01, $01, $28, $3c, FALSE, MUSIC_GREEN_GREENS_INTRO  ; GREEN_GREENS
 	db CASTLE_LOLOLO_00, 01, $01, $28, $58, FALSE, MUSIC_CASTLE_LOLOLO_INTRO ; CASTLE_LOLOLO
 	db FLOAT_ISLANDS_0,  01, $01, $28, $32, FALSE, MUSIC_FLOAT_ISLANDS_INTRO ; FLOAT_ISLANDS
@@ -8088,7 +8088,7 @@ MACRO area
 ENDM
 
 Data_38b1:
-	table_width 2, Data_38b1
+	table_width 2
 	dw .GreenGreens ; GREEN_GREENS
 	dw .CastleLololo ; CASTLE_LOLOLO
 	dw .FloatIslands ; FLOAT_ISLANDS
@@ -8097,7 +8097,7 @@ Data_38b1:
 	assert_table_length NUM_STAGES
 
 .GreenGreens:
-	table_width 8, Data_38b1.GreenGreens
+	table_width 8
 	area $03, $6da3, $6e, $08, $00, $00, $46 ; GREEN_GREENS_0
 	area $03, $6a78, $10, $08, $00, $00, $06 ; GREEN_GREENS_1
 	area $03, $6ba1, $50, $08, $00, $00, $46 ; GREEN_GREENS_2
@@ -8106,7 +8106,7 @@ Data_38b1:
 	assert_table_length NUM_GREEN_GREENS_AREAS
 
 .CastleLololo:
-	table_width 8, Data_38b1.CastleLololo
+	table_width 8
 	area $03, $7626, $0a, $08, $00, $00, $00 ; CASTLE_LOLOLO_00
 	area $03, $771e, $0a, $10, $01, $00, $00 ; CASTLE_LOLOLO_01
 	area $03, $73f1, $0a, $08, $00, $00, $00 ; CASTLE_LOLOLO_02
@@ -8126,7 +8126,7 @@ Data_38b1:
 	assert_table_length NUM_CASTLE_LOLOLO_AREAS
 
 .FloatIslands:
-	table_width 8, Data_38b1.FloatIslands
+	table_width 8
 	area $03, $6273, $78, $08, $00, $00, $6e ; FLOAT_ISLANDS_0
 	area $03, $6688, $32, $10, $01, $00, $28 ; FLOAT_ISLANDS_1
 	area $03, $65bc, $0a, $18, $00, $00, $00 ; FLOAT_ISLANDS_2
@@ -8138,7 +8138,7 @@ Data_38b1:
 	assert_table_length NUM_FLOAT_ISLANDS_AREAS
 
 .BubblyClouds:
-	table_width 8, Data_38b1.BubblyClouds
+	table_width 8
 	area $03, $7843, $62, $08, $00, $00, $58 ; BUBBLY_CLOUDS_0
 	area $03, $7c9f, $46, $08, $00, $00, $3c ; BUBBLY_CLOUDS_1
 	area $03, $7ac5, $12, $20, $00, $04, $16 ; BUBBLY_CLOUDS_2
@@ -8152,7 +8152,7 @@ Data_38b1:
 	assert_table_length NUM_BUBBLY_CLOUDS_AREAS
 
 .MtDedede:
-	table_width 8, Data_38b1.MtDedede
+	table_width 8
 	area $06, $716e, $3c, $08, $00, $10, $32 ; MT_DEDEDE_0
 	area $06, $7653, $28, $08, $00, $00, $1e ; MT_DEDEDE_1
 	area $06, $7225, $1e, $10, $00, $00, $14 ; MT_DEDEDE_2
@@ -8173,7 +8173,7 @@ Data_3a43::
 	dw .MtDedede ; MT_DEDEDE
 
 .GreenGreens:
-	table_width 5, Data_3a43.GreenGreens
+	table_width 5
 	db GREEN_GREENS_0, $01, $01, $28, $40 ; GREEN_GREENS_0
 	db GREEN_GREENS_0, $01, $01, $28, $40 ; GREEN_GREENS_1
 	db GREEN_GREENS_2, $01, $01, $28, $50 ; GREEN_GREENS_2
@@ -8182,7 +8182,7 @@ Data_3a43::
 	assert_table_length NUM_GREEN_GREENS_AREAS
 
 .CastleLololo:
-	table_width 5, Data_3a43.CastleLololo
+	table_width 5
 	db CASTLE_LOLOLO_00, $01, $01, $28, $40 ; CASTLE_LOLOLO_00
 	db CASTLE_LOLOLO_00, $01, $01, $28, $40 ; CASTLE_LOLOLO_01
 	db CASTLE_LOLOLO_00, $01, $01, $28, $40 ; CASTLE_LOLOLO_02
@@ -8201,7 +8201,7 @@ Data_3a43::
 	assert_table_length NUM_CASTLE_LOLOLO_AREAS - 1
 
 .FloatIslands:
-	table_width 5, Data_3a43.FloatIslands
+	table_width 5
 	db FLOAT_ISLANDS_0, $01, $01, $28, $40 ; FLOAT_ISLANDS_0
 	db FLOAT_ISLANDS_1, $01, $01, $48, $50 ; FLOAT_ISLANDS_1
 	db FLOAT_ISLANDS_1, $01, $01, $48, $50 ; FLOAT_ISLANDS_2
@@ -8213,7 +8213,7 @@ Data_3a43::
 	assert_table_length NUM_FLOAT_ISLANDS_AREAS
 
 .BubblyClouds:
-	table_width 5, Data_3a43.BubblyClouds
+	table_width 5
 	db BUBBLY_CLOUDS_0, $01, $01, $48, $40 ; BUBBLY_CLOUDS_0
 	db BUBBLY_CLOUDS_1, $01, $01, $28, $70 ; BUBBLY_CLOUDS_1
 	db BUBBLY_CLOUDS_2, $01, $19, $48, $50 ; BUBBLY_CLOUDS_2
@@ -8227,7 +8227,7 @@ Data_3a43::
 	assert_table_length NUM_BUBBLY_CLOUDS_AREAS
 
 .MtDedede:
-	table_width 5, Data_3a43.MtDedede
+	table_width 5
 	db MT_DEDEDE_0, $33, $01, $48, $70 ; MT_DEDEDE_0
 	db MT_DEDEDE_0, $33, $01, $48, $70 ; MT_DEDEDE_1
 	db MT_DEDEDE_0, $33, $01, $48, $70 ; MT_DEDEDE_2
