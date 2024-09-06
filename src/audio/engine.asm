@@ -193,9 +193,9 @@ ChannelDefaultConfigs:
 ; - [de] = audio commands
 ; - bc = channel
 InitChannel:
-	ld hl, wde8a
+	ld hl, wChannelBaseNotes
 	add hl, bc
-	ld [hl], $24
+	ld [hl], C_3
 	xor a
 	ld hl, wde92
 	add hl, bc
@@ -206,7 +206,7 @@ InitChannel:
 	ld hl, wdea2
 	add hl, bc
 	ld [hl], a
-	ld hl, wdeaa
+	ld hl, wChannelTempoModes
 	add hl, bc
 	ld [hl], a
 	ld hl, wdeb2
@@ -583,9 +583,9 @@ ExecuteAudioCommands:
 	and $0f
 	cp $0f
 	jr z, .asm_14fb6
-	add $a0
+	add LOW(NoiseChannelPolynomialCounters)
 	ld l, a
-	ld h, $54
+	ld h, HIGH(NoiseChannelPolynomialCounters)
 	incc h
 	ld c, [hl]
 	ld a, CHANNEL4_FREQUENCY
@@ -602,15 +602,16 @@ ExecuteAudioCommands:
 	or $e0
 .asm_14fa7
 	ld c, a
-	ld a, LOW(wde8a)
+	ld a, LOW(wChannelBaseNotes)
 	add b
 	ld l, a
 	ld a, [hl]
-	add c
+	add c ; + fundamental note
 	push de
-	call Func_151f9
+	call SetChannelNoteFrequency
 	pop de
 	jp .asm_14fcd
+
 .asm_14fb6
 	call .Func_15038
 	ld c, a
@@ -676,9 +677,9 @@ ExecuteAudioCommands:
 	add a ; *4
 .asm_15008
 	push de
-	add $d3
+	add LOW(Instruments)
 	ld e, a
-	ld d, $78
+	ld d, HIGH(Instruments)
 	incc d
 	ld h, HIGH(wde72)
 	ld a, LOW(wde72)
@@ -692,8 +693,8 @@ ExecuteAudioCommands:
 	inc de
 	ld a, [de]
 	ld [hl], a
-	ld h, $54
-	ld a, $96
+	ld h, HIGH(Data_15496)
+	ld a, LOW(Data_15496)
 	add b
 	ld l, a
 	incc h
@@ -703,7 +704,7 @@ ExecuteAudioCommands:
 	add b
 	ld l, a
 	ld [hl], c
-	add $a8
+	add wde6a - wdec2
 	ld l, a
 	ld [hl], $01
 	pop de
@@ -718,20 +719,21 @@ ExecuteAudioCommands:
 	inc de
 	ld a, [de]
 	jr .got_duration
+
 .asm_15043
-	ld h, HIGH(wdeaa)
-	ld a, LOW(wdeaa)
+	ld h, HIGH(wChannelTempoModes)
+	ld a, LOW(wChannelTempoModes)
 	add b
 	ld l, a
 	ld a, [de]
 	and $e0
 	swap a
 	srl a
-	add [hl]
-	add $ab
+	add [hl] ; wChannelTempoModes
+	add LOW(TempoModeNoteDurations)
 	ld l, a
 	ld a, $00
-	adc $79
+	adc HIGH(TempoModeNoteDurations)
 	ld h, a
 	ld a, [hl]
 .got_duration
@@ -767,7 +769,7 @@ ExecuteAudioCommands:
 
 .asm_15081
 	cp AUDIOCMD_F1
-	jr nz, .asm_150a5
+	jr nz, .tempo_mode_cmd
 	inc de
 	ld a, [de]
 	ld c, a
@@ -791,8 +793,8 @@ ExecuteAudioCommands:
 .asm_150a3
 	jr .asm_15071
 
-.asm_150a5
-	cp AUDIOCMD_F2
+.tempo_mode_cmd
+	cp AUDIOCMD_SET_TEMPO_MODE
 	jr nz, .asm_150ba
 	inc de
 	ld a, [de]
@@ -800,7 +802,7 @@ ExecuteAudioCommands:
 	ld c, a
 	add a
 	add c ; *6
-	ld hl, wdeaa
+	ld hl, wChannelTempoModes
 .set_channel_value
 	ld c, a
 	ld a, l
@@ -828,22 +830,22 @@ ExecuteAudioCommands:
 
 .asm_150cf
 	cp AUDIOCMD_F4
-	jr nz, .asm_150db
+	jr nz, .base_note_cmd
 	inc de
 	ld a, [de]
 	ld hl, wde92
 	jp .set_channel_value
 
-.asm_150db
-	cp AUDIOCMD_F5
+.base_note_cmd
+	cp AUDIOCMD_SET_BASE_NOTE
 	jr nz, .asm_150e7
 	inc de
 	ld a, [de]
-	ld hl, wde8a
+	ld hl, wChannelBaseNotes
 	jp .set_channel_value
 
 .asm_150e7
-	cp AUDIOCMD_F6
+	cp AUDIOCMD_SET_INSTRUMENT
 	jr nz, .asm_150fc
 	inc de
 	ld h, HIGH(wdea2)
@@ -858,15 +860,15 @@ ExecuteAudioCommands:
 
 .asm_150fc
 	cp AUDIOCMD_F7
-	jr nz, .asm_15108
+	jr nz, .set_frequency_cmd
 	inc de
 	ld a, [de]
 	ld hl, wdeb2
 	jp .set_channel_value
 
-.asm_15108
+.set_frequency_cmd
 	cp AUDIOCMD_SET_FREQUENCY
-	jr nz, .asm_1511e
+	jr nz, .pitch_cmd
 	inc de
 	ld a, [de]
 	ld c, a
@@ -880,9 +882,9 @@ ExecuteAudioCommands:
 	pop de
 	jp .next_cmd
 
-.asm_1511e
-	cp AUDIOCMD_SUBTRACT_FREQUENCY
-	jr nz, .asm_15135
+.pitch_cmd
+	cp AUDIOCMD_PITCH
+	jr nz, .pan_cmd
 	inc de
 	ld a, [de]
 	push de
@@ -898,7 +900,7 @@ ExecuteAudioCommands:
 	pop de
 	jp .next_cmd
 
-.asm_15135
+.pan_cmd
 	cp AUDIOCMD_SET_PAN
 	jr nz, .asm_1516f
 	inc de
@@ -995,7 +997,7 @@ ExecuteStackAudioCommands:
 .ExecuteCommand:
 	ld a, [de]
 	cp AUDIOCMD_JUMP
-	jr nz, .asm_151bb
+	jr nz, .call_cmd
 	inc de
 	ld a, [de]
 	ld c, a
@@ -1005,9 +1007,9 @@ ExecuteStackAudioCommands:
 	ld e, c
 	ret
 
-.asm_151bb
+.call_cmd
 	cp AUDIOCMD_CALL
-	jr nz, .asm_151ce
+	jr nz, .ret_cmd
 	inc de
 	inc de
 	inc de
@@ -1024,18 +1026,18 @@ ExecuteStackAudioCommands:
 	ld d, c
 	ret
 
-.asm_151ce
+.ret_cmd
 	cp AUDIOCMD_RET
-	jr nz, .asm_151d7
+	jr nz, .repeat_cmd
 	ld e, [hl]
 	inc hl
 	ld d, [hl]
 	inc hl
 	ret
 
-.asm_151d7
+.repeat_cmd
 	cp AUDIOCMD_REPEAT
-	jr nz, .asm_151e6
+	jr nz, .repeat_end_cmd
 	inc de
 	ld a, [de]
 	ld c, a
@@ -1048,7 +1050,7 @@ ExecuteStackAudioCommands:
 	ld [hl], c
 	ret
 
-.asm_151e6
+.repeat_end_cmd
 	cp AUDIOCMD_REPEAT_END
 	jr nz, .asm_151f8
 	dec [hl]
@@ -1068,17 +1070,19 @@ ExecuteStackAudioCommands:
 .asm_151f8
 	ret
 
-Func_151f9:
+; input:
+; - a = note constant
+SetChannelNoteFrequency:
 	ld e, a
 	ld a, LOW(wdeb2)
 	add b
 	ld l, a
 	ld a, [hl]
 	add a ; *2
-	add $9e
+	add LOW(NoteFrequencyTable)
 	ld l, a
 	ld a, $00
-	adc $54
+	adc HIGH(NoteFrequencyTable)
 	ld h, a
 	ld a, [hli]
 	rlc e ; *2
@@ -1158,47 +1162,48 @@ Func_1525a:
 	ld a, [de]
 	ld c, a
 	and $e0
-	jr nz, .asm_1526d
+	jr nz, .check_change_pitch
 	ld a, c
 	and $1f
 	ld c, a
-	ld a, $6a
+	ld a, LOW(wde6a)
 	add b
 	ld l, a
 	ld [hl], c
 	inc de
 	ret
-.asm_1526d
+
+.check_change_pitch
 	cp $20
-	jr nz, .asm_1528a
+	jr nz, .volume_cmd
 	push bc
 	push de
 	call Func_153a8
 	call AddToChannelFrequency
 	pop de
 	pop bc
-
 .asm_1527b
 	ld a, [de]
-	and $10
+	and AUDIOCMD_BREAK
 	jr z, Func_15259
 	ld h, HIGH(wde6a)
 	ld a, LOW(wde6a)
 	add b
 	ld l, a
-	ld [hl], $01
+	ld [hl], 1
 	inc de
 	ret
 
-.asm_1528a
-	cp $40
+.volume_cmd
+	cp AUDIOCMD_VOLUME
 	jr nz, .asm_15294
 	ld a, c
 	and $0f
 	jp .asm_152b2
+
 .asm_15294
-	cp $60
-	jr nz, .asm_152ba
+	cp AUDIOCMD_VOLUME_SHIFT
+	jr nz, .wave_cmd
 	push de
 	call Func_153a8
 	ld h, HIGH(wde9a)
@@ -1210,11 +1215,11 @@ Func_1525a:
 	add e
 	bit 7, a
 	jr z, .asm_152ab
-	xor a
+	xor a ; cap to min 0
 .asm_152ab
-	cp $10
+	cp 15 + 1
 	jr c, .asm_152b1
-	ld a, $0f
+	ld a, 15 ; cap to max 15
 .asm_152b1
 	pop de
 .asm_152b2
@@ -1222,8 +1227,9 @@ Func_1525a:
 	call Func_1533b
 	pop de
 	jp .asm_1527b
-.asm_152ba
-	cp $80
+
+.wave_cmd
+	cp AUDIOCMD_WAVE
 	jr nz, Func_15311
 	ld h, HIGH(wChannelSelectorOffsets)
 	ld a, LOW(wChannelSelectorOffsets)
@@ -1231,20 +1237,20 @@ Func_1525a:
 	ld l, a
 	ld a, [hl]
 	cp CHANNEL3_LENGTH - 1
-	jr z, .asm_152dc
+	jr z, .change_wave_sample
 	ld a, CHANNEL_SELECTOR_LENGTH
 	call GetPointerToChannelProperty_GotOffset
 	ld a, c
 	rrca
 	rrca
-	and $c0
+	and $c0 ; wave duty cycle mask
 	ld c, a
 	ld a, [hl]
 	and $3f
 	or c
 	ld [hl], a
 	jp .asm_1527b
-.asm_152dc
+.change_wave_sample
 	ld a, c
 	and $0f
 	ld hl, wWaveSample
@@ -1298,7 +1304,7 @@ Func_15311:
 .asm_15326
 	cp $ff
 	jr nz, .asm_15331
-	ld a, $6a
+	ld a, LOW(wde6a)
 	add b
 	ld l, a
 	ld [hl], $00
@@ -1310,6 +1316,8 @@ Func_15311:
 .asm_1533a
 	ret
 
+; input:
+; - a = ?
 Func_1533b:
 	ld c, a
 	ld h, HIGH(wde9a)
@@ -1325,7 +1333,7 @@ Func_1533b:
 Func_15347:
 	push de
 	; subtracts from $ff each nybble in [hl]
-	; so you get e = ($f - high nybble [hl]) - ($f - low nybble [hl])
+	; so you get e = low nybble [hl] - ($f - high nybble [hl])
 	ld a, $ff
 	sub [hl]
 	swap a
@@ -1336,7 +1344,7 @@ Func_15347:
 	sub e
 	ld e, a
 	jr nc, .no_underflow
-	ld e, $00 ; minimum of 0
+	ld e, 0 ; minimum of 0
 .no_underflow
 	push hl
 	ld hl, wde01
@@ -1363,7 +1371,7 @@ Func_15347:
 	ld a, [hl]
 	cp CHANNEL3_LENGTH - 1
 	jr z, .channel_3
-; set envelope
+; set envelope initial volume
 	ld a, CHANNEL_SELECTOR_ENVELOPE
 	call GetPointerToChannelProperty_GotOffset
 	swap e
@@ -1402,15 +1410,20 @@ Channel3OutputLevels:
 	db AUD3LEVEL_100  ; $e
 	db AUD3LEVEL_100  ; $f
 
+; input:
+; - c = 4-bit two's compliment frequency
+; output:
+; - de = frequency
 Func_153a8:
 	ld a, c
 	and $0f
 	ld d, $00
 	bit 3, a
-	jr z, .asm_153b4
+	jr z, .positive
+; negative
 	or $f0
-	dec d
-.asm_153b4
+	dec d ; $ff
+.positive
 	ld e, a
 	ret
 
@@ -1461,7 +1474,7 @@ GetPointerToChannelConfig:
 Func_153d3:
 	push bc
 	push de
-	ld d, $dc
+	ld d, HIGH(wdc00)
 	ld l, a
 	ld h, d
 	and e
@@ -1476,10 +1489,10 @@ Func_153d3:
 	ld b, a
 	ld a, l
 	sub e
-	jr nc, .asm_153e9
+	jr nc, .positive
 	cpl
 	inc a
-.asm_153e9
+.positive
 	ld l, a
 	dec h
 	ld a, c
@@ -1493,7 +1506,81 @@ Func_153d3:
 	pop de
 	pop bc
 	ret
-; 0x153f6
+
+NoteFrequencies:
+	bigdw  $3b ;   65.9 Hz ; C_0
+	bigdw  $aa ;   69.8 Hz ; C#0
+	bigdw $112 ;   73.9 Hz ; D_0
+	bigdw $175 ;   78.3 Hz ; D#0
+	bigdw $1d3 ;   82.9 Hz ; E_0
+	bigdw $22b ;   87.8 Hz ; F_0
+	bigdw $27e ;   93.0 Hz ; F#0
+	bigdw $2cd ;   98.5 Hz ; G_0
+	bigdw $317 ;  104.3 Hz ; G#0
+	bigdw $35d ;  110.4 Hz ; A_0
+	bigdw $3a0 ;  117.0 Hz ; A#0
+	bigdw $3de ;  123.9 Hz ; B_0
+	bigdw $419 ;  131.2 Hz ; C_1
+	bigdw $451 ;  139.0 Hz ; C#1
+	bigdw $486 ;  147.3 Hz ; D_1
+	bigdw $4b8 ;  156.0 Hz ; D#1
+	bigdw $4e7 ;  165.3 Hz ; E_1
+	bigdw $513 ;  175.0 Hz ; F_1
+	bigdw $53d ;  185.4 Hz ; F#1
+	bigdw $564 ;  196.2 Hz ; G_1
+	bigdw $58a ;  208.1 Hz ; G#1
+	bigdw $5ad ;  220.3 Hz ; A_1
+	bigdw $5ce ;  233.2 Hz ; A#1
+	bigdw $5ee ;  247.3 Hz ; B_1
+	bigdw $60b ;  261.6 Hz ; C_2
+	bigdw $627 ;  277.1 Hz ; C#2
+	bigdw $642 ;  293.9 Hz ; D_2
+	bigdw $65b ;  311.3 Hz ; D#2
+	bigdw $672 ;  329.3 Hz ; E_2
+	bigdw $689 ;  349.5 Hz ; F_2
+	bigdw $69e ;  370.3 Hz ; F#2
+	bigdw $6b2 ;  392.4 Hz ; G_2
+	bigdw $6c4 ;  414.8 Hz ; G#2
+	bigdw $6d6 ;  439.8 Hz ; A_2
+	bigdw $6e7 ;  466.4 Hz ; A#2
+	bigdw $6f6 ;  492.8 Hz ; B_2
+	bigdw $705 ;  522.2 Hz ; C_3
+	bigdw $713 ;  553.0 Hz ; C#3
+	bigdw $721 ;  587.8 Hz ; D_3
+	bigdw $72d ;  621.2 Hz ; D#3
+	bigdw $739 ;  658.7 Hz ; E_3
+	bigdw $744 ;  697.2 Hz ; F_3
+	bigdw $74e ;  736.4 Hz ; F#3
+	bigdw $758 ;  780.2 Hz ; G_3
+	bigdw $762 ;  829.6 Hz ; G#3
+	bigdw $76b ;  879.7 Hz ; A_3
+	bigdw $773 ;  929.6 Hz ; A#3
+	bigdw $77b ;  985.5 Hz ; B_3
+	bigdw $782 ; 1040.3 Hz ; C_4
+	bigdw $789 ; 1101.4 Hz ; C#4
+	bigdw $790 ; 1170.3 Hz ; D_4
+	bigdw $796 ; 1236.5 Hz ; D#4
+	bigdw $79c ; 1310.7 Hz ; E_4
+	bigdw $7a2 ; 1394.4 Hz ; F_4
+	bigdw $7a7 ; 1472.7 Hz ; F#4
+	bigdw $7ac ; 1560.4 Hz ; G_4
+	bigdw $7b1 ; 1659.1 Hz ; G#4
+	bigdw $7b5 ; 1747.6 Hz ; A_4
+	bigdw $7b9 ; 1846.1 Hz ; A#4
+	bigdw $7bd ; 1956.3 Hz ; B_4
+	bigdw $7c1 ; 2080.5 Hz ; C_5
+	bigdw $7c4 ; 2184.5 Hz ; C#5
+	bigdw $7c8 ; 2340.6 Hz ; D_5
+	bigdw $7cb ; 2473.1 Hz ; D#5
+	bigdw $7ce ; 2621.4 Hz ; E_5
+	bigdw $7d1 ; 2788.8 Hz ; F_5
+	bigdw $7d3 ; 2912.7 Hz ; F#5
+	bigdw $7d6 ; 3120.8 Hz ; G_5
+	bigdw $7d8 ; 3276.8 Hz ; G#5
+	bigdw $7da ; 3449.3 Hz ; A_5
+	bigdw $7dc ; 3640.9 Hz ; A#5
+	bigdw $7de ; 3855.1 Hz ; B_5
+; 0x15486
 
 SECTION "Bank 5@548e", ROMX[$548e], BANK[$5]
 
@@ -1507,9 +1594,36 @@ ChannelAudioStackOffsets:
 	db LOW(wChannel6AudioStackBottom) ; CHANNEL6
 	db LOW(wChannel7AudioStackBottom) ; CHANNEL7
 	db LOW(wChannel8AudioStackBottom) ; CHANNEL8
-; 0x15496
 
-SECTION "Bank 5@54af", ROMX[$54af], BANK[$5]
+Data_15496:
+	db $06 ; CHANNEL1
+	db $16 ; CHANNEL2
+	db $26 ; CHANNEL3
+	db $36 ; CHANNEL4
+	db $46 ; CHANNEL5
+	db $56 ; CHANNEL6
+	db $66 ; CHANNEL7
+	db $76 ; CHANNEL8
+
+NoteFrequencyTable:
+	dw NoteFrequencies - 6
+
+NoiseChannelPolynomialCounters:
+	db %000 | AUD4POLY_15STEP | (0 << 4)
+	db %000 | AUD4POLY_15STEP | (1 << 4)
+	db %000 | AUD4POLY_15STEP | (2 << 4)
+	db %000 | AUD4POLY_15STEP | (3 << 4)
+	db %111 | AUD4POLY_15STEP | (0 << 4)
+	db %011 | AUD4POLY_15STEP | (2 << 4)
+	db %000 | AUD4POLY_15STEP | (5 << 4)
+	db %011 | AUD4POLY_15STEP | (3 << 4)
+	db %000 | AUD4POLY_15STEP | (6 << 4)
+	db %011 | AUD4POLY_15STEP | (4 << 4)
+	db %000 | AUD4POLY_15STEP | (7 << 4)
+	db %101 | AUD4POLY_15STEP | (4 << 4)
+	db %111 | AUD4POLY_15STEP | (4 << 4)
+	db %101 | AUD4POLY_15STEP | (5 << 4)
+	db %101 | AUD4POLY_15STEP | (6 << 4)
 
 WaveSamples:
 	table_width 16, WaveSamples
@@ -1519,302 +1633,1030 @@ WaveSamples:
 	assert_table_length NUM_WAVEFORMS
 
 MusicHeader_BubblyCloudsIntro:
-	db $04
+	db 4 ; num of channels
 	dwb $55cd, $00 ; CHANNEL1
 	dwb $56ac, $04 ; CHANNEL2
 	dwb $5780, $10 ; CHANNEL3
 	dwb $5852, $0c ; CHANNEL4
 
 MusicHeader_GreenGreensIntro:
-	db $04
+	db 4 ; num of channels
 	dwb $587b, $10 ; CHANNEL1
 	dwb $5949, $00 ; CHANNEL2
 	dwb $5a22, $04 ; CHANNEL3
 	dwb $5b0b, $0c ; CHANNEL4
 
 MusicHeader_InvincibilityCandy:
-	db $04
+	db 4 ; num of channels
 	dwb $5b59, $00 ; CHANNEL1
 	dwb $5b91, $10 ; CHANNEL2
 	dwb $5bc9, $04 ; CHANNEL3
 	dwb $5bf6, $0c ; CHANNEL4
 
 MusicHeader_GameOver:
-	db $04
+	db 4 ; num of channels
 	dwb $5c1f, $00 ; CHANNEL1
 	dwb $5c47, $10 ; CHANNEL2
 	dwb $5c75, $04 ; CHANNEL3
 	dwb $5c99, $0c ; CHANNEL4
 
 MusicHeader_SparklingStar:
-	db $02
+	db 2 ; num of channels
 	dwb $5cbc, $00 ; CHANNEL1
 	dwb $5cd1, $04 ; CHANNEL2
 
 MusicHeader_Titlescreen:
-	db $04
+	db 4 ; num of channels
 	dwb $5ce1, $00 ; CHANNEL1
 	dwb $5d55, $10 ; CHANNEL2
 	dwb $5de2, $04 ; CHANNEL3
 	dwb $5e5e, $0c ; CHANNEL4
 
 MusicHeader_FloatIslandsIntro:
-	db $04
+	db 4 ; num of channels
 	dwb $5e93, $10 ; CHANNEL1
 	dwb $5f36, $00 ; CHANNEL2
 	dwb $600e, $04 ; CHANNEL3
 	dwb $6101, $0c ; CHANNEL4
 
 MusicHeader_LifeLost:
-	db $03
+	db 3 ; num of channels
 	dwb $6160, $00 ; CHANNEL1
 	dwb $6180, $04 ; CHANNEL2
 	dwb $6189, $10 ; CHANNEL3
 
 MusicHeader_BossBattle:
-	db $04
+	db 4 ; num of channels
 	dwb $61a3, $10 ; CHANNEL1
 	dwb $6218, $00 ; CHANNEL2
 	dwb $62a0, $04 ; CHANNEL3
 	dwb $6322, $0c ; CHANNEL4
 
 MusicHeader_MintLeaf:
-	db $04
+	db 4 ; num of channels
 	dwb $639d, $10 ; CHANNEL1
 	dwb $6418, $00 ; CHANNEL2
 	dwb $6484, $04 ; CHANNEL3
 	dwb $64ff, $0c ; CHANNEL4
 
 MusicHeader_Victory:
-	db $04
+	db 4 ; num of channels
 	dwb $6569, $00 ; CHANNEL1
 	dwb $6598, $04 ; CHANNEL2
 	dwb $65c9, $10 ; CHANNEL3
 	dwb $65f8, $0c ; CHANNEL4
 
 MusicHeader_Credits:
-	db $04
+	db 4 ; num of channels
 	dwb $6612, $10 ; CHANNEL1
 	dwb $6729, $00 ; CHANNEL2
 	dwb $6827, $04 ; CHANNEL3
 	dwb $6958, $0c ; CHANNEL4
 
 MusicHeader_CastleLololoIntro:
-	db $04
+	db 4 ; num of channels
 	dwb $69f4, $10 ; CHANNEL1
 	dwb $6a71, $00 ; CHANNEL2
 	dwb $6b6f, $04 ; CHANNEL3
 	dwb $6c4f, $0c ; CHANNEL4
 
 MusicHeader_GreenGreens:
-	db $04
+	db 4 ; num of channels
 	dwb $6ce7, $00 ; CHANNEL1
 	dwb $6cef, $04 ; CHANNEL2
 	dwb $6d03, $10 ; CHANNEL3
 	dwb $6cf7, $0c ; CHANNEL4
 
 MusicHeader_FloatIslands:
-	db $04
+	db 4 ; num of channels
 	dwb $6d0a, $00 ; CHANNEL1
 	dwb $6d11, $04 ; CHANNEL2
 	dwb $6d18, $10 ; CHANNEL3
 	dwb $6d27, $0c ; CHANNEL4
 
 MusicHeader_BubblyClouds:
-	db $04
+	db 4 ; num of channels
 	dwb $6d34, $00 ; CHANNEL1
 	dwb $6d3d, $04 ; CHANNEL2
 	dwb $6d44, $10 ; CHANNEL3
 	dwb $5852, $0c ; CHANNEL4
 
 MusicHeader_CastleLololo:
-	db $04
+	db 4 ; num of channels
 	dwb $6d53, $00 ; CHANNEL1
 	dwb $6d5a, $04 ; CHANNEL2
 	dwb $6d5f, $10 ; CHANNEL3
 	dwb $6d6c, $0c ; CHANNEL4
 
 MusicHeader_DededeBattle:
-	db $04
+	db 4 ; num of channels
 	dwb $6d77, $10 ; CHANNEL1
 	dwb $6dda, $00 ; CHANNEL2
 	dwb $6e4f, $04 ; CHANNEL3
 	dwb $6ebf, $0c ; CHANNEL4
 
 MusicHeader_MtDedede:
-	db $04
+	db 4 ; num of channels
 	dwb $6eec, $10 ; CHANNEL1
 	dwb $6f10, $00 ; CHANNEL2
 	dwb $6f34, $04 ; CHANNEL3
 	dwb $6f54, $0c ; CHANNEL4
+
+	tempo_mode TEMPO_02
+	pan PAN_CENTER
+	base_note D#4
+	instrument INSTRUMENT_05
+	audio_f0 $0b
+	audio_f4 $80
+	audio_call $5622
+	audio_call $562c
+	audio_call $5622
+	audio_call $5634
+	instrument INSTRUMENT_0D
+	audio_f0 $0a
+	audio_f4 $00
+	audio_call $5646
+	audio_call $5652
+	audio_call $5646
+	audio_call $5660
+	instrument INSTRUMENT_0F
+	audio_call $5669
+	audio_f0 $09
+	pan PAN_CENTER
+	audio_call $5681
+	pan PAN_CENTER
+	audio_call .sub_1
+	instrument INSTRUMENT_0E
+	audio_f0 $09
+	audio_call $5695
+	audio_call .sub_1
+	audio_jump $55e5
+
+.sub_1
+	audio_f4 $80
+	instrument INSTRUMENT_05
+	audio_f0 $08
+	audio_repeat 6
+	note G_0
+	audio_f1 $01
+	audio_repeat_end
+	audio_ret
+
+	db $30
+	audio_f4 $80
+	
 ; 0x155cd
 
-SECTION "Bank 5@707e", ROMX[$707e], BANK[$5]
+SECTION "Bank 5@6f6d", ROMX[$6f6d], BANK[$5]
+
+AudioScript_16f6d:
+	wave WAVEDUTY_12_5
+	volume 15
+	db $ff ; end
+
+AudioScript_16f70:
+	wave WAVEDUTY_25
+	volume 15
+	db $ff ; end
+
+AudioScript_16f73:
+	wave WAVEDUTY_50
+	volume 15
+	db $ff ; end
+
+AudioScript_16f76:
+	wave WAVEDUTY_75
+	volume 15
+	db $ff ; end
+
+AudioScript_16f79:
+	volume 4
+	db $08
+	volume 0
+	db $ff ; end
+
+AudioScript_16f7d:
+	wave WAVEDUTY_25
+AudioScript_16f7e:
+	volume 15
+	audio_repeat 15
+	volume_shift -1
+	db $08
+	audio_repeat_end
+	db $ff ; end
+
+AudioScript_16f85:
+	wave WAVEDUTY_50
+AudioScript_16f86:
+	volume_b 15
+AudioScript_16f87:
+	audio_repeat 8
+	db $03
+	volume_shift -2
+	audio_repeat_end
+	db $ff ; end
+
+AudioScript_16f8d:
+	wave WAVEDUTY_25
+	audio_jump AudioScript_16f86
+
+AudioScript_16f91:
+	wave WAVEDUTY_12_5
+	volume 15
+	db $02
+	volume 13
+	db $02
+	audio_jump AudioScript_16f87
+
+AudioScript_16f99:
+	wave WAVEDUTY_50
+	audio_jump AudioScript_16f7e
+
+AudioScript_16f9d:
+	wave WAVEDUTY_50
+AudioScript_16f9e:
+	volume 15
+	db $02
+	volume 14
+AudioScript_16fa1:
+	audio_repeat 12
+	volume_shift -1
+	db $03
+	audio_repeat_end
+	db $ff ; end
+
+AudioScript_16fa7:
+	wave WAVEDUTY_25
+	audio_jump AudioScript_16f9e
+
+AudioScript_16fab:
+	wave WAVEDUTY_12_5
+	audio_call AudioScript_16fb2
+	audio_jump AudioScript_16fa1
+
+AudioScript_16fb2:
+	volume_b 15
+	volume_b 11
+	audio_ret
+
+AudioScript_16fb5:
+	wave WAVEDUTY_25
+	volume_b 15
+	volume_b 12
+	wave WAVEDUTY_12_5
+	audio_repeat 8
+	volume_shift_b 1
+	volume_shift_b -2
+	audio_repeat_end
+.loop
+	volume_shift_b 1
+	volume_shift_b -1
+	audio_jump .loop
+
+AudioScript_16fc3:
+	wave WAVEDUTY_50
+AudioScript_16fc4:
+	volume_b 7
+AudioScript_16fc5:
+	volume_b 13
+	volume_b 15
+	volume_b 12
+	volume 6
+	db $06
+	audio_repeat 4
+	volume_shift 1
+	db $03
+	volume_shift 1
+	db $03
+	audio_repeat_end
+.loop
+	pitch_shift 1
+	db $03
+	pitch_shift -1
+	db $03
+	audio_jump .loop
+
+AudioScript_16fd8:
+	volume 8
+	db $05
+	volume 7
+	db $02
+	volume 6
+	db $02
+	audio_repeat 5
+	volume 5
+	db $04
+	volume 4
+	db $03
+	audio_repeat_end
+	volume 2
+	db $05
+	volume 0
+	db $ff ; end
+
+AudioScript_16fe9:
+	wave WAVEDUTY_25
+	audio_jump AudioScript_16fc4
+
+AudioScript_16fed:
+	wave WAVEDUTY_50
+	volume 15
+	db $02
+	wave WAVEDUTY_25
+	volume_b 13
+	wave WAVEDUTY_12_5
+	audio_repeat 6
+	volume_shift -1
+	db $02
+	audio_repeat_end
+.loop
+	volume 6
+	db $03
+	volume 7
+	db $03
+	audio_jump .loop
+
+AudioScript_16fff:
+	wave WAVEDUTY_75
+	volume_b 15
+	volume_b 12
+	audio_repeat 5
+	volume_shift_b -2
+	audio_repeat_end
+	volume 0
+	db $ff ; end
+
+AudioScript_17008:
+	wave WAVEDUTY_50
+	volume 15
+	db $02
+	volume 14
+	db $05
+	volume 13
+	db $05
+.loop
+	pitch_shift -1
+	db $02
+	pitch_shift -1
+	db $03
+	pitch_shift 1
+	db $02
+	pitch_shift 1
+	db $03
+	audio_jump .loop
+
+AudioScript_1701a:
+	wave WAVEDUTY_12_5
+	audio_jump AudioScript_16fc5
+
+AudioScript_1701e:
+	wave WAVEDUTY_75
+	volume_b 15
+	wave WAVEDUTY_50
+	volume 12
+	db $02
+.loop
+	pitch_shift -1
+	db $03
+	pitch_shift 1
+	db $03
+	audio_jump .loop
+
+AudioScript_1702a:
+	volume 4
+	db $02
+	volume 0
+	db $ff ; end
+
+AudioScript_1702e:
+	wave WAVEDUTY_50
+	volume_b 11
+	volume 12
+	db $02
+	volume 13
+	db $06
+	volume 14
+.loop
+	pitch_shift 1
+	db $03
+	pitch_shift -1
+	db $03
+	audio_jump .loop
+
+AudioScript_1703c:
+	wave WAVEDUTY_75
+	volume_b 15
+	wave WAVEDUTY_12_5
+	volume 14
+	db $02
+	wave WAVEDUTY_25
+	volume 10
+	audio_repeat 5
+	volume_shift_b -1
+	audio_repeat_end
+	volume_shift -1
+	db $03
+.loop
+	pitch_shift -1
+	db $04
+	pitch_shift 1
+	db $04
+	audio_jump .loop
+
+AudioScript_17050:
+	pitch_shift -1
+	audio_jump AudioScript_1702e
+
+AudioScript_17054:
+	wave WAVEDUTY_75
+	volume_b 15
+	wave WAVEDUTY_25
+	volume 12
+	db $02
+.loop
+	pitch_shift 1
+	db $03
+	pitch_shift -1
+	db $03
+	audio_jump .loop
+
+AudioScript_17060:
+	wave WAVEDUTY_12_5
+	volume_b 15
+	wave WAVEDUTY_75
+	volume_b 13
+	audio_repeat 5
+	volume_shift_b -1
+	audio_repeat_end
+	db $ff ; end
+
+AudioScript_17069:
+	wave WAVEDUTY_12_5
+	volume_b 15
+	wave WAVEDUTY_50
+	volume_b 14
+	wave WAVEDUTY_25
+	volume_b 13
+	volume_b 12
+	volume_b 11
+	volume_b 10
+	volume_b 9
+	db $ff ; end
+
+AudioScript_17074:
+	volume_b 15
+	audio_repeat 5
+	volume_shift_b -2
+	audio_repeat_end
+	volume_b 3
+	volume_b 2
+	volume_b 1
+	volume_b 0
+	db $ff ; end
 
 SFXHeader_00:
-	db $02
+	db 2 ; num of channels
 	dwb $7144, $00 ; CHANNEL1
 	dwb $71da, $04 ; CHANNEL2
 
 SFXHeader_Inhale:
-	db $02
+	db 2 ; num of channels
 	dwb $71e0, $04 ; CHANNEL1
 	dwb $721b, $0c ; CHANNEL2
 
 SFXHeader_02:
-	db $01
+	db 1 ; num of channels
 	dwb $723b, $04 ; CHANNEL1
 
 SFXHeader_Swallow:
-	db $01
+	db 1 ; num of channels
 	dwb $725c, $04 ; CHANNEL1
 
 SFXHeader_Jump:
-	db $01
+	db 1 ; num of channels
 	dwb $728d, $04 ; CHANNEL1
 
 SFXHeader_Bump:
-	db $01
+	db 1 ; num of channels
 	dwb $72b0, $04 ; CHANNEL1
 
 SFXHeader_Damage:
-	db $02
+	db 2 ; num of channels
 	dwb $72cd, $0c ; CHANNEL1
 	dwb $72f6, $04 ; CHANNEL2
 
 SFXHeader_EnterDoor:
-	db $02
+	db 2 ; num of channels
 	dwb $7317, $04 ; CHANNEL1
 	dwb $7356, $00 ; CHANNEL2
 
 SFXHeader_08:
-	db $01
+	db 1 ; num of channels
 	dwb $735f, $04 ; CHANNEL1
 
 SFXHeader_PowerUp:
-	db $01
+	db 1 ; num of channels
 	dwb $7378, $04 ; CHANNEL1
 
 SFXHeader_10:
-	db $01
+	db 1 ; num of channels
 	dwb $7394, $0c ; CHANNEL1
 
 SFXHeader_RestoreHp:
-	db $01
+	db 1 ; num of channels
 	dwb $73ba, $04 ; CHANNEL1
 
 SFXHeader_WarpStar:
-	db $02
+	db 2 ; num of channels
 	dwb $73d4, $04 ; CHANNEL1
 	dwb $743d, $00 ; CHANNEL2
 
 SFXHeader_13:
-	db $02
+	db 2 ; num of channels
 	dwb $744a, $04 ; CHANNEL1
 	dwb $74dc, $00 ; CHANNEL2
 
 SFXHeader_14:
-	db $01
+	db 1 ; num of channels
 	dwb $74e4, $0c ; CHANNEL1
 
 SFXHeader_15:
-	db $01
+	db 1 ; num of channels
 	dwb $74f8, $04 ; CHANNEL1
 
 SFXHeader_16:
-	db $01
+	db 1 ; num of channels
 	dwb $7515, $04 ; CHANNEL1
 
 SFXHeader_17:
-	db $01
+	db 1 ; num of channels
 	dwb $7544, $0c ; CHANNEL1
 
 SFXHeader_18:
-	db $01
+	db 1 ; num of channels
 	dwb $7559, $04 ; CHANNEL1
 
 SFXHeader_19:
-	db $01
+	db 1 ; num of channels
 	dwb $757e, $0c ; CHANNEL1
 
 SFXHeader_20:
-	db $01
+	db 1 ; num of channels
 	dwb $7597, $0c ; CHANNEL1
 
 SFXHeader_21:
-	db $01
+	db 1 ; num of channels
 	dwb $75b6, $0c ; CHANNEL1
 
 SFXHeader_1Up:
-	db $02
+	db 2 ; num of channels
 	dwb $75cf, $00 ; CHANNEL1
 	dwb $75e7, $04 ; CHANNEL2
 
 SFXHeader_23:
-	db $03
+	db 3 ; num of channels
 	dwb $75ee, $0c ; CHANNEL1
 	dwb $7602, $04 ; CHANNEL2
 	dwb $7618, $00 ; CHANNEL3
 
 SFXHeader_Pause:
-	db $04
+	db 4 ; num of channels
 	dwb $762e, $04 ; CHANNEL1
 	dwb $7649, $00 ; CHANNEL2
 	dwb $7678, $10 ; CHANNEL3
 	dwb $767b, $0c ; CHANNEL4
 
 SFXHeader_25:
-	db $01
+	db 1 ; num of channels
 	dwb $767e, $0c ; CHANNEL1
 
 SFXHeader_Cursor:
-	db $01
+	db 1 ; num of channels
 	dwb $76a2, $04 ; CHANNEL1
 
 SFXHeader_GameStart:
-	db $01
+	db 1 ; num of channels
 	dwb $76b0, $04 ; CHANNEL1
 
 SFXHeader_28:
-	db $01
+	db 1 ; num of channels
 	dwb $76c1, $0c ; CHANNEL1
 
 SFXHeader_29:
-	db $03
+	db 3 ; num of channels
 	dwb $76d6, $0c ; CHANNEL1
 	dwb $76fa, $04 ; CHANNEL2
 	dwb $7717, $00 ; CHANNEL3
 
 SFXHeader_30:
-	db $01
+	db 1 ; num of channels
 	dwb $7734, $04 ; CHANNEL1
 
 SFXHeader_31:
-	db $01
+	db 1 ; num of channels
 	dwb $7747, $04 ; CHANNEL1
 
 SFXHeader_BossDefeat:
-	db $01
+	db 1 ; num of channels
 	dwb $7768, $0c ; CHANNEL1
 
 SFXHeader_33:
-	db $04
+	db 4 ; num of channels
 	dwb $7798, $04 ; CHANNEL1
 	dwb $77a0, $00 ; CHANNEL2
 	dwb $77a8, $10 ; CHANNEL3
 	dwb $77ad, $0c ; CHANNEL4
 
 SFXHeader_34:
-	db $02
+	db 2 ; num of channels
 	dwb $77b2, $04 ; CHANNEL1
 	dwb $721b, $0c ; CHANNEL2
 
 SFXHeader_35:
-	db $01
+	db 1 ; num of channels
 	dwb $77b7, $04 ; CHANNEL1
 ; 0x17144
 
-SECTION "Bank 5@79f3", ROMX[$79f3], BANK[$5]
+SECTION "Bank 5@77c2", ROMX[$77c2], BANK[$5]
+
+AudioScript_177c2:
+	wave WAVEDUTY_12_5
+	volume 15
+	db $ff ; end
+
+AudioScript_177c5:
+	wave WAVEDUTY_25
+	volume 15
+	db $ff ; end
+
+AudioScript_177c8:
+	wave WAVEDUTY_50
+	volume 15
+	db $ff ; end
+
+AudioScript_177cb:
+	wave WAVEDUTY_75
+	volume 15
+	db $ff ; end
+
+AudioScript_177ce:
+	volume 4
+	db $08
+	volume 0
+	db $ff ; end
+
+AudioScript_177d2:
+	wave WAVEDUTY_25
+AudioScript_177d3:
+	volume 15
+	audio_repeat 15
+	volume_shift -1
+	db $08
+	audio_repeat_end
+	db $ff ; end
+
+AudioScript_177da:
+	wave WAVEDUTY_50
+AudioScript_177db:
+	volume_b 15
+AudioScript_177dc:
+	audio_repeat 8
+	db $03
+	volume_shift -2
+	audio_repeat_end
+	db $ff ; end
+
+AudioScript_177e2:
+	wave WAVEDUTY_25
+	audio_jump AudioScript_177db
+
+AudioScript_177e6:
+	wave WAVEDUTY_12_5
+	volume 15
+	db $02
+	volume 13
+	db $02
+	audio_jump AudioScript_177dc
+
+AudioScript_177ee:
+	wave WAVEDUTY_50
+	audio_jump AudioScript_177d3
+
+AudioScript_177f2:
+	wave WAVEDUTY_50
+AudioScript_177f3:
+	volume 15
+	db $02
+	volume 14
+AudioScript_177f6:
+	audio_repeat 12
+	volume_shift -1
+	db $03
+	audio_repeat_end
+	db $ff ; end
+
+AudioScript_177fc:
+	wave WAVEDUTY_25
+	audio_jump AudioScript_177f3
+
+AudioScript_17800:
+	wave WAVEDUTY_12_5
+	audio_call AudioScript_17807
+	audio_jump AudioScript_177f6
+
+AudioScript_17807:
+	volume_b 15
+	volume_b 11
+	audio_ret
+
+AudioScript_1780a:
+	wave WAVEDUTY_25
+	volume_b 15
+	volume_b 12
+	wave WAVEDUTY_12_5
+	audio_repeat 8
+	volume_shift_b 1
+	volume_shift_b -2
+	audio_repeat_end
+.loop
+	volume_shift_b 1
+	volume_shift_b -1
+	audio_jump .loop
+
+AudioScript_17818:
+	wave WAVEDUTY_50
+AudioScript_17819:
+	volume_b 7
+AudioScript_1781a:
+	volume_b 13
+	volume_b 15
+	volume_b 12
+	volume 6
+	db $06
+	audio_repeat 4
+	volume_shift 1
+	db $03
+	volume_shift 1
+	db $03
+	audio_repeat_end
+.loop
+	pitch_shift 1
+	db $03
+	pitch_shift -1
+	db $03
+	audio_jump .loop
+
+AudioScript_1782d:
+	volume 8
+	db $05
+	volume 7
+	db $02
+	volume 6
+	db $02
+	audio_repeat 5
+	volume 5
+	db $04
+	volume 4
+	db $03
+	audio_repeat_end
+	volume 2
+	db $05
+	volume 0
+	db $ff ; end
+
+AudioScript_1783e:
+	wave WAVEDUTY_25
+	audio_jump AudioScript_17819
+
+AudioScript_17842:
+	wave WAVEDUTY_50
+	volume 15
+	db $02
+	wave WAVEDUTY_25
+	volume_b 13
+	wave WAVEDUTY_12_5
+	audio_repeat 6
+	volume_shift -1
+	db $02
+	audio_repeat_end
+.loop
+	volume 6
+	db $03
+	volume 7
+	db $03
+	audio_jump .loop
+
+AudioScript_17854:
+	wave WAVEDUTY_75
+	volume_b 15
+	volume_b 12
+	audio_repeat 5
+	volume_shift_b -2
+	audio_repeat_end
+	volume 0
+	db $ff ; end
+
+AudioScript_1785d:
+	wave WAVEDUTY_50
+	volume 15
+	db $02
+	volume 14
+	db $05
+	volume 13
+	db $05
+.loop
+	pitch_shift -1
+	db $02
+	pitch_shift -1
+	db $03
+	pitch_shift 1
+	db $02
+	pitch_shift 1
+	db $03
+	audio_jump .loop
+
+AudioScript_1786f:
+	wave WAVEDUTY_12_5
+	audio_jump AudioScript_1781a
+
+AudioScript_17873:
+	wave WAVEDUTY_75
+	volume_b 15
+	wave WAVEDUTY_50
+	volume 12
+	db $02
+.loop
+	pitch_shift -1
+	db $03
+	pitch_shift 1
+	db $03
+	audio_jump .loop
+
+AudioScript_1787f:
+	volume 4
+	db $02
+	volume 0
+	db $ff ; end
+
+AudioScript_17883:
+	wave WAVEDUTY_50
+	volume_b 11
+	volume 12
+	db $02
+	volume 13
+	db $06
+	volume 14
+.loop
+	pitch_shift 1
+	db $03
+	pitch_shift -1
+	db $03
+	audio_jump .loop
+
+AudioScript_17891:
+	wave WAVEDUTY_75
+	volume_b 15
+	wave WAVEDUTY_12_5
+	volume 14
+	db $02
+	wave WAVEDUTY_25
+	volume 10
+	audio_repeat 5
+	volume_shift_b -1
+	audio_repeat_end
+	volume_shift -1
+	db $03
+.loop
+	pitch_shift -1
+	db $04
+	pitch_shift 1
+	db $04
+	audio_jump .loop
+
+AudioScript_178a5:
+	pitch_shift -1
+	audio_jump AudioScript_17883
+
+AudioScript_178a9:
+	wave WAVEDUTY_75
+	volume_b 15
+	wave WAVEDUTY_25
+	volume 12
+	db $02
+.loop
+	pitch_shift 1
+	db $03
+	pitch_shift -1
+	db $03
+	audio_jump .loop
+
+AudioScript_178b5:
+	wave WAVEDUTY_12_5
+	volume_b 15
+	wave WAVEDUTY_75
+	volume_b 13
+	audio_repeat 5
+	volume_shift_b -1
+	audio_repeat_end
+	db $ff ; end
+
+AudioScript_178be:
+	wave WAVEDUTY_12_5
+	volume_b 15
+	wave WAVEDUTY_50
+	volume_b 14
+	wave WAVEDUTY_25
+	volume_b 13
+	volume_b 12
+	volume_b 11
+	volume_b 10
+	volume_b 9
+	db $ff ; end
+
+AudioScript_178c9:
+	volume_b 15
+	audio_repeat 5
+	volume_shift_b -2
+	audio_repeat_end
+	volume_b 3
+	volume_b 2
+	volume_b 1
+	volume_b 0
+	db $ff ; end
+
+Instruments:
+	table_width 4, Instruments
+	dw AudioScript_16f6d, AudioScript_16f79 ; INSTRUMENT_00
+	dw AudioScript_16f70, AudioScript_16f79 ; INSTRUMENT_01
+	dw AudioScript_16f73, AudioScript_16f79 ; INSTRUMENT_02
+	dw AudioScript_16f76, AudioScript_16f79 ; INSTRUMENT_03
+	dw AudioScript_16f7d, AudioScript_16f79 ; INSTRUMENT_04
+	dw AudioScript_16f85, AudioScript_16f79 ; INSTRUMENT_05
+	dw AudioScript_16f8d, AudioScript_16f79 ; INSTRUMENT_06
+	dw AudioScript_16f91, AudioScript_16f79 ; INSTRUMENT_07
+	dw AudioScript_16f99, AudioScript_16f79 ; INSTRUMENT_08
+	dw AudioScript_16f9d, AudioScript_16f79 ; INSTRUMENT_09
+	dw AudioScript_16fa7, AudioScript_16f79 ; INSTRUMENT_0A
+	dw AudioScript_16fab, AudioScript_16f79 ; INSTRUMENT_0B
+	dw AudioScript_16fb5, AudioScript_16f79 ; INSTRUMENT_0C
+	dw AudioScript_16fc3, AudioScript_16fd8 ; INSTRUMENT_0D
+	dw AudioScript_16fe9, AudioScript_16fd8 ; INSTRUMENT_0E
+	dw AudioScript_16fed, AudioScript_16f79 ; INSTRUMENT_0F
+	dw AudioScript_16fff, AudioScript_16f79 ; INSTRUMENT_10
+	dw AudioScript_17008, AudioScript_1702a ; INSTRUMENT_11
+	dw AudioScript_1701a, AudioScript_16fd8 ; INSTRUMENT_12
+	dw AudioScript_1701e, AudioScript_1702a ; INSTRUMENT_13
+	dw AudioScript_1702e, AudioScript_16f79 ; INSTRUMENT_14
+	dw AudioScript_1703c, AudioScript_16f79 ; INSTRUMENT_15
+	dw AudioScript_17050, AudioScript_16f79 ; INSTRUMENT_16
+	dw AudioScript_17054, AudioScript_1702a ; INSTRUMENT_17
+	dw AudioScript_17060, AudioScript_1702a ; INSTRUMENT_18
+	dw AudioScript_17069, AudioScript_1702a ; INSTRUMENT_19
+	dw AudioScript_17074, AudioScript_1702a ; INSTRUMENT_1A
+	dw AudioScript_177c2, AudioScript_177ce ; INSTRUMENT_1B
+	dw AudioScript_177c5, AudioScript_177ce ; INSTRUMENT_1C
+	dw AudioScript_177c8, AudioScript_177ce ; INSTRUMENT_1D
+	dw AudioScript_177cb, AudioScript_177ce ; INSTRUMENT_1E
+	dw AudioScript_177d2, AudioScript_177ce ; INSTRUMENT_1F
+	dw AudioScript_177da, AudioScript_177ce ; INSTRUMENT_20
+	dw AudioScript_177e2, AudioScript_177ce ; INSTRUMENT_21
+	dw AudioScript_177e6, AudioScript_177ce ; INSTRUMENT_22
+	dw AudioScript_177ee, AudioScript_177ce ; INSTRUMENT_23
+	dw AudioScript_177f2, AudioScript_177ce ; INSTRUMENT_24
+	dw AudioScript_177fc, AudioScript_177ce ; INSTRUMENT_25
+	dw AudioScript_17800, AudioScript_177ce ; INSTRUMENT_26
+	dw AudioScript_1780a, AudioScript_177ce ; INSTRUMENT_27
+	dw AudioScript_17818, AudioScript_1782d ; INSTRUMENT_28
+	dw AudioScript_1783e, AudioScript_1782d ; INSTRUMENT_29
+	dw AudioScript_17842, AudioScript_177ce ; INSTRUMENT_2A
+	dw AudioScript_17854, AudioScript_177ce ; INSTRUMENT_2B
+	dw AudioScript_1785d, AudioScript_1787f ; INSTRUMENT_2C
+	dw AudioScript_1786f, AudioScript_1782d ; INSTRUMENT_2D
+	dw AudioScript_17873, AudioScript_1787f ; INSTRUMENT_2E
+	dw AudioScript_17883, AudioScript_177ce ; INSTRUMENT_2F
+	dw AudioScript_17891, AudioScript_177ce ; INSTRUMENT_30
+	dw AudioScript_178a5, AudioScript_177ce ; INSTRUMENT_31
+	dw AudioScript_178a9, AudioScript_1787f ; INSTRUMENT_32
+	dw AudioScript_178b5, AudioScript_1787f ; INSTRUMENT_33
+	dw AudioScript_178be, AudioScript_1787f ; INSTRUMENT_34
+	dw AudioScript_178c9, AudioScript_1787f ; INSTRUMENT_35
+	assert_table_length NUM_INSTRUMENTS
+
+TempoModeNoteDurations:
+	table_width 6, TempoModeNoteDurations
+	db  1,  2,  3,  4,  5,  6 ; TEMPO_00
+	db  5, 10, 15, 20, 30, 80 ; TEMPO_01
+	db  9, 18, 27, 36, 45, 54 ; TEMPO_02
+	db  7, 14, 21, 28, 35, 42 ; TEMPO_03
+	db  6, 12, 18, 24, 30, 36 ; TEMPO_04
+	db  8, 16, 24, 32, 40, 48 ; TEMPO_05
+	db  1,  2,  3,  4,  5,  6 ; TEMPO_06
+	db  5, 10, 15, 20, 30, 80 ; TEMPO_07
+	db  9, 18, 27, 36, 45, 54 ; TEMPO_08
+	db  7, 14, 21, 28, 35, 42 ; TEMPO_09
+	db  6, 12, 18, 24, 30, 36 ; TEMPO_10
+	db  8, 16, 24, 32, 40, 48 ; TEMPO_11
+	assert_table_length NUM_TEMPO_MODES
 
 MusicHeaders:
 	table_width 2, MusicHeaders

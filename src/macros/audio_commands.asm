@@ -1,4 +1,67 @@
 ; audio commands
+
+; \1 = note constant
+MACRO note
+	db \1
+ENDM
+
+	const_def $10
+	const AUDIOCMD_BREAK ; $10
+
+	const_def $20
+
+	const AUDIOCMD_PITCH_SHIFT ; $20
+MACRO pitch_shift
+ASSERT \1 >= -8 && \1 <= 7
+IF \1 >= 0
+	db \1 | AUDIOCMD_PITCH_SHIFT
+ELSE
+	db ($10 + \1) | AUDIOCMD_PITCH_SHIFT
+ENDC
+ENDM
+
+	const_def $40
+
+	const AUDIOCMD_VOLUME ; $40
+MACRO volume
+ASSERT \1 <= 15
+	db \1 | AUDIOCMD_VOLUME
+ENDM
+
+MACRO volume_b
+ASSERT \1 <= 15
+	db \1 | AUDIOCMD_VOLUME | AUDIOCMD_BREAK
+ENDM
+
+	const_def $60
+
+	const AUDIOCMD_VOLUME_SHIFT ; $60
+MACRO volume_shift
+ASSERT \1 >= -8 && \1 <= 7
+IF \1 >= 0
+	db \1 | AUDIOCMD_VOLUME_SHIFT
+ELSE
+	db ($10 + \1) | AUDIOCMD_VOLUME_SHIFT
+ENDC
+ENDM
+
+MACRO volume_shift_b
+ASSERT \1 >= -8 && \1 <= 7
+IF \1 >= 0
+	db \1 | AUDIOCMD_VOLUME_SHIFT | AUDIOCMD_BREAK
+ELSE
+	db ($10 + \1) | AUDIOCMD_VOLUME_SHIFT | AUDIOCMD_BREAK
+ENDC
+ENDM
+
+	const_def $80
+
+	const AUDIOCMD_WAVE ; $80
+MACRO wave
+ASSERT \1 <= $f
+	db \1 | AUDIOCMD_WAVE
+ENDM
+
 	const_def $c0
 
 	const AUDIOCMD_WAIT ; $c0
@@ -25,9 +88,9 @@ MACRO set_frequency
 	dw \1 ; ?
 ENDM
 
-	const AUDIOCMD_SUBTRACT_FREQUENCY ; $e3
-MACRO subtract_frequency
-	db AUDIOCMD_SUBTRACT_FREQUENCY
+	const AUDIOCMD_PITCH ; $e3
+MACRO pitch
+	db AUDIOCMD_PITCH
 	db \1 ; ?
 ENDM
 
@@ -67,9 +130,9 @@ MACRO audio_f1
 	db \1 ; ?
 ENDM
 
-	const AUDIOCMD_F2 ; $f2
-MACRO audio_f2
-	db AUDIOCMD_F2
+	const AUDIOCMD_SET_TEMPO_MODE ; $f2
+MACRO tempo_mode
+	db AUDIOCMD_SET_TEMPO_MODE
 	db \1 ; ?
 ENDM
 
@@ -85,15 +148,15 @@ MACRO audio_f4
 	db \1 ; ?
 ENDM
 
-	const AUDIOCMD_F5 ; $f5
-MACRO audio_f5
-	db AUDIOCMD_F5
+	const AUDIOCMD_SET_BASE_NOTE ; $f5
+MACRO base_note
+	db AUDIOCMD_SET_BASE_NOTE
 	db \1 ; ?
 ENDM
 
-	const AUDIOCMD_F6 ; $f6
-MACRO audio_f6
-	db AUDIOCMD_F6
+	const AUDIOCMD_SET_INSTRUMENT ; $f6
+MACRO instrument
+	db AUDIOCMD_SET_INSTRUMENT
 	db \1 ; ?
 ENDM
 
@@ -134,7 +197,7 @@ MACRO audio_repeat_end
 ENDM
 
 	const AUDIOCMD_SET_PAN ; $fe
-MACRO set_pan
+MACRO pan
 	db AUDIOCMD_SET_PAN
 	db \1 ; PAN_* constant
 ENDM

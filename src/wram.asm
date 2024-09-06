@@ -550,12 +550,10 @@ wd413:: ; d413
 wDisableBumpStars:: ; d414
 	db
 
-	ds $7eb
+SECTION "Audio WRAM", WRAMX, ALIGN[8]
 
 wdc00:: ; dc00
-	db
-
-SECTION "Audio WRAM", WRAMX, ALIGN[8]
+	ds $200
 
 wde00:: ; de00
 	db
@@ -624,7 +622,7 @@ wde7a:: ; de7a
 wde82:: ; de82
 	ds NUM_CHANNELS
 
-wde8a:: ; de8a
+wChannelBaseNotes:: ; de8a
 	ds NUM_CHANNELS
 
 wde92:: ; de92
@@ -636,7 +634,7 @@ wde9a:: ; de9a
 wdea2:: ; dea2
 	ds NUM_CHANNELS
 
-wdeaa:: ; deaa
+wChannelTempoModes:: ; deaa
 	ds NUM_CHANNELS
 
 wdeb2:: ; deb2
