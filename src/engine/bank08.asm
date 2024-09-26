@@ -3,6 +3,7 @@ GfxScript_20000:
 
 GfxScript_20003:
 	script_delay 0
+
 GfxScript_20005:
 	set_object_properties Data_35b7
 	set_custom_func Func_141b1, GfxScript_20ba2

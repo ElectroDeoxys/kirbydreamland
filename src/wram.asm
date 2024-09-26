@@ -260,7 +260,10 @@ wd096:: ; d096
 wd097:: ; d097
 	dw
 
-wd099:: ; d099
+; holds a routine that copies byte in a to [de],
+; increments de and then returns, with some nops
+; used exclusively in Decompress
+wDelayedCopyAToDEFunc:: ; d099
 	ds $7
 
 wObjectXCoords:: ; d0a0
@@ -279,15 +282,7 @@ wd140:: ; d140
 	ds NUM_OBJECT_SLOTS
 
 wd150:: ; d150
-	ds $d
-
-wd15d:: ; d15d
-	db
-
-wd15e:: ; d15e
-	db
-
-	ds $1
+	ds NUM_OBJECT_SLOTS
 
 ; if OBJECT_NOT_ACTIVE, then this object slot is empty
 ; if OBJECT_ACTIVE, then this object is active
@@ -305,26 +300,10 @@ wd190:: ; d190
 	ds NUM_OBJECT_SLOTS
 
 wd1a0:: ; d1a0
-	ds $d
-
-wd1ad:: ; d1ad
-	db
-
-wd1ae:: ; d1ae
-	db
-
-	ds $1
+	ds NUM_OBJECT_SLOTS
 
 wd1b0:: ; d1b0
-	ds $d
-
-wd1bd:: ; d1bd
-	db
-
-wd1be:: ; d1be
-	db
-
-	ds $1
+	ds NUM_OBJECT_SLOTS
 
 wSpriteOAMPtrs:: ; d1c0
 	ds $2 * NUM_OBJECT_SLOTS
@@ -512,12 +491,7 @@ wd3f8:: ; d3f8
 	db
 
 wd3f9:: ; d3f9
-	db
-
-wd3fa:: ; d3fa
-	db
-
-	ds $4
+	ds 3 * $2
 
 wd3ff:: ; d3ff
 	db

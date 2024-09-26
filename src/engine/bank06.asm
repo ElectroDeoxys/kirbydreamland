@@ -783,10 +783,10 @@ _LoseLife::
 	ld [hl], a
 	ld [wd3be], a
 	ld [wd3f5], a
-	ld a, [wd1a0]
-	res 4, a
-	res 5, a
-	ld [wd1a0], a
+	ld a, [wd1a0 + OBJECT_SLOT_00]
+	res OBJFLAG_FLASHING_F, a
+	res OBJFLAG_BLINKING_F, a
+	ld [wd1a0 + OBJECT_SLOT_00], a
 	ld a, [wStage]
 	cp MT_DEDEDE
 	jr nz, .asm_18678
@@ -952,8 +952,11 @@ Func_18757:
 	xor a
 	ld [wVirtualOAMSize], a
 	call Func_2e9c
-	ld bc, $118
-.asm_18797
+
+	; wait 280 frames ~ 4.5 seconds
+	; unless Start is pressed
+	ld bc, 280
+.loop
 	ld hl, hVBlankFlags
 	set 6, [hl]
 .asm_1879c
@@ -961,15 +964,16 @@ Func_18757:
 	jr nz, .asm_1879c
 	ld a, [hJoypadPressed]
 	bit START_F, a
-	jr nz, .asm_187b0
+	jr nz, .break
 	dec bc
 	ld a, b
 	and a
-	jr nz, .asm_18797
+	jr nz, .loop
 	ld a, c
 	and a
-	jr nz, .asm_18797
-.asm_187b0
+	jr nz, .loop
+
+.break
 	ld hl, hff95
 	set 0, [hl]
 	call Func_648
@@ -1159,7 +1163,7 @@ Func_1886c:
 	call StopTimerAndSwitchOnLCD
 	call Func_670
 
-	ld de, 432
+	ld de, 432 ; ~ 7 seconds
 	ld hl, hVBlankFlags
 .asm_18959
 	set 6, [hl]

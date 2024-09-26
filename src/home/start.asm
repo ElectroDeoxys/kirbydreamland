@@ -9,8 +9,8 @@ Reset::
 	xor a
 	ldh [rLCDC], a
 
-	; set stack
 	di
+	; set stack
 	ld sp, hStackTop
 
 	; init RAM, OAM and audio
@@ -19,10 +19,10 @@ Reset::
 	call InitRAM
 	call InitDMATransferFunction
 	call ClearSprites
-	call Func_21bb
+	call InitDelayedCopyAToDEFunc
 	call Func_14b30
 
-	ld a, BANK("Bank 5")
+	ld a, BANK(InitAudio)
 	bankswitch
 	call InitAudio
 	ld a, BANK("Bank 1")

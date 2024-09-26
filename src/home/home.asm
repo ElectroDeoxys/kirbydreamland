@@ -133,8 +133,8 @@ Func_326::
 	xor a
 	ld [wMintLeafCounter + 0], a
 	ld [wMintLeafCounter + 1], a
-	ld hl, wd1a0
-	res 4, [hl]
+	ld hl, wd1a0 + OBJECT_SLOT_00
+	res OBJFLAG_FLASHING_F, [hl]
 	jr .asm_359
 .asm_354
 	ld a, SFX_20
@@ -2777,6 +2777,9 @@ GfxScript_157a::
 
 SECTION "Home@18ff", ROM0[$18ff]
 
+; input:
+; - a = flags for wOAMFlagsOverride
+; - hl = OAM data pointer
 AddSprite::
 	ld [wOAMFlagsOverride], a
 	ld a, [wROMBank]
@@ -3999,7 +4002,7 @@ Decompress::
 	jp z, .loop_compressed_data
 .continue_literal_copy
 	ld a, [hli]
-	call wd099
+	call wDelayedCopyAToDEFunc
 	jr .loop_literal_copy
 
 .repeat_byte
@@ -4010,7 +4013,7 @@ Decompress::
 	dec b
 	jp z, .loop_compressed_data
 .continue_repeat_byte
-	call wd099
+	call wDelayedCopyAToDEFunc
 	jr .loop_repeat_byte
 
 .loop_repeat_bytes
@@ -4020,9 +4023,9 @@ Decompress::
 	jp z, .done_repeat_bytes
 .continue_repeat_bytes
 	ld a, [hli]
-	call wd099
+	call wDelayedCopyAToDEFunc
 	ld a, [hld]
-	call wd099
+	call wDelayedCopyAToDEFunc
 	jr .loop_repeat_bytes
 .done_repeat_bytes
 	inc hl
@@ -4037,7 +4040,7 @@ Decompress::
 	dec b
 	jp z, .loop_compressed_data
 .continue_increasing_sequence
-	call wd099
+	call wDelayedCopyAToDEFunc
 	inc a
 	jr .loop_increasing_sequence
 
@@ -4112,7 +4115,7 @@ Decompress::
 
 SECTION "Home@21bb", ROM0[$21bb]
 
-; writes the following routine to wd099:
+; writes the following routine to wDelayedCopyAToDEFunc:
 ;	nop
 ;	nop
 ;	ld [de], a
@@ -4120,8 +4123,8 @@ SECTION "Home@21bb", ROM0[$21bb]
 ;	nop
 ;	inc de
 ;	ret
-Func_21bb:
-	ld hl, wd099
+InitDelayedCopyAToDEFunc:
+	ld hl, wDelayedCopyAToDEFunc
 	xor a
 	ld [hli], a ; nop
 	ld [hli], a ; nop
@@ -4317,7 +4320,7 @@ ASSERT Data_1c000 == Data_3c000
 	set 4, b
 .asm_230e
 	ld a, b
-	ld [wd1a0], a
+	ld [wd1a0 + OBJECT_SLOT_00], a
 	xor a
 	ld [wd190 + OBJECT_SLOT_00], a
 	ret
@@ -5810,7 +5813,7 @@ Func_2b26:
 	jp nz, .asm_2c5b
 	ld hl, wd1a0
 	add hl, bc
-	res 7, [hl]
+	res OBJFLAG_7_F, [hl]
 	ld hl, wd1b0
 	add hl, bc
 	bit 1, [hl]
@@ -6029,9 +6032,9 @@ Func_2b26:
 	add hl, de
 	ld a, [hl]
 	cp $18
-	jr c, .asm_2ce3
+	jr c, .exit
 	cp $98
-	jr nc, .asm_2ce3
+	jr nc, .exit
 .asm_2c94
 	ld b, $9e
 .asm_2c96
@@ -6039,11 +6042,11 @@ Func_2b26:
 	add hl, de
 	ld a, [hl]
 	cp b
-	jr nc, .asm_2ce3
+	jr nc, .exit
 	pop bc
 	ld hl, wd1a0
 	add hl, de
-	set 7, [hl]
+	set OBJFLAG_7_F, [hl]
 	ld hl, wd190
 	add hl, de
 	ld a, [hl]
@@ -6057,13 +6060,14 @@ Func_2b26:
 	ld a, [wd036]
 	bit 0, a
 	jr nz, .asm_2cc4
-	bit 5, [hl]
-	ret nz
+	bit OBJFLAG_BLINKING_F, [hl]
+	ret nz ; exit
 .asm_2cc4
 	bit 1, a
 	jr nz, .add_sprite
-	bit 4, [hl]
-	jr z, .add_sprite
+	bit OBJFLAG_FLASHING_F, [hl]
+	jr z, .add_sprite ; not flashing
+	; use alternate palette
 	ld a, [wOAMFlagsOverride]
 	xor $10 ; flip pal number
 	ld [wOAMFlagsOverride], a
@@ -6077,7 +6081,7 @@ Func_2b26:
 	ld h, [hl]
 	ld l, e
 	jp AddSprite
-.asm_2ce3
+.exit
 	pop bc
 	ret
 
@@ -6331,7 +6335,7 @@ Func_2e04:
 Func_2e20:
 	ld hl, wd1a0
 	add hl, bc
-	bit 0, [hl]
+	bit OBJFLAG_0_F, [hl]
 	jr z, .asm_2e2a
 	xor a
 	ret
@@ -6611,7 +6615,7 @@ Func_2fdf:
 	ld [wd3f5], a
 	jr nz, .asm_2fff
 	ld hl, wd1a0
-	res 5, [hl]
+	res OBJFLAG_BLINKING_F, [hl]
 .asm_2fff
 	call .Func_303a
 	ld a, [hff91]
@@ -6620,9 +6624,10 @@ Func_2fdf:
 	ld hl, wMintLeafCounter
 	call .Func_3047
 	ret nz
-	ld a, [wd1a0]
-	and $cf
-	ld [wd1a0], a
+	; turn off flashing and blinking
+	ld a, [wd1a0 + OBJECT_SLOT_00]
+	and ~(OBJFLAG_FLASHING | OBJFLAG_BLINKING)
+	ld [wd1a0 + OBJECT_SLOT_00], a
 	ld hl, wd3be
 	bit 0, [hl]
 	jr z, .asm_3030
@@ -6637,16 +6642,16 @@ Func_2fdf:
 	ld a, [hff95]
 	and $83
 	ld [hff95], a
-	jr .asm_3041
+	jr .clear_kirby_flashing
 
 .Func_303a:
 	ld hl, wInvincibilityCounter
 	call .Func_3047
 	ret nz
 
-.asm_3041
-	ld hl, wd1a0
-	res 4, [hl]
+.clear_kirby_flashing
+	ld hl, wd1a0 + OBJECT_SLOT_00
+	res OBJFLAG_FLASHING_F, [hl]
 	ret
 
 .Func_3047:
@@ -7410,8 +7415,8 @@ Func_375d::
 	ret
 
 Func_3768::
-	ld hl, wd1a0
-	set 4, [hl]
+	ld hl, wd1a0 + OBJECT_SLOT_00
+	set OBJFLAG_FLASHING_F, [hl]
 	ld a, $40
 	ld [hff95], a
 	ld hl, hff8d
@@ -7483,7 +7488,7 @@ Func_37b9:
 	add hl, bc
 	add hl, bc
 	add hl, bc
-	ld a, [wd150]
+	ld a, [wd150 + OBJECT_SLOT_00]
 	ld c, a
 	ld a, [wSCY]
 	and $0f

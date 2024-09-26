@@ -1134,13 +1134,13 @@ SECTION "Bank 1@48e1", ROMX[$48e1], BANK[$1]
 Func_48e1:
 	ld hl, wd1a0
 	add hl, bc
-	set 1, [hl]
+	set OBJFLAG_1_F, [hl]
 	ret
 
 Func_48e8:
 	ld hl, wd1a0
 	add hl, bc
-	res 1, [hl]
+	res OBJFLAG_1_F, [hl]
 	ld hl, wd1b0
 	add hl, bc
 	res 5, [hl]
@@ -1255,7 +1255,7 @@ SECTION "Bank 1@4afb", ROMX[$4afb], BANK[$1]
 Func_4afb:
 	ld hl, wd1a0
 	add hl, bc
-	set 0, [hl]
+	set OBJFLAG_0_F, [hl]
 	ld hl, MotionScript_10003
 	ld de, GfxScript_20000
 	call Func_21e6
@@ -1283,9 +1283,9 @@ Func_4c9b::
 	ld [wHP], a
 	ld a, $5a
 	ld [wd3f5], a
-	ld a, [wd1a0]
-	set 5, a
-	ld [wd1a0], a
+	ld a, [wd1a0 + OBJECT_SLOT_00]
+	set OBJFLAG_BLINKING_F, a
+	ld [wd1a0 + OBJECT_SLOT_00], a
 
 	ld a, SFX_21
 	call PlaySFX
@@ -1324,9 +1324,9 @@ Func_4ced::
 	call PlaySFX
 	ld a, $5a
 	ld [wd3f5], a
-	ld a, [wd1a0]
-	set 5, a
-	ld [wd1a0], a
+	ld a, [wd1a0 + OBJECT_SLOT_00]
+	set OBJFLAG_BLINKING_F, a
+	ld [wd1a0 + OBJECT_SLOT_00], a
 	ld de, $4149
 	ld hl, $41dc
 	ld bc, OBJECT_SLOT_00

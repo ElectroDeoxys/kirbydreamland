@@ -16,17 +16,17 @@ Func_140d5:
 	set 5, [hl]
 	ld hl, wd1a0
 	add hl, bc
-	bit 0, [hl]
+	bit OBJFLAG_0_F, [hl]
 	jr nz, .asm_140e7
-	res 3, [hl]
+	res OBJFLAG_3_F, [hl]
 .set_carry
 	scf
 	ret
 .asm_140e7
-	res 0, [hl]
-	bit 3, [hl]
+	res OBJFLAG_0_F, [hl]
+	bit OBJFLAG_3_F, [hl]
 	jr nz, .set_carry
-	set 3, [hl]
+	set OBJFLAG_3_F, [hl]
 	xor a
 	ret
 ; 0x140f1
@@ -39,9 +39,9 @@ Func_14105:
 	res 1, [hl]
 	ld hl, wd1a0
 	add hl, bc
-	bit 0, [hl]
+	bit OBJFLAG_0_F, [hl]
 	ret z
-	res 0, [hl]
+	res OBJFLAG_0_F, [hl]
 	ld hl, wd1b0
 	add hl, bc
 	set 1, [hl]
@@ -156,7 +156,7 @@ Func_1432c::
 .asm_14353
 	ld a, [wd140]
 	ld [wd412], a
-	ld a, [wd150]
+	ld a, [wd150 + OBJECT_SLOT_00]
 	add c
 	ld [wd413], a
 	ld bc, OBJECT_GROUP_1_BEGIN
@@ -180,16 +180,16 @@ Func_1432c::
 	ld a, [hl]
 	and a
 	ret z ; OBJECT_NOT_ACTIVE
-	ld hl, wd1ad
-	bit 7, [hl]
+	ld hl, wd1a0 + OBJECT_SLOT_13
+	bit OBJFLAG_7_F, [hl]
 	ret z
-	ld a, [wd1bd]
+	ld a, [wd1b0 + OBJECT_SLOT_13]
 	bit 2, a
 	ret nz
 	ld [wd410], a
 	ld a, [wd140 + OBJECT_SLOT_13]
 	ld [wd412], a
-	ld a, [wd15d]
+	ld a, [wd150 + OBJECT_SLOT_13]
 	ld [wd413], a
 	ld a, OBJECT_SLOT_13
 	ld [wd411], a
@@ -201,16 +201,16 @@ Func_1432c::
 	ld a, [hl]
 	and a
 	ret z ; OBJECT_NOT_ACTIVE
-	ld hl, wd1ae
-	bit 7, [hl]
+	ld hl, wd1a0 + OBJECT_SLOT_14
+	bit OBJFLAG_7_F, [hl]
 	ret z
-	ld a, [wd1be]
+	ld a, [wd1b0 + OBJECT_SLOT_14]
 	bit 2, a
 	ret nz
 	ld [wd410], a
 	ld a, [wd140 + OBJECT_SLOT_14]
 	ld [wd412], a
-	ld a, [wd15e]
+	ld a, [wd150 + OBJECT_SLOT_14]
 	ld [wd413], a
 	ld a, OBJECT_SLOT_14
 	ld [wd411], a
@@ -274,8 +274,8 @@ Func_1432c::
 	jr nz, .asm_14466
 	ld a, $5a
 	ld [wd3f5], a
-	ld hl, wd1a0
-	set 5, [hl]
+	ld hl, wd1a0 + OBJECT_SLOT_00
+	set OBJFLAG_BLINKING_F, [hl]
 	ld a, [hff91]
 	bit 0, a
 	jr nz, .asm_14453
@@ -491,9 +491,9 @@ Func_1432c::
 	ld hl, wd1a0
 	add hl, bc
 	ld a, [hl]
-	bit 7, a
+	bit OBJFLAG_7_F, a
 	jr z, .set_carry
-	bit 0, a
+	bit OBJFLAG_0_F, a
 	jr nz, .set_carry
 	ld hl, wd190
 	add hl, bc
@@ -608,8 +608,8 @@ Func_1432c::
 	ld [wInvincibilityCounter + 0], a
 	ld a, HIGH(INVINCIBILITY_DURATION)
 	ld [wInvincibilityCounter + 1], a
-	ld hl, wd1a0
-	set 4, [hl]
+	ld hl, wd1a0 + OBJECT_SLOT_00
+	set OBJFLAG_FLASHING_F, [hl]
 	ld a, MUSIC_INVINCIBILITY_CANDY
 	call PlayMusic
 	jp .DestroyObject
@@ -622,11 +622,11 @@ Func_1432c::
 	res 6, [hl]
 	ld a, SFX_POWER_UP
 	call PlaySFX
-	ld hl, wd1a0
-	set 4, [hl]
-	ld a, $fc
+	ld hl, wd1a0 + OBJECT_SLOT_00
+	set OBJFLAG_FLASHING_F, [hl]
+	ld a, LOW($3fc)
 	ld [wMintLeafCounter + 0], a
-	ld a, $03
+	ld a, HIGH($3fc)
 	ld [wMintLeafCounter + 1], a
 	ld a, MUSIC_MINT_LEAF
 	call PlayMusic
@@ -831,9 +831,9 @@ Func_147e4::
 	jp z, .asm_1488d
 	ld hl, wd1a0
 	add hl, bc
-	bit 7, [hl]
+	bit OBJFLAG_7_F, [hl]
 	jr z, .asm_1488d
-	bit 0, [hl]
+	bit OBJFLAG_0_F, [hl]
 	jr nz, .asm_1488d
 	ld hl, wd190
 	add hl, bc
@@ -891,8 +891,8 @@ Func_147e4::
 	jr nc, .asm_1488d
 	ld hl, wd1a0
 	add hl, bc
-	set 0, [hl]
-	bit 1, [hl]
+	set OBJFLAG_0_F, [hl]
+	bit OBJFLAG_1_F, [hl]
 	jr nz, .asm_1488d
 	ld hl, wd1b0
 	add hl, bc
@@ -933,10 +933,10 @@ Func_147e4::
 	add hl, bc
 	add hl, bc
 	ld a, [hli]
-	cp $1a
+	cp LOW($401a)
 	jr nz, .next_object
 	ld a, [hl]
-	cp $40
+	cp HIGH($401a)
 	jr z, .asm_148d7
 .next_object
 	inc c
@@ -989,7 +989,7 @@ Func_148ea:
 	ld a, [wSCY]
 	and $0f
 	ld l, a
-	ld a, [wd150]
+	ld a, [wd150 + OBJECT_SLOT_00]
 	add l
 	sub $10
 	ld l, a
@@ -1068,7 +1068,7 @@ Func_148ea:
 	call CreateObject_Group3
 	ld hl, wd1a0
 	add hl, bc
-	set 0, [hl]
+	set OBJFLAG_0_F, [hl]
 	ld hl, hff94
 	set 7, [hl]
 	ld hl, wd3f6
@@ -1091,7 +1091,7 @@ Func_14993:
 	call .Func_149ae
 .asm_149a1
 	push bc
-	call Func_149fb
+	call .Func_149fb
 	pop bc
 	inc c
 	inc c
@@ -1108,7 +1108,7 @@ Func_14993:
 	ld a, HIGH(.data)
 	adc $00
 	ld d, a
-	ld hl, wd3fa
+	ld hl, wd3f9 + 1
 	add hl, bc
 	push hl
 	ld a, [de]
@@ -1132,37 +1132,40 @@ Func_14993:
 	ld [hl], a
 	ret
 
+; first byte goes to second byte of wd3f9
+; second byte goes to wd406
 .data
-	db $0f, $ec
-	db $14, $ec
-	db $19, $ec
-	db $1e, $ec
-	db $23, $ec
-	db $28, $ec
-	db $2c, $f4
-	db $2c, $fb
-	db $2c, $05
-	db $2c, $0c
-	db $28, $14
-	db $23, $14
-	db $1e, $14
-	db $19, $14
-	db $14, $14
-	db $0f, $14
+	db 15, -20
+	db 20, -20
+	db 25, -20
+	db 30, -20
+	db 35, -20
+	db 40, -20
+	db 44, -12
+	db 44,  -5
+	db 44,   5
+	db 44,  12
+	db 40,  20
+	db 35,  20
+	db 30,  20
+	db 25,  20
+	db 20,  20
+	db 15,  20
 
-Func_149fb:
-	ld hl, wd3fa
+.Func_149fb:
+	ld hl, wd3f9 + 1
 	add hl, bc
 	ld a, [hl]
 	ld de, -$3c
 	bit 7, a
-	jr z, .asm_14a0c
+	jr z, .got_abs_value
 	cpl
 	inc a
 	ld de, $3c
-.asm_14a0c
-	cp $0a
+.got_abs_value
+	cp 10
 	jr c, .asm_14a5b
+	; add wd3ff to de
 	ld hl, wd3ff
 	add hl, bc
 	ld a, [hl]
@@ -1173,6 +1176,7 @@ Func_149fb:
 	adc d
 	ld d, a
 	ld [hl], a
+	; add de to wd3f9
 	ld hl, wd3f9
 	add hl, bc
 	ld a, [hl]
@@ -1229,7 +1233,7 @@ Func_149fb:
 Func_14a5f::
 	ld hl, wd1a0
 	add hl, bc
-	set 2, [hl]
+	set OBJFLAG_2_F, [hl]
 	push bc
 	ld hl, wObjectXCoords + $1
 	add hl, bc
@@ -1266,7 +1270,7 @@ Func_14a5f::
 	add hl, bc
 	add hl, bc
 	add hl, bc
-	ld a, [wd150]
+	ld a, [wd150 + OBJECT_SLOT_00]
 	sub $05
 	ld c, a
 	ld a, [wSCY]
