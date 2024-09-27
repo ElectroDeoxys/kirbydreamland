@@ -1291,9 +1291,31 @@ Func_14a5f::
 	adc $00
 	ld [hl], a
 	ret
-; 0x14abe
 
-SECTION "Bank 5@4ad6", ROMX[$4ad6], BANK[$5]
+InitDMATransferFunction::
+	ld c, LOW(hTransferVirtualOAM)
+	ld b, .end - .Func
+	ld hl, .Func
+.loop_copy
+	ld a, [hli]
+	ld [$ff00+c], a
+	inc c
+	dec b
+	jr nz, .loop_copy
+	ret
+
+.Func:
+LOAD "DMA Transfer", HRAM
+hTransferVirtualOAM::
+	ld a, HIGH(wVirtualOAM)
+	ldh [rDMA], a ; start DMA transfer (starts right after instruction)
+	ld a, 160 / (1 + 3) ; delay for a total of 160 cycles
+.loop
+	dec a        ; 1 cycle
+	jr nz, .loop ; 3 cycles
+	ret
+ENDL
+.end
 
 ; clears WRAM and HRAM
 ; and inits some variables
@@ -1348,37 +1370,6 @@ InitRAM::
 	inc a
 	ld [hl], a  ; $3
 	ret
-; 0x14b30
-
-SECTION "Bank 5@4abe", ROMX[$4abe], BANK[$5]
-
-InitDMATransferFunction::
-	ld c, LOW(hTransferVirtualOAM)
-	ld b, .end - .Func
-	ld hl, .Func
-.loop_copy
-	ld a, [hli]
-	ld [$ff00+c], a
-	inc c
-	dec b
-	jr nz, .loop_copy
-	ret
-
-.Func:
-LOAD "DMA Transfer", HRAM
-hTransferVirtualOAM::
-	ld a, HIGH(wVirtualOAM)
-	ldh [rDMA], a ; start DMA transfer (starts right after instruction)
-	ld a, 160 / (1 + 3) ; delay for a total of 160 cycles
-.loop
-	dec a        ; 1 cycle
-	jr nz, .loop ; 3 cycles
-	ret
-ENDL
-.end
-; 0x14ad6
-
-SECTION "Bank 5@4b30", ROMX[$4b30], BANK[$5]
 
 Func_14b30::
 	ld hl, $4b3a

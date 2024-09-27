@@ -1,5 +1,3 @@
-SECTION "Home@1e48", ROM0[$1e48]
-
 Timer:
 	push af
 	push bc

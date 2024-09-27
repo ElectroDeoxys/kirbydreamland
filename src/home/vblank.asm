@@ -1,5 +1,3 @@
-SECTION "Home@1d16", ROM0[$1d16]
-
 VBlank:
 	push af
 	push bc

@@ -1,5 +1,3 @@
-SECTION "Home@1e0f", ROM0[$1e0f]
-
 Stat:
 	push af
 	push bc
@@ -22,4 +20,23 @@ Stat:
 	pop bc
 	pop af
 	reti
-; 0x1e2e
+
+Func_1e2e:
+	ld hl, hff96
+	bit 7, [hl]
+	ret z
+	res 7, [hl]
+	ld hl, wd029
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	ld d, a
+	ld a, [hli] ; wd02b
+	ld [de], a
+	inc e
+	ld [de], a
+	ld hl, $20
+	add hl, de
+	ld [hld], a
+	ld [hl], a
+	ret
