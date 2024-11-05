@@ -19,3 +19,4 @@ INCLUDE "constants/sound_constants.asm"
 INCLUDE "constants/stage_constants.asm"
 
 INCLUDE "macros/code.asm"
+INCLUDE "macros/coords.asm"

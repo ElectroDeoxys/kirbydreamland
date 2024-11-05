@@ -1,8 +1,8 @@
 ConfigurationMenu:
-	call Func_648
+	call FadeOut
 	call ResetTimer
 	call ClearAllObjects
-	call InitWindow
+	call HideWindow
 	xor a
 	ld [wSCX ], a
 	ld [wSCY], a
@@ -11,19 +11,19 @@ ConfigurationMenu:
 	call ClearSprites
 
 	ld hl, $4855
-	ld de, $9670
+	ld de, vTiles2 tile $67
 	ld c, $02
 	call FarDecompress
 	ld hl, $7b0d
-	ld de, v0Tiles1
+	ld de, vTiles1 tile $00
 	ld c, $06
 	call FarDecompress
 	ld hl, $41c7
-	ld de, $8e00
+	ld de, vTiles1 tile $60
 	ld c, $03
 	call FarDecompress
 	ld hl, $4541
-	ld de, v0BGMap0
+	debgcoord 0, 0
 	ld c, $03
 	call FarDecompress
 
@@ -32,7 +32,7 @@ ConfigurationMenu:
 	dec a ; $ff, all buttons
 	ld [wd050], a
 
-	ld hl, $98eb
+	hlbgcoord 11, 7
 	ld a, [wConfigMaxHP]
 .loop_draw_hp_bars
 	ld [hl], $c5
@@ -41,7 +41,7 @@ ConfigurationMenu:
 	jr nz, .loop_draw_hp_bars
 
 	call StopTimerAndSwitchOnLCD
-	call Func_670
+	call FadeIn
 
 	ld a, [wConfigLives]
 	call .UpdateNumLives
@@ -119,27 +119,27 @@ ConfigurationMenu:
 	ld a, SFX_CURSOR
 	call PlaySFX
 .config_update_cursor
-	ld a, HIGH($98e4)
+	ld a, HIGH(vBGMap0 + $e4)
 	ld [wQueuedBG000BGPtr + 0], a
-	ld a, LOW($98e4)
+	ld a, LOW(vBGMap0 + $e4)
 	ld [wQueuedBG000BGPtr + 1], a
 	ld a, $c7
 	ld [wQueuedBG000TileID], a
-	ld a, HIGH($9924)
+	ld a, HIGH(vBGMap0 + $124)
 	ld [wQueuedBG001BGPtr + 0], a
-	ld a, LOW($9924)
+	ld a, LOW(vBGMap0 + $124)
 	ld [wQueuedBG001BGPtr + 1], a
 	ld a, $c7
 	ld [wQueuedBG001TileID], a
-	ld a, HIGH($9964)
+	ld a, HIGH(vBGMap0 + $164)
 	ld [wQueuedBG002BGPtr + 0], a
-	ld a, LOW($9964)
+	ld a, LOW(vBGMap0 + $164)
 	ld [wQueuedBG002BGPtr + 1], a
 	ld a, $c7
 	ld [wQueuedBG002TileID], a
-	ld a, HIGH($99c4)
+	ld a, HIGH(vBGMap0 + $1c4)
 	ld [wQueuedBG003BGPtr + 0], a
-	ld a, LOW($99c4)
+	ld a, LOW(vBGMap0 + $1c4)
 	ld [wQueuedBG003BGPtr + 1], a
 	ld a, $c7
 	ld [wQueuedBG003TileID], a
@@ -208,7 +208,7 @@ ConfigurationMenu:
 .update_hp_bar
 	ld [wQueuedBG000TileID], a
 	ld b, $00
-	ld hl, $98ea
+	hlbgcoord 10, 7
 	add hl, bc
 	ld a, h
 	ld [wQueuedBG000BGPtr + 0], a
@@ -231,16 +231,16 @@ ConfigurationMenu:
 	call GetDigits
 	add "0"
 	ld [wQueuedBG000TileID], a
-	ld a, HIGH($992c)
+	ld a, HIGH(vBGMap0 + $12c)
 	ld [wQueuedBG000BGPtr + 0], a
-	ld a, LOW($992c)
+	ld a, LOW(vBGMap0 + $12c)
 	ld [wQueuedBG000BGPtr + 1], a
 	ld a, b
 	add "0"
 	ld [wQueuedBG001TileID], a
-	ld a, HIGH($992b)
+	ld a, HIGH(vBGMap0 + $12b)
 	ld [wQueuedBG001BGPtr + 0], a
-	ld a, LOW($992b)
+	ld a, LOW(vBGMap0 + $12b)
 	ld [wQueuedBG001BGPtr + 1], a
 	xor a
 	ld [wQueuedBG002BGPtr + 0], a
@@ -251,19 +251,19 @@ ConfigurationMenu:
 
 .SoundTest:
 	pop hl
-	call Func_648
+	call FadeOut
 	call ResetTimer
 	ld a, $02
 	call Func_21fb
-	call InitWindow
+	call HideWindow
 
 	ld hl, $44c9
-	ld de, v0BGMap0
+	debgcoord 0, 0
 	ld c, $03
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
-	call Func_670
+	call FadeIn
 
 	xor a ; SOUNDTEST_MUSIC
 	ld [wMenuCursorPos], a
@@ -400,16 +400,16 @@ ConfigurationMenu:
 	call GetDigits
 	add "0"
 	ld [wQueuedBG000TileID], a
-	ld a, HIGH($98ee)
+	ld a, HIGH(vBGMap0 + $ee)
 	ld [wQueuedBG000BGPtr + 0], a
-	ld a, LOW($98ee)
+	ld a, LOW(vBGMap0 + $ee)
 	ld [wQueuedBG000BGPtr + 1], a
 	ld a, b
 	add "0"
 	ld [wQueuedBG001TileID], a
-	ld a, HIGH($98ed)
+	ld a, HIGH(vBGMap0 + $ed)
 	ld [wQueuedBG001BGPtr + 0], a
-	ld a, LOW($98ed)
+	ld a, LOW(vBGMap0 + $ed)
 	ld [wQueuedBG001BGPtr + 1], a
 	xor a
 	ld [wQueuedBG002BGPtr + 0], a
@@ -422,16 +422,16 @@ ConfigurationMenu:
 	call GetDigits
 	add "0"
 	ld [wQueuedBG000TileID], a
-	ld a, HIGH($992e)
+	ld a, HIGH(vBGMap0 + $12e)
 	ld [wQueuedBG000BGPtr + 0], a
-	ld a, LOW($992e)
+	ld a, LOW(vBGMap0 + $12e)
 	ld [wQueuedBG000BGPtr + 1], a
 	ld a, b
 	add "0"
 	ld [wQueuedBG001TileID], a
-	ld a, HIGH($992d)
+	ld a, HIGH(vBGMap0 + $12d)
 	ld [wQueuedBG001BGPtr + 0], a
-	ld a, LOW($992d)
+	ld a, LOW(vBGMap0 + $12d)
 	ld [wQueuedBG001BGPtr + 1], a
 	xor a
 	ld [wQueuedBG002BGPtr + 0], a
@@ -444,15 +444,15 @@ ConfigurationMenu:
 	ld a, [wMenuCursorPos]
 	and a
 	jr nz, .cursor_on_sfx
-	ld a, HIGH($98e6)
+	ld a, HIGH(vBGMap0 + $e6)
 	ld [wQueuedBG000BGPtr + 0], a
-	ld a, LOW($98e6)
+	ld a, LOW(vBGMap0 + $e6)
 	ld [wQueuedBG000BGPtr + 1], a
 	ld a, $c6
 	ld [wQueuedBG000TileID], a
-	ld a, HIGH($9926)
+	ld a, HIGH(vBGMap0 + $126)
 	ld [wQueuedBG001BGPtr + 0], a
-	ld a, LOW($9926)
+	ld a, LOW(vBGMap0 + $126)
 	ld [wQueuedBG001BGPtr + 1], a
 	ld a, $c7
 	ld [wQueuedBG001TileID], a
@@ -464,15 +464,15 @@ ConfigurationMenu:
 	ret
 
 .cursor_on_sfx
-	ld a, HIGH($98e6)
+	ld a, HIGH(vBGMap0 + $e6)
 	ld [wQueuedBG000BGPtr + 0], a
-	ld a, LOW($98e6)
+	ld a, LOW(vBGMap0 + $e6)
 	ld [wQueuedBG000BGPtr + 1], a
 	ld a, $c7
 	ld [wQueuedBG000TileID], a
-	ld a, HIGH($9926)
+	ld a, HIGH(vBGMap0 + $126)
 	ld [wQueuedBG001BGPtr + 0], a
-	ld a, LOW($9926)
+	ld a, LOW(vBGMap0 + $126)
 	ld [wQueuedBG001BGPtr + 1], a
 	ld a, $c6
 	ld [wQueuedBG001TileID], a

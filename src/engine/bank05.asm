@@ -49,7 +49,7 @@ Func_14105:
 	add hl, bc
 	add hl, bc
 	add hl, bc
-	ld a, [wGlobalCounter1]
+	ld a, [wGlobalCounter]
 	and %110
 	add LOW(.data)
 	ld e, a
@@ -416,8 +416,8 @@ Func_1432c::
 	call Func_3d48
 	pop af
 	ld [hff92], a
-	ld hl, hff90
-	set 3, [hl]
+	ld hl, hPalFadeFlags
+	set FADE_3_F, [hl]
 .asm_1453b
 	call .Func_1456d
 	jr nz, .asm_144f9
@@ -753,8 +753,8 @@ ASSERT FLOAT_ISLANDS_7 == MT_DEDEDE_7
 	and $bf
 	or $03
 	ld [hff91], a
-	ld hl, hff90
-	set 5, [hl]
+	ld hl, hPalFadeFlags
+	set FADE_5_F, [hl]
 .not_kaboola_fight
 	call Func_3768
 	ld a, MUSIC_MINT_LEAF

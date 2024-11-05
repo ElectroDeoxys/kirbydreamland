@@ -3,7 +3,6 @@ _Start:
 	ldh a, [rLY]
 	cp $91
 	jr c, .wait_vblank
-
 Reset::
 	; reset LCDC
 	xor a
@@ -22,13 +21,14 @@ Reset::
 	call InitDelayedCopyAToDEFunc
 	call Func_14b30
 
+	; initialize audio engine
 	ld a, BANK(InitAudio)
 	bankswitch
 	call InitAudio
 	ld a, BANK("Bank 1")
 	bankswitch
 
-	call InitWindow
+	call HideWindow
 
 	ld a, %11100100 ; standard GB palette data
 	ldh [rOBP1], a
@@ -51,10 +51,10 @@ Reset::
 	ldh [rIE], a
 	ei
 
+	; Title Screen
 	xor a
 	ldh [hVBlankFlags], a
 	ld [wExtraGameUnlocked], a
-
 	ld a, BANK(TitleScreen)
 	bankswitch
 	ld a, DEFAULT_LIVES
@@ -70,6 +70,7 @@ Reset::
 	ld a, [wExtraGameUnlocked]
 	ld [wExtraGameEnabled], a
 
+	; Start Stage
 	ld a, BANK(StartStage)
 	bankswitch
 	call StartStage

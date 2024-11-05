@@ -18,7 +18,7 @@ hff8e:: ; ff8e
 hHUDFlags:: ; ff8f
 	db
 
-hff90:: ; ff90
+hPalFadeFlags:: ; ff90
 	db
 
 hff91:: ; ff91

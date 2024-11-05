@@ -41,13 +41,13 @@ wCurSFX:: ; d02e
 wRNG:: ; d02f
 	ds $3
 
-wd032:: ; d032
+wFadeDelayTimer:: ; d032
 	db
 
 	ds $1
 
-wGlobalCounter1:: db ; d034
-wGlobalCounter2:: db ; d035
+wGlobalCounter:: db ; d034
+wUnkTimer:: db ; d035
 wd036:: db ; d036
 wd037:: db ; d037
 wd038:: db ; d038

@@ -104,121 +104,142 @@ Func_1ee3:
 	ld [hl], a
 	jr .asm_1eee
 
-Func_1f08:
-	ld a, [wd032]
+FadePalettes:
+	; fade only ticks every 5 frames
+	ld a, [wFadeDelayTimer]
 	cp 5
 	ret c ; < 5
 	xor a
-	ld [wd032], a
+	ld [wFadeDelayTimer], a
 
-	ldh a, [hff90]
-	bit 7, a
-	ret z
-	and $04
+	ldh a, [hPalFadeFlags]
+	bit FADE_ON_F, a
+	ret z ; no fade
+	and FADE_BLACK
 	ld e, a
-	ldh a, [hff90]
-	and $03
+
+	ldh a, [hPalFadeFlags]
+	and %11
 	ld c, a
-	cp $03
-	jp z, .asm_1fab
+	cp 3
+	jp z, .end_fade
+	; increment fade step
 	inc a
 	ld b, a
-	ldh a, [hff90]
-	and $fc
+	ldh a, [hPalFadeFlags]
+	and %11111100
 	or b
-	ldh [hff90], a
-	ldh a, [hff90] ; unnecessary
-	bit 6, a
-	jr nz, .asm_1f78
+	ldh [hPalFadeFlags], a
+
+	ldh a, [hPalFadeFlags] ; unnecessary
+	bit FADE_MODE_F, a
+	jr nz, .fade_out
+
+; fade in
+	; fade for BG and OB1
 	ld d, $00
 	ld b, d ; $00
-	ld hl, Data_20b9
+	ld hl, BGPAndOBP1FadeInMasks
 	add hl, de
 	add hl, bc
 	ld a, [wBGP]
-	bit 2, e
-	jr nz, .asm_1f48
+	bit FADE_COLOR_F, e
+	jr nz, .black1
+	; darken
 	srl a
 	srl a
-	jr .asm_1f4c
-.asm_1f48
+	jr .shifted1
+.black1
+	; lighten
 	sla a
 	sla a
-.asm_1f4c
+.shifted1
 	ld b, a
 	ld a, [hl]
 	or b
 	ld [wBGP], a
 	ldh [rBGP], a
 	ldh [rOBP1], a
+
+	; fade for OB0
 	ld d, $00
 	ld b, d
-	ld hl, Data_20b1
+	ld hl, OBP0FadeInMasks
 	add hl, de
 	add hl, bc
 	ld a, [wOBP]
-	bit 2, e
-	jr nz, .asm_1f6b
+	bit FADE_COLOR_F, e
+	jr nz, .black2
+	; darken
 	srl a
 	srl a
-	jr .asm_1f6f
-.asm_1f6b
+	jr .shifted2
+.black2
+	; lighten
 	sla a
 	sla a
-.asm_1f6f
+.shifted2
 	ld b, a
 	ld a, [hl]
 	or b
-	ld [wOBP], a
-	ldh [rOBP0], a
-	ret
-.asm_1f78
-	ld a, [wBGP]
-	bit 2, e
-	jr nz, .asm_1f85
-	sla a
-	sla a
-	jr .asm_1f8b
-.asm_1f85
-	srl a
-	srl a
-	or $c0
-.asm_1f8b
-	ld [wBGP], a
-	ldh [rBGP], a
-	ldh [rOBP1], a
-	ld a, [wOBP]
-	bit 2, e
-	jr nz, .asm_1f9f
-	sla a
-	sla a
-	jr .asm_1fa5
-.asm_1f9f
-	srl a
-	srl a
-	or $c0
-.asm_1fa5
 	ld [wOBP], a
 	ldh [rOBP0], a
 	ret
 
-.asm_1fab
-	ldh a, [hff90]
-	and $7c
-	ldh [hff90], a
+.fade_out
+	; fade for BG and OB1
+	ld a, [wBGP]
+	bit FADE_COLOR_F, e
+	jr nz, .black3
+	; lighten
+	sla a
+	sla a
+	jr .shifted3
+.black3
+	; darken
+	srl a
+	srl a
+	or $c0
+.shifted3
+	ld [wBGP], a
+	ldh [rBGP], a
+	ldh [rOBP1], a
+	ld a, [wOBP]
+
+	; fade for OB0
+	bit FADE_COLOR_F, e
+	jr nz, .black4
+	; lighten
+	sla a
+	sla a
+	jr .shifted4
+.black4
+	; darken
+	srl a
+	srl a
+	or $c0
+.shifted4
+	ld [wOBP], a
+	ldh [rOBP0], a
+	ret
+
+.end_fade
+	ldh a, [hPalFadeFlags]
+	and $fc ^ FADE_ON
+	ldh [hPalFadeFlags], a
 	ret
 
 UpdateHUD:
 	ld hl, hVBlankFlags
 	bit VBLANK_5_F, [hl]
 	ret nz
-	ld hl, hff90
-	bit 6, [hl]
-	ret nz
+	ld hl, hPalFadeFlags
+	bit FADE_MODE_F, [hl]
+	ret nz ; is fading in
 	ldh a, [hHUDFlags]
 	bit HUD_UPDATE_FIRST_ROW_F, a
 	jr z, .skip_first_row
-	ld hl, $9c06
+	hlbgcoord 6, 0, vBGMap1
 	ld c, $0c
 .loop_clear
 	ld a, $7f
@@ -230,7 +251,7 @@ UpdateHUD:
 	jr nz, .boss_hp
 
 	ld hl, wScoreDigitTiles
-	ld bc, $9c06
+	bcbgcoord 6, 0, vBGMap1
 	ld d, $5
 .loop_print_score
 	ld a, [hli]
@@ -239,11 +260,11 @@ UpdateHUD:
 	dec d
 	jr nz, .loop_print_score
 	ld a, "0"
-	ld [$9c0b], a
+	ldbgcoord 11, 0, vBGMap1
 	jr .asm_1ffa
 
 .boss_hp
-	ld hl, $9c06
+	hlbgcoord 6, 0, vBGMap1
 	ld a, [wBossHP]
 	and a
 	jr z, .asm_1ffa
@@ -267,19 +288,19 @@ UpdateHUD:
 	bit HUD_BOSS_BATTLE_F, a
 	jr nz, .asm_201e
 	ld a, $7f
-	ld [$9c02], a
+	ldbgcoord 2, 0, vBGMap1
 	ld a, $6c
-	ld [$9c03], a
+	ldbgcoord 3, 0, vBGMap1
 	inc a
-	ld [$9c04], a
+	ldbgcoord 4, 0, vBGMap1
 	jr .asm_202d
 .asm_201e
 	ld a, $7f
-	ld [$9c02], a
+	ldbgcoord 2, 0, vBGMap1
 	ld a, $6a
-	ld [$9c03], a
+	ldbgcoord 3, 0, vBGMap1
 	ld a, $7f
-	ld [$9c04], a
+	ldbgcoord 4, 0, vBGMap1
 
 .asm_202d
 	ldh a, [hHUDFlags]
@@ -288,27 +309,28 @@ UpdateHUD:
 	ld a, [wHP]
 	ld c, a
 	ld b, a
-	ld hl, $9c26
+	hlbgcoord 6, 1, vBGMap1
 	and a
-	jr z, .asm_2044
+	jr z, .no_filled_hp_bars
 	ld a, $68
-.asm_2040
+.loop_filled_bars
 	ld [hli], a
 	dec c
-	jr nz, .asm_2040
-.asm_2044
+	jr nz, .loop_filled_bars
+.no_filled_hp_bars
 	ld a, [wMaxHP]
 	sub b
 	ld b, a
-	jr z, .asm_2051
+	jr z, .no_empty_hp_bars
 	ld a, $6e
-.asm_204d
+.loop_empty_bars
 	ld [hli], a
 	dec b
-	jr nz, .asm_204d
-.asm_2051
+	jr nz, .loop_empty_bars
+.no_empty_hp_bars
 	ld a, $7f
 	ld [hli], a
+
 .lives
 	ldh a, [hHUDFlags]
 	bit HUD_UPDATE_LIVES_F, a
@@ -319,10 +341,10 @@ UpdateHUD:
 	dec a
 	call GetDigits
 	add "0"
-	ld [$9c31], a ; ones digit
+	ldbgcoord 17, 1, vBGMap1 ; ones digit
 	ld a, b
 	add "0"
-	ld [$9c30], a ; tens digit
+	ldbgcoord 16, 1, vBGMap1 ; tens digit
 	ret
 
 MACRO data_2070
@@ -333,20 +355,20 @@ ENDM
 
 Data_2070::
 	table_width 5, Data_2070
-	data_2070 $02, $4952, $8ae0 ; GREEN_GREENS
-	data_2070 $02, $5266, $8ae0 ; CASTLE_LOLOLO
-	data_2070 $02, $5b2c, $8ae0 ; FLOAT_ISLANDS
-	data_2070 $02, $63ee, $8ae0 ; BUBBLY_CLOUDS
-	data_2070 $02, $6c49, v0Tiles1 ; MT_DEDEDE
+	data_2070 $02, $4952, vTiles1 tile $2e ; GREEN_GREENS
+	data_2070 $02, $5266, vTiles1 tile $2e ; CASTLE_LOLOLO
+	data_2070 $02, $5b2c, vTiles1 tile $2e ; FLOAT_ISLANDS
+	data_2070 $02, $63ee, vTiles1 tile $2e ; BUBBLY_CLOUDS
+	data_2070 $02, $6c49, vTiles1 tile $00 ; MT_DEDEDE
 	assert_table_length NUM_STAGES
 
 Data_2089::
 	table_width 5, Data_2089
-	data_2070 $0a, $51f5, $8ae0 ; GREEN_GREENS
-	data_2070 $0a, $5b0b, $8ae0 ; CASTLE_LOLOLO
-	data_2070 $0a, $63c1, $8ae0 ; FLOAT_ISLANDS
-	data_2070 $0a, $6c79, $8ae0 ; BUBBLY_CLOUDS
-	data_2070 $02, $6c49, v0Tiles1 ; MT_DEDEDE
+	data_2070 $0a, $51f5, vTiles1 tile $2e ; GREEN_GREENS
+	data_2070 $0a, $5b0b, vTiles1 tile $2e ; CASTLE_LOLOLO
+	data_2070 $0a, $63c1, vTiles1 tile $2e ; FLOAT_ISLANDS
+	data_2070 $0a, $6c79, vTiles1 tile $2e ; BUBBLY_CLOUDS
+	data_2070 $02, $6c49, vTiles1 tile $00 ; MT_DEDEDE
 	assert_table_length NUM_STAGES
 
 MACRO data_20a2
@@ -363,11 +385,13 @@ Data_20a2::
 	data_20a2 $06, $777c ; MT_DEDEDE
 	assert_table_length NUM_STAGES
 
-Data_20b1:
-	db $00, $40, $c0, $00, $01, $00, $00, $00
+OBP0FadeInMasks:
+	db $00, $40, $c0, $00 ; black
+	db $01, $00, $00, $00 ; white
 
-Data_20b9:
-	db $40, $80, $c0, $00, $02, $01, $00, $00
+BGPAndOBP1FadeInMasks:
+	db $40, $80, $c0, $00 ; black
+	db $02, $01, $00, $00 ; white
 
 ; input:
 ; - c = bank
@@ -3073,8 +3097,8 @@ Func_2fdf:
 	jr z, .asm_3030
 	ld hl, hff8e
 	set 2, [hl]
-	ld hl, hff90
-	set 3, [hl]
+	ld hl, hPalFadeFlags
+	set FADE_3_F, [hl]
 	ld a, [hff91]
 	and $fc
 	ld [hff91], a
@@ -3159,7 +3183,7 @@ Func_3076::
 	ld a, e
 	and $03
 	ld h, a
-	ld de, v0BGMap0
+	ld de, vBGMap0
 	add hl, de
 	ld a, l
 	ld d, h
@@ -4026,11 +4050,11 @@ Func_388a:
 StageHeaders::
 ; starting area, ?, ?, starting X, starting Y, pals, intro music
 	table_width 7, StageHeaders
-	db GREEN_GREENS_0,   01, $01, $28, $3c, $00, MUSIC_GREEN_GREENS_INTRO  ; GREEN_GREENS
-	db CASTLE_LOLOLO_00, 01, $01, $28, $58, $00, MUSIC_CASTLE_LOLOLO_INTRO ; CASTLE_LOLOLO
-	db FLOAT_ISLANDS_0,  01, $01, $28, $32, $00, MUSIC_FLOAT_ISLANDS_INTRO ; FLOAT_ISLANDS
-	db BUBBLY_CLOUDS_0,  01, $01, $48, $41, $00, MUSIC_BUBBLY_CLOUDS_INTRO ; BUBBLY_CLOUDS
-	db MT_DEDEDE_0,      01, $01, $28, $70, $00, MUSIC_DEDEDE_BATTLE       ; MT_DEDEDE
+	db GREEN_GREENS_0,   01, $01, $28, $3c, FALSE, MUSIC_GREEN_GREENS_INTRO  ; GREEN_GREENS
+	db CASTLE_LOLOLO_00, 01, $01, $28, $58, FALSE, MUSIC_CASTLE_LOLOLO_INTRO ; CASTLE_LOLOLO
+	db FLOAT_ISLANDS_0,  01, $01, $28, $32, FALSE, MUSIC_FLOAT_ISLANDS_INTRO ; FLOAT_ISLANDS
+	db BUBBLY_CLOUDS_0,  01, $01, $48, $41, FALSE, MUSIC_BUBBLY_CLOUDS_INTRO ; BUBBLY_CLOUDS
+	db MT_DEDEDE_0,      01, $01, $28, $70, FALSE, MUSIC_DEDEDE_BATTLE       ; MT_DEDEDE
 	assert_table_length NUM_STAGES
 
 MACRO area
@@ -4281,8 +4305,8 @@ Func_3d48::
 	ld [wd064], a
 	ld [wd078], a
 	ld [wd079], a
-	ld hl, hff90
-	set 3, [hl]
+	ld hl, hPalFadeFlags
+	set FADE_3_F, [hl]
 	ld a, $20
 	ld [wd07c], a
 	ld a, $0e

@@ -14,23 +14,23 @@ TitleScreen::
 
 	; load graphics
 	ld hl, $4000
-	ld de, v0Tiles0
+	ld de, vTiles0 tile $00
 	ld c, $02
 	call FarDecompress
 	ld hl, $4000
-	ld de, v0Tiles1
+	ld de, vTiles1 tile $00
 	ld c, $0a
 	call FarDecompress
 	ld hl, $42ac
-	ld de, v0Tiles2
+	ld de, vTiles2 tile $00
 	ld c, $0a
 	call FarDecompress
 	ld hl, $77e9
-	ld de, $8e00
+	ld de, vTiles1 tile $60
 	ld c, $02
 	call FarDecompress
 	ld hl, $4000
-	ld de, v0BGMap0
+	debgcoord 0, 0
 	ld c, $03
 	call FarDecompress
 
@@ -43,14 +43,14 @@ TitleScreen::
 	call StopTimerAndSwitchOnLCD
 
 	xor a
-	ld [hff90], a
+	ld [hPalFadeFlags], a
 	ld a, HUD_UPDATE_HP
 	ld [hHUDFlags], a
 	call .PrintExtraGameText
 
 	ld a, 1
 	call DoFrames
-	call Func_670
+	call FadeIn
 	ld a, START
 	ld [wd050], a
 
@@ -79,7 +79,7 @@ TitleScreen::
 	ld a, [wExtraGameUnlocked]
 	and a
 	ret z ; Extra Game not enabled
-	ld bc, $9945
+	bcbgcoord 5, 10
 	ld de, .text
 	ld hl, wBGQueue
 	ld a, .text_end - .text

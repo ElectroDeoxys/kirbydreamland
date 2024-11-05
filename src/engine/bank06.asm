@@ -10,13 +10,13 @@ StartStage::
 	ld [wd096], a
 	call ClearSprites
 	xor a
-	ld [hff90], a
+	ld [hPalFadeFlags], a
 	ld [wd3f1], a
 	ld hl, wMintLeafCounter
-	ld [hli], a
-	ld [hli], a
-	ld [hli], a
-	ld [hl], a
+	ld [hli], a ; wMintLeafCounter
+	ld [hli], a ;
+	ld [hli], a ; wInvincibilityCounter
+	ld [hl], a  ;
 	ld [wd3be], a
 
 	ld a, [wStage]
@@ -33,20 +33,20 @@ StartStage::
 	ld bc, $5
 	add hl, bc
 	ld a, [hli]
-	cp $01
-	jr z, .asm_1811a
-	ld a, %11001000
-	jr .asm_1811c
-.asm_1811a
-	ld a, %11001100
-.asm_1811c
-	ld [hff90], a
+	cp TRUE
+	jr z, .lighten
+	ld a, FADE_WHITE | FADE_3 | FADE_OUT | FADE_ON | 0
+	jr .got_fade_config
+.lighten
+	ld a, FADE_BLACK | FADE_3 | FADE_OUT | FADE_ON | 0
+.got_fade_config
+	ld [hPalFadeFlags], a
 	push hl
 	xor a
 	ld [hVBlankFlags], a
 	ld [hff8d], a
 
-	call Func_648
+	call FadeOut
 	ld a, SFX_NONE
 	call PlaySFX
 	ld a, MUSIC_NONE
@@ -56,13 +56,13 @@ StartStage::
 	ld a, [hff95]
 	bit 7, a
 	jr nz, .skip_intro
-	call InitWindow
+	call HideWindow
 	call StageIntro
 .skip_intro
 	ld a, $ff
 	ld [wd096], a
 	call ClearAllObjects
-	call Func_648
+	call FadeOut
 	call Func_1c0a
 	call ResetTimer
 	call Func_18285
@@ -127,6 +127,7 @@ StartStage::
 	call ClearSprites
 	pop hl
 
+	; hl = stage header
 	ld a, [hli]
 	ld [wArea], a
 
@@ -207,7 +208,7 @@ StartStage::
 .skip_music
 	call SetFullHP
 	call StopTimerAndSwitchOnLCD
-	call Func_670
+	call FadeIn
 	call Func_8dc
 	ret
 
@@ -235,21 +236,21 @@ Func_18285:
 	and a
 	jr nz, .extra_game
 	ld hl, $4000
-	ld de, v0Tiles0
+	ld de, vTiles0 tile $00
 	ld c, $02
 	call FarDecompress
 	ld hl, $4855
-	ld de, $9670
+	ld de, vTiles2 tile $67
 	ld c, $02
 	call FarDecompress
 	jr .asm_182b9
 .extra_game
 	ld hl, $488d
-	ld de, v0Tiles0
+	ld de, vTiles0 tile $00
 	ld c, $0a
 	call FarDecompress
 	ld hl, $50f3
-	ld de, $9670
+	ld de, vTiles2 tile $67
 	ld c, $0a
 	call FarDecompress
 .asm_182b9
@@ -300,11 +301,11 @@ StageIntro:
 	call ResetTimer
 
 	ld hl, $4000
-	ld de, v0Tiles0
+	ld de, vTiles0 tile $00
 	ld c, $02
 	call FarDecompress
 	ld hl, $4855
-	ld de, $9670
+	ld de, vTiles2 tile $67
 	ld c, $02
 	call FarDecompress
 
@@ -337,11 +338,11 @@ StageIntro:
 	cp MT_DEDEDE
 	jr z, .asm_1835b
 	ld hl, $77e9
-	ld de, $8e00
+	ld de, vTiles1 tile $60
 	ld c, $02
 	call FarDecompress
 	ld hl, $5cdd
-	ld de, v0Tiles1
+	ld de, vTiles1 tile $00
 	ld c, $03
 	call FarDecompress
 
@@ -362,13 +363,13 @@ StageIntro:
 	ld e, a
 	ld h, d
 	ld l, e
-	ld de, v0BGMap0
+	debgcoord 0, 0
 	call FarDecompress
 
 	xor a
 	call Func_21fb
 	call StopTimerAndSwitchOnLCD
-	call Func_670
+	call FadeIn
 
 	pop hl
 	ld a, [hl]
@@ -418,8 +419,8 @@ Func_183bf::
 	ld a, [wd041]
 	ld [wd042], a
 	call .Func_1844f
-	ld hl, hff90
-	res 4, [hl]
+	ld hl, hPalFadeFlags
+	res FADE_4_F, [hl]
 
 	ld a, [wStage]
 	add a ; *2
@@ -535,7 +536,7 @@ Func_183bf::
 	ld [wArea], a
 	push hl
 	call Func_19c9
-	call Func_648
+	call FadeOut
 	ld a, SFX_NONE
 	call PlaySFX
 	pop hl
@@ -581,7 +582,7 @@ Func_183bf::
 	call PlayMusic
 .asm_184eb
 	call StopTimerAndSwitchOnLCD
-	call Func_670
+	call FadeIn
 	pop hl
 	pop af
 	ret
@@ -880,7 +881,7 @@ _LoseLife::
 
 	push hl
 	call Func_19c9
-	call Func_648
+	call FadeOut
 	call Func_19f9
 	pop hl
 
@@ -929,17 +930,17 @@ Data_1874d:
 	assert_table_length NUM_MT_DEDEDE_AREAS
 
 Func_18757:
-	call Func_648
-	call InitWindow
+	call FadeOut
+	call HideWindow
 	call ResetTimer
 	ld a, $0a
 	call Func_21fb
 	ld hl, $4665
-	ld de, v0BGMap0
+	debgcoord 0, 0
 	ld c, $03
 	call FarDecompress
 	ld hl, $41c7
-	ld de, $8e00
+	ld de, vTiles1 tile $60
 	ld c, $03
 	call FarDecompress
 	ld a, $03
@@ -948,7 +949,7 @@ Func_18757:
 	ld [wSCX], a
 	ld [wSCY], a
 	call StopTimerAndSwitchOnLCD
-	call Func_670
+	call FadeIn
 	xor a
 	ld [wVirtualOAMSize], a
 	call Func_2e9c
@@ -976,8 +977,8 @@ Func_18757:
 .break
 	ld hl, hff95
 	set 0, [hl]
-	call Func_648
-	call InitWindow
+	call FadeOut
+	call HideWindow
 	call ResetTimer
 	call ClearAllObjects
 	inc a
@@ -989,15 +990,15 @@ Func_18757:
 	ld [wd096], a
 	call ClearSprites
 	ld hl, $77e9
-	ld de, $8e00
+	ld de, vTiles1 tile $60
 	ld c, $02
 	call FarDecompress
 	ld hl, $5cdd
-	ld de, v0Tiles1
+	ld de, vTiles1 tile $00
 	ld c, $03
 	call FarDecompress
 	ld hl, $46b5
-	ld de, v0BGMap0
+	debgcoord 0, 0
 	ld c, $03
 	call FarDecompress
 	xor a
@@ -1007,7 +1008,7 @@ Func_18757:
 	ld a, $04
 	call PlayMusic
 	call StopTimerAndSwitchOnLCD
-	call Func_670
+	call FadeIn
 .asm_1880b
 	ld hl, hVBlankFlags
 	set 6, [hl]
@@ -1056,7 +1057,7 @@ Func_18757:
 .asm_1885e
 	ld a, 60
 	call DoFrames
-	call Func_648
+	call FadeOut
 	call ResetTimer
 	jp Reset
 
@@ -1064,7 +1065,7 @@ Func_1886c:
 	ld a, $ff
 	ld [wd096], a
 	call ClearSprites
-	call Func_648
+	call FadeOut
 
 	ld a, SFX_NONE
 	call PlaySFX
@@ -1072,14 +1073,14 @@ Func_1886c:
 	call PlayMusic
 
 	xor a
-	ld [hff90], a
+	ld [hPalFadeFlags], a
 	inc a
 	ld [wd051], a
 	ld [wd052], a
 	ld a, $03
 	call Func_21fb
 	call Func_19098
-	call InitWindow
+	call HideWindow
 
 	ld a, HUD_UPDATE_HP
 	ld [hHUDFlags], a
@@ -1091,24 +1092,24 @@ Func_1886c:
 	call ResetTimer
 
 	ld hl, $41c7
-	ld de, $8e00
+	ld de, vTiles1 tile $60
 	ld c, $03
 	call FarDecompress
 	ld hl, $4fcf
-	ld de, v0Tiles0
+	ld de, vTiles0 tile $00
 	ld c, $03
 	call FarDecompress
 	ld hl, $5894
-	ld de, v0Tiles2
+	ld de, vTiles2 tile $00
 	ld c, $03
 	call FarDecompress
 	ld hl, $42c8
-	ld de, v0BGMap0
+	debgcoord 0, 0
 	ld c, $03
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
-	call Func_670
+	call FadeIn
 	ld de, 200
 	ld hl, hVBlankFlags
 .asm_188de
@@ -1123,23 +1124,23 @@ Func_1886c:
 	jr nz, .asm_188de
 
 	xor a
-	ld [hff90], a
+	ld [hPalFadeFlags], a
 	ld a, $ff
 	ld [wd096], a
 	call ClearSprites
-	call Func_648
+	call FadeOut
 	call ResetTimer
 
 	ld hl, $4000
-	ld de, v0Tiles0
+	ld de, vTiles0 tile $00
 	ld c, $02
 	call FarDecompress
 	ld hl, $4855
-	ld de, $9670
+	ld de, vTiles2 tile $67
 	ld c, $02
 	call FarDecompress
 	ld hl, $6c49
-	ld de, v0Tiles1
+	ld de, vTiles1 tile $00
 	ld c, $02
 	call FarDecompress
 	ld hl, $777c
@@ -1161,7 +1162,7 @@ Func_1886c:
 	ld hl, wc100 + $4
 	call Func_1964
 	call StopTimerAndSwitchOnLCD
-	call Func_670
+	call FadeIn
 
 	ld de, 432 ; ~ 7 seconds
 	ld hl, hVBlankFlags
@@ -1179,31 +1180,31 @@ Func_1886c:
 	ld a, $ff
 	ld [wd096], a
 	call ClearSprites
-	call Func_648
+	call FadeOut
 	ld a, $05
 	call Func_21fb
 	call Func_19098
 	call ResetTimer
 
 	ld hl, $41c7
-	ld de, $8e00
+	ld de, vTiles1 tile $60
 	ld c, $03
 	call FarDecompress
 	ld hl, $4fcf
-	ld de, v0Tiles0
+	ld de, vTiles0 tile $00
 	ld c, $03
 	call FarDecompress
 	ld hl, $5894
-	ld de, v0Tiles2
+	ld de, vTiles2 tile $00
 	ld c, $03
 	call FarDecompress
 	ld hl, $42c8
-	ld de, v0BGMap0
+	debgcoord 0, 0
 	ld c, $03
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
-	call Func_670
+	call FadeIn
 	ld de, 512
 	ld hl, hVBlankFlags
 .asm_189b5
@@ -1217,7 +1218,7 @@ Func_1886c:
 	or e
 	jr nz, .asm_189b5
 
-	call Func_648
+	call FadeOut
 	call ResetTimer
 	ld a, $06
 	call Func_21fb
@@ -1229,11 +1230,11 @@ Func_1886c:
 	ld a, $08
 	ld [wSCY], a
 
-	ld hl, v0BGMap0
+	hlbgcoord 0, 0
 	ld de, BG_192d6
-	ld b, $13 ; number of rows
+	ld b, 19 ; number of rows
 .asm_189e5
-	ld c, $14 ; number of cols
+	ld c, 20 ; number of cols
 .asm_189e7
 	ld a, [de]
 	inc de
@@ -1242,16 +1243,16 @@ Func_1886c:
 	jr nz, .asm_189e7
 	dec b
 	push bc
-	ld bc, SCRN_VX_B - $14 ; next row
+	ld bc, SCRN_VX_B - 20 ; next row
 	add hl, bc
 	pop bc
 	jr nz, .asm_189e5
 
 	push de
 	call StopTimerAndSwitchOnLCD
-	call Func_670
+	call FadeIn
 	pop de
-	ld hl, $9be0
+	hlbgcoord 0, 31
 	ld a, [hff91]
 	res 2, a
 	ld [hff91], a
@@ -1284,7 +1285,7 @@ Func_1886c:
 	ld a, $97
 	cp h
 	jr nz, .asm_18a3e
-	ld hl, $9be0
+	hlbgcoord 0, 31
 .asm_18a3e
 	ld a, h
 	ld [bc], a
@@ -1316,7 +1317,7 @@ Func_1886c:
 	ld a, $ff
 	ld [wd096], a
 	call ClearSprites
-	call Func_648
+	call FadeOut
 	call ResetTimer
 	ld a, $07
 	call Func_21fb
@@ -1326,15 +1327,15 @@ Func_1886c:
 	ld [wSCX], a
 	xor a
 	ld [wSCY], a
-	ld hl, v0BGMap1
-	ld c, $80
+	hlbgcoord 0, 0, vBGMap1
+	ld c, 4 * SCRN_VX_B
 .asm_18a89
 	ld a, $ff
 	ld [hli], a
 	dec c
 	jr nz, .asm_18a89
 
-	ld hl, v0BGMap0
+	hlbgcoord 0, 0
 	ld de, BG_19786
 	ld b, $0e ; number of rows
 .asm_18a97
@@ -1357,10 +1358,10 @@ Func_1886c:
 	ld [wd059 + 1], a
 
 	ld hl, BG_19e86
-	ld de, v0BGMap1
-	ld c, $04 ; number of rows
+	debgcoord 0, 0, vBGMap1
+	ld c, 4 ; number of rows
 .asm_18ab8
-	ld b, $14 ; number of cols
+	ld b, 20 ; number of cols
 .asm_18aba
 	ld a, [hli]
 	ld [de], a
@@ -1520,7 +1521,7 @@ Func_1886c:
 	ld a, $a0
 	cp h
 	jr nz, .asm_18bed
-	ld hl, v0BGMap1
+	hlbgcoord 0, 0, vBGMap1
 .asm_18bed
 	ld a, h
 	ld [wd084], a
@@ -1545,7 +1546,7 @@ Func_1886c:
 	ld a, $97
 	cp h
 	jr nz, .asm_18c1e
-	ld hl, $981f
+	hlbgcoord 31, 0
 	ld a, h
 	ld [wd06b], a
 	ld a, l
@@ -1592,23 +1593,23 @@ Func_1886c:
 	ret
 
 .Func_18c5c:
-	ld a, $90
+	ld a, %10010000
 	ld [wBGP], a
-	ld a, $d0
+	ld a, %11010000
 	ldh [rOBP0], a
 	ld a, 5
 	call DoFrames
 
-	ld a, $40
+	ld a, %01000000
 	ld [wBGP], a
-	ld a, $80
+	ld a, %10000000
 	ldh [rOBP0], a
 	ld a, 5
 	call DoFrames
 
-	ld a, $00
+	ld a, %00000000
 	ld [wBGP], a
-	ld a, $40
+	ld a, %1000000
 	ldh [rOBP0], a
 	ld a, 5
 	call DoFrames
@@ -1628,12 +1629,12 @@ Func_1886c:
 	ld [wSCY], a
 
 	ld hl, $437a
-	ld de, v0BGMap0
+	debgcoord 0, 0
 	ld c, $03
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
-	call Func_670
+	call FadeIn
 	ld de, 324
 	ld hl, hVBlankFlags
 .asm_18cb8
@@ -1646,19 +1647,19 @@ Func_1886c:
 	ld a, d
 	or e
 	jr nz, .asm_18cb8
-	call Func_648
+	call FadeOut
 	call ResetTimer
 	ld a, $09
 	call Func_21fb
 	call Func_19098
 
 	ld hl, $441d
-	ld de, v0BGMap0
+	debgcoord 0, 0
 	ld c, $03
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
-	call Func_670
+	call FadeIn
 
 	ld de, 400
 	call .DoFrames
@@ -1679,7 +1680,7 @@ Func_1886c:
 	or e
 	jr nz, .asm_18cf1
 .asm_18d06
-	call Func_648
+	call FadeOut
 	call ResetTimer
 	call ClearAllObjects
 	ld a, [wExtraGameEnabled]
@@ -1699,57 +1700,57 @@ Func_1886c:
 	call Func_19098
 
 	ld hl, $4000
-	ld de, v0Tiles2
+	ld de, vTiles2 tile $00
 	ld c, $0d
 	call FarDecompress
 	ld hl, $45c0
-	ld de, v0BGMap0
+	debgcoord 0, 0
 	ld c, $0d
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
-	call Func_670
+	call FadeIn
 	ld de, 416
 	call .DoFrames
-	call Func_648
+	call FadeOut
 	call ResetTimer
 	ld a, $0d
 	call Func_21fb
 	call Func_19098
 
 	ld hl, $46fb
-	ld de, v0Tiles2
+	ld de, vTiles2 tile $00
 	ld c, $0d
 	call FarDecompress
 	ld hl, $4cb4
-	ld de, v0BGMap0
+	debgcoord 0, 0
 	ld c, $0d
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
-	call Func_670
+	call FadeIn
 	ld de, 416
 	call .DoFrames
-	call Func_648
+	call FadeOut
 	call ResetTimer
 	ld a, $0e
 	call Func_21fb
 	call Func_19098
 
 	ld hl, $4dc0
-	ld de, v0Tiles2
+	ld de, vTiles2 tile $00
 	ld c, $0d
 	call FarDecompress
 	ld hl, $535c
-	ld de, v0BGMap0
+	debgcoord 0, 0
 	ld c, $0d
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
-	call Func_670
+	call FadeIn
 	ld de, 236
 	call .DoFrames
-	call Func_648
+	call FadeOut
 	call ResetTimer
 
 	ld a, CASTLE_LOLOLO
@@ -1761,38 +1762,38 @@ Func_1886c:
 	call Func_19098
 
 	ld hl, $543e
-	ld de, v0Tiles2
+	ld de, vTiles2 tile $00
 	ld c, $0d
 	call FarDecompress
 	ld hl, $5987
-	ld de, v0BGMap0
+	debgcoord 0, 0
 	ld c, $0d
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
-	call Func_670
+	call FadeIn
 	ld de, 416
 	call .DoFrames
-	call Func_648
+	call FadeOut
 	call ResetTimer
 	ld a, $10
 	call Func_21fb
 	call Func_19098
 
 	ld hl, $5a89
-	ld de, v0Tiles2
+	ld de, vTiles2 tile $00
 	ld c, $0d
 	call FarDecompress
 	ld hl, $5fd2
-	ld de, v0BGMap0
+	debgcoord 0, 0
 	ld c, $0d
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
-	call Func_670
+	call FadeIn
 	ld de, 416
 	call .DoFrames
-	call Func_648
+	call FadeOut
 	call ResetTimer
 
 	ld a, FLOAT_ISLANDS
@@ -1803,38 +1804,38 @@ Func_1886c:
 	call Func_19098
 
 	ld hl, $6063
-	ld de, v0Tiles2
+	ld de, vTiles2 tile $00
 	ld c, $0d
 	call FarDecompress
 	ld hl, $6553
-	ld de, v0BGMap0
+	debgcoord 0, 0
 	ld c, $0d
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
-	call Func_670
+	call FadeIn
 	ld de, 416
 	call .DoFrames
-	call Func_648
+	call FadeOut
 	call ResetTimer
 	ld a, $12
 	call Func_21fb
 	call Func_19098
 
 	ld hl, $6658
-	ld de, v0Tiles2
+	ld de, vTiles2 tile $00
 	ld c, $0d
 	call FarDecompress
 	ld hl, $6b80
-	ld de, v0BGMap0
+	debgcoord 0, 0
 	ld c, $0d
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
-	call Func_670
+	call FadeIn
 	ld de, 416
 	call .DoFrames
-	call Func_648
+	call FadeOut
 	call ResetTimer
 
 	ld a, BUBBLY_CLOUDS
@@ -1845,38 +1846,38 @@ Func_1886c:
 	call Func_19098
 
 	ld hl, $6c7c
-	ld de, v0Tiles2
+	ld de, vTiles2 tile $00
 	ld c, $0d
 	call FarDecompress
 	ld hl, $717d
-	ld de, v0BGMap0
+	debgcoord 0, 0
 	ld c, $0d
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
-	call Func_670
+	call FadeIn
 	ld de, 416
 	call .DoFrames
-	call Func_648
+	call FadeOut
 	call ResetTimer
 	ld a, $14
 	call Func_21fb
 	call Func_19098
 
 	ld hl, $729b
-	ld de, v0Tiles2
+	ld de, vTiles2 tile $00
 	ld c, $0d
 	call FarDecompress
 	ld hl, $779c
-	ld de, v0BGMap0
+	debgcoord 0, 0
 	ld c, $0d
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
-	call Func_670
+	call FadeIn
 	ld de, 416
 	call .DoFrames
-	call Func_648
+	call FadeOut
 	call ResetTimer
 	xor a
 	ld [wStage], a
@@ -1886,19 +1887,19 @@ Func_1886c:
 	call Func_19098
 
 	ld hl, $4000
-	ld de, v0Tiles2
+	ld de, vTiles2 tile $00
 	ld c, $0e
 	call FarDecompress
 	ld hl, $78cc
-	ld de, v0BGMap0
+	debgcoord 0, 0
 	ld c, $0d
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
-	call Func_670
+	call FadeIn
 	ld de, 416
 	call .DoFrames
-	call Func_648
+	call FadeOut
 	call ResetTimer
 	ld a, CASTLE_LOLOLO
 	ld [wStage], a
@@ -1908,19 +1909,19 @@ Func_1886c:
 	call Func_19098
 
 	ld hl, $4582
-	ld de, v0Tiles2
+	ld de, vTiles2 tile $00
 	ld c, $0e
 	call FarDecompress
 	ld hl, $4ac6
-	ld de, v0BGMap0
+	debgcoord 0, 0
 	ld c, $0e
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
-	call Func_670
+	call FadeIn
 	ld de, 416
 	call .DoFrames
-	call Func_648
+	call FadeOut
 	call ResetTimer
 	ld a, FLOAT_ISLANDS
 	ld [wStage], a
@@ -1930,19 +1931,19 @@ Func_1886c:
 	call Func_19098
 
 	ld hl, $4bf3
-	ld de, v0Tiles2
+	ld de, vTiles2 tile $00
 	ld c, $0e
 	call FarDecompress
 	ld hl, $511e
-	ld de, v0BGMap0
+	debgcoord 0, 0
 	ld c, $0e
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
-	call Func_670
+	call FadeIn
 	ld de, 416
 	call .DoFrames
-	call Func_648
+	call FadeOut
 	call ResetTimer
 	ld a, BUBBLY_CLOUDS
 	ld [wStage], a
@@ -1952,23 +1953,23 @@ Func_1886c:
 	call Func_19098
 
 	ld hl, $5206
-	ld de, v0Tiles2
+	ld de, vTiles2 tile $00
 	ld c, $0e
 	call FarDecompress
 	ld hl, $5707
-	ld de, v0BGMap0
+	debgcoord 0, 0
 	ld c, $0e
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
-	call Func_670
+	call FadeIn
 	ld de, 416
 	call .DoFrames
-	call Func_648
+	call FadeOut
 	call ResetTimer
 
 	ld hl, $6c49
-	ld de, v0Tiles1
+	ld de, vTiles1 tile $00
 	ld c, $02
 	call FarDecompress
 
@@ -1977,16 +1978,16 @@ Func_1886c:
 	call Func_19098
 
 	ld hl, $5820
-	ld de, v0Tiles2
+	ld de, vTiles2 tile $00
 	ld c, $0e
 	call FarDecompress
 	ld hl, $5be1
-	ld de, v0BGMap0
+	debgcoord 0, 0
 	ld c, $0e
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
-	call Func_670
+	call FadeIn
 	ld de, 416
 	call .DoFrames
 
@@ -2006,7 +2007,7 @@ Func_1886c:
 	or e
 	jr nz, .asm_19009
 .asm_1901e
-	call Func_648
+	call FadeOut
 	call ResetTimer
 
 	ld a, MUSIC_NONE
@@ -2017,16 +2018,16 @@ Func_1886c:
 	call Func_19098
 
 	ld hl, $5cbf
-	ld de, v0Tiles0
+	ld de, vTiles0 tile $00
 	ld c, $0e
 	call FarDecompress
 	ld hl, $6cce
-	ld de, v0BGMap0
+	debgcoord 0, 0
 	ld c, $0e
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
-	call Func_670
+	call FadeIn
 .asm_1904d
 	ld de, 0 ; $ffff + 1 frames
 	call .DoFrames
@@ -2041,16 +2042,16 @@ Func_1886c:
 	call Func_19098
 
 	ld hl, $6dd9
-	ld de, v0Tiles0
+	ld de, vTiles0 tile $00
 	ld c, $0e
 	call FarDecompress
 	ld hl, $7e4a
-	ld de, v0BGMap0
+	debgcoord 0, 0
 	ld c, $0e
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
-	call Func_670
+	call FadeIn
 .asm_1907e
 	ld de, 0 ; $ffff + 1 frames
 	call .DoFrames

@@ -10,11 +10,11 @@ VBlank:
 	bit 2, [hl]
 	jp nz, .asm_1da4
 
-	ld hl, wGlobalCounter2
+	ld hl, wUnkTimer
 	inc [hl]
-	ld hl, wGlobalCounter1
+	ld hl, wGlobalCounter
 	inc [hl]
-	ld hl, wd032
+	ld hl, wFadeDelayTimer
 	inc [hl]
 
 	call UpdateHUD
@@ -29,7 +29,7 @@ VBlank:
 	ldh [hVBlankFlags], a
 
 	call ApplyLCDCScrollAndBGPalette
-	call Func_1f08
+	call FadePalettes
 	call ReadJoypad
 	jr .asm_1d56
 

@@ -27,8 +27,8 @@ Func_4000::
 	and a
 	ret z
 	ld [wKirbyScreenDeltaX], a
-	ldh a, [hff90]
-	bit 5, a
+	ldh a, [hPalFadeFlags]
+	bit FADE_5_F, a
 	jp nz, .asm_40e1
 	inc e
 	ld a, [wKirbyScreenX]
@@ -115,8 +115,8 @@ Func_4000::
 	ld a, d
 	ld [wKirbyScreenDeltaX], a
 .asm_40e1
-	ldh a, [hff90]
-	bit 4, a
+	ldh a, [hPalFadeFlags]
+	bit FADE_4_F, a
 	jr nz, .asm_4115
 	ld hl, hff94
 	bit 3, [hl]
@@ -124,15 +124,15 @@ Func_4000::
 	ld hl, hff91
 	bit 6, [hl]
 	jr nz, .asm_4115
-	ldh a, [hff90]
-	bit 5, a
+	ldh a, [hPalFadeFlags]
+	bit FADE_5_F, a
 	jr nz, .asm_4115
 	ld c, $4c
 	ldh a, [hff91]
 	bit 7, a
 	jr nz, .asm_4117
-	ldh a, [hff90]
-	bit 5, a
+	ldh a, [hPalFadeFlags]
+	bit FADE_5_F, a
 	jp nz, .asm_4115
 	ld a, [wd042]
 	inc a
@@ -226,8 +226,8 @@ Func_417c::
 	ld [wd063], a
 	and a
 	ret z
-	ldh a, [hff90]
-	bit 5, a
+	ldh a, [hPalFadeFlags]
+	bit FADE_5_F, a
 	jp nz, .asm_4250
 	inc e
 	ld a, [wKirbyScreenX]
@@ -311,15 +311,15 @@ Func_417c::
 .asm_4250
 	ld a, [wd063]
 	ld b, a
-	ldh a, [hff90]
-	bit 4, a
+	ldh a, [hPalFadeFlags]
+	bit FADE_4_F, a
 	jr nz, .asm_427e
 	ld hl, hff94
 	bit 3, [hl]
 	jr nz, .asm_427e
 	ld c, $44
-	ldh a, [hff90]
-	bit 5, a
+	ldh a, [hPalFadeFlags]
+	bit FADE_5_F, a
 	jp nz, .asm_427e
 	ldh a, [hff91]
 	bit 7, a
@@ -432,8 +432,8 @@ Func_42bf::
 	jr nz, .asm_437c
 
 	; do jump
-	ld hl, hff90
-	res 3, [hl]
+	ld hl, hPalFadeFlags
+	res FADE_3_F, [hl]
 	ld hl, hff92
 	res KIRBY2F_UNK6_F, [hl]
 	ldh a, [hff8d]
@@ -596,7 +596,7 @@ Func_42bf::
 	ld hl, hff95
 	res 2, [hl]
 	res 4, [hl]
-	jr .asm_4492
+	jr .asm_4492 ; useless jump
 .asm_4492
 	ldh a, [hJoypadPressed]
 	ld b, a
@@ -778,13 +778,13 @@ Func_42bf::
 	ld [wd078], a
 	ld a, $b3
 	ld [wd079], a
-	ld a, [wGlobalCounter2]
+	ld a, [wUnkTimer]
 	cp $0a
 	jp c, Func_426
 	ld hl, hff8e
 	res 5, [hl]
 	xor a
-	ld [wGlobalCounter2], a
+	ld [wUnkTimer], a
 	ld [wd064], a
 	jp Func_426
 .asm_460c
@@ -794,11 +794,11 @@ Func_42bf::
 	ld [wd078], a
 	ld a, $c0
 	ld [wd079], a
-	ld a, [wGlobalCounter2]
+	ld a, [wUnkTimer]
 	cp $0a
 	jp c, Func_426
 	xor a
-	ld [wGlobalCounter2], a
+	ld [wUnkTimer], a
 	jp Func_426
 .asm_4629
 	ld a, [wd064]
@@ -1051,7 +1051,7 @@ Func_4783::
 	ld a, [hli]
 	or [hl]
 	jr z, .skip_spawn_star
-	ld a, [wGlobalCounter1]
+	ld a, [wGlobalCounter]
 	and %111
 	jr nz, .skip_spawn_star
 	call Func_37a7
@@ -1214,8 +1214,8 @@ Func_4a1c:
 	ret
 
 Func_4a82:
-	ld hl, hff90
-	set 4, [hl]
+	ld hl, hPalFadeFlags
+	set FADE_4_F, [hl]
 	ret
 ; 0x4a88
 

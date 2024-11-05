@@ -159,7 +159,7 @@ Func_326::
 	ldh [hff92], a
 	xor a
 	ld [wd064], a
-	ld [wGlobalCounter2], a
+	ld [wUnkTimer], a
 	ld a, $00
 	ld [wd076], a
 	ld a, $a8
@@ -453,7 +453,7 @@ ProcessDoorConnection::
 	ldh [hff8d], a
 	ldh [hff93], a
 	call Func_19c9
-	call Func_648
+	call FadeOut
 	call Func_19f9
 	pop hl
 	ld a, [hli]
@@ -528,7 +528,7 @@ ProcessDoorConnection::
 	call Func_2e9c
 	call ClearSprites
 	call StopTimerAndSwitchOnLCD
-	call Func_670
+	call FadeIn
 	ld a, $08
 	ldh [hVBlankFlags], a
 	ld a, [wd03d]
@@ -548,15 +548,16 @@ Func_643::
 	scf
 	ret
 
-Func_648::
+; fades palettes out to white
+FadeOut::
 	push hl
 	ldh a, [hff91]
 	and $fb
 	ldh [hff91], a
-	ldh a, [hff90]
-	or $c8
-	ldh [hff90], a
-.asm_655
+	ldh a, [hPalFadeFlags]
+	or FADE_WHITE | FADE_3 | FADE_OUT | FADE_ON
+	ldh [hPalFadeFlags], a
+.loop_wait_fade
 	xor a
 	ld [wVirtualOAMSize], a
 	call Func_2e9c
@@ -566,29 +567,30 @@ Func_648::
 .asm_664
 	bit VBLANK_6_F, [hl]
 	jr nz, .asm_664
-	ldh a, [hff90]
-	bit 7, a
-	jr nz, .asm_655
+	ldh a, [hPalFadeFlags]
+	bit FADE_ON_F, a
+	jr nz, .loop_wait_fade
 	pop hl
 	ret
 
-Func_670::
+; fades palettes in from white
+FadeIn::
 	ldh a, [hff91]
 	and $fb
 	ldh [hff91], a
-	ldh a, [hff90]
-	and $3c
-	or $88
-	ldh [hff90], a
-.asm_67e
+	ldh a, [hPalFadeFlags]
+	and $fc ^ (FADE_OUT | FADE_ON)
+	or FADE_WHITE | FADE_3 | FADE_IN | FADE_ON
+	ldh [hPalFadeFlags], a
+.loop_wait_fade
 	ld hl, hVBlankFlags
 	set VBLANK_6_F, [hl]
 .asm_683
 	bit VBLANK_6_F, [hl]
 	jr nz, .asm_683
-	ldh a, [hff90]
-	bit 7, a
-	jr nz, .asm_67e
+	ldh a, [hPalFadeFlags]
+	bit FADE_ON_F, a
+	jr nz, .loop_wait_fade
 	ret
 
 ; read the joypad register and translate it to something more
@@ -641,7 +643,7 @@ ENDR
 	ld a, VBLANK_7
 	ldh [hVBlankFlags], a
 	ei
-	call Func_648
+	call FadeOut
 	call ResetTimer
 	jp Reset
 
@@ -670,8 +672,8 @@ Func_6ec::
 	and VBLANK_5
 	ret nz
 	ldh [hVBlankFlags], a
-	ld hl, hff90
-	bit 4, [hl]
+	ld hl, hPalFadeFlags
+	bit FADE_4_F, [hl]
 	jr nz, .asm_708
 	ld hl, hff91
 	ld a, [wKirbyScreenX]
@@ -737,7 +739,7 @@ Func_763:
 	add hl, hl
 	add hl, hl
 	add hl, hl
-	add hl, hl
+	add hl, hl ; *16
 	ld b, $00
 	ld a, [wd05f]
 	ld c, a
@@ -998,8 +1000,8 @@ Func_8dc::
 	ret
 
 Func_917::
-	ldh a, [hff90]
-	bit 5, a
+	ldh a, [hPalFadeFlags]
+	bit FADE_5_F, a
 	jr nz, .asm_97b
 	ldh a, [hff8d]
 	bit KIRBY1F_UNK4_F, a
@@ -1066,8 +1068,8 @@ Func_998:
 	ld hl, hff95
 	bit 6, [hl]
 	jr z, .asm_9c0
-	ldh a, [hff90]
-	bit 5, a
+	ldh a, [hPalFadeFlags]
+	bit FADE_5_F, a
 	jr z, .asm_9c0
 	ld a, [wStage]
 	cp FLOAT_ISLANDS
@@ -1108,8 +1110,8 @@ Func_9de:
 	ldh a, [hff93]
 	res 7, a
 	ldh [hff93], a
-	ldh a, [hff90]
-	bit 5, a
+	ldh a, [hPalFadeFlags]
+	bit FADE_5_F, a
 	jp nz, .asm_ab8
 	ld a, [wKirbyScreenY]
 	ld [wd05f], a
@@ -1225,8 +1227,8 @@ Func_9de:
 .asm_abc
 	ld [wd061], a
 	ld b, a
-	ldh a, [hff90]
-	bit 4, a
+	ldh a, [hPalFadeFlags]
+	bit FADE_4_F, a
 	jr nz, .asm_ad6
 	ld c, $4c
 	ld a, [wd052]
@@ -1260,8 +1262,8 @@ Func_9de:
 	jp .asm_bba
 .asm_b08
 	call MoveKirbyDown
-	ldh a, [hff90]
-	bit 4, a
+	ldh a, [hPalFadeFlags]
+	bit FADE_4_F, a
 	jp nz, .asm_bba
 	ld a, [wKirbyScreenDeltaY]
 	ld b, a
@@ -1399,9 +1401,9 @@ Func_9de:
 	ld [wd076], a
 	ld a, $33
 	ld [wd077], a
-	ldh a, [hff90]
-	res 3, a
-	ldh [hff90], a
+	ldh a, [hPalFadeFlags]
+	res FADE_3_F, a
+	ldh [hPalFadeFlags], a
 	ldh a, [hff92]
 	res KIRBY2F_UNK6_F, a
 	ldh [hff92], a
@@ -1468,8 +1470,8 @@ Func_c85:
 	ret
 
 Func_caf:
-	ldh a, [hff90]
-	bit 3, a
+	ldh a, [hPalFadeFlags]
+	bit FADE_3_F, a
 	jr nz, .asm_cba
 	ldh a, [hVBlankFlags]
 	bit VBLANK_3_F, a
@@ -1478,10 +1480,10 @@ Func_caf:
 	ldh a, [hff93]
 	res 6, a
 	ldh [hff93], a
-	ldh a, [hff90]
-	res 3, a
-	ldh [hff90], a
-	bit 5, a
+	ldh a, [hPalFadeFlags]
+	res FADE_3_F, a
+	ldh [hPalFadeFlags], a
+	bit FADE_5_F, a
 	jp nz, .asm_ee0
 	ld a, [wKirbyScreenY]
 	cp $71
@@ -1795,8 +1797,8 @@ Func_caf:
 .asm_f19
 	ld [wKirbyScreenDeltaY], a
 	ld b, a
-	ldh a, [hff90]
-	bit 4, a
+	ldh a, [hPalFadeFlags]
+	bit FADE_4_F, a
 	jr nz, .asm_f31
 	ld c, $54
 	ld a, [wd040]
@@ -1972,8 +1974,8 @@ Func_1046:
 	ret
 
 Func_1062::
-	ldh a, [hff90]
-	bit 4, a
+	ldh a, [hPalFadeFlags]
+	bit FADE_4_F, a
 	ret nz
 	ld a, [wd063]
 	and a
@@ -2067,11 +2069,11 @@ Func_1062::
 	ret
 
 Func_110b:
-	ldh a, [hff90]
-	bit 4, a
+	ldh a, [hPalFadeFlags]
+	bit FADE_4_F, a
 	ret nz
-	ldh a, [hff90]
-	bit 5, a
+	ldh a, [hPalFadeFlags]
+	bit FADE_5_F, a
 	ret nz
 	ld hl, hff94
 	bit 3, [hl]
@@ -2447,7 +2449,7 @@ Func_131a:
 GetBGCoordFromPosition:
 	push bc
 	push hl
-	ld hl, v0BGMap0
+	ld hl, vBGMap0
 	ld a, [wXCoord]
 	srl a
 	srl a
@@ -2903,9 +2905,9 @@ Func_1964::
 	ret
 
 Func_19c9::
-	ldh a, [hff90]
-	and $08
-	ldh [hff90], a
+	ldh a, [hPalFadeFlags]
+	and $fc ^ (FADE_BLACK | FADE_4 | FADE_5 | FADE_OUT | FADE_ON)
+	ldh [hPalFadeFlags], a
 	ld hl, Data_38b1
 	ld a, [wStage]
 	add a ; *2
@@ -2930,9 +2932,9 @@ Func_19c9::
 	ld a, [hli]
 	and a
 	jr z, .asm_19f8
-	ldh a, [hff90]
-	set 2, a
-	ldh [hff90], a
+	ldh a, [hPalFadeFlags]
+	set FADE_COLOR_F, a ; lighten
+	ldh [hPalFadeFlags], a
 .asm_19f8
 	ret
 
@@ -3001,9 +3003,9 @@ Func_19f9::
 	ldh [hff91], a
 	jr .asm_1a6e
 .asm_1a60
-	ldh a, [hff90]
-	set 4, a
-	ldh [hff90], a
+	ldh a, [hPalFadeFlags]
+	set FADE_4_F, a
+	ldh [hPalFadeFlags], a
 	jr .asm_1a6e
 
 .asm_1a68
@@ -3028,9 +3030,9 @@ Func_19f9::
 	ld a, [wArea]
 	and a
 	jr nz, .asm_1b09
-	ldh a, [hff90]
-	set 4, a
-	ldh [hff90], a
+	ldh a, [hPalFadeFlags]
+	set FADE_4_F, a
+	ldh [hPalFadeFlags], a
 	ld a, [wMtDededeDefeatedBosses + MT_DEDEDE_1]
 	and a
 	jr z, .asm_1aae
@@ -3117,21 +3119,21 @@ Func_19f9::
 	and a
 	jr nz, .extra_game
 	ld hl, $4000
-	ld de, v0Tiles0
+	ld de, vTiles0 + $00
 	ld c, $02
 	call FarDecompress
 	ld hl, $4855
-	ld de, $9670
+	ld de, vTiles2 tile $67
 	ld c, $02
 	call FarDecompress
 	jr .asm_1b66
 .extra_game
 	ld hl, $488d
-	ld de, v0Tiles0
+	ld de, vTiles0 + $00
 	ld c, $0a
 	call FarDecompress
 	ld hl, $50f3
-	ld de, $9670
+	ld de, vTiles2 tile $67
 	ld c, $0a
 	call FarDecompress
 .asm_1b66
@@ -3258,44 +3260,53 @@ GetScoreDigitTiles:
 	set HUD_UPDATE_FIRST_ROW_F, [hl]
 	ret
 
-InitWindow::
-	ld a, $a0
+; places window outside visible coordinates
+; functionally hiding it
+HideWindow::
+	ld a, SCRN_X
 	ldh [rWX], a
-	ld a, $90
+	ld a, SCRN_Y
 	ldh [rWY], a
 	ret
 
 Func_1c0a::
 	call ResetTimer
-	ld c, $40
-	ld hl, v0BGMap1
+
+	; fills 2 rows in vBGMap1
+	; with tile index $7f
+	ld c, 2 * SCRN_VX_B
+	hlbgcoord 0, 0, vBGMap1
 	ld a, $7f
-.asm_1c14
+.loop_fill
 	ld [hli], a
 	dec c
-	jr nz, .asm_1c14
-	ld a, $07
+	jr nz, .loop_fill
+
+	; set window's coordinate to (0, 128)
+	ld a, 0 + 7
 	ldh [rWX], a
-	ld a, $80
+	ld a, 128
 	ldh [rWY], a
+
 	ld a, $67
-	ld [$9c2e], a
+	ldbgcoord 14, 1, vBGMap1
 	ld a, $6b
-	ld [$9c2f], a
+	ldbgcoord 15, 1, vBGMap1
 	ld a, $6f
-	ld [$9c22], a
+	ldbgcoord  2, 1, vBGMap1
 	ld a, $70
-	ld [$9c23], a
-	inc a
-	ld [$9c24], a
+	ldbgcoord  3, 1, vBGMap1
+	inc a ; $71
+	ldbgcoord  4, 1, vBGMap1
 	ld a, $7f
-	ld [$9c06], a
-	ld [$9c07], a
-	ld [$9c08], a
-	ld [$9c09], a
-	ld [$9c0a], a
-	ld [$9c30], a
-	ld [$9c31], a
+	ldbgcoord  6, 0, vBGMap1
+	ldbgcoord  7, 0, vBGMap1
+	ldbgcoord  8, 0, vBGMap1
+	ldbgcoord  9, 0, vBGMap1
+	ldbgcoord 10, 0, vBGMap1
+	ldbgcoord 16, 1, vBGMap1
+	ldbgcoord 17, 1, vBGMap1
+
 	jp StopTimerAndSwitchOnLCD
 
 ; calculates bc as a percentage,
