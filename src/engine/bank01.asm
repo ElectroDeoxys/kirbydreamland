@@ -31,7 +31,7 @@ Func_4000::
 	ret z ; no delta x
 	ld [wKirbyScreenDeltaX], a
 	ldh a, [hPalFadeFlags]
-	bit FADE_5_F, a
+	bit SCROLLINGF_UNK5_F, a
 	jp nz, .asm_40e1
 	inc e
 	ld a, [wKirbyScreenX]
@@ -128,14 +128,14 @@ Func_4000::
 	bit ENGINEF_UNK6_F, [hl]
 	jr nz, .asm_4115
 	ldh a, [hPalFadeFlags]
-	bit FADE_5_F, a
+	bit SCROLLINGF_UNK5_F, a
 	jr nz, .asm_4115
 	ld c, $4c
 	ldh a, [hEngineFlags]
 	bit ENGINEF_UNK7_F, a
 	jr nz, .asm_4117
 	ldh a, [hPalFadeFlags]
-	bit FADE_5_F, a
+	bit SCROLLINGF_UNK5_F, a
 	jp nz, .asm_4115
 	ld a, [wd042]
 	inc a
@@ -231,7 +231,7 @@ Func_417c::
 	and a
 	ret z ; no delta x
 	ldh a, [hPalFadeFlags]
-	bit FADE_5_F, a
+	bit SCROLLINGF_UNK5_F, a
 	jp nz, .asm_4250
 	inc e
 	ld a, [wKirbyScreenX]
@@ -323,7 +323,7 @@ Func_417c::
 	jr nz, .asm_427e
 	ld c, $44
 	ldh a, [hPalFadeFlags]
-	bit FADE_5_F, a
+	bit SCROLLINGF_UNK5_F, a
 	jp nz, .asm_427e
 	ldh a, [hEngineFlags]
 	bit ENGINEF_UNK7_F, a

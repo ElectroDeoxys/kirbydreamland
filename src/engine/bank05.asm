@@ -880,7 +880,7 @@ ASSERT FLOAT_ISLANDS_7 == MT_DEDEDE_7
 	or KABOOLA_BATTLE | ENGINEF_UNK1
 	ld [hEngineFlags], a
 	ld hl, hPalFadeFlags
-	set FADE_5_F, [hl]
+	set SCROLLINGF_UNK5_F, [hl]
 .not_kaboola_fight
 	call Func_3768
 	ld a, MUSIC_MINT_LEAF

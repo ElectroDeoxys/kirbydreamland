@@ -35,10 +35,10 @@ StartStage::
 	ld a, [hli]
 	cp TRUE
 	jr z, .black
-	ld a, FADE_WHITE | FADE_3 | FADE_OUT | FADE_ON | 0
+	ld a, FADE_WHITE | SCROLLINGF_UNK3 | FADE_OUT | FADE_ON | 0
 	jr .got_fade_config
 .black
-	ld a, FADE_BLACK | FADE_3 | FADE_OUT | FADE_ON | 0
+	ld a, FADE_BLACK | SCROLLINGF_UNK3 | FADE_OUT | FADE_ON | 0
 .got_fade_config
 	ld [hPalFadeFlags], a
 	push hl

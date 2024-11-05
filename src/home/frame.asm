@@ -5,9 +5,9 @@ DoFrames::
 	push hl
 	ld hl, hVBlankFlags
 .loop
-	set VBLANK_6_F, [hl]
+	set VBLANK_PENDING_F, [hl]
 .asm_1dc9
-	bit VBLANK_6_F, [hl]
+	bit VBLANK_PENDING_F, [hl]
 	jr nz, .asm_1dc9
 	push hl
 	push af
@@ -27,23 +27,19 @@ DoFrames::
 WaitAFrames::
 	push hl
 	ld hl, hVBlankFlags
-.asm_1de4
-	set VBLANK_6_F, [hl]
-.asm_1de6
-	bit VBLANK_6_F, [hl]
-	jr nz, .asm_1de6
+.loop_outer
+	set VBLANK_PENDING_F, [hl]
+.loop_inner
+	bit VBLANK_PENDING_F, [hl]
+	jr nz, .loop_inner
 	dec a
-	jr nz, .asm_1de4
+	jr nz, .loop_outer
 	pop hl
 	ret
 
-Func_1def:
+WaitVBlank:
 	push hl
-	ld hl, hVBlankFlags
-	set 6, [hl]
-.asm_1df5
-	bit 6, [hl]
-	jr nz, .asm_1df5
+	wait_vblank
 	pop hl
 	ret
 
