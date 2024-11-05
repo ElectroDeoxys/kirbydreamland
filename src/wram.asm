@@ -158,6 +158,8 @@ wd069:: ; d069
 wd06a:: ; d06a
 	db
 
+UNION
+
 wOAMFlagsOverride::
 wMenuCursorPos::
 wd06b:: ; d06b
@@ -165,6 +167,13 @@ wd06b:: ; d06b
 
 wd06c:: ; d06c
 	db
+
+NEXTU
+
+wBGPtr_d06b:: ; d06b
+	dw
+
+ENDU
 
 	ds $1
 
@@ -218,10 +227,7 @@ wd082:: ; d082
 	dw
 
 wd084:: ; d084
-	db
-
-wd085:: ; d085
-	db
+	dw
 
 wHP::	db ; d086
 wMaxHP:: db ; d087

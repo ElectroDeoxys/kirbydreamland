@@ -399,7 +399,7 @@ Func_42bf::
 	res KIRBY1F_AIRBORNE_F, [hl]
 	res KIRBY1F_UNK0_F, [hl]
 	ldh a, [hVBlankFlags]
-	set 3, a
+	set VBLANK_3_F, a
 	ldh [hVBlankFlags], a
 	jp Func_4783
 

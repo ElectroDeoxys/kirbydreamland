@@ -252,8 +252,8 @@ Func_426::
 	bit 7, a
 	jr z, .asm_455
 	ldh a, [hVBlankFlags]
-	and $f7
-	or $04
+	and $ff ^ VBLANK_3
+	or VBLANK_2
 	ldh [hVBlankFlags], a
 	ld a, [wd079]
 	cpl
@@ -548,14 +548,14 @@ Func_643::
 	scf
 	ret
 
-; fades palettes out to white
+; fades palettes out
 FadeOut::
 	push hl
 	ldh a, [hff91]
 	and $fb
 	ldh [hff91], a
 	ldh a, [hPalFadeFlags]
-	or FADE_WHITE | FADE_3 | FADE_OUT | FADE_ON
+	or FADE_3 | FADE_OUT | FADE_ON
 	ldh [hPalFadeFlags], a
 .loop_wait_fade
 	xor a
@@ -573,14 +573,14 @@ FadeOut::
 	pop hl
 	ret
 
-; fades palettes in from white
+; fades palettes in
 FadeIn::
 	ldh a, [hff91]
 	and $fb
 	ldh [hff91], a
 	ldh a, [hPalFadeFlags]
 	and $fc ^ (FADE_OUT | FADE_ON)
-	or FADE_WHITE | FADE_3 | FADE_IN | FADE_ON
+	or FADE_3 | FADE_IN | FADE_ON
 	ldh [hPalFadeFlags], a
 .loop_wait_fade
 	ld hl, hVBlankFlags

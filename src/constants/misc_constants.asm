@@ -4,6 +4,7 @@ DEF TRUE  EQU 1
 
 DEF NULL EQU $0000
 
+; hVBlankFlags constants
 	const_def
 	const VBLANK_0_F ; 0
 	const VBLANK_1_F ; 1

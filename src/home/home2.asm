@@ -3745,14 +3745,14 @@ Func_319f:
 	ret
 
 PowersOfTwo::
-	db   1
-	db   2
-	db   4
-	db   8
-	db  16
-	db  32
-	db  64
-	db 128
+	db 1 << 0
+	db 1 << 1
+	db 1 << 2
+	db 1 << 3
+	db 1 << 4
+	db 1 << 5
+	db 1 << 6
+	db 1 << 7
 ; 0x3410
 
 MACRO object_properties
@@ -4048,7 +4048,7 @@ Func_388a:
 	ret
 
 StageHeaders::
-; starting area, ?, ?, starting X, starting Y, pals, intro music
+; starting area, ?, ?, starting X, starting Y, black/white fade, intro music
 	table_width 7, StageHeaders
 	db GREEN_GREENS_0,   01, $01, $28, $3c, FALSE, MUSIC_GREEN_GREENS_INTRO  ; GREEN_GREENS
 	db CASTLE_LOLOLO_00, 01, $01, $28, $58, FALSE, MUSIC_CASTLE_LOLOLO_INTRO ; CASTLE_LOLOLO

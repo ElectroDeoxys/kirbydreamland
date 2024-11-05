@@ -34,10 +34,10 @@ StartStage::
 	add hl, bc
 	ld a, [hli]
 	cp TRUE
-	jr z, .lighten
+	jr z, .black
 	ld a, FADE_WHITE | FADE_3 | FADE_OUT | FADE_ON | 0
 	jr .got_fade_config
-.lighten
+.black
 	ld a, FADE_BLACK | FADE_3 | FADE_OUT | FADE_ON | 0
 .got_fade_config
 	ld [hPalFadeFlags], a
@@ -1337,9 +1337,9 @@ Func_1886c:
 
 	hlbgcoord 0, 0
 	ld de, BG_19786
-	ld b, $0e ; number of rows
+	ld b, 14 ; number of rows
 .asm_18a97
-	ld c, $15 ; number of cols
+	ld c, 21 ; number of cols
 .asm_18a99
 	ld a, [de]
 	inc de
@@ -1347,7 +1347,7 @@ Func_1886c:
 	dec c
 	jr nz, .asm_18a99
 	push bc
-	ld bc, SCRN_VX_B - $15
+	ld bc, SCRN_VX_B - 21
 	add hl, bc
 	pop bc
 	dec b
@@ -1411,14 +1411,14 @@ Func_1886c:
 	ld a, MUSIC_CREDITS
 	call PlayMusic
 
-	ld a, $98
-	ld [wd06b], a
-	ld a, $1f
-	ld [wd06c], a
-	ld a, $9c
-	ld [wd084], a
-	ld a, $80
-	ld [wd085], a
+	ld a, HIGH(vBGMap0 + $1f)
+	ld [wBGPtr_d06b + 0], a
+	ld a, LOW(vBGMap0 + $1f)
+	ld [wBGPtr_d06b + 1], a
+	ld a, HIGH(vBGMap1 + $80)
+	ld [wd084 + 0], a
+	ld a, LOW(vBGMap1 + $80)
+	ld [wd084 + 1], a
 	ld hl, $5ed6
 	ld a, h
 	ld [wd082 + 0], a
@@ -1474,17 +1474,17 @@ Func_1886c:
 	ld hl, wBGQueue
 	ld b, $0a
 .asm_18b94
-	ld a, [wd084]
+	ld a, [wd084 + 0]
 	ld [hli], a
 	ld d, a
-	ld a, [wd085]
+	ld a, [wd084 + 1]
 	ld [hli], a
 	ld e, a
 	inc de
 	ld a, d
-	ld [wd084], a
+	ld [wd084 + 0], a
 	ld a, e
-	ld [wd085], a
+	ld [wd084 + 1], a
 	ld a, [wd082 + 0]
 	ld d, a
 	ld a, [wd082 + 1]
@@ -1512,9 +1512,9 @@ Func_1886c:
 	ld a, [wKirbyScreenDeltaY]
 	and a
 	ret nz
-	ld a, [wd084]
+	ld a, [wd084 + 0]
 	ld h, a
-	ld a, [wd085]
+	ld a, [wd084 + 1]
 	ld l, a
 	ld bc, $c
 	add hl, bc
@@ -1524,16 +1524,16 @@ Func_1886c:
 	hlbgcoord 0, 0, vBGMap1
 .asm_18bed
 	ld a, h
-	ld [wd084], a
+	ld [wd084 + 0], a
 	ld a, l
-	ld [wd085], a
+	ld [wd084 + 1], a
 	ret
 
 .Func_18bf6:
 	ld bc, wBGQueue
-	ld a, [wd06b]
+	ld a, [wBGPtr_d06b + 0]
 	ld h, a
-	ld a, [wd06c]
+	ld a, [wBGPtr_d06b + 1]
 	ld l, a
 	ld a, [wd059 + 0]
 	ld d, a
@@ -1548,9 +1548,9 @@ Func_1886c:
 	jr nz, .asm_18c1e
 	hlbgcoord 31, 0
 	ld a, h
-	ld [wd06b], a
+	ld [wBGPtr_d06b + 0], a
 	ld a, l
-	ld [wd06c], a
+	ld [wBGPtr_d06b + 1], a
 .asm_18c1e
 	ld a, h
 	ld [bc], a
@@ -1577,15 +1577,15 @@ Func_1886c:
 	ld a, [hff91]
 	set 2, a
 	ld [hff91], a
-	ld a, [wd06b]
+	ld a, [wBGPtr_d06b + 0]
 	ld h, a
-	ld a, [wd06c]
+	ld a, [wBGPtr_d06b + 1]
 	ld l, a
 	dec hl
 	ld a, h
-	ld [wd06b], a
+	ld [wBGPtr_d06b + 0], a
 	ld a, l
-	ld [wd06c], a
+	ld [wBGPtr_d06b + 1], a
 	ld a, d
 	ld [wd059 + 0], a
 	ld a, e
@@ -2107,11 +2107,11 @@ Data_190bb:
 
 Data_190ca:
 	table_width 2, Data_190ca
-	dw .GreenGreens ; GREEN_GREENS
+	dw .GreenGreens  ; GREEN_GREENS
 	dw .CastleLololo ; CASTLE_LOLOLO
 	dw .FloatIslands ; FLOAT_ISLANDS
 	dw .BubblyClouds ; BUBBLY_CLOUDS
-	dw .MtDedede ; MT_DEDEDE
+	dw .MtDedede     ; MT_DEDEDE
 	assert_table_length NUM_STAGES
 
 .GreenGreens:
