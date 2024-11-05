@@ -200,7 +200,7 @@ InitChannel:
 	ld hl, wde92
 	add hl, bc
 	ld [hl], a
-	ld hl, wde9a
+	ld hl, wChannelVolumes
 	add hl, bc
 	ld [hl], a
 	ld hl, wdea2
@@ -715,12 +715,12 @@ ExecuteAudioCommands:
 	ld a, [de]
 	and $e0
 	cp AUDIOCMD_WAIT
-	jr nz, .asm_15043
+	jr nz, .rest
 	inc de
 	ld a, [de]
 	jr .got_duration
 
-.asm_15043
+.rest
 	ld h, HIGH(wChannelTempoModes)
 	ld a, LOW(wChannelTempoModes)
 	add b
@@ -748,19 +748,21 @@ ExecuteAudioCommands:
 
 .audio_command
 	ld a, c
-	cp AUDIOCMD_F0
+	cp AUDIOCMD_BASE_VOLUME
 	jr nz, .asm_15081
 	inc de
-	ld h, HIGH(wde9a)
-	ld a, LOW(wde9a)
+	ld h, HIGH(wChannelVolumes)
+	ld a, LOW(wChannelVolumes)
 	add b
 	ld l, a
 	ld a, [de]
 .asm_15071
+	; set high nybble of wChannelVolumes to
+	; the command argument
 	swap a
 	and $f0
 	ld c, a
-	ld a, [hl]
+	ld a, [hl] ; wChannelVolumes + CHANNEL
 	and $0f
 	or c
 	ld [hl], a
@@ -773,8 +775,8 @@ ExecuteAudioCommands:
 	inc de
 	ld a, [de]
 	ld c, a
-	ld h, HIGH(wde9a)
-	ld a, LOW(wde9a)
+	ld h, HIGH(wChannelVolumes)
+	ld a, LOW(wChannelVolumes)
 	add b
 	ld l, a
 	ld a, [hl]
@@ -1206,8 +1208,8 @@ Func_1525a:
 	jr nz, .wave_cmd
 	push de
 	call Func_153a8
-	ld h, HIGH(wde9a)
-	ld a, LOW(wde9a)
+	ld h, HIGH(wChannelVolumes)
+	ld a, LOW(wChannelVolumes)
 	add b
 	ld l, a
 	ld a, [hl]
@@ -1319,9 +1321,10 @@ Func_15311:
 ; input:
 ; - a = ?
 Func_1533b:
+	; set low nybble of wChannelVolumes to input
 	ld c, a
-	ld h, HIGH(wde9a)
-	ld a, LOW(wde9a)
+	ld h, HIGH(wChannelVolumes)
+	ld a, LOW(wChannelVolumes)
 	add b
 	ld l, a
 	ld a, [hl]
@@ -1332,9 +1335,7 @@ Func_1533b:
 
 Func_15347:
 	push de
-	; subtracts from $ff each nybble in [hl]
-	; so you get e = low nybble [hl] - ($f - high nybble [hl])
-	ld a, $ff
+	ld a, -1
 	sub [hl]
 	swap a
 	and $0f
@@ -1343,6 +1344,7 @@ Func_15347:
 	and $0f
 	sub e
 	ld e, a
+	; e = low nybble [hl] - (15 - high nybble [hl])
 	jr nc, .no_underflow
 	ld e, 0 ; minimum of 0
 .no_underflow
@@ -1471,6 +1473,11 @@ GetPointerToChannelConfig:
 	ld h, HIGH(wSFXChannels) ; aka HIGH(wMusicChannels)
 	ret
 
+; input:
+; - a = ?
+; - e = ?
+; output:
+; - hl = ?
 Func_153d3:
 	push bc
 	push de
@@ -1493,6 +1500,7 @@ Func_153d3:
 	cpl
 	inc a
 .positive
+	; a = |l - e|
 	ld l, a
 	dec h
 	ld a, c
@@ -1766,14 +1774,14 @@ MusicHeader_MtDedede:
 	pan PAN_CENTER
 	base_note D#4
 	instrument INSTRUMENT_05
-	audio_f0 $0b
+	base_volume 11
 	audio_f4 $80
-	audio_call $5622
+	audio_call .sub_2
 	audio_call $562c
-	audio_call $5622
+	audio_call .sub_2
 	audio_call $5634
 	instrument INSTRUMENT_0D
-	audio_f0 $0a
+	base_volume 10
 	audio_f4 $00
 	audio_call $5646
 	audio_call $5652
@@ -1781,13 +1789,13 @@ MusicHeader_MtDedede:
 	audio_call $5660
 	instrument INSTRUMENT_0F
 	audio_call $5669
-	audio_f0 $09
+	base_volume 9
 	pan PAN_CENTER
 	audio_call $5681
 	pan PAN_CENTER
 	audio_call .sub_1
 	instrument INSTRUMENT_0E
-	audio_f0 $09
+	base_volume 9
 	audio_call $5695
 	audio_call .sub_1
 	audio_jump $55e5
@@ -1795,17 +1803,24 @@ MusicHeader_MtDedede:
 .sub_1
 	audio_f4 $80
 	instrument INSTRUMENT_05
-	audio_f0 $08
+	base_volume 8
 	audio_repeat 6
 	note G_0
 	audio_f1 $01
 	audio_repeat_end
 	audio_ret
 
+.sub_2
 	db $30
 	audio_f4 $80
-
-; 0x155cd
+	db $1f
+	db $1f
+	db $1f
+	db $50
+	db $3f
+	db $3f
+	audio_ret
+; 0x1562c
 
 SECTION "Bank 5@6f6d", ROMX[$6f6d], BANK[$5]
 
@@ -1830,8 +1845,7 @@ AudioScript_16f76:
 	db $ff ; end
 
 AudioScript_16f79:
-	volume 4
-	db $08
+	volume 4, 8
 	volume 0
 	db $ff ; end
 
@@ -1840,18 +1854,17 @@ AudioScript_16f7d:
 AudioScript_16f7e:
 	volume 15
 	audio_repeat 15
-	volume_shift -1
-	db $08
+	volume_shift -1, 8
 	audio_repeat_end
 	db $ff ; end
 
 AudioScript_16f85:
 	wave WAVEDUTY_50
 AudioScript_16f86:
-	volume_b 15
+	volume 15, 1
 AudioScript_16f87:
 	audio_repeat 8
-	db $03
+	db 3
 	volume_shift -2
 	audio_repeat_end
 	db $ff ; end
@@ -1862,10 +1875,8 @@ AudioScript_16f8d:
 
 AudioScript_16f91:
 	wave WAVEDUTY_12_5
-	volume 15
-	db $02
-	volume 13
-	db $02
+	volume 15, 2
+	volume 13, 2
 	audio_jump AudioScript_16f87
 
 AudioScript_16f99:
@@ -1875,13 +1886,11 @@ AudioScript_16f99:
 AudioScript_16f9d:
 	wave WAVEDUTY_50
 AudioScript_16f9e:
-	volume 15
-	db $02
+	volume 15, 2
 	volume 14
 AudioScript_16fa1:
 	audio_repeat 12
-	volume_shift -1
-	db $03
+	volume_shift -1, 3
 	audio_repeat_end
 	db $ff ; end
 
@@ -1895,62 +1904,51 @@ AudioScript_16fab:
 	audio_jump AudioScript_16fa1
 
 AudioScript_16fb2:
-	volume_b 15
-	volume_b 11
+	volume 15, 1
+	volume 11, 1
 	audio_ret
 
 AudioScript_16fb5:
 	wave WAVEDUTY_25
-	volume_b 15
-	volume_b 12
+	volume 15, 1
+	volume 12, 1
 	wave WAVEDUTY_12_5
 	audio_repeat 8
-	volume_shift_b 1
-	volume_shift_b -2
+	volume_shift 1, 1
+	volume_shift -2, 1
 	audio_repeat_end
 .loop
-	volume_shift_b 1
-	volume_shift_b -1
+	volume_shift 1, 1
+	volume_shift -1, 1
 	audio_jump .loop
 
 AudioScript_16fc3:
 	wave WAVEDUTY_50
 AudioScript_16fc4:
-	volume_b 7
+	volume 7, 1
 AudioScript_16fc5:
-	volume_b 13
-	volume_b 15
-	volume_b 12
-	volume 6
-	db $06
+	volume 13, 1
+	volume 15, 1
+	volume 12, 1
+	volume 6, 6
 	audio_repeat 4
-	volume_shift 1
-	db $03
-	volume_shift 1
-	db $03
+	volume_shift 1, 3
+	volume_shift 1, 3
 	audio_repeat_end
 .loop
-	pitch_shift 1
-	db $03
-	pitch_shift -1
-	db $03
+	pitch_shift 1, 3
+	pitch_shift -1, 3
 	audio_jump .loop
 
 AudioScript_16fd8:
-	volume 8
-	db $05
-	volume 7
-	db $02
-	volume 6
-	db $02
+	volume 8, 5
+	volume 7, 2
+	volume 6, 2
 	audio_repeat 5
-	volume 5
-	db $04
-	volume 4
-	db $03
+	volume 5, 4
+	volume 4, 3
 	audio_repeat_end
-	volume 2
-	db $05
+	volume 2, 5
 	volume 0
 	db $ff ; end
 
@@ -1960,49 +1958,38 @@ AudioScript_16fe9:
 
 AudioScript_16fed:
 	wave WAVEDUTY_50
-	volume 15
-	db $02
+	volume 15, 2
 	wave WAVEDUTY_25
-	volume_b 13
+	volume 13, 1
 	wave WAVEDUTY_12_5
 	audio_repeat 6
-	volume_shift -1
-	db $02
+	volume_shift -1, 2
 	audio_repeat_end
 .loop
-	volume 6
-	db $03
-	volume 7
-	db $03
+	volume 6, 3
+	volume 7, 3
 	audio_jump .loop
 
 AudioScript_16fff:
 	wave WAVEDUTY_75
-	volume_b 15
-	volume_b 12
+	volume 15, 1
+	volume 12, 1
 	audio_repeat 5
-	volume_shift_b -2
+	volume_shift -2, 1
 	audio_repeat_end
 	volume 0
 	db $ff ; end
 
 AudioScript_17008:
 	wave WAVEDUTY_50
-	volume 15
-	db $02
-	volume 14
-	db $05
-	volume 13
-	db $05
+	volume 15, 2
+	volume 14, 5
+	volume 13, 5
 .loop
-	pitch_shift -1
-	db $02
-	pitch_shift -1
-	db $03
-	pitch_shift 1
-	db $02
-	pitch_shift 1
-	db $03
+	pitch_shift -1, 2
+	pitch_shift -1, 3
+	pitch_shift 1, 2
+	pitch_shift 1, 3
 	audio_jump .loop
 
 AudioScript_1701a:
@@ -2011,56 +1998,44 @@ AudioScript_1701a:
 
 AudioScript_1701e:
 	wave WAVEDUTY_75
-	volume_b 15
+	volume 15, 1
 	wave WAVEDUTY_50
-	volume 12
-	db $02
+	volume 12, 2
 .loop
-	pitch_shift -1
-	db $03
-	pitch_shift 1
-	db $03
+	pitch_shift -1, 3
+	pitch_shift 1, 3
 	audio_jump .loop
 
 AudioScript_1702a:
-	volume 4
-	db $02
+	volume 4, 2
 	volume 0
 	db $ff ; end
 
 AudioScript_1702e:
 	wave WAVEDUTY_50
-	volume_b 11
-	volume 12
-	db $02
-	volume 13
-	db $06
+	volume 11, 1
+	volume 12, 2
+	volume 13, 6
 	volume 14
 .loop
-	pitch_shift 1
-	db $03
-	pitch_shift -1
-	db $03
+	pitch_shift 1, 3
+	pitch_shift -1, 3
 	audio_jump .loop
 
 AudioScript_1703c:
 	wave WAVEDUTY_75
-	volume_b 15
+	volume 15, 1
 	wave WAVEDUTY_12_5
-	volume 14
-	db $02
+	volume 14, 2
 	wave WAVEDUTY_25
 	volume 10
 	audio_repeat 5
-	volume_shift_b -1
+	volume_shift -1, 1
 	audio_repeat_end
-	volume_shift -1
-	db $03
+	volume_shift -1, 3
 .loop
-	pitch_shift -1
-	db $04
-	pitch_shift 1
-	db $04
+	pitch_shift -1, 4
+	pitch_shift 1, 4
 	audio_jump .loop
 
 AudioScript_17050:
@@ -2069,49 +2044,46 @@ AudioScript_17050:
 
 AudioScript_17054:
 	wave WAVEDUTY_75
-	volume_b 15
+	volume 15, 1
 	wave WAVEDUTY_25
-	volume 12
-	db $02
+	volume 12, 2
 .loop
-	pitch_shift 1
-	db $03
-	pitch_shift -1
-	db $03
+	pitch_shift 1, 3
+	pitch_shift -1, 3
 	audio_jump .loop
 
 AudioScript_17060:
 	wave WAVEDUTY_12_5
-	volume_b 15
+	volume 15, 1
 	wave WAVEDUTY_75
-	volume_b 13
+	volume 13, 1
 	audio_repeat 5
-	volume_shift_b -1
+	volume_shift -1, 1
 	audio_repeat_end
 	db $ff ; end
 
 AudioScript_17069:
 	wave WAVEDUTY_12_5
-	volume_b 15
+	volume 15, 1
 	wave WAVEDUTY_50
-	volume_b 14
+	volume 14, 1
 	wave WAVEDUTY_25
-	volume_b 13
-	volume_b 12
-	volume_b 11
-	volume_b 10
-	volume_b 9
+	volume 13, 1
+	volume 12, 1
+	volume 11, 1
+	volume 10, 1
+	volume 9, 1
 	db $ff ; end
 
 AudioScript_17074:
-	volume_b 15
+	volume 15, 1
 	audio_repeat 5
-	volume_shift_b -2
+	volume_shift -2, 1
 	audio_repeat_end
-	volume_b 3
-	volume_b 2
-	volume_b 1
-	volume_b 0
+	volume 3, 1
+	volume 2, 1
+	volume 1, 1
+	volume 0, 1
 	db $ff ; end
 
 SFXHeader_00:
@@ -2300,8 +2272,7 @@ AudioScript_177cb:
 	db $ff ; end
 
 AudioScript_177ce:
-	volume 4
-	db $08
+	volume 4, 8
 	volume 0
 	db $ff ; end
 
@@ -2310,15 +2281,14 @@ AudioScript_177d2:
 AudioScript_177d3:
 	volume 15
 	audio_repeat 15
-	volume_shift -1
-	db $08
+	volume_shift -1, 8
 	audio_repeat_end
 	db $ff ; end
 
 AudioScript_177da:
 	wave WAVEDUTY_50
 AudioScript_177db:
-	volume_b 15
+	volume 15, 1
 AudioScript_177dc:
 	audio_repeat 8
 	db $03
@@ -2332,10 +2302,8 @@ AudioScript_177e2:
 
 AudioScript_177e6:
 	wave WAVEDUTY_12_5
-	volume 15
-	db $02
-	volume 13
-	db $02
+	volume 15, 2
+	volume 13, 2
 	audio_jump AudioScript_177dc
 
 AudioScript_177ee:
@@ -2345,13 +2313,11 @@ AudioScript_177ee:
 AudioScript_177f2:
 	wave WAVEDUTY_50
 AudioScript_177f3:
-	volume 15
-	db $02
+	volume 15, 2
 	volume 14
 AudioScript_177f6:
 	audio_repeat 12
-	volume_shift -1
-	db $03
+	volume_shift -1, 3
 	audio_repeat_end
 	db $ff ; end
 
@@ -2365,34 +2331,33 @@ AudioScript_17800:
 	audio_jump AudioScript_177f6
 
 AudioScript_17807:
-	volume_b 15
-	volume_b 11
+	volume 15, 1
+	volume 11, 1
 	audio_ret
 
 AudioScript_1780a:
 	wave WAVEDUTY_25
-	volume_b 15
-	volume_b 12
+	volume 15, 1
+	volume 12, 1
 	wave WAVEDUTY_12_5
 	audio_repeat 8
-	volume_shift_b 1
-	volume_shift_b -2
+	volume_shift 1, 1
+	volume_shift -2, 1
 	audio_repeat_end
 .loop
-	volume_shift_b 1
-	volume_shift_b -1
+	volume_shift 1, 1
+	volume_shift -1, 1
 	audio_jump .loop
 
 AudioScript_17818:
 	wave WAVEDUTY_50
 AudioScript_17819:
-	volume_b 7
+	volume 7, 1
 AudioScript_1781a:
-	volume_b 13
-	volume_b 15
-	volume_b 12
-	volume 6
-	db $06
+	volume 13, 1
+	volume 15, 1
+	volume 12, 1
+	volume 6, 6
 	audio_repeat 4
 	volume_shift 1
 	db $03
@@ -2400,27 +2365,19 @@ AudioScript_1781a:
 	db $03
 	audio_repeat_end
 .loop
-	pitch_shift 1
-	db $03
-	pitch_shift -1
-	db $03
+	pitch_shift 1, 3
+	pitch_shift -1, 3
 	audio_jump .loop
 
 AudioScript_1782d:
-	volume 8
-	db $05
-	volume 7
-	db $02
-	volume 6
-	db $02
+	volume 8, 5
+	volume 7, 2
+	volume 6, 2
 	audio_repeat 5
-	volume 5
-	db $04
-	volume 4
-	db $03
+	volume 5, 4
+	volume 4, 3
 	audio_repeat_end
-	volume 2
-	db $05
+	volume 2, 5
 	volume 0
 	db $ff ; end
 
@@ -2430,49 +2387,38 @@ AudioScript_1783e:
 
 AudioScript_17842:
 	wave WAVEDUTY_50
-	volume 15
-	db $02
+	volume 15, 2
 	wave WAVEDUTY_25
-	volume_b 13
+	volume 13, 1
 	wave WAVEDUTY_12_5
 	audio_repeat 6
-	volume_shift -1
-	db $02
+	volume_shift -1, 2
 	audio_repeat_end
 .loop
-	volume 6
-	db $03
-	volume 7
-	db $03
+	volume 6, 3
+	volume 7, 3
 	audio_jump .loop
 
 AudioScript_17854:
 	wave WAVEDUTY_75
-	volume_b 15
-	volume_b 12
+	volume 15, 1
+	volume 12, 1
 	audio_repeat 5
-	volume_shift_b -2
+	volume_shift -2, 1
 	audio_repeat_end
 	volume 0
 	db $ff ; end
 
 AudioScript_1785d:
 	wave WAVEDUTY_50
-	volume 15
-	db $02
-	volume 14
-	db $05
-	volume 13
-	db $05
+	volume 15, 2
+	volume 14, 5
+	volume 13, 5
 .loop
-	pitch_shift -1
-	db $02
-	pitch_shift -1
-	db $03
-	pitch_shift 1
-	db $02
-	pitch_shift 1
-	db $03
+	pitch_shift -1, 2
+	pitch_shift -1, 3
+	pitch_shift 1, 2
+	pitch_shift 1, 3
 	audio_jump .loop
 
 AudioScript_1786f:
@@ -2481,56 +2427,44 @@ AudioScript_1786f:
 
 AudioScript_17873:
 	wave WAVEDUTY_75
-	volume_b 15
+	volume 15, 1
 	wave WAVEDUTY_50
-	volume 12
-	db $02
+	volume 12, 2
 .loop
-	pitch_shift -1
-	db $03
-	pitch_shift 1
-	db $03
+	pitch_shift -1, 3
+	pitch_shift 1, 3
 	audio_jump .loop
 
 AudioScript_1787f:
-	volume 4
-	db $02
+	volume 4, 2
 	volume 0
 	db $ff ; end
 
 AudioScript_17883:
 	wave WAVEDUTY_50
-	volume_b 11
-	volume 12
-	db $02
-	volume 13
-	db $06
+	volume 11, 1
+	volume 12, 2
+	volume 13, 6
 	volume 14
 .loop
-	pitch_shift 1
-	db $03
-	pitch_shift -1
-	db $03
+	pitch_shift 1, 3
+	pitch_shift -1, 3
 	audio_jump .loop
 
 AudioScript_17891:
 	wave WAVEDUTY_75
-	volume_b 15
+	volume 15, 1
 	wave WAVEDUTY_12_5
-	volume 14
-	db $02
+	volume 14, 2
 	wave WAVEDUTY_25
 	volume 10
 	audio_repeat 5
-	volume_shift_b -1
+	volume_shift -1, 1
 	audio_repeat_end
-	volume_shift -1
-	db $03
+	volume_shift -1, 3
 .loop
-	pitch_shift -1
-	db $04
-	pitch_shift 1
-	db $04
+	pitch_shift -1, 4
+	pitch_shift 1, 4
 	audio_jump .loop
 
 AudioScript_178a5:
@@ -2539,53 +2473,52 @@ AudioScript_178a5:
 
 AudioScript_178a9:
 	wave WAVEDUTY_75
-	volume_b 15
+	volume 15, 1
 	wave WAVEDUTY_25
 	volume 12
 	db $02
 .loop
-	pitch_shift 1
-	db $03
-	pitch_shift -1
-	db $03
+	pitch_shift 1, 3
+	pitch_shift -1, 3
 	audio_jump .loop
 
 AudioScript_178b5:
 	wave WAVEDUTY_12_5
-	volume_b 15
+	volume 15, 1
 	wave WAVEDUTY_75
-	volume_b 13
+	volume 13, 1
 	audio_repeat 5
-	volume_shift_b -1
+	volume_shift -1, 1
 	audio_repeat_end
 	db $ff ; end
 
 AudioScript_178be:
 	wave WAVEDUTY_12_5
-	volume_b 15
+	volume 15, 1
 	wave WAVEDUTY_50
-	volume_b 14
+	volume 14, 1
 	wave WAVEDUTY_25
-	volume_b 13
-	volume_b 12
-	volume_b 11
-	volume_b 10
-	volume_b 9
+	volume 13, 1
+	volume 12, 1
+	volume 11, 1
+	volume 10, 1
+	volume 9, 1
 	db $ff ; end
 
 AudioScript_178c9:
-	volume_b 15
+	volume 15, 1
 	audio_repeat 5
-	volume_shift_b -2
+	volume_shift -2, 1
 	audio_repeat_end
-	volume_b 3
-	volume_b 2
-	volume_b 1
-	volume_b 0
+	volume 3, 1
+	volume 2, 1
+	volume 1, 1
+	volume 0, 1
 	db $ff ; end
 
 Instruments:
 	table_width 4
+	;  attack,            release
 	dw AudioScript_16f6d, AudioScript_16f79 ; INSTRUMENT_00
 	dw AudioScript_16f70, AudioScript_16f79 ; INSTRUMENT_01
 	dw AudioScript_16f73, AudioScript_16f79 ; INSTRUMENT_02

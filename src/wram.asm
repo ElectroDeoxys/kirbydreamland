@@ -628,7 +628,9 @@ wChannelBaseNotes:: ; de8a
 wde92:: ; de92
 	ds NUM_CHANNELS
 
-wde9a:: ; de9a
+; low nybble is note and instrument volume
+; high nybble is base volume of track
+wChannelVolumes:: ; de9a
 	ds NUM_CHANNELS
 
 wdea2:: ; dea2

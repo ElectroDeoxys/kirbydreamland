@@ -13,10 +13,27 @@ ENDM
 	const AUDIOCMD_PITCH_SHIFT ; $20
 MACRO pitch_shift
 ASSERT \1 >= -8 && \1 <= 7
-IF \1 >= 0
-	db \1 | AUDIOCMD_PITCH_SHIFT
+IF _NARG == 1
+	IF \1 >= 0
+		db \1 | AUDIOCMD_PITCH_SHIFT
+	ELSE ; negative
+		db ($10 + \1) | AUDIOCMD_PITCH_SHIFT
+	ENDC
 ELSE
-	db ($10 + \1) | AUDIOCMD_PITCH_SHIFT
+	IF \2 == 1
+		IF \1 >= 0
+			db \1 | AUDIOCMD_PITCH_SHIFT | AUDIOCMD_BREAK
+		ELSE ; negative
+			db ($10 + \1) | AUDIOCMD_PITCH_SHIFT | AUDIOCMD_BREAK
+		ENDC
+	ELSE
+		IF \1 >= 0
+			db \1 | AUDIOCMD_PITCH_SHIFT
+		ELSE ; negative
+			db ($10 + \1) | AUDIOCMD_PITCH_SHIFT
+		ENDC
+		db \2
+	ENDC
 ENDC
 ENDM
 
@@ -25,12 +42,16 @@ ENDM
 	const AUDIOCMD_VOLUME ; $40
 MACRO volume
 ASSERT \1 <= 15
+IF _NARG == 1
 	db \1 | AUDIOCMD_VOLUME
-ENDM
-
-MACRO volume_b
-ASSERT \1 <= 15
-	db \1 | AUDIOCMD_VOLUME | AUDIOCMD_BREAK
+ELSE
+	IF \2 == 1
+		db \1 | AUDIOCMD_VOLUME | AUDIOCMD_BREAK
+	ELSE
+		db \1 | AUDIOCMD_VOLUME
+		db \2
+	ENDC
+ENDC
 ENDM
 
 	const_def $60
@@ -38,19 +59,27 @@ ENDM
 	const AUDIOCMD_VOLUME_SHIFT ; $60
 MACRO volume_shift
 ASSERT \1 >= -8 && \1 <= 7
-IF \1 >= 0
-	db \1 | AUDIOCMD_VOLUME_SHIFT
+IF _NARG == 1
+	IF \1 >= 0
+		db \1 | AUDIOCMD_VOLUME_SHIFT
+	ELSE ; negative
+		db ($10 + \1) | AUDIOCMD_VOLUME_SHIFT
+	ENDC
 ELSE
-	db ($10 + \1) | AUDIOCMD_VOLUME_SHIFT
-ENDC
-ENDM
-
-MACRO volume_shift_b
-ASSERT \1 >= -8 && \1 <= 7
-IF \1 >= 0
-	db \1 | AUDIOCMD_VOLUME_SHIFT | AUDIOCMD_BREAK
-ELSE
-	db ($10 + \1) | AUDIOCMD_VOLUME_SHIFT | AUDIOCMD_BREAK
+	IF \2 == 1
+		IF \1 >= 0
+			db \1 | AUDIOCMD_VOLUME_SHIFT | AUDIOCMD_BREAK
+		ELSE ; negative
+			db ($10 + \1) | AUDIOCMD_VOLUME_SHIFT | AUDIOCMD_BREAK
+		ENDC
+	ELSE
+		IF \1 >= 0
+			db \1 | AUDIOCMD_VOLUME_SHIFT
+		ELSE ; negative
+			db ($10 + \1) | AUDIOCMD_VOLUME_SHIFT
+		ENDC
+		db \2
+	ENDC
 ENDC
 ENDM
 
@@ -118,9 +147,9 @@ ENDM
 
 	const AUDIOCMD_EF ; $ef
 
-	const AUDIOCMD_F0 ; $f0
-MACRO audio_f0
-	db AUDIOCMD_F0
+	const AUDIOCMD_BASE_VOLUME ; $f0
+MACRO base_volume
+	db AUDIOCMD_BASE_VOLUME
 	db \1 ; ?
 ENDM
 
