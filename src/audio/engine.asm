@@ -599,6 +599,7 @@ ExecuteAudioCommands:
 	jr z, .asm_14fb6
 	bit 4, a
 	jr z, .asm_14fa7
+	; is negative
 	or $e0
 .asm_14fa7
 	ld c, a
@@ -645,7 +646,7 @@ ExecuteAudioCommands:
 	jr z, .asm_14ff3
 	push bc
 	push de
-	ld e, a
+	ld e, a ; value from wde92
 	ld h, HIGH(wde82)
 	ld a, LOW(wde82)
 	add b
@@ -730,10 +731,10 @@ ExecuteAudioCommands:
 	swap a
 	srl a
 	add [hl] ; wChannelTempoModes
-	add LOW(TempoModeNoteDurations)
+	add LOW(TempoModeDurations)
 	ld l, a
 	ld a, $00
-	adc HIGH(TempoModeNoteDurations)
+	adc HIGH(TempoModeDurations)
 	ld h, a
 	ld a, [hl]
 .got_duration
@@ -748,7 +749,7 @@ ExecuteAudioCommands:
 
 .audio_command
 	ld a, c
-	cp AUDIOCMD_BASE_VOLUME
+	cp AUDIOCMD_VOLUME
 	jr nz, .asm_15081
 	inc de
 	ld h, HIGH(wChannelVolumes)
@@ -770,7 +771,7 @@ ExecuteAudioCommands:
 	jp .next_cmd
 
 .asm_15081
-	cp AUDIOCMD_F1
+	cp AUDIOCMD_VOLUME_SHIFT
 	jr nz, .tempo_mode_cmd
 	inc de
 	ld a, [de]
@@ -958,7 +959,7 @@ ENDR
 	jp .next_cmd
 
 .asm_1517b
-	cp AUDIOCMD_FF
+	cp AUDIOCMD_END
 	jr nz, .stack_commands
 	ld h, HIGH(wAudioCommandDurations)
 	ld a, LOW(wAudioCommandDurations)
@@ -1197,14 +1198,14 @@ Func_1525a:
 	ret
 
 .volume_cmd
-	cp AUDIOCMD_VOLUME
+	cp AUDIOCMD_NOTE_VOLUME
 	jr nz, .asm_15294
 	ld a, c
 	and $0f
 	jp .asm_152b2
 
 .asm_15294
-	cp AUDIOCMD_VOLUME_SHIFT
+	cp AUDIOCMD_NOTE_VOLUME_SHIFT
 	jr nz, .wave_cmd
 	push de
 	call Func_153a8
@@ -1474,7 +1475,7 @@ GetPointerToChannelConfig:
 	ret
 
 ; input:
-; - a = ?
+; - a = note/rest duration
 ; - e = ?
 ; output:
 ; - hl = ?
@@ -1642,230 +1643,5161 @@ WaveSamples:
 
 MusicHeader_BubblyCloudsIntro:
 	db 4 ; num of channels
-	dwb $55cd, $00 ; CHANNEL1
-	dwb $56ac, $04 ; CHANNEL2
-	dwb $5780, $10 ; CHANNEL3
-	dwb $5852, $0c ; CHANNEL4
+	dwb BubblyCloudsIntro_Channel1, $00 ; CHANNEL1
+	dwb BubblyCloudsIntro_Channel2, $04 ; CHANNEL2
+	dwb BubblyCloudsIntro_Channel3, $10 ; CHANNEL3
+	dwb BubblyCloudsIntro_Channel4, $0c ; CHANNEL4
 
 MusicHeader_GreenGreensIntro:
 	db 4 ; num of channels
-	dwb $587b, $10 ; CHANNEL1
-	dwb $5949, $00 ; CHANNEL2
-	dwb $5a22, $04 ; CHANNEL3
-	dwb $5b0b, $0c ; CHANNEL4
+	dwb GreenGreensIntro_Channel1, $10 ; CHANNEL1
+	dwb GreenGreensIntro_Channel2, $00 ; CHANNEL2
+	dwb GreenGreensIntro_Channel3, $04 ; CHANNEL3
+	dwb GreenGreensIntro_Channel4, $0c ; CHANNEL4
 
 MusicHeader_InvincibilityCandy:
 	db 4 ; num of channels
-	dwb $5b59, $00 ; CHANNEL1
-	dwb $5b91, $10 ; CHANNEL2
-	dwb $5bc9, $04 ; CHANNEL3
-	dwb $5bf6, $0c ; CHANNEL4
+	dwb InvincibilityCandy_Channel1, $00 ; CHANNEL1
+	dwb InvincibilityCandy_Channel2, $10 ; CHANNEL2
+	dwb InvincibilityCandy_Channel3, $04 ; CHANNEL3
+	dwb InvincibilityCandy_Channel4, $0c ; CHANNEL4
 
 MusicHeader_GameOver:
 	db 4 ; num of channels
-	dwb $5c1f, $00 ; CHANNEL1
-	dwb $5c47, $10 ; CHANNEL2
-	dwb $5c75, $04 ; CHANNEL3
-	dwb $5c99, $0c ; CHANNEL4
+	dwb GameOver_Channel1, $00 ; CHANNEL1
+	dwb GameOver_Channel2, $10 ; CHANNEL2
+	dwb GameOver_Channel3, $04 ; CHANNEL3
+	dwb GameOver_Channel4, $0c ; CHANNEL4
 
 MusicHeader_SparklingStar:
 	db 2 ; num of channels
-	dwb $5cbc, $00 ; CHANNEL1
-	dwb $5cd1, $04 ; CHANNEL2
+	dwb SparklingStar_Channel1, $00 ; CHANNEL1
+	dwb SparklingStar_Channel2, $04 ; CHANNEL2
 
 MusicHeader_Titlescreen:
 	db 4 ; num of channels
-	dwb $5ce1, $00 ; CHANNEL1
-	dwb $5d55, $10 ; CHANNEL2
-	dwb $5de2, $04 ; CHANNEL3
-	dwb $5e5e, $0c ; CHANNEL4
+	dwb Titlescreen_Channel1, $00 ; CHANNEL1
+	dwb Titlescreen_Channel2, $10 ; CHANNEL2
+	dwb Titlescreen_Channel3, $04 ; CHANNEL3
+	dwb Titlescreen_Channel4, $0c ; CHANNEL4
 
 MusicHeader_FloatIslandsIntro:
 	db 4 ; num of channels
-	dwb $5e93, $10 ; CHANNEL1
-	dwb $5f36, $00 ; CHANNEL2
-	dwb $600e, $04 ; CHANNEL3
-	dwb $6101, $0c ; CHANNEL4
+	dwb FloatIslandsIntro_Channel1, $10 ; CHANNEL1
+	dwb FloatIslandsIntro_Channel2, $00 ; CHANNEL2
+	dwb FloatIslandsIntro_Channel3, $04 ; CHANNEL3
+	dwb FloatIslandsIntro_Channel4, $0c ; CHANNEL4
 
 MusicHeader_LifeLost:
 	db 3 ; num of channels
-	dwb $6160, $00 ; CHANNEL1
-	dwb $6180, $04 ; CHANNEL2
-	dwb $6189, $10 ; CHANNEL3
+	dwb LifeLost_Channel1, $00 ; CHANNEL1
+	dwb LifeLost_Channel2, $04 ; CHANNEL2
+	dwb LifeLost_Channel3, $10 ; CHANNEL3
 
 MusicHeader_BossBattle:
 	db 4 ; num of channels
-	dwb $61a3, $10 ; CHANNEL1
-	dwb $6218, $00 ; CHANNEL2
-	dwb $62a0, $04 ; CHANNEL3
-	dwb $6322, $0c ; CHANNEL4
+	dwb BossBattle_Channel1, $10 ; CHANNEL1
+	dwb BossBattle_Channel2, $00 ; CHANNEL2
+	dwb BossBattle_Channel3, $04 ; CHANNEL3
+	dwb BossBattle_Channel4, $0c ; CHANNEL4
 
 MusicHeader_MintLeaf:
 	db 4 ; num of channels
-	dwb $639d, $10 ; CHANNEL1
-	dwb $6418, $00 ; CHANNEL2
-	dwb $6484, $04 ; CHANNEL3
-	dwb $64ff, $0c ; CHANNEL4
+	dwb MintLeaf_Channel1, $10 ; CHANNEL1
+	dwb MintLeaf_Channel2, $00 ; CHANNEL2
+	dwb MintLeaf_Channel3, $04 ; CHANNEL3
+	dwb MintLeaf_Channel4, $0c ; CHANNEL4
 
 MusicHeader_Victory:
 	db 4 ; num of channels
-	dwb $6569, $00 ; CHANNEL1
-	dwb $6598, $04 ; CHANNEL2
-	dwb $65c9, $10 ; CHANNEL3
-	dwb $65f8, $0c ; CHANNEL4
+	dwb Victory_Channel1, $00 ; CHANNEL1
+	dwb Victory_Channel2, $04 ; CHANNEL2
+	dwb Victory_Channel3, $10 ; CHANNEL3
+	dwb Victory_Channel4, $0c ; CHANNEL4
 
 MusicHeader_Credits:
 	db 4 ; num of channels
-	dwb $6612, $10 ; CHANNEL1
-	dwb $6729, $00 ; CHANNEL2
-	dwb $6827, $04 ; CHANNEL3
-	dwb $6958, $0c ; CHANNEL4
+	dwb Credits_Channel1, $10 ; CHANNEL1
+	dwb Credits_Channel2, $00 ; CHANNEL2
+	dwb Credits_Channel3, $04 ; CHANNEL3
+	dwb Credits_Channel4, $0c ; CHANNEL4
 
 MusicHeader_CastleLololoIntro:
 	db 4 ; num of channels
-	dwb $69f4, $10 ; CHANNEL1
-	dwb $6a71, $00 ; CHANNEL2
-	dwb $6b6f, $04 ; CHANNEL3
-	dwb $6c4f, $0c ; CHANNEL4
+	dwb CastleLololoIntro_Channel1, $10 ; CHANNEL1
+	dwb CastleLololoIntro_Channel2, $00 ; CHANNEL2
+	dwb CastleLololoIntro_Channel3, $04 ; CHANNEL3
+	dwb CastleLololoIntro_Channel4, $0c ; CHANNEL4
 
 MusicHeader_GreenGreens:
 	db 4 ; num of channels
-	dwb $6ce7, $00 ; CHANNEL1
-	dwb $6cef, $04 ; CHANNEL2
-	dwb $6d03, $10 ; CHANNEL3
-	dwb $6cf7, $0c ; CHANNEL4
+	dwb GreenGreens_Channel1, $00 ; CHANNEL1
+	dwb GreenGreens_Channel2, $04 ; CHANNEL2
+	dwb GreenGreens_Channel3, $10 ; CHANNEL3
+	dwb GreenGreens_Channel4, $0c ; CHANNEL4
 
 MusicHeader_FloatIslands:
 	db 4 ; num of channels
-	dwb $6d0a, $00 ; CHANNEL1
-	dwb $6d11, $04 ; CHANNEL2
-	dwb $6d18, $10 ; CHANNEL3
-	dwb $6d27, $0c ; CHANNEL4
+	dwb FloatIslands_Channel1, $00 ; CHANNEL1
+	dwb FloatIslands_Channel2, $04 ; CHANNEL2
+	dwb FloatIslands_Channel3, $10 ; CHANNEL3
+	dwb FloatIslands_Channel4, $0c ; CHANNEL4
 
 MusicHeader_BubblyClouds:
 	db 4 ; num of channels
-	dwb $6d34, $00 ; CHANNEL1
-	dwb $6d3d, $04 ; CHANNEL2
-	dwb $6d44, $10 ; CHANNEL3
-	dwb $5852, $0c ; CHANNEL4
+	dwb BubblyClouds_Channel1, $00 ; CHANNEL1
+	dwb BubblyClouds_Channel2, $04 ; CHANNEL2
+	dwb BubblyClouds_Channel3, $10 ; CHANNEL3
+	dwb BubblyClouds_Channel4, $0c ; CHANNEL4
 
 MusicHeader_CastleLololo:
 	db 4 ; num of channels
-	dwb $6d53, $00 ; CHANNEL1
-	dwb $6d5a, $04 ; CHANNEL2
-	dwb $6d5f, $10 ; CHANNEL3
-	dwb $6d6c, $0c ; CHANNEL4
+	dwb CastleLololo_Channel1, $00 ; CHANNEL1
+	dwb CastleLololo_Channel2, $04 ; CHANNEL2
+	dwb CastleLololo_Channel3, $10 ; CHANNEL3
+	dwb CastleLololo_Channel4, $0c ; CHANNEL4
 
 MusicHeader_DededeBattle:
 	db 4 ; num of channels
-	dwb $6d77, $10 ; CHANNEL1
-	dwb $6dda, $00 ; CHANNEL2
-	dwb $6e4f, $04 ; CHANNEL3
-	dwb $6ebf, $0c ; CHANNEL4
+	dwb DededeBattle_Channel1, $10 ; CHANNEL1
+	dwb DededeBattle_Channel2, $00 ; CHANNEL2
+	dwb DededeBattle_Channel3, $04 ; CHANNEL3
+	dwb DededeBattle_Channel4, $0c ; CHANNEL4
 
 MusicHeader_MtDedede:
 	db 4 ; num of channels
-	dwb $6eec, $10 ; CHANNEL1
-	dwb $6f10, $00 ; CHANNEL2
-	dwb $6f34, $04 ; CHANNEL3
-	dwb $6f54, $0c ; CHANNEL4
+	dwb MtDedede_Channel1, $10 ; CHANNEL1
+	dwb MtDedede_Channel2, $00 ; CHANNEL2
+	dwb MtDedede_Channel3, $04 ; CHANNEL3
+	dwb MtDedede_Channel4, $0c ; CHANNEL4
 
+BubblyCloudsIntro_Channel1:
 	tempo_mode TEMPO_02
 	pan PAN_CENTER
 	base_note D#4
 	instrument INSTRUMENT_05
-	base_volume 11
+	volume 11
 	audio_f4 $80
 	audio_call .sub_2
-	audio_call $562c
+	audio_call .sub_3
 	audio_call .sub_2
-	audio_call $5634
+	audio_call .sub_4
+.main_loop
 	instrument INSTRUMENT_0D
-	base_volume 10
+	volume 10
 	audio_f4 $00
-	audio_call $5646
-	audio_call $5652
-	audio_call $5646
-	audio_call $5660
+	audio_call .sub_5
+	audio_call .sub_6
+	audio_call .sub_5
+	audio_call .sub_7
 	instrument INSTRUMENT_0F
-	audio_call $5669
-	base_volume 9
+	audio_call .sub_8
+	volume 9
 	pan PAN_CENTER
-	audio_call $5681
+	audio_call .sub_9
 	pan PAN_CENTER
 	audio_call .sub_1
 	instrument INSTRUMENT_0E
-	base_volume 9
-	audio_call $5695
+	volume 9
+	audio_call .sub_10
 	audio_call .sub_1
-	audio_jump $55e5
+	audio_jump .main_loop
 
 .sub_1
 	audio_f4 $80
 	instrument INSTRUMENT_05
-	base_volume 8
+	volume 8
 	audio_repeat 6
 	note G_0
-	audio_f1 $01
+	volume_shift 1
 	audio_repeat_end
 	audio_ret
 
 .sub_2
-	db $30
+	rest 1
 	audio_f4 $80
-	db $1f
-	db $1f
-	db $1f
-	db $50
-	db $3f
-	db $3f
+	note -1
+	note -1
+	note -1
+	rest 2
+	note -1, 1
+	note -1, 1
 	audio_ret
-; 0x1562c
 
-SECTION "Bank 5@6f6d", ROMX[$6f6d], BANK[$5]
+.sub_3
+	rest 1
+	note 0
+	note 0
+	note -3, 1
+	rest 1
+	note -3, 1
+	note -1, 1
+	audio_ret
+
+.sub_4
+	rest 1
+	note 0
+	note 0
+	note -3, 1
+	instrument INSTRUMENT_0C
+	audio_f4 $c8
+	audio_repeat 3
+	note 7
+	volume_shift -1
+	note 7
+	volume_shift 2
+	audio_repeat_end
+	audio_ret
+
+.sub_5
+	note 4, 2
+	note 5
+	note 4
+	note 5
+	note 7
+	rest 0
+	note 12, 2
+	rest 0
+	note 11, 3
+	note 9, 1
+	note 9, 5
+	audio_ret
+
+.sub_6
+	rest 1
+	note 2
+	note 4
+	note 2
+	note 4
+	note 5
+	rest 0
+	note 11, 2
+	note 9
+	note_long 7, 54
+	note_long 2, 54
+	audio_ret
+
+.sub_7
+	note 12, 1
+	note 10, 1
+	note 8, 1
+	note 12, 1
+	note 10, 2
+	note 12
+	note_long 7, 108
+	audio_ret
+
+.sub_8
+	note 2, 3
+	note 2
+	note 4
+	note 5, 1
+	note 2, 1
+	note 5, 1
+	note 4, 3
+	note 4
+	note 5
+	note 7, 1
+	note 5, 1
+	note 4, 1
+	note 2, 1
+	note 2, 1
+	note 2
+	note 4
+	note 5, 1
+	note 2, 1
+	note 5, 1
+	note 7, 1
+	note 4, 1
+	note 7, 1
+	note 12, 5
+	audio_ret
+
+.sub_9
+	note 14, 3
+	note 12
+	note 10
+	note 9, 1
+	note 10, 1
+	note 12, 1
+	note 7, 3
+	note 4
+	note 5
+	note 7, 1
+	note 4, 1
+	note 5, 1
+	note 4, 3
+	note 2
+	note 4
+	note 2, 3
+	note 0
+	note 2
+	note 2, 5
+	audio_ret
+
+.sub_10
+	audio_repeat 6
+	audio_f4 $00
+	note -1
+	note -5
+	audio_repeat_end
+	audio_repeat 6
+	note 0
+	note -3
+	audio_repeat_end
+	audio_repeat 6
+	note -1
+	note -5
+	audio_repeat_end
+	audio_repeat 3
+	note 0
+	note -3
+	audio_repeat_end
+	audio_ret
+
+BubblyCloudsIntro_Channel2:
+	tempo_mode TEMPO_02
+	pan PAN_CENTER
+	instrument INSTRUMENT_05
+	audio_f4 $80
+	volume 11
+	base_note D#4
+	audio_call .sub_1
+	audio_call .sub_2
+	audio_call .sub_1
+	audio_call .sub_3
+.main_loop
+	pan PAN_CENTER
+	instrument INSTRUMENT_0D
+	volume 10
+	audio_f4 $00
+	audio_call .sub_4
+	audio_call .sub_5
+	audio_call .sub_4
+	audio_call .sub_6
+	instrument INSTRUMENT_05
+	audio_f4 $8c
+	volume 8
+	base_note D#3
+	audio_call .sub_7
+	audio_call .sub_7
+	instrument INSTRUMENT_0E
+	audio_f4 $ff
+	volume 10
+	pan PAN_CENTER
+	audio_call BubblyCloudsIntro_Channel1.sub_9
+	audio_call .sub_3
+	base_note D#3
+	pan PAN_CENTER
+	instrument INSTRUMENT_0E
+	audio_f4 $00
+	volume 9
+	audio_call .sub_8
+	audio_call .sub_3
+	audio_jump .main_loop
+
+.sub_1
+	rest 1
+	note -5
+	note -5
+	note -5
+	rest 2
+	note -5, 1
+	note -5, 1
+	rest 1
+	note -7
+	note -7
+	note -7
+	rest 0
+	audio_ret
+
+.sub_2
+	rest 1
+	note -8, 1
+	note -10, 1
+	audio_ret
+
+.sub_3
+	instrument INSTRUMENT_0C
+	base_note D#4
+	audio_f4 $c8
+	pan PAN_LEFT
+	note 7
+	volume_shift -1
+	pan PAN_RIGHT
+	note 6
+	volume_shift 2
+	pan PAN_LEFT
+	note 5
+	volume_shift -1
+	pan PAN_RIGHT
+	note 4
+	volume_shift 2
+	pan PAN_LEFT
+	note 3
+	volume_shift -1
+	pan PAN_RIGHT
+	note 2
+	audio_ret
+
+.sub_4
+	note 0, 2
+	note 2
+	note 0
+	note 2
+	note 4
+	rest 0
+	note 4, 2
+	rest 0
+	note 2, 3
+	note 0
+	rest 0
+	note 0, 5
+	audio_ret
+
+.sub_5
+	rest 1
+	note -1
+	note 0
+	note -1
+	note 0
+	note 2
+	rest 0
+	note 7, 2
+	note 5
+	note_long 4, 54
+	note -1, 1
+	note -3, 1
+	note -5, 1
+	audio_ret
+
+.sub_6
+	note 8, 1
+	note 7, 1
+	note 5, 1
+	note 8, 1
+	note 7, 2
+	note 8
+	note_long 4, 108
+	audio_ret
+
+.sub_7
+	audio_repeat 6
+	note -7
+	note -10
+	audio_repeat_end
+	audio_repeat 6
+	note -5
+	note -8
+	audio_repeat_end
+	audio_ret
+
+.sub_8
+	audio_repeat 6
+	note -5
+	note -8
+	audio_repeat_end
+	audio_repeat 6
+	note -3
+	note -7
+	audio_repeat_end
+	audio_repeat 6
+	note -5
+	note -8
+	audio_repeat_end
+	audio_repeat 3
+	note -3
+	note -7
+	audio_repeat_end
+	audio_ret
+
+BubblyCloudsIntro_Channel3:
+.main_loop
+	tempo_mode TEMPO_02
+	pan PAN_CENTER
+	volume 15
+	instrument INSTRUMENT_07
+	base_note D#3
+	audio_call .sub_1
+	audio_call .sub_2
+	audio_call .sub_1
+	audio_call .sub_3
+.post_intro
+	audio_call .sub_4
+	base_note G#2
+	audio_call .sub_4
+	base_note A#2
+	audio_call .sub_4
+	base_note D#3
+	audio_call .sub_5
+	audio_call .sub_4
+	base_note G#2
+	audio_call .sub_4
+	base_note D#2
+	audio_call .sub_6
+	audio_call .sub_4
+	base_note D#3
+	instrument INSTRUMENT_0B
+	audio_f4 $8c
+	audio_call .sub_7
+	audio_call .sub_7
+	base_note D#2
+	audio_f4 $c8
+	audio_call .sub_7
+	audio_f4 $00
+	audio_call .sub_8
+	audio_jump .main_loop
+
+.sub_1
+	audio_f4 $dc
+	base_note D#3
+	note -12
+	note -5
+	audio_f4 $c8
+	note 2
+	note 2
+	note 0
+	rest 0
+	audio_f4 $dc
+	note -12
+	note -5
+	audio_f4 $c8
+	note 2, 1
+	note 0, 1
+	audio_ret
+
+.sub_2
+	note -10
+	note -3
+	note 4
+	note 4
+	note 2
+	rest 0
+	base_note D#2
+	note -5
+	note 2
+	note 7, 1
+	note 7, 1
+	audio_ret
+
+.sub_3
+	note -10
+	note -3
+	note 4
+	note 4
+	note 2, 1
+	audio_f4 $a0
+	note -5
+	note -5
+	note -5
+	note -5
+	note -3
+	note -1
+	audio_ret
+
+.sub_4
+	audio_repeat 2
+	note -12
+	note -5
+	note 2
+	note 4
+	note 0
+	rest 0
+	audio_repeat_end
+	audio_ret
+
+.sub_5
+	note -12
+	note -5
+	note 2
+	note 4
+	note 0
+	rest 0
+	note -5
+	note 7
+	note 7
+	note -5
+	note 7
+	note 7
+	audio_ret
+
+.sub_6
+	note -4
+	note -4
+	note 8
+	note -4
+	note 8
+	note -9
+	note -2
+	note -2
+	note 10
+	note -2
+	note 10
+	note -7
+	audio_ret
+
+.sub_7
+	audio_repeat 2
+	note -14
+	note -7
+	note 2
+	note -2
+	note 2
+	note -2
+	audio_repeat_end
+	audio_repeat 2
+	note -12
+	note -5
+	note 4
+	note 0
+	note 4
+	note 0
+	audio_repeat_end
+	audio_ret
+
+.sub_8
+	audio_repeat 2
+	note -10
+	note -3
+	note 5
+	note 2
+	note 9
+	note 5
+	audio_repeat_end
+	note -5
+	note 2
+	note 11
+	note 7
+	note 11
+	note 5
+	audio_f4 $a0
+	note -5
+	note -5
+	note -5
+	note -5
+	note -3
+	note -1
+	audio_ret
+
+BubblyCloudsIntro_Channel4:
+BubblyClouds_Channel4:
+	tempo_mode TEMPO_02
+	pan PAN_CENTER
+	volume 10
+	instrument INSTRUMENT_10
+	audio_f4 $00
+.main_loop
+	note 2
+	volume_shift -5
+	note 4
+	volume_shift 5
+	note 2
+	note 2
+	note 2
+	volume_shift -5
+	note 4
+	volume_shift 5
+	note 2
+	note 2
+	note 2
+	volume_shift -5
+	note 4
+	volume_shift 5
+	note 2
+	volume_shift -5
+	note 4
+	volume_shift 5
+	audio_jump .main_loop
+
+GreenGreensIntro_Channel1:
+	tempo_mode TEMPO_01
+	pan PAN_CENTER
+	volume 15
+	instrument INSTRUMENT_02
+	audio_f4 $f0
+	base_note D#2
+	note -5
+	note -5
+	rest 0
+	note -5
+	audio_f4 $80
+	note -5, 1
+	note -5, 1
+	note -5, 1
+	base_note D#4
+	audio_f4 $b4
+	note 2
+	note 2
+	note 2
+	rest 0
+	audio_f4 $00
+	base_note D#1
+	note_long -5, 3
+	note_long -3, 4
+	note_long -1, 3
+	audio_f4 $32
+	base_note D#2
+	note -12, 5
+	note -12, 5
+	note -10, 5
+	audio_f4 $82
+	instrument INSTRUMENT_11
+	rest 1
+	note -5, 1
+	note -5, 1
+	note -5, 1
+	note -5, 1
+	rest 1
+.main_loop
+	base_note D#4
+	volume 15
+	instrument INSTRUMENT_11
+	audio_call .sub_1
+	audio_call .sub_1
+	audio_f3 $14
+	audio_call .sub_2
+	base_note D#2
+	instrument INSTRUMENT_02
+	audio_f4 $32
+	note -12, 5
+	note -12, 5
+	base_note D#1
+	audio_f4 $f0
+	audio_repeat 3
+	audio_call .sub_3
+	audio_repeat_end
+	audio_call .sub_4
+	audio_jump .main_loop
+
+.sub_1
+	audio_f4 $96
+	note -5, 2
+	audio_f4 $ff
+	note -5
+	note_long 0, 57
+	rest_long 3
+	note 0, 2
+	note 4
+	note 7, 1
+	audio_f4 $8c
+	note 12, 1
+	note 11, 1
+	note 9, 1
+	audio_f4 $ff
+	note 7, 3
+	note 4, 2
+	note 7
+	audio_f4 $f0
+	note 5, 3
+	note 2, 2
+	note 4
+	note 2, 3
+	note 4, 2
+	note 2
+	audio_f4 $e6
+	note_long 0, 60
+	audio_ret
+
+.sub_2
+	audio_f4 $e6
+	note 0, 2
+	note 0
+	note 2
+	rest 0
+	note 4, 3
+	note 0
+	rest 0
+	note 2, 1
+	note 0, 1
+	audio_ret
+
+.sub_3
+	note -7
+	note 0
+	note 8
+	note 5
+	note 8
+	note 5
+	note 8
+	note 5
+	note -2
+	note 5
+	note 10
+	note 5
+	note 10
+	note 5
+	note 10
+	note 5
+	note -9
+	note -2
+	note 7
+	note 3
+	note 7
+	note 3
+	note 7
+	note 3
+	note -4
+	note 3
+	note 8
+	note 3
+	note 8
+	note 3
+	note 8
+	note 3
+	audio_ret
+
+.sub_4
+	note -7
+	note 0
+	note 5
+	note 0
+	note 5
+	note 0
+	note 5
+	note 0
+	note -2
+	note 5
+	note 10
+	note 5
+	note 10
+	note 5
+	note 10
+	note 5
+	audio_repeat 2
+	audio_f4 $f0
+	note -5
+	rest 0
+	note -5
+	note 2
+	audio_repeat_end
+	note 7
+	rest 2
+	audio_ret
+
+GreenGreensIntro_Channel2:
+	tempo_mode TEMPO_01
+	rest_long 50
+	pan PAN_CENTER
+	volume 10
+	instrument INSTRUMENT_08
+	base_note D#3
+	audio_f4 $f0
+	note 5
+	note 5
+	note 5
+	rest 2
+	base_note D#2
+	audio_call .sub_1
+	audio_call .sub_1
+	audio_call .sub_2
+.main_loop
+	instrument INSTRUMENT_08
+	volume 10
+	base_note D#2
+	audio_call .sub_3
+	audio_call .sub_4
+	audio_call .sub_3
+	audio_call .sub_5
+	audio_call .sub_6
+	audio_call .sub_1
+	audio_call .sub_1
+	base_note D#3
+	instrument INSTRUMENT_12
+	volume 12
+	audio_f4 $00
+	audio_call .sub_7
+	audio_call .sub_8
+	volume 11
+	audio_call .sub_7
+	audio_call .sub_9
+	rest 3
+	audio_jump .main_loop
+
+.sub_1
+	rest 1
+	audio_f4 $8c
+	audio_repeat 7
+	note -5, 1
+	audio_repeat_end
+	audio_ret
+
+.sub_2
+	rest 1
+	audio_repeat 7
+	note -3, 1
+	audio_repeat_end
+	rest 1
+	instrument INSTRUMENT_04
+	note 9, 1
+	note 9, 1
+	note 9, 1
+	note 11, 1
+	rest 4
+	audio_ret
+
+.sub_3
+	audio_repeat 2
+	audio_f4 $00
+	note -12, 1
+	audio_f4 $82
+	audio_repeat 7
+	note -5, 1
+	audio_repeat_end
+	audio_repeat_end
+	audio_f4 $00
+	note -10, 1
+	audio_f4 $8c
+	note -3, 1
+	note -3, 1
+	note -3, 1
+	audio_ret
+
+.sub_4
+	audio_f4 $00
+	note -10, 1
+	audio_f4 $8c
+	note -5, 1
+	note -5, 1
+	note -5, 1
+	audio_f4 $00
+	note -12, 1
+	audio_repeat 7
+	audio_f4 $8c
+	note -5, 1
+	audio_repeat_end
+	audio_ret
+
+.sub_5
+	audio_f4 $00
+	note -8, 1
+	audio_f4 $8c
+	note -1, 1
+	note -1, 1
+	note -1, 1
+	audio_f4 $00
+	pan PAN_LEFT
+	note -3, 1
+	audio_f4 $8c
+	note 9, 1
+	note 9, 1
+	note 9, 1
+	audio_f4 $00
+	note -5, 1
+	audio_f4 $8c
+	note 7, 1
+	note 7, 1
+	note 7, 1
+	pan PAN_CENTER
+	audio_ret
+
+.sub_6
+	audio_f4 $96
+	note -3, 2
+	note -3, 1
+	rest 2
+	note -1, 1
+	note -1, 1
+	rest 3
+	audio_ret
+
+.sub_7
+	note 3, 3
+	note 2, 2
+	note 3
+	note 5, 3
+	note 3, 2
+	note 5
+	note 7, 3
+	note 5, 2
+	note 7
+	note 0, 3
+	note 0, 2
+	note 2
+	note 3, 3
+	note 2, 2
+	note 3
+	note 5, 3
+	note 3, 2
+	note 5
+	audio_ret
+
+.sub_8
+	note_long 7, 40
+	note 12, 1
+	rest 1
+	instrument INSTRUMENT_0D
+	base_note D#4
+	audio_f4 $e6
+	note 0, 2
+	note 2
+	audio_ret
+
+.sub_9
+	note_long 2, 40
+	note 7, 3
+	audio_ret
+
+GreenGreensIntro_Channel3:
+	tempo_mode TEMPO_01
+	pan PAN_CENTER
+	volume 10
+	instrument INSTRUMENT_08
+	base_note D#1
+	audio_f4 $f0
+	note -5
+	note -5
+	rest 0
+	note -5
+	audio_f4 $80
+	note -5, 1
+	note -5, 1
+	note -5, 1
+	audio_f4 $b4
+	base_note D#3
+	note 7
+	note 7
+	note 7
+	rest 0
+	audio_f4 $00
+	base_note D#1
+	volume 13
+	note_long -5, 3
+	note_long -3, 4
+	note_long -1, 3
+	base_note D#3
+	volume 10
+	audio_f4 $8c
+	audio_call .sub_1
+	audio_call .sub_1
+	audio_call .sub_2
+.main_loop
+	instrument INSTRUMENT_08
+	volume 10
+	base_note D#2
+	audio_call .sub_3
+	audio_call .sub_4
+	audio_call .sub_3
+	audio_call .sub_5
+	audio_call .sub_6
+	audio_call .sub_1
+	audio_call .sub_1
+	base_note D#3
+	instrument INSTRUMENT_12
+	volume 12
+	audio_f4 $00
+	audio_call .sub_7
+	audio_call .sub_8
+	volume 11
+	audio_call .sub_7
+	audio_call .sub_9
+	rest 3
+	audio_jump .main_loop
+
+.sub_1
+	rest 1
+	audio_repeat 7
+	note -8, 1
+	audio_repeat_end
+	audio_ret
+
+.sub_2
+	rest 1
+	audio_repeat 7
+	note -7, 1
+	audio_repeat_end
+	instrument INSTRUMENT_04
+	rest 1
+	note 5, 1
+	note 5, 1
+	note 7, 1
+	note 7, 1
+	rest 4
+	audio_ret
+
+.sub_3
+	audio_repeat 2
+	audio_f4 $00
+	note -5, 1
+	audio_f4 $8c
+	audio_repeat 7
+	note 4, 1
+	audio_repeat_end
+	audio_repeat_end
+	audio_f4 $00
+	note -3, 1
+	audio_f4 $8c
+	note 0, 1
+	note 0, 1
+	note 0, 1
+	audio_ret
+
+.sub_4
+	audio_f4 $00
+	note -5, 1
+	audio_f4 $8c
+	note -1, 1
+	note -1, 1
+	note -1, 1
+	audio_f4 $00
+	note -5, 1
+	audio_f4 $8c
+	audio_repeat 7
+	note 4, 1
+	audio_repeat_end
+	audio_ret
+
+.sub_5
+	audio_f4 $00
+	note -4, 1
+	audio_f4 $8c
+	note 4, 1
+	note 4, 1
+	note 4, 1
+	audio_f4 $ff
+	pan PAN_RIGHT
+	audio_repeat 8
+	note 0
+	note 4
+	audio_repeat_end
+	pan PAN_CENTER
+	audio_ret
+
+.sub_6
+	audio_f4 $96
+	note 5, 2
+	note 5, 1
+	rest 2
+	note 7, 1
+	note 7, 1
+	rest 3
+	audio_ret
+
+.sub_7
+	note -4, 3
+	note -4, 2
+	note -4
+	note 2, 3
+	note 0, 2
+	note 2
+	note 3, 3
+	note 2, 2
+	note 3
+	note -4, 3
+	note -4, 2
+	note -2
+	note -4, 3
+	note -4, 2
+	note -4
+	note 2, 3
+	note 0, 2
+	note 2
+	audio_ret
+
+.sub_8
+	note_long 3, 40
+	note 7, 1
+	rest 1
+	audio_f4 $e6
+	base_note D#4
+	instrument INSTRUMENT_0D
+	note -4, 2
+	note -2
+	audio_ret
+
+.sub_9
+	note_long -1, 40
+	note -1, 3
+	audio_ret
+
+GreenGreensIntro_Channel4:
+	tempo_mode TEMPO_01
+	pan PAN_CENTER
+	volume 10
+	instrument INSTRUMENT_10
+	audio_f4 $f0
+	note 15, 5
+	note_long 15, 250
+	note 2, 1
+	note 2, 1
+	note 2, 1
+	note 2, 1
+	note 15, 4
+.main_loop
+	audio_repeat 8
+	volume 8
+	audio_call .sub_1
+	audio_repeat_end
+	audio_call .sub_2
+	volume 7
+	audio_repeat 9
+	audio_call .sub_1
+	audio_repeat_end
+	audio_call .sub_3
+	audio_jump .main_loop
+
+.sub_1
+	audio_repeat 3
+	note 3, 1
+	note 4
+	note 4
+	audio_repeat_end
+	note 3
+	note 4
+	note 4
+	note 4
+	audio_ret
+
+.sub_2
+	note 3, 1
+	note 4
+	note 4
+	note 3, 1
+	note 4
+	note 4
+	volume_shift 1
+	note 4, 1
+	note 4, 1
+	volume_shift -1
+	note 15, 3
+	audio_ret
+
+.sub_3
+	note 3, 1
+	note 4
+	note 4
+	note 3, 1
+	note 4
+	note 4
+	note 2, 1
+	note 15, 1
+	note 15, 3
+	audio_ret
+
+InvincibilityCandy_Channel1:
+.main_loop
+	tempo_mode TEMPO_01
+	pan PAN_CENTER
+	volume 12
+	instrument INSTRUMENT_13
+	base_note G#3
+	audio_f4 $ff
+	note_long 2, 25
+	note 0, 1
+	note 2, 0
+	note 4, 3
+	note -5, 3
+	note 2, 0
+	rest 0
+	note 2, 2
+	note 0, 1
+	note 2, 0
+	note 4, 3
+	note -5, 3
+	note 7, 0
+	note 5, 0
+	note 4, 0
+	note 7, 0
+	note 5, 0
+	note 4, 0
+	note 2, 0
+	note 5, 0
+	note 4, 0
+	note 2, 0
+	note 0, 0
+	note 4, 0
+	note 2, 0
+	note 0, 0
+	note 2, 0
+	note 4, 0
+	note_long 0, 40
+	volume_shift 255
+	audio_f4 $00
+	note_long 11, 2
+	audio_f4 $ff
+	note_long 12, 38
+	audio_jump .main_loop
+
+InvincibilityCandy_Channel2:
+.main_loop
+	tempo_mode TEMPO_01
+	pan PAN_CENTER
+	instrument INSTRUMENT_07
+	volume 15
+	audio_f4 $c8
+	base_note G#2
+	note -7, 2
+	note -7, 0
+	note 5, 0
+	note -7, 1
+	note 5, 0
+	note -12, 0
+	rest 0
+	note -12, 2
+	note -5, 1
+	note -12, 0
+	note -14, 0
+	rest 0
+	note -14, 1
+	note -2, 0
+	note -14, 1
+	note -2, 0
+	note -12, 2
+	note -12, 0
+	note 0, 0
+	note -12, 1
+	note 0, 0
+	audio_repeat 2
+	note -7, 1
+	note 5, 1
+	note -7, 0
+	note 5, 1
+	note -7, 0
+	audio_repeat_end
+	note -14, 0
+	rest 0
+	note -14, 1
+	note -2, 0
+	note -14, 1
+	note -2, 0
+	note -14, 0
+	note -2, 0
+	note -14, 1
+	note -2, 0
+	note -14, 1
+	note -2, 0
+	audio_jump .main_loop
+
+InvincibilityCandy_Channel3:
+.main_loop
+	tempo_mode TEMPO_01
+	pan PAN_CENTER
+	base_note C#4
+	volume 9
+	instrument INSTRUMENT_05
+	audio_f4 $ff
+	audio_repeat 4
+	note -12, 0
+	note -8, 0
+	audio_repeat_end
+	audio_repeat 4
+	note -13, 0
+	note -10, 0
+	audio_repeat_end
+	audio_repeat 4
+	note -12, 0
+	note -7, 0
+	audio_repeat_end
+	audio_repeat 4
+	note -13, 0
+	note -5, 0
+	audio_repeat_end
+	audio_repeat 8
+	note -12, 0
+	note -8, 0
+	audio_repeat_end
+	audio_repeat 8
+	note -12, 0
+	note -7, 0
+	audio_repeat_end
+	audio_jump .main_loop
+
+InvincibilityCandy_Channel4:
+.main_loop
+	tempo_mode TEMPO_01
+	pan PAN_CENTER
+	volume 10
+	instrument INSTRUMENT_10
+	audio_f4 $ff
+	note 6, 0
+	volume_shift -4
+	pan PAN_LEFT
+	note 7, 0
+	pan PAN_RIGHT
+	note 7, 0
+	pan PAN_LEFT
+	note 7, 0
+	pan PAN_CENTER
+	volume_shift 4
+	note 5, 0
+	volume_shift -4
+	pan PAN_RIGHT
+	note 7, 0
+	pan PAN_LEFT
+	note 7, 0
+	pan PAN_RIGHT
+	note 7, 0
+	audio_jump .main_loop
+
+GameOver_Channel1:
+	tempo_mode TEMPO_03
+	pan PAN_CENTER
+	volume 10
+	instrument INSTRUMENT_14
+	audio_f4 $fa
+	base_note D#3
+	note -3, 1
+	note -4, 0
+	note -3, 0
+	rest 0
+	note 7, 2
+	note 5, 0
+	note 4, 1
+	note 5, 0
+	note 4, 2
+	note 2, 2
+	note 0, 2
+	note 2, 1
+	audio_f4 $00
+	note_long 1, 3
+	note_long 0, 4
+	note_long -1, 75
+	audio_repeat 12
+	volume_shift -1
+	audio_f3 $02
+	audio_repeat_end
+	audio_end
+
+GameOver_Channel2:
+	tempo_mode TEMPO_03
+	pan PAN_CENTER
+	instrument INSTRUMENT_07
+	volume 15
+	base_note D#3
+	audio_f4 $f0
+	note -10, 0
+	rest 0
+	note 2, 0
+	note 0, 0
+	rest 0
+	note -10, 2
+	note 2, 0
+	note 0, 0
+	rest 0
+	note -3, 0
+	note 5, 1
+	note -5, 0
+	note 5, 1
+	note -5, 0
+	note 2, 1
+	note -5, 0
+	note 5, 1
+	note -5, 0
+	volume_shift -1
+	audio_f4 $00
+	instrument INSTRUMENT_00
+	note_long -12, 75
+	audio_repeat 12
+	volume_shift -1
+	audio_f3 $02
+	audio_repeat_end
+	audio_end
+
+GameOver_Channel3:
+	tempo_mode TEMPO_03
+	pan PAN_CENTER
+	instrument INSTRUMENT_14
+	volume 10
+	audio_f4 $fa
+	base_note D#2
+	note 5, 1
+	note 5, 0
+	note 5, 0
+	rest 0
+	note 14, 2
+	note 14, 0
+	note 12, 1
+	note 12, 0
+	note 9, 2
+	note 9, 2
+	note 7, 2
+	note 7, 2
+	audio_f4 $00
+	note_long 4, 75
+	audio_repeat 12
+	volume_shift -1
+	audio_f3 $02
+	audio_repeat_end
+	audio_end
+
+GameOver_Channel4:
+	tempo_mode TEMPO_03
+	pan PAN_CENTER
+	volume 9
+	audio_f4 $ff
+	instrument INSTRUMENT_10
+	note 5, 1
+	note 7, 0
+	note 7, 1
+	note 7, 0
+	note 5, 1
+	note 7, 0
+	note 6, 0
+	note 7, 0
+	note 7, 0
+	note 5, 1
+	note 7, 0
+	note 5, 1
+	note 7, 0
+	note 5, 0
+	note 7, 0
+	note 7, 0
+	note 5, 1
+	note 7, 0
+	volume_shift 2
+	instrument INSTRUMENT_07
+	note_long 5, 70
+	audio_end
+
+SparklingStar_Channel1:
+	tempo_mode TEMPO_04
+	pan PAN_CENTER
+	volume 11
+	audio_f4 $00
+	instrument INSTRUMENT_0E
+	base_note G#4
+.main_loop
+	note 2, 1
+	note 7, 1
+	note 11, 1
+	note 9, 1
+	note 7, 1
+	note 4, 1
+	audio_jump .main_loop
+
+SparklingStar_Channel2:
+	tempo_mode TEMPO_04
+	pan PAN_CENTER
+	volume 11
+	rest 2
+	audio_f4 $00
+	instrument INSTRUMENT_0E
+	base_note G#4
+	audio_jump SparklingStar_Channel1.main_loop
+
+Titlescreen_Channel1:
+.main_loop
+	tempo_mode TEMPO_04
+	pan PAN_CENTER
+	volume 12
+	audio_f4 $ff
+	base_note D#3
+	audio_call .sub_1
+	note 7, 0
+	note 7, 0
+	note 7, 0
+	volume 12
+	rest 0
+	audio_call .sub_1
+	rest 1
+	audio_f4 $00
+	note_long 7, 12
+	audio_repeat 6
+	pitch 2
+	audio_f3 $02
+	audio_repeat_end
+	instrument INSTRUMENT_0D
+	base_note D#4
+	volume 11
+	audio_f4 $c8
+	audio_call .sub_2
+	audio_jump .main_loop
+
+.sub_1
+	instrument INSTRUMENT_13
+	note_long -8, 4
+	note_long -5, 4
+	note_long 0, 4
+	audio_f4 $6c
+	note 4, 1
+	note 2, 1
+	note 0, 1
+	note -1, 1
+	note 0, 1
+	audio_f4 $ff
+	note -3, 0
+	note 0, 0
+	note -5, 0
+	rest 0
+	note -5, 0
+	note -4, 0
+	note -3, 0
+	rest 0
+	note 5, 3
+	note 4, 1
+	note 2, 0
+	volume 13
+	instrument INSTRUMENT_07
+	rest 0
+	audio_ret
+
+.sub_2
+	note 0, 2
+	note 0, 0
+	note 2, 0
+	rest 0
+	note 4, 3
+	note 0, 0
+	rest 0
+	note 2, 0
+	rest 0
+	note_long 0, 108
+	note 0, 2
+	note 0, 0
+	note 2, 0
+	rest 0
+	note 7, 3
+	note 0, 0
+	rest 0
+	note 2, 0
+	rest 0
+	note_long 0, 60
+	volume 13
+	audio_f4 $c8
+	instrument INSTRUMENT_07
+	note 2, 0
+	note 2, 0
+	rest 0
+	note 4, 0
+	note 2, 1
+	audio_ret
+
+Titlescreen_Channel2:
+.main_loop
+	tempo_mode TEMPO_04
+	pan PAN_CENTER
+	instrument INSTRUMENT_07
+	volume 15
+	audio_f4 $ff
+	rest 1
+	audio_call .sub_1
+	note 9, 0
+	note 9, 0
+	note 11, 1
+	note -5, 1
+	audio_call .sub_1
+	rest 1
+	instrument INSTRUMENT_00
+	audio_f4 $00
+	note_long 11, 12
+	audio_repeat 6
+	pitch 2
+	audio_f3 $02
+	volume_shift -2
+	audio_repeat_end
+	instrument INSTRUMENT_07
+	audio_f4 $fa
+	volume 15
+	base_note D#2
+	audio_call .sub_2
+	audio_call .sub_3
+	audio_call .sub_2
+	base_note D#3
+	audio_call .sub_4
+	audio_jump .main_loop
+
+.sub_1
+	audio_repeat 3
+	base_note D#2
+	note -12, 0
+	rest 0
+	note 0, 1
+	audio_repeat_end
+	note -12, 0
+	rest 0
+	note 0, 0
+	note 0, 0
+	audio_repeat 2
+	note -7, 0
+	rest 0
+	note 5, 0
+	note 5, 0
+	audio_repeat_end
+	note -5, 0
+	rest 0
+	base_note D#3
+	audio_ret
+
+.sub_2
+	note -3, 0
+	rest 0
+	volume_shift -5
+	note 9, 0
+	volume_shift 5
+	note 9, 0
+	note -3, 0
+	rest 0
+	volume_shift -5
+	note 9, 0
+	volume_shift 5
+	note 9, 0
+	note -5, 0
+	rest 0
+	volume_shift -5
+	note 7, 0
+	volume_shift 5
+	note 7, 0
+	note -5, 0
+	volume_shift -6
+	note -5, 0
+	volume_shift 6
+	note 7, 0
+	note 7, 0
+	audio_repeat 2
+	note -7, 0
+	rest 0
+	note 5, 0
+	note 0, 0
+	audio_repeat_end
+	audio_ret
+
+.sub_3
+	note -7, 0
+	note -7, 0
+	note 5, 0
+	note -7, 0
+	note -5, 0
+	note -5, 0
+	note 7, 0
+	note -5, 0
+	audio_ret
+
+.sub_4
+	note 2, 0
+	note 7, 0
+	rest 0
+	note -5, 0
+	note 7, 1
+	audio_ret
+
+Titlescreen_Channel3:
+.main_loop
+	tempo_mode TEMPO_04
+	pan PAN_CENTER
+	rest 1
+	audio_f4 $96
+	base_note D#4
+	audio_call .sub_1
+	note -10, 0
+	note -10, 0
+	note -10, 1
+	rest 1
+	audio_call .sub_1
+	rest 1
+	audio_f4 $00
+	note_long -10, 12
+	audio_repeat 6
+	pitch 2
+	audio_f3 $02
+	audio_repeat_end
+	instrument INSTRUMENT_09
+	audio_f4 $a0
+	volume 8
+	audio_repeat 7
+	audio_call .sub_2
+	audio_repeat_end
+	audio_call .sub_3
+	audio_repeat 6
+	audio_call .sub_2
+	audio_repeat_end
+	volume 12
+	instrument INSTRUMENT_07
+	audio_f4 $b4
+	base_note D#4
+	pan PAN_CENTER
+	audio_call .sub_4
+	audio_jump .main_loop
+
+.sub_1
+	audio_repeat 4
+	instrument INSTRUMENT_0F
+	volume 10
+	rest 1
+	pan PAN_LEFT
+	note -5, 0
+	pan PAN_RIGHT
+	note -5, 0
+	audio_repeat_end
+	audio_repeat 2
+	rest 1
+	pan PAN_LEFT
+	note -3, 0
+	pan PAN_RIGHT
+	note -3, 0
+	audio_repeat_end
+	rest 1
+	pan PAN_CENTER
+	instrument INSTRUMENT_07
+	volume 13
+	audio_ret
+
+.sub_2
+	pan PAN_LEFT
+	note -5, 0
+	note -3, 0
+	pan PAN_RIGHT
+	note -5, 0
+	note -3, 0
+	audio_ret
+
+.sub_3
+	pan PAN_LEFT
+	note -1, 0
+	note 0, 0
+	pan PAN_RIGHT
+	note -1, 0
+	note -5, 0
+	audio_ret
+
+.sub_4
+	note -7, 0
+	note -7, 0
+	rest 0
+	note -7, 0
+	note -7, 1
+	audio_ret
+
+Titlescreen_Channel4:
+	tempo_mode TEMPO_04
+	pan PAN_CENTER
+	audio_f4 $ff
+	instrument INSTRUMENT_10
+	volume 9
+	note 15, 1
+.main_loop
+	audio_repeat 2
+	audio_repeat 3
+	note 2, 1
+	note 4, 0
+	note 4, 0
+	audio_repeat_end
+	note 1, 0
+	note 1, 0
+	note 4, 0
+	note 4, 0
+	note 0, 1
+	note 4, 0
+	note 4, 0
+	note 1, 0
+	note 1, 0
+	note 4, 0
+	note 4, 0
+	volume_shift 2
+	note_long 3, 48
+	volume_shift -2
+	audio_repeat_end
+	audio_repeat 14
+	note 3, 0
+	volume_shift -3
+	note 4, 0
+	volume_shift 3
+	note 4, 0
+	note 2, 0
+	audio_repeat_end
+	note_long 3, 48
+	audio_jump .main_loop
+
+FloatIslandsIntro_Channel1:
+	tempo_mode TEMPO_03
+	pan PAN_CENTER
+	instrument INSTRUMENT_07
+	base_note G#2
+	volume 15
+	audio_f4 $ff
+	audio_call .sub_1
+	audio_call .sub_2
+	audio_call .sub_1
+	audio_call .sub_3
+.main_loop
+	audio_repeat 4
+	audio_call .sub_4
+	audio_repeat_end
+	audio_call .sub_5
+	audio_call .sub_5
+	base_note B_2
+	audio_call .sub_5
+	base_note G#2
+	audio_call .sub_6
+	audio_jump .main_loop
+
+.sub_1
+	note -12, 0
+	note -5, 0
+	note 0, 0
+	rest 0
+	note -12, 0
+	note 0, 0
+	rest 0
+	note -10, 1
+	note -3, 0
+	note 2, 0
+	rest 0
+	note -10, 0
+	note 2, 0
+	rest 0
+	note -3, 0
+	note -8, 0
+	note -1, 0
+	note 4, 0
+	rest 0
+	note -8, 0
+	note 4, 0
+	rest 0
+	note -1, 0
+	audio_ret
+
+.sub_2
+	note -10, 0
+	note -3, 0
+	note 2, 0
+	rest 0
+	note -10, 0
+	note 2, 0
+	rest 0
+	note -3, 0
+	audio_ret
+
+.sub_3
+	note 2, 0
+	note 2, 0
+	rest 1
+	note 7, 0
+	note 7, 0
+	rest 1
+	audio_ret
+
+.sub_4
+	note -12, 0
+	rest 0
+	note -12, 0
+	rest 0
+	note -5, 2
+	note -10, 0
+	rest 0
+	note -10, 0
+	rest 0
+	note -10, 0
+	note -3, 1
+	note -10, 0
+	note -9, 0
+	note -8, 0
+	rest 0
+	note -8, 0
+	rest 0
+	note -1, 2
+	note -10, 0
+	rest 0
+	note -10, 0
+	rest 0
+	note -10, 0
+	note -3, 1
+	note -10, 1
+	audio_ret
+
+.sub_5
+	note -7, 0
+	rest 0
+	note -7, 2
+	note 5, 1
+	note -7, 0
+	rest 0
+	note -7, 0
+	rest 0
+	note 0, 0
+	note 9, 1
+	note 0, 1
+	note -8, 0
+	rest 0
+	note -8, 2
+	note 4, 1
+	note -8, 0
+	rest 0
+	note -8, 0
+	rest 0
+	note -1, 0
+	note 7, 1
+	note -1, 1
+	audio_ret
+
+.sub_6
+	note -4, 0
+	rest 0
+	note -4, 2
+	note 3, 1
+	note -4, 0
+	rest 0
+	note -4, 0
+	rest 0
+	note 3, 0
+	note 8, 1
+	note 3, 1
+	note -5, 0
+	rest 0
+	note 7, 1
+	note -5, 0
+	note 7, 0
+	rest 0
+	note -5, 0
+	rest 0
+	note -5, 0
+	rest 0
+	note 5, 0
+	note 7, 1
+	note -5, 1
+	audio_ret
+
+FloatIslandsIntro_Channel2:
+	tempo_mode TEMPO_03
+	pan PAN_CENTER
+	instrument INSTRUMENT_15
+	audio_f4 $fa
+	volume 11
+	base_note G#3
+	audio_call .sub_1
+	audio_call .sub_2
+	audio_call .sub_1
+	audio_call .sub_3
+.main_loop
+	audio_f4 $00
+	instrument INSTRUMENT_0D
+	volume 10
+	base_note G#3
+	audio_call .sub_4
+	volume 13
+	instrument INSTRUMENT_15
+	note 4, 2
+	volume_shift -6
+	audio_call .sub_5
+	note 0, 0
+	note 2, 0
+	rest 0
+	note 4, 1
+	instrument INSTRUMENT_11
+	volume_shift -6
+	note -3, 0
+	note 4, 0
+	audio_call .sub_5
+	audio_call .sub_6
+	audio_jump .main_loop
+
+.sub_1
+	rest 1
+	note -1, 1
+	rest 0
+	volume_shift 1
+	note -1, 1
+	volume_shift -1
+	rest 2
+	note 0, 1
+	rest 0
+	volume_shift 1
+	note 0, 1
+	rest 2
+	note 2, 1
+	rest 0
+	volume_shift -1
+	note 2, 1
+	rest 0
+	audio_ret
+
+.sub_2
+	rest 1
+	note 0, 1
+	rest 0
+	volume_shift -1
+	note 0, 1
+	volume_shift 1
+	rest 0
+	audio_ret
+
+.sub_3
+	note 0, 0
+	volume_shift -2
+	note 0, 0
+	volume_shift 2
+	rest 1
+	note 0, 0
+	note 0, 0
+	rest 1
+	audio_ret
+
+.sub_4
+	note_long 6, 2
+	note_long 7, 194
+	note 5, 1
+	note 4, 0
+	note 7, 2
+	note_long -1, 2
+	note_long 0, 180
+	note -5, 1
+	note 0, 0
+	note_long 6, 2
+	note_long 7, 201
+	note 4, 1
+	note 5, 0
+	note 7, 2
+	note_long 12, 97
+	note_long 5, 1
+	note_long 6, 2
+	note_long 7, 110
+	audio_ret
+
+.sub_5
+	instrument INSTRUMENT_11
+	audio_repeat 4
+	note -3, 0
+	note 4, 0
+	audio_repeat_end
+	note -3, 0
+	instrument INSTRUMENT_15
+	volume_shift 6
+	note 2, 0
+	rest 0
+	note 0, 0
+	note 2, 1
+	volume_shift -6
+	instrument INSTRUMENT_11
+	audio_repeat 5
+	note -5, 0
+	note 2, 0
+	audio_repeat_end
+	note -5, 0
+	instrument INSTRUMENT_15
+	volume_shift 6
+	audio_ret
+
+.sub_6
+	note 4, 0
+	rest 0
+	note 5, 0
+	note 7, 1
+	volume_shift -6
+	instrument INSTRUMENT_11
+	audio_repeat 5
+	note 0, 0
+	note 7, 0
+	audio_repeat_end
+	note 0, 0
+	volume_shift 6
+	instrument INSTRUMENT_15
+	note 5, 0
+	rest 0
+	note 3, 0
+	note 5, 1
+	volume_shift -6
+	instrument INSTRUMENT_11
+	audio_repeat 5
+	note -2, 0
+	note 5, 0
+	audio_repeat_end
+	instrument INSTRUMENT_0E
+	volume_shift 6
+	note -2, 0
+	note 3, 0
+	note 5, 0
+	rest 0
+	note_long 7, 91
+	note 12, 2
+	note_long 6, 2
+	note_long 7, 89
+	note -5, 0
+	note 0, 2
+	audio_ret
+
+FloatIslandsIntro_Channel3:
+	tempo_mode TEMPO_03
+	pan PAN_CENTER
+	volume 11
+	instrument INSTRUMENT_15
+	audio_f4 $ff
+	base_note G#3
+	audio_call .sub_1
+	audio_call .sub_2
+	audio_call .sub_1
+	audio_call .sub_3
+.main_loop
+	instrument INSTRUMENT_0B
+	audio_f4 $be
+	volume 10
+	audio_repeat 4
+	audio_call .sub_4
+	audio_repeat_end
+	volume 12
+	pan PAN_CENTER
+	instrument INSTRUMENT_15
+	note 0, 2
+	volume_shift -6
+	audio_call .sub_5
+	note -3, 0
+	note -1, 0
+	rest 0
+	note 0, 1
+	instrument INSTRUMENT_11
+	volume_shift -6
+	note -7, 0
+	note 0, 0
+	audio_call .sub_5
+	note -1, 0
+	rest 0
+	note 2, 0
+	audio_call .sub_6
+	audio_jump .main_loop
+
+.sub_1
+	rest 1
+	note -8, 1
+	rest 0
+	volume_shift 1
+	note -8, 1
+	volume_shift -1
+	rest 2
+	note -7, 1
+	rest 0
+	volume_shift 1
+	note -7, 1
+	rest 2
+	note -5, 1
+	volume_shift -1
+	rest 0
+	note -5, 1
+	rest 0
+	audio_ret
+
+.sub_2
+	rest 1
+	note -7, 1
+	rest 0
+	volume_shift -1
+	note -7, 1
+	volume_shift 1
+	rest 0
+	audio_ret
+
+.sub_3
+	note -7, 0
+	volume_shift -2
+	note -7, 0
+	volume_shift 2
+	rest 1
+	note -7, 0
+	note -7, 0
+	rest 1
+	audio_ret
+
+.sub_4
+	pan PAN_LEFT
+	note -8, 0
+	note -5, 0
+	note -1, 0
+	note -5, 0
+	note -8, 0
+	note -5, 0
+	note -1, 0
+	note -5, 0
+	pan PAN_RIGHT
+	note -7, 0
+	note -3, 0
+	note 0, 0
+	note -3, 0
+	note -7, 0
+	note -3, 0
+	note 0, 0
+	note -3, 0
+	pan PAN_LEFT
+	note -5, 0
+	note -1, 0
+	note 2, 0
+	note -1, 0
+	note -5, 0
+	note -1, 0
+	note 2, 0
+	note -1, 0
+	pan PAN_RIGHT
+	note -7, 0
+	note -3, 0
+	note 0, 0
+	pan PAN_LEFT
+	note -7, 0
+	note -3, 0
+	note 0, 0
+	pan PAN_RIGHT
+	note -7, 0
+	note -3, 0
+	audio_ret
+
+.sub_5
+	audio_repeat 4
+	instrument INSTRUMENT_11
+	note -7, 0
+	note 0, 0
+	audio_repeat_end
+	note -7, 0
+	instrument INSTRUMENT_15
+	volume_shift 6
+	note -1, 0
+	rest 0
+	note -3, 0
+	note -1, 1
+	instrument INSTRUMENT_11
+	volume_shift -6
+	note -8, 0
+	audio_repeat 5
+	note -1, 0
+	note -8, 0
+	audio_repeat_end
+	instrument INSTRUMENT_15
+	volume_shift 6
+	audio_ret
+
+.sub_6
+	note 3, 1
+	volume_shift -6
+	instrument INSTRUMENT_11
+	audio_repeat 5
+	note -4, 0
+	note 3, 0
+	audio_repeat_end
+	note -4, 0
+	volume_shift 6
+	instrument INSTRUMENT_15
+	note 2, 0
+	rest 0
+	note 0, 0
+	note 2, 1
+	volume_shift -6
+	instrument INSTRUMENT_11
+	audio_repeat 7
+	note -5, 0
+	note 2, 0
+	audio_repeat_end
+	volume_shift 1
+	note -5, 0
+	volume_shift 1
+	audio_repeat 5
+	note -4, 0
+	note 0, 0
+	note 3, 0
+	audio_repeat_end
+	note -4, 0
+	note 5, 0
+	note 2, 0
+	note -1, 0
+	note 2, 0
+	note -1, 0
+	note -5, 0
+	note -1, 0
+	note -5, 0
+	audio_repeat 4
+	note -7, 0
+	note -5, 0
+	audio_repeat_end
+	audio_ret
+
+FloatIslandsIntro_Channel4:
+	tempo_mode TEMPO_03
+	pan PAN_CENTER
+	volume 9
+	audio_f4 $ff
+	instrument INSTRUMENT_10
+	audio_repeat 7
+	audio_call .sub_3
+	audio_repeat_end
+	audio_call .sub_2
+.main_loop
+	audio_repeat 2
+	audio_repeat 12
+	audio_call .sub_1
+	audio_repeat_end
+	audio_call .sub_4
+	audio_repeat_end
+	audio_repeat 14
+	audio_call .sub_3
+	audio_repeat_end
+	audio_call .sub_4
+	audio_jump .main_loop
+
+.sub_1
+	note 6, 0
+	volume_shift -3
+	note 6, 0
+	volume_shift 3
+	note 5, 0
+	note 6, 0
+	audio_ret
+
+.sub_2
+	note 5, 0
+	note 5, 2
+	note 5, 0
+	note 5, 2
+	audio_ret
+
+.sub_3
+	note 6, 0
+	volume_shift -2
+	note 7, 0
+	note 7, 0
+	note 7, 0
+	volume_shift 2
+	note 4, 0
+	volume_shift -2
+	note 7, 0
+	note 7, 0
+	note 7, 0
+	volume_shift 2
+	audio_ret
+
+.sub_4
+	note 5, 0
+	note 7, 0
+	note 5, 0
+	note 7, 0
+	note 5, 0
+	note 7, 0
+	note 7, 0
+	volume_shift 1
+	note 5, 0
+	note 7, 0
+	note 4, 0
+	note 4, 0
+	note 7, 0
+	note 4, 0
+	note 5, 0
+	note 6, 0
+	note 7, 0
+	volume_shift -1
+	audio_ret
+
+LifeLost_Channel1:
+	tempo_mode TEMPO_03
+	pan PAN_LEFT
+	instrument INSTRUMENT_14
+.sub_1
+	audio_f4 $f0
+	base_note D#4
+	volume 11
+	note 0, 0
+	rest 0
+	note -1, 0
+	note -2, 0
+	rest 0
+	note -3, 0
+	note -4, 0
+	rest 0
+	note -9, 2
+	note -4, 0
+	note -5, 0
+	rest 4
+	audio_f4 $00
+	note_long 6, 2
+	note_long 7, 6
+	rest 0
+	audio_end
+
+LifeLost_Channel2:
+	tempo_mode TEMPO_03
+	pan PAN_RIGHT
+	instrument INSTRUMENT_16
+	audio_jump LifeLost_Channel1.sub_1
+
+LifeLost_Channel3:
+	tempo_mode TEMPO_03
+	pan PAN_CENTER
+	instrument INSTRUMENT_07
+	volume 15
+	audio_f4 $ff
+	base_note D#4
+	note -12, 0
+	rest 0
+	note -5, 0
+	note 4, 0
+	rest 0
+	note 0, 0
+	note -4, 0
+	note -9, 0
+	note -4, 0
+	note 0, 1
+	note -4, 0
+	note -5, 0
+	rest 0
+	audio_end
+
+BossBattle_Channel1:
+	tempo_mode TEMPO_01
+	pan PAN_CENTER
+	instrument INSTRUMENT_00
+	audio_f4 $00
+	volume 0
+	base_note G#2
+	note_long -1, 10
+	audio_repeat 14
+	volume_shift 1
+	audio_f3 $05
+	audio_repeat_end
+	audio_f4 $fa
+	volume 15
+	instrument INSTRUMENT_07
+	note -5, 0
+	note -5, 0
+	rest 3
+	note -5, 0
+	note -5, 0
+	rest 3
+	note -5, 0
+	note -5, 0
+	rest 1
+.main_loop
+	audio_repeat 2
+	instrument INSTRUMENT_07
+	audio_f4 $ff
+	base_note G#2
+	note -3, 2
+	note -3, 0
+	note -3, 1
+	note -3, 1
+	rest 1
+	note 9, 1
+	rest 1
+	note 7, 3
+	note -5, 1
+	note -5, 0
+	note 7, 0
+	note 7, 1
+	note_long -5, 40
+	note -6, 2
+	note 6, 0
+	note -6, 1
+	note 6, 1
+	rest 1
+	note 6, 0
+	rest 0
+	note -6, 1
+	note 6, 1
+	note -7, 0
+	note 5, 0
+	note -7, 0
+	note 5, 0
+	note -7, 1
+	note 5, 1
+	rest 1
+	note -7, 0
+	rest 0
+	note -5, 3
+	audio_repeat_end
+	audio_repeat 4
+	note -8, 0
+	note -8, 0
+	note 4, 0
+	note -1, 0
+	audio_repeat_end
+	audio_repeat 4
+	note -10, 0
+	note -10, 0
+	note 2, 0
+	note -3, 0
+	audio_repeat_end
+	audio_repeat 4
+	note -8, 0
+	note -8, 0
+	note 4, 0
+	note -1, 0
+	audio_repeat_end
+	audio_repeat 2
+	note -10, 0
+	note -10, 0
+	note 2, 0
+	note -3, 0
+	audio_repeat_end
+	note -8, 0
+	note -8, 0
+	note 4, 0
+	note -8, 0
+	note -8, 0
+	note 4, 0
+	note -8, 0
+	note -5, 0
+	audio_jump .main_loop
+
+BossBattle_Channel2:
+	tempo_mode TEMPO_01
+	pan PAN_CENTER
+	audio_f4 $00
+	instrument INSTRUMENT_14
+	volume 1
+	base_note G#2
+	note_long 7, 10
+	audio_repeat 14
+	volume_shift 1
+	audio_f3 $05
+	audio_repeat_end
+	instrument INSTRUMENT_15
+	audio_f4 $fa
+	note 11, 0
+	note 11, 0
+	rest 3
+	note 11, 0
+	note 11, 0
+	rest 3
+	note 11, 0
+	note 11, 0
+	rest 1
+.main_loop
+	audio_repeat 2
+	instrument INSTRUMENT_13
+	audio_f4 $ff
+	volume 12
+	base_note G#3
+	audio_repeat 8
+	note 0, 0
+	note -8, 0
+	volume_shift -3
+	note 0, 0
+	note -8, 0
+	volume_shift 3
+	audio_repeat_end
+	audio_repeat 4
+	note 0, 0
+	note -6, 0
+	volume_shift -3
+	note 0, 0
+	note -6, 0
+	volume_shift 3
+	audio_repeat_end
+	instrument INSTRUMENT_19
+	volume 13
+	audio_repeat 4
+	note 0, 0
+	note -7, 0
+	audio_repeat_end
+	rest 0
+	volume 12
+	audio_f4 $f5
+	instrument INSTRUMENT_13
+	note -7, 0
+	audio_repeat 3
+	note 0, 0
+	note -7, 0
+	audio_repeat_end
+	volume_shift -1
+	audio_repeat_end
+	audio_repeat 4
+	note 2, 0
+	note -1, 0
+	note -5, 0
+	note -1, 0
+	audio_repeat_end
+	audio_repeat 4
+	note 0, 0
+	note -3, 0
+	note -7, 0
+	note -3, 0
+	audio_repeat_end
+	audio_repeat 4
+	note 2, 0
+	note -1, 0
+	note -5, 0
+	note -1, 0
+	audio_repeat_end
+	audio_repeat 2
+	note 2, 0
+	note -3, 0
+	note -7, 0
+	note -3, 0
+	audio_repeat_end
+	volume_shift 1
+	instrument INSTRUMENT_18
+	note -8, 0
+	note 5, 0
+	note 4, 0
+	note 2, 0
+	note 0, 0
+	note -1, 0
+	note 0, 0
+	note 2, 0
+	volume_shift -1
+	audio_jump .main_loop
+
+BossBattle_Channel3:
+	tempo_mode TEMPO_01
+	pan PAN_CENTER
+	volume 1
+	base_note G#2
+	audio_f4 $00
+	instrument INSTRUMENT_14
+	note_long 2, 10
+	audio_repeat 14
+	volume_shift 1
+	audio_f3 $05
+	audio_repeat_end
+	audio_f4 $fa
+	instrument INSTRUMENT_15
+	note 4, 0
+	note 4, 0
+	rest 3
+	note 4, 0
+	note 4, 0
+	rest 3
+	note 4, 0
+	note 4, 0
+	rest 1
+.main_loop
+	audio_repeat 2
+	instrument INSTRUMENT_13
+	volume 12
+	audio_f4 $ff
+	base_note G#3
+	audio_repeat 8
+	note -5, 0
+	note -12, 0
+	volume_shift -3
+	note -5, 0
+	note -12, 0
+	volume_shift 3
+	audio_repeat_end
+	audio_repeat 4
+	note -3, 0
+	note -10, 0
+	volume_shift -3
+	note -3, 0
+	note -10, 0
+	volume_shift 3
+	audio_repeat_end
+	instrument INSTRUMENT_19
+	volume 13
+	audio_repeat 4
+	note -3, 0
+	note -12, 0
+	audio_repeat_end
+	volume 12
+	rest 0
+	instrument INSTRUMENT_13
+	audio_f4 $f5
+	note -12, 0
+	audio_repeat 3
+	note -3, 0
+	note -12, 0
+	audio_repeat_end
+	volume_shift -1
+	audio_repeat_end
+	audio_repeat 4
+	note -1, 0
+	note -5, 0
+	note -8, 0
+	note -5, 0
+	audio_repeat_end
+	audio_repeat 4
+	note -3, 0
+	note -7, 0
+	note -10, 0
+	note -7, 0
+	audio_repeat_end
+	audio_repeat 4
+	note -1, 0
+	note -5, 0
+	note -8, 0
+	note -5, 0
+	audio_repeat_end
+	audio_repeat 2
+	note -3, 0
+	note -7, 0
+	note -10, 0
+	note -7, 0
+	audio_repeat_end
+	note -13, 0
+	note 5, 0
+	note 4, 0
+	note 2, 0
+	note 0, 0
+	note -1, 0
+	note 0, 0
+	note 2, 0
+	audio_jump .main_loop
+
+BossBattle_Channel4:
+	tempo_mode TEMPO_01
+	pan PAN_CENTER
+	volume 3
+	instrument INSTRUMENT_10
+	audio_f4 $aa
+	audio_repeat 2
+	note 4, 0
+	note 6, 0
+	note 6, 0
+	note 6, 0
+	audio_repeat_end
+	volume 9
+	audio_repeat 4
+	note 6, 0
+	note 6, 0
+	audio_repeat_end
+	pan PAN_CENTER
+	note 4, 0
+	note 4, 0
+	note 15, 3
+	note 4, 0
+	note 4, 0
+	note 15, 3
+	note 4, 0
+	note 4, 0
+	note 15, 1
+.main_loop
+	audio_repeat 16
+	audio_f4 $e1
+	volume 10
+	instrument INSTRUMENT_10
+	pan PAN_LEFT
+	volume 11
+	note 2, 0
+	volume_shift -3
+	note 2, 0
+	volume_shift 4
+	note 5, 0
+	volume_shift -2
+	note 2, 0
+	pan PAN_RIGHT
+	volume_shift 1
+	note 2, 0
+	volume_shift -3
+	note 2, 0
+	volume_shift 4
+	note 5, 0
+	volume_shift -2
+	note 2, 0
+	volume_shift 1
+	audio_repeat_end
+	pan PAN_CENTER
+	audio_repeat 7
+	instrument INSTRUMENT_1A
+	note 2, 0
+	volume_shift -2
+	note 2, 0
+	volume_shift -2
+	instrument INSTRUMENT_00
+	note 2, 1
+	volume_shift 6
+	instrument INSTRUMENT_10
+	note 6, 0
+	volume_shift -4
+	instrument INSTRUMENT_1A
+	note 2, 0
+	volume_shift -2
+	instrument INSTRUMENT_00
+	note 2, 1
+	volume_shift 4
+	audio_repeat_end
+	instrument INSTRUMENT_1A
+	audio_repeat 6
+	note 7, 0
+	audio_repeat_end
+	instrument INSTRUMENT_10
+	volume_shift 4
+	note 10, 1
+	volume_shift -4
+	audio_jump .main_loop
+
+MintLeaf_Channel1:
+.main_loop
+	tempo_mode TEMPO_01
+	pan PAN_CENTER
+	instrument INSTRUMENT_07
+	volume 15
+	audio_f4 $7f
+	base_note B_1
+	audio_repeat 3
+	audio_call .sub_1
+	audio_repeat_end
+	audio_call .sub_2
+	audio_call .sub_1
+	audio_call .sub_3
+	audio_call .sub_4
+	base_note A_1
+	audio_call .sub_4
+	base_note B_1
+	audio_call .sub_4
+	audio_call .sub_5
+	audio_jump .main_loop
+
+.sub_1
+	note -3, 1
+	note -3, 1
+	note 4, 1
+	note -3, 1
+	note 6, 1
+	note 7, 1
+	note -5, 1
+	note -8, 1
+	audio_ret
+
+.sub_2
+	note -3, 1
+	audio_f4 $d2
+	note -3, 0
+	volume_shift -2
+	note -3, 0
+	volume_shift 2
+	audio_f4 $7f
+	note 4, 1
+	note -3, 1
+	note 6, 1
+	note 7, 1
+	note -5, 1
+	note -8, 1
+	audio_ret
+
+.sub_3
+	note -7, 1
+	note -7, 1
+	note 5, 1
+	note -7, 1
+	audio_f4 $fa
+	note 4, 1
+	note 5, 0
+	rest 0
+	note -1, 1
+	note 0, 0
+	rest 0
+	audio_f4 $7f
+	audio_ret
+
+.sub_4
+	note -8, 1
+	note -8, 1
+	note 4, 1
+	note -8, 1
+	audio_f4 $fa
+	note -8, 0
+	volume_shift -3
+	note 4, 0
+	volume_shift 3
+	audio_f4 $7f
+	note -8, 1
+	note 4, 1
+	note -8, 1
+	audio_ret
+
+.sub_5
+	audio_f4 $5a
+	note -5, 1
+	audio_f4 $fa
+	note 7, 1
+	audio_f4 $78
+	note 6, 1
+	note 5, 1
+	note 3, 1
+	note 0, 1
+	audio_f4 $f0
+	note -5, 1
+	note -2, 1
+	audio_ret
+
+MintLeaf_Channel2:
+.main_loop
+	tempo_mode TEMPO_01
+	pan PAN_CENTER
+	volume 12
+	instrument INSTRUMENT_17
+	base_note B_1
+	audio_f4 $7f
+	audio_call MintLeaf_Channel1.sub_1
+	audio_call MintLeaf_Channel1.sub_1
+	base_note B_2
+	audio_call .sub_1
+	note_long -3, 7
+	rest_long 43
+	audio_call .sub_1
+	note_long 2, 7
+	rest_long 43
+	instrument INSTRUMENT_13
+	volume 13
+	audio_call .sub_2
+	base_note A_2
+	audio_call .sub_2
+	base_note B_2
+	audio_call .sub_2
+	instrument INSTRUMENT_17
+	volume 12
+	audio_call MintLeaf_Channel1.sub_5
+	audio_jump .main_loop
+
+.sub_1
+	rest 1
+	audio_f4 $00
+	note_long 2, 3
+	audio_f4 $e6
+	note_long 3, 7
+	audio_f4 $7f
+	note 4, 1
+	note 7, 1
+	audio_f4 $f4
+	note 4, 1
+	note 3, 0
+	rest 0
+	audio_f4 $7f
+	note 2, 1
+	audio_f4 $fa
+	note -5, 1
+	audio_f4 $78
+	note -3, 1
+	note -3, 1
+	audio_f4 $fa
+	note 0, 1
+	audio_ret
+
+.sub_2
+	audio_f4 $96
+	note 2, 1
+	note 7, 1
+	rest 1
+	note 2, 1
+	note 7, 1
+	rest 1
+	audio_f4 $dc
+	note 2, 1
+	audio_f4 $82
+	note 7, 1
+	audio_ret
+
+MintLeaf_Channel3:
+.main_loop
+	tempo_mode TEMPO_01
+	pan PAN_CENTER
+	audio_f4 $78
+	volume 5
+	instrument INSTRUMENT_05
+	base_note B_4
+	audio_call .sub_1
+	audio_call .sub_1
+	instrument INSTRUMENT_17
+	volume 10
+	base_note B_3
+	pan PAN_CENTER
+	audio_call MintLeaf_Channel2.sub_1
+	note_long -3, 7
+	rest_long 43
+	audio_call MintLeaf_Channel2.sub_1
+	note_long 2, 7
+	rest_long 43
+	instrument INSTRUMENT_13
+	volume 12
+	base_note B_2
+	audio_call .sub_2
+	base_note B_4
+	instrument INSTRUMENT_17
+	volume 10
+	audio_call MintLeaf_Channel1.sub_5
+	audio_jump .main_loop
+
+.sub_1
+	rest 1
+	pan PAN_LEFT
+	note 7, 1
+	pan PAN_RIGHT
+	note 7, 1
+	rest 1
+	pan PAN_LEFT
+	note 6, 1
+	pan PAN_RIGHT
+	note 7, 1
+	rest 1
+	pan PAN_CENTER
+	note 7, 1
+	audio_ret
+
+.sub_2
+	audio_f4 $96
+	note -1, 1
+	note 2, 1
+	rest 1
+	note -1, 1
+	note 2, 1
+	rest 1
+	audio_f4 $dc
+	note -1, 1
+	audio_f4 $82
+	note 2, 1
+	audio_f4 $96
+	note -3, 1
+	note 0, 1
+	rest 1
+	note -3, 1
+	note 0, 1
+	rest 1
+	audio_f4 $dc
+	note -3, 1
+	audio_f4 $82
+	note 0, 1
+	audio_f4 $96
+	note -4, 1
+	note -4, 1
+	rest 1
+	note -4, 1
+	note -4, 1
+	rest 1
+	audio_f4 $dc
+	note -4, 1
+	audio_f4 $82
+	note -4, 1
+	audio_ret
+
+MintLeaf_Channel4:
+.main_loop
+	tempo_mode TEMPO_01
+	instrument INSTRUMENT_10
+	volume 9
+	audio_f4 $ff
+	audio_repeat 4
+	audio_repeat 3
+	pan PAN_LEFT
+	note 3, 1
+	volume_shift -3
+	note 3, 1
+	volume_shift 6
+	pan PAN_CENTER
+	note 6, 1
+	pan PAN_LEFT
+	volume_shift -4
+	note 3, 1
+	volume_shift 1
+	audio_repeat_end
+	pan PAN_LEFT
+	note 3, 0
+	volume_shift -3
+	note 3, 0
+	note 3, 1
+	volume_shift 6
+	pan PAN_CENTER
+	note 6, 1
+	volume_shift -4
+	pan PAN_LEFT
+	note 3, 1
+	volume_shift 1
+	audio_repeat_end
+	pan PAN_LEFT
+	note 3, 1
+	volume_shift -3
+	note 3, 1
+	volume_shift 6
+	pan PAN_CENTER
+	note 6, 1
+	volume_shift -4
+	pan PAN_LEFT
+	note 3, 1
+	volume_shift 1
+	note 3, 0
+	volume_shift -3
+	note 3, 0
+	note 3, 0
+	note 3, 0
+	volume_shift 6
+	pan PAN_CENTER
+	note 6, 1
+	volume_shift -4
+	pan PAN_LEFT
+	note 3, 0
+	note 3, 0
+	volume_shift 4
+	pan PAN_CENTER
+	note 15, 1
+	note 6, 1
+	note 6, 1
+	note 6, 1
+	volume_shift -3
+	audio_repeat 4
+	note 6, 0
+	note 6, 0
+	volume_shift 1
+	audio_repeat_end
+	audio_jump .main_loop
+
+Victory_Channel1:
+	tempo_mode TEMPO_03
+	pan PAN_CENTER
+	instrument INSTRUMENT_0A
+	volume 12
+	audio_f4 $ff
+	base_note D#4
+	audio_call .sub_1
+	note 0, 1
+	note -5, 0
+	note -8, 2
+	audio_call .sub_1
+	note 0, 2
+	note -8, 2
+	audio_call .sub_1
+	note 0, 1
+	note -5, 0
+	note -8, 1
+	note 7, 0
+	note 5, 1
+	note 4, 0
+	note 2, 1
+	note 4, 0
+	note 0, 2
+	note_long 12, 10
+	rest_long 11
+	audio_end
+
+.sub_1
+	note -7, 0
+	note -5, 0
+	note -3, 0
+	note -1, 0
+	note -3, 0
+	note -1, 0
+	audio_ret
+
+Victory_Channel2:
+	tempo_mode TEMPO_03
+	instrument INSTRUMENT_0A
+	pan PAN_CENTER
+	audio_f4 $ff
+	volume 11
+	base_note D#4
+	audio_call .sub_1
+	note -8, 2
+	note -12, 1
+	note -5, 0
+	audio_call .sub_1
+	note -8, 1
+	note -7, 0
+	note -5, 1
+	note -12, 0
+	audio_call .sub_1
+	note -8, 2
+	note -12, 1
+	note 4, 0
+	note 2, 1
+	note -1, 0
+	note -5, 0
+	note -3, 0
+	note -1, 0
+	note -8, 2
+	note_long 4, 10
+	rest_long 11
+	audio_end
+
+.sub_1
+	note -12, 0
+	note -10, 0
+	note -7, 0
+	note -7, 0
+	note -7, 0
+	note -7, 0
+	audio_ret
+
+Victory_Channel3:
+	tempo_mode TEMPO_03
+	instrument INSTRUMENT_07
+	pan PAN_CENTER
+	volume 15
+	audio_f4 $ff
+	base_note D#3
+	note 2, 1
+	note 2, 0
+	note 7, 1
+	note 7, 0
+	note 0, 2
+	note 0, 1
+	note 7, 0
+	note 5, 1
+	note 5, 0
+	note 7, 1
+	note 7, 0
+	note 0, 1
+	note 7, 0
+	note 0, 2
+	note 2, 1
+	note 2, 0
+	note 7, 1
+	note 7, 0
+	note 0, 1
+	note -12, 0
+	note -12, 1
+	note 0, 0
+	note -7, 0
+	note -5, 0
+	note -3, 0
+	note -1, 0
+	note -3, 0
+	note -1, 0
+	note 0, 1
+	base_note D#2
+	note -5, 0
+	note -12, 0
+	rest 1
+	audio_end
+
+Victory_Channel4:
+	tempo_mode TEMPO_03
+	volume 10
+	instrument INSTRUMENT_10
+	audio_f4 $eb
+	audio_repeat 7
+	note 6, 1
+	note 6, 0
+	note 6, 0
+	volume_shift -4
+	note 3, 0
+	volume_shift 4
+	note 6, 0
+	audio_repeat_end
+	note 3, 0
+	note 3, 0
+	note 3, 0
+	note 3, 0
+	note 15, 1
+	audio_end
+
+Credits_Channel1:
+	tempo_mode TEMPO_04
+	volume 15
+	instrument INSTRUMENT_07
+	pan PAN_CENTER
+	audio_f4 $ff
+	base_note D#2
+	audio_call .sub_1
+.main_loop
+	audio_call .sub_2
+	audio_call .sub_3
+	audio_call .sub_2
+	audio_call .sub_4
+	audio_call .sub_5
+	audio_call .sub_6
+	audio_call .sub_2
+	audio_call .sub_3
+	audio_call .sub_2
+	audio_call .sub_4
+	audio_call .sub_5
+	audio_call .sub_7
+	audio_call .sub_8
+	audio_call .sub_9
+	audio_call .sub_10
+	audio_call .sub_9
+	audio_call .sub_11
+	audio_jump .main_loop
+
+.sub_1
+	note -10, 1
+	note -3, 1
+	note -10, 1
+	note 2, 1
+	note -8, 1
+	note -1, 1
+	note -8, 1
+	note 4, 1
+	note -7, 1
+	note 0, 1
+	note -7, 1
+	note 5, 1
+	note -5, 0
+	rest 2
+	note -5, 0
+	rest 2
+	audio_ret
+
+.sub_2
+	note 0, 1
+	note 12, 1
+	note 0, 1
+	note 12, 1
+	note -1, 1
+	note 11, 1
+	note -1, 1
+	note 11, 1
+	audio_ret
+
+.sub_3
+	note -3, 1
+	note 9, 1
+	note -3, 1
+	note 9, 1
+	note -7, 1
+	note 5, 1
+	note -5, 1
+	note 7, 1
+	audio_ret
+
+.sub_4
+	note -2, 1
+	note 10, 1
+	note -2, 1
+	note 10, 1
+	note -3, 1
+	note 9, 1
+	note -3, 1
+	note 9, 1
+	audio_ret
+
+.sub_5
+	note -10, 1
+	note 2, 1
+	note -10, 1
+	note 2, 1
+	note -5, 1
+	note 7, 1
+	note -5, 1
+	note 7, 1
+	note -12, 1
+	note 0, 1
+	note -12, 1
+	note 0, 1
+	note -7, 1
+	note 5, 1
+	note -7, 1
+	note 5, 1
+	audio_ret
+
+.sub_6
+	audio_repeat 4
+	note -10, 1
+	note 2, 1
+	audio_repeat_end
+	note -5, 1
+	note 7, 1
+	note -5, 1
+	note 7, 1
+	audio_f4 $78
+	note 7, 1
+	note 2, 1
+	note -1, 1
+	note -3, 1
+	audio_f4 $ff
+	audio_ret
+
+.sub_7
+	audio_repeat 3
+	note -4, 1
+	note -4, 0
+	note 8, 0
+	audio_repeat_end
+	note -4, 0
+	note -4, 0
+	note 8, 0
+	note -4, 0
+	audio_repeat 4
+	note -5, 0
+	note -5, 0
+	note 7, 0
+	note -5, 0
+	audio_repeat_end
+	audio_ret
+
+.sub_8
+	note -3, 1
+	note 9, 0
+	note 4, 0
+	note -3, 0
+	note -3, 0
+	note 9, 0
+	note 4, 0
+	note -5, 1
+	note 7, 0
+	note 2, 0
+	note -5, 0
+	note -5, 0
+	note 7, 0
+	note 2, 0
+	note -6, 1
+	note 6, 0
+	note -6, 0
+	note -6, 0
+	note -6, 0
+	note 6, 0
+	note -6, 0
+	note -5, 1
+	note 7, 0
+	note 2, 0
+	note -5, 0
+	note 7, 0
+	note 2, 0
+	note 7, 0
+	note -3, 0
+	note -3, 0
+	note 9, 0
+	note 4, 0
+	note -3, 0
+	note -3, 0
+	note 9, 0
+	note 4, 0
+	note -8, 0
+	note -8, 0
+	note 4, 0
+	note -1, 0
+	note -8, 0
+	note -8, 0
+	note 4, 0
+	note -1, 0
+	audio_repeat 4
+	note -10, 0
+	volume_shift -3
+	note -10, 0
+	volume_shift 3
+	note 2, 0
+	volume_shift -2
+	note -3, 0
+	volume_shift 2
+	audio_repeat_end
+	instrument INSTRUMENT_00
+	note_long -3, 144
+	instrument INSTRUMENT_07
+	note 7, 0
+	note 7, 0
+	rest 1
+	note 7, 0
+	note 7, 0
+	note 7, 1
+	audio_ret
+
+.sub_9
+	note -10, 1
+	note 2, 0
+	note -3, 0
+	note -10, 1
+	note 2, 0
+	note -3, 0
+	note -8, 1
+	note 4, 0
+	note -1, 0
+	note -8, 0
+	note -8, 0
+	note 4, 0
+	note -1, 0
+	note -7, 1
+	note 5, 0
+	note 0, 0
+	note -7, 0
+	note -7, 0
+	note 5, 0
+	note 0, 0
+	audio_ret
+
+.sub_10
+	note -8, 0
+	note -8, 0
+	note 4, 0
+	note -1, 0
+	note -8, 0
+	note -8, 0
+	note 4, 0
+	note -1, 0
+	audio_ret
+
+.sub_11
+	audio_f4 $a0
+	note_long 7, 16
+	note_long 7, 16
+	note_long 7, 16
+	audio_f4 $ff
+	audio_ret
+
+Credits_Channel2:
+	tempo_mode TEMPO_04
+	pan PAN_CENTER
+	audio_call .sub_1
+	audio_call .sub_2
+.main_loop
+	volume 12
+	instrument INSTRUMENT_13
+	base_note D#3
+	audio_call .sub_3
+	audio_call .sub_4
+	note -3, 2
+	rest 0
+	audio_call .sub_5
+	audio_call .sub_3
+	audio_call .sub_4
+	note -3, 2
+	note 0, 0
+	audio_call .sub_6
+	volume 13
+	instrument INSTRUMENT_12
+	audio_call .sub_7
+	audio_call .sub_1
+	audio_call .sub_8
+	audio_call .sub_1
+	audio_call .sub_9
+	audio_jump .main_loop
+
+.sub_1
+	audio_f4 $f5
+	base_note D#2
+	volume 13
+	instrument INSTRUMENT_19
+	note 2, 3
+	note 0, 2
+	note 2, 0
+	note 4, 3
+	note 2, 2
+	note 4, 0
+	note 5, 3
+	note 4, 2
+	note 5, 0
+	audio_ret
+
+.sub_2
+	audio_f4 $00
+	note_long 7, 12
+	volume_shift -3
+	audio_repeat 6
+	pitch 3
+	audio_f3 $01
+	pitch 4
+	audio_f3 $01
+	audio_repeat_end
+	volume_shift 3
+	note -5, 0
+	rest 2
+	audio_ret
+
+.sub_3
+	audio_f4 $f5
+	note -5, 3
+	note 0, 2
+	note 2, 0
+	audio_f4 $78
+	note 4, 1
+	note 2, 1
+	note 4, 1
+	note 5, 1
+	audio_f4 $f5
+	note 7, 3
+	note 4, 2
+	note 7, 0
+	audio_f4 $ff
+	note 0, 3
+	note 2, 3
+	audio_f4 $f5
+	note -5, 3
+	note 0, 2
+	note 2, 0
+	audio_f4 $78
+	note 4, 1
+	note 2, 1
+	note 4, 1
+	note 5, 1
+	audio_f4 $fa
+	note 7, 3
+	note 9, 2
+	note 7, 0
+	audio_f4 $dc
+	note 5, 1
+	note 4, 1
+	note 2, 1
+	note 4, 1
+	audio_ret
+
+.sub_4
+	audio_f4 $fa
+	note 5, 3
+	note 4, 2
+	note 5, 0
+	audio_f4 $8c
+	note 7, 1
+	note 5, 1
+	note 4, 1
+	note 7, 1
+	audio_f4 $f6
+	note 4, 3
+	note 0, 2
+	note 2, 0
+	note 4, 3
+	audio_ret
+
+.sub_5
+	note 2, 3
+	note 4, 2
+	note 2, 0
+	audio_f4 $80
+	note 2, 1
+	note 0, 1
+	note -1, 1
+	note 0, 1
+	audio_f4 $00
+	note_long 2, 24
+	volume_shift -5
+	audio_repeat 12
+	pitch -2
+	audio_f3 $02
+	audio_repeat_end
+	volume_shift 5
+	audio_f4 $80
+	note 7, 1
+	note 2, 1
+	note -1, 1
+	note -3, 1
+	audio_ret
+
+.sub_6
+	audio_f4 $fd
+	note 7, 3
+	note 7, 2
+	note 7, 0
+	audio_f4 $82
+	note 7, 1
+	note 5, 1
+	note 3, 1
+	note 5, 1
+	audio_f4 $00
+	note_long 7, 96
+	audio_ret
+
+.sub_7
+	note 9, 3
+	note 1, 2
+	note 2, 0
+	note 4, 5
+	note 1, 0
+	note 2, 0
+	note 4, 3
+	note 1, 2
+	note 2, 0
+	note 1, 3
+	note -1, 1
+	note -3, 0
+	note -1, 0
+	note 1, 3
+	note 4, 2
+	note 1, 0
+	note 1, 3
+	note -1, 3
+	note_long -3, 96
+	note_long -3, 144
+	instrument INSTRUMENT_17
+	volume 13
+	note 2, 0
+	note 2, 0
+	rest 1
+	note 2, 0
+	note 2, 0
+	note 2, 1
+	audio_ret
+
+.sub_8
+	note 4, 3
+	note 2, 2
+	note 4, 0
+	audio_ret
+
+.sub_9
+	audio_f4 $a0
+	note_long 7, 16
+	note_long 7, 16
+	note_long 7, 16
+	audio_ret
+
+Credits_Channel3:
+	tempo_mode TEMPO_04
+	pan PAN_CENTER
+	base_note D#2
+	volume 11
+	audio_call .sub_1
+	audio_call .sub_2
+.main_loop
+	instrument INSTRUMENT_0A
+	base_note D#2
+	volume 9
+	audio_f4 $ff
+	audio_repeat 3
+	audio_call .sub_3
+	audio_repeat_end
+	audio_call .sub_4
+	audio_call .sub_3
+	audio_call .sub_3
+	audio_call .sub_5
+	base_note D#3
+	instrument INSTRUMENT_06
+	audio_call .sub_6
+	audio_call .sub_7
+	instrument INSTRUMENT_0A
+	base_note D#2
+	audio_repeat 3
+	audio_call .sub_3
+	audio_repeat_end
+	audio_call .sub_4
+	audio_call .sub_3
+	audio_call .sub_3
+	audio_call .sub_5
+	base_note D#3
+	instrument INSTRUMENT_06
+	audio_call .sub_6
+	instrument INSTRUMENT_13
+	audio_call .sub_8
+	instrument INSTRUMENT_12
+	volume 11
+	audio_call .sub_9
+	volume 11
+	audio_call .sub_1
+	audio_call .sub_10
+	audio_call .sub_1
+	audio_call .sub_11
+	audio_jump .main_loop
+
+.sub_1
+	audio_f4 $f5
+	instrument INSTRUMENT_19
+	note -7, 3
+	note -7, 2
+	note -7, 0
+	note -5, 3
+	note -5, 2
+	note -5, 0
+	note -3, 3
+	note -3, 2
+	note -3, 0
+	audio_ret
+
+.sub_2
+	audio_f4 $00
+	note_long -1, 12
+	volume_shift -3
+	audio_repeat 6
+	pitch 3
+	audio_f3 $01
+	pitch 4
+	audio_f3 $01
+	audio_repeat_end
+	volume_shift 3
+	note -13, 0
+	rest 2
+	audio_ret
+
+.sub_3
+	note -5, 0
+	note 0, 0
+	note 4, 0
+	note 0, 0
+	note -5, 0
+	note 0, 0
+	note 4, 0
+	note 0, 0
+	audio_ret
+
+.sub_4
+	note -7, 0
+	note -3, 0
+	note 0, 0
+	note -3, 0
+	note -5, 0
+	note -1, 0
+	note 2, 0
+	note -1, 0
+	audio_ret
+
+.sub_5
+	note -5, 0
+	note 2, 0
+	note 5, 0
+	note 2, 0
+	note -5, 0
+	note 2, 0
+	note 5, 0
+	note 2, 0
+	note -5, 0
+	note 1, 0
+	note 4, 0
+	note 1, 0
+	note -5, 0
+	note 1, 0
+	note 4, 0
+	note 1, 0
+	audio_ret
+
+.sub_6
+	note -10, 0
+	note -7, 0
+	note 0, 0
+	note -7, 0
+	note -10, 0
+	note -7, 0
+	note 0, 0
+	note -7, 0
+	note -10, 0
+	note -5, 0
+	note -1, 0
+	note -5, 0
+	note -10, 0
+	note -5, 0
+	note -1, 0
+	note -5, 0
+	note -12, 0
+	note -8, 0
+	note -1, 0
+	note -5, 0
+	note -12, 0
+	note -8, 0
+	note -5, 0
+	note -1, 0
+	note -12, 0
+	note -7, 0
+	note -3, 0
+	note -7, 0
+	note -12, 0
+	note -7, 0
+	note -15, 0
+	note -12, 0
+	audio_ret
+
+.sub_7
+	audio_repeat 4
+	note -10, 0
+	note -7, 0
+	note -3, 0
+	note -7, 0
+	audio_repeat_end
+	note -10, 0
+	note -7, 0
+	note -1, 0
+	note -7, 0
+	note -10, 0
+	note -7, 0
+	note -1, 0
+	note -7, 0
+	audio_f4 $78
+	note -5, 1
+	note -10, 1
+	note -13, 1
+	note -15, 1
+	audio_f4 $ff
+	audio_ret
+
+.sub_8
+	audio_f4 $fd
+	note 3, 3
+	note 3, 2
+	note 3, 0
+	audio_f4 $82
+	note 3, 1
+	note 2, 1
+	note 0, 1
+	note 2, 1
+	audio_f4 $fa
+	note 0, 3
+	note 2, 2
+	note 0, 0
+	note -1, 3
+	note -5, 3
+	audio_ret
+
+.sub_9
+	note 1, 3
+	note -3, 2
+	note -1, 0
+	note 1, 5
+	note -3, 0
+	note -1, 0
+	note 1, 3
+	note -3, 2
+	note -1, 0
+	note -7, 3
+	note -7, 3
+	note -3, 3
+	note 1, 2
+	note -3, 0
+	note -8, 3
+	note -8, 3
+	note_long -6, 48
+	note_long -7, 48
+	note_long -10, 48
+	note_long -13, 48
+	note_long -11, 48
+	instrument INSTRUMENT_17
+	volume 13
+	note -7, 0
+	note -7, 0
+	rest 1
+	note -7, 0
+	note -7, 0
+	note -7, 1
+	audio_ret
+
+.sub_10
+	note -5, 3
+	note -5, 2
+	note -5, 0
+	audio_ret
+
+.sub_11
+	audio_f4 $a0
+	note_long -1, 16
+	note_long -1, 16
+	note_long -1, 16
+	audio_ret
+
+Credits_Channel4:
+	tempo_mode TEMPO_04
+	volume 8
+	audio_f4 $ff
+	pan PAN_CENTER
+	audio_repeat 6
+	audio_call .sub_1
+	audio_repeat_end
+	audio_call .sub_2
+.main_loop
+	audio_repeat 30
+	audio_call .sub_1
+	audio_repeat_end
+	audio_call .sub_3
+	audio_repeat 30
+	audio_call .sub_1
+	audio_repeat_end
+	audio_call .sub_5
+	audio_repeat 16
+	audio_call .sub_4
+	audio_repeat_end
+	audio_call .sub_6
+	audio_repeat 14
+	audio_call .sub_1
+	audio_repeat_end
+	audio_call .sub_7
+	audio_jump .main_loop
+
+.sub_1
+	instrument INSTRUMENT_1A
+	note 3, 0
+	volume_shift -2
+	note 3, 0
+	instrument INSTRUMENT_10
+	volume_shift 4
+	note 6, 0
+	volume_shift -2
+	instrument INSTRUMENT_1A
+	note 3, 0
+	audio_ret
+
+.sub_2
+	volume_shift 2
+	note 6, 0
+	note 6, 2
+	note 6, 3
+	volume_shift -2
+	audio_ret
+
+.sub_3
+	volume_shift 2
+	note 6, 1
+	note 6, 1
+	note 6, 0
+	volume_shift -5
+	note 6, 0
+	volume_shift 5
+	note 6, 1
+	volume_shift -2
+	audio_ret
+
+.sub_4
+	instrument INSTRUMENT_1A
+	note 2, 0
+	volume_shift -2
+	note 2, 0
+	volume_shift 2
+	note 6, 0
+	volume_shift -2
+	note 2, 0
+	volume_shift 2
+	audio_ret
+
+.sub_5
+	instrument INSTRUMENT_1A
+	note 3, 0
+	volume_shift -1
+	note 3, 0
+	audio_repeat 3
+	volume_shift 1
+	note 6, 0
+	note 6, 0
+	audio_repeat_end
+	volume_shift -2
+	audio_ret
+
+.sub_6
+	instrument INSTRUMENT_04
+	note_long 4, 144
+	volume_shift 3
+	instrument INSTRUMENT_10
+	note 5, 0
+	note 5, 2
+	note 5, 0
+	note 5, 0
+	note 5, 0
+	volume_shift -3
+	note 6, 0
+	audio_ret
+
+.sub_7
+	instrument INSTRUMENT_10
+	volume_shift 2
+	note_long 5, 16
+	note_long 5, 16
+	note_long 5, 16
+	volume_shift -2
+	audio_ret
+
+CastleLololoIntro_Channel1:
+	tempo_mode TEMPO_04
+	volume 15
+	instrument INSTRUMENT_07
+	pan PAN_CENTER
+	audio_f4 $ff
+	base_note G#2
+	audio_call .sub_1
+	base_note G_2
+	audio_call .sub_1
+	base_note G#2
+	audio_call .sub_1
+	audio_call .sub_2
+.main_loop
+	audio_repeat 2
+	base_note G#2
+	audio_call .sub_3
+	base_note A_2
+	audio_call .sub_3
+	audio_repeat_end
+	base_note F_2
+	audio_call .sub_3
+	base_note E_2
+	audio_call .sub_3
+	base_note G#1
+	audio_call .sub_4
+	audio_jump .main_loop
+
+.sub_1
+	audio_repeat 4
+	note -12, 0
+	rest 0
+	note 0, 1
+	audio_repeat_end
+	audio_ret
+
+.sub_2
+	note -13, 0
+	rest 0
+	note -1, 1
+	note -13, 0
+	rest 0
+	note -1, 1
+	note -1, 0
+	rest 0
+	note -1, 0
+	rest 0
+	note -1, 0
+	note -1, 0
+	note -1, 0
+	rest 0
+	audio_ret
+
+.sub_3
+	audio_repeat 8
+	note -12, 1
+	note 0, 0
+	note -12, 0
+	audio_repeat_end
+	audio_ret
+
+.sub_4
+	audio_repeat 2
+	note -5, 1
+	note 7, 0
+	note -5, 0
+	audio_repeat_end
+	audio_repeat 2
+	note -7, 1
+	note 5, 0
+	note -7, 0
+	audio_repeat_end
+	audio_repeat 2
+	note -9, 1
+	note 3, 0
+	note -9, 0
+	audio_repeat_end
+	audio_repeat 2
+	note -4, 1
+	note 8, 0
+	note -4, 0
+	audio_repeat_end
+	audio_repeat 6
+	note -2, 1
+	note 10, 0
+	note -2, 0
+	audio_repeat_end
+	note -1, 0
+	note -1, 0
+	rest 1
+	note -1, 0
+	note -1, 0
+	note -1, 1
+	audio_ret
+
+CastleLololoIntro_Channel2:
+	tempo_mode TEMPO_04
+	instrument INSTRUMENT_04
+	audio_f4 $de
+	volume 9
+	base_note G#2
+	audio_call .sub_1
+	base_note G_2
+	audio_call .sub_1
+	base_note G#2
+	audio_call .sub_1
+	audio_call .sub_2
+.post_intro
+	instrument INSTRUMENT_19
+	volume 12
+	base_note G#3
+	pan PAN_CENTER
+	audio_call .sub_3
+	audio_call .sub_4
+	audio_call .sub_3
+	audio_call .sub_5
+.main_loop
+	instrument INSTRUMENT_13
+	volume 13
+	audio_f4 $f0
+	audio_call .sub_6
+	base_note G_3
+	audio_call .sub_6
+	base_note G#2
+	audio_call .sub_7
+	base_note G#3
+	pan PAN_CENTER
+	instrument INSTRUMENT_13
+	volume 13
+	audio_call .sub_3
+	audio_call .sub_4
+	audio_call .sub_3
+	audio_call .sub_5
+	audio_jump .main_loop
+
+.sub_1
+	audio_repeat 8
+	pan PAN_LEFT
+	note 4, 0
+	pan PAN_RIGHT
+	note 7, 0
+	audio_repeat_end
+	audio_ret
+
+.sub_2
+	audio_repeat 4
+	pan PAN_LEFT
+	note 3, 0
+	pan PAN_RIGHT
+	note 6, 0
+	audio_repeat_end
+	instrument INSTRUMENT_15
+	volume 12
+	pan PAN_LEFT
+	note 6, 0
+	rest 0
+	note 6, 0
+	rest 0
+	note 6, 0
+	note 6, 0
+	note 6, 1
+	audio_ret
+
+.sub_3
+	rest 1
+	note -5, 0
+	note -3, 0
+	note -1, 0
+	rest 0
+	note 2, 0
+	rest 0
+	note -1, 5
+	note -5, 0
+	note -3, 0
+	note -1, 0
+	note 2, 0
+	note -1, 0
+	note 2, 0
+	note_long -3, 60
+	audio_ret
+
+.sub_4
+	note_long -5, 4
+	note_long -3, 4
+	note_long -1, 4
+	note 0, 0
+	rest 0
+	note -2, 0
+	rest 0
+	note_long -4, 60
+	note 0, 0
+	note -2, 0
+	note 0, 0
+	rest 0
+	note -2, 0
+	rest 0
+	note -4, 5
+	note -2, 0
+	rest 0
+	note -4, 3
+	audio_ret
+
+.sub_5
+	note_long -5, 4
+	note_long -3, 4
+	note_long -1, 4
+	note 0, 0
+	rest 0
+	note -2, 0
+	rest 0
+	note_long -4, 60
+	note 0, 0
+	note -2, 0
+	note 0, 0
+	rest 0
+	note -2, 0
+	rest 0
+	note -4, 0
+	note -2, 0
+	note -4, 2
+	rest 0
+	note -2, 0
+	rest 0
+	note 0, 0
+	note 1, 0
+	note 3, 1
+	audio_ret
+
+.sub_6
+	note 4, 0
+	rest 0
+	note 8, 0
+	rest 0
+	note_long 1, 60
+	note 4, 0
+	note 3, 0
+	note 4, 0
+	rest 0
+	note 8, 0
+	rest 0
+	note 1, 5
+	note 3, 0
+	rest 0
+	note 1, 3
+	audio_ret
+
+.sub_7
+	rest 1
+	note 7, 0
+	note 9, 0
+	note 10, 1
+	note 14, 0
+	rest 0
+	note 15, 0
+	rest 0
+	note 14, 0
+	rest 0
+	note 12, 3
+	rest 1
+	note 10, 0
+	note 12, 0
+	note 14, 0
+	rest 0
+	note 10, 0
+	rest 0
+	note 7, 1
+	note 5, 0
+	rest 0
+	note 7, 0
+	rest 0
+	note 5, 0
+	note 7, 0
+	note 9, 0
+	rest 0
+	note 7, 0
+	note 9, 0
+	note_long 2, 120
+	instrument INSTRUMENT_17
+	audio_f4 $de
+	volume 13
+	pan PAN_LEFT
+	note 6, 0
+	note 6, 0
+	rest 1
+	note 6, 0
+	note 6, 0
+	note 6, 1
+	audio_ret
+
+	volume 222 ; stray command
+
+CastleLololoIntro_Channel3:
+	tempo_mode TEMPO_04
+	instrument INSTRUMENT_02
+	volume 6
+	audio_f4 $96
+	base_note G#5
+	pan PAN_CENTER
+	audio_call .sub_1
+	base_note G_5
+	audio_call .sub_1
+	base_note G#5
+	audio_call .sub_1
+	audio_call .sub_2
+.post_intro
+	base_note G#3
+	audio_f4 $fa
+	volume 12
+	instrument INSTRUMENT_16
+	pan PAN_CENTER
+	audio_call CastleLololoIntro_Channel2.sub_3
+	audio_call CastleLololoIntro_Channel2.sub_4
+	audio_call CastleLololoIntro_Channel2.sub_3
+	audio_call CastleLololoIntro_Channel2.sub_5
+.main_loop
+	base_note G#3
+	instrument INSTRUMENT_13
+	volume 12
+	audio_f4 $f0
+	audio_call .sub_3
+	base_note G_3
+	audio_call .sub_3
+	base_note G#2
+	audio_f4 $00
+	instrument INSTRUMENT_06
+	volume 7
+	audio_call .sub_4
+	instrument INSTRUMENT_18
+	pan PAN_CENTER
+	volume 11
+	audio_repeat 2
+	base_note G#2
+	audio_call .sub_5
+	base_note A_2
+	audio_call .sub_5
+	audio_repeat_end
+	audio_jump .main_loop
+
+.sub_1
+	audio_repeat 4
+	rest 1
+	note 4, 0
+	note 4, 0
+	audio_repeat_end
+	audio_ret
+
+.sub_2
+	rest 1
+	note 3, 0
+	note 3, 0
+	rest 1
+	note 3, 0
+	note 3, 0
+	base_note G#2
+	pan PAN_RIGHT
+	instrument INSTRUMENT_15
+	audio_f4 $de
+	volume 12
+	note 3, 0
+	rest 0
+	note 3, 0
+	rest 0
+	note 3, 0
+	note 3, 0
+	note 3, 1
+	audio_ret
+
+.sub_3
+	note 1, 0
+	rest 0
+	note 4, 0
+	rest 0
+	note_long -3, 60
+	note 1, 0
+	note -1, 0
+	note 1, 0
+	rest 0
+	note 4, 0
+	rest 0
+	note -3, 5
+	note -1, 0
+	rest 0
+	note -3, 3
+	audio_ret
+
+.sub_4
+	audio_repeat 2
+	pan PAN_LEFT
+	note 5, 0
+	note 2, 0
+	pan PAN_RIGHT
+	note -2, 0
+	note 2, 0
+	audio_repeat_end
+	audio_repeat 2
+	pan PAN_LEFT
+	note 5, 0
+	note 0, 0
+	pan PAN_RIGHT
+	note -4, 0
+	note 0, 0
+	audio_repeat_end
+	audio_repeat 2
+	pan PAN_LEFT
+	note 7, 0
+	note 3, 0
+	pan PAN_RIGHT
+	note -2, 0
+	note 3, 0
+	audio_repeat_end
+	audio_repeat 2
+	pan PAN_LEFT
+	note 3, 0
+	note 0, 0
+	pan PAN_RIGHT
+	note -4, 0
+	note 0, 0
+	audio_repeat_end
+	audio_repeat 6
+	pan PAN_LEFT
+	note 5, 0
+	note 2, 0
+	pan PAN_RIGHT
+	note -2, 0
+	note 2, 0
+	audio_repeat_end
+	instrument INSTRUMENT_17
+	volume 13
+	pan PAN_RIGHT
+	audio_f4 $de
+	note 3, 0
+	note 3, 0
+	rest 1
+	note 3, 0
+	note 3, 0
+	note 3, 1
+	audio_ret
+
+.sub_5
+	audio_repeat 8
+	note -5, 1
+	note 4, 0
+	note 4, 0
+	audio_repeat_end
+	audio_ret
+
+CastleLololoIntro_Channel4:
+	tempo_mode TEMPO_04
+	audio_f4 $ff
+	volume 8
+	pan PAN_CENTER
+	audio_repeat 14
+	audio_call .sub_1
+	audio_repeat_end
+	audio_call .sub_4
+.main_loop
+	audio_repeat 2
+	audio_repeat 14
+	audio_call .sub_1
+	audio_repeat_end
+	audio_call .sub_2
+	audio_repeat_end
+	audio_repeat 8
+	audio_call .sub_3
+	audio_repeat_end
+	audio_repeat 14
+	audio_call .sub_1
+	audio_repeat_end
+	audio_call .sub_5
+	audio_jump .main_loop
+
+.sub_1
+	instrument INSTRUMENT_1A
+	note 4, 0
+	volume_shift -3
+	note 4, 0
+	volume_shift 6
+	instrument INSTRUMENT_10
+	note 6, 0
+	instrument INSTRUMENT_1A
+	volume_shift -2
+	note 5, 0
+	volume_shift -1
+	audio_ret
+
+.sub_2
+	instrument INSTRUMENT_1A
+	note 4, 0
+	volume_shift -3
+	note 4, 0
+	volume_shift 6
+	audio_repeat 3
+	note 6, 0
+	note 6, 0
+	volume_shift 1
+	audio_repeat_end
+	volume_shift -6
+	audio_ret
+
+.sub_3
+	instrument INSTRUMENT_1A
+	note 4, 0
+	volume_shift -3
+	note 4, 0
+	volume_shift 6
+	instrument INSTRUMENT_10
+	note 6, 0
+	volume_shift -6
+	instrument INSTRUMENT_00
+	note 2, 0
+	volume_shift 3
+	audio_repeat 2
+	instrument INSTRUMENT_1A
+	note 4, 0
+	instrument INSTRUMENT_10
+	volume_shift 3
+	note 6, 0
+	volume_shift -3
+	audio_repeat_end
+	audio_ret
+
+.sub_4
+	instrument INSTRUMENT_10
+	volume_shift 5
+	note 7, 1
+	note 7, 1
+	note 7, 0
+	volume_shift -3
+	note 7, 0
+	volume_shift 3
+	instrument INSTRUMENT_07
+	note 9, 1
+	volume_shift -5
+	audio_ret
+
+.sub_5
+	volume_shift 3
+	instrument INSTRUMENT_10
+	note 6, 0
+	note 6, 2
+	note 6, 0
+	volume_shift -2
+	note 6, 0
+	volume_shift 2
+	instrument INSTRUMENT_07
+	note 8, 1
+	volume_shift -3
+	audio_ret
+
+GreenGreens_Channel1:
+	tempo_mode TEMPO_01
+	rest 3
+	pan PAN_CENTER
+	audio_jump GreenGreensIntro_Channel2.main_loop
+
+GreenGreens_Channel2:
+	tempo_mode TEMPO_01
+	rest 3
+	pan PAN_CENTER
+	audio_jump GreenGreensIntro_Channel3.main_loop
+
+GreenGreens_Channel4:
+	tempo_mode TEMPO_01
+	note 15, 3
+	pan PAN_CENTER
+	instrument INSTRUMENT_10
+	audio_f4 $f0
+	audio_jump GreenGreensIntro_Channel4.main_loop
+
+GreenGreens_Channel3:
+	tempo_mode TEMPO_01
+	pan PAN_CENTER
+	audio_jump GreenGreensIntro_Channel1.main_loop
+
+FloatIslands_Channel1:
+	tempo_mode TEMPO_03
+	pan PAN_CENTER
+	audio_jump FloatIslandsIntro_Channel2.main_loop
+
+FloatIslands_Channel2:
+	tempo_mode TEMPO_03
+	base_note G#3
+	audio_jump FloatIslandsIntro_Channel3.main_loop
+
+FloatIslands_Channel3:
+	tempo_mode TEMPO_03
+	pan PAN_CENTER
+	base_note G#2
+	instrument INSTRUMENT_07
+	volume 15
+	audio_f4 $ff
+	audio_jump FloatIslandsIntro_Channel1.main_loop
+
+FloatIslands_Channel4:
+	tempo_mode TEMPO_03
+	pan PAN_CENTER
+	audio_f4 $ff
+	instrument INSTRUMENT_10
+	volume 9
+	audio_jump FloatIslandsIntro_Channel4.main_loop
+
+BubblyClouds_Channel1:
+	tempo_mode TEMPO_02
+	pan PAN_CENTER
+	base_note D#4
+	audio_jump BubblyCloudsIntro_Channel1.main_loop
+
+BubblyClouds_Channel2:
+	tempo_mode TEMPO_02
+	base_note D#4
+	audio_jump BubblyCloudsIntro_Channel2.main_loop
+
+BubblyClouds_Channel3:
+	tempo_mode TEMPO_02
+	audio_f4 $a0
+	pan PAN_CENTER
+	base_note D#3
+	instrument INSTRUMENT_07
+	volume 15
+	audio_jump BubblyCloudsIntro_Channel3.post_intro
+
+CastleLololo_Channel1:
+	tempo_mode TEMPO_04
+	audio_f4 $de
+	audio_jump CastleLololoIntro_Channel2.post_intro
+
+CastleLololo_Channel2:
+	tempo_mode TEMPO_04
+	audio_jump CastleLololoIntro_Channel3.post_intro
+
+CastleLololo_Channel3:
+	tempo_mode TEMPO_04
+	volume 15
+	instrument INSTRUMENT_07
+	pan PAN_CENTER
+	audio_f4 $ff
+	audio_jump CastleLololoIntro_Channel1.main_loop
+
+CastleLololo_Channel4:
+	tempo_mode TEMPO_04
+	volume 8
+	audio_f4 $ff
+	pan PAN_CENTER
+	audio_jump CastleLololoIntro_Channel4.main_loop
+
+DededeBattle_Channel1:
+	tempo_mode TEMPO_01
+	instrument INSTRUMENT_00
+	volume 10
+	pan PAN_CENTER
+	audio_f4 $00
+	base_note F#1
+	note_long -5, 40
+	volume 15
+	note_long -5, 40
+	instrument INSTRUMENT_07
+	base_note F#3
+	audio_f4 $64
+	note 2, 1
+	note -1, 1
+	rest 1
+	note 2, 1
+	note -1, 1
+	rest 1
+	note 2, 1
+	note -1, 1
+	base_note F#2
+	volume 15
+	audio_f4 $82
+	audio_repeat 3
+	note 0, 1
+	note 0, 1
+	note -5, 1
+	note -2, 1
+	audio_repeat_end
+	note 0, 1
+	note 0, 1
+	audio_f4 $e6
+	note -5, 0
+	note -5, 0
+	audio_f4 $82
+	note -2, 1
+.main_loop
+	audio_call .sub_1
+	audio_jump .main_loop
+	audio_end ; unreachable
+
+.sub_1
+	audio_repeat 4
+	note 0, 1
+	note 0, 1
+	note -5, 1
+	note -2, 1
+	audio_repeat_end
+	audio_repeat 4
+	note -2, 1
+	note -2, 1
+	note -7, 1
+	note -4, 1
+	audio_repeat_end
+	audio_repeat 4
+	note -4, 1
+	note -4, 1
+	note -9, 1
+	note 3, 1
+	audio_repeat_end
+	note -5, 1
+	note -5, 1
+	note 2, 1
+	note -5, 1
+	note -5, 1
+	note 2, 1
+	note -5, 1
+	note -5, 1
+	note 2, 1
+	note -5, 1
+	note -5, 1
+	note -10, 1
+	note 7, 1
+	note -5, 1
+	note 7, 1
+	note -5, 1
+	audio_ret
+
+DededeBattle_Channel2:
+	tempo_mode TEMPO_01
+	audio_f4 $00
+	instrument INSTRUMENT_02
+	pan PAN_CENTER
+	base_note F#1
+	volume 7
+	note_long -5, 40
+	audio_repeat 8
+	volume_shift 1
+	audio_f3 $05
+	audio_repeat_end
+	base_note F#2
+	audio_f4 $64
+	note 10, 1
+	note 7, 1
+	rest 1
+	note 10, 1
+	note 7, 1
+	rest 1
+	note 10, 1
+	note 7, 1
+	volume 0
+	rest_long 160
+.main_loop
+	instrument INSTRUMENT_13
+	base_note F#2
+	volume 12
+	audio_call .sub_1
+	base_note F#3
+	audio_call .sub_1
+	audio_jump .main_loop
+
+.sub_1
+	audio_f4 $ff
+	note 3, 1
+	audio_f4 $c8
+	note 0, 1
+	rest 4
+	note -2, 1
+	note 0, 1
+	audio_f4 $ff
+	note 3, 3
+	note 0, 1
+	rest 4
+	audio_f4 $c8
+	note 5, 1
+	note 7, 1
+	rest 1
+	audio_f4 $00
+	note 3, 0
+	note 2, 0
+	note 0, 1
+	rest 4
+	audio_f4 $8c
+	note -5, 1
+	note 3, 1
+	audio_f4 $ff
+	audio_repeat 3
+	note 0, 3
+	note -2, 0
+	rest 0
+	audio_repeat_end
+	note 5, 1
+	note 3, 1
+	rest 4
+	note 5, 1
+	note 3, 1
+	rest 1
+	note 0, 1
+	note 3, 1
+	rest 1
+	note 0, 1
+	note 3, 1
+	note 5, 1
+	note 6, 1
+	note 7, 1
+	note 10, 1
+	note 7, 1
+	rest_long 40
+	note 10, 1
+	note 7, 1
+	rest_long 40
+	note 10, 1
+	note 7, 1
+	rest 3
+	audio_ret
+
+DededeBattle_Channel3:
+	tempo_mode TEMPO_01
+	audio_f4 $00
+	instrument INSTRUMENT_03
+	volume 7
+	base_note F#1
+	pan PAN_CENTER
+	note_long -5, 40
+	audio_repeat 8
+	volume_shift 1
+	audio_f3 $05
+	audio_repeat_end
+	base_note F#2
+	audio_f4 $64
+	instrument INSTRUMENT_02
+	note 5, 1
+	note 2, 1
+	rest 1
+	note 5, 1
+	note 2, 1
+	rest 1
+	note 5, 1
+	note 2, 1
+	volume 12
+	base_note F#0
+	audio_f4 $82
+	audio_repeat 4
+	note 0, 1
+	note 0, 1
+	note 7, 1
+	note -2, 1
+	audio_repeat_end
+.main_loop
+	audio_f4 $ff
+	base_note F#2
+	instrument INSTRUMENT_00
+	volume 8
+	audio_call .sub_1
+	base_note F#3
+	audio_call .sub_1
+	audio_jump .main_loop
+
+.sub_1
+	audio_repeat 8
+	pan PAN_RIGHT
+	note -9, 0
+	note -5, 0
+	pan PAN_LEFT
+	note 0, 0
+	note -5, 0
+	audio_repeat_end
+	audio_repeat 8
+	pan PAN_RIGHT
+	note -10, 0
+	note -7, 0
+	pan PAN_LEFT
+	note -2, 0
+	note -7, 0
+	audio_repeat_end
+	audio_repeat 8
+	pan PAN_RIGHT
+	note -9, 0
+	note -4, 0
+	pan PAN_LEFT
+	note 0, 0
+	note -4, 0
+	audio_repeat_end
+	audio_repeat 8
+	pan PAN_RIGHT
+	note -7, 0
+	note -5, 0
+	pan PAN_LEFT
+	note -1, 0
+	note -5, 0
+	audio_repeat_end
+	audio_ret
+
+DededeBattle_Channel4:
+	tempo_mode TEMPO_01
+	instrument INSTRUMENT_10
+	audio_f4 $ff
+	pan PAN_CENTER
+	volume 12
+	note_long 15, 80
+	note 7, 1
+	note 7, 1
+	note 15, 1
+	note 7, 1
+	note 7, 1
+	note 15, 1
+	note 7, 1
+	note 7, 1
+.main_loop
+	instrument INSTRUMENT_10
+	note 3, 0
+	volume_shift -3
+	note 3, 0
+	instrument INSTRUMENT_00
+	note 1, 1
+	volume_shift 3
+	instrument INSTRUMENT_10
+	note 6, 0
+	volume_shift -3
+	note 3, 0
+	instrument INSTRUMENT_00
+	note 1, 1
+	volume_shift 3
+	audio_jump .main_loop
+
+MtDedede_Channel1:
+.main_loop
+	tempo_mode TEMPO_03
+	instrument INSTRUMENT_07
+	pan PAN_CENTER
+	volume 15
+	audio_f4 $fa
+	base_note G#2
+	note -10, 2
+	note -10, 2
+	note -10, 0
+	note -8, 0
+	note -7, 0
+	rest 0
+	note -7, 0
+	rest 0
+	note -7, 0
+	note -7, 0
+	note -7, 1
+	note -5, 2
+	note -5, 2
+	note -5, 1
+	note 14, 0
+	rest 0
+	note 14, 0
+	rest 0
+	note 13, 0
+	note 13, 0
+	note 7, 1
+	audio_jump .main_loop
+
+MtDedede_Channel2:
+.main_loop
+	tempo_mode TEMPO_03
+	pan PAN_CENTER
+	volume 11
+	audio_f4 $f5
+	instrument INSTRUMENT_17
+	base_note G#3
+	note 0, 2
+	note 0, 2
+	note -3, 0
+	note 2, 0
+	note 0, 0
+	rest 0
+	note 0, 0
+	rest 0
+	note 0, 0
+	note 0, 0
+	note 0, 1
+	note -1, 2
+	note -1, 2
+	note -1, 1
+	note -3, 0
+	rest 0
+	note -3, 0
+	rest 0
+	note -3, 0
+	note -3, 0
+	note -3, 1
+	audio_jump .main_loop
+
+MtDedede_Channel3:
+.main_loop
+	tempo_mode TEMPO_03
+	instrument INSTRUMENT_18
+	audio_f4 $f5
+	volume 11
+	pan PAN_CENTER
+	base_note G#2
+	audio_repeat 8
+	note 5, 0
+	note 9, 0
+	audio_repeat_end
+	audio_repeat 4
+	note 2, 0
+	note 5, 0
+	audio_repeat_end
+	note 4, 0
+	rest 0
+	note 4, 0
+	rest 0
+	note 4, 0
+	note 4, 0
+	note 1, 1
+	audio_jump .main_loop
+
+MtDedede_Channel4:
+	tempo_mode TEMPO_03
+	instrument INSTRUMENT_10
+	pan PAN_LEFT
+	volume 11
+	audio_f4 $ff
+.main_loop
+	note 1, 0
+	volume_shift -1
+	note 2, 0
+	volume_shift 2
+	note 6, 0
+	volume_shift -2
+	note 8, 0
+	volume_shift 1
+	audio_jump .main_loop
 
 AudioScript_16f6d:
 	wave WAVEDUTY_12_5
-	volume 15
+	note_volume 15
 	db $ff ; end
 
 AudioScript_16f70:
 	wave WAVEDUTY_25
-	volume 15
+	note_volume 15
 	db $ff ; end
 
 AudioScript_16f73:
 	wave WAVEDUTY_50
-	volume 15
+	note_volume 15
 	db $ff ; end
 
 AudioScript_16f76:
 	wave WAVEDUTY_75
-	volume 15
+	note_volume 15
 	db $ff ; end
 
 AudioScript_16f79:
-	volume 4, 8
-	volume 0
+	note_volume 4, 8
+	note_volume 0
 	db $ff ; end
 
 AudioScript_16f7d:
 	wave WAVEDUTY_25
 AudioScript_16f7e:
-	volume 15
+	note_volume 15
 	audio_repeat 15
-	volume_shift -1, 8
+	note_volume_shift -1, 8
 	audio_repeat_end
 	db $ff ; end
 
 AudioScript_16f85:
 	wave WAVEDUTY_50
 AudioScript_16f86:
-	volume 15, 1
+	note_volume 15, 1
 AudioScript_16f87:
 	audio_repeat 8
 	db 3
-	volume_shift -2
+	note_volume_shift -2
 	audio_repeat_end
 	db $ff ; end
 
@@ -1875,8 +6807,8 @@ AudioScript_16f8d:
 
 AudioScript_16f91:
 	wave WAVEDUTY_12_5
-	volume 15, 2
-	volume 13, 2
+	note_volume 15, 2
+	note_volume 13, 2
 	audio_jump AudioScript_16f87
 
 AudioScript_16f99:
@@ -1886,11 +6818,11 @@ AudioScript_16f99:
 AudioScript_16f9d:
 	wave WAVEDUTY_50
 AudioScript_16f9e:
-	volume 15, 2
-	volume 14
+	note_volume 15, 2
+	note_volume 14
 AudioScript_16fa1:
 	audio_repeat 12
-	volume_shift -1, 3
+	note_volume_shift -1, 3
 	audio_repeat_end
 	db $ff ; end
 
@@ -1904,36 +6836,36 @@ AudioScript_16fab:
 	audio_jump AudioScript_16fa1
 
 AudioScript_16fb2:
-	volume 15, 1
-	volume 11, 1
+	note_volume 15, 1
+	note_volume 11, 1
 	audio_ret
 
 AudioScript_16fb5:
 	wave WAVEDUTY_25
-	volume 15, 1
-	volume 12, 1
+	note_volume 15, 1
+	note_volume 12, 1
 	wave WAVEDUTY_12_5
 	audio_repeat 8
-	volume_shift 1, 1
-	volume_shift -2, 1
+	note_volume_shift 1, 1
+	note_volume_shift -2, 1
 	audio_repeat_end
 .loop
-	volume_shift 1, 1
-	volume_shift -1, 1
+	note_volume_shift 1, 1
+	note_volume_shift -1, 1
 	audio_jump .loop
 
 AudioScript_16fc3:
 	wave WAVEDUTY_50
 AudioScript_16fc4:
-	volume 7, 1
+	note_volume 7, 1
 AudioScript_16fc5:
-	volume 13, 1
-	volume 15, 1
-	volume 12, 1
-	volume 6, 6
+	note_volume 13, 1
+	note_volume 15, 1
+	note_volume 12, 1
+	note_volume 6, 6
 	audio_repeat 4
-	volume_shift 1, 3
-	volume_shift 1, 3
+	note_volume_shift 1, 3
+	note_volume_shift 1, 3
 	audio_repeat_end
 .loop
 	pitch_shift 1, 3
@@ -1941,15 +6873,15 @@ AudioScript_16fc5:
 	audio_jump .loop
 
 AudioScript_16fd8:
-	volume 8, 5
-	volume 7, 2
-	volume 6, 2
+	note_volume 8, 5
+	note_volume 7, 2
+	note_volume 6, 2
 	audio_repeat 5
-	volume 5, 4
-	volume 4, 3
+	note_volume 5, 4
+	note_volume 4, 3
 	audio_repeat_end
-	volume 2, 5
-	volume 0
+	note_volume 2, 5
+	note_volume 0
 	db $ff ; end
 
 AudioScript_16fe9:
@@ -1958,33 +6890,33 @@ AudioScript_16fe9:
 
 AudioScript_16fed:
 	wave WAVEDUTY_50
-	volume 15, 2
+	note_volume 15, 2
 	wave WAVEDUTY_25
-	volume 13, 1
+	note_volume 13, 1
 	wave WAVEDUTY_12_5
 	audio_repeat 6
-	volume_shift -1, 2
+	note_volume_shift -1, 2
 	audio_repeat_end
 .loop
-	volume 6, 3
-	volume 7, 3
+	note_volume 6, 3
+	note_volume 7, 3
 	audio_jump .loop
 
 AudioScript_16fff:
 	wave WAVEDUTY_75
-	volume 15, 1
-	volume 12, 1
+	note_volume 15, 1
+	note_volume 12, 1
 	audio_repeat 5
-	volume_shift -2, 1
+	note_volume_shift -2, 1
 	audio_repeat_end
-	volume 0
+	note_volume 0
 	db $ff ; end
 
 AudioScript_17008:
 	wave WAVEDUTY_50
-	volume 15, 2
-	volume 14, 5
-	volume 13, 5
+	note_volume 15, 2
+	note_volume 14, 5
+	note_volume 13, 5
 .loop
 	pitch_shift -1, 2
 	pitch_shift -1, 3
@@ -1998,25 +6930,25 @@ AudioScript_1701a:
 
 AudioScript_1701e:
 	wave WAVEDUTY_75
-	volume 15, 1
+	note_volume 15, 1
 	wave WAVEDUTY_50
-	volume 12, 2
+	note_volume 12, 2
 .loop
 	pitch_shift -1, 3
 	pitch_shift 1, 3
 	audio_jump .loop
 
 AudioScript_1702a:
-	volume 4, 2
-	volume 0
+	note_volume 4, 2
+	note_volume 0
 	db $ff ; end
 
 AudioScript_1702e:
 	wave WAVEDUTY_50
-	volume 11, 1
-	volume 12, 2
-	volume 13, 6
-	volume 14
+	note_volume 11, 1
+	note_volume 12, 2
+	note_volume 13, 6
+	note_volume 14
 .loop
 	pitch_shift 1, 3
 	pitch_shift -1, 3
@@ -2024,15 +6956,15 @@ AudioScript_1702e:
 
 AudioScript_1703c:
 	wave WAVEDUTY_75
-	volume 15, 1
+	note_volume 15, 1
 	wave WAVEDUTY_12_5
-	volume 14, 2
+	note_volume 14, 2
 	wave WAVEDUTY_25
-	volume 10
+	note_volume 10
 	audio_repeat 5
-	volume_shift -1, 1
+	note_volume_shift -1, 1
 	audio_repeat_end
-	volume_shift -1, 3
+	note_volume_shift -1, 3
 .loop
 	pitch_shift -1, 4
 	pitch_shift 1, 4
@@ -2044,9 +6976,9 @@ AudioScript_17050:
 
 AudioScript_17054:
 	wave WAVEDUTY_75
-	volume 15, 1
+	note_volume 15, 1
 	wave WAVEDUTY_25
-	volume 12, 2
+	note_volume 12, 2
 .loop
 	pitch_shift 1, 3
 	pitch_shift -1, 3
@@ -2054,36 +6986,36 @@ AudioScript_17054:
 
 AudioScript_17060:
 	wave WAVEDUTY_12_5
-	volume 15, 1
+	note_volume 15, 1
 	wave WAVEDUTY_75
-	volume 13, 1
+	note_volume 13, 1
 	audio_repeat 5
-	volume_shift -1, 1
+	note_volume_shift -1, 1
 	audio_repeat_end
 	db $ff ; end
 
 AudioScript_17069:
 	wave WAVEDUTY_12_5
-	volume 15, 1
+	note_volume 15, 1
 	wave WAVEDUTY_50
-	volume 14, 1
+	note_volume 14, 1
 	wave WAVEDUTY_25
-	volume 13, 1
-	volume 12, 1
-	volume 11, 1
-	volume 10, 1
-	volume 9, 1
+	note_volume 13, 1
+	note_volume 12, 1
+	note_volume 11, 1
+	note_volume 10, 1
+	note_volume 9, 1
 	db $ff ; end
 
 AudioScript_17074:
-	volume 15, 1
+	note_volume 15, 1
 	audio_repeat 5
-	volume_shift -2, 1
+	note_volume_shift -2, 1
 	audio_repeat_end
-	volume 3, 1
-	volume 2, 1
-	volume 1, 1
-	volume 0, 1
+	note_volume 3, 1
+	note_volume 2, 1
+	note_volume 1, 1
+	note_volume 0, 1
 	db $ff ; end
 
 SFXHeader_00:
@@ -2253,46 +7185,46 @@ SECTION "Bank 5@77c2", ROMX[$77c2], BANK[$5]
 
 AudioScript_177c2:
 	wave WAVEDUTY_12_5
-	volume 15
+	note_volume 15
 	db $ff ; end
 
 AudioScript_177c5:
 	wave WAVEDUTY_25
-	volume 15
+	note_volume 15
 	db $ff ; end
 
 AudioScript_177c8:
 	wave WAVEDUTY_50
-	volume 15
+	note_volume 15
 	db $ff ; end
 
 AudioScript_177cb:
 	wave WAVEDUTY_75
-	volume 15
+	note_volume 15
 	db $ff ; end
 
 AudioScript_177ce:
-	volume 4, 8
-	volume 0
+	note_volume 4, 8
+	note_volume 0
 	db $ff ; end
 
 AudioScript_177d2:
 	wave WAVEDUTY_25
 AudioScript_177d3:
-	volume 15
+	note_volume 15
 	audio_repeat 15
-	volume_shift -1, 8
+	note_volume_shift -1, 8
 	audio_repeat_end
 	db $ff ; end
 
 AudioScript_177da:
 	wave WAVEDUTY_50
 AudioScript_177db:
-	volume 15, 1
+	note_volume 15, 1
 AudioScript_177dc:
 	audio_repeat 8
 	db $03
-	volume_shift -2
+	note_volume_shift -2
 	audio_repeat_end
 	db $ff ; end
 
@@ -2302,8 +7234,8 @@ AudioScript_177e2:
 
 AudioScript_177e6:
 	wave WAVEDUTY_12_5
-	volume 15, 2
-	volume 13, 2
+	note_volume 15, 2
+	note_volume 13, 2
 	audio_jump AudioScript_177dc
 
 AudioScript_177ee:
@@ -2313,11 +7245,11 @@ AudioScript_177ee:
 AudioScript_177f2:
 	wave WAVEDUTY_50
 AudioScript_177f3:
-	volume 15, 2
-	volume 14
+	note_volume 15, 2
+	note_volume 14
 AudioScript_177f6:
 	audio_repeat 12
-	volume_shift -1, 3
+	note_volume_shift -1, 3
 	audio_repeat_end
 	db $ff ; end
 
@@ -2331,37 +7263,37 @@ AudioScript_17800:
 	audio_jump AudioScript_177f6
 
 AudioScript_17807:
-	volume 15, 1
-	volume 11, 1
+	note_volume 15, 1
+	note_volume 11, 1
 	audio_ret
 
 AudioScript_1780a:
 	wave WAVEDUTY_25
-	volume 15, 1
-	volume 12, 1
+	note_volume 15, 1
+	note_volume 12, 1
 	wave WAVEDUTY_12_5
 	audio_repeat 8
-	volume_shift 1, 1
-	volume_shift -2, 1
+	note_volume_shift 1, 1
+	note_volume_shift -2, 1
 	audio_repeat_end
 .loop
-	volume_shift 1, 1
-	volume_shift -1, 1
+	note_volume_shift 1, 1
+	note_volume_shift -1, 1
 	audio_jump .loop
 
 AudioScript_17818:
 	wave WAVEDUTY_50
 AudioScript_17819:
-	volume 7, 1
+	note_volume 7, 1
 AudioScript_1781a:
-	volume 13, 1
-	volume 15, 1
-	volume 12, 1
-	volume 6, 6
+	note_volume 13, 1
+	note_volume 15, 1
+	note_volume 12, 1
+	note_volume 6, 6
 	audio_repeat 4
-	volume_shift 1
+	note_volume_shift 1
 	db $03
-	volume_shift 1
+	note_volume_shift 1
 	db $03
 	audio_repeat_end
 .loop
@@ -2370,15 +7302,15 @@ AudioScript_1781a:
 	audio_jump .loop
 
 AudioScript_1782d:
-	volume 8, 5
-	volume 7, 2
-	volume 6, 2
+	note_volume 8, 5
+	note_volume 7, 2
+	note_volume 6, 2
 	audio_repeat 5
-	volume 5, 4
-	volume 4, 3
+	note_volume 5, 4
+	note_volume 4, 3
 	audio_repeat_end
-	volume 2, 5
-	volume 0
+	note_volume 2, 5
+	note_volume 0
 	db $ff ; end
 
 AudioScript_1783e:
@@ -2387,33 +7319,33 @@ AudioScript_1783e:
 
 AudioScript_17842:
 	wave WAVEDUTY_50
-	volume 15, 2
+	note_volume 15, 2
 	wave WAVEDUTY_25
-	volume 13, 1
+	note_volume 13, 1
 	wave WAVEDUTY_12_5
 	audio_repeat 6
-	volume_shift -1, 2
+	note_volume_shift -1, 2
 	audio_repeat_end
 .loop
-	volume 6, 3
-	volume 7, 3
+	note_volume 6, 3
+	note_volume 7, 3
 	audio_jump .loop
 
 AudioScript_17854:
 	wave WAVEDUTY_75
-	volume 15, 1
-	volume 12, 1
+	note_volume 15, 1
+	note_volume 12, 1
 	audio_repeat 5
-	volume_shift -2, 1
+	note_volume_shift -2, 1
 	audio_repeat_end
-	volume 0
+	note_volume 0
 	db $ff ; end
 
 AudioScript_1785d:
 	wave WAVEDUTY_50
-	volume 15, 2
-	volume 14, 5
-	volume 13, 5
+	note_volume 15, 2
+	note_volume 14, 5
+	note_volume 13, 5
 .loop
 	pitch_shift -1, 2
 	pitch_shift -1, 3
@@ -2427,25 +7359,25 @@ AudioScript_1786f:
 
 AudioScript_17873:
 	wave WAVEDUTY_75
-	volume 15, 1
+	note_volume 15, 1
 	wave WAVEDUTY_50
-	volume 12, 2
+	note_volume 12, 2
 .loop
 	pitch_shift -1, 3
 	pitch_shift 1, 3
 	audio_jump .loop
 
 AudioScript_1787f:
-	volume 4, 2
-	volume 0
+	note_volume 4, 2
+	note_volume 0
 	db $ff ; end
 
 AudioScript_17883:
 	wave WAVEDUTY_50
-	volume 11, 1
-	volume 12, 2
-	volume 13, 6
-	volume 14
+	note_volume 11, 1
+	note_volume 12, 2
+	note_volume 13, 6
+	note_volume 14
 .loop
 	pitch_shift 1, 3
 	pitch_shift -1, 3
@@ -2453,15 +7385,15 @@ AudioScript_17883:
 
 AudioScript_17891:
 	wave WAVEDUTY_75
-	volume 15, 1
+	note_volume 15, 1
 	wave WAVEDUTY_12_5
-	volume 14, 2
+	note_volume 14, 2
 	wave WAVEDUTY_25
-	volume 10
+	note_volume 10
 	audio_repeat 5
-	volume_shift -1, 1
+	note_volume_shift -1, 1
 	audio_repeat_end
-	volume_shift -1, 3
+	note_volume_shift -1, 3
 .loop
 	pitch_shift -1, 4
 	pitch_shift 1, 4
@@ -2473,9 +7405,9 @@ AudioScript_178a5:
 
 AudioScript_178a9:
 	wave WAVEDUTY_75
-	volume 15, 1
+	note_volume 15, 1
 	wave WAVEDUTY_25
-	volume 12
+	note_volume 12
 	db $02
 .loop
 	pitch_shift 1, 3
@@ -2484,36 +7416,36 @@ AudioScript_178a9:
 
 AudioScript_178b5:
 	wave WAVEDUTY_12_5
-	volume 15, 1
+	note_volume 15, 1
 	wave WAVEDUTY_75
-	volume 13, 1
+	note_volume 13, 1
 	audio_repeat 5
-	volume_shift -1, 1
+	note_volume_shift -1, 1
 	audio_repeat_end
 	db $ff ; end
 
 AudioScript_178be:
 	wave WAVEDUTY_12_5
-	volume 15, 1
+	note_volume 15, 1
 	wave WAVEDUTY_50
-	volume 14, 1
+	note_volume 14, 1
 	wave WAVEDUTY_25
-	volume 13, 1
-	volume 12, 1
-	volume 11, 1
-	volume 10, 1
-	volume 9, 1
+	note_volume 13, 1
+	note_volume 12, 1
+	note_volume 11, 1
+	note_volume 10, 1
+	note_volume 9, 1
 	db $ff ; end
 
 AudioScript_178c9:
-	volume 15, 1
+	note_volume 15, 1
 	audio_repeat 5
-	volume_shift -2, 1
+	note_volume_shift -2, 1
 	audio_repeat_end
-	volume 3, 1
-	volume 2, 1
-	volume 1, 1
-	volume 0, 1
+	note_volume 3, 1
+	note_volume 2, 1
+	note_volume 1, 1
+	note_volume 0, 1
 	db $ff ; end
 
 Instruments:
@@ -2575,7 +7507,7 @@ Instruments:
 	dw AudioScript_178c9, AudioScript_1787f ; INSTRUMENT_35
 	assert_table_length NUM_INSTRUMENTS
 
-TempoModeNoteDurations:
+TempoModeDurations:
 	table_width 6
 	db  1,  2,  3,  4,  5,  6 ; TEMPO_00
 	db  5, 10, 15, 20, 30, 80 ; TEMPO_01

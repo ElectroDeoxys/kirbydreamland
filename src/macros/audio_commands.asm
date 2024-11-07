@@ -1,7 +1,34 @@
 ; audio commands
 
 ; \1 = note constant
+; \2 = note duration (optional)
 MACRO note
+ASSERT \1 >= -15 && \1 <= 15
+IF _NARG == 1
+	db (\1 & %11111)
+ELSE
+ASSERT \2 <= 5
+	db (\1 & %11111) | (\2 << 5)
+ENDC
+ENDM
+
+; \1 = note constant
+; \2 = note duration
+MACRO note_long
+ASSERT \1 >= -15 && \1 <= 15
+	db (\1 & %11111) | (6 << 5)
+	db \2
+ENDM
+
+; \1 = rest duration
+MACRO rest
+ASSERT \1 <= 5
+	db \1 << 5 | $10
+ENDM
+
+; \1 = rest duration
+MACRO rest_long
+	db $10 | (6 << 5)
 	db \1
 ENDM
 
@@ -39,16 +66,16 @@ ENDM
 
 	const_def $40
 
-	const AUDIOCMD_VOLUME ; $40
-MACRO volume
+	const AUDIOCMD_NOTE_VOLUME ; $40
+MACRO note_volume
 ASSERT \1 <= 15
 IF _NARG == 1
-	db \1 | AUDIOCMD_VOLUME
+	db \1 | AUDIOCMD_NOTE_VOLUME
 ELSE
 	IF \2 == 1
-		db \1 | AUDIOCMD_VOLUME | AUDIOCMD_BREAK
+		db \1 | AUDIOCMD_NOTE_VOLUME | AUDIOCMD_BREAK
 	ELSE
-		db \1 | AUDIOCMD_VOLUME
+		db \1 | AUDIOCMD_NOTE_VOLUME
 		db \2
 	ENDC
 ENDC
@@ -56,27 +83,27 @@ ENDM
 
 	const_def $60
 
-	const AUDIOCMD_VOLUME_SHIFT ; $60
-MACRO volume_shift
+	const AUDIOCMD_NOTE_VOLUME_SHIFT ; $60
+MACRO note_volume_shift
 ASSERT \1 >= -8 && \1 <= 7
 IF _NARG == 1
 	IF \1 >= 0
-		db \1 | AUDIOCMD_VOLUME_SHIFT
+		db \1 | AUDIOCMD_NOTE_VOLUME_SHIFT
 	ELSE ; negative
-		db ($10 + \1) | AUDIOCMD_VOLUME_SHIFT
+		db ($10 + \1) | AUDIOCMD_NOTE_VOLUME_SHIFT
 	ENDC
 ELSE
 	IF \2 == 1
 		IF \1 >= 0
-			db \1 | AUDIOCMD_VOLUME_SHIFT | AUDIOCMD_BREAK
+			db \1 | AUDIOCMD_NOTE_VOLUME_SHIFT | AUDIOCMD_BREAK
 		ELSE ; negative
-			db ($10 + \1) | AUDIOCMD_VOLUME_SHIFT | AUDIOCMD_BREAK
+			db ($10 + \1) | AUDIOCMD_NOTE_VOLUME_SHIFT | AUDIOCMD_BREAK
 		ENDC
 	ELSE
 		IF \1 >= 0
-			db \1 | AUDIOCMD_VOLUME_SHIFT
+			db \1 | AUDIOCMD_NOTE_VOLUME_SHIFT
 		ELSE ; negative
-			db ($10 + \1) | AUDIOCMD_VOLUME_SHIFT
+			db ($10 + \1) | AUDIOCMD_NOTE_VOLUME_SHIFT
 		ENDC
 		db \2
 	ENDC
@@ -147,16 +174,16 @@ ENDM
 
 	const AUDIOCMD_EF ; $ef
 
-	const AUDIOCMD_BASE_VOLUME ; $f0
-MACRO base_volume
-	db AUDIOCMD_BASE_VOLUME
-	db \1 ; ?
+	const AUDIOCMD_VOLUME ; $f0
+MACRO volume
+	db AUDIOCMD_VOLUME
+	db \1 ; volume value
 ENDM
 
-	const AUDIOCMD_F1 ; $f1
-MACRO audio_f1
-	db AUDIOCMD_F1
-	db \1 ; ?
+	const AUDIOCMD_VOLUME_SHIFT ; $f1
+MACRO volume_shift
+	db AUDIOCMD_VOLUME_SHIFT
+	db \1 ; volume shift value
 ENDM
 
 	const AUDIOCMD_SET_TEMPO_MODE ; $f2
@@ -231,7 +258,7 @@ MACRO pan
 	db \1 ; PAN_* constant
 ENDM
 
-	const AUDIOCMD_FF ; $ff
-MACRO audio_ff
-	db AUDIOCMD_FF
+	const AUDIOCMD_END ; $ff
+MACRO audio_end
+	db AUDIOCMD_END
 ENDM
