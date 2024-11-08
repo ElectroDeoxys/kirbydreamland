@@ -507,8 +507,8 @@ Func_183bf::
 	ld h, [hl]
 	ld l, a
 	ld de, MotionScript_157a
-	ld bc, OBJECT_SLOT_00
-	call Func_21e6
+	ld bc, OBJECT_SLOT_KIRBY
+	call SetObjectScripts
 	ret
 
 .Func_18473:
@@ -519,8 +519,8 @@ Func_183bf::
 	ld d, a
 	push hl
 	ld hl, AnimScript_2010c
-	ld bc, OBJECT_SLOT_00
-	call Func_21e6
+	ld bc, OBJECT_SLOT_KIRBY
+	call SetObjectScripts
 	pop hl
 	pop af
 	ret
@@ -773,16 +773,19 @@ _LoseLife::
 
 	ld hl, wMintLeafCounter
 	xor a
-	ld [hli], a
-	ld [hli], a
-	ld [hli], a
-	ld [hl], a
+	ld [hli], a ; wMintLeafCounter
+	ld [hli], a ;
+	ld [hli], a ; wInvincibilityCounter
+	ld [hl], a  ;
 	ld [wd3be], a
 	ld [wd3f5], a
-	ld a, [wd1a0 + OBJECT_SLOT_00]
+
+	; stop blinking and flashing
+	ld a, [wd1a0 + OBJECT_SLOT_KIRBY]
 	res OBJFLAG_FLASHING_F, a
 	res OBJFLAG_BLINKING_F, a
-	ld [wd1a0 + OBJECT_SLOT_00], a
+	ld [wd1a0 + OBJECT_SLOT_KIRBY], a
+
 	ld a, [wStage]
 	cp MT_DEDEDE
 	jr nz, .asm_18678
@@ -821,22 +824,22 @@ _LoseLife::
 	call ClearObjectsExceptSlot00
 	xor a
 	ld [wd3cc], a
-	ld bc, OBJECT_SLOT_00
+	ld bc, OBJECT_SLOT_KIRBY
 	ld hl, AnimScript_20154
 	ld de, MotionScript_10137
-	call Func_21e6
+	call SetObjectScripts
 
 	ld b, 160
 .loop_wait_animation
 	push bc
-	ld a, [wObjectYCoords + $1]
+	ld a, [wObjectYCoords + OBJECT_SLOT_KIRBY + $1]
 	cp $dc
 	jr nc, .set_kirby_obj_active
 	cp $a0
 	jr nc, .skip_set_kirby_obj_active
 .set_kirby_obj_active
 	ld a, OBJECT_ACTIVE
-	ld [wObjectActiveStates + OBJECT_SLOT_00], a
+	ld [wObjectActiveStates + OBJECT_SLOT_KIRBY], a
 .skip_set_kirby_obj_active
 	ld a, 1
 	call DoFrames

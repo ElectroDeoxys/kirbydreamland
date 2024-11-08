@@ -283,7 +283,7 @@ Func_1432c::
 .asm_14353
 	ld a, [wd140]
 	ld [wd412], a
-	ld a, [wd150 + OBJECT_SLOT_00]
+	ld a, [wd150 + OBJECT_SLOT_KIRBY]
 	add c
 	ld [wd413], a
 	ld bc, OBJECT_GROUP_1_BEGIN
@@ -401,7 +401,7 @@ Func_1432c::
 	jr nz, .asm_14466
 	ld a, $5a
 	ld [wd3f5], a
-	ld hl, wd1a0 + OBJECT_SLOT_00
+	ld hl, wd1a0 + OBJECT_SLOT_KIRBY
 	set OBJFLAG_BLINKING_F, [hl]
 	ld a, [hEngineFlags]
 	bit KABOOLA_BATTLE_F, a
@@ -505,7 +505,7 @@ Func_1432c::
 	ld de, MotionScript_10008
 	ld a, [wd411]
 	ld c, a
-	jp Func_21e6
+	jp SetObjectScripts
 .asm_144ee
 	ld a, [wd411]
 	ld c, a
@@ -528,7 +528,7 @@ Func_1432c::
 	ld hl, AnimScript_20026
 .asm_14515
 	ld de, MotionScript_10008
-	jp Func_21e6
+	jp SetObjectScripts
 .asm_1451b
 	jp DestroyObject
 .asm_1451e
@@ -567,7 +567,7 @@ Func_1432c::
 	ld c, a
 	ld hl, AnimScript_20005
 	ld de, MotionScript_10008
-	jp Func_21e6
+	jp SetObjectScripts
 
 .Func_1456d:
 	ld hl, wd1b0
@@ -733,7 +733,7 @@ Func_14600:
 	ld [wInvincibilityCounter + 0], a
 	ld a, HIGH(INVINCIBILITY_DURATION)
 	ld [wInvincibilityCounter + 1], a
-	ld hl, wd1a0 + OBJECT_SLOT_00
+	ld hl, wd1a0 + OBJECT_SLOT_KIRBY
 	set OBJFLAG_FLASHING_F, [hl]
 	ld a, MUSIC_INVINCIBILITY_CANDY
 	call PlayMusic
@@ -747,7 +747,7 @@ Func_14600:
 	res KIRBY6F_UNK6_F, [hl]
 	ld a, SFX_POWER_UP
 	call PlaySFX
-	ld hl, wd1a0 + OBJECT_SLOT_00
+	ld hl, wd1a0 + OBJECT_SLOT_KIRBY
 	set OBJFLAG_FLASHING_F, [hl]
 	ld a, LOW($3fc)
 	ld [wMintLeafCounter + 0], a
@@ -794,13 +794,13 @@ Func_14600:
 	ld hl, wd140
 	add hl, bc
 	ld a, [hl]
-	ld [wObjectXCoords + $1], a
+	ld [wObjectXCoords + OBJECT_SLOT_KIRBY + $1], a
 	sub $08
 	ld [wKirbyScreenX], a
 	ld hl, wd150
 	add hl, bc
 	ld a, [hl]
-	ld [wObjectYCoords + $1], a
+	ld [wObjectYCoords + OBJECT_SLOT_KIRBY + $1], a
 	sub $08
 	ld [wKirbyScreenY], a
 	jr .DestroyObject
@@ -1027,7 +1027,7 @@ Func_147e4::
 	jr nz, .asm_1488d
 	ld hl, AnimScript_20003
 	ld de, MotionScript_10000
-	call Func_21e6
+	call SetObjectScripts
 	ld hl, hKirbyFlags5
 	set KIRBY5F_UNK7_F, [hl]
 	ld hl, wd3f6
@@ -1113,7 +1113,7 @@ Func_148ea:
 	ld a, [wSCY]
 	and $0f
 	ld l, a
-	ld a, [wd150 + OBJECT_SLOT_00]
+	ld a, [wd150 + OBJECT_SLOT_KIRBY]
 	add l
 	sub $10
 	ld l, a
@@ -1394,7 +1394,7 @@ Func_14a5f::
 	add hl, bc
 	add hl, bc
 	add hl, bc
-	ld a, [wd150 + OBJECT_SLOT_00]
+	ld a, [wd150 + OBJECT_SLOT_KIRBY]
 	sub $05
 	ld c, a
 	ld a, [wSCY]

@@ -1325,7 +1325,7 @@ Func_4afb:
 	set OBJFLAG_0_F, [hl]
 	ld hl, AnimScript_20003
 	ld de, MotionScript_10000
-	call Func_21e6
+	call SetObjectScripts
 	ld hl, hKirbyFlags5
 	set 7, [hl]
 	ld hl, wd3f6
@@ -1343,20 +1343,22 @@ Func_4bb4::
 	set 3, [hl]
 	bit 7, [hl]
 	jr nz, .skip_overwrite_anim_script
+
+	; temporarily replaces Kirby's script AnimScript_20405
 	ld a, [wKirbyAnimScript + 1]
 	push af
 	ld a, [wKirbyAnimScript + 0]
 	push af
-	ld a, [wObjectAnimScriptPtrs + OBJECT_SLOT_00 + 0]
+	ld a, [wObjectAnimScriptPtrs + OBJECT_SLOT_KIRBY + 0]
 	push af
-	ld a, [wObjectAnimScriptPtrs + OBJECT_SLOT_00 + 1]
+	ld a, [wObjectAnimScriptPtrs + OBJECT_SLOT_KIRBY + 1]
 	push af
 	ld a, 1
-	ld [wObjectAnimScriptTimers + OBJECT_SLOT_00], a
+	ld [wObjectAnimScriptTimers + OBJECT_SLOT_KIRBY], a
 	ld a, LOW(AnimScript_20405)
-	ld [wObjectAnimScriptPtrs + OBJECT_SLOT_00 + 0], a
+	ld [wObjectAnimScriptPtrs + OBJECT_SLOT_KIRBY + 0], a
 	ld a, HIGH(AnimScript_20405)
-	ld [wObjectAnimScriptPtrs + OBJECT_SLOT_00 + 1], a
+	ld [wObjectAnimScriptPtrs + OBJECT_SLOT_KIRBY + 1], a
 
 .skip_overwrite_anim_script
 	ld bc, OBJECT_SLOT_01
@@ -1404,13 +1406,14 @@ Func_4bb4::
 	call DestroyObject
 	jr .next_object
 .asm_4c2f
+	; double the score to add
 	ld a, [wScoreToAdd]
 	add a
 	call AddToScore
 	ld hl, AnimScript_2036c
 .asm_4c39
 	ld de, MotionScript_10008
-	call Func_21e6
+	call SetObjectScripts
 .loop_wait
 	ld a, 1
 	call DoFrames
@@ -1432,13 +1435,13 @@ Func_4bb4::
 	ret nz ; skip loading backed up script
 
 	ld hl, hKirbyFlags5
-	res 5, [hl]
+	res KIRBY5F_UNK5_F, [hl]
 	ld a, 1
-	ld [wObjectAnimScriptTimers + OBJECT_SLOT_00], a
+	ld [wObjectAnimScriptTimers + OBJECT_SLOT_KIRBY], a
 	pop af
-	ld [wObjectAnimScriptPtrs + OBJECT_SLOT_00 + 1], a
+	ld [wObjectAnimScriptPtrs + OBJECT_SLOT_KIRBY + 1], a
 	pop af
-	ld [wObjectAnimScriptPtrs + OBJECT_SLOT_00 + 0], a
+	ld [wObjectAnimScriptPtrs + OBJECT_SLOT_KIRBY + 0], a
 	pop af
 	ld [wKirbyAnimScript + 0], a
 	pop af
@@ -1456,23 +1459,26 @@ Func_4c9b::
 	ld a, [hli]
 	or [hl]
 	jp nz, Func_4ced.set_carry
+
+	; halve HP
 	ld a, [wHP]
 	srl a
 	ld [wHP], a
+
 	ld a, $5a
 	ld [wd3f5], a
-	ld a, [wd1a0 + OBJECT_SLOT_00]
+
+	ld a, [wd1a0 + OBJECT_SLOT_KIRBY]
 	set OBJFLAG_BLINKING_F, a
-	ld [wd1a0 + OBJECT_SLOT_00], a
+	ld [wd1a0 + OBJECT_SLOT_KIRBY], a
 
 	ld a, SFX_LOSE_LIFE
 	call PlaySFX
 
 	ld de, MotionScript_10162
 	ld hl, AnimScript_201dc
-	ld bc, OBJECT_SLOT_00
-	call Func_21e6
-
+	ld bc, OBJECT_SLOT_KIRBY
+	call SetObjectScripts
 .asm_4cd0
 	ld a, 1
 	call DoFrames
@@ -1496,20 +1502,26 @@ Func_4ced::
 	ld a, [hli]
 	or [hl]
 	jr nz, .set_carry
+
+	; halve HP
 	ld a, [wHP]
 	srl a
 	ld [wHP], a
+
 	ld a, SFX_LOSE_LIFE
 	call PlaySFX
+
 	ld a, $5a
 	ld [wd3f5], a
-	ld a, [wd1a0 + OBJECT_SLOT_00]
+
+	ld a, [wd1a0 + OBJECT_SLOT_KIRBY]
 	set OBJFLAG_BLINKING_F, a
-	ld [wd1a0 + OBJECT_SLOT_00], a
+	ld [wd1a0 + OBJECT_SLOT_KIRBY], a
+
 	ld de, MotionScript_10149
 	ld hl, AnimScript_201dc
-	ld bc, OBJECT_SLOT_00
-	call Func_21e6
+	ld bc, OBJECT_SLOT_KIRBY
+	call SetObjectScripts
 .asm_4d20
 	ld a, 1
 	call DoFrames

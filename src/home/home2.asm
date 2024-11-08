@@ -630,7 +630,7 @@ Func_21dc::
 ; - hl = anim script
 ; - de = motion script
 ; - bc = object slot
-Func_21e6::
+SetObjectScripts::
 	push hl
 	ld hl, wObjectMotionScriptPtrs
 	add hl, bc
@@ -796,9 +796,9 @@ ASSERT Data_1c000 == Data_3c000
 	set 4, b
 .asm_230e
 	ld a, b
-	ld [wd1a0 + OBJECT_SLOT_00], a
+	ld [wd1a0 + OBJECT_SLOT_KIRBY], a
 	xor a
-	ld [wd190 + OBJECT_SLOT_00], a
+	ld [wd190 + OBJECT_SLOT_KIRBY], a
 	ret
 
 ClearObjectsExceptSlot00::
@@ -838,7 +838,7 @@ ClearConsumedItems::
 ; - e = y position
 ; - hl = scripts and object data
 CreateObject_Groups1And2:
-	ld c, OBJECT_SLOT_00
+	ld c, OBJECT_SLOT_KIRBY
 	ld b, OBJECT_GROUP_1_END
 	jr CreateObject
 
@@ -2420,11 +2420,11 @@ Func_2b26:
 	ld a, [hl]
 	cp $a8
 	jr nc, .asm_2bc7
-	ld d, $90
+	ld d, SCRN_Y
 	ld a, [wd3f2]
 	and a
 	jr z, .asm_2c0e
-	ld d, $aa
+	ld d, SCRN_Y + 26
 .asm_2c0e
 	ld hl, wObjectYCoords + $1
 	add hl, bc
@@ -2747,7 +2747,7 @@ Func_2d2d:
 	ld a, b
 	pop bc
 	ld c, a
-	cp $90
+	cp SCRN_Y
 	call nc, .Func_2de3
 	ld a, [wd06b + 1]
 	and a
@@ -2906,7 +2906,7 @@ Func_2e9c::
 	call nz, Func_4bb4
 
 	ld b, NUM_OBJECT_SLOTS
-	ld c, OBJECT_SLOT_00
+	ld c, OBJECT_SLOT_KIRBY
 .loop_objects_1
 	push bc
 	ld b, $00
@@ -2938,7 +2938,7 @@ Func_2e9c::
 	ld a, $05
 	bankswitch
 	ld b, NUM_OBJECT_SLOTS
-	ld c, OBJECT_SLOT_00
+	ld c, OBJECT_SLOT_KIRBY
 .loop_objects_2
 	push bc
 	ld b, $00
@@ -2968,7 +2968,7 @@ Func_2e9c::
 
 .asm_2f15
 	ld b, NUM_OBJECT_SLOTS
-	ld c, OBJECT_SLOT_00
+	ld c, OBJECT_SLOT_KIRBY
 .loop_objects_3
 	push bc
 	ld b, $00
@@ -3095,9 +3095,9 @@ Func_2fdf:
 	call .Func_3047
 	ret nz
 	; turn off flashing and blinking
-	ld a, [wd1a0 + OBJECT_SLOT_00]
+	ld a, [wd1a0 + OBJECT_SLOT_KIRBY]
 	and ~(OBJFLAG_FLASHING | OBJFLAG_BLINKING)
-	ld [wd1a0 + OBJECT_SLOT_00], a
+	ld [wd1a0 + OBJECT_SLOT_KIRBY], a
 	ld hl, wd3be
 	bit 0, [hl]
 	jr z, .asm_3030
@@ -3120,7 +3120,7 @@ Func_2fdf:
 	ret nz
 
 .clear_kirby_flashing
-	ld hl, wd1a0 + OBJECT_SLOT_00
+	ld hl, wd1a0 + OBJECT_SLOT_KIRBY
 	res OBJFLAG_FLASHING_F, [hl]
 	ret
 
@@ -3577,6 +3577,8 @@ Func_319f:
 	ld h, a
 	ret
 
+; output:
+; - hl = wd3e7 + a
 .Func_331c:
 	ld l, a
 	ld a, [wd3e7 + 0]
@@ -3897,7 +3899,7 @@ Func_375d::
 	ret
 
 Func_3768::
-	ld hl, wd1a0 + OBJECT_SLOT_00
+	ld hl, wd1a0 + OBJECT_SLOT_KIRBY
 	set OBJFLAG_FLASHING_F, [hl]
 	ld a, KIRBY6F_UNK6
 	ld [hKirbyFlags6], a
@@ -3972,7 +3974,7 @@ Func_37b9:
 	add hl, bc
 	add hl, bc
 	add hl, bc
-	ld a, [wd150 + OBJECT_SLOT_00]
+	ld a, [wd150 + OBJECT_SLOT_KIRBY]
 	ld c, a
 	ld a, [wSCY]
 	and $0f
@@ -4306,7 +4308,7 @@ Func_3d2d::
 Func_3d32::
 	call Func_3d48
 	ld a, OBJECT_ACTIVE
-	ld [wObjectActiveStates + OBJECT_SLOT_00], a
+	ld [wObjectActiveStates + OBJECT_SLOT_KIRBY], a
 	call Func_139b
 	ld a, BANK("Bank 1")
 	bankswitch

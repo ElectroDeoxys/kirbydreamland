@@ -152,9 +152,9 @@ Func_326::
 	ldh [hKirbyFlags2], a
 	bit KIRBY2F_HOVER_F, a
 	jr nz, .asm_373
-	ld a, [wd190 + OBJECT_SLOT_00]
+	ld a, [wd190 + OBJECT_SLOT_KIRBY]
 	set 7, a
-	ld [wd190 + OBJECT_SLOT_00], a
+	ld [wd190 + OBJECT_SLOT_KIRBY], a
 .asm_373
 	and $ff ^ (KIRBY1F_WALK | KIRBY1F_GROUNDED | KIRBY1F_AIRBORNE)
 	ldh [hKirbyFlags1], a
@@ -452,8 +452,8 @@ ProcessDoorConnection::
 	ld hl, AnimScript_2056c
 .asm_57b
 	ld de, MotionScript_157a
-	ld bc, OBJECT_SLOT_00
-	call Func_21e6
+	ld bc, OBJECT_SLOT_KIRBY
+	call SetObjectScripts
 
 	xor a
 	ldh [hVBlankFlags], a
@@ -1396,9 +1396,9 @@ Func_9de:
 	ldh a, [hKirbyFlags3]
 	and $ff ^ (KIRBY3F_UNK0 | KIRBY3F_UNK1 | KIRBY3F_UNK6 | KIRBY3F_LAND)
 	ldh [hKirbyFlags3], a
-	ld a, [wd190 + OBJECT_SLOT_00]
+	ld a, [wd190 + OBJECT_SLOT_KIRBY]
 	res 7, a
-	ld [wd190 + OBJECT_SLOT_00], a
+	ld [wd190 + OBJECT_SLOT_KIRBY], a
 	ldh a, [hKirbyFlags2]
 	and $ff ^ (KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_UNK5 | KIRBY2F_UNK6)
 	ldh [hKirbyFlags2], a
@@ -1824,11 +1824,11 @@ Func_caf:
 	cp d
 	jr nz, .asm_f3b
 .scroll_locked
-	ld c, $90
+	ld c, SCRN_Y
 	ldh a, [hKirbyFlags6]
 	bit KIRBY6F_UNK6_F, a
 	jr z, .asm_f3b
-	ld c, $80
+	ld c, SCRN_Y - 16
 .asm_f3b
 	ld a, [wKirbyScreenY]
 	add b
@@ -1841,7 +1841,7 @@ Func_caf:
 	cp $08
 	jp nz, .asm_1021
 	ld a, [wKirbyScreenY]
-	cp $90
+	cp SCRN_Y
 	jp c, .asm_1021
 	jp .asm_f92
 .asm_f5a
@@ -1872,7 +1872,7 @@ Func_caf:
 	dec b
 	jr nz, .asm_f80
 	ld a, [wKirbyScreenY]
-	cp $90
+	cp SCRN_Y
 	jp nz, .asm_1019
 .asm_f92
 	ldh a, [hKirbyFlags1]
@@ -2000,15 +2000,15 @@ Func_1062::
 	ld a, [wSCX]
 	inc a
 	ld c, a
-.asm_1072
+.loop_align
 	ld a, c
 	call Is4BitUnaligned
-	jr nc, .asm_109b
+	jr nc, .aligned
 	inc c
 	dec b
-	jr nz, .asm_1072
+	jr nz, .loop_align
 	ld a, [wKirbyScreenX]
-	cp $98
+	cp SCRN_X - 8
 	jp nz, .asm_1102
 .asm_1084
 	ld a, [wd063]
@@ -2021,7 +2021,7 @@ Func_1062::
 	inc a
 	ld [wd051], a
 	jr .asm_1102
-.asm_109b
+.aligned
 	ldh a, [hEngineFlags]
 	bit ENGINEF_UNK7_F, a
 	jr nz, .asm_10ac
@@ -2041,7 +2041,7 @@ Func_1062::
 	ld b, a
 .asm_10b8
 	ld a, [wSCX]
-	add $a0
+	add SCRN_X
 	add b
 	ld [wXCoord], a
 	ld a, [wSCY]
@@ -2229,7 +2229,7 @@ Func_11de:
 	ld b, a
 .asm_120a
 	ld a, [wSCX]
-	add $a0
+	add SCRN_X
 	add b
 	ld [wXCoord], a
 	xor a
@@ -2517,14 +2517,14 @@ Func_139b::
 	ld a, $01
 	ld [rROMB0 + $100], a
 
-	; set coordinates of object in OBJECT_SLOT_00
+	; set coordinates of object in OBJECT_SLOT_KIRBY
 	; to Kirby's screen coordinates
 	ld a, [wKirbyScreenX]
 	add $08
-	ld [wObjectXCoords + $1], a
+	ld [wObjectXCoords + OBJECT_SLOT_KIRBY + $1], a
 	ld a, [wKirbyScreenY]
 	add $08
-	ld [wObjectYCoords + $1], a
+	ld [wObjectYCoords + OBJECT_SLOT_KIRBY + $1], a
 
 	ld de, MotionScript_157a
 	ldh a, [hKirbyFlags3]
@@ -2778,8 +2778,8 @@ Func_139b::
 	ld a, c
 	ld l, a
 	ld [wKirbyAnimScript + 1], a
-	ld bc, OBJECT_SLOT_00
-	call Func_21e6
+	ld bc, OBJECT_SLOT_KIRBY
+	call SetObjectScripts
 
 .finish
 	ld a, [wROMBank]
