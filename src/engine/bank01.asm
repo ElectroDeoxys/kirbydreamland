@@ -1327,7 +1327,7 @@ Func_4afb:
 	ld de, MotionScript_10000
 	call SetObjectScripts
 	ld hl, hKirbyFlags5
-	set 7, [hl]
+	set KIRBY5F_UNK7_F, [hl]
 	ld hl, wd3f6
 	inc [hl]
 	ld a, $ff

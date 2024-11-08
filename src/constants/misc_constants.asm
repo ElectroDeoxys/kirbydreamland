@@ -101,6 +101,74 @@ DEF OBJFLAG_BLINKING EQU 1 << OBJFLAG_BLINKING_F
 DEF OBJFLAG_6 EQU 1 << OBJFLAG_6_F
 DEF OBJFLAG_7 EQU 1 << OBJFLAG_7_F
 
+	const_def $70
+	const VEL_RIGHT_0000 ; $70
+	const VEL_RIGHT_0004 ; $71
+	const VEL_RIGHT_0008 ; $72
+	const VEL_RIGHT_0016 ; $73
+	const VEL_RIGHT_0032 ; $74
+	const VEL_RIGHT_0064 ; $75
+	const VEL_RIGHT_0128 ; $76
+	const VEL_RIGHT_0192 ; $77
+	const VEL_RIGHT_0256 ; $78
+	const VEL_RIGHT_0320 ; $79
+	const VEL_RIGHT_0512 ; $7a
+	const VEL_RIGHT_0768 ; $7b
+	const VEL_RIGHT_1024 ; $7c
+	const VEL_RIGHT_1536 ; $7d
+	const VEL_RIGHT_2048 ; $7e
+	const VEL_RIGHT_4096 ; $7f
+	const VEL_LEFT_0000 ; $80
+	const VEL_LEFT_0004 ; $81
+	const VEL_LEFT_0008 ; $82
+	const VEL_LEFT_0016 ; $83
+	const VEL_LEFT_0032 ; $84
+	const VEL_LEFT_0064 ; $85
+	const VEL_LEFT_0128 ; $86
+	const VEL_LEFT_0192 ; $87
+	const VEL_LEFT_0256 ; $88
+	const VEL_LEFT_0320 ; $89
+	const VEL_LEFT_0512 ; $8a
+	const VEL_LEFT_0768 ; $8b
+	const VEL_LEFT_1024 ; $8c
+	const VEL_LEFT_1536 ; $8d
+	const VEL_LEFT_2048 ; $8e
+	const VEL_LEFT_4096 ; $8f
+
+	const_def $70
+	const VEL_DOWN_0000 ; $70
+	const VEL_DOWN_0004 ; $71
+	const VEL_DOWN_0008 ; $72
+	const VEL_DOWN_0016 ; $73
+	const VEL_DOWN_0032 ; $74
+	const VEL_DOWN_0064 ; $75
+	const VEL_DOWN_0128 ; $76
+	const VEL_DOWN_0192 ; $77
+	const VEL_DOWN_0256 ; $78
+	const VEL_DOWN_0320 ; $79
+	const VEL_DOWN_0512 ; $7a
+	const VEL_DOWN_0768 ; $7b
+	const VEL_DOWN_1024 ; $7c
+	const VEL_DOWN_1536 ; $7d
+	const VEL_DOWN_2048 ; $7e
+	const VEL_DOWN_4096 ; $7f
+	const VEL_UP_0000 ; $80
+	const VEL_UP_0004 ; $81
+	const VEL_UP_0008 ; $82
+	const VEL_UP_0016 ; $83
+	const VEL_UP_0032 ; $84
+	const VEL_UP_0064 ; $85
+	const VEL_UP_0128 ; $86
+	const VEL_UP_0192 ; $87
+	const VEL_UP_0256 ; $88
+	const VEL_UP_0320 ; $89
+	const VEL_UP_0512 ; $8a
+	const VEL_UP_0768 ; $8b
+	const VEL_UP_1024 ; $8c
+	const VEL_UP_1536 ; $8d
+	const VEL_UP_2048 ; $8e
+	const VEL_UP_4096 ; $8f
+
 ; flags for hPalFadeFlags
 	const_def 2
 	const FADE_COLOR_F ; 2

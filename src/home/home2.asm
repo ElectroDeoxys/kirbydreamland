@@ -2018,38 +2018,38 @@ SetObjectVelocity:
 	ret
 
 Data_2977:
-	dw  $0000 ; $70
-	dw  $0004 ; $71
-	dw  $0008 ; $72
-	dw  $0010 ; $73
-	dw  $0020 ; $74
-	dw  $0040 ; $75
-	dw  $0080 ; $76
-	dw  $00c0 ; $77
-	dw  $0100 ; $78
-	dw  $0140 ; $79
-	dw  $0200 ; $7a
-	dw  $0300 ; $7b
-	dw  $0400 ; $7c
-	dw  $0600 ; $7d
-	dw  $0800 ; $7e
-	dw  $1000 ; $7f
-	dw -$0000 ; $80
-	dw -$0004 ; $81
-	dw -$0008 ; $82
-	dw -$0010 ; $83
-	dw -$0020 ; $84
-	dw -$0040 ; $85
-	dw -$0080 ; $86
-	dw -$00c0 ; $87
-	dw -$0100 ; $88
-	dw -$0140 ; $89
-	dw -$0200 ; $8a
-	dw -$0300 ; $8b
-	dw -$0400 ; $8c
-	dw -$0600 ; $8d
-	dw -$0800 ; $8e
-	dw -$1000 ; $8f
+	dw     0 ; VEL_RIGHT_0000 | VEL_DOWN_0000
+	dw     4 ; VEL_RIGHT_0004 | VEL_DOWN_0004
+	dw     8 ; VEL_RIGHT_0008 | VEL_DOWN_0008
+	dw    16 ; VEL_RIGHT_0016 | VEL_DOWN_0016
+	dw    32 ; VEL_RIGHT_0032 | VEL_DOWN_0032
+	dw    64 ; VEL_RIGHT_0064 | VEL_DOWN_0064
+	dw   128 ; VEL_RIGHT_0128 | VEL_DOWN_0128
+	dw   192 ; VEL_RIGHT_0192 | VEL_DOWN_0192
+	dw   256 ; VEL_RIGHT_0256 | VEL_DOWN_0256
+	dw   320 ; VEL_RIGHT_0320 | VEL_DOWN_0320
+	dw   512 ; VEL_RIGHT_0512 | VEL_DOWN_0512
+	dw   768 ; VEL_RIGHT_0768 | VEL_DOWN_0768
+	dw  1024 ; VEL_RIGHT_1024 | VEL_DOWN_1024
+	dw  1536 ; VEL_RIGHT_1536 | VEL_DOWN_1536
+	dw  2048 ; VEL_RIGHT_2048 | VEL_DOWN_2048
+	dw  4096 ; VEL_RIGHT_4096 | VEL_DOWN_4096
+	dw -   0 ; VEL_LEFT_0000  | VEL_UP_0000
+	dw -   4 ; VEL_LEFT_0004  | VEL_UP_0004
+	dw -   8 ; VEL_LEFT_0008  | VEL_UP_0008
+	dw -  16 ; VEL_LEFT_0016  | VEL_UP_0016
+	dw -  32 ; VEL_LEFT_0032  | VEL_UP_0032
+	dw -  64 ; VEL_LEFT_0064  | VEL_UP_0064
+	dw - 128 ; VEL_LEFT_0128  | VEL_UP_0128
+	dw - 192 ; VEL_LEFT_0192  | VEL_UP_0192
+	dw - 256 ; VEL_LEFT_0256  | VEL_UP_0256
+	dw - 320 ; VEL_LEFT_0320  | VEL_UP_0320
+	dw - 512 ; VEL_LEFT_0512  | VEL_UP_0512
+	dw - 768 ; VEL_LEFT_0768  | VEL_UP_0768
+	dw -1024 ; VEL_LEFT_1024  | VEL_UP_1024
+	dw -1536 ; VEL_LEFT_1536  | VEL_UP_1536
+	dw -2048 ; VEL_LEFT_2048  | VEL_UP_2048
+	dw -4096 ; VEL_LEFT_4096  | VEL_UP_4096
 
 Func_29b7:
 	ld a, c
