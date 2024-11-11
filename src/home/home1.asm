@@ -2893,36 +2893,36 @@ AnimScript_162b:
 	frame 10, $5a81
 	frame 10, $5a99
 	frame 10, $5a69
-	set_flags hKirbyFlags2, $78, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_SPIT | KIRBY2F_HOVER, $00
 	set_value wd094, $01
 	script_delay 1
 
 AnimScript_163f:
-	set_flags hKirbyFlags2, $ff, KIRBY2F_UNK1
+	set_flags hKirbyFlags2, $00, KIRBY2F_UNK1
 	frame  6, $5bc9
-	set_flags hKirbyFlags3, $7f, $00
-	set_flags hKirbyFlags2, $fc, $00
+	set_flags hKirbyFlags3, KIRBY3F_LAND, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1, $00
 	script_delay 1
 
 AnimScript_1653:
-	set_flags hKirbyFlags2, $ff, KIRBY2F_UNK1
+	set_flags hKirbyFlags2, $00, KIRBY2F_UNK1
 	frame  6, $5bd1
-	set_flags hKirbyFlags3, $7f, $00
-	set_flags hKirbyFlags2, $fc, $00
+	set_flags hKirbyFlags3, KIRBY3F_LAND, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1, $00
 	script_delay 1
 
 AnimScript_1667:
-	set_flags hKirbyFlags2, $ff, KIRBY2F_UNK1
+	set_flags hKirbyFlags2, $00, KIRBY2F_UNK1
 	frame  6, $5bd9
-	set_flags hKirbyFlags3, $7f, $00
-	set_flags hKirbyFlags2, $fc, $00
+	set_flags hKirbyFlags3, KIRBY3F_LAND, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1, $00
 	script_delay 1
 
 AnimScript_167b:
-	set_flags hKirbyFlags2, $ff, KIRBY2F_UNK1
+	set_flags hKirbyFlags2, $00, KIRBY2F_UNK1
 	frame  6, $5bdd
-	set_flags hKirbyFlags3, $7f, $00
-	set_flags hKirbyFlags2, $fc, $00
+	set_flags hKirbyFlags3, KIRBY3F_LAND, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1, $00
 	script_delay 1
 
 AnimScript_168f:
@@ -2947,13 +2947,13 @@ AnimScript_16ab:
 	frame  0, $5b69
 
 AnimScript_16ae:
-	set_flags hKirbyFlags2, $ff, KIRBY2F_UNK1
+	set_flags hKirbyFlags2, $00, KIRBY2F_UNK1
 	frame  5, $5b69
 	frame  6, $5bc9
-	set_flags hKirbyFlags3, $63, $00
-	set_flags hKirbyFlags2, $f8, $00
+	set_flags hKirbyFlags3, KIRBY3F_UNK2 | KIRBY3F_DIVE | KIRBY3F_DUCK | KIRBY3F_LAND, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_SPIT, $00
 	set_value wd064, $02
-	set_flags hKirbyFlags2, $fc, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1, $00
 	script_delay 1
 
 AnimScript_16ce:
@@ -2966,31 +2966,31 @@ AnimScript_16ce:
 AnimScript_16de:
 	frame  8, $5a71
 	frame  6, $5a69
-	set_flags hKirbyFlags2, $60, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_SPIT | KIRBY2F_MOUTHFUL | KIRBY2F_INHALE | KIRBY2F_HOVER, $00
 	frame  8, $5ae1
 	set_value wd094, $01
 	script_delay 1
 
 AnimScript_16f2:
-	set_flags hKirbyFlags2, $ec, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_INHALE, $00
 	frame  0, $5979
 
 AnimScript_16fa:
-	set_flags hKirbyFlags2, $ec, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_INHALE, $00
 .loop
 	frame 12, $59a9
 	frame 12, $59c1
 	jump_rel .loop
 
 AnimScript_1707:
-	set_flags hKirbyFlags2, $ec, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_INHALE, $00
 	frame  0, $59d9
 
 AnimScript_170f:
 	frame  5, $5ab1
 	frame  5, $5a71
 	frame  6, $5a69
-	set_flags hKirbyFlags2, $60, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_SPIT | KIRBY2F_MOUTHFUL | KIRBY2F_INHALE | KIRBY2F_HOVER, $00
 	set_value wd094, $01
 	script_delay 1
 
@@ -3007,8 +3007,8 @@ AnimScript_1732:
 	frame  5, $5991
 	frame  3, $5ac9
 	frame  3, $5ae1
-	set_flags hKirbyFlags2, $60, $00
-	set_flags hKirbyFlags4, $ef, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_SPIT | KIRBY2F_MOUTHFUL | KIRBY2F_INHALE | KIRBY2F_HOVER, $00
+	set_flags hKirbyFlags4, KIRBY5F_DAMAGE_KNOCK_BACK_LEFT, $00
 	script_delay 1
 
 AnimScript_1747:
@@ -3019,13 +3019,13 @@ AnimScript_1747:
 
 AnimScript_1753:
 	frame  5, $5a69
-	set_flags hKirbyFlags6, $ef, $00
+	set_flags hKirbyFlags6, KIRBY6F_UNK4, $00
 	script_delay 1
 
 AnimScript_175d:
 	frame  3, $5a81
 	frame  3, $5a99
-	set_flags hKirbyFlags6, $fb, $00
+	set_flags hKirbyFlags6, KIRBY6F_UNK2, $00
 	script_delay 1
 
 AnimScript_176a:
@@ -3072,36 +3072,36 @@ AnimScript_17b2:
 	frame 10, $5b01
 	frame 10, $5b19
 	frame 10, $5ae9
-	set_flags hKirbyFlags2, $78, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_SPIT | KIRBY2F_HOVER, $00
 	set_value wd094, $01
 	script_delay 1
 
 AnimScript_17c6:
-	set_flags hKirbyFlags2, $ff, KIRBY2F_UNK1
+	set_flags hKirbyFlags2, $00, KIRBY2F_UNK1
 	frame  6, $5bad
-	set_flags hKirbyFlags3, $7f, $00
-	set_flags hKirbyFlags2, $fc, $00
+	set_flags hKirbyFlags3, KIRBY3F_LAND, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1, $00
 	script_delay 1
 
 AnimScript_17da:
-	set_flags hKirbyFlags2, $ff, KIRBY2F_UNK1
+	set_flags hKirbyFlags2, $00, KIRBY2F_UNK1
 	frame  6, $5bb5
-	set_flags hKirbyFlags3, $7f, $00
-	set_flags hKirbyFlags2, $fc, $00
+	set_flags hKirbyFlags3, KIRBY3F_LAND, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1, $00
 	script_delay 1
 
 AnimScript_17ee:
-	set_flags hKirbyFlags2, $ff, KIRBY2F_UNK1
+	set_flags hKirbyFlags2, $00, KIRBY2F_UNK1
 	frame  6, $5bbd
-	set_flags hKirbyFlags3, $7f, $00
-	set_flags hKirbyFlags2, $fc, $00
+	set_flags hKirbyFlags3, KIRBY3F_LAND, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1, $00
 	script_delay 1
 
 AnimScript_1802:
-	set_flags hKirbyFlags2, $ff, KIRBY2F_UNK1
+	set_flags hKirbyFlags2, $00, KIRBY2F_UNK1
 	frame  6, $5bc1
-	set_flags hKirbyFlags3, $7f, $00
-	set_flags hKirbyFlags2, $fc, $00
+	set_flags hKirbyFlags3, KIRBY3F_LAND, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1, $00
 	script_delay 1
 
 AnimScript_1816:
@@ -3126,13 +3126,13 @@ AnimScript_1832:
 	frame  0, $5b71
 
 AnimScript_1835:
-	set_flags hKirbyFlags2, $ff, KIRBY2F_UNK1
+	set_flags hKirbyFlags2, $00, KIRBY2F_UNK1
 	frame  5, $5b71
 	frame  6, $5bad
-	set_flags hKirbyFlags3, $63, $00
-	set_flags hKirbyFlags2, $f8, $00
+	set_flags hKirbyFlags3, KIRBY3F_UNK2 | KIRBY3F_DIVE | KIRBY3F_DUCK | KIRBY3F_LAND, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_SPIT, $00
 	set_value wd064, $02
-	set_flags hKirbyFlags2, $fc, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1, $00
 	script_delay 1
 
 AnimScript_1855:
@@ -3145,31 +3145,31 @@ AnimScript_1855:
 AnimScript_1865:
 	frame  8, $5af1
 	frame  6, $5ae9
-	set_flags hKirbyFlags2, $60, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_SPIT | KIRBY2F_MOUTHFUL | KIRBY2F_INHALE | KIRBY2F_HOVER, $00
 	frame  8, $5b61
 	set_value wd094, $01
 	script_delay 1
 
 AnimScript_1879:
-	set_flags hKirbyFlags2, $ec, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_INHALE, $00
 	frame  0, $59f1
 
 AnimScript_1881:
-	set_flags hKirbyFlags2, $ec, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_INHALE, $00
 .loop
 	frame 12, $5a21
 	frame 12, $5a39
 	jump_rel .loop
 
 AnimScript_188e:
-	set_flags hKirbyFlags2, $ec, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_INHALE, $00
 	frame  0, $5a51
 
 AnimScript_1896:
 	frame  5, $5b31
 	frame  5, $5af1
 	frame  6, $5ae9
-	set_flags hKirbyFlags2, $60, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_SPIT | KIRBY2F_MOUTHFUL | KIRBY2F_INHALE | KIRBY2F_HOVER, $00
 	set_value wd094, $01
 	script_delay 1
 
@@ -3186,8 +3186,8 @@ AnimScript_18b9:
 	frame  5, $5a09
 	frame  3, $5b49
 	frame  3, $5b61
-	set_flags hKirbyFlags2, $60, $00
-	set_flags hKirbyFlags4, $ef, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_SPIT | KIRBY2F_MOUTHFUL | KIRBY2F_INHALE | KIRBY2F_HOVER, $00
+	set_flags hKirbyFlags4, KIRBY5F_DAMAGE_KNOCK_BACK_LEFT, $00
 	script_delay 1
 
 AnimScript_18ce:
@@ -3198,13 +3198,13 @@ AnimScript_18ce:
 
 AnimScript_18da:
 	frame  5, $5ae9
-	set_flags hKirbyFlags6, $ef, $00
+	set_flags hKirbyFlags6, KIRBY6F_UNK4, $00
 	script_delay 1
 
 AnimScript_18e4:
 	frame  3, $5b01
 	frame  3, $5b19
-	set_flags hKirbyFlags6, $fb, $00
+	set_flags hKirbyFlags6, KIRBY6F_UNK2, $00
 	script_delay 1
 
 AnimScript_18f1:

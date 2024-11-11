@@ -155,11 +155,11 @@ AnimScript_201dc:
 	script_repeat_end
 	frame  1, $58d9
 	script_exec Func_4ac1
-	set_flags hKirbyFlags5, $df, $00
+	set_flags hKirbyFlags5, KIRBY5F_UNK5, $00
 	script_delay 0
 
 AnimScript_20206:
-	set_flags hEngineFlags, $ff, ENGINEF_UNK5
+	set_flags hEngineFlags, $00, ENGINEF_UNK5
 	jump_if_flags hKirbyFlags6, KIRBY6F_UNK7, $4008 ; bug?
 	set_motion_script MotionScript_135d2
 	create_object AnimScript_203be, MotionScript_10008, Data_3425
@@ -226,7 +226,7 @@ AnimScript_202b6::
 	script_call $48b8
 	script_call $48b8
 	frame  1, $58d9
-	set_flags hKirbyFlags5, $fe, KIRBY5F_UNK0
+	set_flags hKirbyFlags5, KIRBY5F_UNK0, KIRBY5F_UNK0
 	script_delay 1
 
 AnimScript_20311::
@@ -259,13 +259,13 @@ AnimScript_20311::
 	script_call $48cb
 	script_call $48cb
 	frame  1, $5909
-	set_flags hKirbyFlags5, $ff, KIRBY5F_UNK0
+	set_flags hKirbyFlags5, $00, KIRBY5F_UNK0
 	script_delay 1
 
 AnimScript_2036c:
 	create_object AnimScript_20a01, MotionScript_10008, Data_3421
 	frame 16, $58b8
-	set_flags wd3bf, $ff, $02
+	set_flags wd3bf, $00, $02
 	script_end
 
 AnimScript_2037c:
@@ -285,7 +285,7 @@ AnimScript_2037c:
 	frame  2, $5ccd
 	frame  2, $5cd9
 	frame  2, $5ce5
-	set_flags wd3bf, $ff, $02
+	set_flags wd3bf, $00, $02
 	script_end
 ; 0x203b2
 
@@ -780,13 +780,13 @@ AnimScript_20baf:
 	jump_abs AnimScript_20000
 
 AnimScript_20bb7:
-	set_flags wd3be, $01, $00
+	set_flags wd3be, $fe, $00
 	script_exec Func_4adf
 	set_custom_func Func_141b1, AnimScript_20ba2
 	set_scripts AnimScript_208fc, MotionScript_10302
 
 AnimScript_20bc9:
-	set_flags wd3be, $01, $00
+	set_flags wd3be, $fe, $00
 	play_sfx SFX_00
 	script_exec Func_4ae6
 	set_scripts AnimScript_20925, MotionScript_10370
@@ -1386,11 +1386,11 @@ AnimScript_21195:
 	script_f3
 	set_position $14, $14
 	set_value wBossHP, 0
-	set_flags hHUDFlags, $ff, HUD_UPDATE_LABEL | HUD_BOSS_BATTLE
+	set_flags hHUDFlags, $00, HUD_UPDATE_LABEL | HUD_BOSS_BATTLE
 .loop
 	frame 10, $58b8
 	inc_value wBossHP
-	set_flags hHUDFlags, $ff, HUD_UPDATE_FIRST_ROW
+	set_flags hHUDFlags, $00, HUD_UPDATE_FIRST_ROW
 	play_sfx SFX_RESTORE_HP
 	dec_value wBossHPCounter
 	jump_if_equal wBossHPCounter, 0, .end

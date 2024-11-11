@@ -84,7 +84,7 @@ MotionScript_1011d:
 	set_anim_script AnimScript_15f1
 	set_velocities  1, 0, 0
 	script_exec Func_4ac1
-	set_flags hKirbyFlags3, $f3, $00
+	set_flags hKirbyFlags3, KIRBY3F_UNK2 | KIRBY3F_DIVE, $00
 	set_value wd3dd, $01
 	set_velocities  0, 0, 0
 
@@ -97,23 +97,23 @@ MotionScript_10137:
 	set_velocities  0, 0, VEL_DOWN_0768
 
 MotionScript_10149:
-	set_flags hKirbyFlags5, $ff, KIRBY5F_UNK5
+	set_flags hKirbyFlags5, $00, KIRBY5F_UNK5
 	script_repeat 3
 	set_velocities  1, VEL_LEFT_0512, VEL_UP_1024
 	set_velocities  1, VEL_RIGHT_0512, VEL_UP_0512
 	script_repeat_end
 	script_exec Func_4ac1
-	set_flags hKirbyFlags5, $df, $00
+	set_flags hKirbyFlags5, KIRBY5F_UNK5, $00
 	set_velocities  0, 0, 0
 
 MotionScript_10162:
-	set_flags hKirbyFlags5, $ff, KIRBY5F_UNK5
+	set_flags hKirbyFlags5, $00, KIRBY5F_UNK5
 	script_repeat 4
 	set_velocities  1, VEL_LEFT_0512, VEL_DOWN_0320
 	set_velocities  1, VEL_RIGHT_0512, VEL_DOWN_0320
 	script_repeat_end
 	script_exec Func_4ac1
-	set_flags hKirbyFlags5, $df, $00
+	set_flags hKirbyFlags5, KIRBY5F_UNK5, $00
 	set_velocities  0, 0, 0
 ; 0x1017b
 
@@ -158,7 +158,7 @@ MotionScript_10276:
 	set_anim_script AnimScript_15f1
 	set_velocities  1, 0, 0
 	script_exec Func_4ac1
-	set_flags hKirbyFlags5, $fb, $00
+	set_flags hKirbyFlags5, KIRBY5F_UNK2, $00
 	set_velocities  0, 0, 0
 
 MotionScript_1028c::
@@ -224,7 +224,7 @@ SECTION "Bank 4@4370", ROMX[$4370], BANK[$4]
 
 MotionScript_10370:
 	set_value wd3bf, $01
-	set_flags hKirbyFlags5, $ff, KIRBY5F_UNK5
+	set_flags hKirbyFlags5, $00, KIRBY5F_UNK5
 	jump_if_not_flags hKirbyFlags3, KIRBY3F_FACE_LEFT, .script_1038d
 	position_offset 0, 6
 	set_velocities  2, VEL_LEFT_0512, 0
@@ -311,7 +311,7 @@ MotionScript_106a2:
 	set_velocities  8, 0, VEL_DOWN_0768
 MotionScript_106dc:
 	script_exec Func_4ac1
-	set_flags hKirbyFlags3, $f3, $00
+	set_flags hKirbyFlags3, KIRBY3F_UNK2 | KIRBY3F_DIVE, $00
 	set_value wd3dd, $01
 	set_velocities  0, 0, 0
 

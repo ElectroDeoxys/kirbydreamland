@@ -163,7 +163,7 @@ ENDM
 MACRO set_flags
 	db SCRIPT_SET_FLAGS
 	dw \1 ; address
-	db \2 ; value 1
+	db $ff ^ (\2) ; value 1
 	db \3 ; value 2
 ENDM
 
