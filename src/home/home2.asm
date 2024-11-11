@@ -2018,38 +2018,39 @@ SetObjectVelocity:
 	ret
 
 Data_2977:
-	dw     0 ; VEL_RIGHT_0000 | VEL_DOWN_0000
-	dw     4 ; VEL_RIGHT_0004 | VEL_DOWN_0004
-	dw     8 ; VEL_RIGHT_0008 | VEL_DOWN_0008
-	dw    16 ; VEL_RIGHT_0016 | VEL_DOWN_0016
-	dw    32 ; VEL_RIGHT_0032 | VEL_DOWN_0032
-	dw    64 ; VEL_RIGHT_0064 | VEL_DOWN_0064
-	dw   128 ; VEL_RIGHT_0128 | VEL_DOWN_0128
-	dw   192 ; VEL_RIGHT_0192 | VEL_DOWN_0192
-	dw   256 ; VEL_RIGHT_0256 | VEL_DOWN_0256
-	dw   320 ; VEL_RIGHT_0320 | VEL_DOWN_0320
-	dw   512 ; VEL_RIGHT_0512 | VEL_DOWN_0512
-	dw   768 ; VEL_RIGHT_0768 | VEL_DOWN_0768
-	dw  1024 ; VEL_RIGHT_1024 | VEL_DOWN_1024
-	dw  1536 ; VEL_RIGHT_1536 | VEL_DOWN_1536
-	dw  2048 ; VEL_RIGHT_2048 | VEL_DOWN_2048
-	dw  4096 ; VEL_RIGHT_4096 | VEL_DOWN_4096
-	dw -   0 ; VEL_LEFT_0000  | VEL_UP_0000
-	dw -   4 ; VEL_LEFT_0004  | VEL_UP_0004
-	dw -   8 ; VEL_LEFT_0008  | VEL_UP_0008
-	dw -  16 ; VEL_LEFT_0016  | VEL_UP_0016
-	dw -  32 ; VEL_LEFT_0032  | VEL_UP_0032
-	dw -  64 ; VEL_LEFT_0064  | VEL_UP_0064
-	dw - 128 ; VEL_LEFT_0128  | VEL_UP_0128
-	dw - 192 ; VEL_LEFT_0192  | VEL_UP_0192
-	dw - 256 ; VEL_LEFT_0256  | VEL_UP_0256
-	dw - 320 ; VEL_LEFT_0320  | VEL_UP_0320
-	dw - 512 ; VEL_LEFT_0512  | VEL_UP_0512
-	dw - 768 ; VEL_LEFT_0768  | VEL_UP_0768
-	dw -1024 ; VEL_LEFT_1024  | VEL_UP_1024
-	dw -1536 ; VEL_LEFT_1536  | VEL_UP_1536
-	dw -2048 ; VEL_LEFT_2048  | VEL_UP_2048
-	dw -4096 ; VEL_LEFT_4096  | VEL_UP_4096
+	dw        0.00 ; VEL_RIGHT_0_00   | VEL_DOWN_0_00
+	dw  DIV(1, 64) ; VEL_RIGHT_1_64TH | VEL_DOWN_1_64TH
+	dw  DIV(1, 32) ; VEL_RIGHT_1_32TH | VEL_DOWN_1_32TH
+	dw  DIV(1, 16) ; VEL_RIGHT_1_16TH | VEL_DOWN_1_16TH
+	dw  DIV(1,  8) ; VEL_RIGHT_1_8TH  | VEL_DOWN_1_8TH
+	dw  DIV(1,  4) ; VEL_RIGHT_0_25   | VEL_DOWN_0_25
+	dw        0.50 ; VEL_RIGHT_0_50   | VEL_DOWN_0_50
+	dw        0.75 ; VEL_RIGHT_0_75   | VEL_DOWN_0_75
+	dw        1.00 ; VEL_RIGHT_1_00   | VEL_DOWN_1_00
+	dw        1.25 ; VEL_RIGHT_1_25   | VEL_DOWN_1_25
+	dw        2.00 ; VEL_RIGHT_2_00   | VEL_DOWN_2_00
+	dw        3.00 ; VEL_RIGHT_3_00   | VEL_DOWN_3_00
+	dw        4.00 ; VEL_RIGHT_4_00   | VEL_DOWN_4_00
+	dw        6.00 ; VEL_RIGHT_6_00   | VEL_DOWN_6_00
+	dw        8.00 ; VEL_RIGHT_8_00   | VEL_DOWN_8_00
+	dw       16.00 ; VEL_RIGHT_16_00  | VEL_DOWN_16_00
+
+	dw       -0.00 ; VEL_LEFT_0_00    | VEL_UP_0_00
+	dw -DIV(1, 64) ; VEL_LEFT_1_64TH  | VEL_UP_1_64TH
+	dw -DIV(1, 32) ; VEL_LEFT_1_32TH  | VEL_UP_1_32TH
+	dw -DIV(1, 16) ; VEL_LEFT_1_16TH  | VEL_UP_1_16TH
+	dw -DIV(1,  8) ; VEL_LEFT_1_8TH   | VEL_UP_1_8TH
+	dw -DIV(1,  4) ; VEL_LEFT_0_25    | VEL_UP_0_25
+	dw       -0.50 ; VEL_LEFT_0_50    | VEL_UP_0_50
+	dw       -0.75 ; VEL_LEFT_0_75    | VEL_UP_0_75
+	dw       -1.00 ; VEL_LEFT_1_00    | VEL_UP_1_00
+	dw       -1.25 ; VEL_LEFT_1_25    | VEL_UP_1_25
+	dw       -2.00 ; VEL_LEFT_2_00    | VEL_UP_2_00
+	dw       -3.00 ; VEL_LEFT_3_00    | VEL_UP_3_00
+	dw       -4.00 ; VEL_LEFT_4_00    | VEL_UP_4_00
+	dw       -6.00 ; VEL_LEFT_6_00    | VEL_UP_6_00
+	dw       -8.00 ; VEL_LEFT_8_00    | VEL_UP_8_00
+	dw      -16.00 ; VEL_LEFT_16_00   | VEL_UP_16_00
 
 Func_29b7:
 	ld a, c
@@ -2591,8 +2592,8 @@ Func_2ce5:
 ; adds the bc-th word (velocity) in [hl]
 ; to the bc-th 3-byte value (coordinate) in [de]
 ; input:
-; - hl = object coordinates
-; - de = object velocities
+; - hl = object velocities
+; - de = object coordinates
 ; - bc = object slot
 ApplyObjectVelocity:
 	push hl
