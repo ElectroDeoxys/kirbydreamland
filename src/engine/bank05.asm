@@ -64,7 +64,7 @@ Func_1401a:
 	call Func_148dc
 	inc hl
 .asm_14075
-	ld a, [hl]
+	ld a, [hl] ; OBJ_SCORE
 	call AddToScore
 	dec d
 	jr nz, .asm_14075
@@ -176,10 +176,10 @@ Func_14105:
 	ret
 
 .data
-	dw  -$40
-	dw -$100
-	dw   $40
-	dw  $100
+	dw -0.25
+	dw -1.00
+	dw  0.25
+	dw  1.00
 ; 0x14148
 
 SECTION "Bank 5@415e", ROMX[$415e], BANK[$5]
@@ -347,9 +347,9 @@ Func_1432c::
 	ld h, [hl]
 	ld l, a
 	inc hl
-	ld d, [hl]
+	ld d, [hl] ; OBJ_UNK1
 	inc hl
-	ld e, [hl]
+	ld e, [hl] ; OBJ_UNK2
 	ld bc, OBJECT_GROUP_1_BEGIN
 .asm_143d7
 	push de
@@ -382,14 +382,14 @@ Func_1432c::
 	call Func_148dc
 	dec hl
 	dec hl
-	ld a, [hli]
+	ld a, [hli] ; OBJ_DAMAGE
 	ld [wDamage], a
 	inc hl
-	ld a, [hli]
+	ld a, [hli] ; OBJ_UNK5
 	ld [wd40f], a
-	ld a, [hli]
+	ld a, [hli] ; OBJ_SCORE
 	ld [wScoreToAdd], a
-	ld a, [hli]
+	ld a, [hli] ; OBJ_UNK7
 	ld [wd40d + 0], a
 	ld a, [hli]
 	ld [wd40d + 1], a
@@ -463,14 +463,14 @@ Func_1432c::
 	call Func_148dc
 	dec hl
 	dec hl
-	ld a, [hli]
+	ld a, [hli] ; OBJ_DAMAGE
 	ld [wDamage], a
 	inc hl
-	ld a, [hli]
+	ld a, [hli] ; OBJ_UNK5
 	ld [wd40f], a
-	ld a, [hli]
+	ld a, [hli] ; OBJ_SCORE
 	ld [wScoreToAdd], a
-	ld a, [hli]
+	ld a, [hli] ; OBJ_UNK7
 	ld [wd40d + 0], a
 	ld a, [hli]
 	ld [wd40d + 1], a
@@ -640,7 +640,7 @@ Func_1432c::
 	ld h, [hl]
 	ld l, a
 	inc hl
-	ld a, [hli]
+	ld a, [hli] ; OBJ_UNK1
 	add d
 	ld d, a
 	push hl
@@ -655,7 +655,7 @@ Func_1432c::
 	cp d
 	pop hl
 	ret nc
-	ld a, [hli]
+	ld a, [hli] ; OBJ_UNK2
 	add e
 	ld e, a
 	push hl
@@ -677,11 +677,11 @@ Func_14600:
 	add hl, bc
 	add hl, bc
 	ld a, [hli]
-	add $03
+	add OBJ_ITEM_ID
 	ld h, [hl]
 	incc h
 	ld l, a
-	ld a, [hl]
+	ld a, [hl] ; OBJ_ITEM_ID
 	and a
 	jr z, .InvincibilityCandy ; INVINCIBILITY_CANDY
 	dec a
@@ -975,10 +975,10 @@ Func_147e4::
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
+REPT OBJ_ITEM_ID
 	inc hl
-	inc hl
-	inc hl
-	ld a, [hl]
+ENDR
+	ld a, [hl] ; OBJ_ITEM_ID
 	cp WARP_STAR
 	jr z, .asm_1488d
 	cp ITEM_8
@@ -988,7 +988,7 @@ Func_147e4::
 	jr .asm_14844
 .asm_1483d
 	call Func_148dc
-	bit 1, [hl]
+	bit 1, [hl] ; OBJ_UNK5
 	jr z, .asm_1488d
 .asm_14844
 	ld hl, wd150
@@ -1090,7 +1090,7 @@ Func_148dc:
 	add hl, bc
 	add hl, bc
 	ld a, [hli]
-	add $05
+	add OBJ_UNK5
 	ld h, [hl]
 	incc h
 	ld l, a

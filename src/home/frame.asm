@@ -13,7 +13,7 @@ DoFrames::
 	push af
 	xor a
 	ld [wVirtualOAMSize], a
-	call Func_2e9c
+	call UpdateObjects
 	call ClearSprites
 	pop af
 	pop hl

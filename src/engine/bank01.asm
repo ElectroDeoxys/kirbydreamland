@@ -1386,16 +1386,16 @@ Func_4bb4::
 	add hl, bc
 	add hl, bc
 	ld a, [hli]
-	add $05
+	add OBJ_UNK5
 	ld h, [hl]
 	incc h
 	ld l, a
-	ld a, [hli]
+	ld a, [hli] ; OBJ_UNK5
 	bit 3, a
 	jr nz, .next_object
 	bit 0, a
 	jr z, .next_object
-	ld a, [hl]
+	ld a, [hl] ; OBJ_SCORE
 	ld [wScoreToAdd], a
 	ld hl, wd1a0
 	add hl, bc
@@ -1610,7 +1610,7 @@ _StartLevelAfterContinue::
 
 	call Func_21fb
 	call Func_139b
-	call Func_2e9c
+	call UpdateObjects
 	call StopTimerAndSwitchOnLCD
 	call FadeIn
 

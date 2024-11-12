@@ -13,7 +13,7 @@ ASSERT BANK(Func_1432c) == BANK(Func_147e4)
 	bankswitch
 
 	call Func_319d
-	call Func_2e9c
+	call UpdateObjects
 	call ClearSprites
 
 	ld hl, hKirbyFlags6
@@ -61,7 +61,7 @@ ASSERT BANK(Func_1432c) == BANK(Func_147e4)
 	push hl
 	xor a
 	ld [wVirtualOAMSize], a
-	call Func_2e9c
+	call UpdateObjects
 	call ClearSprites
 	pop hl
 	ldh a, [hKirbyFlags5]
@@ -430,7 +430,7 @@ ProcessDoorConnection::
 	push bc
 	xor a
 	ld [wVirtualOAMSize], a
-	call Func_2e9c
+	call UpdateObjects
 	call ClearSprites
 	pop bc
 	ld a, [wd094]
@@ -532,7 +532,7 @@ ProcessDoorConnection::
 	xor a
 	call Func_21fb
 	call Func_139b
-	call Func_2e9c
+	call UpdateObjects
 	call ClearSprites
 	call StopTimerAndSwitchOnLCD
 	call FadeIn
@@ -570,7 +570,7 @@ FadeOut::
 .loop_wait_fade
 	xor a
 	ld [wVirtualOAMSize], a
-	call Func_2e9c
+	call UpdateObjects
 	call ClearSprites
 	wait_vblank
 	ldh a, [hPalFadeFlags]
@@ -2793,7 +2793,7 @@ SetFullHP::
 	ret
 
 MotionScript_157a::
-	set_velocities 0, $00, $00
+	set_velocities 0, 0, 0
 
 AnimScriptPointers_157d:
 	dw AnimScript_15f1 ; KIRBY_IDLE

@@ -566,7 +566,7 @@ Func_183bf::
 	xor a
 	call Func_21fb
 	call ClearSprites
-	call Func_2e9c
+	call UpdateObjects
 	ld a, [wStage]
 	cp MT_DEDEDE
 	jr nz, .asm_184eb
@@ -731,7 +731,7 @@ Pause::
 .show_sprites
 	xor a
 	ld [wVirtualOAMSize], a
-	call Func_2e9c
+	call UpdateObjects
 	call Func_139b
 	call ClearSprites
 	ld a, [hVBlankFlags]
@@ -954,7 +954,7 @@ GameOver:
 	call FadeIn
 	xor a
 	ld [wVirtualOAMSize], a
-	call Func_2e9c
+	call UpdateObjects
 
 	; wait 280 frames ~ 4.5 seconds
 	; unless Start is pressed
@@ -2078,7 +2078,7 @@ Func_19098:
 	push af
 	xor a
 	ld [wVirtualOAMSize], a
-	call Func_2e9c
+	call UpdateObjects
 	call ClearSprites
 	pop af
 	ld [wd06b + 1], a

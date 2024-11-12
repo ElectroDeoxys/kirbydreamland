@@ -2052,26 +2052,27 @@ Data_2977:
 	dw       -8.00 ; VEL_LEFT_8_00    | VEL_UP_8_00
 	dw      -16.00 ; VEL_LEFT_16_00   | VEL_UP_16_00
 
-Func_29b7:
+; c = object slot
+ExecuteObjectScripts:
 	ld a, c
-	cp $0d
-	jr nc, .asm_29c3
+	cp OBJECT_GROUP_2_BEGIN
+	jr nc, .group_2
 	ld hl, wd1b0
 	add hl, bc
 	bit 1, [hl]
 	ret nz
-.asm_29c3
+.group_2
 	ld a, c
 	and a
-	jr nz, .asm_29ce
+	jr nz, .not_kirby
 	ld hl, hEngineFlags
 	bit PAUSE_ANIMATION_F, [hl]
-	jr nz, .asm_29d4
-.asm_29ce
+	jr nz, .pause_animation_active
+.not_kirby
 	ld hl, hKirbyFlags4
 	bit KIRBY4F_UNK2_F, [hl]
 	ret nz
-.asm_29d4
+.pause_animation_active
 	call Func_2ce5
 	ret c
 
@@ -2562,10 +2563,11 @@ Func_2b26:
 	pop bc
 	ret
 
+; c = object slot
 Func_2ce5:
 	ld a, c
 	and a
-	jr z, .no_carry
+	jr z, .no_carry ; is Kirby
 	ld hl, wd3bf
 	bit 3, [hl]
 	jr z, .no_carry
@@ -2577,7 +2579,7 @@ Func_2ce5:
 	add hl, bc
 	add hl, bc
 	ld a, [hli]
-	add $05
+	add OBJ_UNK5
 	ld h, [hl]
 	incc h
 	ld l, a
@@ -2896,12 +2898,12 @@ MultiplyHLBy16::
 	ld a, h
 	ret
 
-Func_2e9c::
+UpdateObjects::
 	ld a, [wROMBank]
 	push af
 	ld a, $01
 	bankswitch
-	call Func_2fdf
+	call UpdatePowerUpCounters
 	ld hl, wd3bf
 	bit 0, [hl]
 	call nz, Func_4bb4
@@ -2923,7 +2925,7 @@ Func_2e9c::
 	ld [hl], a
 	jr .next_object
 .run_scripts
-	call Func_29b7
+	call ExecuteObjectScripts
 .next_object
 	pop bc
 	inc c
@@ -3071,29 +3073,30 @@ Func_2f34:
 .data_2
 	db -1,  1,  1,  1, -1, -1, -1,  1,  1, -1, -2,  2,  2,  2, -2, -2, -2,  2,  2, -2, -1,  1,  1,  1, -1, -1, -1,  1,  1, -1
 
-Func_2fdf:
+; handles ticking down both Invincibility and Mint Leaf counters
+UpdatePowerUpCounters:
 	ld a, [hKirbyFlags4]
 	bit KIRBY4F_UNK2_F, a
 	ret nz
 	ld a, [hKirbyFlags5]
 	bit KIRBY5F_UNK5_F, a
 	ret nz
-	call .Func_3059
+	call .RestoreLevelMusicWhenCounterIsLow
 	ld a, [wd3f5]
 	and a
-	jr z, .asm_2fff
+	jr z, .skip_reset_blinking
 	dec a
 	ld [wd3f5], a
-	jr nz, .asm_2fff
-	ld hl, wd1a0
+	jr nz, .skip_reset_blinking
+	ld hl, wd1a0 + OBJECT_SLOT_KIRBY
 	res OBJFLAG_BLINKING_F, [hl]
-.asm_2fff
-	call .Func_303a
+.skip_reset_blinking
+	call .TickInvincibilityCounter
 	ld a, [hEngineFlags]
 	bit KABOOLA_BATTLE_F, a
-	ret nz
+	ret nz ; skip rest of routine
 	ld hl, wMintLeafCounter
-	call .Func_3047
+	call .TickCounter
 	ret nz
 	; turn off flashing and blinking
 	ld a, [wd1a0 + OBJECT_SLOT_KIRBY]
@@ -3115,49 +3118,54 @@ Func_2fdf:
 	ld [hKirbyFlags6], a
 	jr .clear_kirby_flashing
 
-.Func_303a:
+.TickInvincibilityCounter:
 	ld hl, wInvincibilityCounter
-	call .Func_3047
+	call .TickCounter
 	ret nz
-
 .clear_kirby_flashing
 	ld hl, wd1a0 + OBJECT_SLOT_KIRBY
 	res OBJFLAG_FLASHING_F, [hl]
 	ret
 
-.Func_3047:
+; ticks down 16-bit counter in [hl]
+; returns z if ticks down to 0
+.TickCounter:
 	ld a, [hli]
 	or [hl]
-	jr nz, .asm_304e
-	or $01
+	jr nz, .non_zero
+	; already 0, return nz
+	or $1
 	ret
-.asm_304e
+.non_zero
 	dec hl
 	dec [hl]
 	ld a, [hli]
 	cp $ff
-	jr nz, .asm_3056
+	jr nz, .ticked_down
 	dec [hl]
-.asm_3056
+.ticked_down
+	; return z if just got 0
 	ld a, [hld]
 	or [hl]
 	ret
 
-.Func_3059:
+.RestoreLevelMusicWhenCounterIsLow:
 	ld a, [wMintLeafCounter + 1]
 	ld e, a
 	ld a, [wInvincibilityCounter + 1]
 	or e
-	ret nz
+	ret nz ; still counting down
+	; get the larger of both counters
 	ld a, [wMintLeafCounter + 0]
 	ld e, a
 	ld a, [wInvincibilityCounter + 0]
 	cp e
-	jr nc, .asm_306d
+	jr nc, .got_larger
 	ld a, e
-.asm_306d
-	cp $78
+.got_larger
+	cp 120
 	ret nz
+	; restore level music
 	ld a, [wMusic]
 	jp PlayMusic
 
@@ -3768,11 +3776,11 @@ MACRO object_properties
 	db \1 ; ?
 	db \2 ; ?
 	db \3 ; ?
-	db \4 ; damage dealt to Kirby
+	db \4 ; item ID or damage dealt to Kirby
 	db \5 ; ?
 	db \6 ; ?
 	db (\7) / 10 ; score when defeated
-	dw \8 ; )
+	dw \8 ; 
 ENDM
 
 SECTION "Home@3421", ROM0[$3421]
