@@ -158,7 +158,7 @@ MotionScript_10276:
 	set_anim_script AnimScript_15f1
 	set_velocities  1, 0, 0
 	script_exec Func_4ac1
-	set_flags hKirbyFlags5, KIRBY5F_UNK2, $00
+	set_flags hKirbyFlags5, KIRBY5F_TRIGGER_TRANSITION, $00
 	set_velocities  0, 0, 0
 
 MotionScript_1028c::
@@ -741,18 +741,18 @@ MotionScript_10abd:
 
 MotionScript_10ae8:
 .loop
-	jump_if_equal wd140, $56, $4b00
+	jump_if_equal wd140, $56, MotionScript_10b00
 	set_velocities  1, VEL_LEFT_0_50, 0
 	jump_abs .loop
 
 MotionScript_10af4:
 .loop
-	jump_if_equal wd140, $5a, $4b00
+	jump_if_equal wd140, $5a, MotionScript_10b00
 	set_velocities  1, VEL_RIGHT_0_50, 0
 	jump_abs .loop
 
 MotionScript_10b00:
-	set_scripts $4771, MotionScript_10008
+	set_scripts AnimScript_20771, MotionScript_10008
 
 MotionScript_10b05:
 	set_velocities 79, VEL_LEFT_0_25, 0

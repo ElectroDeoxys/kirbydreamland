@@ -3,7 +3,7 @@ Func_4000::
 	bit KIRBY2F_UNK6_F, a
 	call z, Func_8dc
 	ld a, [wKirbyScreenX]
-	cp $98
+	cp SCRN_X - 8
 	jr c, .not_on_right_edge
 	; on right edge of screen
 	call StopKirbyWalking
@@ -144,13 +144,13 @@ Func_4000::
 	cp d
 	jr nz, .asm_4117
 .asm_4115
-	ld c, $98
+	ld c, SCRN_X - 8
 .asm_4117
 	ld a, [wKirbyScreenDeltaX]
 	ld b, a
 	ld a, [wKirbyScreenX]
 	add b
-	cp $98
+	cp SCRN_X - 8
 	jr nc, .asm_4149
 	ld b, a
 	ld a, c
@@ -196,7 +196,7 @@ Func_4000::
 	ldh [hKirbyFlags1], a
 .asm_416f
 	call StopKirbyWalking
-	ld a, $98
+	ld a, SCRN_X - 8
 	ld [wKirbyScreenX], a
 	xor a
 	ld [wd063], a
@@ -551,7 +551,7 @@ KirbyControl::
 	jp nz, .asm_4492
 	ld hl, hKirbyFlags4
 	res KIRBY4F_UNK1_F, [hl]
-	and $ff ^ (KIRBY4F_UNK3)
+	and $ff ^ (KIRBY2F_MOUTHFUL)
 	jr nz, .asm_4492
 	ldh a, [hKirbyFlags3]
 	and KIRBY3F_UNK2 | KIRBY3F_DUCK | KIRBY3F_LAND

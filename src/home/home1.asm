@@ -42,13 +42,12 @@ ASSERT BANK(Func_1432c) == BANK(Func_147e4)
 	call GetScoreDigitTiles
 .asm_29b
 	ldh a, [hKirbyFlags5]
-	bit KIRBY5F_UNK2_F, a
-	jp z, .asm_2ad ; can be jr
-	ld a, BANK(Func_183bf)
+	bit KIRBY5F_TRIGGER_TRANSITION_F, a
+	jp z, .no_transition ; can be jr
+	ld a, BANK(HandleStageTransition)
 	bankswitch
-	jp Func_183bf
-
-.asm_2ad
+	jp HandleStageTransition
+.no_transition
 	ld hl, hKirbyFlags5
 	bit KIRBY5F_UNK5_F, [hl]
 	jr z, .asm_2d1

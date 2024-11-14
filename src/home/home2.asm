@@ -4311,7 +4311,7 @@ DoorConnections:
 
 Func_3d2d::
 	ld hl, hKirbyFlags5
-	res KIRBY5F_UNK2_F, [hl]
+	res KIRBY5F_TRIGGER_TRANSITION_F, [hl]
 ;	fallthrough
 
 Func_3d32::

@@ -788,7 +788,7 @@ Func_14600:
 
 .WarpStar
 	ld hl, hKirbyFlags5
-	set KIRBY5F_UNK2_F, [hl]
+	set KIRBY5F_TRIGGER_TRANSITION_F, [hl]
 	ld a, SFX_WARP_STAR
 	call PlaySFX
 	ld hl, wd140
@@ -807,7 +807,7 @@ Func_14600:
 
 .asm_14704
 	ld hl, hKirbyFlags5
-	set KIRBY5F_UNK2_F, [hl]
+	set KIRBY5F_TRIGGER_TRANSITION_F, [hl]
 	ld a, SFX_POWER_UP
 	call PlaySFX
 

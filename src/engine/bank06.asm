@@ -184,14 +184,14 @@ StartStage::
 
 	ld a, [wStage]
 	cp MT_DEDEDE
-	jr nz, .asm_1824a
+	jr nz, .no_transition
 	ld hl, hKirbyFlags5
-	res KIRBY5F_UNK2_F, [hl]
+	res KIRBY5F_TRIGGER_TRANSITION_F, [hl]
 	ld a, [hKirbyFlags6]
 	bit KIRBY6F_UNK7_F, a
-	jr nz, .asm_1824a
-	set KIRBY5F_UNK2_F, [hl]
-.asm_1824a
+	jr nz, .no_transition
+	set KIRBY5F_TRIGGER_TRANSITION_F, [hl]
+.no_transition
 	ld hl, hKirbyFlags6
 	res KIRBY6F_UNK7_F, [hl]
 	ld a, [hKirbyFlags6]
@@ -416,7 +416,7 @@ StageIntroDurations:
 	dw 712 ; MT_DEDEDE
 	assert_table_length NUM_STAGES
 
-Func_183bf::
+HandleStageTransition::
 	ld a, [wd041]
 	ld [wd042], a
 	call .Func_1844f
@@ -469,9 +469,9 @@ Func_183bf::
 	bit 2, a
 	call nz, .SetArea
 	bit 4, a
-	call nz, .Func_18473
+	call nz, .SetKirbyMotionScript
 	bit 5, a
-	jp nz, Func_1886c
+	jp nz, Epilogue
 	bit 3, a
 	jr z, .asm_18440
 ; next stage
@@ -511,7 +511,7 @@ Func_183bf::
 	call SetObjectScripts
 	ret
 
-.Func_18473:
+.SetKirbyMotionScript:
 	push af
 	ld a, [hli]
 	ld e, a
@@ -1064,7 +1064,7 @@ GameOver:
 	call ResetTimer
 	jp Reset
 
-Func_1886c:
+Epilogue:
 	ld a, $ff
 	ld [wd096], a
 	call ClearSprites
@@ -2182,15 +2182,15 @@ StageTransistions:
 
 .GreenGreens0:
 	trans_wait 60
-	trans_move_kirby_1  $80, 10
-	trans_move_kirby_1 $100, 10
-	trans_move_kirby_1 $200, 10
-	trans_move_kirby_1 $300, 11
-	trans_move_kirby_1 $400, 86
-	trans_move_kirby_1 $300, 11
-	trans_move_kirby_1 $200, 10
-	trans_move_kirby_1 $100, 10
-	trans_move_kirby_1  $80, 10
+	trans_move_kirby_1 0.5, 10
+	trans_move_kirby_1 1.0, 10
+	trans_move_kirby_1 2.0, 10
+	trans_move_kirby_1 3.0, 11
+	trans_move_kirby_1 4.0, 86
+	trans_move_kirby_1 3.0, 11
+	trans_move_kirby_1 2.0, 10
+	trans_move_kirby_1 1.0, 10
+	trans_move_kirby_1 0.5, 10
 	trans_wait 120
 	trans_change_area GREEN_GREENS_2, $01, $01, 1
 	trans_set_motion_script MotionScript_1000b, 1
@@ -2205,15 +2205,15 @@ StageTransistions:
 
 .CastleLololo07:
 	trans_wait 60
-	trans_move_kirby_1  $80, 10
-	trans_move_kirby_1 $100, 10
-	trans_move_kirby_1 $200, 10
-	trans_move_kirby_1 $300, 11
-	trans_move_kirby_1 $400, 86
-	trans_move_kirby_1 $300, 11
-	trans_move_kirby_1 $200, 10
-	trans_move_kirby_1 $100, 10
-	trans_move_kirby_1  $80, 10
+	trans_move_kirby_1 0.5, 10
+	trans_move_kirby_1 1.0, 10
+	trans_move_kirby_1 2.0, 10
+	trans_move_kirby_1 3.0, 11
+	trans_move_kirby_1 4.0, 86
+	trans_move_kirby_1 3.0, 11
+	trans_move_kirby_1 2.0, 10
+	trans_move_kirby_1 1.0, 10
+	trans_move_kirby_1 0.5, 10
 	trans_wait 30
 	trans_change_area CASTLE_LOLOLO_08, $01, $01, 1
 	trans_set_motion_script MotionScript_10014, 1
@@ -2238,13 +2238,13 @@ StageTransistions:
 
 .FloatIslands5:
 	trans_wait 160
-	trans_move_kirby_2 $100, 10
-	trans_move_kirby_2 $200, 10
-	trans_move_kirby_2 $300, 10
-	trans_move_kirby_2 $400, 34
-	trans_move_kirby_2 $300, 10
-	trans_move_kirby_2 $200, 10
-	trans_move_kirby_2 $100, 10
+	trans_move_kirby_2 1.0, 10
+	trans_move_kirby_2 2.0, 10
+	trans_move_kirby_2 3.0, 10
+	trans_move_kirby_2 4.0, 34
+	trans_move_kirby_2 3.0, 10
+	trans_move_kirby_2 2.0, 10
+	trans_move_kirby_2 1.0, 10
 	trans_wait 140
 	trans_change_area FLOAT_ISLANDS_6, $01, $01, 1
 	trans_set_motion_script MotionScript_1002f, 1
@@ -2262,11 +2262,11 @@ StageTransistions:
 
 .BubbleClouds4:
 	trans_wait 100
-	trans_move_kirby_2  $80, 10
-	trans_move_kirby_2 $100, 10
-	trans_move_kirby_2 $200, 10
-	trans_move_kirby_2 $300, 11
-	trans_move_kirby_2 $400, 44
+	trans_move_kirby_2 0.5, 10
+	trans_move_kirby_2 1.0, 10
+	trans_move_kirby_2 2.0, 10
+	trans_move_kirby_2 3.0, 11
+	trans_move_kirby_2 4.0, 44
 	trans_wait 120
 	trans_change_area BUBBLY_CLOUDS_5, $01, $01, 1
 	trans_set_motion_script MotionScript_100bf, 1
@@ -2280,14 +2280,14 @@ StageTransistions:
 	trans_next_stage 1
 
 .MtDedede0:
-	trans_move_kirby_1 $1c0, 240
-	trans_move_kirby_1 $1c0, 188
-	trans_move_kirby_1 $180,  10
-	trans_move_kirby_1 $140,  10
-	trans_move_kirby_1 $100,  10
-	trans_move_kirby_1 $0c0,  10
-	trans_move_kirby_1  $80,  10
-	trans_move_kirby_1  $40,  10
+	trans_move_kirby_1 1.75, 240
+	trans_move_kirby_1 1.75, 188
+	trans_move_kirby_1 1.50,  10
+	trans_move_kirby_1 1.25,  10
+	trans_move_kirby_1 1.00,  10
+	trans_move_kirby_1 0.75,  10
+	trans_move_kirby_1 0.50,  10
+	trans_move_kirby_1 0.25,  10
 	trans_move_kirby_1   $0,  10
 	trans_wait 50
 	trans_end 1
