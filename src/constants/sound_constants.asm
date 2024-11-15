@@ -33,7 +33,7 @@ DEF NUM_MUSICS EQU const_value
 	const SFX_ENTER_DOOR ; $07
 	const SFX_08 ; $08
 	const SFX_POWER_UP ; $09
-	const SFX_10 ; $0a
+	const SFX_EXPLOSION ; $0a
 	const SFX_RESTORE_HP ; $0b
 	const SFX_WARP_STAR ; $0c
 	const SFX_13 ; $0d

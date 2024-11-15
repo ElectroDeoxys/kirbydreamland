@@ -73,11 +73,9 @@ wd03d:: ; d03d
 wArea:: ; d03e
 	db
 
-wd03f:: ; d03f
-	db
-
-wd040:: ; d040
-	db
+; level dimensions in blocks (2x2 tiles)
+wLevelWidth::  db ; d03f
+wLevelHeight:: db ; d040
 
 wd041:: ; d041
 	db
@@ -309,7 +307,7 @@ wObjectMotionScriptTimers:: ; d170
 wObjectAnimScriptTimers:: ; d180
 	ds NUM_OBJECT_SLOTS
 
-wd190:: ; d190
+wObjectPropertyFlags:: ; d190
 	ds NUM_OBJECT_SLOTS
 
 wd1a0:: ; d1a0
@@ -460,7 +458,8 @@ wMintLeafCounter:: ; d3df
 wInvincibilityCounter:: ; d3e1
 	dw
 
-wd3e3:: ; d3e3
+; equal to wLevelWidth in pixels
+wLevelWidthPx:: ; d3e3
 	dw
 
 wd3e5:: dw ; d3e5

@@ -348,7 +348,7 @@ Data_1c447:
 Data_1c451:
 	object $26, $00, $d0, $00, AnimScript_20647, MotionScript_10d16, WaddleDeeProperties
 Data_1c45b:
-	object $0a, $00, $e0, $00, AnimScript_20f14, MotionScript_10fdf, Data_3429, 6
+	object $0a, $00, $e0, $00, AnimScript_PoppyBrosJr, MotionScript_PoppyBrosJr, Data_3429, 6
 ; unreferenced
 	object $37, $06, $f8, $00, AnimScript_2063b, MotionScript_10cf4, WaddleDeeProperties
 Data_1c470:

@@ -14,7 +14,7 @@ MotionScript_10014:
 	set_position $08, $52
 	set_anim_script AnimScript_20bfe
 	set_velocities  1, 0, 0
-	create_object AnimScript_203be, MotionScript_102e0, Data_3425
+	create_object AnimScript_Explosion, MotionScript_102e0, Data_3425
 	set_velocities 10, VEL_RIGHT_2_00, VEL_UP_1_8TH
 	set_velocities 10, VEL_RIGHT_1_00, VEL_DOWN_1_8TH
 	jump_abs MotionScript_106dc
@@ -652,7 +652,7 @@ MotionScript_109a3:
 	set_velocities  2, VEL_RIGHT_0_00, VEL_UP_2_00
 	set_velocities  2, VEL_RIGHT_0_00, VEL_DOWN_2_00
 	script_repeat_end
-	create_object AnimScript_203be, $4a13, Data_3425
+	create_object AnimScript_Explosion, $4a13, Data_3425
 	script_repeat 8
 	set_velocities  6, VEL_RIGHT_0_00, VEL_DOWN_1_8TH
 	create_object AnimScript_208f1, $4a13, Data_3425
@@ -741,13 +741,13 @@ MotionScript_10abd:
 
 MotionScript_10ae8:
 .loop
-	jump_if_equal wd140, $56, MotionScript_10b00
+	jump_if_equal wd140 + OBJECT_SLOT_KIRBY, $56, MotionScript_10b00
 	set_velocities  1, VEL_LEFT_0_50, 0
 	jump_abs .loop
 
 MotionScript_10af4:
 .loop
-	jump_if_equal wd140, $5a, MotionScript_10b00
+	jump_if_equal wd140 + OBJECT_SLOT_KIRBY, $5a, MotionScript_10b00
 	set_velocities  1, VEL_RIGHT_0_50, 0
 	jump_abs .loop
 
@@ -1282,9 +1282,9 @@ MotionScript_10f9c:
 	set_velocities  6, VEL_LEFT_1_16TH, VEL_DOWN_0_50
 	set_velocities  0, 0, 0
 
-MotionScript_10fdf:
+MotionScript_PoppyBrosJr:
 	set_velocities 45, 0, VEL_DOWN_2_00
-MotionScript_10fe2:
+.JumpShort:
 	script_repeat 2
 	set_velocities  8, VEL_RIGHT_0_50, VEL_UP_1_00
 	set_velocities  8, VEL_RIGHT_0_50, VEL_UP_0_50
@@ -1297,7 +1297,7 @@ MotionScript_10fe2:
 	script_repeat_end
 	set_velocities  0, 0, 0
 
-MotionScript_11000:
+.JumpMid:
 	set_velocities  4, VEL_LEFT_0_75, VEL_UP_2_00
 	set_velocities  4, VEL_LEFT_0_75, VEL_UP_2_00
 	set_velocities  4, VEL_LEFT_0_75, VEL_UP_1_00
@@ -1324,7 +1324,7 @@ MotionScript_11000:
 	set_velocities  4, VEL_RIGHT_0_75, VEL_DOWN_2_00
 	set_velocities  0, 0, 0
 
-MotionScript_1104b:
+.JumpLong:
 	set_velocities  5, VEL_LEFT_2_00, VEL_UP_2_00
 	set_velocities  5, VEL_LEFT_2_00, VEL_UP_2_00
 	set_velocities  5, VEL_LEFT_2_00, VEL_UP_1_00
@@ -1351,7 +1351,7 @@ MotionScript_1104b:
 	set_velocities  5, VEL_RIGHT_2_00, VEL_DOWN_2_00
 	set_velocities  0, 0, 0
 
-MotionScript_11096:
+.JumpHigh:
 	set_velocities  6, 0, VEL_UP_3_00
 	set_velocities  6, 0, VEL_UP_2_00
 	set_velocities  6, 0, VEL_UP_1_25
@@ -1365,7 +1365,7 @@ MotionScript_11096:
 	set_velocities  6, 0, VEL_DOWN_3_00
 	set_velocities  0, 0, 0
 
-MotionScript_110ba:
+MotionScript_PoppyBrosJrBombFall:
 	set_velocities  8, VEL_LEFT_2_00, 0
 	set_velocities  8, VEL_LEFT_2_00, VEL_DOWN_0_25
 	set_velocities  8, VEL_LEFT_2_00, VEL_DOWN_0_75
@@ -1373,10 +1373,10 @@ MotionScript_110ba:
 	set_velocities  8, VEL_LEFT_1_25, VEL_UP_1_8TH
 	set_velocities  8, VEL_LEFT_1_25, VEL_DOWN_1_8TH
 	set_velocities  8, VEL_LEFT_1_25, VEL_DOWN_1_00
-	create_object AnimScript_203be, MotionScript_10008, Data_35bb
+	create_object AnimScript_Explosion, MotionScript_10008, Data_35bb
 	script_end
 
-MotionScript_110d7:
+MotionScript_PoppyBrosJrBombBounce:
 	set_velocities  8, VEL_LEFT_2_00, VEL_DOWN_1_00
 	set_velocities  8, VEL_LEFT_2_00, VEL_DOWN_2_00
 	set_velocities  8, VEL_LEFT_2_00, VEL_DOWN_3_00
@@ -1384,7 +1384,7 @@ MotionScript_110d7:
 	set_velocities  8, VEL_LEFT_1_25, VEL_UP_0_50
 	set_velocities  8, VEL_LEFT_1_25, VEL_DOWN_0_50
 	set_velocities  8, VEL_LEFT_1_25, VEL_DOWN_2_00
-	create_object AnimScript_203be, MotionScript_10008, Data_35bb
+	create_object AnimScript_Explosion, MotionScript_10008, Data_35bb
 	script_end
 
 MotionScript_WhispyWoodsPuff:

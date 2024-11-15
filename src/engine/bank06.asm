@@ -134,7 +134,7 @@ StartStage::
 	push hl
 	call StopTimerAndSwitchOnLCD
 	call Func_19c9
-	call Func_19f9
+	call LoadArea
 	pop hl
 
 	ld a, [hli]
@@ -543,13 +543,13 @@ HandleStageTransition::
 	ld a, [hli]
 	ld [wd052], a
 	push hl
-	call Func_19f9
+	call LoadArea
 	ld a, [wd052]
 	dec a
 	ld b, a
-	ld a, [wd03f]
+	ld a, [wLevelWidth]
 	ld e, a
-	call BCFractionE
+	call FixedPointMultiply
 	ld a, [wd051]
 	dec a
 	ld l, a
@@ -654,9 +654,9 @@ HandleStageTransition::
 	dec a
 .asm_1856e
 	ld e, a
-	ld a, [wd03f]
+	ld a, [wLevelWidth]
 	ld b, a
-	call BCFractionE
+	call FixedPointMultiply
 	ld hl, wc100
 	add hl, bc
 	ld b, $00
@@ -831,13 +831,16 @@ _LoseLife::
 
 	ld b, 160
 .loop_wait_animation
+	; overwrite Kirby's active state to active
+	; if it's outside screen
 	push bc
 	ld a, [wObjectYCoords + OBJECT_SLOT_KIRBY + $1]
-	cp $dc
+	cp 220
 	jr nc, .set_kirby_obj_active
-	cp $a0
+	cp 160
 	jr nc, .skip_set_kirby_obj_active
 .set_kirby_obj_active
+	; y < 160 || y >= 220
 	ld a, OBJECT_ACTIVE
 	ld [wObjectActiveStates + OBJECT_SLOT_KIRBY], a
 .skip_set_kirby_obj_active
@@ -880,7 +883,7 @@ _LoseLife::
 	push hl
 	call Func_19c9
 	call FadeOut
-	call Func_19f9
+	call LoadArea
 	pop hl
 
 	ld a, [hli]
@@ -1158,10 +1161,10 @@ Epilogue:
 	ld a, SCENE_04
 	call Func_21fb
 	call Func_19098
-	ld a, $12
-	ld [wd03f], a
-	ld a, $08
-	ld [wd040], a
+	ld a, 18
+	ld [wLevelWidth], a
+	ld a, 8
+	ld [wLevelHeight], a
 	ld hl, wc100 + $4
 	call Func_1964
 	call StopTimerAndSwitchOnLCD

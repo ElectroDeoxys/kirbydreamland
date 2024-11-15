@@ -151,9 +151,9 @@ Func_326::
 	ldh [hKirbyFlags2], a
 	bit KIRBY2F_HOVER_F, a
 	jr nz, .asm_373
-	ld a, [wd190 + OBJECT_SLOT_KIRBY]
-	set 7, a
-	ld [wd190 + OBJECT_SLOT_KIRBY], a
+	ld a, [wObjectPropertyFlags + OBJECT_SLOT_KIRBY]
+	set PROPERTY_PRIORITY_F, a
+	ld [wObjectPropertyFlags + OBJECT_SLOT_KIRBY], a
 .asm_373
 	and $ff ^ (KIRBY1F_WALK | KIRBY1F_GROUNDED | KIRBY1F_AIRBORNE)
 	ldh [hKirbyFlags1], a
@@ -337,7 +337,7 @@ ProcessDoorConnection::
 	swap a
 	add b
 	ld b, a
-	ld a, [wd03f]
+	ld a, [wLevelWidth]
 	cp b
 	jr nc, .got_x
 	ld c, a
@@ -460,16 +460,16 @@ ProcessDoorConnection::
 	ldh [hKirbyFlags4], a
 	call Func_19c9
 	call FadeOut
-	call Func_19f9
+	call LoadArea
 	pop hl
 	ld a, [hli]
 	ld d, a
 	ld a, [hli]
 	ld e, a
-	ld a, [wd03f]
+	ld a, [wLevelWidth]
 	ld b, a
 	push de
-	call BCFractionE
+	call FixedPointMultiply
 	pop de
 	ld a, d
 	add c
@@ -814,16 +814,16 @@ Func_7cd:
 	cp $ff
 	jr z, .asm_816
 	ld b, a
-	ld a, [wd03f]
+	ld a, [wLevelWidth]
 	ld e, a
-	call BCFractionE
+	call FixedPointMultiply
 	ld hl, wc100
 	add hl, bc
 	push hl
 	call GetKirbyLevelXCoord
 	call Func_1ccb
 	pop hl
-	ld a, [wd03f]
+	ld a, [wLevelWidth]
 	cp c
 	jr z, .asm_7ff
 	xor a
@@ -832,12 +832,12 @@ Func_7cd:
 	dec bc
 	inc hl
 .asm_7f7
-	ld a, [wd03f]
+	ld a, [wLevelWidth]
 	sub $02
 	cp c
 	jr nc, .asm_808
 .asm_7ff
-	ld a, [wd03f]
+	ld a, [wLevelWidth]
 	ld e, a
 	ld a, c
 	sub e
@@ -867,9 +867,9 @@ Func_819::
 	call GetKirbyLevelYCoord
 	call Func_1ccb
 	ld b, c
-	ld a, [wd03f]
+	ld a, [wLevelWidth]
 	ld e, a
-	call BCFractionE
+	call FixedPointMultiply
 	ld hl, wc100
 	add hl, bc
 	ldh a, [hEngineFlags]
@@ -880,7 +880,7 @@ Func_819::
 	jr z, .asm_850
 	cp $01
 	jr z, .asm_84b
-	ld a, [wd03f]
+	ld a, [wLevelWidth]
 	dec a
 	cp c
 	jr nc, .asm_850
@@ -891,7 +891,7 @@ Func_819::
 	ld c, a
 	jr .asm_850
 .asm_84b
-	ld a, [wd03f]
+	ld a, [wLevelWidth]
 	add e
 	ld c, a
 .asm_850
@@ -1340,9 +1340,9 @@ Func_9de:
 	dec a
 .asm_b8e
 	ld e, a
-	ld a, [wd03f]
+	ld a, [wLevelWidth]
 	ld b, a
-	call BCFractionE
+	call FixedPointMultiply
 	ld hl, wc100
 	add hl, bc
 	ld b, $00
@@ -1395,9 +1395,9 @@ Func_9de:
 	ldh a, [hKirbyFlags3]
 	and $ff ^ (KIRBY3F_UNK0 | KIRBY3F_UNK1 | KIRBY3F_UNK6 | KIRBY3F_LAND)
 	ldh [hKirbyFlags3], a
-	ld a, [wd190 + OBJECT_SLOT_KIRBY]
-	res 7, a
-	ld [wd190 + OBJECT_SLOT_KIRBY], a
+	ld a, [wObjectPropertyFlags + OBJECT_SLOT_KIRBY]
+	res PROPERTY_PRIORITY_F, a
+	ld [wObjectPropertyFlags + OBJECT_SLOT_KIRBY], a
 	ldh a, [hKirbyFlags2]
 	and $ff ^ (KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_UNK5 | KIRBY2F_UNK6)
 	ldh [hKirbyFlags2], a
@@ -1816,7 +1816,7 @@ Func_caf:
 	bit SCROLL_LOCKED_F, a
 	jr nz, .scroll_locked
 	ld c, $54
-	ld a, [wd040]
+	ld a, [wLevelHeight]
 	sub $07
 	ld d, a
 	ld a, [wd052]
@@ -1836,7 +1836,7 @@ Func_caf:
 	sub b
 	jr c, .asm_f5a
 	call MoveKirbyUp
-	ld a, [wd040]
+	ld a, [wLevelHeight]
 	cp $08
 	jp nz, .asm_1021
 	ld a, [wKirbyScreenY]
@@ -1854,7 +1854,7 @@ Func_caf:
 	call nz, MoveKirbyUp
 	ld a, [wd052]
 	ld b, a
-	ld a, [wd040]
+	ld a, [wLevelHeight]
 	sub b
 	cp $08
 	jp c, .asm_f92
@@ -1894,12 +1894,12 @@ Func_caf:
 	dec a
 	ld [wKirbyScreenDeltaY], a
 	call MoveKirbyUp
-	ld a, [wd040]
+	ld a, [wLevelHeight]
 	sub $07
 	ld [wd052], a
 	jr .asm_1019
 .asm_fc3
-	ld a, [wd040]
+	ld a, [wLevelHeight]
 	sub $08
 	ld c, a
 	ld a, [wd052]
@@ -1927,9 +1927,9 @@ Func_caf:
 	ld a, [wd052]
 	add $08
 	ld e, a
-	ld a, [wd03f]
+	ld a, [wLevelWidth]
 	ld b, a
-	call BCFractionE
+	call FixedPointMultiply
 	ld hl, wc100
 	add hl, bc
 	ld b, $00
@@ -1976,9 +1976,9 @@ Func_1046:
 	ld a, [wd052]
 	dec a
 	ld b, a
-	ld a, [wd03f]
+	ld a, [wLevelWidth]
 	ld e, a
-	call BCFractionE
+	call FixedPointMultiply
 	add hl, bc
 	ld b, $00
 	ld a, [wd051]
@@ -2053,7 +2053,7 @@ Func_1062::
 	ld a, [wd051]
 	add $0b
 	ld c, a
-	ld a, [wd03f]
+	ld a, [wLevelWidth]
 	cp c
 	jr nc, .asm_10e1
 	ld c, a
@@ -2065,7 +2065,7 @@ Func_1062::
 	ldh [hVBlankFlags], a
 	ld a, [wd051]
 	ld b, a
-	ld a, [wd03f]
+	ld a, [wLevelWidth]
 	cp b
 	jr nz, .asm_10fe
 	ldh a, [hEngineFlags]
@@ -2154,13 +2154,13 @@ Func_110b:
 	ldh a, [hEngineFlags]
 	bit ENGINEF_UNK7_F, a
 	jr z, .asm_11ac
-	ld a, [wd03f]
+	ld a, [wLevelWidth]
 	inc a
 	ld [wd051], a
 	call Func_1046
 	dec hl
 	dec hl
-	ld a, [wd03f]
+	ld a, [wLevelWidth]
 	ld [wd051], a
 	call Func_1292
 	ldh a, [hVBlankFlags]
@@ -2340,7 +2340,7 @@ Func_1292:
 	call Func_131a
 	push bc
 	ld b, $00
-	ld a, [wd03f]
+	ld a, [wLevelWidth]
 	ld c, a
 	add hl, bc
 	pop bc
@@ -2357,7 +2357,7 @@ Func_1292:
 Func_12b4::
 	push bc
 	ld de, wBGQueue
-	ld a, [wd03f]
+	ld a, [wLevelWidth]
 	ld b, a
 	ld a, [wd051]
 	add $0a
@@ -2401,9 +2401,9 @@ Func_12b4::
 	dec c
 .asm_12f8
 	ld e, c
-	ld a, [wd03f]
+	ld a, [wLevelWidth]
 	ld b, a
-	call BCFractionE
+	call FixedPointMultiply
 	ld hl, wc100
 	add hl, bc
 	pop de
@@ -3292,7 +3292,7 @@ Func_1964::
 	ld a, $0a ; can be ld b, $0a
 	ld b, a   ;
 .loop_rows
-	ld a, [wd03f]
+	ld a, [wLevelWidth]
 	cp $0a
 	jr z, .got_num_cols
 	ld a, $0b
@@ -3308,7 +3308,7 @@ Func_1964::
 	jr nz, .loop_cols
 	push bc
 	ld b, $00
-	ld a, [wd03f]
+	ld a, [wLevelWidth]
 	sub $0a
 	jr z, .asm_1998
 	sub $01
@@ -3375,7 +3375,7 @@ Func_19c9::
 .asm_19f8
 	ret
 
-Func_19f9::
+LoadArea::
 	push bc
 	push hl
 	ld a, $ff
@@ -3401,6 +3401,7 @@ Func_19f9::
 	ld c, a
 	ld b, $00
 	add hl, bc
+
 	ld a, [hli]
 	ld c, a
 	ld a, [hli]
@@ -3413,12 +3414,14 @@ Func_19f9::
 	ld de, wc100
 	call FarDecompress
 	pop hl
+
 	ld a, [hli]
-	ld [wd03f], a
+	ld [wLevelWidth], a
 	sub $0a
 	ld [wd041], a
+
 	ld a, [hli]
-	ld [wd040], a
+	ld [wLevelHeight], a
 	ldh a, [hEngineFlags]
 	and $ff ^ ENGINEF_UNK7
 	ldh [hEngineFlags], a
@@ -3435,10 +3438,12 @@ Func_19f9::
 	jr nz, .lock_scroll
 	bit 4, a
 	jr nz, .asm_1a68
+
 	ldh a, [hEngineFlags]
 	set ENGINEF_UNK7_F, a
 	ldh [hEngineFlags], a
 	jr .asm_1a6e
+
 .lock_scroll
 	ldh a, [hPalFadeFlags]
 	set SCROLL_LOCKED_F, a
@@ -3449,6 +3454,7 @@ Func_19f9::
 	ldh a, [hHUDFlags]
 	set HUD_6_F, a
 	ldh [hHUDFlags], a
+
 .asm_1a6e
 	bit 3, [hl]
 	jr z, .asm_1a79
@@ -3748,15 +3754,12 @@ Func_1c0a::
 
 	jp StopTimerAndSwitchOnLCD
 
-; calculates bc as a percentage,
-; given its percentage value in e
-; i.e. bc = bc * (e / 256)
-; input:
-; - bc = value to get percentage
-; - e = percentage
+; calculates bc * e considering both values
+; as fixed-point numbers with 8-bit precision
+; e is considered only as fractional part
 ; output:
-; - bc = result
-BCFractionE::
+; - bc = fixed-point number
+FixedPointMultiply::
 	push af
 	push hl
 	ld hl, 0

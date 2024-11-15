@@ -765,8 +765,8 @@ KirbyControl::
 	and a
 	jr nz, .asm_4629
 .asm_45c0
-	ld hl, wd190
-	set 7, [hl]
+	ld hl, wObjectPropertyFlags + OBJECT_SLOT_KIRBY
+	set PROPERTY_PRIORITY_F, [hl]
 	ldh a, [hKirbyFlags2]
 	bit KIRBY2F_MOUTHFUL_F, a
 	jr nz, .asm_45d9
@@ -1273,15 +1273,15 @@ LockScrolling:
 SECTION "Bank 1@4ab3", ROMX[$4ab3], BANK[$1]
 
 Func_4ab3:
-	ld hl, wd190
+	ld hl, wObjectPropertyFlags
 	add hl, bc
-	res 4, [hl]
+	res PROPERTY_PAL_F, [hl]
 	ret
 
 Func_4aba:
-	ld hl, wd190
+	ld hl, wObjectPropertyFlags
 	add hl, bc
-	set 4, [hl]
+	set PROPERTY_PAL_F, [hl]
 	ret
 
 Func_4ac1:
@@ -1298,10 +1298,10 @@ Func_4ac1:
 	ret
 
 Func_4ad6:
-	ld hl, wd190
+	ld hl, wObjectPropertyFlags
 	add hl, bc
-	res 5, [hl]
-	res 3, [hl]
+	res PROPERTY_GRAVITY_F, [hl]
+	res PROPERTY_3_F, [hl]
 	ret
 
 Func_4adf:
@@ -1377,10 +1377,10 @@ Func_4bb4::
 	ld hl, AnimScript_2037c
 	bit 2, a
 	jr nz, .asm_4c39
-	ld hl, wd190
+	ld hl, wObjectPropertyFlags
 	add hl, bc
 	ld a, [hl]
-	and $44
+	and PROPERTY_2 | PROPERTY_PERSISTENT
 	jr nz, .next_object
 	ld hl, wObjectPropertyPtrs
 	add hl, bc
@@ -1568,12 +1568,12 @@ _StartLevelAfterContinue::
 	ld [hKirbyFlags1], a
 
 	ld bc, $0
-	ld a, [wd03f]
+	ld a, [wLevelWidth]
 	ld b, a
 	ld a, [wd052]
 	dec a
 	ld e, a
-	call BCFractionE
+	call FixedPointMultiply
 	ld h, $00
 	ld a, [wd051]
 	dec a

@@ -8,12 +8,12 @@ AnimScript_20005:
 	set_object_properties Data_35b7
 	set_custom_func Func_141b1, AnimScript_20ba2
 	script_exec Func_4adf
-	set_scripts AnimScript_203be, MotionScript_102fb
+	set_scripts AnimScript_Explosion, MotionScript_102fb
 
 AnimScript_20017:
 	set_object_properties Data_35b7
 	set_custom_func Func_141b1, AnimScript_20ba2
-	set_scripts AnimScript_203be, MotionScript_10008
+	set_scripts AnimScript_Explosion, MotionScript_10008
 
 AnimScript_20026:
 	jump_if_flags hEngineFlags, KABOOLA_BATTLE, .script_20034
@@ -50,13 +50,13 @@ AnimScript_20073:
 	set_motion_script MotionScript_1096c
 	frame 44, $5c01
 	frame 40, $5c01
-	create_object AnimScript_203be, MotionScript_135bc, Data_3425
+	create_object AnimScript_Explosion, MotionScript_135bc, Data_3425
 	frame 88, $5c01
 .loop
 	frame  4, $5c01
-	create_object AnimScript_203be, MotionScript_10317, Data_3425
-	create_object AnimScript_203be, MotionScript_135bc, Data_3425
-	create_object AnimScript_203be, MotionScript_135bc, Data_3425
+	create_object AnimScript_Explosion, MotionScript_10317, Data_3425
+	create_object AnimScript_Explosion, MotionScript_135bc, Data_3425
+	create_object AnimScript_Explosion, MotionScript_135bc, Data_3425
 	jump_abs .loop
 
 AnimScript_200a3:
@@ -162,13 +162,13 @@ AnimScript_20206:
 	set_flags hEngineFlags, $00, ENGINEF_UNK5
 	jump_if_flags hKirbyFlags6, KIRBY6F_UNK7, $4008 ; bug?
 	set_motion_script MotionScript_135d2
-	create_object AnimScript_203be, MotionScript_10008, Data_3425
+	create_object AnimScript_Explosion, MotionScript_10008, Data_3425
 	frame  4, $5c01
-	create_object AnimScript_203be, MotionScript_10008, Data_3425
+	create_object AnimScript_Explosion, MotionScript_10008, Data_3425
 	frame  4, $5c01
-	create_object AnimScript_203be, MotionScript_10008, Data_3425
+	create_object AnimScript_Explosion, MotionScript_10008, Data_3425
 	frame  8, $5c01
-	create_object AnimScript_203be, MotionScript_10008, Data_3425
+	create_object AnimScript_Explosion, MotionScript_10008, Data_3425
 	frame 80, $5c01
 	script_repeat 4
 	create_object AnimScript_22f63, MotionScript_135bc, Data_3425
@@ -291,8 +291,8 @@ AnimScript_2037c:
 
 SECTION "Bank 8@43be", ROMX[$43be], BANK[$8]
 
-AnimScript_203be:
-	play_sfx SFX_10
+AnimScript_Explosion:
+	play_sfx SFX_EXPLOSION
 	script_repeat 2
 	frame  2, $5d39
 	frame  2, $5d51
@@ -774,7 +774,7 @@ AnimScript_20b9a:
 AnimScript_20ba2:
 	script_exec Func_4a1c
 	set_object_properties Data_35b7
-	set_scripts AnimScript_203be, MotionScript_10008
+	set_scripts AnimScript_Explosion, MotionScript_10008
 AnimScript_20baf:
 	set_custom_func Func_142a3, NULL
 	jump_abs AnimScript_20000
@@ -1135,7 +1135,7 @@ AnimScript_20e9d:
 
 SECTION "Bank 8@4f14", ROMX[$4f14], BANK[$8]
 
-AnimScript_20f14:
+AnimScript_PoppyBrosJr:
 	jump_if_equal wd3f1, $00, .init
 	script_end
 
@@ -1144,25 +1144,25 @@ AnimScript_20f14:
 	script_exec LockScrolling
 	set_value wBossHPCounter, 3
 	set_value wd3c1, $01
-	create_object AnimScript_21195, MotionScript_10008, Data_3421
+	create_object AnimScript_BossHPIncrementer, MotionScript_10008, Data_3421
 	frame 45, $4088
 .loop
 	; scripted attacks
-	script_call GfxSubScript_20f50
-	script_call GfxSubScript_20fd5
-	script_call GfxSubScript_20f50
-	script_call GfxSubScript_20fa3
-	script_call GfxSubScript_20f50
+	script_call .JumpShort
+	script_call .ThrowBombWithDelay
+	script_call .JumpShort
+	script_call .ThrowBombNoDelay
+	script_call .JumpShort
 	; random attack
 	calltable_random %11
-	dw GfxSubScript_20fd5
-	dw GfxSubScript_20fa3
-	dw GfxSubScript_20f6e
-	dw GfxSubScript_20f6e
+	dw .ThrowBombWithDelay
+	dw .ThrowBombNoDelay
+	dw .JumpLong
+	dw .JumpLong
 	jump_rel .loop
 
-GfxSubScript_20f50:
-	set_motion_script MotionScript_10fe2
+.JumpShort:
+	set_motion_script MotionScript_PoppyBrosJr.JumpShort
 	script_repeat 2
 	frame  8, $4088
 	frame  8, $4098
@@ -1174,8 +1174,8 @@ GfxSubScript_20f50:
 	script_repeat_end
 	script_ret
 
-GfxSubScript_20f6e:
-	set_motion_script MotionScript_11000
+.JumpLong:
+	set_motion_script MotionScript_PoppyBrosJr.JumpMid
 	frame 12, $4088
 	frame 12, $4098
 	frame 12, $40b8
@@ -1183,7 +1183,7 @@ GfxSubScript_20f6e:
 	frame 12, $40b8
 	frame 12, $4098
 	frame 12, $4088
-	set_motion_script MotionScript_1104b
+	set_motion_script MotionScript_PoppyBrosJr.JumpLong
 	frame 15, $4088
 	frame 15, $4098
 	frame 15, $40b8
@@ -1193,8 +1193,8 @@ GfxSubScript_20f6e:
 	frame 15, $4088
 	script_ret
 
-GfxSubScript_20fa3:
-	set_motion_script MotionScript_11096
+.ThrowBombNoDelay:
+	set_motion_script MotionScript_PoppyBrosJr.JumpHigh
 	frame  6, $40c8
 	frame  6, $40f0
 	frame  6, $410c
@@ -1204,14 +1204,14 @@ GfxSubScript_20fa3:
 	frame  3, $4144
 	frame  3, $4128
 	play_sfx SFX_28
-	create_object AnimScript_2101d, MotionScript_110d7, Data_3574
+	create_object AnimScript_PoppyBrosJrBomb, MotionScript_PoppyBrosJrBombBounce, Data_3574
 	frame  3, $40dc
 	frame  8, $40c8
 	frame 21, $4088
 	script_ret
 
-GfxSubScript_20fd5:
-	set_motion_script MotionScript_11096
+.ThrowBombWithDelay:
+	set_motion_script MotionScript_PoppyBrosJr.JumpHigh
 	frame  6, $40c8
 	frame  6, $40f0
 	frame  6, $410c
@@ -1221,7 +1221,7 @@ GfxSubScript_20fd5:
 	frame  3, $4144
 	frame  3, $4128
 	play_sfx SFX_28
-	create_object AnimScript_2101d, MotionScript_110ba, Data_3574
+	create_object AnimScript_PoppyBrosJrBomb, MotionScript_PoppyBrosJrBombFall, Data_3574
 	frame  3, $40dc
 	frame  8, $40c8
 	script_ret
@@ -1229,7 +1229,7 @@ GfxSubScript_20fd5:
 
 SECTION "Bank 8@501d", ROMX[$501d], BANK[$8]
 
-AnimScript_2101d:
+AnimScript_PoppyBrosJrBomb:
 	position_offset -16, 8
 	frame  0, $5c4d
 
@@ -1243,7 +1243,7 @@ AnimScript_WhispyWoods:
 	set_object_properties $3586
 	set_value wBossHPCounter, 6
 	set_value wd3c1, $01
-	create_object AnimScript_21195, MotionScript_10008, Data_3421
+	create_object AnimScript_BossHPIncrementer, MotionScript_10008, Data_3421
 	frame 60, $4000
 	script_exec Func_48a3
 	set_value wd3cd, $01
@@ -1381,7 +1381,7 @@ AnimScript_21181:
 
 SECTION "Bank 8@5195", ROMX[$5195], BANK[$8]
 
-AnimScript_21195:
+AnimScript_BossHPIncrementer:
 	frame  1, $58b8
 	script_f3
 	set_position $14, $14

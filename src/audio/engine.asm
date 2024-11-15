@@ -2130,7 +2130,7 @@ SFXHeader_PowerUp:
 	db 1 ; num of channels
 	dwb $7378, $04 ; CHANNEL1
 
-SFXHeader_10:
+SFXHeader_Explosion:
 	db 1 ; num of channels
 	dwb $7394, $0c ; CHANNEL1
 
@@ -2626,7 +2626,7 @@ SFXHeaders:
 	dw SFXHeader_EnterDoor  ; SFX_ENTER_DOOR
 	dw SFXHeader_08         ; SFX_08
 	dw SFXHeader_PowerUp    ; SFX_POWER_UP
-	dw SFXHeader_10         ; SFX_10
+	dw SFXHeader_Explosion  ; SFX_EXPLOSION
 	dw SFXHeader_RestoreHp  ; SFX_RESTORE_HP
 	dw SFXHeader_WarpStar   ; SFX_WARP_STAR
 	dw SFXHeader_13         ; SFX_13
@@ -2667,7 +2667,7 @@ SFXRequiredChannels:
 	db SFXFLAG_SQUARE1 | SFXFLAG_SQUARE2 ; SFX_ENTER_DOOR
 	db SFXFLAG_SQUARE2 ; SFX_08
 	db SFXFLAG_SQUARE2 ; SFX_POWER_UP
-	db SFXFLAG_NOISE ; SFX_10
+	db SFXFLAG_NOISE ; SFX_EXPLOSION
 	db SFXFLAG_SQUARE2 ; SFX_RESTORE_HP
 	db SFXFLAG_SQUARE1 | SFXFLAG_SQUARE2 ; SFX_WARP_STAR
 	db SFXFLAG_SQUARE1 | SFXFLAG_SQUARE2 ; SFX_13
@@ -2709,7 +2709,7 @@ SFXPriorities:
 	db 20 ; SFX_ENTER_DOOR
 	db 40 ; SFX_08
 	db 45 ; SFX_POWER_UP
-	db 35 ; SFX_10
+	db 35 ; SFX_EXPLOSION
 	db 25 ; SFX_RESTORE_HP
 	db  0 ; SFX_WARP_STAR
 	db  0 ; SFX_13

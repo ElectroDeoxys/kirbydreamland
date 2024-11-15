@@ -734,7 +734,7 @@ ASSERT Data_1c000 == Data_3c000
 	and ~(KABOOLA_BATTLE | ENGINEF_UNK1)
 	ld [hEngineFlags], a
 
-	ld a, [wd03f]
+	ld a, [wLevelWidth]
 	ld l, a
 	ld h, $00
 	add hl, hl
@@ -742,9 +742,9 @@ ASSERT Data_1c000 == Data_3c000
 	add hl, hl
 	add hl, hl ; *16
 	ld a, l
-	ld [wd3e3 + 0], a
+	ld [wLevelWidthPx + 0], a
 	ld a, h
-	ld [wd3e3 + 1], a
+	ld [wLevelWidthPx + 1], a
 	ld a, [wd3f2]
 	and a
 	jr nz, .asm_22c5
@@ -798,7 +798,7 @@ ASSERT Data_1c000 == Data_3c000
 	ld a, b
 	ld [wd1a0 + OBJECT_SLOT_KIRBY], a
 	xor a
-	ld [wd190 + OBJECT_SLOT_KIRBY], a
+	ld [wObjectPropertyFlags + OBJECT_SLOT_KIRBY], a
 	ret
 
 ClearObjectsExceptSlot00::
@@ -929,7 +929,7 @@ CreateObject:
 	ld [hli], a
 	ld a, [wd3d7]
 	and $0f
-	ld d, a
+	ld d, a ; low nybble
 	ld a, [wd3d7]
 	and $f0
 	add $18
@@ -990,7 +990,7 @@ Func_23af::
 
 	push hl
 	ld a, [hl]
-	ld hl, wd190
+	ld hl, wObjectPropertyFlags
 	add hl, bc
 	ld [hl], a
 	pop hl
@@ -1309,9 +1309,9 @@ DoCommonScriptCommand:
 	ld [wScriptPtr + 0], a
 	ld a, h
 	ld [wScriptPtr + 1], a
-	ld hl, wd190
+	ld hl, wObjectPropertyFlags
 	add hl, bc
-	set 0, [hl]
+	set PROPERTY_0_F, [hl]
 	ld a, [wSCX]
 	and $0f
 	ld e, a
@@ -1385,9 +1385,9 @@ DoCommonScriptCommand:
 	ld [wScriptPtr + 0], a
 	ld a, h
 	ld [wScriptPtr + 1], a
-	ld hl, wd190
+	ld hl, wObjectPropertyFlags
 	add hl, bc
-	res 0, [hl]
+	res PROPERTY_0_F, [hl]
 	ld hl, wd140
 	add hl, bc
 	ld a, [hl]
@@ -1554,7 +1554,7 @@ DoCommonScriptCommand:
 	pop af
 	ld [wd3f0], a
 	pop hl
-	ld de, $6
+	ld de, 3 * $2
 	add hl, de
 	ld a, l
 	ld [wScriptPtr + 0], a
@@ -1575,6 +1575,8 @@ Func_2708::
 	ld d, b
 	ld e, c
 	pop bc
+
+	; copies wd200 from bc to de
 	ld hl, wd200
 	add hl, bc
 	add hl, bc
@@ -1587,9 +1589,10 @@ Func_2708::
 	ld [hld], a
 	pop af
 	ld [hl], a
-	ld hl, wd190
+
+	ld hl, wObjectPropertyFlags
 	add hl, de
-	bit 0, [hl]
+	bit PROPERTY_0_F, [hl]
 	jr nz, .asm_2755
 	ld hl, wd140
 	add hl, bc
@@ -1616,15 +1619,16 @@ Func_2708::
 	ld [hli], a
 	ld [hl], $00
 	ret
+
 .asm_2755
 	ld hl, wObjectXCoords
-	call .Func_2771
+	call .CopyCoordinates
 	ld hl, wObjectYCoords
-	call .Func_2771
+	call .CopyCoordinates
 	ld hl, wd140
-	call .Func_276a
+	call .CopyObjDataByte
 	ld hl, wd150
-.Func_276a:
+.CopyObjDataByte:
 	push hl
 	add hl, bc
 	ld a, [hl]
@@ -1633,7 +1637,12 @@ Func_2708::
 	ld [hl], a
 	ret
 
-.Func_2771:
+; copies coordinates of object bc
+; to coordinates of object de
+; input:
+; - bc = object slot to copy from
+; - de = object slot to copy to
+.CopyCoordinates:
 	push bc
 	push hl
 	add hl, bc
@@ -2285,6 +2294,8 @@ ExecuteObjectScripts:
 	ld [hl], a
 	ret
 
+; input:
+; - bc = object slot
 Func_2b26:
 	ld hl, hKirbyFlags4
 	bit KIRBY4F_UNK2_F, [hl]
@@ -2306,13 +2317,13 @@ Func_2b26:
 	ld hl, hEngineFlags
 	bit ENGINEF_UNK7_F, [hl]
 	jr z, .y_velocity
-	ld hl, wd190
+	ld hl, wObjectPropertyFlags
 	add hl, bc
-	bit 0, [hl]
+	bit PROPERTY_0_F, [hl]
 	jr z, .y_velocity
-	ld a, [wd3e3 + 0]
+	ld a, [wLevelWidthPx + 0]
 	ld e, a
-	ld a, [wd3e3 + 1]
+	ld a, [wLevelWidthPx + 1]
 	ld d, a
 	ld hl, wObjectXCoords + $1
 	add hl, bc
@@ -2324,7 +2335,8 @@ Func_2b26:
 	sbc d
 	jr c, .y_velocity
 	bit 7, [hl]
-	jr nz, .asm_2b7b
+	jr nz, .warp_around_right
+; warp around on left
 	dec hl
 	ld a, [hl]
 	sub e
@@ -2332,7 +2344,7 @@ Func_2b26:
 	ld a, [hl]
 	sbc d
 	jr .asm_2b81
-.asm_2b7b
+.warp_around_right
 	dec hl
 	ld a, [hl]
 	add e
@@ -2351,9 +2363,9 @@ Func_2b26:
 	ld hl, wd3cc
 	bit 0, [hl]
 	jp nz, .asm_2c18
-	ld hl, wd190
+	ld hl, wObjectPropertyFlags
 	add hl, bc
-	bit 0, [hl]
+	bit PROPERTY_0_F, [hl]
 	jr z, .asm_2bf9
 	ld hl, hEngineFlags
 	bit ENGINEF_UNK7_F, [hl]
@@ -2385,9 +2397,9 @@ Func_2b26:
 .asm_2bc7
 	jp DestroyObject
 .asm_2bca
-	ld hl, wd190
+	ld hl, wObjectPropertyFlags
 	add hl, bc
-	bit 0, [hl]
+	bit PROPERTY_0_F, [hl]
 	jr z, .asm_2c18
 	ld hl, wObjectYCoords + $1
 	add hl, bc
@@ -2436,16 +2448,16 @@ Func_2b26:
 	cp d
 	jr nc, .asm_2bc7
 .asm_2c18
-	ld hl, wd190
+	ld hl, wObjectPropertyFlags
 	add hl, bc
 	ld a, [hl]
-	bit 5, a
-	jr z, .asm_2c26
+	bit PROPERTY_GRAVITY_F, a
+	jr z, .not_affected_by_gravity
 	push af
-	call Func_2e04
+	call ApplyGravityToObject
 	pop af
-.asm_2c26
-	bit 3, a
+.not_affected_by_gravity
+	bit PROPERTY_3_F, a
 	jr z, .asm_2c5b
 	call Func_2e20
 	and a
@@ -2455,9 +2467,9 @@ Func_2b26:
 	ld hl, wObjectYVels
 	add hl, bc
 	add hl, bc
-	ld [hl], $66
+	ld [hl], LOW(0.40)
 	inc hl
-	xor a
+	xor a ; HIGH(0.40)
 	ld [hl], a
 
 ; zero x velocity
@@ -2466,9 +2478,9 @@ Func_2b26:
 	add hl, bc
 	ld [hli], a
 	ld [hl], a
-	ld hl, wd190
+	ld hl, wObjectPropertyFlags
 	add hl, bc
-	set 7, [hl]
+	set PROPERTY_PRIORITY_F, [hl]
 	jr .asm_2c5b
 
 .zero_y_velocity
@@ -2484,9 +2496,9 @@ Func_2b26:
 .asm_2c5b
 	ld d, b
 	ld e, c
-	ld hl, wd190
+	ld hl, wObjectPropertyFlags
 	add hl, de
-	bit 0, [hl]
+	bit PROPERTY_0_F, [hl]
 	jr z, .asm_2c6b
 	call Func_2d2d
 	jr nc, .asm_2c6e
@@ -2525,7 +2537,7 @@ Func_2b26:
 	ld hl, wd1a0
 	add hl, de
 	set OBJFLAG_7_F, [hl]
-	ld hl, wd190
+	ld hl, wObjectPropertyFlags
 	add hl, de
 	ld a, [hl]
 	and OAMF_PAL1 | OAMF_PRI
@@ -2571,9 +2583,9 @@ Func_2ce5:
 	ld hl, wd3bf
 	bit 3, [hl]
 	jr z, .no_carry
-	ld hl, wd190
+	ld hl, wObjectPropertyFlags
 	add hl, bc
-	bit 2, [hl]
+	bit PROPERTY_2_F, [hl]
 	jr nz, .no_carry
 	ld hl, wObjectPropertyPtrs
 	add hl, bc
@@ -2680,7 +2692,7 @@ Func_2d2d:
 	push de
 	ld d, h
 	ld e, l
-	ld a, [wd03f]
+	ld a, [wLevelWidth]
 	ld l, a
 	ld h, $00
 	add hl, hl
@@ -2784,27 +2796,27 @@ Func_2deb:
 	ld [hl], c
 	ret
 
-; adds 36 to the y velocity of the bc-th object
-; caps this velocity to 640
-Func_2e04:
+; adds 0.14 to the y velocity of the bc-th object
+; caps this velocity to 2.5
+ApplyGravityToObject:
 	ld hl, wObjectYVels
 	add hl, bc
 	add hl, bc
 	ld a, [hl]
-	add 36
+	add 0.14
 	ld [hli], a
 	jr nc, .no_overflow
 	inc [hl]
 .no_overflow
 	dec hl
 	ld a, [hli]
-	cp LOW(640)
+	cp LOW(2.5)
 	ld a, [hl]
-	cp HIGH(640)
+	cp HIGH(2.5)
 	jr c, .done
-	ld a, HIGH(640)
+	ld a, HIGH(2.5)
 	ld [hld], a
-	ld a, LOW(640)
+	ld a, LOW(2.5)
 	ld [hl], a
 .done
 	ret
@@ -2829,15 +2841,15 @@ Func_2e20:
 	add hl, de
 	bit 7, h
 	jr z, .asm_2e45
-	ld a, [wd3e3 + 0]
+	ld a, [wLevelWidthPx + 0]
 	ld e, a
-	ld a, [wd3e3 + 1]
+	ld a, [wLevelWidthPx + 1]
 	ld d, a
 	add hl, de
 .asm_2e45
 	call MultiplyHLBy16
 	push af
-	ld a, [wd03f]
+	ld a, [wLevelWidth]
 	ld d, a
 	pop af
 	cp d
@@ -2873,9 +2885,9 @@ Func_2e20:
 	ret
 
 Func_2e7f::
-	ld a, [wd03f]
+	ld a, [wLevelWidth]
 	ld b, a
-	call BCFractionE
+	call FixedPointMultiply
 	ld hl, wc100
 	add hl, bc
 	ld e, d
@@ -3006,9 +3018,9 @@ Func_2f34:
 	ld a, [wd3d5]
 	ld e, a
 	ld d, $00
-	ld hl, wd190
+	ld hl, wObjectPropertyFlags
 	add hl, de
-	res 4, [hl]
+	res PROPERTY_PAL_F, [hl]
 	ret
 .asm_2f57
 	push bc
@@ -3214,7 +3226,7 @@ Func_3076::
 Func_30b2::
 	ld a, [wScriptBank]
 	bankswitch
-	ld hl, wd140
+	ld hl, wd140 + OBJECT_SLOT_KIRBY
 	ld a, [hl]
 	add $28
 	ld e, a
@@ -3250,7 +3262,7 @@ Func_30dc::
 .positive
 	cp $03
 	jr nc, .asm_3110
-	ld hl, wd140
+	ld hl, wd140 + OBJECT_SLOT_KIRBY
 	ld a, [hl]
 	add hl, bc
 	cp [hl]
@@ -3302,16 +3314,15 @@ SetObjectProperties::
 	ld [wScriptPtr + 1], a
 	pop bc
 	push hl
-	ld a, [hl]
-	ld hl, wd190
+	ld a, [hl] ; OBJ_PROPERTY_FLAGS
+	ld hl, wObjectPropertyFlags
 	add hl, bc
 	ld [hl], a
 	pop hl
+REPT OBJ_UNK4
 	inc hl
-	inc hl
-	inc hl
-	inc hl
-	ld a, [hl]
+ENDR
+	ld a, [hl] ; OBJ_UNK4
 	ld hl, wd39a
 	add hl, bc
 	ld [hl], a
@@ -3641,6 +3652,9 @@ Func_319f:
 	cp e
 	ret c
 
+	; check if there are no other objects already active
+	; that was created from the same data, by comparing
+	; the values in wd200
 	push hl
 	push bc
 	push de
@@ -3648,7 +3662,7 @@ Func_319f:
 	ld e, l ;
 	ld b, OBJECT_GROUP_1_END - OBJECT_GROUP_1_BEGIN
 	ld de, wObjectActiveStates + OBJECT_GROUP_1_BEGIN
-	ld hl, wd200 + $2
+	ld hl, wd200 + OBJECT_GROUP_1_BEGIN * $2
 .loop_object_active_states
 	ld a, [de]
 	and a
@@ -3685,25 +3699,25 @@ Func_319f:
 .created
 	pop de
 	push de
-	ld hl, wd190
+	ld hl, wObjectPropertyFlags
 	add hl, bc
-	bit 6, [hl]
-	jr z, .asm_33ce
+	bit PROPERTY_PERSISTENT_F, [hl]
+	jr z, .not_consumable
 	ld hl, wd3aa
 	add hl, bc
 	ld a, [hl]
 	cp $ff
-	jr z, .asm_33ce
+	jr z, .not_consumable
 	push bc
 	ld e, a
-	and $07
-	ld c, a
+	and %111
+	ld c, a ; which power of two to use
 	xor a
 	ld b, a
 	ld d, a
 	srl e
 	srl e
-	srl e
+	srl e ; which byte in wConsumedItems to use
 	ld hl, wConsumedItems
 	add hl, de
 	ld a, [hl]
@@ -3717,7 +3731,7 @@ Func_319f:
 	ret
 .not_consumed
 	pop bc
-.asm_33ce
+.not_consumable
 	pop de
 	ld hl, wObjectXCoords + $1
 	add hl, bc
@@ -3798,73 +3812,73 @@ Data_3429::
 SECTION "Home@344d", ROM0[$344d]
 
 Data_344d::
-	db $69, $08, $08, WARP_STAR, $72, $41
+	db PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, $08, $08, WARP_STAR, $72, $41
 ; 0x3453
 
 SECTION "Home@3459", ROM0[$3459]
 
 MaximTomatoProperties::
-	db $69, $08, $08, MAXIM_TOMATO, $72, $41
+	db PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, $08, $08, MAXIM_TOMATO, $72, $41
 ; 0x345f
 
 SECTION "Home@3465", ROM0[$3465]
 
 EnergyDrinkProperties::
-	db $69, $06, $08, ENERGY_DRINK, $72, $41
+	db PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, $06, $08, ENERGY_DRINK, $72, $41
 ; 0x346b
 
 SECTION "Home@3483", ROM0[$3483]
 
 Data_3483::
-	object_properties $29, $06, $06, 1, $01, $03, 200, Data_1c154
+	object_properties PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY, $06, $06, 1, $01, $03, 200, Data_1c154
 
 WaddleDeeProperties::
-	object_properties $01, $06, $06, 1, $01, $03, 200, Data_1c154
+	object_properties PROPERTY_0, $06, $06, 1, $01, $03, 200, Data_1c154
 ; 0x3495
 
 SECTION "Home@34ff", ROM0[$34ff]
 
 CappyProperties::
-	object_properties $09, $06, $06, 1, $01, $03, 200, Data_1c154
+	object_properties PROPERTY_0 | PROPERTY_3, $06, $06, 1, $01, $03, 200, Data_1c154
 
 Data_3508::
-	object_properties $09, $06, $06, 1, $01, $03, 200, Data_1c154
+	object_properties PROPERTY_0 | PROPERTY_3, $06, $06, 1, $01, $03, 200, Data_1c154
 ; 0x3511
 
 SECTION "Home@351a", ROM0[$351a]
 
 TwizzyProperties::
-	object_properties $01, $06, $06, 1, $01, $03, 200, Data_1c154
+	object_properties PROPERTY_0, $06, $06, 1, $01, $03, 200, Data_1c154
 
 Data_3523::
-	object_properties $01, $06, $06, 1, $01, $03, 200, Data_1c154
+	object_properties PROPERTY_0, $06, $06, 1, $01, $03, 200, Data_1c154
 
 Data_352c::
-	object_properties $09, $06, $06, 1, $01, $03, 200, Data_1c154
+	object_properties PROPERTY_0 | PROPERTY_3, $06, $06, 1, $01, $03, 200, Data_1c154
 
 Data_3535::
-	object_properties $01, $0a, $0a, 2, $01, $03, 400, Data_1c154
+	object_properties PROPERTY_0, $0a, $0a, 2, $01, $03, 400, Data_1c154
 ; 0x353e
 
 SECTION "Home@3547", ROM0[$3547]
 
 Data_3547::
-	object_properties $01, $0a, $0d, 2, $01, $03, 200, $41a8
+	object_properties PROPERTY_0, $0a, $0d, 2, $01, $03, 200, $41a8
 
 Data_3550::
-	object_properties $09, $06, $06, 1, $01, $03, 200, Data_1c154
+	object_properties PROPERTY_0 | PROPERTY_3, $06, $06, 1, $01, $03, 200, Data_1c154
 
 Data_3559::
-	object_properties $09, $06, $06, 1, $01, $01, 200, Data_1c154
+	object_properties PROPERTY_0 | PROPERTY_3, $06, $06, 1, $01, $01, 200, Data_1c154
 
 Data_3562::
-	object_properties $01, $08, $10, 1, $01, $03, 300, $41b4
+	object_properties PROPERTY_0, $08, $10, 1, $01, $03, 300, $41b4
 
 Data_356b::
-	object_properties $01, $08, $0b, 1, $03, $09, 0, $41c0
+	object_properties PROPERTY_0, $08, $0b, 1, $03, $09, 0, $41c0
 
 Data_3574::
-	object_properties $01, $06, $06, 1, $01, $03, 10, $4160
+	object_properties PROPERTY_0, $06, $06, 1, $01, $03, 10, $4160
 ; 0x357d
 
 SECTION "Home@35a7", ROM0[$35a7]
@@ -3885,7 +3899,7 @@ Data_35b7::
 	db $0d, $14, $14, $01
 
 Data_35bb::
-	object_properties $01, $14, $14, 1, $05, $00, 0, $4160
+	object_properties PROPERTY_0, $14, $14, 1, $05, $00, 0, $4160
 ; 0x35c4
 
 SECTION "Home@35cd", ROM0[$35cd]
@@ -3958,7 +3972,7 @@ Func_37b9:
 	add hl, bc
 	add hl, bc
 	add hl, bc
-	ld a, [wd140]
+	ld a, [wd140 + OBJECT_SLOT_KIRBY]
 	ld c, a
 	ld a, [wSCX]
 	and $0f
@@ -4091,9 +4105,9 @@ StageHeaders::
 MACRO area
 	db \1 ; BANK(\2)
 	bigdw \2 ; ?
-	db \3 ; ?
-	db \4 ; ?
-	db \5 ; ?
+	db \3 ; level width in tiles?
+	db \4 ; level height in tiles?
+	db \5 ; if $0, fade from white, otherwise fade from black
 	db \6 ; ?
 	db \7 ; ?
 ENDM
@@ -4109,71 +4123,71 @@ Data_38b1:
 
 .GreenGreens:
 	table_width 8
-	area $03, $6da3, $6e, $08, $00, $00, $46 ; GREEN_GREENS_0
-	area $03, $6a78, $10, $08, $00, $00, $06 ; GREEN_GREENS_1
-	area $03, $6ba1, $50, $08, $00, $00, $46 ; GREEN_GREENS_2
-	area $03, $7005, $10, $28, $00, $00, $06 ; GREEN_GREENS_3
-	area $03, $6ad2, $0a, $18, $00, $08, $00 ; GREEN_GREENS_4
+	area $03, $6da3, 110,  8, $0, $00, $46 ; GREEN_GREENS_0
+	area $03, $6a78,  16,  8, $0, $00, $06 ; GREEN_GREENS_1
+	area $03, $6ba1,  80,  8, $0, $00, $46 ; GREEN_GREENS_2
+	area $03, $7005,  16, 40, $0, $00, $06 ; GREEN_GREENS_3
+	area $03, $6ad2,  10, 24, $0, $08, $00 ; GREEN_GREENS_4
 	assert_table_length NUM_GREEN_GREENS_AREAS
 
 .CastleLololo:
 	table_width 8
-	area $03, $7626, $0a, $08, $00, $00, $00 ; CASTLE_LOLOLO_00
-	area $03, $771e, $0a, $10, $01, $00, $00 ; CASTLE_LOLOLO_01
-	area $03, $73f1, $0a, $08, $00, $00, $00 ; CASTLE_LOLOLO_02
-	area $03, $71cd, $18, $08, $01, $00, $0e ; CASTLE_LOLOLO_03
-	area $03, $742b, $14, $0c, $01, $04, $0a ; CASTLE_LOLOLO_04
-	area $03, $7771, $10, $0c, $01, $00, $06 ; CASTLE_LOLOLO_05
-	area $03, $758d, $0a, $14, $00, $00, $00 ; CASTLE_LOLOLO_06
-	area $03, $7234, $3c, $08, $01, $00, $14 ; CASTLE_LOLOLO_07
-	area $03, $7317, $0a, $08, $00, $00, $00 ; CASTLE_LOLOLO_08
-	area $03, $74ba, $16, $10, $00, $00, $0c ; CASTLE_LOLOLO_09
-	area $03, $7199, $0a, $08, $01, $00, $00 ; CASTLE_LOLOLO_10
-	area $03, $7669, $10, $08, $00, $00, $06 ; CASTLE_LOLOLO_11
-	area $03, $7366, $0c, $10, $00, $00, $02 ; CASTLE_LOLOLO_12
-	area $03, $76bc, $10, $08, $00, $00, $06 ; CASTLE_LOLOLO_13
-	area $03, $733d, $0a, $08, $00, $08, $00 ; CASTLE_LOLOLO_14
-	area $03, $7801, $0a, $08, $00, $00, $00 ; CASTLE_LOLOLO_15
+	area $03, $7626, 10,  8, $0, $00, $00 ; CASTLE_LOLOLO_00
+	area $03, $771e, 10, 16, $1, $00, $00 ; CASTLE_LOLOLO_01
+	area $03, $73f1, 10,  8, $0, $00, $00 ; CASTLE_LOLOLO_02
+	area $03, $71cd, 24,  8, $1, $00, $0e ; CASTLE_LOLOLO_03
+	area $03, $742b, 20, 12, $1, $04, $0a ; CASTLE_LOLOLO_04
+	area $03, $7771, 16, 12, $1, $00, $06 ; CASTLE_LOLOLO_05
+	area $03, $758d, 10, 20, $0, $00, $00 ; CASTLE_LOLOLO_06
+	area $03, $7234, 60,  8, $1, $00, $14 ; CASTLE_LOLOLO_07
+	area $03, $7317, 10,  8, $0, $00, $00 ; CASTLE_LOLOLO_08
+	area $03, $74ba, 22, 16, $0, $00, $0c ; CASTLE_LOLOLO_09
+	area $03, $7199, 10,  8, $1, $00, $00 ; CASTLE_LOLOLO_10
+	area $03, $7669, 16,  8, $0, $00, $06 ; CASTLE_LOLOLO_11
+	area $03, $7366, 12, 16, $0, $00, $02 ; CASTLE_LOLOLO_12
+	area $03, $76bc, 16,  8, $0, $00, $06 ; CASTLE_LOLOLO_13
+	area $03, $733d, 10,  8, $0, $08, $00 ; CASTLE_LOLOLO_14
+	area $03, $7801, 10,  8, $0, $00, $00 ; CASTLE_LOLOLO_15
 	assert_table_length NUM_CASTLE_LOLOLO_AREAS
 
 .FloatIslands:
 	table_width 8
-	area $03, $6273, $78, $08, $00, $00, $6e ; FLOAT_ISLANDS_0
-	area $03, $6688, $32, $10, $01, $00, $28 ; FLOAT_ISLANDS_1
-	area $03, $65bc, $0a, $18, $00, $00, $00 ; FLOAT_ISLANDS_2
-	area $03, $68d3, $46, $08, $00, $00, $3c ; FLOAT_ISLANDS_3
-	area $03, $6593, $0a, $08, $01, $00, $00 ; FLOAT_ISLANDS_4
-	area $03, $686f, $0a, $18, $01, $01, $00 ; FLOAT_ISLANDS_5
-	area $03, $6a54, $0a, $08, $00, $00, $00 ; FLOAT_ISLANDS_6
-	area $03, $649e, $2a, $08, $00, $00, $14 ; FLOAT_ISLANDS_7
+	area $03, $6273, 120,  8, $0, $00, $6e ; FLOAT_ISLANDS_0
+	area $03, $6688,  50, 16, $1, $00, $28 ; FLOAT_ISLANDS_1
+	area $03, $65bc,  10, 24, $0, $00, $00 ; FLOAT_ISLANDS_2
+	area $03, $68d3,  70,  8, $0, $00, $3c ; FLOAT_ISLANDS_3
+	area $03, $6593,  10,  8, $1, $00, $00 ; FLOAT_ISLANDS_4
+	area $03, $686f,  10, 24, $1, $01, $00 ; FLOAT_ISLANDS_5
+	area $03, $6a54,  10,  8, $0, $00, $00 ; FLOAT_ISLANDS_6
+	area $03, $649e,  42,  8, $0, $00, $14 ; FLOAT_ISLANDS_7
 	assert_table_length NUM_FLOAT_ISLANDS_AREAS
 
 .BubblyClouds:
 	table_width 8
-	area $03, $7843, $62, $08, $00, $00, $58 ; BUBBLY_CLOUDS_0
-	area $03, $7c9f, $46, $08, $00, $00, $3c ; BUBBLY_CLOUDS_1
-	area $03, $7ac5, $12, $20, $00, $04, $16 ; BUBBLY_CLOUDS_2
-	area $06, $6ce8, $32, $0c, $00, $00, $28 ; BUBBLY_CLOUDS_3
-	area $03, $7e39, $0a, $18, $00, $00, $00 ; BUBBLY_CLOUDS_4
-	area $06, $69d7, $32, $0e, $00, $00, $28 ; BUBBLY_CLOUDS_5
-	area $06, $6b94, $3c, $08, $00, $00, $32 ; BUBBLY_CLOUDS_6
-	area $06, $6800, $0e, $28, $00, $00, $04 ; BUBBLY_CLOUDS_7
-	area $06, $6e6d, $0a, $64, $00, $00, $00 ; BUBBLY_CLOUDS_8
-	area $06, $712d, $0a, $08, $00, $08, $00 ; BUBBLY_CLOUDS_9
+	area $03, $7843,  98,   8, $0, $00, $58 ; BUBBLY_CLOUDS_0
+	area $03, $7c9f,  70,   8, $0, $00, $3c ; BUBBLY_CLOUDS_1
+	area $03, $7ac5,  18,  32, $0, $04, $16 ; BUBBLY_CLOUDS_2
+	area $06, $6ce8,  50,  12, $0, $00, $28 ; BUBBLY_CLOUDS_3
+	area $03, $7e39,  10,  24, $0, $00, $00 ; BUBBLY_CLOUDS_4
+	area $06, $69d7,  50,  14, $0, $00, $28 ; BUBBLY_CLOUDS_5
+	area $06, $6b94,  60,   8, $0, $00, $32 ; BUBBLY_CLOUDS_6
+	area $06, $6800,  14,  40, $0, $00, $04 ; BUBBLY_CLOUDS_7
+	area $06, $6e6d,  10, 100, $0, $00, $00 ; BUBBLY_CLOUDS_8
+	area $06, $712d,  10,   8, $0, $08, $00 ; BUBBLY_CLOUDS_9
 	assert_table_length NUM_BUBBLY_CLOUDS_AREAS
 
 .MtDedede:
 	table_width 8
-	area $06, $716e, $3c, $08, $00, $10, $32 ; MT_DEDEDE_0
-	area $06, $7653, $28, $08, $00, $00, $1e ; MT_DEDEDE_1
-	area $06, $7225, $1e, $10, $00, $00, $14 ; MT_DEDEDE_2
-	area $06, $739c, $1a, $0e, $00, $00, $10 ; MT_DEDEDE_3
-	area $06, $7497, $0a, $32, $00, $00, $00 ; MT_DEDEDE_4
-	area $06, $71e2, $12, $08, $00, $00, $08 ; MT_DEDEDE_5
-	area $03, $6ad2, $0a, $18, $00, $00, $00 ; MT_DEDEDE_6
-	area $03, $649e, $2a, $08, $00, $00, $14 ; MT_DEDEDE_7
-	area $03, $733d, $0a, $08, $00, $00, $00 ; MT_DEDEDE_8
-	area $06, $712d, $0a, $08, $00, $00, $00 ; MT_DEDEDE_9
+	area $06, $716e,  60,  8, $0, $10, $32 ; MT_DEDEDE_0
+	area $06, $7653,  40,  8, $0, $00, $1e ; MT_DEDEDE_1
+	area $06, $7225,  30, 16, $0, $00, $14 ; MT_DEDEDE_2
+	area $06, $739c,  26, 14, $0, $00, $10 ; MT_DEDEDE_3
+	area $06, $7497,  10, 50, $0, $00, $00 ; MT_DEDEDE_4
+	area $06, $71e2,  18,  8, $0, $00, $08 ; MT_DEDEDE_5
+	area $03, $6ad2,  10, 24, $0, $00, $00 ; MT_DEDEDE_6
+	area $03, $649e,  42,  8, $0, $00, $14 ; MT_DEDEDE_7
+	area $03, $733d,  10,  8, $0, $00, $00 ; MT_DEDEDE_8
+	area $06, $712d,  10,  8, $0, $00, $00 ; MT_DEDEDE_9
 	assert_table_length NUM_MT_DEDEDE_AREAS
 
 Data_3a43::

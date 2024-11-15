@@ -5,7 +5,7 @@ Func_1401a:
 	add hl, bc
 	bit 7, [hl]
 	ret z
-	ld hl, wd140
+	ld hl, wd140 + OBJECT_SLOT_KIRBY
 	ld e, [hl]
 	add hl, bc
 	ld a, [hl]
@@ -50,14 +50,14 @@ Func_1401a:
 	ld [hl], e
 	ret
 .asm_1405d
-	ld hl, wd190
+	ld hl, wObjectPropertyFlags
 	add hl, bc
-	bit 6, [hl]
-	jr z, .asm_1406c
+	bit PROPERTY_PERSISTENT_F, [hl]
+	jr z, .no_persistent
 	ld a, $01
 	call Func_14600
 	jr .asm_1407f
-.asm_1406c
+.no_persistent
 	ld hl, wd3f7
 	inc [hl]
 	ld d, [hl]
@@ -239,14 +239,14 @@ Func_141b1:
 SECTION "Bank 5@42a3", ROMX[$42a3], BANK[$5]
 
 Func_142a3:
-	ld hl, wd140
+	ld hl, wd140 + OBJECT_SLOT_KIRBY
 	ld a, [hl]
 	ld hl, wObjectXCoords + $1
 	add hl, bc
 	add hl, bc
 	add hl, bc
 	ld [hl], a
-	ld hl, wd150
+	ld hl, wd150 + OBJECT_SLOT_KIRBY
 	ld a, [hl]
 	ld hl, wObjectYCoords + $1
 	add hl, bc
@@ -281,7 +281,7 @@ Func_1432c::
 	ld c, 6
 	ld de, $201
 .asm_14353
-	ld a, [wd140]
+	ld a, [wd140 + OBJECT_SLOT_KIRBY]
 	ld [wd412], a
 	ld a, [wd150 + OBJECT_SLOT_KIRBY]
 	add c
@@ -369,16 +369,16 @@ Func_1432c::
 	ret
 
 .Func_143ef:
-	ld hl, wd190
+	ld hl, wObjectPropertyFlags
 	add hl, bc
-	bit 6, [hl]
-	jr z, .asm_143fe
+	bit PROPERTY_PERSISTENT_F, [hl]
+	jr z, .not_persistent
 	push bc
 	xor a
 	call Func_14600
 	pop bc
 	ret
-.asm_143fe
+.not_persistent
 	call Func_148dc
 	dec hl
 	dec hl
@@ -409,7 +409,7 @@ Func_1432c::
 	ld hl, hKirbyFlags5
 	set KIRBY5F_DAMAGED_F, [hl]
 	res KIRBY5F_DAMAGE_KNOCK_BACK_LEFT_F, [hl]
-	ld hl, wd140
+	ld hl, wd140 + OBJECT_SLOT_KIRBY
 	ld a, [hl]
 	add hl, bc
 	cp [hl]
@@ -456,10 +456,10 @@ Func_1432c::
 	jp Func_23af
 
 .Func_1448a:
-	ld hl, wd190
+	ld hl, wObjectPropertyFlags
 	add hl, bc
-	bit 6, [hl]
-	ret nz
+	bit PROPERTY_PERSISTENT_F, [hl]
+	ret nz ; is persistent
 	call Func_148dc
 	dec hl
 	dec hl
@@ -597,10 +597,10 @@ Func_1432c::
 	ld hl, hEngineFlags
 	bit ENGINEF_UNK1_F, [hl]
 	jr z, .asm_145aa
-	ld hl, wd190
+	ld hl, wObjectPropertyFlags
 	ld b, $00
 	add hl, bc
-	set 4, [hl]
+	set PROPERTY_PAL_F, [hl]
 	ld a, $05
 	ld [wd3d4], a
 	ret
@@ -622,9 +622,9 @@ Func_1432c::
 	jr z, .set_carry
 	bit OBJFLAG_0_F, a
 	jr nz, .set_carry
-	ld hl, wd190
+	ld hl, wObjectPropertyFlags
 	add hl, bc
-	bit 2, [hl]
+	bit PROPERTY_2_F, [hl]
 	jr nz, .set_carry
 	xor a
 	ret
@@ -919,13 +919,13 @@ ConsumeItem:
 	jr z, .asm_147e2
 	ld e, a
 	and %111
-	ld c, a
+	ld c, a ; which power of two to use
 	xor a
 	ld b, a
 	ld d, a
 	srl e
 	srl e
-	srl e
+	srl e ; which byte to use in wConsumedItems
 	ld hl, PowersOfTwo
 	add hl, bc
 	ld a, [hl]
@@ -961,14 +961,14 @@ Func_147e4::
 	jr z, .asm_1488d
 	bit OBJFLAG_0_F, [hl]
 	jr nz, .asm_1488d
-	ld hl, wd190
+	ld hl, wObjectPropertyFlags
 	add hl, bc
-	bit 2, [hl]
+	bit PROPERTY_2_F, [hl]
 	jr nz, .asm_1488d
-	ld hl, wd190
+	ld hl, wObjectPropertyFlags
 	add hl, bc
-	bit 6, [hl]
-	jr z, .asm_1483d
+	bit PROPERTY_PERSISTENT_F, [hl]
+	jr z, .not_persistent
 	ld hl, wObjectPropertyPtrs
 	add hl, bc
 	add hl, bc
@@ -986,7 +986,7 @@ ENDR
 	cp ITEM_A
 	jr z, .asm_1488d
 	jr .asm_14844
-.asm_1483d
+.not_persistent
 	call Func_148dc
 	bit 1, [hl] ; OBJ_UNK5
 	jr z, .asm_1488d
@@ -1004,7 +1004,7 @@ ENDR
 	jr nc, .asm_1488d
 	ld a, [hKirbyFlags3]
 	ld e, a
-	ld hl, wd140
+	ld hl, wd140 + OBJECT_SLOT_KIRBY
 	ld a, [hl]
 	add hl, bc
 	sub [hl]
@@ -1100,7 +1100,7 @@ Func_148ea:
 	ld a, [wSCX]
 	and $0f
 	ld l, a
-	ld a, [wd140]
+	ld a, [wd140 + OBJECT_SLOT_KIRBY]
 	add l
 	sub $08
 	ld l, a
@@ -1134,7 +1134,7 @@ Func_148ea:
 	jr .asm_14933
 .asm_1492b
 	inc b
-	ld a, [wd03f]
+	ld a, [wLevelWidth]
 	cp b
 	jr z, .asm_14991
 	inc hl
@@ -1342,7 +1342,7 @@ Func_14993:
 	dec a
 	ld c, a
 	pop af
-	ld hl, wd140
+	ld hl, wd140 + OBJECT_SLOT_KIRBY
 	add [hl]
 	ld b, a
 	ld hl, $5c19
@@ -1369,7 +1369,7 @@ Func_14a5f::
 	jr z, .facing_right
 	ld c, -10
 .facing_right
-	ld a, [wd140]
+	ld a, [wd140 + OBJECT_SLOT_KIRBY]
 	add c
 	ld c, a
 	ld a, [wSCX]
