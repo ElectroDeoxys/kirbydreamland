@@ -2,7 +2,7 @@ Func_4000::
 	ldh a, [hKirbyFlags2]
 	bit KIRBY2F_UNK6_F, a
 	call z, Func_8dc
-	ld a, [wKirbyScreenX]
+	ld a, [wCurScreenX]
 	cp SCRN_X - 8
 	jr c, .not_on_right_edge
 	; on right edge of screen
@@ -34,7 +34,7 @@ Func_4000::
 	bit SCROLLINGF_UNK5_F, a
 	jp nz, .asm_40e1
 	inc e
-	ld a, [wKirbyScreenX]
+	ld a, [wCurScreenX]
 	add $0d
 	ld [wd05e], a
 	call GetKirbyLevelXCoord
@@ -52,7 +52,7 @@ Func_4000::
 	call Func_1ccb
 	ld a, c
 	ld [wd05e], a
-	ld a, [wKirbyScreenY]
+	ld a, [wCurScreenY]
 	sub $10
 	ld [wd05f], a
 	call Func_819
@@ -69,7 +69,7 @@ Func_4000::
 	call Func_1248
 	jr c, .asm_40a4
 .asm_4081
-	ld a, [wKirbyScreenY]
+	ld a, [wCurScreenY]
 	sub $01
 	ld [wd05f], a
 	call Func_819
@@ -148,7 +148,7 @@ Func_4000::
 .asm_4117
 	ld a, [wKirbyScreenDeltaX]
 	ld b, a
-	ld a, [wKirbyScreenX]
+	ld a, [wCurScreenX]
 	add b
 	cp SCRN_X - 8
 	jr nc, .asm_4149
@@ -157,7 +157,7 @@ Func_4000::
 	sub b
 	jr c, .asm_4133
 	call MoveKirbyRight
-	ld a, [wKirbyScreenX]
+	ld a, [wCurScreenX]
 	xor a
 	ld [wd063], a
 	ret
@@ -197,7 +197,7 @@ Func_4000::
 .asm_416f
 	call StopKirbyWalking
 	ld a, SCRN_X - 8
-	ld [wKirbyScreenX], a
+	ld [wCurScreenX], a
 	xor a
 	ld [wd063], a
 	ret
@@ -208,7 +208,7 @@ Func_417c::
 	ldh a, [hKirbyFlags2]
 	bit KIRBY2F_UNK6_F, a
 	call z, Func_8dc
-	ld a, [wKirbyScreenX]
+	ld a, [wCurScreenX]
 	cp $08
 	jr nz, .not_on_left_edge
 	; on left edge of screen
@@ -234,7 +234,7 @@ Func_417c::
 	bit SCROLLINGF_UNK5_F, a
 	jp nz, .asm_4250
 	inc e
-	ld a, [wKirbyScreenX]
+	ld a, [wCurScreenX]
 	add $03
 	ld [wd05e], a
 	call GetKirbyLevelXCoord
@@ -254,7 +254,7 @@ Func_417c::
 	call Func_1ccb
 	ld a, c
 	ld [wd05e], a
-	ld a, [wKirbyScreenY]
+	ld a, [wCurScreenY]
 	sub $10
 	ld [wd05f], a
 	call Func_819
@@ -271,7 +271,7 @@ Func_417c::
 	call Func_1248
 	jr c, .asm_4221
 .asm_41fe
-	ld a, [wKirbyScreenY]
+	ld a, [wCurScreenY]
 	sub $01
 	ld [wd05f], a
 	call Func_819
@@ -337,7 +337,7 @@ Func_417c::
 .asm_427e
 	ld c, $08
 .asm_4280
-	ld a, [wKirbyScreenX]
+	ld a, [wCurScreenX]
 	sub c
 	ld [wKirbyScreenDeltaX], a
 	sub b
@@ -345,7 +345,7 @@ Func_417c::
 	ld a, [wd063]
 	ld [wKirbyScreenDeltaX], a
 	call MoveKirbyLeft
-	ld a, [wKirbyScreenX]
+	ld a, [wCurScreenX]
 	cp $08
 	jr z, Func_42a1
 	and a
@@ -677,7 +677,7 @@ KirbyControl::
 	jr .check_d_left
 .asm_451a
 	ldh a, [hKirbyFlags5]
-	and KIRBY5F_UNK6 | KIRBY5F_UNK7
+	and KIRBY5F_UNK6 | KIRBY5F_INHALING_OBJECT
 	jr nz, .check_d_left
 	ld hl, hKirbyFlags2
 	set KIRBY2F_SPIT_F, [hl]
@@ -1008,9 +1008,10 @@ Func_4783::
 	cp 31
 	jr c, .skip_spit
 
+	; can only spit if it's not still inhaling an object
 	ldh a, [hKirbyFlags5]
-	bit KIRBY5F_UNK7_F, a
-	jr nz, .skip_spit
+	bit KIRBY5F_INHALING_OBJECT_F, a
+	jr nz, .skip_spit ; still inhaling an object
 	ldh a, [hJoypadPressed]
 	bit B_BUTTON_F, a
 	jr nz, .skip_spit
@@ -1186,7 +1187,7 @@ SECTION "Bank 1@49fb", ROMX[$49fb], BANK[$1]
 
 Func_49fb:
 	ld d, $00
-	ld hl, wd140
+	ld hl, wObjectScreenXPositions
 	add hl, bc
 	ld a, [hl]
 	cp $58
@@ -1204,7 +1205,7 @@ Func_4a1c:
 	push bc
 	ld a, [wSCX]
 	and $0f
-	ld hl, wd140
+	ld hl, wObjectScreenXPositions
 	add hl, bc
 	add [hl]
 	sub $08
@@ -1217,7 +1218,7 @@ Func_4a1c:
 	ld d, a
 	ld a, [wSCY]
 	and $0f
-	ld hl, wd150
+	ld hl, wObjectScreenYPositions
 	add hl, bc
 	add [hl]
 	sub $10
@@ -1268,7 +1269,14 @@ LockScrolling:
 	ld hl, hPalFadeFlags
 	set SCROLL_LOCKED_F, [hl]
 	ret
-; 0x4a88
+
+EnableScrollingAndFadeOut:
+	ld hl, hPalFadeFlags
+	res SCROLL_LOCKED_F, [hl]
+	ld hl, hEngineFlags
+	set FADE_MODE_F, [hl] ; fade out
+	ret
+; 0x4a93
 
 SECTION "Bank 1@4ab3", ROMX[$4ab3], BANK[$1]
 
@@ -1285,16 +1293,16 @@ Func_4aba:
 	ret
 
 Func_4ac1:
-	ld hl, wd140
+	ld hl, wObjectScreenXPositions
 	add hl, bc
 	ld a, [hl]
 	sub $8
-	ld [wKirbyScreenX], a
-	ld hl, wd150
+	ld [wCurScreenX], a
+	ld hl, wObjectScreenYPositions
 	add hl, bc
 	ld a, [hl]
 	sub $8
-	ld [wKirbyScreenY], a
+	ld [wCurScreenY], a
 	ret
 
 Func_4ad6:
@@ -1315,25 +1323,67 @@ Func_4ae6:
 	add hl, bc
 	set 2, [hl]
 	ret
-; 0x4aed
 
-SECTION "Bank 1@4afb", ROMX[$4afb], BANK[$1]
+Func_4aed:
+	push bc
+	ld hl, $416c
+	call CreateObject_Group2
+	ld d, b
+	ld e, c
+	pop bc
+	call Func_2755
+	ret
 
 Func_4afb:
 	ld hl, wd1a0
 	add hl, bc
 	set OBJFLAG_0_F, [hl]
 	ld hl, AnimScript_20003
-	ld de, MotionScript_10000
+	ld de, MotionScript_InhaledObject
 	call SetObjectScripts
 	ld hl, hKirbyFlags5
-	set KIRBY5F_UNK7_F, [hl]
+	set KIRBY5F_INHALING_OBJECT_F, [hl]
 	ld hl, wd3f6
 	inc [hl]
 	ld a, $ff
 	ld [wScriptCommand], a
 	ret
 ; 0x4b19
+
+SECTION "Bank 1@4b77", ROMX[$4b77], BANK[$1]
+
+Func_4b77:
+	ld d, $00
+	ld hl, .ScoreValues
+	add hl, de
+	add hl, de
+	ld de, wScore
+	ld a, [de]
+	add [hl]
+	ld [de], a
+	inc hl
+	inc de
+	ld a, [de]
+	adc [hl]
+	ld [de], a
+	inc de
+	ld a, [de]
+	adc 0
+	ld [de], a
+	call CapScore
+	ret
+
+.ScoreValues:
+	dw  300 ; $0
+	dw 1000 ; $1
+	dw  400 ; $2
+	dw  650 ; $3
+	dw    0 ; $4
+	dw 2000 ; $5
+	dw  750 ; $6
+	dw 2500 ; $7
+	dw    0 ; $8
+; 0x4ba4
 
 SECTION "Bank 1@4bb4", ROMX[$4bb4], BANK[$1]
 

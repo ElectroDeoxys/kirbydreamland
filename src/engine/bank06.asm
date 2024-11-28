@@ -142,9 +142,9 @@ StartStage::
 	ld a, [hli]
 	ld [wd052], a
 	ld a, [hli]
-	ld [wKirbyScreenX], a
+	ld [wCurScreenX], a
 	ld a, [hli]
-	ld [wKirbyScreenY], a
+	ld [wCurScreenY], a
 
 	ld a, [wStage]
 	ld e, a
@@ -166,9 +166,9 @@ StartStage::
 	ld a, $01
 	ld [wd052], a
 	ld a, $48
-	ld [wKirbyScreenX], a
+	ld [wCurScreenX], a
 	ld a, $70
-	ld [wKirbyScreenY], a
+	ld [wCurScreenY], a
 	ld bc, $32
 .asm_1821e
 	ld hl, wc100
@@ -891,9 +891,9 @@ _LoseLife::
 	ld a, [hli]
 	ld [wd052], a
 	ld a, [hli]
-	ld [wKirbyScreenX], a
+	ld [wCurScreenX], a
 	ld a, [hli]
-	ld [wKirbyScreenY], a
+	ld [wCurScreenY], a
 	xor a
 	ld [hKirbyFlags1], a
 	ld [hKirbyFlags2], a

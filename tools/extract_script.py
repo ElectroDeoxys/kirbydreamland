@@ -52,6 +52,80 @@ def parseAnimJr(args):
 def parseAnimFC(args):
     return parseWord(args[0:2]) + parseWord(args[2:4]) + parseWord(args[4:6])
 
+xVelocities = {
+    0x00: "0",
+
+    0x70: "VEL_RIGHT_0_00",
+    0x71: "VEL_RIGHT_1_64TH",
+    0x72: "VEL_RIGHT_1_32TH",
+    0x73: "VEL_RIGHT_1_16TH",
+    0x74: "VEL_RIGHT_1_8TH",
+    0x75: "VEL_RIGHT_0_25",
+    0x76: "VEL_RIGHT_0_50",
+    0x77: "VEL_RIGHT_0_75",
+    0x78: "VEL_RIGHT_1_00",
+    0x79: "VEL_RIGHT_1_25",
+    0x7a: "VEL_RIGHT_2_00",
+    0x7b: "VEL_RIGHT_3_00",
+    0x7c: "VEL_RIGHT_4_00",
+    0x7d: "VEL_RIGHT_6_00",
+    0x7e: "VEL_RIGHT_8_00",
+    0x7f: "VEL_RIGHT_16_00",
+    0x80: "VEL_LEFT_0_00",
+    0x81: "VEL_LEFT_1_64TH",
+    0x82: "VEL_LEFT_1_32TH",
+    0x83: "VEL_LEFT_1_16TH",
+    0x84: "VEL_LEFT_1_8TH",
+    0x85: "VEL_LEFT_0_25",
+    0x86: "VEL_LEFT_0_50",
+    0x87: "VEL_LEFT_0_75",
+    0x88: "VEL_LEFT_1_00",
+    0x89: "VEL_LEFT_1_25",
+    0x8a: "VEL_LEFT_2_00",
+    0x8b: "VEL_LEFT_3_00",
+    0x8c: "VEL_LEFT_4_00",
+    0x8d: "VEL_LEFT_6_00",
+    0x8e: "VEL_LEFT_8_00",
+    0x8f: "VEL_LEFT_16_00",
+}
+
+yVelocities = {
+    0x00: "0",
+
+    0x70: "VEL_DOWN_0_00",
+    0x71: "VEL_DOWN_1_64TH",
+    0x72: "VEL_DOWN_1_32TH",
+    0x73: "VEL_DOWN_1_16TH",
+    0x74: "VEL_DOWN_1_8TH",
+    0x75: "VEL_DOWN_0_25",
+    0x76: "VEL_DOWN_0_50",
+    0x77: "VEL_DOWN_0_75",
+    0x78: "VEL_DOWN_1_00",
+    0x79: "VEL_DOWN_1_25",
+    0x7a: "VEL_DOWN_2_00",
+    0x7b: "VEL_DOWN_3_00",
+    0x7c: "VEL_DOWN_4_00",
+    0x7d: "VEL_DOWN_6_00",
+    0x7e: "VEL_DOWN_8_00",
+    0x7f: "VEL_DOWN_16_00",
+    0x80: "VEL_UP_0_00",
+    0x81: "VEL_UP_1_64TH",
+    0x82: "VEL_UP_1_32TH",
+    0x83: "VEL_UP_1_16TH",
+    0x84: "VEL_UP_1_8TH",
+    0x85: "VEL_UP_0_25",
+    0x86: "VEL_UP_0_50",
+    0x87: "VEL_UP_0_75",
+    0x88: "VEL_UP_1_00",
+    0x89: "VEL_UP_1_25",
+    0x8a: "VEL_UP_2_00",
+    0x8b: "VEL_UP_3_00",
+    0x8c: "VEL_UP_4_00",
+    0x8d: "VEL_UP_6_00",
+    0x8e: "VEL_UP_8_00",
+    0x8f: "VEL_UP_16_00",
+}
+
 commands = {
     0xe0: ("script_end", 0, None),
     0xe1: ("jump_abs", 2, parseWord),
@@ -180,7 +254,7 @@ for o in args.offsets:
 
         if cmdByte < 0xe0:
             if isMotionScript:
-                xVel = source[pos]
+                xVel = source[pos+0]
                 yVel = source[pos+1]
                 pos += 2
                 parsedCommands.append((cmdByte, cmdPos, [xVel, yVel]))
@@ -254,7 +328,7 @@ for o in args.offsets:
             outStr += addressLabels[cmdPos] + "\n"
         if cmdByte < 0xe0:
             if isMotionScript:
-                outStr += "\tset_velocities {:2d}".format(cmdByte) + ", ${:02x}".format(args[0]) + ", ${:02x}\n".format(args[1])
+                outStr += "\tset_velocities {:2d}".format(cmdByte) + ", {}".format(xVelocities[args[0]]) + ", {}\n".format(yVelocities[args[1]])
             else:
                 outStr += "\tframe {:2d}".format(cmdByte) + ", ${:04x}\n".format(args[0])
         else:

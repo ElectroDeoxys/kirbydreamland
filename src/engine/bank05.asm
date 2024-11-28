@@ -1,23 +1,28 @@
 SECTION "Bank 5@401a", ROMX[$401a], BANK[$5]
 
-Func_1401a:
+; handles motion of object in slot bc
+; that is being inhaled by Kirby
+; also handles when it gets in Kirby's mouth
+InhaleObject:
 	ld hl, wd1a0
 	add hl, bc
 	bit 7, [hl]
 	ret z
-	ld hl, wd140 + OBJECT_SLOT_KIRBY
+	ld hl, wObjectScreenXPositions + OBJECT_SLOT_KIRBY
 	ld e, [hl]
 	add hl, bc
 	ld a, [hl]
-	sub e
-	ld de, -30
-	jr nc, .asm_14032
+	sub e ; (obj X) - (Kirby X)
+	ld de, -0.117
+	jr nc, .got_x_distance
 	cpl
 	inc a
-	ld de, 30
-.asm_14032
-	cp $0a
-	jr c, .asm_1405d
+	ld de, 0.117
+.got_x_distance
+	; a = X distance between obj and Kirby
+	cp 10
+	jr c, .within_10_px
+	; add de to obj x velocity
 	ld hl, wObjectXVels
 	add hl, bc
 	add hl, bc
@@ -27,8 +32,9 @@ Func_1401a:
 	ld a, [hl]
 	adc d
 	ld [hl], a
-	ld d, $03
-	ld hl, wd150
+
+	ld d, 3
+	ld hl, wObjectScreenYPositions
 	ld e, [hl]
 	add hl, bc
 	ld a, [hl]
@@ -37,39 +43,46 @@ Func_1401a:
 	cpl
 	inc a
 	ld e, a
+	; e = (Kirby Y) - (obj Y + 1)
 	xor a
-.asm_1404f
+.loop_division
 	sra e
 	rra
 	dec d
-	jr nz, .asm_1404f
+	jr nz, .loop_division
+	; add ((Kirby Y) - (obj Y + 1)) / 8 to obj y velocity
 	ld hl, wObjectYVels
 	add hl, bc
 	add hl, bc
 	ld [hli], a
 	ld [hl], e
 	ret
-.asm_1405d
+
+.within_10_px
+	; < 10 pixels from Kirby X coordinate
 	ld hl, wObjectPropertyFlags
 	add hl, bc
 	bit PROPERTY_PERSISTENT_F, [hl]
-	jr z, .no_persistent
+	jr z, .not_persistent
 	ld a, $01
-	call Func_14600
-	jr .asm_1407f
-.no_persistent
-	ld hl, wd3f7
+	call ExecuteItemEffect
+	jr .skip_score
+
+.not_persistent
+	; add this enemy's score
+	ld hl, wEnemyScoreMultiplier
 	inc [hl]
 	ld d, [hl]
 	call Func_148dc
 	inc hl
-.asm_14075
+.loop_score_multiplier
 	ld a, [hl] ; OBJ_SCORE
 	call AddToScore
 	dec d
-	jr nz, .asm_14075
+	jr nz, .loop_score_multiplier
 	call DestroyObject
-.asm_1407f
+
+.skip_score
 	ld hl, hKirbyFlags2
 	set KIRBY2F_MOUTHFUL_F, [hl]
 	ld hl, hKirbyFlags4
@@ -80,11 +93,11 @@ Func_1401a:
 .asm_14090
 	ld hl, wd3f6
 	dec [hl]
-	jr nz, .asm_140c1
+	jr nz, .done
 	xor a
-	ld [wd3f7], a
+	ld [wEnemyScoreMultiplier], a
 	ld hl, hKirbyFlags5
-	res KIRBY5F_UNK7_F, [hl]
+	res KIRBY5F_INHALING_OBJECT_F, [hl]
 	ld hl, hKirbyFlags2
 	res KIRBY2F_INHALE_F, [hl]
 	ld hl, hKirbyFlags4
@@ -95,18 +108,18 @@ Func_1401a:
 	bit 0, [hl]
 	jp nz, Func_14761
 	bit 4, [hl]
-	jr z, .asm_140c1
+	jr z, .done
 	res 4, [hl]
 	ld hl, hKirbyFlags4
 	set KIRBY4F_UNK4_F, [hl]
-.asm_140c1
+.done
 	ret
 
 Func_140c2:
 	call Func_140d5
 	ret c
 	ld hl, hKirbyFlags5
-	set KIRBY5F_UNK7_F, [hl]
+	set KIRBY5F_INHALING_OBJECT_F, [hl]
 	jp Func_1415e
 ; 0x140ce
 
@@ -190,7 +203,7 @@ Func_1415e:
 	add hl, bc
 	ld d, h
 	ld e, l
-	ld hl, wd37a
+	ld hl, wObjectCustomFuncArgs
 	add hl, bc
 	add hl, bc
 	ld a, [hli]
@@ -209,7 +222,7 @@ Func_14172:
 	ld a, [wd3cd]
 	and a
 	ret z
-	ld hl, wd37a
+	ld hl, wObjectCustomFuncArgs
 	add hl, bc
 	add hl, bc
 	ld a, [hli]
@@ -239,14 +252,14 @@ Func_141b1:
 SECTION "Bank 5@42a3", ROMX[$42a3], BANK[$5]
 
 Func_142a3:
-	ld hl, wd140 + OBJECT_SLOT_KIRBY
+	ld hl, wObjectScreenXPositions + OBJECT_SLOT_KIRBY
 	ld a, [hl]
 	ld hl, wObjectXCoords + $1
 	add hl, bc
 	add hl, bc
 	add hl, bc
 	ld [hl], a
-	ld hl, wd150 + OBJECT_SLOT_KIRBY
+	ld hl, wObjectScreenYPositions + OBJECT_SLOT_KIRBY
 	ld a, [hl]
 	ld hl, wObjectYCoords + $1
 	add hl, bc
@@ -257,7 +270,27 @@ Func_142a3:
 	bit KIRBY3F_DIVE_F, [hl]
 	jp z, DestroyObject
 	ret
-; 0x142c2
+
+Func_142c2:
+	ld hl, wObjectCustomFuncArgs
+	add hl, bc
+	add hl, bc
+	ld a, [hli]
+	ld e, a
+	ld d, [hl]
+	or d
+	ret z
+	dec de
+	ld a, d
+	ld [hld], a
+	ld [hl], e
+	or e
+	ret nz
+	ld hl, AnimScript_203b6
+	ld de, MotionScript_10008
+	call SetObjectScripts
+	ret
+; 0x142dc
 
 SECTION "Bank 5@432c", ROMX[$432c], BANK[$5]
 
@@ -269,21 +302,21 @@ Func_1432c::
 
 .Func_14336:
 	ld c, -4
-	ld de, $505
+	lb de, 5, 5
 	ld a, [hKirbyFlags2]
 	and KIRBY2F_MOUTHFUL | KIRBY2F_INHALE | KIRBY2F_HOVER
 	jr nz, .asm_14353
 	ld c, 0
-	ld de, $303
+	lb de, 3, 3
 	ld hl, hKirbyFlags3
 	bit KIRBY3F_DUCK_F, [hl]
 	jr z, .asm_14353
 	ld c, 6
-	ld de, $201
+	lb de, 2, 1
 .asm_14353
-	ld a, [wd140 + OBJECT_SLOT_KIRBY]
+	ld a, [wObjectScreenXPositions + OBJECT_SLOT_KIRBY]
 	ld [wd412], a
-	ld a, [wd150 + OBJECT_SLOT_KIRBY]
+	ld a, [wObjectScreenYPositions + OBJECT_SLOT_KIRBY]
 	add c
 	ld [wd413], a
 	ld bc, OBJECT_GROUP_1_BEGIN
@@ -314,9 +347,9 @@ Func_1432c::
 	bit 2, a
 	ret nz
 	ld [wd410], a
-	ld a, [wd140 + OBJECT_SLOT_13]
+	ld a, [wObjectScreenXPositions + OBJECT_SLOT_13]
 	ld [wd412], a
-	ld a, [wd150 + OBJECT_SLOT_13]
+	ld a, [wObjectScreenYPositions + OBJECT_SLOT_13]
 	ld [wd413], a
 	ld a, OBJECT_SLOT_13
 	ld [wd411], a
@@ -335,9 +368,9 @@ Func_1432c::
 	bit 2, a
 	ret nz
 	ld [wd410], a
-	ld a, [wd140 + OBJECT_SLOT_14]
+	ld a, [wObjectScreenXPositions + OBJECT_SLOT_14]
 	ld [wd412], a
-	ld a, [wd150 + OBJECT_SLOT_14]
+	ld a, [wObjectScreenYPositions + OBJECT_SLOT_14]
 	ld [wd413], a
 	ld a, OBJECT_SLOT_14
 	ld [wd411], a
@@ -375,7 +408,7 @@ Func_1432c::
 	jr z, .not_persistent
 	push bc
 	xor a
-	call Func_14600
+	call ExecuteItemEffect
 	pop bc
 	ret
 .not_persistent
@@ -409,7 +442,7 @@ Func_1432c::
 	ld hl, hKirbyFlags5
 	set KIRBY5F_DAMAGED_F, [hl]
 	res KIRBY5F_DAMAGE_KNOCK_BACK_LEFT_F, [hl]
-	ld hl, wd140 + OBJECT_SLOT_KIRBY
+	ld hl, wObjectScreenXPositions + OBJECT_SLOT_KIRBY
 	ld a, [hl]
 	add hl, bc
 	cp [hl]
@@ -614,7 +647,7 @@ Func_1432c::
 	add hl, bc
 	ld a, [hl]
 	and a
-	jr z, .set_carry
+	jr z, .set_carry ; not active
 	ld hl, wd1a0
 	add hl, bc
 	ld a, [hl]
@@ -644,7 +677,7 @@ Func_1432c::
 	add d
 	ld d, a
 	push hl
-	ld hl, wd140
+	ld hl, wObjectScreenXPositions
 	add hl, bc
 	ld a, [wd412]
 	sub [hl]
@@ -659,7 +692,7 @@ Func_1432c::
 	add e
 	ld e, a
 	push hl
-	ld hl, wd150
+	ld hl, wObjectScreenYPositions
 	add hl, bc
 	ld a, [wd413]
 	sub [hl]
@@ -671,7 +704,9 @@ Func_1432c::
 	pop hl
 	ret
 
-Func_14600:
+; input:
+; - a = ?
+ExecuteItemEffect:
 	ld [wd06b + 0], a
 	ld hl, wObjectPropertyPtrs
 	add hl, bc
@@ -791,18 +826,18 @@ Func_14600:
 	set KIRBY5F_TRIGGER_TRANSITION_F, [hl]
 	ld a, SFX_WARP_STAR
 	call PlaySFX
-	ld hl, wd140
+	ld hl, wObjectScreenXPositions
 	add hl, bc
 	ld a, [hl]
 	ld [wObjectXCoords + OBJECT_SLOT_KIRBY + $1], a
 	sub $08
-	ld [wKirbyScreenX], a
-	ld hl, wd150
+	ld [wCurScreenX], a
+	ld hl, wObjectScreenYPositions
 	add hl, bc
 	ld a, [hl]
 	ld [wObjectYCoords + OBJECT_SLOT_KIRBY + $1], a
 	sub $08
-	ld [wKirbyScreenY], a
+	ld [wCurScreenY], a
 	jr .DestroyObject
 
 .asm_14704
@@ -937,34 +972,37 @@ ConsumeItem:
 	pop bc
 	ret
 
-Func_147e4::
+InhaleObjectsInRange::
 	call .Func_1489b
 	ld a, [hKirbyFlags2]
 	bit KIRBY2F_INHALE_F, a
-	ret z
+	ret z ; not inhaling
 	bit KIRBY2F_SPIT_F, a
-	ret nz
+	ret nz ; is in spitting state
 	call Func_14993
 	ld hl, hKirbyFlags5
-	bit KIRBY5F_UNK7_F, [hl]
+	bit KIRBY5F_INHALING_OBJECT_F, [hl]
 	call z, Func_148ea
-	ld bc, $1
+
+	; loop through all objects, and start
+	; inhaling all objects in range
+	ld bc, OBJECT_GROUP_1_BEGIN
 .loop
 	ld hl, wObjectActiveStates
 	add hl, bc
 	ld a, [hl]
 	and a
-	jp z, .asm_1488d
+	jp z, .next_obj
 	ld hl, wd1a0
 	add hl, bc
 	bit OBJFLAG_7_F, [hl]
-	jr z, .asm_1488d
+	jr z, .next_obj
 	bit OBJFLAG_0_F, [hl]
-	jr nz, .asm_1488d
+	jr nz, .next_obj
 	ld hl, wObjectPropertyFlags
 	add hl, bc
 	bit PROPERTY_2_F, [hl]
-	jr nz, .asm_1488d
+	jr nz, .next_obj
 	ld hl, wObjectPropertyFlags
 	add hl, bc
 	bit PROPERTY_PERSISTENT_F, [hl]
@@ -978,33 +1016,36 @@ Func_147e4::
 REPT OBJ_ITEM_ID
 	inc hl
 ENDR
+	; the following items can't be inhaled
 	ld a, [hl] ; OBJ_ITEM_ID
 	cp WARP_STAR
-	jr z, .asm_1488d
+	jr z, .next_obj
 	cp ITEM_8
-	jr z, .asm_1488d
+	jr z, .next_obj
 	cp ITEM_A
-	jr z, .asm_1488d
-	jr .asm_14844
+	jr z, .next_obj
+	jr .check_y
+
 .not_persistent
 	call Func_148dc
 	bit 1, [hl] ; OBJ_UNK5
-	jr z, .asm_1488d
-.asm_14844
-	ld hl, wd150
-	ld a, [hl]
+	jr z, .next_obj
+.check_y
+	ld hl, wObjectScreenYPositions
+	ld a, [hl] ; Kirby's Y
 	add hl, bc
 	sub [hl]
 	bit 7, a
-	jr z, .asm_14850
+	jr z, .got_y_dist
 	cpl
 	inc a
-.asm_14850
-	cp $14
-	jr nc, .asm_1488d
+.got_y_dist
+	cp 20
+	jr nc, .next_obj ; out of range
+	; also in y range, inhale object
 	ld a, [hKirbyFlags3]
 	ld e, a
-	ld hl, wd140 + OBJECT_SLOT_KIRBY
+	ld hl, wObjectScreenXPositions + OBJECT_SLOT_KIRBY
 	ld a, [hl]
 	add hl, bc
 	sub [hl]
@@ -1013,56 +1054,60 @@ ENDR
 	cpl
 	inc a
 .asm_14864
-	cp $2a
-	jr nc, .asm_1488d
+	; a = x distance to Kirby
+	cp 42
+	jr nc, .next_obj
 	ld hl, wd1a0
 	add hl, bc
 	set OBJFLAG_0_F, [hl]
 	bit OBJFLAG_1_F, [hl]
-	jr nz, .asm_1488d
+	jr nz, .next_obj
 	ld hl, wd1b0
 	add hl, bc
 	ld a, [hl]
 	and $22
-	jr nz, .asm_1488d
+	jr nz, .next_obj
 	ld hl, AnimScript_20003
-	ld de, MotionScript_10000
+	ld de, MotionScript_InhaledObject
 	call SetObjectScripts
 	ld hl, hKirbyFlags5
-	set KIRBY5F_UNK7_F, [hl]
+	set KIRBY5F_INHALING_OBJECT_F, [hl]
 	ld hl, wd3f6
 	inc [hl]
-.asm_1488d
+.next_obj
 	inc c
 	ld a, c
-	cp $0d
-	jr nz, .asm_14895
+	cp OBJECT_GROUP_2_BEGIN
+	jr nz, .check_if_break
+	; skip group 2
 	inc c
 	inc c
-.asm_14895
-	cp $10
+.check_if_break
+	cp NUM_OBJECT_SLOTS
 	jp nz, .loop
 	ret
 
 .Func_1489b:
 	ld hl, hKirbyFlags5
-	bit KIRBY5F_UNK7_F, [hl]
-	jr z, .asm_148d7
+	bit KIRBY5F_INHALING_OBJECT_F, [hl]
+	jr z, .asm_148d7 ; not inhaling anything
 	ld bc, OBJECT_SLOT_01
 .loop_objects
 	ld hl, wObjectActiveStates
 	add hl, bc
 	ld a, [hl]
 	and a
-	jr z, .next_object
+	jr z, .next_object ; is inactive
+	; check if its custom function
+	; is InhaleObject, i.e. is being inhaled
 	ld hl, wObjectCustomFuncs
 	add hl, bc
 	add hl, bc
 	ld a, [hli]
-	cp LOW($401a)
+	cp LOW(InhaleObject)
 	jr nz, .next_object
 	ld a, [hl]
-	cp HIGH($401a)
+	cp HIGH(InhaleObject)
 	jr z, .asm_148d7
 .next_object
 	inc c
@@ -1074,7 +1119,7 @@ ENDR
 	cp 10
 	jr nz, .asm_148d3
 	ld hl, hKirbyFlags5
-	res KIRBY5F_UNK7_F, [hl]
+	res KIRBY5F_INHALING_OBJECT_F, [hl]
 	xor a
 	ld [wd3f6], a
 .asm_148d3
@@ -1100,7 +1145,7 @@ Func_148ea:
 	ld a, [wSCX]
 	and $0f
 	ld l, a
-	ld a, [wd140 + OBJECT_SLOT_KIRBY]
+	ld a, [wObjectScreenXPositions + OBJECT_SLOT_KIRBY]
 	add l
 	sub $08
 	ld l, a
@@ -1113,7 +1158,7 @@ Func_148ea:
 	ld a, [wSCY]
 	and $0f
 	ld l, a
-	ld a, [wd150 + OBJECT_SLOT_KIRBY]
+	ld a, [wObjectScreenYPositions + OBJECT_SLOT_KIRBY]
 	add l
 	sub $10
 	ld l, a
@@ -1188,13 +1233,13 @@ Func_148ea:
 	ld d, b
 	push bc
 	push de
-	ld hl, $41a2
+	ld hl, Data_1c1a2
 	call CreateObject_Group3
 	ld hl, wd1a0
 	add hl, bc
 	set OBJFLAG_0_F, [hl]
 	ld hl, hKirbyFlags5
-	set KIRBY5F_UNK7_F, [hl]
+	set KIRBY5F_INHALING_OBJECT_F, [hl]
 	ld hl, wd3f6
 	inc [hl]
 	pop de
@@ -1205,7 +1250,7 @@ Func_148ea:
 	ret
 
 Func_14993:
-	ld bc, $0
+	ld bc, OBJECT_SLOT_KIRBY
 .asm_14996
 	ld hl, wd3f9
 	add hl, bc
@@ -1337,12 +1382,12 @@ Func_14993:
 	ld a, [hl]
 	adc e
 	ld [hl], a
-	ld hl, wd150
+	ld hl, wObjectScreenYPositions
 	add [hl]
 	dec a
 	ld c, a
 	pop af
-	ld hl, wd140 + OBJECT_SLOT_KIRBY
+	ld hl, wObjectScreenXPositions + OBJECT_SLOT_KIRBY
 	add [hl]
 	ld b, a
 	ld hl, $5c19
@@ -1369,7 +1414,7 @@ Func_14a5f::
 	jr z, .facing_right
 	ld c, -10
 .facing_right
-	ld a, [wd140 + OBJECT_SLOT_KIRBY]
+	ld a, [wObjectScreenXPositions + OBJECT_SLOT_KIRBY]
 	add c
 	ld c, a
 	ld a, [wSCX]
@@ -1394,7 +1439,7 @@ Func_14a5f::
 	add hl, bc
 	add hl, bc
 	add hl, bc
-	ld a, [wd150 + OBJECT_SLOT_KIRBY]
+	ld a, [wObjectScreenYPositions + OBJECT_SLOT_KIRBY]
 	sub $05
 	ld c, a
 	ld a, [wSCY]
@@ -1465,9 +1510,9 @@ InitRAM::
 	ld [wd052], a
 	ld [wKirbyXVel + 0], a
 	ld a, $30
-	ld [wKirbyScreenX], a
+	ld [wCurScreenX], a
 	ld a, $00
-	ld [wKirbyScreenY], a
+	ld [wCurScreenY], a
 	ld a, $ff
 	ld [wd096], a
 	ld [wd03d], a ; MUSIC_NONE

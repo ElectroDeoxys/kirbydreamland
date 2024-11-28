@@ -721,7 +721,7 @@ ASSERT Data_1c000 == Data_3c000
 	ld [wd3ee], a
 	ld [wd3be], a
 	ld [wd3c0], a
-	ld [wd3f7], a
+	ld [wEnemyScoreMultiplier], a
 	ld [wd3c2], a
 	ld [wd3f5], a
 	ld [wd3f8], a
@@ -855,7 +855,7 @@ CreateObject_Group1:
 ; - d = x position
 ; - e = y position
 ; - hl = scripts and object data
-CreateObject_Group2:
+CreateObject_Group2::
 	ld c, OBJECT_GROUP_2_BEGIN
 	ld b, OBJECT_GROUP_2_END
 	jr CreateObject
@@ -1194,7 +1194,7 @@ DoCommonScriptCommand:
 	ld a, [de]
 	ld [hl], a
 	inc de
-	ld hl, wd37a
+	ld hl, wObjectCustomFuncArgs
 	add hl, bc
 	add hl, bc
 	ld a, [de]
@@ -1388,7 +1388,7 @@ DoCommonScriptCommand:
 	ld hl, wObjectPropertyFlags
 	add hl, bc
 	res PROPERTY_0_F, [hl]
-	ld hl, wd140
+	ld hl, wObjectScreenXPositions
 	add hl, bc
 	ld a, [hl]
 	ld hl, wObjectXCoords + $1
@@ -1396,7 +1396,7 @@ DoCommonScriptCommand:
 	add hl, bc
 	add hl, bc
 	ld [hl], a
-	ld hl, wd150
+	ld hl, wObjectScreenYPositions
 	add hl, bc
 	ld a, [hl]
 	ld hl, wObjectYCoords + $1
@@ -1593,11 +1593,11 @@ Func_2708::
 	ld hl, wObjectPropertyFlags
 	add hl, de
 	bit PROPERTY_0_F, [hl]
-	jr nz, .asm_2755
-	ld hl, wd140
+	jr nz, Func_2755
+	ld hl, wObjectScreenXPositions
 	add hl, bc
 	ld a, [hl]
-	ld hl, wd140
+	ld hl, wObjectScreenXPositions
 	add hl, de
 	ld [hl], a
 	ld hl, wObjectXCoords + $1
@@ -1606,10 +1606,10 @@ Func_2708::
 	add hl, de
 	ld [hli], a
 	ld [hl], $00
-	ld hl, wd150
+	ld hl, wObjectScreenYPositions
 	add hl, bc
 	ld a, [hl]
-	ld hl, wd150
+	ld hl, wObjectScreenYPositions
 	add hl, de
 	ld [hl], a
 	ld hl, wObjectYCoords + $1
@@ -1620,14 +1620,14 @@ Func_2708::
 	ld [hl], $00
 	ret
 
-.asm_2755
+Func_2755::
 	ld hl, wObjectXCoords
 	call .CopyCoordinates
 	ld hl, wObjectYCoords
 	call .CopyCoordinates
-	ld hl, wd140
+	ld hl, wObjectScreenXPositions
 	call .CopyObjDataByte
-	ld hl, wd150
+	ld hl, wObjectScreenYPositions
 .CopyObjDataByte:
 	push hl
 	add hl, bc
@@ -2518,7 +2518,7 @@ Func_2b26:
 	ld a, [wStage]
 	cp MT_DEDEDE
 	jr z, .asm_2c94
-	ld hl, wd140
+	ld hl, wObjectScreenXPositions
 	add hl, de
 	ld a, [hl]
 	cp $18
@@ -2528,7 +2528,7 @@ Func_2b26:
 .asm_2c94
 	ld b, $9e
 .asm_2c96
-	ld hl, wd150
+	ld hl, wObjectScreenYPositions
 	add hl, de
 	ld a, [hl]
 	cp b
@@ -2670,7 +2670,7 @@ Func_2d2d:
 	ld b, a
 	push af
 	push hl
-	ld hl, wd140
+	ld hl, wObjectScreenXPositions
 	add hl, de
 	ld [hl], b
 	pop hl
@@ -2712,7 +2712,7 @@ Func_2d2d:
 	ld b, a
 	push af
 	push hl
-	ld hl, wd140
+	ld hl, wObjectScreenXPositions
 	add hl, de
 	ld [hl], a
 	pop hl
@@ -2751,7 +2751,7 @@ Func_2d2d:
 	ld b, a
 	push af
 	push hl
-	ld hl, wd150
+	ld hl, wObjectScreenYPositions
 	add hl, de
 	ld [hl], b
 	pop hl
@@ -2783,7 +2783,7 @@ Func_2deb:
 	add hl, de
 	add hl, de
 	ld b, [hl]
-	ld hl, wd140
+	ld hl, wObjectScreenXPositions
 	add hl, de
 	ld [hl], b
 	ld hl, wObjectYCoords + $1
@@ -2791,7 +2791,7 @@ Func_2deb:
 	add hl, de
 	add hl, de
 	ld c, [hl]
-	ld hl, wd150
+	ld hl, wObjectScreenYPositions
 	add hl, de
 	ld [hl], c
 	ret
@@ -3226,7 +3226,7 @@ Func_3076::
 Func_30b2::
 	ld a, [wScriptBank]
 	bankswitch
-	ld hl, wd140 + OBJECT_SLOT_KIRBY
+	ld hl, wObjectScreenXPositions + OBJECT_SLOT_KIRBY
 	ld a, [hl]
 	add $28
 	ld e, a
@@ -3251,7 +3251,7 @@ Func_30b2::
 Func_30dc::
 	ld a, [wScriptBank]
 	bankswitch
-	ld hl, wd150
+	ld hl, wObjectScreenYPositions
 	ld a, [hl]
 	add hl, bc
 	sub [hl]
@@ -3262,7 +3262,7 @@ Func_30dc::
 .positive
 	cp $03
 	jr nc, .asm_3110
-	ld hl, wd140 + OBJECT_SLOT_KIRBY
+	ld hl, wObjectScreenXPositions + OBJECT_SLOT_KIRBY
 	ld a, [hl]
 	add hl, bc
 	cp [hl]
@@ -3350,12 +3350,12 @@ AddToScore::
 	inc hl
 	inc [hl]
 .cap
-	call .CapScore
+	call CapScore
 	pop hl
 	ret
 
 ; caps score to MAX_SCORE
-.CapScore:
+CapScore::
 	ld hl, wScore
 	ld a, [hli]
 	sub LOW(MAX_SCORE)
@@ -3805,26 +3805,40 @@ Data_3421::
 Data_3425::
 	db $04, $00, $00, 0
 Data_3429::
-	db $69, $08, $08, 0
+	db PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, $08, $08, INVINCIBILITY_CANDY
 	dw Data_1c154
 ; 0x342f
 
+SECTION "Home@3435", ROM0[$3435]
+
+BombProperties::
+	db PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, $08, $08, BOMB
+	dw Data_1c172
+
+MikeProperties::
+	db PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, $08, $08, MIKE
+	dw Data_1c172
+; 0x3441
+
 SECTION "Home@344d", ROM0[$344d]
 
-Data_344d::
-	db PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, $08, $08, WARP_STAR, $72, $41
+WarpStarProperties::
+	db PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, $08, $08, WARP_STAR
+	dw Data_1c172
 ; 0x3453
 
 SECTION "Home@3459", ROM0[$3459]
 
 MaximTomatoProperties::
-	db PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, $08, $08, MAXIM_TOMATO, $72, $41
+	db PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, $08, $08, MAXIM_TOMATO
+	dw Data_1c172
 ; 0x345f
 
 SECTION "Home@3465", ROM0[$3465]
 
 EnergyDrinkProperties::
-	db PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, $06, $08, ENERGY_DRINK, $72, $41
+	db PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, $06, $08, ENERGY_DRINK
+	dw Data_1c172
 ; 0x346b
 
 SECTION "Home@3483", ROM0[$3483]
@@ -3835,6 +3849,11 @@ Data_3483::
 WaddleDeeProperties::
 	object_properties PROPERTY_0, $06, $06, 1, $01, $03, 200, Data_1c154
 ; 0x3495
+
+SECTION "Home@34db", ROM0[$34db]
+
+Data_34db::
+	object_properties PROPERTY_0, $06, $06, 1, $64, $01, 30, Data_1c154
 
 SECTION "Home@34ff", ROM0[$34ff]
 
@@ -3850,7 +3869,7 @@ SECTION "Home@351a", ROM0[$351a]
 TwizzyProperties::
 	object_properties PROPERTY_0, $06, $06, 1, $01, $03, 200, Data_1c154
 
-Data_3523::
+PoppyBrosJrProperties::
 	object_properties PROPERTY_0, $06, $06, 1, $01, $03, 200, Data_1c154
 
 Data_352c::
@@ -3863,7 +3882,7 @@ Data_3535::
 SECTION "Home@3547", ROM0[$3547]
 
 Data_3547::
-	object_properties PROPERTY_0, $0a, $0d, 2, $01, $03, 200, $41a8
+	object_properties PROPERTY_0, $0a, $0d, 2, $01, $03, 200, Data_1c1a8
 
 Data_3550::
 	object_properties PROPERTY_0 | PROPERTY_3, $06, $06, 1, $01, $03, 200, Data_1c154
@@ -3872,42 +3891,54 @@ Data_3559::
 	object_properties PROPERTY_0 | PROPERTY_3, $06, $06, 1, $01, $01, 200, Data_1c154
 
 Data_3562::
-	object_properties PROPERTY_0, $08, $10, 1, $01, $03, 300, $41b4
+	object_properties PROPERTY_0, $08, $10, 1, $01, $03, 300, Data_1c1b4
 
 Data_356b::
-	object_properties PROPERTY_0, $08, $0b, 1, $03, $09, 0, $41c0
+	object_properties PROPERTY_0, $08, $0b, 1, $03, $09, 0, Data_1c1c0
 
 Data_3574::
-	object_properties PROPERTY_0, $06, $06, 1, $01, $03, 10, $4160
+	object_properties PROPERTY_0, $06, $06, 1, $01, $03, 10, Data_1c160
 ; 0x357d
+
+SECTION "Home@358f", ROM0[$358f]
+
+Data_358f::
+	db PROPERTY_0 | PROPERTY_2, $0d, $10, $06
+; 0x3593
 
 SECTION "Home@35a7", ROM0[$35a7]
 
 Data_35a7::
-	db $0d, $0a, $0a, $01
+	db PROPERTY_0 | PROPERTY_2 | PROPERTY_3, $0a, $0a, $01
 
 Data_35ab::
-	db $0d, $0a, $0e, $01
+	db PROPERTY_0 | PROPERTY_2 | PROPERTY_3, $0a, $0e, $01
 
 Data_35af::
-	db $04, $0a, $0a, $01
-; 0x35b3
+	db PROPERTY_2, $0a, $0a, $01
 
-SECTION "Home@35b7", ROM0[$35b7]
+Data_35b3::
+	db PROPERTY_0 | PROPERTY_2 | PROPERTY_3, $06, $06, $01
 
 Data_35b7::
-	db $0d, $14, $14, $01
+	db PROPERTY_0 | PROPERTY_2 | PROPERTY_3, $14, $14, $01
 
 Data_35bb::
-	object_properties PROPERTY_0, $14, $14, 1, $05, $00, 0, $4160
+	object_properties PROPERTY_0, $14, $14, 1, $05, $00, 0, Data_1c160
 ; 0x35c4
 
 SECTION "Home@35cd", ROM0[$35cd]
 
 Data_35cd::
-	db $0d, $01, $12, $10, $01, $28, $09, $00
+	db PROPERTY_0 | PROPERTY_2 | PROPERTY_3, $01, $12, $10, $01, $28, $09, $00
 	dw $41d8
 ; 0x35d7
+
+SECTION "Home@3685", ROM0[$3685]
+
+Data_3685::
+	db PROPERTY_0, $06, $06, $01
+; 0x3689
 
 SECTION "Home@375d", ROM0[$375d]
 
@@ -3972,7 +4003,7 @@ Func_37b9:
 	add hl, bc
 	add hl, bc
 	add hl, bc
-	ld a, [wd140 + OBJECT_SLOT_KIRBY]
+	ld a, [wObjectScreenXPositions + OBJECT_SLOT_KIRBY]
 	ld c, a
 	ld a, [wSCX]
 	and $0f
@@ -3997,7 +4028,7 @@ Func_37b9:
 	add hl, bc
 	add hl, bc
 	add hl, bc
-	ld a, [wd150 + OBJECT_SLOT_KIRBY]
+	ld a, [wObjectScreenYPositions + OBJECT_SLOT_KIRBY]
 	ld c, a
 	ld a, [wSCY]
 	and $0f

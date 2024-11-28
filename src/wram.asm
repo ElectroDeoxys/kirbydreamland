@@ -121,8 +121,8 @@ wd059:: ; d059
 wd05b:: ; d05b
 	db
 
-wKirbyScreenX:: db ; d05c
-wKirbyScreenY:: db ; d05d
+wCurScreenX:: db ; d05c
+wCurScreenY:: db ; d05d
 
 wd05e:: ; d05e
 	db
@@ -289,10 +289,10 @@ wObjectXVels:: ; d100
 wObjectYVels:: ; d120
 	ds $2 * NUM_OBJECT_SLOTS
 
-wd140:: ; d140
+wObjectScreenXPositions:: ; d140
 	ds NUM_OBJECT_SLOTS
 
-wd150:: ; d150
+wObjectScreenYPositions:: ; d150
 	ds NUM_OBJECT_SLOTS
 
 ; if OBJECT_NOT_ACTIVE, then this object slot is empty
@@ -366,7 +366,7 @@ wd34a:: ; d34a
 wObjectCustomFuncs:: ; d35a
 	ds $2 * NUM_OBJECT_SLOTS
 
-wd37a:: ; d37a
+wObjectCustomFuncArgs:: ; d37a
 	ds $2 * NUM_OBJECT_SLOTS
 
 wd39a:: ; d39a
@@ -378,7 +378,10 @@ wd3aa:: ; d3aa
 wd3ba:: ; d3ba
 	db
 
-	ds $3
+	ds $2
+
+wd3bd:: ; d3bd
+	db
 
 wd3be:: ; d3be
 	db
@@ -503,7 +506,9 @@ wd3f5:: ; d3f5
 wd3f6:: ; d3f6
 	db
 
-wd3f7:: ; d3f7
+; multiplies the score amount of a
+; defeat enemy by this value - 1
+wEnemyScoreMultiplier:: ; d3f7
 	db
 
 wd3f8:: ; d3f8

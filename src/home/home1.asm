@@ -4,11 +4,11 @@ Func_246::
 
 	ld a, [wROMBank]
 	push af
-ASSERT BANK(Func_1432c) == BANK(Func_147e4)
+ASSERT BANK(Func_1432c) == BANK(InhaleObjectsInRange)
 	ld a, BANK(Func_1432c)
 	bankswitch
 	call Func_1432c
-	call Func_147e4
+	call InhaleObjectsInRange
 	pop af
 	bankswitch
 
@@ -27,7 +27,7 @@ ASSERT BANK(Func_1432c) == BANK(Func_147e4)
 	res 3, [hl]
 .asm_280
 	; if fell in a pit, then zero HP and lose life
-	ld a, [wKirbyScreenY]
+	ld a, [wCurScreenY]
 	cp $88
 	jp nc, SetHPToZeroAndLoseLife
 	; if HP reached 0, then lose life
@@ -331,7 +331,7 @@ ProcessDoorConnection::
 	ld a, [wSCX]
 	and $0f
 	ld c, a
-	ld a, [wKirbyScreenX]
+	ld a, [wCurScreenX]
 	add c
 	and $f0
 	swap a
@@ -357,7 +357,7 @@ ProcessDoorConnection::
 	ld a, [wSCY]
 	and $0f
 	ld c, a
-	ld a, [wKirbyScreenY]
+	ld a, [wCurScreenY]
 	add c
 	add $0a
 	and $f0
@@ -489,10 +489,10 @@ ProcessDoorConnection::
 	ld a, [hli]
 	swap a
 	add $08
-	ld [wKirbyScreenX], a
+	ld [wCurScreenX], a
 	ld a, [hli]
 	swap a
-	ld [wKirbyScreenY], a
+	ld [wCurScreenY], a
 
 	ldh a, [hHUDFlags]
 	or HUD_UPDATE_FIRST_ROW | HUD_UPDATE_LABEL | HUD_UPDATE_LIVES
@@ -677,7 +677,7 @@ Func_6ec::
 	bit SCROLL_LOCKED_F, [hl]
 	jr nz, .asm_708
 	ld hl, hEngineFlags
-	ld a, [wKirbyScreenX]
+	ld a, [wCurScreenX]
 	cp $45
 	jr c, .asm_70e
 	cp $4b
@@ -801,7 +801,7 @@ Func_7b5:
 ;	fallthrough
 Func_7bf:
 	ld [wd05f], a
-	ld a, [wKirbyScreenX]
+	ld a, [wCurScreenX]
 	add $08
 	ld [wd05e], a
 	jp Func_7cd ; useless jump
@@ -1124,7 +1124,7 @@ Func_9de:
 	ldh a, [hPalFadeFlags]
 	bit SCROLLINGF_UNK5_F, a
 	jp nz, .asm_ab8
-	ld a, [wKirbyScreenY]
+	ld a, [wCurScreenY]
 	ld [wd05f], a
 
 	call GetKirbyLevelYCoord
@@ -1149,7 +1149,7 @@ Func_9de:
 	dec a
 	dec a
 	ld [wd05f], a
-	ld a, [wKirbyScreenX]
+	ld a, [wCurScreenX]
 	add $03
 	ld [wd05e], a
 	call Func_7cd
@@ -1167,7 +1167,7 @@ Func_9de:
 	set KIRBY4F_UNK6_F, a
 	ldh [hKirbyFlags4], a
 .asm_a3f
-	ld a, [wKirbyScreenX]
+	ld a, [wCurScreenX]
 	add $0c
 	ld [wd05e], a
 	call Func_7cd
@@ -1184,7 +1184,7 @@ Func_9de:
 	set KIRBY4F_UNK6_F, a
 	ldh [hKirbyFlags4], a
 .asm_a63
-	ld a, [wKirbyScreenY]
+	ld a, [wCurScreenY]
 	cp $10
 	jp z, .asm_a9e
 	jp c, .asm_a9e
@@ -1254,7 +1254,7 @@ Func_9de:
 .scroll_locked
 	ld c, $10
 .asm_ad8
-	ld a, [wKirbyScreenY]
+	ld a, [wCurScreenY]
 	sub c
 	ld [wKirbyScreenDeltaY], a
 	sub b
@@ -1262,7 +1262,7 @@ Func_9de:
 	ld a, [wd061]
 	ld [wKirbyScreenDeltaY], a
 	call MoveKirbyDown
-	ld a, [wKirbyScreenY]
+	ld a, [wCurScreenY]
 	cp $08
 	jp nz, .asm_bba
 .asm_af3
@@ -1296,12 +1296,12 @@ Func_9de:
 	dec c
 	dec b
 	jr nz, .asm_b25
-	ld a, [wKirbyScreenY]
+	ld a, [wCurScreenY]
 	cp $10
 	jp nc, .asm_baf
 	jp .asm_bba
 .asm_b3a
-	ld a, [wKirbyScreenY]
+	ld a, [wCurScreenY]
 	cp $10
 	jr z, .asm_af3
 	ld a, [wd061]
@@ -1310,7 +1310,7 @@ Func_9de:
 	ld a, b
 	ld [wKirbyScreenDeltaY], a
 	call MoveKirbyDown
-	ld a, [wKirbyScreenY]
+	ld a, [wCurScreenY]
 	cp $10
 	jp nz, .asm_baf
 	call Func_c85
@@ -1376,7 +1376,7 @@ Func_9de:
 	inc hl
 	or [hl]
 	jr nz, .asm_be0
-	ld a, [wKirbyScreenY]
+	ld a, [wCurScreenY]
 	add $18
 	call Func_7a7
 	cp $07
@@ -1385,7 +1385,7 @@ Func_9de:
 	ldh a, [hKirbyFlags2]
 	bit KIRBY2F_UNK6_F, a
 	jp z, Func_caf
-	ld a, [wKirbyScreenY]
+	ld a, [wCurScreenY]
 	cp $71
 	jp nc, Func_caf
 	dec a
@@ -1500,10 +1500,10 @@ Func_caf:
 	ldh [hPalFadeFlags], a
 	bit SCROLLINGF_UNK5_F, a
 	jp nz, .asm_ee0
-	ld a, [wKirbyScreenY]
+	ld a, [wCurScreenY]
 	cp $71
 	jp nc, .asm_ee0
-	ld a, [wKirbyScreenY]
+	ld a, [wCurScreenY]
 	ld [wd05f], a
 	call GetKirbyLevelYCoord
 	ld d, $00
@@ -1525,7 +1525,7 @@ Func_caf:
 	call Func_1ccb
 	ld a, c
 	ld [wd05f], a
-	ld a, [wKirbyScreenX]
+	ld a, [wCurScreenX]
 	add $03
 	ld [wd05e], a
 	call Func_7cd
@@ -1546,7 +1546,7 @@ Func_caf:
 	set KIRBY4F_UNK7_F, a
 	ldh [hKirbyFlags4], a
 .asm_d24
-	ld a, [wKirbyScreenX]
+	ld a, [wCurScreenX]
 	add $0c
 	ld [wd05e], a
 	call Func_7cd
@@ -1829,7 +1829,7 @@ Func_caf:
 	jr z, .asm_f3b
 	ld c, SCRN_Y - 16
 .asm_f3b
-	ld a, [wKirbyScreenY]
+	ld a, [wCurScreenY]
 	add b
 	ld b, a
 	ld a, c
@@ -1839,7 +1839,7 @@ Func_caf:
 	ld a, [wLevelHeight]
 	cp $08
 	jp nz, .asm_1021
-	ld a, [wKirbyScreenY]
+	ld a, [wCurScreenY]
 	cp SCRN_Y
 	jp c, .asm_1021
 	jp .asm_f92
@@ -1870,7 +1870,7 @@ Func_caf:
 	inc c
 	dec b
 	jr nz, .asm_f80
-	ld a, [wKirbyScreenY]
+	ld a, [wCurScreenY]
 	cp SCRN_Y
 	jp nz, .asm_1019
 .asm_f92
@@ -1962,7 +1962,7 @@ Func_caf:
 	inc hl
 	or [hl]
 	ret nz
-	ld a, [wKirbyScreenY]
+	ld a, [wCurScreenY]
 	sub $08
 	call Func_7b5
 	cp $08
@@ -2006,7 +2006,7 @@ Func_1062::
 	inc c
 	dec b
 	jr nz, .loop_align
-	ld a, [wKirbyScreenX]
+	ld a, [wCurScreenX]
 	cp SCRN_X - 8
 	jp nz, .asm_1102
 .asm_1084
@@ -2112,12 +2112,12 @@ Func_110b:
 	dec c
 	dec b
 	jr nz, .asm_112c
-	ld a, [wKirbyScreenX]
+	ld a, [wCurScreenX]
 	cp $08
 	jp nc, .asm_11be
 	ret
 .asm_113f
-	ld a, [wKirbyScreenX]
+	ld a, [wCurScreenX]
 	cp $08
 	jp z, Func_42a1
 	ld a, [wd063]
@@ -2263,7 +2263,7 @@ Func_11de:
 	ret
 
 Func_1248::
-	ld hl, wKirbyScreenY
+	ld hl, wCurScreenY
 	ld a, [wSCY]
 	and $0f
 	add [hl]
@@ -2273,7 +2273,7 @@ Func_1248::
 	ret
 
 Func_1257::
-	ld hl, wKirbyScreenY
+	ld hl, wCurScreenY
 	ld a, [wSCY]
 	and $0f
 	add [hl]
@@ -2289,7 +2289,7 @@ Func_1257::
 ; - [wKirbyScreenDeltaX] = offset to add to
 ;   Kirby's screen X position
 MoveKirbyRight::
-	ld hl, wKirbyScreenX
+	ld hl, wCurScreenX
 	ld a, [wKirbyScreenDeltaX]
 	ld b, a
 	add [hl]
@@ -2300,7 +2300,7 @@ MoveKirbyRight::
 ; - [wKirbyScreenDeltaX] = offset to subtract
 ;   from Kirby's screen X position
 MoveKirbyLeft::
-	ld hl, wKirbyScreenX
+	ld hl, wCurScreenX
 	ld a, [wKirbyScreenDeltaX]
 	ld b, a
 	ld a, [hl]
@@ -2312,7 +2312,7 @@ MoveKirbyLeft::
 ; - [wKirbyScreenDeltaY] = offset to add to
 ;   Kirby's screen Y position
 MoveKirbyDown:
-	ld hl, wKirbyScreenY
+	ld hl, wCurScreenY
 	ld a, [wKirbyScreenDeltaY]
 	ld b, a
 	ld a, [hl]
@@ -2324,7 +2324,7 @@ MoveKirbyDown:
 ; - [wKirbyScreenDeltaY] = offset to subtract
 ;   from Kirby's screen Y position
 MoveKirbyUp:
-	ld hl, wKirbyScreenY
+	ld hl, wCurScreenY
 	ld a, [wKirbyScreenDeltaY]
 	ld b, a
 	add [hl]
@@ -2518,10 +2518,10 @@ Func_139b::
 
 	; set coordinates of object in OBJECT_SLOT_KIRBY
 	; to Kirby's screen coordinates
-	ld a, [wKirbyScreenX]
+	ld a, [wCurScreenX]
 	add $08
 	ld [wObjectXCoords + OBJECT_SLOT_KIRBY + $1], a
-	ld a, [wKirbyScreenY]
+	ld a, [wCurScreenY]
 	add $08
 	ld [wObjectYCoords + OBJECT_SLOT_KIRBY + $1], a
 
