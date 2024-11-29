@@ -3839,7 +3839,11 @@ SECTION "Home@3465", ROM0[$3465]
 EnergyDrinkProperties::
 	db PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, $06, $08, ENERGY_DRINK
 	dw Data_1c172
-; 0x346b
+
+SparklingStarProperties::
+	db PROPERTY_0 | PROPERTY_3 | PROPERTY_PERSISTENT, $08, $08, SPARKLING_STAR
+	dw Data_1c172
+; 0x3471
 
 SECTION "Home@3483", ROM0[$3483]
 
@@ -3900,7 +3904,10 @@ Data_3574::
 	object_properties PROPERTY_0, $06, $06, 1, $01, $03, 10, Data_1c160
 ; 0x357d
 
-SECTION "Home@358f", ROM0[$358f]
+SECTION "Home@3586", ROM0[$3586]
+
+Data_3586::
+	object_properties PROPERTY_0, $0d, $20, $02, $06, $09, $00, Data_1c1cc
 
 Data_358f::
 	db PROPERTY_0 | PROPERTY_2, $0d, $10, $06
@@ -3933,6 +3940,11 @@ Data_35cd::
 	db PROPERTY_0 | PROPERTY_2 | PROPERTY_3, $01, $12, $10, $01, $28, $09, $00
 	dw $41d8
 ; 0x35d7
+
+SECTION "Home@364f", ROM0[$364f]
+
+Data_364f::
+	object_properties PROPERTY_0, $06, $06, 1, $01, $03, 300, Data_1c154
 
 SECTION "Home@3685", ROM0[$3685]
 

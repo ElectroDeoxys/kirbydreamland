@@ -328,7 +328,10 @@ for o in args.offsets:
             outStr += addressLabels[cmdPos] + "\n"
         if cmdByte < 0xe0:
             if isMotionScript:
-                outStr += "\tset_velocities {:2d}".format(cmdByte) + ", {}".format(xVelocities[args[0]]) + ", {}\n".format(yVelocities[args[1]])
+                if args[0] in xVelocities and args[1] in yVelocities:
+                    outStr += "\tset_velocities {:2d}".format(cmdByte) + ", {}".format(xVelocities[args[0]]) + ", {}\n".format(yVelocities[args[1]])
+                else:
+                    break
             else:
                 outStr += "\tframe {:2d}".format(cmdByte) + ", ${:04x}\n".format(args[0])
         else:

@@ -188,7 +188,10 @@ Data_1c1c0::
 
 Data_1c1c6::
 	dw AnimScript_210e7, MotionScript_10008, Data_358f
-; 0x1c1cc
+
+Data_1c1cc::
+	dw AnimScript_210f1, MotionScript_10008, Data_3421
+; 0x1c1d2
 
 SECTION "Bank 7@4202", ROMX[$4202], BANK[$7]
 
@@ -457,7 +460,7 @@ Data_1c5c0:
 	object $08, $01, $00, $00, AnimScript_2143e, MotionScript_1154d, Data_3483
 
 Data_1c5ca:
-	dbw $00, $0000
+	dbw $00, NULL
 	dbw $0a, Data_1c603
 	dbw $0b, Data_1c5e4
 	dbw $0b, Data_1c5f8
@@ -467,7 +470,7 @@ Data_1c5ca:
 	db $ff ; end
 
 Data_1c5e0:
-	dbw $00, $0000
+	dbw $00, NULL
 	db $ff ; end
 
 Data_1c5e4:
@@ -517,35 +520,54 @@ Data_1c688:
 	object $07, $0e, $00, $00, AnimScript_205ae, MotionScript_103ff, WaddleDeeProperties
 
 Data_1c692:
-	dbw $00, $0000
-	dbw $00, $46A6
-	dbw $02, $46C5
-	dbw $07, $46BA
-	dbw $09, $46B0
+	dbw $00, NULL
+	dbw $00, Data_1c6a6
+	dbw $02, Data_1c6c5
+	dbw $07, Data_1c6ba
+	dbw $09, Data_1c6b0
 	db $ff ; end
 
 Data_1c6a2:
-	dbw $00, $0000
+	dbw $00, NULL
 	db $ff ; end
-; 0x1c6a6
 
-SECTION "Bank 7@46d0", ROMX[$46d0], BANK[$7]
+Data_1c6a6:
+	object $00, $03, $00, $00, AnimScript_212a4, MotionScript_11345, WaddleDeeProperties
+Data_1c6b0:
+	object $09, $03, $00, $00, AnimScript_2127a, MotionScript_1130c, WaddleDeeProperties
+Data_1c6ba:
+	object $07, $06, $00, $00, AnimScript_2092e, MotionScript_10008, EnergyDrinkProperties, 0
+Data_1c6c5:
+	object $02, $06, $00, $00, AnimScript_2092e, MotionScript_10008, EnergyDrinkProperties, 1
 
 Data_1c6d0:
-	dbw $00, $0000
+	dbw $00, NULL
 	dbw $09, $4715
 	db $ff ; end
 
 Data_1c6d7:
-	dbw $00, $0000
-	dbw $01, $46ED
-	dbw $06, $4701
-	dbw $06, $471F
-	dbw $09, $46F7
-	dbw $0A, $470B
-	dbw $0A, $4715
+	dbw $00, NULL
+	dbw $01, Data_1c6ed
+	dbw $06, Data_1c701
+	dbw $06, Data_1c71f
+	dbw $09, Data_1c6f7
+	dbw $0a, Data_1c70b
+	dbw $0a, Data_1c715
 	db $ff ; end
-; 0x1c6ed
+
+Data_1c6ed:
+	object $07, $01, $00, $00, AnimScript_2147e, MotionScript_10008, Data_3421
+Data_1c6f7:
+	object $11, $09, $00, $00, AnimScript_2147e, MotionScript_10008, Data_3421
+Data_1c701:
+	object $04, $06, $00, $00, AnimScript_2146b, MotionScript_11585, Data_3421
+Data_1c70b:
+	object $05, $0a, $00, $00, AnimScript_2146b, MotionScript_11585, Data_3421
+Data_1c715:
+	object $09, $0a, $00, $00, AnimScript_2146b, MotionScript_11585, Data_3421
+Data_1c71f:
+	object $11, $06, $00, $00, AnimScript_2146b, MotionScript_11585, Data_3421
+; 0x1c729
 
 SECTION "Bank 7@558f", ROMX[$558f], BANK[$7]
 

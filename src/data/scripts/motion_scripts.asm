@@ -228,12 +228,32 @@ SECTION "Bank 4@431d", ROMX[$431d], BANK[$4]
 MotionScript_1031d:
 	set_velocities  1, 0, 0
 .loop
-	script_exec Func_4ab3
+	script_exec SetObjectPalLight
 	script_delay 28
-	script_exec Func_4aba
+	script_exec SetObjectPalDark
 	script_delay 4
 	jump_abs .loop
 ; 0x1032d
+
+SECTION "Bank 4@4346", ROMX[$4346], BANK[$4]
+
+MotionScript_10346:
+.loop
+	set_velocities  5, 0, 0
+	set_velocities  9, 0, VEL_UP_0_25
+	set_velocities  9, 0, VEL_UP_0_75
+	script_exec SetObjectPalDark
+	set_velocities  9, 0, VEL_UP_0_25
+	script_exec SetObjectPalLight
+	set_velocities  5, 0, 0
+	set_velocities  9, 0, VEL_DOWN_0_25
+	script_exec SetObjectPalDark
+	set_velocities  9, 0, VEL_DOWN_0_75
+	script_exec SetObjectPalLight
+	set_velocities  4, 0, VEL_DOWN_0_25
+	set_velocities  5, 0, VEL_DOWN_0_25
+	jump_abs .loop
+; 0x10370
 
 SECTION "Bank 4@4370", ROMX[$4370], BANK[$4]
 
@@ -1543,9 +1563,13 @@ MotionScript_WhispyWoodsApple:
 	set_velocities 10, VEL_RIGHT_0_75, 0
 	set_velocities 10, VEL_RIGHT_0_75, VEL_DOWN_0_50
 	jump_rel .loop_2
-; 0x111c7
 
-SECTION "Bank 4@51d8", ROMX[$51d8], BANK[$4]
+MotionScript_111c7:
+	set_velocities 16, VEL_LEFT_2_00, 0
+	set_velocities  8, VEL_LEFT_1_00, 0
+	set_velocities  8, VEL_LEFT_0_50, 0
+	set_object_properties SparklingStarProperties
+	jump_abs MotionScript_10346
 
 MotionScript_111d8:
 .loop
@@ -1594,6 +1618,51 @@ MotionScript_11251:
 	set_scripts $524a, $52b8
 ; 0x11265
 
+SECTION "Bank 4@530c", ROMX[$530c], BANK[$4]
+
+MotionScript_1130c:
+	set_velocities 18, 0, VEL_UP_0_50
+	set_velocities  8, VEL_LEFT_0_50, VEL_UP_0_25
+	set_velocities  8, VEL_LEFT_0_50, VEL_DOWN_1_8TH
+	set_velocities  8, VEL_LEFT_0_75, VEL_DOWN_0_75
+	set_velocities 13, VEL_LEFT_1_00, VEL_DOWN_1_00
+	set_velocities 10, VEL_LEFT_1_25, VEL_DOWN_1_25
+	set_velocities 14, VEL_LEFT_1_25, VEL_DOWN_2_00
+	set_velocities  8, VEL_LEFT_1_00, VEL_DOWN_1_00
+	set_velocities 16, VEL_LEFT_1_00, 0
+	set_velocities 10, VEL_LEFT_0_75, VEL_UP_1_00
+	set_velocities  8, VEL_LEFT_0_75, VEL_UP_1_00
+	set_velocities  8, VEL_LEFT_0_75, VEL_UP_1_25
+	set_velocities  8, VEL_LEFT_0_75, VEL_UP_2_00
+	set_velocities  8, VEL_LEFT_0_75, VEL_UP_1_00
+	set_velocities  8, VEL_LEFT_0_75, VEL_UP_1_25
+	set_velocities  8, VEL_LEFT_0_75, VEL_UP_1_00
+	set_velocities  8, VEL_LEFT_0_75, VEL_DOWN_0_50
+	set_velocities  8, VEL_LEFT_0_75, VEL_DOWN_1_00
+	set_velocities  8, 0, VEL_DOWN_1_8TH
+MotionScript_11345:
+	set_velocities 18, 0, VEL_UP_0_50
+	set_velocities  8, VEL_RIGHT_0_50, VEL_UP_0_25
+	set_velocities  8, VEL_RIGHT_0_50, VEL_DOWN_1_8TH
+	set_velocities  8, VEL_RIGHT_0_75, VEL_DOWN_0_75
+	set_velocities 13, VEL_RIGHT_1_00, VEL_DOWN_1_00
+	set_velocities 10, VEL_RIGHT_1_25, VEL_DOWN_1_25
+	set_velocities 14, VEL_RIGHT_1_25, VEL_DOWN_2_00
+	set_velocities  8, VEL_RIGHT_1_00, VEL_DOWN_1_00
+	set_velocities 16, VEL_RIGHT_1_00, 0
+	set_velocities 10, VEL_RIGHT_0_75, VEL_UP_1_00
+	set_velocities  8, VEL_RIGHT_0_75, VEL_UP_1_00
+	set_velocities  8, VEL_RIGHT_0_75, VEL_UP_1_25
+	set_velocities  8, VEL_RIGHT_0_75, VEL_UP_2_00
+	set_velocities  8, VEL_RIGHT_0_75, VEL_UP_1_00
+	set_velocities  8, VEL_RIGHT_0_75, VEL_UP_1_25
+	set_velocities  8, VEL_RIGHT_0_75, VEL_UP_1_00
+	set_velocities  8, VEL_RIGHT_0_75, VEL_DOWN_0_50
+	set_velocities  8, VEL_RIGHT_0_75, VEL_DOWN_1_00
+	set_velocities  8, 0, VEL_DOWN_1_8TH
+	jump_abs MotionScript_1130c
+; 0x11381
+
 SECTION "Bank 4@53e2", ROMX[$53e2], BANK[$4]
 
 MotionScript_113e2:
@@ -1632,6 +1701,73 @@ MotionScript_1154d:
 	set_velocities  8, VEL_RIGHT_0_50, 0
 	jump_abs MotionScript_102da
 ; 0x11562
+
+SECTION "Bank 4@5585", ROMX[$5585], BANK[$4]
+
+MotionScript_11585:
+.loop
+	set_anim_script AnimScript_20000
+	set_velocities 50, 0, 0
+	calltable_random %11
+	dw .wait_1
+	dw .wait_10
+	dw .wait_20
+	dw .wait_30
+
+	set_object_properties Data_364f
+	set_anim_script AnimScript_2146b
+	script_call .script_115bc
+	set_object_properties Data_3421
+	jump_abs .loop
+
+.wait_1
+	set_velocities  1, 0, 0
+	script_ret
+
+.wait_10
+	set_velocities 10, 0, 0
+	script_ret
+
+.wait_20
+	set_velocities 20, 0, 0
+	script_ret
+
+.wait_30
+	set_velocities 30, 0, 0
+	script_ret
+
+.script_115bc
+	create_object AnimScript_21474, $4008, Data_35cd
+	create_object $4ae6, $47c3, Data_3421
+	set_velocities  4, 0, VEL_UP_4_00
+	set_velocities  4, 0, VEL_UP_3_00
+	set_velocities  4, 0, VEL_UP_2_00
+	set_velocities  4, 0, VEL_DOWN_1_25
+	set_velocities  4, 0, VEL_DOWN_3_00
+	set_velocities  4, 0, VEL_DOWN_1_25
+	set_velocities  4, VEL_LEFT_0_50, VEL_UP_1_25
+	set_velocities  4, VEL_LEFT_1_00, VEL_UP_3_00
+	set_velocities  4, VEL_LEFT_2_00, VEL_UP_1_25
+	set_velocities  4, VEL_RIGHT_2_00, VEL_DOWN_1_25
+	set_velocities  4, VEL_RIGHT_1_00, VEL_DOWN_3_00
+	set_velocities  4, VEL_RIGHT_0_50, VEL_DOWN_1_25
+	set_velocities  4, VEL_RIGHT_0_50, VEL_UP_1_25
+	set_velocities  4, VEL_RIGHT_1_00, VEL_UP_3_00
+	set_velocities  4, VEL_RIGHT_2_00, VEL_UP_1_25
+	set_velocities  4, VEL_LEFT_0_50, VEL_DOWN_1_25
+	set_velocities  4, VEL_LEFT_1_00, VEL_DOWN_3_00
+	set_velocities  4, VEL_LEFT_2_00, VEL_DOWN_1_25
+	set_velocities  4, 0, VEL_UP_1_25
+	set_velocities  4, 0, VEL_UP_3_00
+	set_velocities  4, 0, VEL_UP_1_25
+	set_velocities  4, 0, VEL_DOWN_2_00
+	set_velocities 48, 0, 0
+	set_velocities  4, 0, VEL_DOWN_3_00
+	set_velocities  4, 0, VEL_DOWN_4_00
+	create_object $5474, $4008, Data_35cd
+	create_object $4ae6, $47c3, Data_3421
+	script_ret
+; 0x11624
 
 SECTION "Bank 4@5679", ROMX[$5679], BANK[$4]
 

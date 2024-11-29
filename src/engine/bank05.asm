@@ -249,6 +249,90 @@ Func_141b1:
 	jp Func_1415e
 ; 0x141bb
 
+SECTION "Bank 5@4208", ROMX[$4208], BANK[$5]
+
+Func_14208:
+	ld hl, wd1a0
+	add hl, bc
+	bit 7, [hl]
+	ret z
+	ld de, 0.08
+	ld hl, wObjectScreenXPositions
+	ld a, [hl] ; Kirby's X
+	add hl, bc
+	cp [hl]
+	jr nc, .got_x_vel
+	ld de, -0.08
+.got_x_vel
+	ld hl, wObjectXVels
+	call .AddVelocity
+	ld de, 0.08
+	ld hl, wObjectScreenYPositions
+	ld a, [hl] ; Kirby's Y
+	add hl, bc
+	cp [hl]
+	jr nc, .got_y_vel
+	ld de, -0.08
+.got_y_vel
+	ld hl, wObjectYVels
+
+; input:
+; - hl = which velocity to add
+; - de = velocity value to add
+.AddVelocity:
+	add hl, bc
+	add hl, bc
+	ld a, [hl]
+	add e
+	ld [hli], a
+	ld a, [hl]
+	adc d
+	ld [hl], a
+	bit 7, a
+	jr nz, .cap_negative
+	cp HIGH(2.0)
+	jr c, .capped
+	ld a, HIGH(2.0)
+	jr .got_capped_value
+.cap_negative
+	cp HIGH(-2.0)
+	jr nc, .capped
+	ld a, HIGH(-2.0)
+.got_capped_value
+	ld [hld], a
+	xor a
+	ld [hl], a
+.capped
+	ret
+
+Func_14252:
+	ld hl, wd1a0
+	add hl, bc
+	bit 7, [hl]
+	ret z
+	ld hl, wObjectScreenXPositions
+	ld a, [hl] ; Kirby's X position
+	add hl, bc
+	sub [hl]
+	jr nc, .got_x_distance
+	cpl
+	inc a
+.got_x_distance
+	cp 24
+	ret nc ; too far away
+	ld hl, wObjectScreenYPositions
+	ld a, [hl]
+	add hl, bc
+	sub [hl]
+	jr nc, .got_y_distance
+	cpl
+	inc a
+.got_y_distance
+	cp 24
+	ret nc ; too far away
+	jp Func_1415e
+; 0x14276
+
 SECTION "Bank 5@42a3", ROMX[$42a3], BANK[$5]
 
 Func_142a3:
@@ -734,7 +818,7 @@ ExecuteItemEffect:
 	dec a
 	jp z, .EnergyDrink ; ENERGY_DRINK
 	dec a
-	jp z, .asm_14704 ; $8
+	jp z, .SparklingStar ; SPARKLING_STAR
 	dec a
 	jp z, .OneUp ; ONE_UP
 
@@ -840,7 +924,7 @@ ExecuteItemEffect:
 	ld [wCurScreenY], a
 	jr .DestroyObject
 
-.asm_14704
+.SparklingStar
 	ld hl, hKirbyFlags5
 	set KIRBY5F_TRIGGER_TRANSITION_F, [hl]
 	ld a, SFX_POWER_UP
@@ -1020,7 +1104,7 @@ ENDR
 	ld a, [hl] ; OBJ_ITEM_ID
 	cp WARP_STAR
 	jr z, .next_obj
-	cp ITEM_8
+	cp SPARKLING_STAR
 	jr z, .next_obj
 	cp ITEM_A
 	jr z, .next_obj

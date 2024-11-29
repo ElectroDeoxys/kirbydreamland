@@ -1280,13 +1280,13 @@ EnableScrollingAndFadeOut:
 
 SECTION "Bank 1@4ab3", ROMX[$4ab3], BANK[$1]
 
-Func_4ab3:
+SetObjectPalLight:
 	ld hl, wObjectPropertyFlags
 	add hl, bc
 	res PROPERTY_PAL_F, [hl]
 	ret
 
-Func_4aba:
+SetObjectPalDark:
 	ld hl, wObjectPropertyFlags
 	add hl, bc
 	set PROPERTY_PAL_F, [hl]
@@ -1374,14 +1374,14 @@ Func_4b77:
 	ret
 
 .ScoreValues:
-	dw  300 ; $0
-	dw 1000 ; $1
-	dw  400 ; $2
-	dw  650 ; $3
+	dw  300 ; SCORE_300
+	dw 1000 ; SCORE_1000
+	dw  400 ; SCORE_400
+	dw  650 ; SCORE_650
 	dw    0 ; $4
-	dw 2000 ; $5
-	dw  750 ; $6
-	dw 2500 ; $7
+	dw 2000 ; SCORE_2000
+	dw  750 ; SCORE_750
+	dw 2500 ; SCORE_2500
 	dw    0 ; $8
 ; 0x4ba4
 
@@ -1394,7 +1394,7 @@ Func_4bb4::
 	bit 7, [hl]
 	jr nz, .skip_overwrite_anim_script
 
-	; temporarily replaces Kirby's script AnimScript_20405
+	; temporarily replaces Kirby's script with AnimScript_20405
 	ld a, [wKirbyAnimScript + 1]
 	push af
 	ld a, [wKirbyAnimScript + 0]

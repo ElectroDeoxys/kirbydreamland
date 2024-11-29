@@ -8,7 +8,7 @@
 	const WARP_STAR ; $5
 	const MAXIM_TOMATO ; $6
 	const ENERGY_DRINK ; $7
-	const ITEM_8 ; $8
+	const SPARKLING_STAR ; $8
 	const ONE_UP ; $9
 	const ITEM_A ; $a
 
