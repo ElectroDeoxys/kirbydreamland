@@ -1326,7 +1326,7 @@ Func_4ae6:
 
 Func_4aed:
 	push bc
-	ld hl, $416c
+	ld hl, Data_1c16c
 	call CreateObject_Group2
 	ld d, b
 	ld e, c

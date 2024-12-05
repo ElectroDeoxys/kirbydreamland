@@ -10,7 +10,7 @@ args = parser.parse_args()
 
 for o in args.offsets:
     #cache whole bank
-    offset = int(o, 16) 
+    offset = int(o, 16)
     bank = int(offset / 0x4000)
     source = reader.getROMBytes(bank * 0x4000, 0x4000)
     offset = offset % 0x4000 # convert to offset relative in bank
@@ -32,7 +32,7 @@ for o in args.offsets:
         else:
             len = (cmdByte & 0x1f) + 1
             flags = cmdByte & 0xe0
-        
+
         if flags & 0x80 == 0:
             if flags == 0x20:
                 pos += 1

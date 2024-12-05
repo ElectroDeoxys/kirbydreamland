@@ -320,9 +320,10 @@ AnimScript_2037c:
 	frame  2, $5ce5
 	set_flags wd3bf, $00, $02
 	script_end
-; 0x203b2
 
-SECTION "Bank 8@43b6", ROMX[$43b6], BANK[$8]
+AnimScript_203b2:
+	frame 32, $58b8
+	script_end
 
 AnimScript_203b6:
 	script_exec Func_4aed

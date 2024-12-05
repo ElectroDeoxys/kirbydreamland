@@ -8,7 +8,7 @@
 	const SCENE_CREDITS ; $07
 	const SCENE_08 ; $08
 	const SCENE_09 ; $09
-	const SCENE_0A ; $0a
+	const SCENE_GAME_OVER ; $0a
 	const SCENE_0B ; $0b
 	const SCENE_0C ; $0c
 	const SCENE_0D ; $0d

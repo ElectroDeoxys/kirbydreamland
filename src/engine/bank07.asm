@@ -100,7 +100,7 @@ Data_1c0ce::
 	dw $5631, Data_1d7e7 ; SCENE_CREDITS
 	dw $55c4, Data_1d7e7 ; SCENE_08
 	dw $55e0, Data_1d7e7 ; SCENE_09
-	dw $55f9, Data_1d7e7 ; SCENE_0A
+	dw $55f9, Data_1d7e7 ; SCENE_GAME_OVER
 	dw $563e, Data_1d7e7 ; SCENE_0B
 	dw $57e7, Data_1d7e7 ; SCENE_0C
 	dw $57e7, Data_1d7e7 ; SCENE_0D
@@ -142,7 +142,10 @@ Data_1c160::
 	dw AnimScript_Explosion, MotionScript_10008, Data_35bb
 ; 0x1c166
 
-SECTION "Bank 7@4172", ROMX[$4172], BANK[$7]
+SECTION "Bank 7@416c", ROMX[$416c], BANK[$7]
+
+Data_1c16c:
+	dw AnimScript_203b2, MotionScript_10008, Data_35bb
 
 Data_1c172::
 	dw AnimScript_20000, MotionScript_10008, Data_3421

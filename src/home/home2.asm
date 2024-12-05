@@ -3786,6 +3786,8 @@ PowersOfTwo::
 	db 1 << 7
 ; 0x3410
 
+SECTION "Home@3421", ROM0[$3421]
+
 MACRO object_properties
 	db \1 ; ?
 	db \2 ; ?
@@ -3796,8 +3798,6 @@ MACRO object_properties
 	db (\7) / 10 ; score when defeated
 	dw \8 ; 
 ENDM
-
-SECTION "Home@3421", ROM0[$3421]
 
 Data_3421::
 	db $05, $00, $00, $00

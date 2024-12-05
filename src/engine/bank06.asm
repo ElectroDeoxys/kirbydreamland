@@ -935,7 +935,7 @@ GameOver:
 	call HideWindow
 	call ResetTimer
 
-	ld a, SCENE_0A
+	ld a, SCENE_GAME_OVER
 	call Func_21fb
 
 	ld hl, $4665
