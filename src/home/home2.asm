@@ -72,7 +72,7 @@ PlayMusic::
 	pop bc
 	ret
 
-Func_1ee3:
+ProcessBlockQueue:
 	ldh a, [hVBlankFlags]
 	bit VBLANK_PENDING_F, a
 	ret z
@@ -2888,7 +2888,7 @@ Func_2e7f::
 	ld a, [wLevelWidth]
 	ld b, a
 	call FixedPointMultiply
-	ld hl, wc100
+	ld hl, wLevelBlockMap
 	add hl, bc
 	ld e, d
 	ld d, $00

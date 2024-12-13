@@ -18,7 +18,7 @@ VBlank:
 	inc [hl]
 
 	call UpdateHUD
-	call Func_1ee3
+	call ProcessBlockQueue
 	call Func_1e2e
 
 	; write to OAM

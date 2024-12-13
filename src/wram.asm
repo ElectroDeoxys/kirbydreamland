@@ -8,7 +8,9 @@ wVirtualOAMEnd::
 
 	ds $60
 
-wc100:: ; c100
+; stores a map of the current level's blocks
+; this map's dimension is wLevelWidth x wLevelHeight
+wLevelBlockMap:: ; c100
 	ds $500
 
 wBlockTileMap:: ; c600
@@ -24,9 +26,7 @@ wQueuedBG{03d:n}:: queued_bg_struct wQueuedBG{03d:n}
 ENDR
 NEXTU
 wBlockQueue:: ; cb00
-FOR n, $80
-wQueuedBlock{03d:n}:: queued_block_struct wQueuedBlock{03d:n}
-ENDR
+	ds $80 * 6
 ENDU
 
 SECTION "WRAM1", WRAMX

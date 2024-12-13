@@ -171,7 +171,7 @@ StartStage::
 	ld [wCurScreenY], a
 	ld bc, $32
 .asm_1821e
-	ld hl, wc100
+	ld hl, wLevelBlockMap
 	add hl, bc
 	call Func_1964
 
@@ -557,7 +557,7 @@ HandleStageTransition::
 	add hl, bc
 	ld b, h
 	ld c, l
-	ld hl, wc100
+	ld hl, wLevelBlockMap
 	add hl, bc
 	call Func_1964
 	ld a, $ff
@@ -657,7 +657,7 @@ HandleStageTransition::
 	ld a, [wLevelWidth]
 	ld b, a
 	call FixedPointMultiply
-	ld hl, wc100
+	ld hl, wLevelBlockMap
 	add hl, bc
 	ld b, $00
 	ld a, [wd051]
@@ -1154,7 +1154,7 @@ Epilogue:
 	ld c, BANK(Data_1b77c)
 	call FarDecompress
 	ld hl, Data_1b1e2
-	ld de, wc100
+	ld de, wLevelBlockMap
 	ld c, BANK(Data_1b1e2)
 	call FarDecompress
 
@@ -1165,7 +1165,7 @@ Epilogue:
 	ld [wLevelWidth], a
 	ld a, 8
 	ld [wLevelHeight], a
-	ld hl, wc100 + $4
+	ld hl, wLevelBlockMap + $4
 	call Func_1964
 	call StopTimerAndSwitchOnLCD
 	call FadeIn

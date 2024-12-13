@@ -1631,7 +1631,7 @@ _StartLevelAfterContinue::
 	add hl, bc
 	ld b, h
 	ld c, l
-	ld hl, wc100
+	ld hl, wLevelBlockMap
 	add hl, bc
 	call Func_1964
 	ld a, $16

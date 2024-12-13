@@ -501,7 +501,7 @@ ProcessDoorConnection::
 	ldh a, [hKirbyFlags3]
 	and KIRBY3F_FACE_LEFT
 	ldh [hKirbyFlags3], a
-	ld hl, wc100
+	ld hl, wLevelBlockMap
 	add hl, bc
 	call Func_1964
 	ld a, $16
@@ -817,7 +817,7 @@ Func_7cd:
 	ld a, [wLevelWidth]
 	ld e, a
 	call FixedPointMultiply
-	ld hl, wc100
+	ld hl, wLevelBlockMap
 	add hl, bc
 	push hl
 	call GetKirbyLevelXCoord
@@ -870,7 +870,7 @@ Func_819::
 	ld a, [wLevelWidth]
 	ld e, a
 	call FixedPointMultiply
-	ld hl, wc100
+	ld hl, wLevelBlockMap
 	add hl, bc
 	ldh a, [hEngineFlags]
 	ld b, a
@@ -1343,7 +1343,7 @@ Func_9de:
 	ld a, [wLevelWidth]
 	ld b, a
 	call FixedPointMultiply
-	ld hl, wc100
+	ld hl, wLevelBlockMap
 	add hl, bc
 	ld b, $00
 	ld a, [wd051]
@@ -1930,7 +1930,7 @@ Func_caf:
 	ld a, [wLevelWidth]
 	ld b, a
 	call FixedPointMultiply
-	ld hl, wc100
+	ld hl, wLevelBlockMap
 	add hl, bc
 	ld b, $00
 	ld a, [wd051]
@@ -1972,7 +1972,7 @@ Func_caf:
 Func_1046:
 	push bc
 	push de
-	ld hl, wc100
+	ld hl, wLevelBlockMap
 	ld a, [wd052]
 	dec a
 	ld b, a
@@ -2230,7 +2230,7 @@ Func_11de:
 	ld [wXCoord], a
 	xor a
 	ld [wYCoord], a
-	ld hl, wc100
+	ld hl, wLevelBlockMap
 	ld b, $00
 	ld a, [wd051]
 	bit 7, a
@@ -2330,11 +2330,11 @@ MoveKirbyUp:
 
 Func_1292:
 	push bc
-	ld de, wBGQueue
+	ld de, wBlockQueue
 	ld c, $09
 .loop
 	ld a, [hl]
-	call Func_131a
+	call AddBlockTilesToQueue
 	push bc
 	ld b, $00
 	ld a, [wLevelWidth]
@@ -2353,7 +2353,7 @@ Func_1292:
 
 Func_12b4::
 	push bc
-	ld de, wBGQueue
+	ld de, wBlockQueue
 	ld a, [wLevelWidth]
 	ld b, a
 	ld a, [wd051]
@@ -2372,7 +2372,7 @@ Func_12b4::
 	push bc
 .asm_12d0
 	ld a, [hli]
-	call Func_131a
+	call AddBlockTilesToQueue
 	ld a, [wXCoord]
 	add $10
 	ld [wXCoord], a
@@ -2401,14 +2401,14 @@ Func_12b4::
 	ld a, [wLevelWidth]
 	ld b, a
 	call FixedPointMultiply
-	ld hl, wc100
+	ld hl, wLevelBlockMap
 	add hl, bc
 	pop de
 	pop bc
 	ld c, b
 .asm_1307
 	ld a, [hli]
-	call Func_131a
+	call AddBlockTilesToQueue
 	ld a, [wXCoord]
 	add $10
 	ld [wXCoord], a
@@ -2422,8 +2422,10 @@ Func_12b4::
 
 ; input:
 ; - a = index in wBlockTileMap
-; - de = 
-Func_131a:
+; - de = pointer to wBlockQueue entry
+; - [wXCoord] = x coordinate
+; - [wYCoord] = y coordinate
+AddBlockTilesToQueue:
 	push bc
 	push hl
 	ld l, a
@@ -2432,24 +2434,26 @@ Func_131a:
 	add hl, hl ; *4
 	ld bc, wBlockTileMap
 	add hl, bc
+
 	ld a, [wXCoord]
 	ld [wd06b + 0], a
 	ld a, [wYCoord]
 	ld [wd06b + 1], a
 	ld [wd07f], a
-	call GetBGCoordFromPosition
+
+	; write BG coordinate
+	call .GetBGCoordFromPosition
+
+	; write block tile indices to [de]
+REPT 3
 	ld a, [hli]
 	ld [de], a
 	inc de
-	ld a, [hli]
-	ld [de], a
-	inc de
-	ld a, [hli]
-	ld [de], a
-	inc de
+ENDR
 	ld a, [hl]
 	ld [de], a
 	inc de
+
 	ld a, [wd06b + 0]
 	ld [wXCoord], a
 	ld a, [wd06b + 1]
@@ -2458,11 +2462,14 @@ Func_131a:
 	pop bc
 	ret
 
+; given a set of coordinates (wXCoord, wYCoord)
+; outputs in [de] the BG map address of that coordinate
 ; input:
 ; - [wXCoord] = x pos
 ; - [wYCoord] = y pos
-; - de = bg map pointer
-GetBGCoordFromPosition:
+; output:
+; - [de] = bg map pointer
+.GetBGCoordFromPosition:
 	push bc
 	push hl
 	ld hl, vBGMap0
@@ -3278,48 +3285,55 @@ ClearSprites::
 	ret
 
 ; input:
-; - hl = ?
+; - hl = level block map at current position
 Func_1964::
 	push bc
 	push de
 	xor a
 	ld [wXCoord], a
 	ld [wYCoord], a
-	ld de, wBGQueue
-	ld a, $0a ; can be ld b, $0a
+	ld de, wBlockQueue
+	ld a, 10 ; can be ld b, 10
 	ld b, a   ;
 .loop_rows
 	ld a, [wLevelWidth]
-	cp $0a
+	cp 10
 	jr z, .got_num_cols
-	ld a, $0b
+	ld a, 11
 .got_num_cols
 	ld c, a
 .loop_cols
+	; add this block to block queue
 	ld a, [hli]
-	call Func_131a
+	call AddBlockTilesToQueue
+	; increment x coordinate by 2 tiles
 	ld a, [wXCoord]
-	add $10
+	add TILE_WIDTH * 2
 	ld [wXCoord], a
+	; decrement col counter
 	dec c
 	jr nz, .loop_cols
+
 	push bc
 	ld b, $00
 	ld a, [wLevelWidth]
-	sub $0a
+	sub 10
 	jr z, .asm_1998
-	sub $01
+	sub 1
 .asm_1998
 	ld c, a
 	add hl, bc
 	pop bc
+	; wrap back around on x coordinate
 	xor a
 	ld [wXCoord], a
+	; increment y coordinate by 2 tiles
 	ld a, [wYCoord]
-	add $10
+	add TILE_HEIGHT * 2
 	ld [wYCoord], a
 	dec b
 	jr nz, .loop_rows
+
 	xor a
 	ld [de], a
 	ld [wXCoord], a
@@ -3330,8 +3344,8 @@ Func_1964::
 	ldh a, [hVBlankFlags]
 	or VBLANK_5 | VBLANK_PENDING
 	ldh [hVBlankFlags], a
-	call Func_1ee3
-	ld a, [wd06b + 0]
+	call ProcessBlockQueue
+	ld a, [wd06b + 0] ; useless
 	xor a
 	ldh [hVBlankFlags], a
 	pop de
@@ -3408,7 +3422,7 @@ LoadArea::
 	push hl
 	ld h, d
 	ld l, e
-	ld de, wc100
+	ld de, wLevelBlockMap
 	call FarDecompress
 	pop hl
 
@@ -3477,52 +3491,52 @@ LoadArea::
 	and a
 	jr z, .asm_1aae
 	ld a, $15
-	ld [wc100 + $6f], a
+	ld [wLevelBlockMap + $6f], a
 	ld a, $16
-	ld [wc100 + $ab], a
+	ld [wLevelBlockMap + $ab], a
 	ld a, $17
-	ld [wc100 + $70], a
+	ld [wLevelBlockMap + $70], a
 	ld a, $18
-	ld [wc100 + $ac], a
+	ld [wLevelBlockMap + $ac], a
 	ld b, 1
 .asm_1aae
 	ld a, [wMtDededeDefeatedBosses + MT_DEDEDE_2]
 	and a
 	jr z, .asm_1ac9
 	ld a, $15
-	ld [wc100 + $15f], a
+	ld [wLevelBlockMap + $15f], a
 	ld a, $16
-	ld [wc100 + $19b], a
+	ld [wLevelBlockMap + $19b], a
 	ld a, $17
-	ld [wc100 + $160], a
+	ld [wLevelBlockMap + $160], a
 	ld a, $18
-	ld [wc100 + $19c], a
+	ld [wLevelBlockMap + $19c], a
 	inc b
 .asm_1ac9
 	ld a, [wMtDededeDefeatedBosses + MT_DEDEDE_3]
 	and a
 	jr z, .asm_1ae4
 	ld a, $15
-	ld [wc100 + $75], a
+	ld [wLevelBlockMap + $75], a
 	ld a, $16
-	ld [wc100 + $b1], a
+	ld [wLevelBlockMap + $b1], a
 	ld a, $17
-	ld [wc100 + $76], a
+	ld [wLevelBlockMap + $76], a
 	ld a, $18
-	ld [wc100 + $b2], a
+	ld [wLevelBlockMap + $b2], a
 	inc b
 .asm_1ae4
 	ld a, [wMtDededeDefeatedBosses + MT_DEDEDE_4]
 	and a
 	jr z, .asm_1aff
 	ld a, $15
-	ld [wc100 + $165], a
+	ld [wLevelBlockMap + $165], a
 	ld a, $16
-	ld [wc100 + $1a1], a
+	ld [wLevelBlockMap + $1a1], a
 	ld a, $17
-	ld [wc100 + $166], a
+	ld [wLevelBlockMap + $166], a
 	ld a, $18
-	ld [wc100 + $1a2], a
+	ld [wLevelBlockMap + $1a2], a
 	inc b
 .asm_1aff
 	ld a, $04
