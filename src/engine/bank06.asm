@@ -235,23 +235,23 @@ Func_18285:
 	ld a, [wExtraGameEnabled]
 	and a
 	jr nz, .extra_game
-	ld hl, $4000
+	ld hl, Gfx_8000
 	ld de, vTiles0 tile $00
-	ld c, $02
+	ld c, BANK(Gfx_8000)
 	call FarDecompress
-	ld hl, $4855
+	ld hl, Gfx_8855
 	ld de, vTiles2 tile $67
-	ld c, $02
+	ld c, BANK(Gfx_8855)
 	call FarDecompress
 	jr .asm_182b9
 .extra_game
-	ld hl, $488d
+	ld hl, Gfx_2888d
 	ld de, vTiles0 tile $00
-	ld c, $0a
+	ld c, BANK(Gfx_2888d)
 	call FarDecompress
-	ld hl, $50f3
+	ld hl, Gfx_290f3
 	ld de, vTiles2 tile $67
-	ld c, $0a
+	ld c, BANK(Gfx_290f3)
 	call FarDecompress
 .asm_182b9
 	ld d, $00
@@ -300,13 +300,13 @@ StageIntro:
 	call ClearSprites
 	call ResetTimer
 
-	ld hl, $4000
+	ld hl, Gfx_8000
 	ld de, vTiles0 tile $00
-	ld c, $02
+	ld c, BANK(Gfx_8000)
 	call FarDecompress
-	ld hl, $4855
+	ld hl, Gfx_8855
 	ld de, vTiles2 tile $67
-	ld c, $02
+	ld c, BANK(Gfx_8855)
 	call FarDecompress
 
 	ld a, [wStage]
@@ -337,13 +337,13 @@ StageIntro:
 	ld a, [wStage]
 	cp MT_DEDEDE
 	jr z, .asm_1835b
-	ld hl, $77e9
+	ld hl, Gfx_b7e9
 	ld de, vTiles1 tile $60
-	ld c, $02
+	ld c, BANK(Gfx_b7e9)
 	call FarDecompress
-	ld hl, $5cdd
+	ld hl, Gfx_dcdd
 	ld de, vTiles1 tile $00
-	ld c, $03
+	ld c, BANK(Gfx_dcdd)
 	call FarDecompress
 
 .asm_1835b
@@ -938,13 +938,13 @@ GameOver:
 	ld a, SCENE_GAME_OVER
 	call Func_21fb
 
-	ld hl, $4665
+	ld hl, BG_c665
 	debgcoord 0, 0
-	ld c, $03
+	ld c, BANK(BG_c665)
 	call FarDecompress
-	ld hl, $41c7
+	ld hl, Gfx_c1c7
 	ld de, vTiles1 tile $60
-	ld c, $03
+	ld c, BANK(Gfx_c1c7)
 	call FarDecompress
 
 	ld a, MUSIC_GAME_OVER
@@ -993,17 +993,17 @@ GameOver:
 	ld [wd096], a
 	call ClearSprites
 
-	ld hl, $77e9
+	ld hl, Gfx_b7e9
 	ld de, vTiles1 tile $60
-	ld c, $02
+	ld c, BANK(Gfx_b7e9)
 	call FarDecompress
-	ld hl, $5cdd
+	ld hl, Gfx_dcdd
 	ld de, vTiles1 tile $00
-	ld c, $03
+	ld c, BANK(Gfx_dcdd)
 	call FarDecompress
-	ld hl, $46b5
+	ld hl, BG_c6b5
 	debgcoord 0, 0
-	ld c, $03
+	ld c, BANK(BG_c6b5)
 	call FarDecompress
 
 	xor a
@@ -1097,21 +1097,21 @@ Epilogue:
 
 	call ResetTimer
 
-	ld hl, $41c7
+	ld hl, Gfx_c1c7
 	ld de, vTiles1 tile $60
-	ld c, $03
+	ld c, BANK(Gfx_c1c7)
 	call FarDecompress
-	ld hl, $4fcf
+	ld hl, Gfx_cfcf
 	ld de, vTiles0 tile $00
-	ld c, $03
+	ld c, BANK(Gfx_cfcf)
 	call FarDecompress
-	ld hl, $5894
+	ld hl, Gfx_d894
 	ld de, vTiles2 tile $00
-	ld c, $03
+	ld c, BANK(Gfx_d894)
 	call FarDecompress
-	ld hl, $42c8
+	ld hl, BG_c2c8
 	debgcoord 0, 0
-	ld c, $03
+	ld c, BANK(BG_c2c8)
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
@@ -1137,25 +1137,25 @@ Epilogue:
 	call FadeOut
 	call ResetTimer
 
-	ld hl, $4000
+	ld hl, Gfx_8000
 	ld de, vTiles0 tile $00
-	ld c, $02
+	ld c, BANK(Gfx_8000)
 	call FarDecompress
-	ld hl, $4855
+	ld hl, Gfx_8855
 	ld de, vTiles2 tile $67
-	ld c, $02
+	ld c, BANK(Gfx_8855)
 	call FarDecompress
-	ld hl, $6c49
+	ld hl, Gfx_ac49
 	ld de, vTiles1 tile $00
-	ld c, $02
+	ld c, BANK(Gfx_ac49)
 	call FarDecompress
-	ld hl, $777c
+	ld hl, Data_1b77c
 	ld de, wBlockTileMap
-	ld c, $06
+	ld c, BANK(Data_1b77c)
 	call FarDecompress
-	ld hl, $71e2
+	ld hl, Data_1b1e2
 	ld de, wc100
-	ld c, $06
+	ld c, BANK(Data_1b1e2)
 	call FarDecompress
 
 	ld a, SCENE_04
@@ -1192,21 +1192,21 @@ Epilogue:
 	call Func_19098
 	call ResetTimer
 
-	ld hl, $41c7
+	ld hl, Gfx_c1c7
 	ld de, vTiles1 tile $60
-	ld c, $03
+	ld c, BANK(Gfx_c1c7)
 	call FarDecompress
-	ld hl, $4fcf
+	ld hl, Gfx_cfcf
 	ld de, vTiles0 tile $00
-	ld c, $03
+	ld c, BANK(Gfx_cfcf)
 	call FarDecompress
-	ld hl, $5894
+	ld hl, Gfx_d894
 	ld de, vTiles2 tile $00
-	ld c, $03
+	ld c, BANK(Gfx_d894)
 	call FarDecompress
-	ld hl, $42c8
+	ld hl, BG_c2c8
 	debgcoord 0, 0
-	ld c, $03
+	ld c, BANK(BG_c2c8)
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
@@ -1625,9 +1625,9 @@ Epilogue:
 	ld [wSCX], a
 	ld [wSCY], a
 
-	ld hl, $437a
+	ld hl, BG_c37a
 	debgcoord 0, 0
-	ld c, $03
+	ld c, BANK(BG_c37a)
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
@@ -1650,9 +1650,9 @@ Epilogue:
 	call Func_21fb
 	call Func_19098
 
-	ld hl, $441d
+	ld hl, BG_c41d
 	debgcoord 0, 0
-	ld c, $03
+	ld c, BANK(BG_c41d)
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
@@ -1696,13 +1696,13 @@ Epilogue:
 	call Func_21fb
 	call Func_19098
 
-	ld hl, $4000
+	ld hl, Gfx_34000
 	ld de, vTiles2 tile $00
-	ld c, $0d
+	ld c, BANK(Gfx_34000)
 	call FarDecompress
-	ld hl, $45c0
+	ld hl, Gfx_345c0
 	debgcoord 0, 0
-	ld c, $0d
+	ld c, BANK(Gfx_345c0)
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
@@ -1715,13 +1715,13 @@ Epilogue:
 	call Func_21fb
 	call Func_19098
 
-	ld hl, $46fb
+	ld hl, Gfx_346fb
 	ld de, vTiles2 tile $00
-	ld c, $0d
+	ld c, BANK(Gfx_346fb)
 	call FarDecompress
-	ld hl, $4cb4
+	ld hl, BG_34cb4
 	debgcoord 0, 0
-	ld c, $0d
+	ld c, BANK(BG_34cb4)
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
@@ -1734,13 +1734,13 @@ Epilogue:
 	call Func_21fb
 	call Func_19098
 
-	ld hl, $4dc0
+	ld hl, Gfx_34dc0
 	ld de, vTiles2 tile $00
-	ld c, $0d
+	ld c, BANK(Gfx_34dc0)
 	call FarDecompress
-	ld hl, $535c
+	ld hl, BG_3535c
 	debgcoord 0, 0
-	ld c, $0d
+	ld c, BANK(BG_3535c)
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
@@ -1758,13 +1758,13 @@ Epilogue:
 	call Func_21fb
 	call Func_19098
 
-	ld hl, $543e
+	ld hl, Gfx_3543e
 	ld de, vTiles2 tile $00
-	ld c, $0d
+	ld c, BANK(Gfx_3543e)
 	call FarDecompress
-	ld hl, $5987
+	ld hl, BG_35987
 	debgcoord 0, 0
-	ld c, $0d
+	ld c, BANK(BG_35987)
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
@@ -1777,13 +1777,13 @@ Epilogue:
 	call Func_21fb
 	call Func_19098
 
-	ld hl, $5a89
+	ld hl, Gfx_35a89
 	ld de, vTiles2 tile $00
-	ld c, $0d
+	ld c, BANK(Gfx_35a89)
 	call FarDecompress
-	ld hl, $5fd2
+	ld hl, BG_35fd2
 	debgcoord 0, 0
-	ld c, $0d
+	ld c, BANK(BG_35fd2)
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
@@ -1800,13 +1800,13 @@ Epilogue:
 	call Func_21fb
 	call Func_19098
 
-	ld hl, $6063
+	ld hl, Gfx_36063
 	ld de, vTiles2 tile $00
-	ld c, $0d
+	ld c, BANK(Gfx_36063)
 	call FarDecompress
-	ld hl, $6553
+	ld hl, BG_36553
 	debgcoord 0, 0
-	ld c, $0d
+	ld c, BANK(BG_36553)
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
@@ -1819,13 +1819,13 @@ Epilogue:
 	call Func_21fb
 	call Func_19098
 
-	ld hl, $6658
+	ld hl, Gfx_36658
 	ld de, vTiles2 tile $00
-	ld c, $0d
+	ld c, BANK(Gfx_36658)
 	call FarDecompress
-	ld hl, $6b80
+	ld hl, BG_36b80
 	debgcoord 0, 0
-	ld c, $0d
+	ld c, BANK(BG_36b80)
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
@@ -1842,13 +1842,13 @@ Epilogue:
 	call Func_21fb
 	call Func_19098
 
-	ld hl, $6c7c
+	ld hl, Gfx_36c7c
 	ld de, vTiles2 tile $00
-	ld c, $0d
+	ld c, BANK(Gfx_36c7c)
 	call FarDecompress
-	ld hl, $717d
+	ld hl, BG_3717d
 	debgcoord 0, 0
-	ld c, $0d
+	ld c, BANK(BG_3717d)
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
@@ -1861,13 +1861,13 @@ Epilogue:
 	call Func_21fb
 	call Func_19098
 
-	ld hl, $729b
+	ld hl, Gfx_3729b
 	ld de, vTiles2 tile $00
-	ld c, $0d
+	ld c, BANK(Gfx_3729b)
 	call FarDecompress
-	ld hl, $779c
+	ld hl, BG_3779c
 	debgcoord 0, 0
-	ld c, $0d
+	ld c, BANK(BG_3779c)
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
@@ -1883,13 +1883,13 @@ Epilogue:
 	call Func_21fb
 	call Func_19098
 
-	ld hl, $4000
+	ld hl, Gfx_38000
 	ld de, vTiles2 tile $00
-	ld c, $0e
+	ld c, BANK(Gfx_38000)
 	call FarDecompress
-	ld hl, $78cc
+	ld hl, BG_378cc
 	debgcoord 0, 0
-	ld c, $0d
+	ld c, BANK(BG_378cc)
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
@@ -1905,13 +1905,13 @@ Epilogue:
 	call Func_21fb
 	call Func_19098
 
-	ld hl, $4582
+	ld hl, Gfx_38582
 	ld de, vTiles2 tile $00
-	ld c, $0e
+	ld c, BANK(Gfx_38582)
 	call FarDecompress
-	ld hl, $4ac6
+	ld hl, BG_38ac6
 	debgcoord 0, 0
-	ld c, $0e
+	ld c, BANK(BG_38ac6)
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
@@ -1927,13 +1927,13 @@ Epilogue:
 	call Func_21fb
 	call Func_19098
 
-	ld hl, $4bf3
+	ld hl, Gfx_38bf3
 	ld de, vTiles2 tile $00
-	ld c, $0e
+	ld c, BANK(Gfx_38bf3)
 	call FarDecompress
-	ld hl, $511e
+	ld hl, BG_3911e
 	debgcoord 0, 0
-	ld c, $0e
+	ld c, BANK(BG_3911e)
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
@@ -1949,13 +1949,13 @@ Epilogue:
 	call Func_21fb
 	call Func_19098
 
-	ld hl, $5206
+	ld hl, Gfx_39206
 	ld de, vTiles2 tile $00
-	ld c, $0e
+	ld c, BANK(Gfx_39206)
 	call FarDecompress
-	ld hl, $5707
+	ld hl, BG_39707
 	debgcoord 0, 0
-	ld c, $0e
+	ld c, BANK(BG_39707)
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
@@ -1965,22 +1965,22 @@ Epilogue:
 	call FadeOut
 	call ResetTimer
 
-	ld hl, $6c49
+	ld hl, Gfx_ac49
 	ld de, vTiles1 tile $00
-	ld c, $02
+	ld c, BANK(Gfx_ac49)
 	call FarDecompress
 
 	ld a, SCENE_19
 	call Func_21fb
 	call Func_19098
 
-	ld hl, $5820
+	ld hl, Gfx_39820
 	ld de, vTiles2 tile $00
-	ld c, $0e
+	ld c, BANK(Gfx_39820)
 	call FarDecompress
-	ld hl, $5be1
+	ld hl, BG_39be1
 	debgcoord 0, 0
-	ld c, $0e
+	ld c, BANK(BG_39be1)
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
@@ -2014,13 +2014,13 @@ Epilogue:
 	call Func_21fb
 	call Func_19098
 
-	ld hl, $5cbf
+	ld hl, Gfx_39cbf
 	ld de, vTiles0 tile $00
-	ld c, $0e
+	ld c, BANK(Gfx_39cbf)
 	call FarDecompress
-	ld hl, $6cce
+	ld hl, BG_3acce
 	debgcoord 0, 0
-	ld c, $0e
+	ld c, BANK(BG_3acce)
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
@@ -2038,13 +2038,13 @@ Epilogue:
 	call Func_21fb
 	call Func_19098
 
-	ld hl, $6dd9
+	ld hl, Gfx_3add9
 	ld de, vTiles0 tile $00
-	ld c, $0e
+	ld c, BANK(Gfx_3add9)
 	call FarDecompress
-	ld hl, $7e4a
+	ld hl, BG_3be4a
 	debgcoord 0, 0
-	ld c, $0e
+	ld c, BANK(BG_3be4a)
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
@@ -2385,21 +2385,41 @@ Data_1926a:
 	dw AnimScript_2004a ; MT_DEDEDE_9
 	assert_table_length NUM_MT_DEDEDE_AREAS
 
-BG_192d6:
-INCBIN "data/bg_192d6.bin"
+BG_192d6: INCBIN "data/bg_192d6.bin"
 ; 0x19452
 
 SECTION "Bank 6@5786", ROMX[$5786], BANK[$6]
 
-BG_19786:
-INCBIN "data/bg_19786.bin"
+BG_19786: INCBIN "data/bg_19786.bin"
 ; 0x198ac
 
 SECTION "Bank 6@5e86", ROMX[$5e86], BANK[$6]
 
-BG_19e86:
-INCBIN "data/bg_19e86.bin"
+BG_19e86: INCBIN "data/bg_19e86.bin"
 
 INCLUDE "data/credits.asm"
 
 INCLUDE "engine/configuration.asm"
+
+SECTION "Bank 6@6800", ROMX[$6800], BANK[$6]
+
+Data_1a800:: INCBIN "data/data_1a800.bin.lz"
+Data_1a9d7:: INCBIN "data/data_1a9d7.bin.lz"
+Data_1ab94:: INCBIN "data/data_1ab94.bin.lz"
+Data_1ace8:: INCBIN "data/data_1ace8.bin.lz"
+Data_1ae6d:: INCBIN "data/data_1ae6d.bin.lz"
+Data_1b12d:: INCBIN "data/data_1b12d.bin.lz"
+Data_1b16e:: INCBIN "data/data_1b16e.bin.lz"
+Data_1b1e2:: INCBIN "data/data_1b1e2.bin.lz"
+Data_1b225:: INCBIN "data/data_1b225.bin.lz"
+Data_1b39c:: INCBIN "data/data_1b39c.bin.lz"
+Data_1b497:: INCBIN "data/data_1b497.bin.lz"
+Data_1b653:: INCBIN "data/data_1b653.bin.lz"
+
+SECTION "Bank 6@777c", ROMX[$777c], BANK[$6]
+
+Data_1b77c:: INCBIN "data/data_1b77c.bin.lz"
+
+SECTION "Bank 6@7b0d", ROMX[$7b0d], BANK[$6]
+
+Gfx_1bb0d: INCBIN "gfx/gfx_1bb0d.2bpp.lz"

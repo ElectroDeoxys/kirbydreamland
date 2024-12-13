@@ -1625,8 +1625,10 @@ InitRAM::
 	ret
 
 Func_14b30::
-	ld hl, $4b3a
+	ld hl, Data_14b3a
 	ld de, wdc00
 	call Decompress
 	ret
-; 0x14b3a
+
+Data_14b3a:
+	INCBIN "data/data_14b3a.bin.lz"

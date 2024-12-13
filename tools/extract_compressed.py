@@ -45,6 +45,6 @@ for o in args.offsets:
         else:
             pos += 2
 
-        data = source[offset : offset + pos + 1]
-        with open("Data_{}.lz".format(o), "wb") as fo:
-            fo.write(bytes(data))
+    data = source[offset : pos]
+    with open("data_{}.bin.lz".format(o), "wb") as fo:
+        fo.write(bytes(data))

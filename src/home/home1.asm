@@ -2082,9 +2082,6 @@ Func_1062::
 	add [hl]
 	ld [hl], a
 	ret
-; 0x10c4
-
-SECTION "Home@110b", ROM0[$110b]
 
 Func_110b:
 	ldh a, [hPalFadeFlags]
@@ -3561,23 +3558,23 @@ LoadArea::
 	ld a, [wExtraGameEnabled]
 	and a
 	jr nz, .extra_game
-	ld hl, $4000
+	ld hl, Gfx_8000
 	ld de, vTiles0 + $00
-	ld c, $02
+	ld c, BANK(Gfx_8000)
 	call FarDecompress
-	ld hl, $4855
+	ld hl, Gfx_8855
 	ld de, vTiles2 tile $67
-	ld c, $02
+	ld c, BANK(Gfx_8855)
 	call FarDecompress
 	jr .asm_1b66
 .extra_game
-	ld hl, $488d
+	ld hl, Gfx_2888d
 	ld de, vTiles0 + $00
-	ld c, $0a
+	ld c, BANK(Gfx_2888d)
 	call FarDecompress
-	ld hl, $50f3
+	ld hl, Gfx_290f3
 	ld de, vTiles2 tile $67
-	ld c, $0a
+	ld c, BANK(Gfx_290f3)
 	call FarDecompress
 .asm_1b66
 	pop de

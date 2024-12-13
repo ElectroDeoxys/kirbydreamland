@@ -13,25 +13,25 @@ TitleScreen::
 	ld [wSCY], a
 
 	; load graphics
-	ld hl, $4000
+	ld hl, Gfx_8000
 	ld de, vTiles0 tile $00
-	ld c, $02
+	ld c, BANK(Gfx_8000)
 	call FarDecompress
-	ld hl, $4000
+	ld hl, Gfx_28000
 	ld de, vTiles1 tile $00
-	ld c, $0a
+	ld c, BANK(Gfx_28000)
 	call FarDecompress
-	ld hl, $42ac
+	ld hl, Gfx_282ac
 	ld de, vTiles2 tile $00
-	ld c, $0a
+	ld c, BANK(Gfx_282ac)
 	call FarDecompress
-	ld hl, $77e9
+	ld hl, Gfx_b7e9
 	ld de, vTiles1 tile $60
-	ld c, $02
+	ld c, BANK(Gfx_b7e9)
 	call FarDecompress
-	ld hl, $4000
+	ld hl, BG_c000
 	debgcoord 0, 0
-	ld c, $03
+	ld c, BANK(BG_c000)
 	call FarDecompress
 
 	ld a, MUSIC_TITLESCREEN

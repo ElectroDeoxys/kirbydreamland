@@ -10,21 +10,21 @@ ConfigurationMenu:
 	ld [wd096], a
 	call ClearSprites
 
-	ld hl, $4855
+	ld hl, Gfx_8855
 	ld de, vTiles2 tile $67
-	ld c, $02
+	ld c, BANK(Gfx_8855)
 	call FarDecompress
-	ld hl, $7b0d
+	ld hl, Gfx_1bb0d
 	ld de, vTiles1 tile $00
-	ld c, $06
+	ld c, BANK(Gfx_1bb0d)
 	call FarDecompress
-	ld hl, $41c7
+	ld hl, Gfx_c1c7
 	ld de, vTiles1 tile $60
-	ld c, $03
+	ld c, BANK(Gfx_c1c7)
 	call FarDecompress
-	ld hl, $4541
+	ld hl, BG_c541
 	debgcoord 0, 0
-	ld c, $03
+	ld c, BANK(BG_c541)
 	call FarDecompress
 
 	xor a
@@ -246,9 +246,9 @@ ConfigurationMenu:
 	call Func_21fb
 	call HideWindow
 
-	ld hl, $44c9
+	ld hl, BG_c4c9
 	debgcoord 0, 0
-	ld c, $03
+	ld c, BANK(BG_c4c9)
 	call FarDecompress
 
 	call StopTimerAndSwitchOnLCD
