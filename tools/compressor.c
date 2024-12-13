@@ -9,7 +9,8 @@
 
 typedef unsigned char byte;
 
-static void usage(void) {
+static void usage(void)
+{
 	fprintf(stderr, "Usage: compressor [-d decompress] [-h] infile\n");
 }
 
@@ -22,7 +23,8 @@ struct Options Options = {
 	.decompress = false,
 };
 
-void get_args(int argc, char *argv[]) {
+void get_args(int argc, char *argv[])
+{
 	struct option long_options[] = {
 		{"decompress", no_argument, 0, 'd'},
 		{"help", no_argument, 0, 'h'},
