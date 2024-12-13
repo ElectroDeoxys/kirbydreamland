@@ -4148,8 +4148,8 @@ StageHeaders::
 MACRO area
 	db BANK(\1)
 	bigdw \1 ; ?
-	db \2 ; level width in tiles?
-	db \3 ; level height in tiles?
+	db \2 ; level width in blocks
+	db \3 ; level height in blocks
 	db \4 ; if $0, fade from white, otherwise fade from black
 	db \5 ; ?
 	db \6 ; ?

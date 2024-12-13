@@ -2415,9 +2415,6 @@ Data_1b225:: INCBIN "data/data_1b225.bin.lz"
 Data_1b39c:: INCBIN "data/data_1b39c.bin.lz"
 Data_1b497:: INCBIN "data/data_1b497.bin.lz"
 Data_1b653:: INCBIN "data/data_1b653.bin.lz"
-
-SECTION "Bank 6@777c", ROMX[$777c], BANK[$6]
-
 Data_1b77c:: INCBIN "data/data_1b77c.bin.lz"
 
 SECTION "Bank 6@7b0d", ROMX[$7b0d], BANK[$6]

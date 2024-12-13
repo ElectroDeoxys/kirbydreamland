@@ -12,7 +12,6 @@ Gfx_9266:: INCBIN "gfx/gfx_9266.2bpp.lz"
 Gfx_9b2c:: INCBIN "gfx/gfx_9b2c.2bpp.lz"
 Gfx_a3ee:: INCBIN "gfx/gfx_a3ee.2bpp.lz"
 Gfx_ac49:: INCBIN "gfx/gfx_ac49.2bpp.lz"
-SECTION "Bank 2@b7e9", ROMX[$77e9], BANK[$2]
 Gfx_b7e9: INCBIN "gfx/gfx_b7e9.2bpp.lz"
 
 
@@ -31,14 +30,10 @@ BG_c6b5: INCBIN "data/bg_c6b5.bin.lz"
 Data_c6e0:: INCBIN "data/data_c6e0.bin.lz"
 Data_c8d9:: INCBIN "data/data_c8d9.bin.lz"
 Data_cac3:: INCBIN "data/data_cac3.bin.lz"
-SECTION "Bank 3@ccff", ROMX[$4cff], BANK[$3]
 Data_ccff:: INCBIN "data/data_ccff.bin.lz"
 
-SECTION "Bank 3@cfcf", ROMX[$4fcf], BANK[$3]
 Gfx_cfcf: INCBIN "gfx/gfx_cfcf.2bpp.lz"
-SECTION "Bank 3@d894", ROMX[$5894], BANK[$3]
 Gfx_d894: INCBIN "gfx/gfx_d894.2bpp.lz"
-SECTION "Bank 3@dcdd", ROMX[$5cdd], BANK[$3]
 Gfx_dcdd: INCBIN "gfx/gfx_dcdd.2bpp.lz"
 
 SECTION "Bank 3@e273", ROMX[$6273], BANK[$3]
