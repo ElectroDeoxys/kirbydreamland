@@ -24,9 +24,13 @@ ResetTimer::
 	ld a, TACF_4KHZ | TACF_START
 	ldh [rTAC], a
 	ret
-; 0x1e8f
 
-SECTION "Home@1e96", ROM0[$1e96]
+; unreferenced
+Func_1e8f:
+	ld hl, hVBlankFlags
+	set VBLANK_PENDING_F, [hl]
+	halt
+	ret
 
 ; input:
 ; - a = SFX_* constant
@@ -575,9 +579,17 @@ Decompress::
 	inc hl
 	inc hl
 	jp .loop_compressed_data
-; 0x21a5
 
-SECTION "Home@21bb", ROM0[$21bb]
+; unreferenced
+Func_21a5:
+	ld a, $cb
+	ld [wDelayedCopyAToDEFunc + 0], a
+	ld [wDelayedCopyAToDEFunc + 3], a
+	ld a, $37
+	ld [wDelayedCopyAToDEFunc + 1], a
+	ld [wDelayedCopyAToDEFunc + 4], a
+	call Decompress
+	jp InitDelayedCopyAToDEFunc
 
 ; writes the following routine to wDelayedCopyAToDEFunc:
 ;	nop
@@ -650,7 +662,7 @@ SetObjectScripts::
 ; input:
 ; - a = SCENE_* constant
 Func_21fb::
-	ld [wd3f2], a
+	ld [wScene], a
 	ld a, $ff
 	ld [wd096], a
 
@@ -667,7 +679,7 @@ Func_21fb::
 	ld [wd3f0], a
 	bankswitch
 	ld d, $00
-	ld a, [wd3f2]
+	ld a, [wScene]
 	and a
 	jr z, .asm_222b
 	dec a
@@ -745,7 +757,7 @@ ASSERT Data_1c000 == Data_3c000
 	ld [wLevelWidthPx + 0], a
 	ld a, h
 	ld [wLevelWidthPx + 1], a
-	ld a, [wd3f2]
+	ld a, [wScene]
 	and a
 	jr nz, .asm_22c5
 	ld a, [hKirbyFlags5]
@@ -2435,7 +2447,7 @@ Func_2b26:
 	cp $a8
 	jr nc, .asm_2bc7
 	ld d, SCRN_Y
-	ld a, [wd3f2]
+	ld a, [wScene]
 	and a
 	jr z, .asm_2c0e
 	ld d, SCRN_Y + 26
@@ -2508,7 +2520,7 @@ Func_2b26:
 .asm_2c6e
 	push bc
 	ld b, $b0
-	ld a, [wd3f2]
+	ld a, [wScene]
 	and a
 	jr nz, .asm_2c96
 	ld b, $90
@@ -3784,9 +3796,24 @@ PowersOfTwo::
 	db 1 << 5
 	db 1 << 6
 	db 1 << 7
-; 0x3410
 
-SECTION "Home@3421", ROM0[$3421]
+; unreferenced
+Func_3410:
+	push bc
+	ld b, $8
+.asm_3413
+	add a
+	cp d
+	jr c, .asm_3418
+	sub d
+.asm_3418
+	ccf
+	rl c
+	dec b
+	jr nz, .asm_3413
+	ld a, c
+	pop bc
+	ret
 
 MACRO object_properties
 	db \1 ; ?
@@ -4422,4 +4449,10 @@ StartLevelAfterContinue::
 	pop af
 	bankswitch
 	ret
-; 0x3da9
+
+; unreferenced
+Func_3da9:
+	ret nc
+	ld [$2100], a
+	ret
+; 0x3dae

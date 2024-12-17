@@ -495,7 +495,7 @@ wd3f0:: ; d3f0
 wd3f1:: ; d3f1
 	db
 
-wd3f2:: ; d3f2
+wScene:: ; d3f2
 	db
 
 	ds $2

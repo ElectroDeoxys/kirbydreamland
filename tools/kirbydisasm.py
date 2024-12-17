@@ -905,7 +905,7 @@ def get_raw_addr(addr):
 if __name__ == "__main__":
 	# argument parser
 	ap = argparse.ArgumentParser()
-	ap.add_argument("-r", dest="rom", default="baserom.gbc")
+	ap.add_argument("-r", dest="rom", default="baserom.gb")
 	ap.add_argument("-o", dest="filename", default="disasm_output.asm")
 	ap.add_argument("-s", dest="symfile", default="kirbydreamland.sym")
 	ap.add_argument("-q", "--quiet", dest="quiet", action="store_true")

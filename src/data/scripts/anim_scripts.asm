@@ -1722,7 +1722,6 @@ AnimScript_21e7e:
 
 SECTION "Bank 8@5eae", ROMX[$5eae], BANK[$8]
 
-; TODO unreferenced?
 AnimScript_21eae:
 	script_call AnimScript_21f0a
 	script_exec Func_30b2

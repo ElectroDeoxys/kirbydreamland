@@ -1,5 +1,3 @@
-SECTION "Home@1d01", ROM0[$1d01]
-
 ; output:
 ; - a = random byte
 Random::

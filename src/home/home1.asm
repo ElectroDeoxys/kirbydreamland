@@ -3909,4 +3909,31 @@ HLMinusBC::
 	ld h, a
 	pop de
 	ret
-; 0x1ced
+
+; unreferenced
+Func_1ced:
+	; push/pop de is unnecessary
+	push de
+	inc hl
+	ld a, [hl]
+	add c
+	ld [hld], a
+	ld a, [hl]
+	adc b
+	ld [hl], a
+	pop de
+	ret
+
+; unreferenced
+Func_1cf7:
+	; push/pop de is unnecessary
+	push de
+	inc hl
+	ld a, [hl]
+	sub b
+	ld [hld], a
+	ld a, [hl]
+	sbc c
+	ld [hl], a
+	pop de
+	ret
