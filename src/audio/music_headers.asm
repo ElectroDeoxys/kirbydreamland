@@ -114,7 +114,7 @@ MusicHeader_CastleLololo:
 	dwb CastleLololo_Channel3, $10 ; CHANNEL3
 	dwb CastleLololo_Channel4, $0c ; CHANNEL4
 
-MusicHeader_DededeBattle:
+MusicHeader_KingDededeBattle:
 	db 4 ; num of channels
 	dwb DededeBattle_Channel1, $10 ; CHANNEL1
 	dwb DededeBattle_Channel2, $00 ; CHANNEL2

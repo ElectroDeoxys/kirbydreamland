@@ -16,7 +16,7 @@
 	const MUSIC_FLOAT_ISLANDS       ; $0e
 	const MUSIC_BUBBLY_CLOUDS       ; $0f
 	const MUSIC_CASTLE_LOLOLO       ; $10
-	const MUSIC_DEDEDE_BATTLE       ; $11
+	const MUSIC_KING_DEDEDE_BATTLE  ; $11
 	const MUSIC_MT_DEDEDE           ; $12
 DEF NUM_MUSICS EQU const_value
 	const_def $ff

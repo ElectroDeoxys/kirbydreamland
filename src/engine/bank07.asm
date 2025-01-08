@@ -93,31 +93,31 @@ Data_1c0ce::
 	table_width 4
 	dw Data_1d58f, Data_1d7e7 ; SCENE_TITLE_SCREEN
 	dw Data_1d5ba, Data_1d7e7 ; SCENE_SOUND_TEST
-	dw Data_1d5fd, Data_1d7e7 ; SCENE_03
-	dw $5607, Data_1d7e7 ; SCENE_04
-	dw $561d, Data_1d7e7 ; SCENE_05
-	dw $5624, Data_1d7e7 ; SCENE_06
+	dw Data_1d5fd, Data_1d7e7 ; SCENE_EPILOGUE_DEDEDE_LAUNCH
+	dw $5607, Data_1d7e7 ; SCENE_EPILOGUE_KIRBY_DANCE
+	dw $561d, Data_1d7e7 ; SCENE_EPILOGUE_KIRBY_INFLATE
+	dw $5624, Data_1d7e7 ; SCENE_EPILOGUE_FALLING_FOOD
 	dw $5631, Data_1d7e7 ; SCENE_CREDITS
-	dw $55c4, Data_1d7e7 ; SCENE_08
-	dw $55e0, Data_1d7e7 ; SCENE_09
+	dw $55c4, Data_1d7e7 ; SCENE_EPILOGUE_KIRBY_DEFLATE
+	dw $55e0, Data_1d7e7 ; SCENE_EPILOGUE_BYE_BYE
 	dw $55f9, Data_1d7e7 ; SCENE_GAME_OVER
-	dw $563e, Data_1d7e7 ; SCENE_0B
-	dw $57e7, Data_1d7e7 ; SCENE_0C
-	dw $57e7, Data_1d7e7 ; SCENE_0D
-	dw $57e7, Data_1d7e7 ; SCENE_0E
-	dw $57e7, Data_1d7e7 ; SCENE_0F
-	dw $57e7, Data_1d7e7 ; SCENE_10
-	dw $57e7, Data_1d7e7 ; SCENE_11
-	dw $57e7, Data_1d7e7 ; SCENE_12
-	dw $57e7, Data_1d7e7 ; SCENE_13
-	dw $57e7, Data_1d7e7 ; SCENE_14
-	dw $57e7, Data_1d7e7 ; SCENE_15
-	dw $57e7, Data_1d7e7 ; SCENE_16
-	dw $57e7, Data_1d7e7 ; SCENE_17
-	dw $57e7, Data_1d7e7 ; SCENE_18
-	dw $57e7, Data_1d7e7 ; SCENE_19
-	dw $57e7, Data_1d7e7 ; SCENE_1A
-	dw $57e7, Data_1d7e7 ; SCENE_1B
+	dw $563e, Data_1d7e7 ; SCENE_CONTINUE
+	dw $57e7, Data_1d7e7 ; SCENE_GREEN_GREENS_ENEMIES_1
+	dw $57e7, Data_1d7e7 ; SCENE_GREEN_GREENS_ENEMIES_2
+	dw $57e7, Data_1d7e7 ; SCENE_GREEN_GREENS_ENEMIES_3
+	dw $57e7, Data_1d7e7 ; SCENE_CASTLE_LOLOLO_ENEMIES_1
+	dw $57e7, Data_1d7e7 ; SCENE_CASTLE_LOLOLO_ENEMIES_2
+	dw $57e7, Data_1d7e7 ; SCENE_FLOAT_ISLANDS_ENEMIES_1
+	dw $57e7, Data_1d7e7 ; SCENE_FLOAT_ISLANDS_ENEMIES_2
+	dw $57e7, Data_1d7e7 ; SCENE_BUBBLE_CLOUDS_ENEMIES_1
+	dw $57e7, Data_1d7e7 ; SCENE_BUBBLE_CLOUDS_ENEMIES_2
+	dw $57e7, Data_1d7e7 ; SCENE_GREEN_GREENS_ENEMIES_4
+	dw $57e7, Data_1d7e7 ; SCENE_CASTLE_LOLOLO_ENEMIES_3
+	dw $57e7, Data_1d7e7 ; SCENE_FLOAT_ISLANDS_ENEMIES_3
+	dw $57e7, Data_1d7e7 ; SCENE_BUBBLE_CLOUDS_ENEMIES_3
+	dw $57e7, Data_1d7e7 ; SCENE_KING_DEDEDE
+	dw $57e7, Data_1d7e7 ; SCENE_CONFIG_MODE_UNLOCK
+	dw $57e7, Data_1d7e7 ; SCENE_EXTRA_GAME_UNLOCK
 	assert_table_length NUM_SCENES
 
 Data_1c13a::

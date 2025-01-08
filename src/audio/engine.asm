@@ -2448,7 +2448,7 @@ MusicHeaders:
 	dw MusicHeader_FloatIslands       ; MUSIC_FLOAT_ISLANDS
 	dw MusicHeader_BubblyClouds       ; MUSIC_BUBBLY_CLOUDS
 	dw MusicHeader_CastleLololo       ; MUSIC_CASTLE_LOLOLO
-	dw MusicHeader_DededeBattle       ; MUSIC_DEDEDE_BATTLE
+	dw MusicHeader_KingDededeBattle   ; MUSIC_KING_DEDEDE_BATTLE
 	dw MusicHeader_MtDedede           ; MUSIC_MT_DEDEDE
 	assert_table_length NUM_MUSICS
 

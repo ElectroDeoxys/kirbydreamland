@@ -987,7 +987,7 @@ GameOver:
 	ld [wd051], a
 	ld [wd052], a
 
-	ld a, SCENE_0B
+	ld a, SCENE_CONTINUE
 	call Func_21fb
 	ld a, $ff
 	ld [wd096], a
@@ -1083,7 +1083,7 @@ Epilogue:
 	inc a
 	ld [wd051], a
 	ld [wd052], a
-	ld a, SCENE_03
+	ld a, SCENE_EPILOGUE_DEDEDE_LAUNCH
 	call Func_21fb
 	call Func_19098
 	call HideWindow
@@ -1158,7 +1158,7 @@ Epilogue:
 	ld c, BANK(Data_1b1e2)
 	call FarDecompress
 
-	ld a, SCENE_04
+	ld a, SCENE_EPILOGUE_KIRBY_DANCE
 	call Func_21fb
 	call Func_19098
 	ld a, 18
@@ -1187,7 +1187,7 @@ Epilogue:
 	ld [wd096], a
 	call ClearSprites
 	call FadeOut
-	ld a, SCENE_05
+	ld a, SCENE_EPILOGUE_KIRBY_INFLATE
 	call Func_21fb
 	call Func_19098
 	call ResetTimer
@@ -1226,7 +1226,7 @@ Epilogue:
 
 	call FadeOut
 	call ResetTimer
-	ld a, SCENE_06
+	ld a, SCENE_EPILOGUE_FALLING_FOOD
 	call Func_21fb
 	call Func_19098
 
@@ -1615,7 +1615,7 @@ Epilogue:
 
 	xor a
 	ld [wBGP], a
-	ld a, SCENE_08
+	ld a, SCENE_EPILOGUE_KIRBY_DEFLATE
 	call Func_21fb
 	call Func_19098
 
@@ -1646,7 +1646,7 @@ Epilogue:
 	jr nz, .asm_18cb8
 	call FadeOut
 	call ResetTimer
-	ld a, SCENE_09
+	ld a, SCENE_EPILOGUE_BYE_BYE
 	call Func_21fb
 	call Func_19098
 
@@ -1692,7 +1692,7 @@ Epilogue:
 	xor a
 	ld [wStage], a
 	call Func_18275
-	ld a, SCENE_0C
+	ld a, SCENE_GREEN_GREENS_ENEMIES_1
 	call Func_21fb
 	call Func_19098
 
@@ -1711,7 +1711,7 @@ Epilogue:
 	call .DoFrames
 	call FadeOut
 	call ResetTimer
-	ld a, SCENE_0D
+	ld a, SCENE_GREEN_GREENS_ENEMIES_2
 	call Func_21fb
 	call Func_19098
 
@@ -1730,7 +1730,7 @@ Epilogue:
 	call .DoFrames
 	call FadeOut
 	call ResetTimer
-	ld a, SCENE_0E
+	ld a, SCENE_GREEN_GREENS_ENEMIES_3
 	call Func_21fb
 	call Func_19098
 
@@ -1754,7 +1754,7 @@ Epilogue:
 	ld [wStage], a
 
 	call Func_18275
-	ld a, SCENE_0F
+	ld a, SCENE_CASTLE_LOLOLO_ENEMIES_1
 	call Func_21fb
 	call Func_19098
 
@@ -1773,7 +1773,7 @@ Epilogue:
 	call .DoFrames
 	call FadeOut
 	call ResetTimer
-	ld a, SCENE_10
+	ld a, SCENE_CASTLE_LOLOLO_ENEMIES_2
 	call Func_21fb
 	call Func_19098
 
@@ -1796,7 +1796,7 @@ Epilogue:
 	ld a, FLOAT_ISLANDS
 	ld [wStage], a
 	call Func_18275
-	ld a, SCENE_11
+	ld a, SCENE_FLOAT_ISLANDS_ENEMIES_1
 	call Func_21fb
 	call Func_19098
 
@@ -1815,7 +1815,7 @@ Epilogue:
 	call .DoFrames
 	call FadeOut
 	call ResetTimer
-	ld a, SCENE_12
+	ld a, SCENE_FLOAT_ISLANDS_ENEMIES_2
 	call Func_21fb
 	call Func_19098
 
@@ -1838,7 +1838,7 @@ Epilogue:
 	ld a, BUBBLY_CLOUDS
 	ld [wStage], a
 	call Func_18275
-	ld a, SCENE_13
+	ld a, SCENE_BUBBLE_CLOUDS_ENEMIES_1
 	call Func_21fb
 	call Func_19098
 
@@ -1857,7 +1857,7 @@ Epilogue:
 	call .DoFrames
 	call FadeOut
 	call ResetTimer
-	ld a, SCENE_14
+	ld a, SCENE_BUBBLE_CLOUDS_ENEMIES_2
 	call Func_21fb
 	call Func_19098
 
@@ -1879,7 +1879,7 @@ Epilogue:
 	xor a
 	ld [wStage], a
 	call Func_18285
-	ld a, SCENE_15
+	ld a, SCENE_GREEN_GREENS_ENEMIES_4
 	call Func_21fb
 	call Func_19098
 
@@ -1901,7 +1901,7 @@ Epilogue:
 	ld a, CASTLE_LOLOLO
 	ld [wStage], a
 	call Func_18285
-	ld a, SCENE_16
+	ld a, SCENE_CASTLE_LOLOLO_ENEMIES_3
 	call Func_21fb
 	call Func_19098
 
@@ -1923,7 +1923,7 @@ Epilogue:
 	ld a, FLOAT_ISLANDS
 	ld [wStage], a
 	call Func_18285
-	ld a, SCENE_17
+	ld a, SCENE_FLOAT_ISLANDS_ENEMIES_3
 	call Func_21fb
 	call Func_19098
 
@@ -1945,7 +1945,7 @@ Epilogue:
 	ld a, BUBBLY_CLOUDS
 	ld [wStage], a
 	call Func_18285
-	ld a, SCENE_18
+	ld a, SCENE_BUBBLE_CLOUDS_ENEMIES_3
 	call Func_21fb
 	call Func_19098
 
@@ -1970,7 +1970,7 @@ Epilogue:
 	ld c, BANK(Gfx_ac49)
 	call FarDecompress
 
-	ld a, SCENE_19
+	ld a, SCENE_KING_DEDEDE
 	call Func_21fb
 	call Func_19098
 
@@ -2010,7 +2010,7 @@ Epilogue:
 	ld a, MUSIC_NONE
 	call PlayMusic
 
-	ld a, SCENE_1A
+	ld a, SCENE_CONFIG_MODE_UNLOCK
 	call Func_21fb
 	call Func_19098
 
@@ -2034,7 +2034,7 @@ Epilogue:
 	ld a, MUSIC_NONE
 	call PlayMusic
 
-	ld a, SCENE_1B
+	ld a, SCENE_EXTRA_GAME_UNLOCK
 	call Func_21fb
 	call Func_19098
 
