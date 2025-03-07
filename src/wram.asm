@@ -115,8 +115,8 @@ wd059:: ; d059
 wCreditsTextScroll:: ; d05b
 	db
 
-wCurScreenX:: db ; d05c
-wCurScreenY:: db ; d05d
+wKirbyScreenX:: db ; d05c
+wKirbyScreenY:: db ; d05d
 
 wd05e:: ; d05e
 	db
@@ -412,7 +412,10 @@ wd3cc:: ; d3cc
 wd3cd:: ; d3cd
 	db
 
-wd3ce:: ; d3ce
+; which half side of the screen Kirby is on:
+; - $0: left side
+; - $1: right side
+wKirbySideOfScreen:: ; d3ce
 	db
 
 wd3cf:: ; d3cf
@@ -464,8 +467,8 @@ wInvincibilityCounter:: ; d3e1
 wLevelWidthPx:: ; d3e3
 	dw
 
-wd3e5:: dw ; d3e5
-wd3e7:: dw ; d3e7
+wLevelHorizontalObjectList:: dw ; d3e5
+wLevelVerticalObjectList:: dw ; d3e7
 
 wd3e9:: ; d3e9
 	db

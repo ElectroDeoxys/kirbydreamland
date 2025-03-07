@@ -1990,7 +1990,7 @@ SFXHeader_14:
 	db 1 ; num of channels
 	dwb $74e4, $0c ; CHANNEL1
 
-SFXHeader_15:
+SFXHeader_Puff:
 	db 1 ; num of channels
 	dwb $74f8, $04 ; CHANNEL1
 
@@ -2469,7 +2469,7 @@ SFXHeaders:
 	dw SFXHeader_WarpStar   ; SFX_WARP_STAR
 	dw SFXHeader_13         ; SFX_13
 	dw SFXHeader_14         ; SFX_14
-	dw SFXHeader_15         ; SFX_15
+	dw SFXHeader_Puff       ; SFX_PUFF
 	dw SFXHeader_StarSpit   ; SFX_STAR_SPIT
 	dw SFXHeader_17         ; SFX_17
 	dw SFXHeader_18         ; SFX_18
@@ -2510,7 +2510,7 @@ SFXRequiredChannels:
 	db SFXFLAG_SQUARE1 | SFXFLAG_SQUARE2 ; SFX_WARP_STAR
 	db SFXFLAG_SQUARE1 | SFXFLAG_SQUARE2 ; SFX_13
 	db SFXFLAG_NOISE ; SFX_14
-	db SFXFLAG_SQUARE2 ; SFX_15
+	db SFXFLAG_SQUARE2 ; SFX_PUFF
 	db SFXFLAG_SQUARE2 ; SFX_STAR_SPIT
 	db SFXFLAG_NOISE ; SFX_17
 	db SFXFLAG_SQUARE2 ; SFX_18
@@ -2552,7 +2552,7 @@ SFXPriorities:
 	db  0 ; SFX_WARP_STAR
 	db  0 ; SFX_13
 	db 50 ; SFX_14
-	db 50 ; SFX_15
+	db 50 ; SFX_PUFF
 	db 50 ; SFX_STAR_SPIT
 	db 55 ; SFX_17
 	db 55 ; SFX_18

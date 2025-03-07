@@ -131,14 +131,14 @@ Func_140d5:
 	set 5, [hl]
 	ld hl, wd1a0
 	add hl, bc
-	bit OBJFLAG_0_F, [hl]
+	bit OBJFLAG_INHALED_F, [hl]
 	jr nz, .asm_140e7
 	res OBJFLAG_3_F, [hl]
 .set_carry
 	scf
 	ret
 .asm_140e7
-	res OBJFLAG_0_F, [hl]
+	res OBJFLAG_INHALED_F, [hl]
 	bit OBJFLAG_3_F, [hl]
 	jr nz, .set_carry
 	set OBJFLAG_3_F, [hl]
@@ -154,9 +154,9 @@ Func_14105:
 	res 1, [hl]
 	ld hl, wd1a0
 	add hl, bc
-	bit OBJFLAG_0_F, [hl]
-	ret z
-	res OBJFLAG_0_F, [hl]
+	bit OBJFLAG_INHALED_F, [hl]
+	ret z ; not being inhaled
+	res OBJFLAG_INHALED_F, [hl]
 	ld hl, wd1b0
 	add hl, bc
 	set 1, [hl]
@@ -355,7 +355,7 @@ Func_142a3:
 	jp z, DestroyObject
 	ret
 
-Func_142c2:
+ObjFunc_CountdownToExplosion:
 	ld hl, wObjectCustomFuncArgs
 	add hl, bc
 	add hl, bc
@@ -363,13 +363,14 @@ Func_142c2:
 	ld e, a
 	ld d, [hl]
 	or d
-	ret z
+	ret z ; already 0
+	; decrement counter
 	dec de
 	ld a, d
 	ld [hld], a
 	ld [hl], e
 	or e
-	ret nz
+	ret nz ; still counting down
 	ld hl, AnimScript_203b6
 	ld de, MotionScript_10008
 	call SetObjectScripts
@@ -414,7 +415,7 @@ ProcessObjectInteractions::
 	jr c, .next_object
 	call .CheckCollisionBoxOverlap
 	jr nc, .next_object
-	call .Func_143ef
+	call .CollideWithKirby
 .next_object
 	pop de
 	inc c
@@ -479,7 +480,7 @@ ProcessObjectInteractions::
 	call .CheckCollisionBoxOverlap
 	jr nc, .asm_143e7
 	push bc
-	call .Func_1448a
+	call .CollideWithGroup2Object
 	pop bc
 .asm_143e7
 	pop de
@@ -489,17 +490,19 @@ ProcessObjectInteractions::
 	jr nz, .asm_143d7
 	ret
 
-.Func_143ef:
+.CollideWithKirby:
 	ld hl, wObjectPropertyFlags
 	add hl, bc
 	bit PROPERTY_PERSISTENT_F, [hl]
-	jr z, .not_persistent
+	jr z, .not_item
+	; for items, execute their effects
 	push bc
 	xor a ; FALSE
 	call ExecuteItemEffect
 	pop bc
 	ret
-.not_persistent
+
+.not_item
 	call Func_148dc
 	dec hl
 	dec hl
@@ -582,7 +585,7 @@ ProcessObjectInteractions::
 	ld d, a
 	jp Func_23af
 
-.Func_1448a:
+.CollideWithGroup2Object:
 	ld hl, wObjectPropertyFlags
 	add hl, bc
 	bit PROPERTY_PERSISTENT_F, [hl]
@@ -622,7 +625,7 @@ ProcessObjectInteractions::
 
 ; zero HP
 	ld a, [wScoreToAdd]
-	add a
+	add a ; *2
 	call AddToScore
 	ld a, [wd40d + 0]
 	ld e, a
@@ -682,7 +685,7 @@ ProcessObjectInteractions::
 	call .DecrementObjectHP
 	jr nz, .non_zero_hp_2
 	ld a, [wScoreToAdd]
-	add a
+	add a ; *2
 	call AddToScore
 	ld a, [wd40d + 0]
 	ld e, a
@@ -751,7 +754,7 @@ ProcessObjectInteractions::
 ; output:
 ; - carry set if object is inactive 
 ;   OR OBJFLAG_7 is not set
-;   OR OBJFLAG_0 is set
+;   OR OBJFLAG_INHALED is set
 ;   OR PROPERTY_2 is set
 .CheckObjIsInteractible:
 	ld hl, wObjectActiveStates
@@ -764,7 +767,7 @@ ProcessObjectInteractions::
 	ld a, [hl]
 	bit OBJFLAG_7_F, a
 	jr z, .set_carry
-	bit OBJFLAG_0_F, a
+	bit OBJFLAG_INHALED_F, a
 	jr nz, .set_carry
 	ld hl, wObjectPropertyFlags
 	add hl, bc
@@ -943,7 +946,7 @@ ExecuteItemEffect:
 	call Restore1HP
 	jp Restore1HP
 
-.WarpStar
+.WarpStar:
 	ld hl, hKirbyFlags5
 	set KIRBY5F_TRIGGER_TRANSITION_F, [hl]
 	ld a, SFX_WARP_STAR
@@ -953,16 +956,16 @@ ExecuteItemEffect:
 	ld a, [hl]
 	ld [wObjectXCoords + OBJECT_SLOT_KIRBY + $1], a
 	sub $08
-	ld [wCurScreenX], a
+	ld [wKirbyScreenX], a
 	ld hl, wObjectScreenYPositions
 	add hl, bc
 	ld a, [hl]
 	ld [wObjectYCoords + OBJECT_SLOT_KIRBY + $1], a
 	sub $08
-	ld [wCurScreenY], a
+	ld [wKirbyScreenY], a
 	jr .DestroyObject
 
-.SparklingStar
+.SparklingStar:
 	ld hl, hKirbyFlags5
 	set KIRBY5F_TRIGGER_TRANSITION_F, [hl]
 	ld a, SFX_POWER_UP
@@ -971,13 +974,13 @@ ExecuteItemEffect:
 .DestroyObject:
 	jp DestroyObject
 
-.Bomb
+.Bomb:
 	call ConsumeItem
 	ld hl, wPowerUpAttack
 	set POWERUP_BOMB_F, [hl]
 	jr .asm_14723
 
-.Mike
+.Mike:
 	call ConsumeItem
 	ld hl, wPowerUpAttack
 	set POWERUP_MIKE_F, [hl]
@@ -1005,7 +1008,7 @@ ExecuteItemEffect:
 	ld [hKirbyFlags2], a
 	jr .DestroyObject
 
-.MintLeaf
+.MintLeaf:
 	call ConsumeItem
 	ld a, [wItemWasInhaled]
 	and a
@@ -1123,8 +1126,8 @@ InhaleObjectsInRange::
 	add hl, bc
 	bit OBJFLAG_7_F, [hl]
 	jr z, .next_obj
-	bit OBJFLAG_0_F, [hl]
-	jr nz, .next_obj
+	bit OBJFLAG_INHALED_F, [hl]
+	jr nz, .next_obj ; already being inhaled
 	ld hl, wObjectPropertyFlags
 	add hl, bc
 	bit PROPERTY_2_F, [hl]
@@ -1183,10 +1186,11 @@ ENDR
 	; a = x distance to Kirby
 	cp 42
 	jr nc, .next_obj
+	; flag this object as being inhaled
 	ld hl, wd1a0
 	add hl, bc
-	set OBJFLAG_0_F, [hl]
-	bit OBJFLAG_1_F, [hl]
+	set OBJFLAG_INHALED_F, [hl]
+	bit OBJFLAG_IMMUNE_F, [hl]
 	jr nz, .next_obj
 	ld hl, wd1b0
 	add hl, bc
@@ -1276,7 +1280,7 @@ Func_148ea:
 	sub $08
 	ld l, a
 	ld h, $00
-	call MultiplyHLBy16
+	call DivideHLBy16
 	ld hl, wLevelXSection
 	add [hl]
 	dec a
@@ -1289,13 +1293,13 @@ Func_148ea:
 	sub $10
 	ld l, a
 	ld h, $00
-	call MultiplyHLBy16
+	call DivideHLBy16
 	ld hl, wLevelYSection
 	add [hl]
 	dec a
 	ld e, a
 	push de
-	call Func_2e7f
+	call GetLevelBlock
 	pop bc
 	push bc
 	ld c, $03
@@ -1363,7 +1367,7 @@ Func_148ea:
 	call CreateObject_Group3
 	ld hl, wd1a0
 	add hl, bc
-	set OBJFLAG_0_F, [hl]
+	set OBJFLAG_INHALED_F, [hl]
 	ld hl, hKirbyFlags5
 	set KIRBY5F_INHALING_OBJECT_F, [hl]
 	ld hl, wd3f6
@@ -1636,9 +1640,9 @@ InitRAM::
 	ld [wLevelYSection], a
 	ld [wKirbyXVel + 0], a
 	ld a, $30
-	ld [wCurScreenX], a
+	ld [wKirbyScreenX], a
 	ld a, $00
-	ld [wCurScreenY], a
+	ld [wKirbyScreenY], a
 	ld a, $ff
 	ld [wd096], a
 	ld [wd03d], a ; MUSIC_NONE

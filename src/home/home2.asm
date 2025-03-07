@@ -634,13 +634,13 @@ ASSERT Data_1c000 == Data_3c000
 	add hl, de
 	add hl, de ; *4
 	ld a, [hli]
-	ld [wd3e5 + 0], a
+	ld [wLevelHorizontalObjectList + 0], a
 	ld a, [hli]
-	ld [wd3e5 + 1], a
+	ld [wLevelHorizontalObjectList + 1], a
 	ld a, [hli]
-	ld [wd3e7 + 0], a
+	ld [wLevelVerticalObjectList + 0], a
 	ld a, [hl]
-	ld [wd3e7 + 1], a
+	ld [wLevelVerticalObjectList + 1], a
 	pop af
 	bankswitch
 
@@ -1511,7 +1511,10 @@ Func_2708::
 	ld e, c
 	pop bc
 
-	; copies wd200 from bc to de
+	; bc = original object slot
+	; de = created object slot
+
+	; copies wd200 from original to created objects
 	ld hl, wd200
 	add hl, bc
 	add hl, bc
@@ -1528,7 +1531,9 @@ Func_2708::
 	ld hl, wObjectPropertyFlags
 	add hl, de
 	bit PROPERTY_0_F, [hl]
-	jr nz, Func_2755
+	jr nz, CopyObjectCoordinates
+
+	; copies only whole part of coordinates
 	ld hl, wObjectScreenXPositions
 	add hl, bc
 	ld a, [hl]
@@ -1555,7 +1560,12 @@ Func_2708::
 	ld [hl], $00
 	ret
 
-Func_2755::
+; copies coordinates of object bc
+; to coordinates of object de
+; input:
+; - bc = object slot to copy from
+; - de = object slot to copy to
+CopyObjectCoordinates::
 	ld hl, wObjectXCoords
 	call .CopyCoordinates
 	ld hl, wObjectYCoords
@@ -1572,11 +1582,6 @@ Func_2755::
 	ld [hl], a
 	ret
 
-; copies coordinates of object bc
-; to coordinates of object de
-; input:
-; - bc = object slot to copy from
-; - de = object slot to copy to
 .CopyCoordinates:
 	push bc
 	push hl
@@ -2399,6 +2404,7 @@ Func_2b26:
 	jr z, .asm_2c5b
 	cp $06
 	jr nz, .zero_y_velocity
+	; a == $6
 	ld hl, wObjectYVels
 	add hl, bc
 	add hl, bc
@@ -2759,11 +2765,11 @@ ApplyGravityToObject:
 Func_2e20:
 	ld hl, wd1a0
 	add hl, bc
-	bit OBJFLAG_0_F, [hl]
-	jr z, .asm_2e2a
+	bit OBJFLAG_INHALED_F, [hl]
+	jr z, .not_inhaled
 	xor a
 	ret
-.asm_2e2a
+.not_inhaled
 	push bc
 	ld hl, wObjectXCoords + $1
 	add hl, bc
@@ -2775,18 +2781,20 @@ Func_2e20:
 	ld de, -$8
 	add hl, de
 	bit 7, h
-	jr z, .asm_2e45
+	jr z, .no_x_wrap
+	; wrap around
 	ld a, [wLevelWidthPx + 0]
 	ld e, a
 	ld a, [wLevelWidthPx + 1]
 	ld d, a
 	add hl, de
-.asm_2e45
-	call MultiplyHLBy16
+.no_x_wrap
+	call DivideHLBy16
 	push af
 	ld a, [wLevelWidth]
 	ld d, a
 	pop af
+	; a = x coordinate in blocks
 	cp d
 	jr c, .asm_2e52
 	sub d
@@ -2802,8 +2810,9 @@ Func_2e20:
 	ld l, a
 	ld de, -$10
 	ld a, c
-	cp $0d
+	cp OBJECT_GROUP_2_BEGIN
 	jr nc, .asm_2e71
+	; is from group 1
 	ld de, -$8
 	ld a, [wd3c0]
 	and a
@@ -2811,15 +2820,21 @@ Func_2e20:
 	ld de, $0
 .asm_2e71
 	add hl, de
-	call MultiplyHLBy16
+	call DivideHLBy16
 	pop de
+	; a = y coordinate in blocks
 	ld e, a
-	call Func_2e7f
+	call GetLevelBlock
 	call Func_2e90
 	pop bc
 	ret
 
-Func_2e7f::
+; input:
+; - d = x block
+; - e = y block
+; ouptut:
+; - e = corresponding block in wLevelBlockMap
+GetLevelBlock::
 	ld a, [wLevelWidth]
 	ld b, a
 	call FixedPointMultiply
@@ -2837,12 +2852,17 @@ Func_2e90:
 	ld a, [hl]
 	ret
 
-MultiplyHLBy16::
+; input:
+; - hl = value to divide
+; output:
+; - a = result
+DivideHLBy16::
 	add hl, hl
 	add hl, hl
 	add hl, hl
 	add hl, hl ; *16
-	ld a, h
+	ld a, h ; grab upper byte only
+	; a = (hl * 16) / 256 = hl / 16
 	ret
 
 UpdateObjects::
@@ -3158,7 +3178,7 @@ Func_3076::
 	set 7, [hl]
 	ret
 
-Func_30b2::
+ScriptFunc_BranchOnKirbyRelativePosition::
 	ld a, [wScriptBank]
 	bankswitch
 	ld hl, wObjectScreenXPositions + OBJECT_SLOT_KIRBY
@@ -3185,11 +3205,11 @@ Func_30b2::
 	ld [wScriptPtr + 1], a
 	ret
 
-Func_30dc::
+ScriptFunc_BranchOnKirbyVerticalAlignment::
 	ld a, [wScriptBank]
 	bankswitch
 	ld hl, wObjectScreenYPositions
-	ld a, [hl]
+	ld a, [hl] ; OBJECT_SLOT_KIRBY y pos
 	add hl, bc
 	sub [hl]
 	bit 7, a
@@ -3197,35 +3217,38 @@ Func_30dc::
 	cpl
 	inc a
 .positive
-	cp $03
-	jr nc, .asm_3110
+	; is within 3 distance in the y axis?
+	cp 3
+	jr nc, .outside_range
 	ld hl, wObjectScreenXPositions + OBJECT_SLOT_KIRBY
-	ld a, [hl]
+	ld a, [hl] ; OBJECT_SLOT_KIRBY x pos
 	add hl, bc
 	cp [hl]
+	; carry set if Kirby's on the left
 	ld a, [wScriptPtr + 0]
 	ld l, a
 	ld a, [wScriptPtr + 1]
 	ld h, a
-	jr c, .asm_3107
+	jr c, .kirby_on_left
+; kirby's on the right
 	inc hl
 	inc hl
-.asm_3107
+.kirby_on_left
 	ld a, [hli]
 	ld [wScriptPtr + 0], a
 	ld a, [hl]
 	ld [wScriptPtr + 1], a
 	ret
-.asm_3110
+.outside_range
 	ld a, [wScriptPtr + 0]
-	add $04
+	add $4
 	ld [wScriptPtr + 0], a
 	ld a, [wScriptPtr + 1]
 	adc $00
 	ld [wScriptPtr + 1], a
 	ret
 
-SetObjectProperties::
+ScriptFunc_SetObjectProperties::
 	ld a, [wScriptBank]
 	bankswitch
 	ld hl, wObjectPropertyPtrs
@@ -3332,19 +3355,19 @@ Func_319f:
 	ld hl, wLastLevelXSection
 	ld a, [wLevelXSection]
 	cp [hl]
-	jr z, .same_section ; wLevelXSection == wLastLevelXSection
-	jr nc, .section_to_right ; wLevelXSection > wLastLevelXSection
-	jr .section_to_left ; wLevelXSection < wLastLevelXSection
+	jr z, .check_vertical ; wLevelXSection == wLastLevelXSection
+	jr nc, .moved_section_right ; wLevelXSection > wLastLevelXSection
+	jr .moved_section_left ; wLevelXSection < wLastLevelXSection
 
-.same_section
+.check_vertical
 	ld hl, wLastLevelYSection
 	ld a, [wLevelYSection]
 	cp [hl]
 	ret z ; wLevelYSection == wLastLevelYSection
-	jp nc, .asm_3271 ; wLevelYSection > wLastLevelYSection
-	jp .asm_32bf ; wLevelYSection < wLastLevelYSection
+	jp nc, .moved_section_down ; wLevelYSection > wLastLevelYSection
+	jp .moved_section_up ; wLevelYSection < wLastLevelYSection
 
-.section_to_right
+.moved_section_right
 	ld e, $05
 	bit 0, d
 	jr z, .asm_31da
@@ -3354,31 +3377,31 @@ Func_319f:
 	ld a, [wd3e9]
 	and a
 	jr z, .asm_31f0
-	call .Func_330f
+	call .GetHorizontalObjectEntry
 	ld a, [wLevelXSection]
-	add $0b
+	add 11
 	cp [hl]
-	jr c, .asm_31fa
+	jr c, .update_last_level_x_section
 	push de
-	call .Func_3329
+	call .CreateObjectIfInRange
 	pop de
 .asm_31f0
 	ld a, [wd3e9]
 	add $03
 	ld [wd3e9], a
 	jr .asm_3200
-.asm_31fa
+.update_last_level_x_section
 	ld a, [wLevelXSection]
 	ld [wLastLevelXSection], a
 .asm_3200
 	ld a, [wd3ea]
 	add $03
 	ld [wd3ea], a
-	call .Func_330f
+	call .GetHorizontalObjectEntry
 	ld a, [wLevelXSection]
 	sub e
 	jr nc, .asm_3212
-	xor a
+	xor a ; minimum a = 0
 .asm_3212
 	cp [hl]
 	jr z, .asm_3217
@@ -3389,7 +3412,7 @@ Func_319f:
 	ld [wd3ea], a
 	ret
 
-.section_to_left
+.moved_section_left
 	ld e, $0d
 	bit 0, d
 	jr z, .asm_3228
@@ -3399,18 +3422,18 @@ Func_319f:
 	ld a, [wd3ea]
 	and a
 	jr z, .asm_324d
-	call .Func_330f
+	call .GetHorizontalObjectEntry
 	ld a, [wLevelXSection]
-	sub $03
+	sub 3
 	jr nc, .asm_3239
-	xor a
+	xor a ; minimum a = 0
 .asm_3239
 	cp [hl]
 	jr z, .asm_323e
 	jr nc, .asm_324d
 .asm_323e
 	push de
-	call .Func_3329
+	call .CreateObjectIfInRange
 	pop de
 	ld a, [wd3ea]
 	sub $03
@@ -3425,7 +3448,7 @@ Func_319f:
 	jr z, .asm_3270
 	sub $03
 	ld [wd3e9], a
-	call .Func_330f
+	call .GetHorizontalObjectEntry
 	ld a, [wLevelXSection]
 	add e
 	cp [hl]
@@ -3436,7 +3459,7 @@ Func_319f:
 .asm_3270
 	ret
 
-.asm_3271
+.moved_section_down
 	ld e, $04
 	bit 0, d
 	jr z, .asm_3279
@@ -3446,13 +3469,13 @@ Func_319f:
 	ld a, [wd3eb]
 	and a
 	jr z, .asm_328f
-	call .Func_331c
+	call .GetVerticalObjectEntry
 	ld a, [wLevelYSection]
 	add $09
 	cp [hl]
 	jr c, .asm_3299
 	push de
-	call .Func_3329
+	call .CreateObjectIfInRange
 	pop de
 .asm_328f
 	ld a, [wd3eb]
@@ -3466,7 +3489,7 @@ Func_319f:
 	ld a, [wd3ec]
 	add $03
 	ld [wd3ec], a
-	call .Func_331c
+	call .GetVerticalObjectEntry
 	ld a, [wLevelYSection]
 	sub e
 	jr nc, .asm_32b1
@@ -3481,7 +3504,7 @@ Func_319f:
 	ld [wd3ec], a
 	ret
 
-.asm_32bf
+.moved_section_up
 	ld e, $0a
 	bit 0, d
 	jr z, .asm_32c7
@@ -3490,7 +3513,7 @@ Func_319f:
 	ld a, [wd3ec]
 	and a
 	jr z, .asm_32ec
-	call .Func_331c
+	call .GetVerticalObjectEntry
 	ld a, [wLevelYSection]
 	sub $03
 	jr nc, .asm_32d8
@@ -3501,7 +3524,7 @@ Func_319f:
 	jr nc, .asm_32ec
 .asm_32dd
 	push de
-	call .Func_3329
+	call .CreateObjectIfInRange
 	pop de
 	ld a, [wd3ec]
 	sub $03
@@ -3516,7 +3539,7 @@ Func_319f:
 	ret z
 	sub $03
 	ld [wd3eb], a
-	call .Func_331c
+	call .GetVerticalObjectEntry
 	ld a, [wLevelYSection]
 	add e
 	cp [hl]
@@ -3527,30 +3550,30 @@ Func_319f:
 	ret
 
 ; output:
-; - hl = wd3e5 + a
-.Func_330f:
+; - hl = wLevelHorizontalObjectList + a
+.GetHorizontalObjectEntry:
 	ld l, a
-	ld a, [wd3e5 + 0]
+	ld a, [wLevelHorizontalObjectList + 0]
 	add l
 	ld l, a
-	ld a, [wd3e5 + 1]
+	ld a, [wLevelHorizontalObjectList + 1]
 	adc $00
 	ld h, a
 	ret
 
 ; output:
-; - hl = wd3e7 + a
-.Func_331c:
+; - hl = wLevelVerticalObjectList + a
+.GetVerticalObjectEntry:
 	ld l, a
-	ld a, [wd3e7 + 0]
+	ld a, [wLevelVerticalObjectList + 0]
 	add l
 	ld l, a
-	ld a, [wd3e7 + 1]
+	ld a, [wLevelVerticalObjectList + 1]
 	adc $00
 	ld h, a
 	ret
 
-.Func_3329:
+.CreateObjectIfInRange:
 	inc hl
 	ld a, [hli]
 	ld [wd06b + 0], a
@@ -3563,33 +3586,36 @@ Func_319f:
 	ld a, [hEngineFlags]
 	bit ENGINEF_UNK7_F, a
 	jr nz, .asm_3350
+
+	; check if object X is within [wLevelXSection - 3, wLevelXSection + 11]
 	ld a, [wLevelXSection]
-	sub $03
+	sub 3
 	jr nc, .asm_3345
-	xor a
+	xor a ; minimum a = 0
 .asm_3345
 	cp d
 	jr z, .asm_3349
-	ret nc
+	ret nc ; object x is on right
 .asm_3349
 	ld a, [wLevelXSection]
-	add $0b
+	add 11
 	cp d
-	ret c
+	ret c ; object x is on left
 .asm_3350
+	; check if object X is within [wLevelYSection - 3, wLevelYSection + 9]
 	ld a, [hli]
 	ld e, a ; y
 	ld a, [wLevelYSection]
-	sub $03
+	sub 3
 	jr nc, .asm_335a
-	xor a
+	xor a ; minimum a = 0
 .asm_335a
 	cp e
 	jr z, .asm_335e
 	ret nc
 .asm_335e
 	ld a, [wLevelYSection]
-	add $09
+	add 9
 	cp e
 	ret c
 
@@ -3667,6 +3693,7 @@ Func_319f:
 	and [hl]
 	jr z, .not_consumed
 	pop bc
+	; destroy object if it was already consumed
 	call DestroyObject
 	pop de
 	ret
@@ -3680,10 +3707,10 @@ Func_319f:
 	add hl, bc
 	ld a, [de]
 	push de
-	ld d, $00
+	ld d, 0
 	bit 7, a
 	jr z, .asm_33df
-	ld d, $ff
+	ld d, -1
 .asm_33df
 	add [hl]
 	ld [hli], a
@@ -3697,10 +3724,10 @@ Func_319f:
 	add hl, bc
 	add hl, bc
 	ld a, [de]
-	ld d, $00
+	ld d, 0
 	bit 7, a
 	jr z, .asm_33f5
-	ld d, $ff
+	ld d, -1
 .asm_33f5
 	add [hl]
 	ld [hli], a
@@ -3745,162 +3772,175 @@ Func_3410:
 	ret
 
 MACRO object_properties
-	db \1 ; ?
-	db \2 ; ?
-	db \3 ; ?
+	db \1 ; property flags
+	db (\2) / 2 ; collision width
+	db (\3) / 2 ; collision height
+
+IF (\1) & PROPERTY_2
+
+ASSERT _NARG == 4
+	db \4 ; ?
+
+ELIF (\1) & PROPERTY_PERSISTENT
+
+ASSERT _NARG == 5
+	db \4 ; item ID
+	dw \5 ; when item is consumed
+
+ELSE
+
+ASSERT _NARG == 8
 	db \4 ; damage dealt to Kirby
 	db \5 ; health points
 	db \6 ; ?
 	db (\7) / 10 ; score when defeated
-	dw \8 ; 
+	dw \8 ; when object is defeated
+
+ENDC
 ENDM
 
 Data_3421::
-	db PROPERTY_0 | PROPERTY_2, $00, $00, $00
+	object_properties PROPERTY_0 | PROPERTY_2, 0, 0, $00
 
 Data_3425::
-	db PROPERTY_2, $00, $00, 0
+	object_properties PROPERTY_2, 0, 0, $00
+
 Data_3429::
-	db PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, $08, $08, INVINCIBILITY_CANDY
-	dw Data_1c154
+	object_properties PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, $00, Data_1c154
 ; 0x342f
 
 SECTION "Home@3435", ROM0[$3435]
 
 BombProperties::
-	db PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, $08, $08, BOMB
-	dw Data_1c172
+	object_properties PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, BOMB, Data_1c172
 
 MikeProperties::
-	db PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, $08, $08, MIKE
-	dw Data_1c172
+	object_properties PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, MIKE, Data_1c172
 ; 0x3441
 
 SECTION "Home@344d", ROM0[$344d]
 
 WarpStarProperties::
-	db PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, $08, $08, WARP_STAR
-	dw Data_1c172
+	object_properties PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, WARP_STAR, Data_1c172
 ; 0x3453
 
 SECTION "Home@3459", ROM0[$3459]
 
 MaximTomatoProperties::
-	db PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, $08, $08, MAXIM_TOMATO
-	dw Data_1c172
+	object_properties PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, MAXIM_TOMATO, Data_1c172
 ; 0x345f
 
 SECTION "Home@3465", ROM0[$3465]
 
 EnergyDrinkProperties::
-	db PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, $06, $08, ENERGY_DRINK
-	dw Data_1c172
+	object_properties PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 12, 16, ENERGY_DRINK, Data_1c172
 
 SparklingStarProperties::
-	db PROPERTY_0 | PROPERTY_3 | PROPERTY_PERSISTENT, $08, $08, SPARKLING_STAR
-	dw Data_1c172
+	object_properties PROPERTY_0 | PROPERTY_3 | PROPERTY_PERSISTENT, 16, 16, SPARKLING_STAR, Data_1c172
 ; 0x3471
 
 SECTION "Home@3483", ROM0[$3483]
 
 Data_3483::
-	object_properties PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY, $06, $06, 1, $01, $03, 200, Data_1c154
+	object_properties PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY, 12, 12, 1, 1, $03, 200, Data_1c154
 
 WaddleDeeProperties::
-	object_properties PROPERTY_0, $06, $06, 1, $01, $03, 200, Data_1c154
+	object_properties PROPERTY_0, 12, 12, 1, 1, $03, 200, Data_1c154
 ; 0x3495
 
 SECTION "Home@34db", ROM0[$34db]
 
 Data_34db::
-	object_properties PROPERTY_0, $06, $06, 1, $64, $01, 30, Data_1c154
+	object_properties PROPERTY_0, 12, 12, 1, 100, $01, 30, Data_1c154
 
 SECTION "Home@34ff", ROM0[$34ff]
 
 CappyProperties::
-	object_properties PROPERTY_0 | PROPERTY_3, $06, $06, 1, $01, $03, 200, Data_1c154
+	object_properties PROPERTY_0 | PROPERTY_3, 12, 12, 1, 1, $03, 200, Data_1c154
 
 Data_3508::
-	object_properties PROPERTY_0 | PROPERTY_3, $06, $06, 1, $01, $03, 200, Data_1c154
+	object_properties PROPERTY_0 | PROPERTY_3, 12, 12, 1, 1, $03, 200, Data_1c154
 ; 0x3511
 
 SECTION "Home@351a", ROM0[$351a]
 
 TwizzyProperties::
-	object_properties PROPERTY_0, $06, $06, 1, $01, $03, 200, Data_1c154
+	object_properties PROPERTY_0, 12, 12, 1, 1, $03, 200, Data_1c154
 
 PoppyBrosJrProperties::
-	object_properties PROPERTY_0, $06, $06, 1, $01, $03, 200, Data_1c154
+	object_properties PROPERTY_0, 12, 12, 1, 1, $03, 200, Data_1c154
 
 Data_352c::
-	object_properties PROPERTY_0 | PROPERTY_3, $06, $06, 1, $01, $03, 200, Data_1c154
+	object_properties PROPERTY_0 | PROPERTY_3, 12, 12, 1, 1, $03, 200, Data_1c154
 
 Data_3535::
-	object_properties PROPERTY_0, $0a, $0a, 2, $01, $03, 400, Data_1c154
+	object_properties PROPERTY_0, 20, 20, 2, 1, $03, 400, Data_1c154
 ; 0x353e
 
 SECTION "Home@3547", ROM0[$3547]
 
 Data_3547::
-	object_properties PROPERTY_0, $0a, $0d, 2, $01, $03, 200, Data_1c1a8
+	object_properties PROPERTY_0, 20, 26, 2, 1, $03, 200, Data_1c1a8
 
 Data_3550::
-	object_properties PROPERTY_0 | PROPERTY_3, $06, $06, 1, $01, $03, 200, Data_1c154
+	object_properties PROPERTY_0 | PROPERTY_3, 12, 12, 1, 1, $03, 200, Data_1c154
 
 Data_3559::
-	object_properties PROPERTY_0 | PROPERTY_3, $06, $06, 1, $01, $01, 200, Data_1c154
+	object_properties PROPERTY_0 | PROPERTY_3, 12, 12, 1, 1, $01, 200, Data_1c154
 
 Data_3562::
-	object_properties PROPERTY_0, $08, $10, 1, $01, $03, 300, Data_1c1b4
+	object_properties PROPERTY_0, 16, 32, 1, 1, $03, 300, Data_1c1b4
 
 Data_356b::
-	object_properties PROPERTY_0, $08, $0b, 1, $03, $09, 0, Data_1c1c0
+	object_properties PROPERTY_0, 16, 22, 1, 3, $09, 0, Data_1c1c0
 
 Data_3574::
-	object_properties PROPERTY_0, $06, $06, 1, $01, $03, 10, Data_1c160
+	object_properties PROPERTY_0, 12, 12, 1, 1, $03, 10, Data_1c160
 ; 0x357d
 
 SECTION "Home@3586", ROM0[$3586]
 
 Data_3586::
-	object_properties PROPERTY_0, $0d, $20, $02, $06, $09, $00, Data_1c1cc
+	object_properties PROPERTY_0, 26, 64, 2, 6, $09, 0, Data_1c1cc
 
 Data_358f::
-	db PROPERTY_0 | PROPERTY_2, $0d, $10, $06
+	object_properties PROPERTY_0 | PROPERTY_2, 26, 32, $06
 ; 0x3593
 
 SECTION "Home@35a7", ROM0[$35a7]
 
 SpitStarProperties::
-	db PROPERTY_0 | PROPERTY_2 | PROPERTY_3, $0a, $0a, $01
+	object_properties PROPERTY_0 | PROPERTY_2 | PROPERTY_3, 20, 20, $01
 
 Data_35ab::
-	db PROPERTY_0 | PROPERTY_2 | PROPERTY_3, $0a, $0e, $01
+	object_properties PROPERTY_0 | PROPERTY_2 | PROPERTY_3, 20, 28, $01
 
 Data_35af::
-	db PROPERTY_2, $0a, $0a, $01
+	object_properties PROPERTY_2, 20, 20, $01
 
 Data_35b3::
-	db PROPERTY_0 | PROPERTY_2 | PROPERTY_3, $06, $06, $01
+	object_properties PROPERTY_0 | PROPERTY_2 | PROPERTY_3, 12, 12, $01
 
 Data_35b7::
-	db PROPERTY_0 | PROPERTY_2 | PROPERTY_3, $14, $14, $01
+	object_properties PROPERTY_0 | PROPERTY_2 | PROPERTY_3, 40, 40, $01
 
-Data_35bb::
-	object_properties PROPERTY_0, $14, $14, 1, $05, $00, 0, Data_1c160
+ExplosionProperties::
+	object_properties PROPERTY_0, 40, 40, 1, 5, $00, 0, Data_1c160
 ; 0x35c4
 
 SECTION "Home@35cd", ROM0[$35cd]
 
 Data_35cd::
-	db PROPERTY_0 | PROPERTY_2 | PROPERTY_3, $01, $12, $10, $01, $28, $09, $00
+	object_properties PROPERTY_0 | PROPERTY_2 | PROPERTY_3, 2, 36, $10
+
+	db $01, $28, $09, $00
 	dw $41d8
 ; 0x35d7
 
 SECTION "Home@364f", ROM0[$364f]
 
 Data_364f::
-	object_properties PROPERTY_0, $06, $06, 1, $01, $03, 300, Data_1c154
+	object_properties PROPERTY_0, 12, 12, 1, 1, $03, 300, Data_1c154
 
 SECTION "Home@3685", ROM0[$3685]
 
@@ -4190,11 +4230,13 @@ Data_38b1:
 	assert_table_length NUM_MT_DEDEDE_AREAS
 
 Data_3a43::
+	table_width 2
 	dw .GreenGreens ; GREEN_GREENS
 	dw .CastleLololo ; CASTLE_LOLOLO
 	dw .FloatIslands ; FLOAT_ISLANDS
 	dw .BubblyClouds ; BUBBLY_CLOUDS
 	dw .MtDedede ; MT_DEDEDE
+	assert_table_length NUM_STAGES
 
 .GreenGreens:
 	table_width 5

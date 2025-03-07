@@ -228,8 +228,32 @@ MACRO play_music
 ENDM
 
 MACRO set_object_properties
-	script_exec SetObjectProperties
+	script_exec ScriptFunc_SetObjectProperties
 	dw \1
+ENDM
+
+MACRO set_pal_light
+	script_exec ScriptFunc_SetObjectPalLight
+ENDM
+
+MACRO set_pal_dark
+	script_exec ScriptFunc_SetObjectPalDark
+ENDM
+
+MACRO set_kirby_pos
+	script_exec ScriptFunc_SetKirbyPosition
+ENDM
+
+MACRO branch_kirby_pos
+	script_exec ScriptFunc_BranchOnKirbyRelativePosition
+	dw \1 ; address when Kirby's on the left
+	dw \2 ; address when Kirby's on the right
+ENDM
+
+MACRO branch_on_kirby_vertical_alignment
+	script_exec ScriptFunc_BranchOnKirbyVerticalAlignment
+	dw \1 ; address when Kirby's on the left
+	dw \2 ; address when Kirby's on the right
 ENDM
 
 ; stage transition scripting

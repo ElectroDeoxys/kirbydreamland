@@ -176,8 +176,9 @@ AnimScript_201dc:
 	frame  4, $5bf1
 	frame  4, $58b8
 	script_repeat_end
+
 	frame  1, $58d9
-	script_exec Func_4ac1
+	set_kirby_pos
 	set_flags hKirbyFlags5, KIRBY5F_UNK5, $00
 	script_delay 0
 
@@ -193,17 +194,21 @@ AnimScript_20206:
 	frame  8, $5c01
 	create_object AnimScript_Explosion, MotionScript_10008, Data_3425
 	frame 80, $5c01
+
 	script_repeat 4
 	create_object AnimScript_22f63, MotionScript_135bc, Data_3425
 	play_sfx SFX_DAMAGE
 	script_delay 4
 	script_repeat_end
+
 	script_delay 16
+
 	script_repeat 8
 	create_object AnimScript_22f69, MotionScript_135bc, Data_3425
 	play_sfx SFX_20
 	script_delay 4
 	script_repeat_end
+
 	play_sfx SFX_ENTER_DOOR
 	create_object AnimScript_208f1, MotionScript_106eb, Data_3425
 	create_object AnimScript_208f1, MotionScript_106f5, Data_3425
@@ -221,9 +226,10 @@ AnimScript_2028f:
 	create_object AnimScript_22f63, MotionScript_135bc, Data_3425
 	frame 10, $5b69
 	script_repeat_end
+
 	frame 58, $5b69
 	frame  8, $5bc9
-	script_exec Func_4ac1
+	set_kirby_pos
 	set_flags hPalFadeFlags, $00, SCROLL_LOCKED
 	set_value wd3dd, $01
 	set_motion_script MotionScript_10008
@@ -326,8 +332,8 @@ AnimScript_203b2:
 	script_end
 
 AnimScript_203b6:
-	script_exec Func_4aed
-	set_object_properties Data_35bb
+	script_exec ScriptFunc_CreateExplosion
+	set_object_properties ExplosionProperties
 AnimScript_Explosion:
 	play_sfx SFX_EXPLOSION
 	script_repeat 2
@@ -357,7 +363,7 @@ AnimScript_20405:
 	set_motion_script MotionScript_10c47
 	frame  0, $5a71
 
-AnimScript_20427:
+AnimScript_SpitStar:
 	play_sfx SFX_STAR_SPIT
 	jump_if_flags wPowerUpAttack, POWERUP_MIKE, AnimScript_20bc9
 	jump_if_flags wPowerUpAttack, POWERUP_BOMB, AnimScript_20bb7
@@ -389,8 +395,8 @@ AnimScript_20427:
 AnimScript_20474:
 	frame  0, $5df9
 
-AnimScript_20477:
-	play_sfx SFX_15
+AnimScript_KirbyPuff:
+	play_sfx SFX_PUFF
 	jump_if_flags wPowerUpAttack, POWERUP_MIKE, AnimScript_20bc9
 	jump_if_flags wPowerUpAttack, POWERUP_BOMB, AnimScript_20bb7
 	jump_if_flags hEngineFlags, KABOOLA_BATTLE, .script_2049e
@@ -504,8 +510,14 @@ SECTION "Bank 8@473c", ROMX[$473c], BANK[$8]
 AnimScript_2073c:
 	script_f3
 	set_object_properties Data_3425
-	script_exec Func_49fb
-	jump_if_equal wd3ce, $00, .script_2075e
+
+	; check which half side of the screen Kirby is
+	; if on the right side, then walk left
+	; if on left side, then walk right
+	script_exec ScriptFunc_CheckHalfSideOfScreen
+	jump_if_equal wKirbySideOfScreen, $0, .walk_right
+
+; walk left
 	set_motion_script MotionScript_10ae8
 .loop_1
 	frame 10, $58f1
@@ -514,7 +526,7 @@ AnimScript_2073c:
 	frame  6, $58f9
 	jump_rel .loop_1
 
-.script_2075e
+.walk_right
 	set_motion_script MotionScript_10af4
 .loop_2
 	frame 10, $58c1
@@ -523,33 +535,37 @@ AnimScript_2073c:
 	frame  6, $58c9
 	jump_rel .loop_2
 
-AnimScript_20771:
+AnimScript_MainKirbyStageClearDance:
 	set_motion_script MotionScript_10008
-	create_object AnimScript_20799, MotionScript_10008, Data_3425
-	create_object AnimScript_207a5, MotionScript_10008, Data_3425
+	; create extra Kirbys for dance
+	create_object AnimScript_LeftKirbyStageClearDance, MotionScript_10008, Data_3425
+	create_object AnimScript_RightKirbyStageClearDance, MotionScript_10008, Data_3425
 	script_call AnimScript_208b8
 	frame 55, $58e1
 	play_music MUSIC_VICTORY
-AnimScript_2078e:
-	jumptable wStage
-	dw AnimScript_207b1 ; GREEN_GREENS
-	dw AnimScript_207f8 ; CASTLE_LOLOLO
-	dw AnimScript_2084b ; FLOAT_ISLANDS
-	dw AnimScript_20883 ; BUBBLY_CLOUDS
 
-AnimScript_20799:
+AnimScript_KirbyStageClearDance_Common:
+	jumptable wStage
+	table_width 2
+	dw AnimScript_KirbyStageClearDance_GreenGreens  ; GREEN_GREENS
+	dw AnimScript_KirbyStageClearDance_CastleLololo ; CASTLE_LOLOLO
+	dw AnimScript_KirbyStageClearDance_FloatIslands ; FLOAT_ISLANDS
+	dw AnimScript_KirbyStageClearDance_BubblyClouds ; BUBBLY_CLOUDS
+	assert_table_length NUM_STAGES - 1
+
+AnimScript_LeftKirbyStageClearDance:
 	position_offset -30, 0
 	script_call AnimScript_208de
 	frame 55, $58e1
-	jump_abs AnimScript_2078e
+	jump_abs AnimScript_KirbyStageClearDance_Common
 
-AnimScript_207a5:
+AnimScript_RightKirbyStageClearDance:
 	position_offset 30, 0
 	script_call AnimScript_208de
 	frame 55, $58e1
-	jump_abs AnimScript_2078e
+	jump_abs AnimScript_KirbyStageClearDance_Common
 
-AnimScript_207b1:
+AnimScript_KirbyStageClearDance_GreenGreens:
 	set_motion_script MotionScript_10b05
 	script_repeat 2
 	frame 10, $58d1
@@ -575,7 +591,7 @@ AnimScript_207b1:
 	set_value wd3dd, $01
 	script_delay 0
 
-AnimScript_207f8:
+AnimScript_KirbyStageClearDance_CastleLololo:
 	set_motion_script MotionScript_10b38
 	frame 10, $5909
 	frame 10, $5ba9
@@ -606,7 +622,7 @@ AnimScript_207f8:
 	set_value wd3dd, $01
 	script_delay 0
 
-AnimScript_2084b:
+AnimScript_KirbyStageClearDance_FloatIslands:
 	set_motion_script MotionScript_10b98
 	frame 60, $5909
 	frame 20, $5bad
@@ -628,7 +644,7 @@ AnimScript_2084b:
 	set_value wd3dd, $01
 	script_delay 0
 
-AnimScript_20883:
+AnimScript_KirbyStageClearDance_BubblyClouds:
 	set_motion_script MotionScript_10bda
 	frame 60, $5bc5
 	frame 20, $5bc9
@@ -677,9 +693,9 @@ AnimScript_208de:
 AnimScript_208f1:
 	frame  0, $5c1d
 
-AnimScript_208f4:
+AnimScript_BombItem:
 	script_exec Func_4ad6
-	set_custom_func Func_142c2, 256
+	set_custom_func ObjFunc_CountdownToExplosion, 256
 AnimScript_208fc:
 	frame 162, $5c4d
 .loop
@@ -705,9 +721,9 @@ AnimScript_20934:
 	frame  0, $5c81
 .loop
 	frame 16, $5c89
-	script_exec SetObjectPalDark
+	set_pal_dark
 	frame  8, $5c89
-	script_exec SetObjectPalLight
+	set_pal_light
 	jump_abs .loop
 ; 0x20946
 
@@ -809,8 +825,7 @@ AnimScript_20a3b:
 	script_end
 
 AnimScript_20a76:
-	script_exec Func_30b2
-	dw .script_20a7d, .script_20a9a
+	branch_kirby_pos .script_20a7d, .script_20a9a
 .script_20a7d
 	create_object AnimScript_208f1, MotionScript_108a7, Data_3421
 	create_object AnimScript_208f1, MotionScript_108b4, Data_3421
@@ -971,16 +986,15 @@ AnimScript_20c6d:
 
 AnimScript_20c7e:
 	set_custom_func Func_14105, NULL
-	script_exec Func_48e1
-	script_exec Func_30b2
-	dw .branch_1, .branch_2
+	script_exec ScriptFunc_SetImmuneFlag
+	branch_kirby_pos .branch_1, .branch_2
 .branch_1
 	set_motion_script MotionScript_10db7
 	script_repeat 6
 	frame 4, $41a4
 	frame 4, $419c
 	script_repeat_end
-	script_exec Func_48e8
+	script_exec ScriptFunc_ResetImmuneFlag
 	set_object_properties CappyProperties
 	set_scripts AnimScript_20cc3, MotionScript_10ddf
 .branch_2
@@ -991,7 +1005,7 @@ AnimScript_20cad:
 	frame 4, $41b4
 	frame 4, $41ac
 	script_repeat_end
-	script_exec Func_48e8
+	script_exec ScriptFunc_ResetImmuneFlag
 	set_object_properties CappyProperties
 	set_scripts AnimScript_20ccb, MotionScript_10de7
 
@@ -1161,14 +1175,15 @@ AnimScript_20dda:
 SECTION "Bank 8@4de5", ROMX[$4de5], BANK[$8]
 
 AnimScript_20de5:
-	script_exec Func_30b2
-	dw .script_20de5, $4dfe
+	branch_kirby_pos .script_20de5, .script_20dfe
 .script_20de5
 	set_motion_script MotionScript_10f3c
 	frame 30, $4254
 	set_object_properties $3535
 	set_scripts AnimScript_20dc5, MotionScript_10f5a
-; 0x20e03
+
+.script_20dfe
+; 0x20dfe
 
 SECTION "Bank 8@4e10", ROMX[$4e10], BANK[$8]
 
@@ -1254,8 +1269,7 @@ AnimScript_20e9d:
 
 AnimScript_20ec6:
 	play_sfx SFX_28
-	script_exec Func_30b2
-	dw .script_20ed1, .script_20edb
+	branch_kirby_pos .script_20ed1, .script_20edb
 .script_20ed1
 	create_object AnimScript_20d4f, MotionScript_10008, PoppyBrosJrProperties
 	jump_abs AnimScript_20a0f
@@ -1272,7 +1286,7 @@ AnimScript_PoppyBrosSr:
 
 .init
 	set_object_properties Data_356b
-	script_exec LockScrolling
+	script_exec ScriptFunc_LockScrolling
 	set_value wBossHPCounter, 3
 	set_value wd3c1, $01
 	create_object AnimScript_BossHPIncrementer, MotionScript_10008, Data_3421
@@ -1360,8 +1374,8 @@ AnimScript_PoppyBrosSr:
 AnimScript_21004:
 	set_value wd3f1, $01
 	set_flags wConsumedItems, $00, 1 << 6
-	script_exec EnableScrollingAndFadeOut
-	script_exec_arg Func_4b77, SCORE_300
+	script_exec ScriptFunc_EnableScrollingAndFadeOut
+	script_exec_arg ScriptFunc_AddScore, SCORE_300
 	set_flags hHUDFlags, HUD_BOSS_BATTLE, HUD_UPDATE_FIRST_ROW | HUD_UPDATE_LABEL | HUD_UPDATE_SCORE_DIGITS
 	script_call AnimScript_20b49
 	script_end
@@ -1459,7 +1473,7 @@ AnimScript_210f1:
 	play_sfx SFX_29
 	create_object AnimScript_20967, MotionScript_111c7, Data_3421
 	script_call AnimScript_20b05
-	script_exec_arg Func_4b77, SCORE_1000
+	script_exec_arg ScriptFunc_AddScore, SCORE_1000
 	set_flags hHUDFlags, HUD_BOSS_BATTLE, HUD_UPDATE_FIRST_ROW | HUD_UPDATE_LABEL | HUD_UPDATE_SCORE_DIGITS
 	frame 30, $58b8
 	set_value wd3bf, $81
@@ -1471,9 +1485,9 @@ AnimScript_WhispyWoodsPuff:
 AnimScript_WhispyWoodsApple_Fall:
 	frame  1, $41d4
 	script_repeat 3
-	script_exec SetObjectPalDark
+	set_pal_dark
 	script_delay 4
-	script_exec SetObjectPalLight
+	set_pal_light
 	script_delay 4
 	script_repeat_end
 	frame 42, $41d4
@@ -1520,7 +1534,7 @@ AnimScript_21181:
 	jump_abs .loop
 
 .script_2118d
-	script_exec LockScrolling
+	script_exec ScriptFunc_LockScrolling
 	script_end
 ; 0x21191
 
@@ -1724,24 +1738,20 @@ SECTION "Bank 8@5eae", ROMX[$5eae], BANK[$8]
 
 AnimScript_21eae:
 	script_call AnimScript_21f0a
-	script_exec Func_30b2
-	dw AnimScript_21eb8, AnimScript_21efa
+	branch_kirby_pos AnimScript_21eb8, AnimScript_21efa
 
 AnimScript_21eb8:
 	script_call AnimScript_21f0a
-	script_exec Func_30b2
-	dw AnimScript_21ec2, AnimScript_21ef0
+	branch_kirby_pos AnimScript_21ec2, AnimScript_21ef0
 
 AnimScript_21ec2:
 	script_call AnimScript_21f0a
-	script_exec Func_30b2
-	dw AnimScript_21ecc, AnimScript_21ee6
+	branch_kirby_pos AnimScript_21ecc, AnimScript_21ee6
 
 AnimScript_21ecc:
 	script_call AnimScript_21f0a
 AnimScript_21ecf:
-	script_exec Func_30b2
-	dw AnimScript_21ed6, AnimScript_21edc
+	branch_kirby_pos AnimScript_21ed6, AnimScript_21edc
 
 AnimScript_21ed6:
 	script_call AnimScript_21f0f
@@ -1749,24 +1759,20 @@ AnimScript_21ed6:
 
 AnimScript_21edc:
 	script_call AnimScript_21f4d
-	script_exec Func_30b2
-	dw AnimScript_21ecc, AnimScript_21ee6
+	branch_kirby_pos AnimScript_21ecc, AnimScript_21ee6
 
 AnimScript_21ee6:
 	script_call AnimScript_21f4d
-	script_exec Func_30b2
-	dw AnimScript_21ec2, AnimScript_21ef0
+	branch_kirby_pos AnimScript_21ec2, AnimScript_21ef0
 
 AnimScript_21ef0:
 	script_call AnimScript_21f4d
-	script_exec Func_30b2
-	dw AnimScript_21eb8, AnimScript_21efa
+	branch_kirby_pos AnimScript_21eb8, AnimScript_21efa
 
 AnimScript_21efa:
 	script_call AnimScript_21f4d
 AnimScript_21efd:
-	script_exec Func_30b2
-	dw AnimScript_21eae, AnimScript_21f04
+	branch_kirby_pos AnimScript_21eae, AnimScript_21f04
 
 AnimScript_21f04:
 	script_call AnimScript_21f52

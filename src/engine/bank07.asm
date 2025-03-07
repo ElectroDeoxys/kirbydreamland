@@ -139,13 +139,13 @@ Data_1c154::
 SECTION "Bank 7@4160", ROMX[$4160], BANK[$7]
 
 Data_1c160::
-	dw AnimScript_Explosion, MotionScript_10008, Data_35bb
+	dw AnimScript_Explosion, MotionScript_10008, ExplosionProperties
 ; 0x1c166
 
 SECTION "Bank 7@416c", ROMX[$416c], BANK[$7]
 
 Data_1c16c:
-	dw AnimScript_203b2, MotionScript_10008, Data_35bb
+	dw AnimScript_203b2, MotionScript_10008, ExplosionProperties
 
 Data_1c172::
 	dw AnimScript_20000, MotionScript_10008, Data_3421
@@ -157,7 +157,7 @@ Data_1c17e::
 	dw AnimScript_208f1, MotionScript_10c50, Data_3421
 
 Data_1c184::
-	dw AnimScript_20427, MotionScript_SpitStar, SpitStarProperties
+	dw AnimScript_SpitStar, MotionScript_SpitStar, SpitStarProperties
 
 Data_1c18a::
 	dw AnimScript_20baf, MotionScript_10008, Data_35af
@@ -169,7 +169,7 @@ Data_1c196::
 	dw AnimScript_20bda, MotionScript_1022a, Data_35b3
 
 Data_1c19c::
-	dw AnimScript_20477, MotionScript_10244, Data_35b3
+	dw AnimScript_KirbyPuff, MotionScript_KirbyPuff, Data_35b3
 
 Data_1c1a2:
 	dw AnimScript_20474, MotionScript_InhaledObject, Data_3685
@@ -481,7 +481,7 @@ Data_1c5e4:
 Data_1c5ee:
 	object $15, $00, $c0, $00, AnimScript_21238, MotionScript_11251, WaddleDeeProperties
 Data_1c5f8:
-	object $0b, $06, $00, $00, AnimScript_208f4, MotionScript_10008, BombProperties, $ff
+	object $0b, $06, $00, $00, AnimScript_BombItem, MotionScript_10008, BombProperties, $ff
 Data_1c603:
 	object $0a, $06, $e0, $00, AnimScript_2134f, MotionScript_113e2, WaddleDeeProperties
 Data_1c60d:

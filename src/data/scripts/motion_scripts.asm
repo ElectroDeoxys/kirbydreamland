@@ -83,7 +83,7 @@ MotionScript_1011d:
 	set_position $58, $78
 	set_anim_script AnimScript_15f1
 	set_velocities  1, 0, 0
-	script_exec Func_4ac1
+	set_kirby_pos
 	set_flags hKirbyFlags3, KIRBY3F_UNK2 | KIRBY3F_DIVE, $00
 	set_value wd3dd, $01
 	set_velocities  0, 0, 0
@@ -102,7 +102,7 @@ MotionScript_10149:
 	set_velocities  1, VEL_LEFT_2_00, VEL_UP_4_00
 	set_velocities  1, VEL_RIGHT_2_00, VEL_UP_2_00
 	script_repeat_end
-	script_exec Func_4ac1
+	set_kirby_pos
 	set_flags hKirbyFlags5, KIRBY5F_UNK5, $00
 	set_velocities  0, 0, 0
 
@@ -112,7 +112,7 @@ MotionScript_10162:
 	set_velocities  1, VEL_LEFT_2_00, VEL_DOWN_1_25
 	set_velocities  1, VEL_RIGHT_2_00, VEL_DOWN_1_25
 	script_repeat_end
-	script_exec Func_4ac1
+	set_kirby_pos
 	set_flags hKirbyFlags5, KIRBY5F_UNK5, $00
 	set_velocities  0, 0, 0
 ; 0x1017b
@@ -132,7 +132,7 @@ MotionScript_1022a:
 	set_velocities 10, VEL_RIGHT_0_50, 0
 	script_end
 
-MotionScript_10244:
+MotionScript_KirbyPuff:
 	jump_if_flags hEngineFlags, KABOOLA_BATTLE, .script_1026a
 	jump_if_not_flags hKirbyFlags3, KIRBY3F_FACE_LEFT, .script_1025d
 	set_velocities 16, VEL_LEFT_3_00, 0
@@ -157,7 +157,7 @@ MotionScript_10276:
 	set_position $40, $78
 	set_anim_script AnimScript_15f1
 	set_velocities  1, 0, 0
-	script_exec Func_4ac1
+	set_kirby_pos
 	set_flags hKirbyFlags5, KIRBY5F_TRIGGER_TRANSITION, $00
 	set_velocities  0, 0, 0
 
@@ -204,8 +204,7 @@ MotionScript_102e0:
 SECTION "Bank 4@42fb", ROMX[$42fb], BANK[$4]
 
 MotionScript_102fb:
-	script_exec Func_30b2
-	dw MotionScript_SpitStar_Right, MotionScript_SpitStar_Left
+	branch_kirby_pos MotionScript_SpitStar_Right, MotionScript_SpitStar_Left
 
 MotionScript_SpitStar:
 	jump_if_not_flags hKirbyFlags3, KIRBY3F_FACE_LEFT, MotionScript_SpitStar_Right
@@ -226,9 +225,9 @@ SECTION "Bank 4@431d", ROMX[$431d], BANK[$4]
 MotionScript_1031d:
 	set_velocities  1, 0, 0
 .loop
-	script_exec SetObjectPalLight
+	set_pal_light
 	script_delay 28
-	script_exec SetObjectPalDark
+	set_pal_dark
 	script_delay 4
 	jump_abs .loop
 ; 0x1032d
@@ -240,14 +239,14 @@ MotionScript_10346:
 	set_velocities  5, 0, 0
 	set_velocities  9, 0, VEL_UP_0_25
 	set_velocities  9, 0, VEL_UP_0_75
-	script_exec SetObjectPalDark
+	set_pal_dark
 	set_velocities  9, 0, VEL_UP_0_25
-	script_exec SetObjectPalLight
+	set_pal_light
 	set_velocities  5, 0, 0
 	set_velocities  9, 0, VEL_DOWN_0_25
-	script_exec SetObjectPalDark
+	set_pal_dark
 	set_velocities  9, 0, VEL_DOWN_0_75
-	script_exec SetObjectPalLight
+	set_pal_light
 	set_velocities  4, 0, VEL_DOWN_0_25
 	set_velocities  5, 0, VEL_DOWN_0_25
 	jump_abs .loop
@@ -343,7 +342,7 @@ MotionScript_106a2:
 	set_velocities  8, 0, VEL_DOWN_2_00
 	set_velocities  8, 0, VEL_DOWN_3_00
 MotionScript_106dc:
-	script_exec Func_4ac1
+	set_kirby_pos
 	set_flags hKirbyFlags3, KIRBY3F_UNK2 | KIRBY3F_DIVE, $00
 	set_value wd3dd, $01
 	set_velocities  0, 0, 0
@@ -827,7 +826,7 @@ MotionScript_10af4:
 	jump_abs .loop
 
 MotionScript_10b00:
-	set_scripts AnimScript_20771, MotionScript_10008
+	set_scripts AnimScript_MainKirbyStageClearDance, MotionScript_10008
 
 MotionScript_10b05:
 	set_velocities 79, VEL_LEFT_0_25, 0
@@ -1044,11 +1043,10 @@ MotionScript_10cf4:
 MotionScript_10d16:
 .loop
 	set_velocities  2, 0, VEL_DOWN_1_25
-	script_exec Func_30dc
-	dw .script_10d40, .script_10d23
+	branch_on_kirby_vertical_alignment .swoop_left, .swoop_right
 	jump_abs .loop
 
-.script_10d23
+.swoop_right
 	set_anim_script AnimScript_20662
 	set_velocities 16, 0, VEL_DOWN_1_00
 	set_velocities  8, VEL_LEFT_1_8TH, VEL_DOWN_0_25
@@ -1059,7 +1057,7 @@ MotionScript_10d16:
 	set_velocities  8, VEL_RIGHT_1_8TH, 0
 	set_velocities  0, VEL_RIGHT_1_00, 0
 
-.script_10d40
+.swoop_left
 	set_anim_script AnimScript_20659
 	set_velocities 16, 0, VEL_DOWN_1_00
 	set_velocities  8, VEL_RIGHT_1_8TH, VEL_DOWN_0_25
@@ -1330,10 +1328,9 @@ MotionScript_10f84:
 SECTION "Bank 4@4f9c", ROMX[$4f9c], BANK[$4]
 
 MotionScript_10f9c:
-	script_exec Func_30b2
-	dw .script_10fa3, .script_10fc1
+	branch_kirby_pos .move_right, .move_left
 
-.script_10fa3
+.move_right
 	set_velocities  6, VEL_RIGHT_0_75, VEL_UP_2_00
 	set_velocities  6, VEL_RIGHT_0_75, 0
 	set_velocities  6, VEL_RIGHT_0_75, VEL_DOWN_2_00
@@ -1345,7 +1342,7 @@ MotionScript_10f9c:
 	set_velocities  6, VEL_RIGHT_1_16TH, VEL_DOWN_0_50
 	set_velocities  0, 0, 0
 
-.script_10fc1
+.move_left
 	set_velocities  6, VEL_LEFT_0_75, VEL_UP_2_00
 	set_velocities  6, VEL_LEFT_0_75, 0
 	set_velocities  6, VEL_LEFT_0_75, VEL_DOWN_2_00
@@ -1448,7 +1445,7 @@ MotionScript_PoppyBrosSrBombFall:
 	set_velocities  8, VEL_LEFT_1_25, VEL_UP_1_8TH
 	set_velocities  8, VEL_LEFT_1_25, VEL_DOWN_1_8TH
 	set_velocities  8, VEL_LEFT_1_25, VEL_DOWN_1_00
-	create_object AnimScript_Explosion, MotionScript_10008, Data_35bb
+	create_object AnimScript_Explosion, MotionScript_10008, ExplosionProperties
 	script_end
 
 MotionScript_PoppyBrosSrBombBounce:
@@ -1459,22 +1456,23 @@ MotionScript_PoppyBrosSrBombBounce:
 	set_velocities  8, VEL_LEFT_1_25, VEL_UP_0_50
 	set_velocities  8, VEL_LEFT_1_25, VEL_DOWN_0_50
 	set_velocities  8, VEL_LEFT_1_25, VEL_DOWN_2_00
-	create_object AnimScript_Explosion, MotionScript_10008, Data_35bb
+	create_object AnimScript_Explosion, MotionScript_10008, ExplosionProperties
 	script_end
 
 MotionScript_WhispyWoodsPuff:
-	jump_random 50 percent + 1, .script_1110e
+	jump_random 50 percent + 1, .down
+; up
 	position_offset -16, 24
-	play_sfx SFX_15
+	play_sfx SFX_PUFF
 	set_velocities  8, VEL_LEFT_1_00, VEL_UP_0_25
 	set_velocities  8, VEL_LEFT_2_00, 0
 	set_velocities  8, VEL_LEFT_3_00, VEL_UP_0_25
 	set_velocities  8, VEL_LEFT_3_00, VEL_UP_0_50
 	set_velocities  0, VEL_LEFT_3_00, VEL_UP_0_75
 
-.script_1110e
+.down
 	position_offset -16, 24
-	play_sfx SFX_15
+	play_sfx SFX_PUFF
 	set_velocities  8, VEL_LEFT_1_00, VEL_DOWN_0_25
 	set_velocities  8, VEL_LEFT_2_00, 0
 	set_velocities  8, VEL_LEFT_3_00, VEL_DOWN_0_25
@@ -1525,8 +1523,7 @@ MotionScript_WhispyWoodsApple:
 	set_velocities  8, 0, VEL_DOWN_2_00
 	set_velocities  8, 0, VEL_DOWN_3_00
 	set_velocities  8, 0, VEL_DOWN_4_00
-	script_exec Func_30b2
-	dw .roll_left, .roll_right
+	branch_kirby_pos .roll_left, .roll_right
 
 .roll_left
 	set_anim_script AnimScript_WhispyWoodsApple_RollLeft
@@ -1735,8 +1732,8 @@ MotionScript_11585:
 	script_ret
 
 .script_115bc
-	create_object AnimScript_21474, $4008, Data_35cd
-	create_object $4ae6, $47c3, Data_3421
+	create_object AnimScript_21474, MotionScript_10008, Data_35cd
+	create_object AnimScript_20ae6, MotionScript_107c3, Data_3421
 	set_velocities  4, 0, VEL_UP_4_00
 	set_velocities  4, 0, VEL_UP_3_00
 	set_velocities  4, 0, VEL_UP_2_00
@@ -1762,8 +1759,8 @@ MotionScript_11585:
 	set_velocities 48, 0, 0
 	set_velocities  4, 0, VEL_DOWN_3_00
 	set_velocities  4, 0, VEL_DOWN_4_00
-	create_object $5474, $4008, Data_35cd
-	create_object $4ae6, $47c3, Data_3421
+	create_object AnimScript_21474, MotionScript_10008, Data_35cd
+	create_object AnimScript_20ae6, MotionScript_107c3, Data_3421
 	script_ret
 ; 0x11624
 

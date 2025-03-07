@@ -297,7 +297,7 @@ for o in args.offsets:
 
             elif cmdByte == 0xe8:
                 funcAddr = parsedCommands[-1][2][0]
-                if funcAddr in symbols and symbols[funcAddr] == "SetObjectProperties":
+                if funcAddr in symbols and symbols[funcAddr] == "ScriptFunc_SetObjectProperties":
                     parsedCommands[-1] = (0x103, cmdPos, parseWord(source[pos : pos + 2]))
                     pos += 2
 

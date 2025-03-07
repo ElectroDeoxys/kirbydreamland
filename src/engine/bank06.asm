@@ -142,9 +142,9 @@ StartStage::
 	ld a, [hli]
 	ld [wLevelYSection], a
 	ld a, [hli]
-	ld [wCurScreenX], a
+	ld [wKirbyScreenX], a
 	ld a, [hli]
-	ld [wCurScreenY], a
+	ld [wKirbyScreenY], a
 
 	ld a, [wStage]
 	ld e, a
@@ -166,9 +166,9 @@ StartStage::
 	ld a, $01
 	ld [wLevelYSection], a
 	ld a, $48
-	ld [wCurScreenX], a
+	ld [wKirbyScreenX], a
 	ld a, $70
-	ld [wCurScreenY], a
+	ld [wKirbyScreenY], a
 	ld bc, $32
 .asm_1821e
 	ld hl, wLevelBlockMap
@@ -891,9 +891,9 @@ _LoseLife::
 	ld a, [hli]
 	ld [wLevelYSection], a
 	ld a, [hli]
-	ld [wCurScreenX], a
+	ld [wKirbyScreenX], a
 	ld a, [hli]
-	ld [wCurScreenY], a
+	ld [wKirbyScreenY], a
 	xor a
 	ld [hKirbyFlags1], a
 	ld [hKirbyFlags2], a
