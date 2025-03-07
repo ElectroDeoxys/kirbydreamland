@@ -140,7 +140,7 @@ Func_4000::
 	ld a, [wd042]
 	inc a
 	ld d, a
-	ld a, [wd051]
+	ld a, [wLevelXSection]
 	cp d
 	jr nz, .asm_4117
 .asm_4115
@@ -174,6 +174,7 @@ Func_4000::
 	call MoveKirbyRight
 	scf
 	ret
+
 .asm_4149
 	ldh a, [hKirbyFlags3]
 	and KIRBY3F_UNK2 | KIRBY3F_DIVE
@@ -328,7 +329,7 @@ Func_417c::
 	ldh a, [hEngineFlags]
 	bit ENGINEF_UNK7_F, a
 	jr nz, .asm_4280
-	ld a, [wd051]
+	ld a, [wLevelXSection]
 	cp $01
 	jr nz, .asm_4280
 	ld a, [wSCX]
@@ -1212,7 +1213,7 @@ Func_4a1c:
 	ld l, a
 	ld h, $00
 	call MultiplyHLBy16
-	ld hl, wd051
+	ld hl, wLevelXSection
 	add [hl]
 	dec a
 	ld d, a
@@ -1225,7 +1226,7 @@ Func_4a1c:
 	ld l, a
 	ld h, $00
 	call MultiplyHLBy16
-	ld hl, wd052
+	ld hl, wLevelYSection
 	add [hl]
 	dec a
 	ld e, a
@@ -1502,7 +1503,7 @@ Func_4bb4::
 SECTION "Bank 1@4c9b", ROMX[$4c9b], BANK[$1]
 
 Func_4c9b::
-	ld a, [wd3f5]
+	ld a, [wDamageBlinkingCounter]
 	and a
 	jp nz, Func_4ced.set_carry
 	ld hl, wInvincibilityCounter
@@ -1515,8 +1516,8 @@ Func_4c9b::
 	srl a
 	ld [wHP], a
 
-	ld a, $5a
-	ld [wd3f5], a
+	ld a, DAMAGE_BLINK_DURATION
+	ld [wDamageBlinkingCounter], a
 
 	ld a, [wd1a0 + OBJECT_SLOT_KIRBY]
 	set OBJFLAG_BLINKING_F, a
@@ -1545,7 +1546,7 @@ Func_4c9b::
 	ret
 
 Func_4ced::
-	ld a, [wd3f5]
+	ld a, [wDamageBlinkingCounter]
 	and a
 	jr nz, .set_carry
 	ld hl, wInvincibilityCounter
@@ -1561,8 +1562,8 @@ Func_4ced::
 	ld a, SFX_LOSE_LIFE
 	call PlaySFX
 
-	ld a, $5a
-	ld [wd3f5], a
+	ld a, DAMAGE_BLINK_DURATION
+	ld [wDamageBlinkingCounter], a
 
 	ld a, [wd1a0 + OBJECT_SLOT_KIRBY]
 	set OBJFLAG_BLINKING_F, a
@@ -1620,12 +1621,12 @@ _StartLevelAfterContinue::
 	ld bc, $0
 	ld a, [wLevelWidth]
 	ld b, a
-	ld a, [wd052]
+	ld a, [wLevelYSection]
 	dec a
 	ld e, a
 	call FixedPointMultiply
 	ld h, $00
-	ld a, [wd051]
+	ld a, [wLevelXSection]
 	dec a
 	ld l, a
 	add hl, bc

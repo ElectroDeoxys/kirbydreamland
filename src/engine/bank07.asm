@@ -157,7 +157,7 @@ Data_1c17e::
 	dw AnimScript_208f1, MotionScript_10c50, Data_3421
 
 Data_1c184::
-	dw AnimScript_20427, MotionScript_10302, Data_35a7
+	dw AnimScript_20427, MotionScript_SpitStar, SpitStarProperties
 
 Data_1c18a::
 	dw AnimScript_20baf, MotionScript_10008, Data_35af

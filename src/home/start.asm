@@ -74,12 +74,12 @@ Reset::
 	ld a, BANK(StartStage)
 	bankswitch
 	call StartStage
-ResetStage::
+StageLoop_UpdateHUD::
 	ld a, BANK("Bank 1")
 	bankswitch
 	ld a, HUD_UPDATE_LABEL | HUD_UPDATE_LIVES | HUD_UPDATE_SCORE_DIGITS
 	ldh [hHUDFlags], a
-Func_1f2:
+StageLoop_SkipHUDUpdate:
 	ld a, [wBGP]
 	ldh [rBGP], a
 .asm_1f7

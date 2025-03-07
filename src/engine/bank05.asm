@@ -64,7 +64,7 @@ InhaleObject:
 	add hl, bc
 	bit PROPERTY_PERSISTENT_F, [hl]
 	jr z, .not_persistent
-	ld a, $01
+	ld a, TRUE
 	call ExecuteItemEffect
 	jr .skip_score
 
@@ -104,12 +104,12 @@ InhaleObject:
 	set KIRBY4F_UNK1_F, [hl]
 	ld a, SFX_02
 	call PlaySFX
-	ld hl, wd3be
-	bit 0, [hl]
-	jp nz, Func_14761
-	bit 4, [hl]
+	ld hl, wPowerUpAttack
+	bit POWERUP_MINT_LEAF_F, [hl]
+	jp nz, StartMintLeaf
+	bit POWERUP_CONSUMABLE_F, [hl]
 	jr z, .done
-	res 4, [hl]
+	res POWERUP_CONSUMABLE_F, [hl]
 	ld hl, hKirbyFlags4
 	set KIRBY4F_UNK4_F, [hl]
 .done
@@ -378,37 +378,41 @@ Func_142c2:
 
 SECTION "Bank 5@432c", ROMX[$432c], BANK[$5]
 
-Func_1432c::
-	call .Func_14336
-	call .Func_14379
-	call .Func_143a4
+ProcessObjectInteractions::
+	call .ProcessKirbyInteractions
+	call .ProcessObjSlot13Interactions
+	call .ProcessObjSlot14Interactions
 	ret
 
-.Func_14336:
-	ld c, -4
-	lb de, 5, 5
+.ProcessKirbyInteractions:
+	ld c, -4    ; collision y
+	lb de, 5, 5 ; width, height
 	ld a, [hKirbyFlags2]
 	and KIRBY2F_MOUTHFUL | KIRBY2F_INHALE | KIRBY2F_HOVER
-	jr nz, .asm_14353
-	ld c, 0
-	lb de, 3, 3
+	jr nz, .got_collision_box
+
+	ld c, 0     ; collision y
+	lb de, 3, 3 ; width, height
 	ld hl, hKirbyFlags3
 	bit KIRBY3F_DUCK_F, [hl]
-	jr z, .asm_14353
-	ld c, 6
-	lb de, 2, 1
-.asm_14353
+	jr z, .got_collision_box
+
+	ld c, 6     ; collision y
+	lb de, 2, 1 ; width, height
+
+.got_collision_box
 	ld a, [wObjectScreenXPositions + OBJECT_SLOT_KIRBY]
-	ld [wd412], a
+	ld [wCurObjCollisionX], a
 	ld a, [wObjectScreenYPositions + OBJECT_SLOT_KIRBY]
 	add c
-	ld [wd413], a
+	ld [wCurObjCollisionY], a
+
 	ld bc, OBJECT_GROUP_1_BEGIN
 .loop_objects
 	push de
-	call .Func_145b0
+	call .CheckObjIsInteractible
 	jr c, .next_object
-	call .Func_145d1
+	call .CheckCollisionBoxOverlap
 	jr nc, .next_object
 	call .Func_143ef
 .next_object
@@ -419,7 +423,7 @@ Func_1432c::
 	jr nz, .loop_objects
 	ret
 
-.Func_14379:
+.ProcessObjSlot13Interactions:
 	ld hl, wObjectActiveStates + OBJECT_SLOT_13
 	ld a, [hl]
 	and a
@@ -432,15 +436,15 @@ Func_1432c::
 	ret nz
 	ld [wd410], a
 	ld a, [wObjectScreenXPositions + OBJECT_SLOT_13]
-	ld [wd412], a
+	ld [wCurObjCollisionX], a
 	ld a, [wObjectScreenYPositions + OBJECT_SLOT_13]
-	ld [wd413], a
+	ld [wCurObjCollisionY], a
 	ld a, OBJECT_SLOT_13
 	ld [wd411], a
 	ld hl, wObjectPropertyPtrs + OBJECT_SLOT_13 * $2
 	jr .asm_143cd
 
-.Func_143a4:
+.ProcessObjSlot14Interactions:
 	ld hl, wObjectActiveStates + OBJECT_SLOT_14
 	ld a, [hl]
 	and a
@@ -453,9 +457,9 @@ Func_1432c::
 	ret nz
 	ld [wd410], a
 	ld a, [wObjectScreenXPositions + OBJECT_SLOT_14]
-	ld [wd412], a
+	ld [wCurObjCollisionX], a
 	ld a, [wObjectScreenYPositions + OBJECT_SLOT_14]
-	ld [wd413], a
+	ld [wCurObjCollisionY], a
 	ld a, OBJECT_SLOT_14
 	ld [wd411], a
 	ld hl, wObjectPropertyPtrs + OBJECT_SLOT_14 * $2
@@ -464,15 +468,15 @@ Func_1432c::
 	ld h, [hl]
 	ld l, a
 	inc hl
-	ld d, [hl] ; OBJ_UNK1
+	ld d, [hl] ; OBJ_COL_WIDTH
 	inc hl
-	ld e, [hl] ; OBJ_UNK2
+	ld e, [hl] ; OBJ_COL_HEIGHT
 	ld bc, OBJECT_GROUP_1_BEGIN
 .asm_143d7
 	push de
-	call .Func_145b0
+	call .CheckObjIsInteractible
 	jr c, .asm_143e7
-	call .Func_145d1
+	call .CheckCollisionBoxOverlap
 	jr nc, .asm_143e7
 	push bc
 	call .Func_1448a
@@ -491,7 +495,7 @@ Func_1432c::
 	bit PROPERTY_PERSISTENT_F, [hl]
 	jr z, .not_persistent
 	push bc
-	xor a
+	xor a ; FALSE
 	call ExecuteItemEffect
 	pop bc
 	ret
@@ -510,14 +514,19 @@ Func_1432c::
 	ld [wd40d + 0], a
 	ld a, [hli]
 	ld [wd40d + 1], a
+
+	; check if Kirby is impervious to damage
+	; either through invincibility or blinking
 	ld hl, wInvincibilityCounter
-	ld a, [wd3f5]
+	ld a, [wDamageBlinkingCounter]
 	or [hl]
 	inc hl
 	or [hl]
-	jr nz, .asm_14466
-	ld a, $5a
-	ld [wd3f5], a
+	jr nz, .skip_damage
+
+	; inflict damage and knock back on Kirby
+	ld a, DAMAGE_BLINK_DURATION
+	ld [wDamageBlinkingCounter], a
 	ld hl, wd1a0 + OBJECT_SLOT_KIRBY
 	set OBJFLAG_BLINKING_F, [hl]
 	ld a, [hEngineFlags]
@@ -539,6 +548,7 @@ Func_1432c::
 	ld a, SFX_DAMAGE
 	call PlaySFX
 	jr .apply_damage
+
 .no_knock_back
 	ld a, SFX_08
 	call PlaySFX
@@ -552,14 +562,14 @@ Func_1432c::
 .got_hp_value
 	ld [wHP], a
 
-.asm_14466
+.skip_damage
 	ld a, [wd40f]
 	bit 3, a
 	ret nz
 	bit 0, a
 	ret z
-	call .Func_1456d
-	ret nz
+	call .DecrementObjectHP
+	ret nz ; still has HP
 	ld a, [wScoreToAdd]
 	add a
 	call AddToScore
@@ -577,6 +587,7 @@ Func_1432c::
 	add hl, bc
 	bit PROPERTY_PERSISTENT_F, [hl]
 	ret nz ; is persistent
+
 	call Func_148dc
 	dec hl
 	dec hl
@@ -591,6 +602,7 @@ Func_1432c::
 	ld [wd40d + 0], a
 	ld a, [hli]
 	ld [wd40d + 1], a
+
 	ld a, [wd40f]
 	bit 4, a
 	ret nz
@@ -605,8 +617,10 @@ Func_1432c::
 	jr .asm_144e4
 .asm_144c5
 	call .Func_14579
-	call .Func_1456d
-	jr nz, .asm_144e1
+	call .DecrementObjectHP
+	jr nz, .non_zero_hp_1
+
+; zero HP
 	ld a, [wScoreToAdd]
 	add a
 	call AddToScore
@@ -616,7 +630,8 @@ Func_1432c::
 	ld d, a
 	call Func_23af
 	jr .asm_144ee
-.asm_144e1
+
+.non_zero_hp_1
 	ld hl, AnimScript_20026
 .asm_144e4
 	ld de, MotionScript_10008
@@ -630,7 +645,8 @@ Func_1432c::
 .asm_144f5
 	bit 0, a
 	jr nz, .asm_1451e
-.asm_144f9
+
+.non_zero_hp_2
 	ld a, [wd411]
 	ld c, a
 	ld a, [wd410]
@@ -663,8 +679,8 @@ Func_1432c::
 	ld hl, hPalFadeFlags
 	set SCROLLINGF_UNK3_F, [hl]
 .asm_1453b
-	call .Func_1456d
-	jr nz, .asm_144f9
+	call .DecrementObjectHP
+	jr nz, .non_zero_hp_2
 	ld a, [wScoreToAdd]
 	add a
 	call AddToScore
@@ -686,11 +702,15 @@ Func_1432c::
 	ld de, MotionScript_10008
 	jp SetObjectScripts
 
-.Func_1456d:
+; input:
+; - bc = object slot
+; output:
+; - z set if HP decremented to 0
+.DecrementObjectHP:
 	ld hl, wd1b0
 	add hl, bc
 	set 7, [hl]
-	ld hl, wd39a
+	ld hl, wObjectHPs
 	add hl, bc
 	dec [hl]
 	ret
@@ -726,7 +746,14 @@ Func_1432c::
 	ld [wd3d4], a
 	ret
 
-.Func_145b0:
+; input:
+; - bc = object slot
+; output:
+; - carry set if object is inactive 
+;   OR OBJFLAG_7 is not set
+;   OR OBJFLAG_0 is set
+;   OR PROPERTY_2 is set
+.CheckObjIsInteractible:
 	ld hl, wObjectActiveStates
 	add hl, bc
 	ld a, [hl]
@@ -749,7 +776,16 @@ Func_1432c::
 	scf
 	ret
 
-.Func_145d1:
+; input:
+; - bc = object slot
+; - d = curObj's collision box width
+; - e = curObj's collision box height
+; - [wCurObjCollisionX] = curObj's collision x coordinate
+; - [wCurObjCollisionY] = curObj's collision y coordinate
+; output:
+; - carry set if object slot bc overlaps
+;   with collision box of curObj
+.CheckCollisionBoxOverlap:
 	ld hl, wObjectPropertyPtrs
 	add hl, bc
 	add hl, bc
@@ -757,41 +793,42 @@ Func_1432c::
 	ld h, [hl]
 	ld l, a
 	inc hl
-	ld a, [hli] ; OBJ_UNK1
+	ld a, [hli] ; OBJ_COL_WIDTH
 	add d
 	ld d, a
 	push hl
 	ld hl, wObjectScreenXPositions
 	add hl, bc
-	ld a, [wd412]
+	ld a, [wCurObjCollisionX]
 	sub [hl]
-	jr nc, .asm_145ea
+	jr nc, .got_x_dist
 	cpl
 	inc a
-.asm_145ea
+.got_x_dist
 	cp d
 	pop hl
-	ret nc
-	ld a, [hli] ; OBJ_UNK2
+	ret nc ; not within x distance
+	ld a, [hli] ; OBJ_COL_HEIGHT
 	add e
 	ld e, a
 	push hl
 	ld hl, wObjectScreenYPositions
 	add hl, bc
-	ld a, [wd413]
+	ld a, [wCurObjCollisionY]
 	sub [hl]
-	jr nc, .asm_145fd
+	jr nc, .got_y_dist
 	cpl
 	inc a
-.asm_145fd
+.got_y_dist
 	cp e
 	pop hl
 	ret
 
 ; input:
-; - a = ?
+; - a = whether item was inhaled (TRUE) or
+;   just touched (FALSE)
 ExecuteItemEffect:
-	ld [wd06b + 0], a
+	ld [wItemWasInhaled], a
 	ld hl, wObjectPropertyPtrs
 	add hl, bc
 	add hl, bc
@@ -804,13 +841,13 @@ ExecuteItemEffect:
 	and a
 	jr z, .InvincibilityCandy ; INVINCIBILITY_CANDY
 	dec a
-	jp z, .Bomb ; $1
+	jp z, .Bomb ; BOMB
 	dec a
-	jp z, .Mike ; $2
+	jp z, .Mike ; MIKE
 	dec a
-	jp z, .asm_1474f ; $3
+	jp z, .MintLeaf ; MINT_LEAF
 	dec a
-	jr z, .MintLeaf ; MINT_LEAF
+	jr z, .SpicyFood ; SPICY_FOOD
 	dec a
 	jp z, .WarpStar ; WARP_STAR
 	dec a
@@ -822,6 +859,7 @@ ExecuteItemEffect:
 	dec a
 	jp z, .OneUp ; ONE_UP
 
+; ITEM_A
 	call ConsumeItem
 	ld a, $81
 	ld [wd3bf], a
@@ -858,7 +896,7 @@ ExecuteItemEffect:
 	call PlayMusic
 	jp .DestroyObject
 
-.MintLeaf:
+.SpicyFood:
 	call ConsumeItem
 	call Func_147b5
 	ld hl, hKirbyFlags6
@@ -868,10 +906,10 @@ ExecuteItemEffect:
 	call PlaySFX
 	ld hl, wd1a0 + OBJECT_SLOT_KIRBY
 	set OBJFLAG_FLASHING_F, [hl]
-	ld a, LOW($3fc)
-	ld [wMintLeafCounter + 0], a
-	ld a, HIGH($3fc)
-	ld [wMintLeafCounter + 1], a
+	ld a, LOW(SPICY_FOOD_DURATION)
+	ld [wFoodPowerUpCounter + 0], a
+	ld a, HIGH(SPICY_FOOD_DURATION)
+	ld [wFoodPowerUpCounter + 1], a
 	ld a, MUSIC_MINT_LEAF
 	call PlayMusic
 	jp .DestroyObject
@@ -935,18 +973,18 @@ ExecuteItemEffect:
 
 .Bomb
 	call ConsumeItem
-	ld hl, wd3be
-	set 2, [hl]
+	ld hl, wPowerUpAttack
+	set POWERUP_BOMB_F, [hl]
 	jr .asm_14723
 
 .Mike
 	call ConsumeItem
-	ld hl, wd3be
-	set 1, [hl]
+	ld hl, wPowerUpAttack
+	set POWERUP_MIKE_F, [hl]
 .asm_14723
 	ld a, SFX_POWER_UP
 	call PlaySFX
-	ld a, [wd06b + 0]
+	ld a, [wItemWasInhaled]
 	and a
 	jr z, .asm_14730
 	jr .DestroyObject
@@ -967,23 +1005,26 @@ ExecuteItemEffect:
 	ld [hKirbyFlags2], a
 	jr .DestroyObject
 
-.asm_1474f
+.MintLeaf
 	call ConsumeItem
-	ld a, [wd06b + 0]
+	ld a, [wItemWasInhaled]
 	and a
-	jr z, Func_14761
-	ld a, $01
-	ld a, $01 ; unnecessary
-	ld [wd3be], a
+	jr z, StartMintLeaf
+	ld a, POWERUP_MINT_LEAF
+	ld a, POWERUP_MINT_LEAF ; unnecessary
+	ld [wPowerUpAttack], a
 	jr .DestroyObject
 
-Func_14761:
-	ld hl, wd3be
-	res 0, [hl]
+StartMintLeaf:
+	ld hl, wPowerUpAttack
+	res POWERUP_MINT_LEAF_F, [hl]
+
+	; set duration of the power up
 	ld a, LOW(MINT_LEAF_DURATION)
-	ld [wMintLeafCounter + 0], a
+	ld [wFoodPowerUpCounter + 0], a
 	ld a, HIGH(MINT_LEAF_DURATION)
-	ld [wMintLeafCounter + 1], a
+	ld [wFoodPowerUpCounter + 1], a
+
 	ld a, [wArea]
 ASSERT FLOAT_ISLANDS_7 == MT_DEDEDE_7
 	cp FLOAT_ISLANDS_7 ; MT_DEDEDE_7
@@ -993,6 +1034,7 @@ ASSERT FLOAT_ISLANDS_7 == MT_DEDEDE_7
 	jr z, .kaboola_fight
 	cp MT_DEDEDE
 	jr nz, .not_kaboola_fight
+
 .kaboola_fight
 	ld a, [hEngineFlags]
 	and ~ENGINEF_UNK6
@@ -1019,14 +1061,14 @@ Restore1HP:
 	call PlaySFX
 	pop de
 	ld a, 10
-	jp WaitAFrames
+	jp WaitFrames
 
 Func_147b5:
-	ld a, [wd06b + 0]
+	ld a, [wItemWasInhaled]
 	and a
 	ret z
-	ld hl, wd3be
-	set 4, [hl]
+	ld hl, wPowerUpAttack
+	set POWERUP_CONSUMABLE_F, [hl]
 	ret
 
 ConsumeItem:
@@ -1235,7 +1277,7 @@ Func_148ea:
 	ld l, a
 	ld h, $00
 	call MultiplyHLBy16
-	ld hl, wd051
+	ld hl, wLevelXSection
 	add [hl]
 	dec a
 	ld d, a
@@ -1248,7 +1290,7 @@ Func_148ea:
 	ld l, a
 	ld h, $00
 	call MultiplyHLBy16
-	ld hl, wd052
+	ld hl, wLevelYSection
 	add [hl]
 	dec a
 	ld e, a
@@ -1504,7 +1546,7 @@ Func_14a5f::
 	ld a, [wSCX]
 	and $0f
 	ld b, a
-	ld a, [wd051]
+	ld a, [wLevelXSection]
 	dec a
 	swap a
 	ld d, a
@@ -1529,7 +1571,7 @@ Func_14a5f::
 	ld a, [wSCY]
 	and $0f
 	ld b, a
-	ld a, [wd052]
+	ld a, [wLevelYSection]
 	dec a
 	swap a
 	ld d, a
@@ -1590,8 +1632,8 @@ InitRAM::
 	jr nz, .loop_clear_hram
 
 	ld a, $01
-	ld [wd051], a
-	ld [wd052], a
+	ld [wLevelXSection], a
+	ld [wLevelYSection], a
 	ld [wKirbyXVel + 0], a
 	ld a, $30
 	ld [wCurScreenX], a

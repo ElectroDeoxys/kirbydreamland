@@ -1994,7 +1994,7 @@ SFXHeader_15:
 	db 1 ; num of channels
 	dwb $74f8, $04 ; CHANNEL1
 
-SFXHeader_16:
+SFXHeader_StarSpit:
 	db 1 ; num of channels
 	dwb $7515, $04 ; CHANNEL1
 
@@ -2014,7 +2014,7 @@ SFXHeader_20:
 	db 1 ; num of channels
 	dwb $7597, $0c ; CHANNEL1
 
-SFXHeader_21:
+SFXHeader_LoseLife:
 	db 1 ; num of channels
 	dwb $75b6, $0c ; CHANNEL1
 
@@ -2470,12 +2470,12 @@ SFXHeaders:
 	dw SFXHeader_13         ; SFX_13
 	dw SFXHeader_14         ; SFX_14
 	dw SFXHeader_15         ; SFX_15
-	dw SFXHeader_16         ; SFX_16
+	dw SFXHeader_StarSpit   ; SFX_STAR_SPIT
 	dw SFXHeader_17         ; SFX_17
 	dw SFXHeader_18         ; SFX_18
 	dw SFXHeader_19         ; SFX_19
 	dw SFXHeader_20         ; SFX_20
-	dw SFXHeader_21         ; SFX_LOSE_LIFE
+	dw SFXHeader_LoseLife   ; SFX_LOSE_LIFE
 	dw SFXHeader_1Up        ; SFX_1UP
 	dw SFXHeader_23         ; SFX_23
 	dw SFXHeader_Pause      ; SFX_PAUSE
@@ -2511,7 +2511,7 @@ SFXRequiredChannels:
 	db SFXFLAG_SQUARE1 | SFXFLAG_SQUARE2 ; SFX_13
 	db SFXFLAG_NOISE ; SFX_14
 	db SFXFLAG_SQUARE2 ; SFX_15
-	db SFXFLAG_SQUARE2 ; SFX_16
+	db SFXFLAG_SQUARE2 ; SFX_STAR_SPIT
 	db SFXFLAG_NOISE ; SFX_17
 	db SFXFLAG_SQUARE2 ; SFX_18
 	db SFXFLAG_NOISE ; SFX_19
@@ -2553,7 +2553,7 @@ SFXPriorities:
 	db  0 ; SFX_13
 	db 50 ; SFX_14
 	db 50 ; SFX_15
-	db 50 ; SFX_16
+	db 50 ; SFX_STAR_SPIT
 	db 55 ; SFX_17
 	db 55 ; SFX_18
 	db 50 ; SFX_19

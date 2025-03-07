@@ -4,10 +4,10 @@ Func_246::
 
 	ld a, [wROMBank]
 	push af
-ASSERT BANK(Func_1432c) == BANK(InhaleObjectsInRange)
-	ld a, BANK(Func_1432c)
+ASSERT BANK(ProcessObjectInteractions) == BANK(InhaleObjectsInRange)
+	ld a, BANK(ProcessObjectInteractions)
 	bankswitch
-	call Func_1432c
+	call ProcessObjectInteractions
 	call InhaleObjectsInRange
 	pop af
 	bankswitch
@@ -18,14 +18,14 @@ ASSERT BANK(Func_1432c) == BANK(InhaleObjectsInRange)
 
 	ld hl, hKirbyFlags6
 	bit KIRBY6F_UNK3_F, [hl]
-	jr z, .asm_280
+	jr z, .check_fall_in_pit
 	ld a, [wd06a]
 	inc a
 	ld [wd06a], a
 	cp $0f
-	jr c, .asm_280
+	jr c, .check_fall_in_pit
 	res 3, [hl]
-.asm_280
+.check_fall_in_pit
 	; if fell in a pit, then zero HP and lose life
 	ld a, [wCurScreenY]
 	cp $88
@@ -104,7 +104,7 @@ ASSERT BANK(Func_1432c) == BANK(InhaleObjectsInRange)
 	ldh a, [hVBlankFlags]
 	set VBLANK_PENDING_F, a
 	ldh [hVBlankFlags], a
-	jp Func_1f2
+	jp StageLoop_SkipHUDUpdate
 
 .end_damage_knock_back
 	ld hl, hKirbyFlags5
@@ -132,8 +132,8 @@ Func_326::
 	ld a, [wMusic]
 	call PlayMusic
 	xor a
-	ld [wMintLeafCounter + 0], a
-	ld [wMintLeafCounter + 1], a
+	ld [wFoodPowerUpCounter + 0], a
+	ld [wFoodPowerUpCounter + 1], a
 	ld hl, wd1a0
 	res 4, [hl]
 	jr .asm_359
@@ -245,11 +245,15 @@ Func_3b3::
 	ld a, [wd079]
 	cp e
 	jr z, .asm_422
-	jr nc, Func_426
+	jr nc, Func_426 ; [wd079] > e
 .asm_422
 	ld a, e
 	ld [wd079], a
 ;	fallthrough
+
+; input:
+; - [wd078] = ?
+; - [wd079] = ?
 Func_426::
 	ld a, [wd078]
 	bit 7, a
@@ -326,7 +330,7 @@ ProcessDoorConnection::
 	add hl, bc
 	jr .loop_door_connections
 .check_x
-	ld a, [wd051]
+	ld a, [wLevelXSection]
 	ld b, a
 	ld a, [wSCX]
 	and $0f
@@ -352,7 +356,7 @@ ProcessDoorConnection::
 	add hl, bc
 	jr .loop_door_connections
 .check_y
-	ld a, [wd052]
+	ld a, [wLevelYSection]
 	ld b, a
 	ld a, [wSCY]
 	and $0f
@@ -407,9 +411,9 @@ ProcessDoorConnection::
 	bit KIRBY2F_SPIT_F, [hl]
 	jr nz, .asm_566
 	set KIRBY2F_SPIT_F, [hl]
-	ld a, [wd3be]
-	and $f9
-	ld [wd3be], a
+	ld a, [wPowerUpAttack]
+	and $ff ^ (POWERUP_MIKE | POWERUP_BOMB)
+	ld [wPowerUpAttack], a
 	ld a, $04
 	ld [wd094], a
 
@@ -482,10 +486,10 @@ ProcessDoorConnection::
 	ld [wSCY], a
 	ld a, d
 	inc a
-	ld [wd051], a
+	ld [wLevelXSection], a
 	ld a, e
 	inc a
-	ld [wd052], a
+	ld [wLevelYSection], a
 	ld a, [hli]
 	swap a
 	add $08
@@ -689,7 +693,7 @@ Func_6ec::
 .asm_70e
 	bit ENGINEF_UNK7_F, [hl]
 	jr nz, .asm_720
-	ld a, [wd051]
+	ld a, [wLevelXSection]
 	cp $01
 	jr nz, .asm_720
 	ld a, [wSCX]
@@ -713,7 +717,7 @@ Func_6ec::
 	jr z, .asm_708
 	inc a
 	ld b, a
-	ld a, [wd051]
+	ld a, [wLevelXSection]
 	cp b
 	jr z, .asm_759
 .asm_747
@@ -735,7 +739,7 @@ Func_6ec::
 GetKirbyLevelYCoord:
 	push bc
 	push de
-	ld a, [wd052]
+	ld a, [wLevelYSection]
 	sub 1
 	ld l, a
 	ld h, $00
@@ -752,7 +756,7 @@ GetKirbyLevelYCoord:
 	ld b, $00
 	ld c, a
 	add hl, bc
-	; hl = (wd052 - 1) * 16 + wd05f + (wSCY & 0x0f)
+	; hl = (wLevelYSection - 1) * 16 + wd05f + (wSCY & 0x0f)
 	pop de
 	pop bc
 	ret
@@ -762,7 +766,7 @@ GetKirbyLevelYCoord:
 GetKirbyLevelXCoord::
 	push bc
 	push de
-	ld a, [wd051]
+	ld a, [wLevelXSection]
 	sub 1
 	ld l, a
 	ld h, $00
@@ -780,7 +784,7 @@ GetKirbyLevelXCoord::
 	ld b, $00
 	ld c, a
 	add hl, bc
-	; hl = (wd051 - 1) * 16 + (wd05e - 8) + (wSCX & 0x0f)
+	; hl = (wLevelXSection - 1) * 16 + (wd05e - 8) + (wSCX & 0x0f)
 	pop de
 	pop bc
 	ret
@@ -979,15 +983,20 @@ StopKirbyWalking::
 	ret
 
 Func_8dc::
+	; skip if hovering
 	ldh a, [hKirbyFlags2]
 	bit KIRBY2F_HOVER_F, a
 	ret nz
+
 	ldh a, [hKirbyFlags3]
 	and KIRBY3F_UNK2
 	ret nz
+
+	; skip if airborne
 	ldh a, [hKirbyFlags1]
 	bit KIRBY1F_AIRBORNE_F, a
 	ret nz
+
 	set KIRBY1F_AIRBORNE_F, a
 	set 0, a
 	ldh [hKirbyFlags1], a
@@ -1188,7 +1197,7 @@ Func_9de:
 	cp $10
 	jp z, .asm_a9e
 	jp c, .asm_a9e
-	ld a, [wd3f5]
+	ld a, [wDamageBlinkingCounter]
 	ld hl, wInvincibilityCounter
 	or [hl]
 	inc hl
@@ -1245,7 +1254,7 @@ Func_9de:
 	bit SCROLL_LOCKED_F, a
 	jr nz, .scroll_locked
 	ld c, $4c
-	ld a, [wd052]
+	ld a, [wLevelYSection]
 	cp $01
 	jr nz, .asm_ad8
 	ld a, [wSCY]
@@ -1321,7 +1330,7 @@ Func_9de:
 	ld [wd065], a
 	jr .asm_baf
 .asm_b68
-	ld a, [wd052]
+	ld a, [wLevelYSection]
 	ld c, a
 	cp $01
 	jr z, .asm_b3a
@@ -1334,7 +1343,7 @@ Func_9de:
 	ld a, [wSCX]
 	and $f0
 	ld [wXCoord], a
-	ld a, [wd052]
+	ld a, [wLevelYSection]
 	dec a
 	jr z, .asm_b8e
 	dec a
@@ -1346,12 +1355,12 @@ Func_9de:
 	ld hl, wLevelBlockMap
 	add hl, bc
 	ld b, $00
-	ld a, [wd051]
+	ld a, [wLevelXSection]
 	dec a
 	ld c, a
 	add hl, bc
 	call Func_12b4
-	ld hl, wd052
+	ld hl, wLevelYSection
 	dec [hl]
 	ldh a, [hVBlankFlags]
 	set VBLANK_5_F, a
@@ -1370,7 +1379,7 @@ Func_9de:
 	ldh a, [hKirbyFlags4]
 	bit KIRBY4F_UNK6_F, a
 	jr z, .asm_be0
-	ld a, [wd3f5]
+	ld a, [wDamageBlinkingCounter]
 	ld hl, wInvincibilityCounter
 	or [hl]
 	inc hl
@@ -1572,7 +1581,7 @@ Func_caf:
 	cp b
 	jp nz, .asm_ee0
 .asm_d55
-	ld a, [wd3f5]
+	ld a, [wDamageBlinkingCounter]
 	ld hl, wInvincibilityCounter
 	or [hl]
 	inc hl
@@ -1672,7 +1681,7 @@ Func_caf:
 	set KIRBY4F_UNK4_F, a
 	ldh [hKirbyFlags4], a
 	xor a
-	ld [wd3be], a
+	ld [wPowerUpAttack], a
 	push de
 	ld a, SFX_SWALLOW
 	call PlaySFX
@@ -1819,7 +1828,7 @@ Func_caf:
 	ld a, [wLevelHeight]
 	sub $07
 	ld d, a
-	ld a, [wd052]
+	ld a, [wLevelYSection]
 	cp d
 	jr nz, .asm_f3b
 .scroll_locked
@@ -1852,7 +1861,7 @@ Func_caf:
 	sub b
 	ld [wKirbyScreenDeltaY], a
 	call nz, MoveKirbyUp
-	ld a, [wd052]
+	ld a, [wLevelYSection]
 	ld b, a
 	ld a, [wLevelHeight]
 	sub b
@@ -1896,13 +1905,13 @@ Func_caf:
 	call MoveKirbyUp
 	ld a, [wLevelHeight]
 	sub $07
-	ld [wd052], a
+	ld [wLevelYSection], a
 	jr .asm_1019
 .asm_fc3
 	ld a, [wLevelHeight]
 	sub $08
 	ld c, a
-	ld a, [wd052]
+	ld a, [wLevelYSection]
 	cp c
 	jr z, .asm_fa9
 	jr nc, .asm_f92
@@ -1924,7 +1933,7 @@ Func_caf:
 	ld a, [wSCX]
 	and $f0
 	ld [wXCoord], a
-	ld a, [wd052]
+	ld a, [wLevelYSection]
 	add $08
 	ld e, a
 	ld a, [wLevelWidth]
@@ -1933,7 +1942,7 @@ Func_caf:
 	ld hl, wLevelBlockMap
 	add hl, bc
 	ld b, $00
-	ld a, [wd051]
+	ld a, [wLevelXSection]
 	dec a
 	ld c, a
 	add hl, bc
@@ -1941,7 +1950,7 @@ Func_caf:
 	ldh a, [hVBlankFlags]
 	set VBLANK_5_F, a
 	ldh [hVBlankFlags], a
-	ld hl, wd052
+	ld hl, wLevelYSection
 	inc [hl]
 .asm_1019
 	ld hl, wSCY
@@ -1956,7 +1965,7 @@ Func_caf:
 	ldh a, [hKirbyFlags4]
 	bit KIRBY4F_UNK7_F, a
 	ret z
-	ld a, [wd3f5]
+	ld a, [wDamageBlinkingCounter]
 	ld hl, wInvincibilityCounter
 	or [hl]
 	inc hl
@@ -1973,7 +1982,7 @@ Func_1046:
 	push bc
 	push de
 	ld hl, wLevelBlockMap
-	ld a, [wd052]
+	ld a, [wLevelYSection]
 	dec a
 	ld b, a
 	ld a, [wLevelWidth]
@@ -1981,7 +1990,7 @@ Func_1046:
 	call FixedPointMultiply
 	add hl, bc
 	ld b, $00
-	ld a, [wd051]
+	ld a, [wLevelXSection]
 	ld c, a
 	add hl, bc
 	pop de
@@ -2018,7 +2027,7 @@ Func_1062::
 	call MoveKirbyRight
 	ld a, [wd042]
 	inc a
-	ld [wd051], a
+	ld [wLevelXSection], a
 	jr .asm_1102
 .aligned
 	ldh a, [hEngineFlags]
@@ -2027,7 +2036,7 @@ Func_1062::
 	ld a, [wd042]
 	inc a
 	ld c, a
-	ld a, [wd051]
+	ld a, [wLevelXSection]
 	cp c
 	jr z, .asm_1084
 .asm_10ac
@@ -2050,7 +2059,7 @@ Func_1062::
 	ld b, $00
 	ld c, $0a
 	add hl, bc
-	ld a, [wd051]
+	ld a, [wLevelXSection]
 	add $0b
 	ld c, a
 	ld a, [wLevelWidth]
@@ -2063,7 +2072,7 @@ Func_1062::
 	ldh a, [hVBlankFlags]
 	set VBLANK_5_F, a
 	ldh [hVBlankFlags], a
-	ld a, [wd051]
+	ld a, [wLevelXSection]
 	ld b, a
 	ld a, [wLevelWidth]
 	cp b
@@ -2072,9 +2081,9 @@ Func_1062::
 	bit ENGINEF_UNK7_F, a
 	jr z, .asm_10fe
 	xor a
-	ld [wd051], a
+	ld [wLevelXSection], a
 .asm_10fe
-	ld hl, wd051
+	ld hl, wLevelXSection
 	inc [hl]
 .asm_1102
 	ld hl, wSCX
@@ -2124,14 +2133,14 @@ Func_110b:
 	ld [wKirbyScreenDeltaX], a
 	call MoveKirbyLeft
 	ld a, $01
-	ld [wd051], a
+	ld [wLevelXSection], a
 	jp .asm_11be
 
 .asm_115d
 	ldh a, [hEngineFlags]
 	bit ENGINEF_UNK7_F, a
 	jr nz, .asm_116d
-	ld a, [wd051]
+	ld a, [wLevelXSection]
 	cp $01
 	jr z, .asm_113f
 	jp c, Func_42a1
@@ -2145,7 +2154,7 @@ Func_110b:
 	ld a, [wSCY]
 	and $f0
 	ld [wYCoord], a
-	ld a, [wd051]
+	ld a, [wLevelXSection]
 	cp $01
 	jr nz, .asm_11ac
 	ldh a, [hEngineFlags]
@@ -2153,12 +2162,12 @@ Func_110b:
 	jr z, .asm_11ac
 	ld a, [wLevelWidth]
 	inc a
-	ld [wd051], a
+	ld [wLevelXSection], a
 	call Func_1046
 	dec hl
 	dec hl
 	ld a, [wLevelWidth]
-	ld [wd051], a
+	ld [wLevelXSection], a
 	call Func_1292
 	ldh a, [hVBlankFlags]
 	set VBLANK_5_F, a
@@ -2172,7 +2181,7 @@ Func_110b:
 	ldh a, [hVBlankFlags]
 	set VBLANK_5_F, a
 	ldh [hVBlankFlags], a
-	ld hl, wd051
+	ld hl, wLevelXSection
 	dec [hl]
 .asm_11be
 	ld hl, wd063
@@ -2210,10 +2219,10 @@ Func_11de:
 	jr .asm_123f
 .asm_11f1
 	ld a, $14
-	ld [wd051], a
+	ld [wLevelXSection], a
 .asm_11f6
 	ld c, $1e
-	ld a, [wd051]
+	ld a, [wLevelXSection]
 	cp c
 	jr z, .asm_11f1
 	ld a, [wSCX]
@@ -2232,7 +2241,7 @@ Func_11de:
 	ld [wYCoord], a
 	ld hl, wLevelBlockMap
 	ld b, $00
-	ld a, [wd051]
+	ld a, [wLevelXSection]
 	bit 7, a
 	jr z, .asm_122b
 	cpl
@@ -2251,7 +2260,7 @@ Func_11de:
 	ldh a, [hVBlankFlags]
 	set VBLANK_5_F, a
 	ldh [hVBlankFlags], a
-	ld hl, wd051
+	ld hl, wLevelXSection
 	inc [hl]
 .asm_123f
 	ld a, [wSCX]
@@ -2356,7 +2365,7 @@ Func_12b4::
 	ld de, wBlockQueue
 	ld a, [wLevelWidth]
 	ld b, a
-	ld a, [wd051]
+	ld a, [wLevelXSection]
 	add $0a
 	sub b
 	jr c, .asm_12cb
@@ -2384,7 +2393,7 @@ Func_12b4::
 	jr z, .asm_1316
 	push bc
 	push de
-	ld a, [wd052]
+	ld a, [wLevelYSection]
 	ld c, a
 	ldh a, [hVBlankFlags]
 	bit VBLANK_2_F, a

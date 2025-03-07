@@ -39,7 +39,7 @@ DEF NUM_MUSICS EQU const_value
 	const SFX_13 ; $0d
 	const SFX_14 ; $0e
 	const SFX_15 ; $0f
-	const SFX_16 ; $10
+	const SFX_STAR_SPIT ; $10
 	const SFX_17 ; $11
 	const SFX_18 ; $12
 	const SFX_19 ; $13

@@ -205,15 +205,13 @@ SECTION "Bank 4@42fb", ROMX[$42fb], BANK[$4]
 
 MotionScript_102fb:
 	script_exec Func_30b2
-	dw MotionScript_1030b, MotionScript_10308
+	dw MotionScript_SpitStar_Right, MotionScript_SpitStar_Left
 
-MotionScript_10302:
-	jump_if_not_flags hKirbyFlags3, KIRBY3F_FACE_LEFT, MotionScript_1030b
-
-MotionScript_10308:
+MotionScript_SpitStar:
+	jump_if_not_flags hKirbyFlags3, KIRBY3F_FACE_LEFT, MotionScript_SpitStar_Right
+MotionScript_SpitStar_Left:
 	set_velocities  0, VEL_LEFT_3_00, 0
-
-MotionScript_1030b:
+MotionScript_SpitStar_Right:
 	set_velocities  0, VEL_RIGHT_3_00, 0
 ; 0x1030e
 

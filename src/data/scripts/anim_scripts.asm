@@ -358,9 +358,9 @@ AnimScript_20405:
 	frame  0, $5a71
 
 AnimScript_20427:
-	play_sfx SFX_16
-	jump_if_flags wd3be, $02, AnimScript_20bc9
-	jump_if_flags wd3be, $04, AnimScript_20bb7
+	play_sfx SFX_STAR_SPIT
+	jump_if_flags wPowerUpAttack, POWERUP_MIKE, AnimScript_20bc9
+	jump_if_flags wPowerUpAttack, POWERUP_BOMB, AnimScript_20bb7
 	set_custom_func Func_141b1, AnimScript_20b9a
 	jump_if_not_flags hKirbyFlags3, KIRBY3F_FACE_LEFT, .script_2045b
 	script_repeat 2
@@ -391,8 +391,8 @@ AnimScript_20474:
 
 AnimScript_20477:
 	play_sfx SFX_15
-	jump_if_flags wd3be, $02, AnimScript_20bc9
-	jump_if_flags wd3be, $04, AnimScript_20bb7
+	jump_if_flags wPowerUpAttack, POWERUP_MIKE, AnimScript_20bc9
+	jump_if_flags wPowerUpAttack, POWERUP_BOMB, AnimScript_20bb7
 	jump_if_flags hEngineFlags, KABOOLA_BATTLE, .script_2049e
 	set_custom_func Func_141b1, AnimScript_20b9a
 .check_land
@@ -904,13 +904,13 @@ AnimScript_20baf:
 	jump_abs AnimScript_20000
 
 AnimScript_20bb7:
-	set_flags wd3be, $fe, $00
+	set_flags wPowerUpAttack, $ff ^ POWERUP_MINT_LEAF, $00
 	script_exec Func_4adf
 	set_custom_func Func_141b1, AnimScript_20ba2
-	set_scripts AnimScript_208fc, MotionScript_10302
+	set_scripts AnimScript_208fc, MotionScript_SpitStar
 
 AnimScript_20bc9:
-	set_flags wd3be, $fe, $00
+	set_flags wPowerUpAttack, $ff ^ POWERUP_MINT_LEAF, $00
 	play_sfx SFX_00
 	script_exec Func_4ae6
 	set_scripts AnimScript_20925, MotionScript_10370
@@ -1372,7 +1372,7 @@ AnimScript_PoppyBrosSrBomb:
 
 AnimScript_WhispyWoods:
 .loop_wait
-	jump_if_equal wd052, $11, .init
+	jump_if_equal wLevelYSection, $11, .init
 	frame  1, $4000
 	jump_abs .loop_wait
 
@@ -1515,7 +1515,7 @@ AnimScript_WhispyWoodsApple_RollRight:
 
 AnimScript_21181:
 .loop
-	jump_if_equal wd052, $11, .script_2118d
+	jump_if_equal wLevelYSection, $11, .script_2118d
 	frame  1, $58b8
 	jump_abs .loop
 

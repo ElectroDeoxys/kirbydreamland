@@ -24,7 +24,7 @@ DoFrames::
 
 ; input:
 ; a = number of frames
-WaitAFrames::
+WaitFrames::
 	push hl
 	ld hl, hVBlankFlags
 .loop_outer

@@ -1,3 +1,5 @@
+; stat is exclusively used to show
+; the text during the credits sequence
 Stat:
 	push af
 	push bc
@@ -7,11 +9,14 @@ Stat:
 	dec b
 	jr nz, .loop_wait
 	ld hl, rLCDC
-	ld a, [wd05b]
+	ld a, [wCreditsTextScroll]
 	ld c, a
 	ld a, %11100100
+	; temporarily select BG9C00 map
+	; this is reset back to BG9800 during VBlank
 	set LCDCB_BG9C00, [hl]
 	ldh [rBGP], a
+	; apply text scroll
 	xor a
 	ldh [rSCX], a
 	ld a, c

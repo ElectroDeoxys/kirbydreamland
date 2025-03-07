@@ -12,12 +12,12 @@ StartStage::
 	xor a
 	ld [hPalFadeFlags], a
 	ld [wd3f1], a
-	ld hl, wMintLeafCounter
-	ld [hli], a ; wMintLeafCounter
+	ld hl, wFoodPowerUpCounter
+	ld [hli], a ; wFoodPowerUpCounter
 	ld [hli], a ;
 	ld [hli], a ; wInvincibilityCounter
 	ld [hl], a  ;
-	ld [wd3be], a
+	ld [wPowerUpAttack], a
 
 	ld a, [wStage]
 	ld b, a
@@ -138,9 +138,9 @@ StartStage::
 	pop hl
 
 	ld a, [hli]
-	ld [wd051], a
+	ld [wLevelXSection], a
 	ld a, [hli]
-	ld [wd052], a
+	ld [wLevelYSection], a
 	ld a, [hli]
 	ld [wCurScreenX], a
 	ld a, [hli]
@@ -162,9 +162,9 @@ StartStage::
 	bit KIRBY6F_UNK7_F, [hl]
 	jr z, .asm_1821e
 	ld a, $33
-	ld [wd051], a
+	ld [wLevelXSection], a
 	ld a, $01
-	ld [wd052], a
+	ld [wLevelYSection], a
 	ld a, $48
 	ld [wCurScreenX], a
 	ld a, $70
@@ -292,9 +292,9 @@ StageIntro:
 	ld [wVirtualOAMSize], a
 	ld [wSCX], a
 	ld [wSCY], a
-	inc a
-	ld [wd051], a
-	ld [wd052], a
+	inc a ; $1
+	ld [wLevelXSection], a
+	ld [wLevelYSection], a
 	ld hl, hKirbyFlags5
 	set KIRBY5F_UNK1_F, [hl]
 	call ClearSprites
@@ -539,18 +539,18 @@ HandleStageTransition::
 	ld [wSCX], a
 	ld [wSCY], a
 	ld a, [hli]
-	ld [wd051], a
+	ld [wLevelXSection], a
 	ld a, [hli]
-	ld [wd052], a
+	ld [wLevelYSection], a
 	push hl
 	call LoadArea
-	ld a, [wd052]
+	ld a, [wLevelYSection]
 	dec a
 	ld b, a
 	ld a, [wLevelWidth]
 	ld e, a
 	call FixedPointMultiply
-	ld a, [wd051]
+	ld a, [wLevelXSection]
 	dec a
 	ld l, a
 	ld h, $00
@@ -648,7 +648,7 @@ HandleStageTransition::
 	ld a, [wSCX]
 	and $f0
 	ld [wXCoord], a
-	ld a, [wd052]
+	ld a, [wLevelYSection]
 	dec a
 	jr z, .asm_1856e
 	dec a
@@ -660,12 +660,12 @@ HandleStageTransition::
 	ld hl, wLevelBlockMap
 	add hl, bc
 	ld b, $00
-	ld a, [wd051]
+	ld a, [wLevelXSection]
 	dec a
 	ld c, a
 	add hl, bc
 	call Func_12b4
-	ld hl, wd052
+	ld hl, wLevelYSection
 	dec [hl]
 	ld a, [hVBlankFlags]
 	set 5, a
@@ -752,7 +752,7 @@ Pause::
 	ld hl, hKirbyFlags5
 	res KIRBY5F_UNK0_F, [hl]
 	ld a, 30
-	call WaitAFrames
+	call WaitFrames
 	ret
 
 .skip_animation
@@ -771,14 +771,14 @@ _LoseLife::
 	ld a, MUSIC_NONE
 	call PlayMusic
 
-	ld hl, wMintLeafCounter
+	ld hl, wFoodPowerUpCounter
 	xor a
-	ld [hli], a ; wMintLeafCounter
+	ld [hli], a ; wFoodPowerUpCounter
 	ld [hli], a ;
 	ld [hli], a ; wInvincibilityCounter
 	ld [hl], a  ;
-	ld [wd3be], a
-	ld [wd3f5], a
+	ld [wPowerUpAttack], a
+	ld [wDamageBlinkingCounter], a
 
 	; stop blinking and flashing
 	ld a, [wd1a0 + OBJECT_SLOT_KIRBY]
@@ -815,13 +815,13 @@ _LoseLife::
 	ld a, 1
 	call DoFrames
 	ld a, 59
-	call WaitAFrames
+	call WaitFrames
 	ld a, MUSIC_LIFE_LOST
 	call PlayMusic
 
 	ld hl, hKirbyFlags5
 	set KIRBY5F_UNK5_F, [hl]
-	call ClearObjectsExceptSlot00
+	call ClearObjectsExceptKirby
 	xor a
 	ld [wd3cc], a
 	ld bc, OBJECT_SLOT_KIRBY
@@ -887,9 +887,9 @@ _LoseLife::
 	pop hl
 
 	ld a, [hli]
-	ld [wd051], a
+	ld [wLevelXSection], a
 	ld a, [hli]
-	ld [wd052], a
+	ld [wLevelYSection], a
 	ld a, [hli]
 	ld [wCurScreenX], a
 	ld a, [hli]
@@ -914,7 +914,7 @@ _LoseLife::
 	ld [hHUDFlags], a
 	ld a, [wMaxHP]
 	ld [wHP], a
-	jp ResetStage
+	jp StageLoop_UpdateHUD
 
 Data_1874d:
 	table_width 1
@@ -984,8 +984,8 @@ GameOver:
 	call ClearAllObjects
 
 	inc a ; $1
-	ld [wd051], a
-	ld [wd052], a
+	ld [wLevelXSection], a
+	ld [wLevelYSection], a
 
 	ld a, SCENE_CONTINUE
 	call Func_21fb
@@ -1058,7 +1058,7 @@ GameOver:
 	call StartStage
 	ld a, [wMusic]
 	call PlayMusic
-	jp ResetStage
+	jp StageLoop_UpdateHUD
 
 .reset_game
 	ld a, 60
@@ -1080,9 +1080,9 @@ Epilogue:
 
 	xor a
 	ld [hPalFadeFlags], a
-	inc a
-	ld [wd051], a
-	ld [wd052], a
+	inc a ; $1
+	ld [wLevelXSection], a
+	ld [wLevelYSection], a
 	ld a, SCENE_EPILOGUE_DEDEDE_LAUNCH
 	call Func_21fb
 	call Func_19098
@@ -1384,7 +1384,7 @@ Epilogue:
 	ld hl, rIE
 	set IEB_STAT, [hl]
 	ld a, $90
-	ld [wd05b], a
+	ld [wCreditsTextScroll], a
 	call StopTimerAndSwitchOnLCD
 
 	ld a, %01000000

@@ -36,7 +36,9 @@ Gfx_cfcf: INCBIN "gfx/gfx_cfcf.2bpp.lz"
 Gfx_d894: INCBIN "gfx/gfx_d894.2bpp.lz"
 Gfx_dcdd: INCBIN "gfx/gfx_dcdd.2bpp.lz"
 
+
 SECTION "Bank 3@e273", ROMX[$6273], BANK[$3]
+
 Data_e273:: INCBIN "data/data_e273.bin.lz"
 Data_e49e:: INCBIN "data/data_e49e.bin.lz"
 Data_e593:: INCBIN "data/data_e593.bin.lz"
@@ -44,7 +46,10 @@ Data_e5bc:: INCBIN "data/data_e5bc.bin.lz"
 Data_e688:: INCBIN "data/data_e688.bin.lz"
 Data_e86f:: INCBIN "data/data_e86f.bin.lz"
 Data_e8d3:: INCBIN "data/data_e8d3.bin.lz"
+
+
 SECTION "Bank 3@ea54", ROMX[$6a54], BANK[$3]
+
 Data_ea54:: INCBIN "data/data_ea54.bin.lz"
 Data_ea78:: INCBIN "data/data_ea78.bin.lz"
 Data_ead2:: INCBIN "data/data_ead2.bin.lz"

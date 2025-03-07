@@ -1,81 +1,3 @@
-StopTimerAndSwitchOnLCD::
-	ld a, TACF_STOP
-	ldh [rTAC], a
-	ldh a, [hLCDC]
-	set LCDCB_ON, a
-	ldh [hLCDC], a
-	ldh [rLCDC], a
-	ret
-
-ResetTimer::
-	ld hl, hLCDC
-	res LCDCB_ON, [hl]
-	ld hl, hEngineFlags
-	set RESET_TIMER_PENDING_F, [hl]
-.loop_wait_vblank
-	bit RESET_TIMER_PENDING_F, [hl]
-	jr nz, .loop_wait_vblank
-	ld a, TACF_STOP
-	ldh [rTAC], a
-	; sets timer to interrupt at
-	; 4k Hz / 68 ~ 59 Hz
-	ld a, -68
-	ldh [rTMA], a
-	ld a, TACF_4KHZ | TACF_START
-	ldh [rTAC], a
-	ret
-
-; unreferenced
-Func_1e8f:
-	ld hl, hVBlankFlags
-	set VBLANK_PENDING_F, [hl]
-	halt
-	ret
-
-; input:
-; - a = SFX_* constant
-PlaySFX::
-	push bc
-	ld [wCurSFX], a
-	ld c, a
-	ld a, [wROMBank]
-	push af
-	ld a, BANK(_PlaySFX)
-	bankswitch
-	ld a, c
-	call _PlaySFX
-	pop af
-	bankswitch
-	pop bc
-	ret
-
-; input:
-; - a = MUSIC_* constant
-PlayMusic::
-	push bc
-	ld c, a
-	cp MUSIC_TITLESCREEN
-	jr z, .play_music
-	ld a, [wCurSFX]
-	cp SFX_33
-	jr z, .play_music
-	ld a, [wCurMusic]
-	cp c
-	jr z, .skip ; already playing
-.play_music
-	ld a, [wROMBank]
-	push af
-	ld a, BANK(_PlayMusic)
-	bankswitch
-	ld a, c
-	ld [wCurMusic], a
-	call _PlayMusic
-	pop af
-	bankswitch
-.skip
-	pop bc
-	ret
-
 ProcessBlockQueue:
 	ldh a, [hVBlankFlags]
 	bit VBLANK_PENDING_F, a
@@ -729,13 +651,13 @@ ASSERT Data_1c000 == Data_3c000
 	ld [wd3ea], a
 	ld [wd3eb], a
 	ld [wd3ec], a
-	ld [wd3ed], a
-	ld [wd3ee], a
-	ld [wd3be], a
+	ld [wLastLevelXSection], a
+	ld [wLastLevelYSection], a
+	ld [wPowerUpAttack], a
 	ld [wd3c0], a
 	ld [wEnemyScoreMultiplier], a
 	ld [wd3c2], a
-	ld [wd3f5], a
+	ld [wDamageBlinkingCounter], a
 	ld [wd3f8], a
 	inc a ; a = $1
 	ld hl, wd037
@@ -769,14 +691,14 @@ ASSERT Data_1c000 == Data_3c000
 	jr c, .asm_22dd
 .asm_22c5
 	call Func_3199
-	ld hl, wd3ed
-	ld a, [wd051]
+	ld hl, wLastLevelXSection
+	ld a, [wLevelXSection]
 	cp [hl]
 	jr nz, .asm_22c5
 .asm_22d1
 	call Func_3199
-	ld hl, wd3ee
-	ld a, [wd052]
+	ld hl, wLastLevelYSection
+	ld a, [wLevelYSection]
 	cp [hl]
 	jr nz, .asm_22d1
 .asm_22dd
@@ -790,7 +712,7 @@ ASSERT Data_1c000 == Data_3c000
 	bit KIRBY5F_UNK1_F, [hl]
 	ret nz
 	ld b, $00
-	ld hl, wMintLeafCounter
+	ld hl, wFoodPowerUpCounter
 	ld a, [hli]
 	or [hl]
 	jr z, .asm_2305
@@ -813,7 +735,7 @@ ASSERT Data_1c000 == Data_3c000
 	ld [wObjectPropertyFlags + OBJECT_SLOT_KIRBY], a
 	ret
 
-ClearObjectsExceptSlot00::
+ClearObjectsExceptKirby::
 	ld b, NUM_OBJECT_SLOTS - 1
 	ld hl, wObjectActiveStates + OBJECT_GROUP_1_BEGIN
 	jr ClearObjects
@@ -1006,14 +928,15 @@ Func_23af::
 	add hl, bc
 	ld [hl], a
 	pop hl
+
+REPT OBJ_HP
 	inc hl
-	inc hl
-	inc hl
-	inc hl
-	ld a, [hl]
-	ld hl, wd39a
+ENDR
+	ld a, [hl] ; OBJ_HP
+	ld hl, wObjectHPs
 	add hl, bc
 	ld [hl], a
+
 	xor a
 	ld hl, wd1a0
 	add hl, bc
@@ -1327,7 +1250,7 @@ DoCommonScriptCommand:
 	ld a, [wSCX]
 	and $0f
 	ld e, a
-	ld a, [wd051]
+	ld a, [wLevelXSection]
 	dec a
 	ld l, a
 	ld h, $00
@@ -1359,7 +1282,7 @@ DoCommonScriptCommand:
 	ld a, [wSCY]
 	and $0f
 	ld e, a
-	ld a, [wd052]
+	ld a, [wLevelYSection]
 	dec a
 	ld l, a
 	ld h, $00
@@ -2395,7 +2318,7 @@ Func_2b26:
 	and $f0
 	or e
 	ld e, a
-	ld a, [wd051]
+	ld a, [wLevelXSection]
 	add $0e
 	cp e
 	jr c, .asm_2bc7
@@ -2426,7 +2349,7 @@ Func_2b26:
 	and $f0
 	or e
 	ld e, a
-	ld a, [wd052]
+	ld a, [wLevelYSection]
 	add $0c
 	cp e
 	jr c, .asm_2bc7
@@ -2660,7 +2583,7 @@ Func_2d2d:
 	ld a, [wSCX]
 	and $0f
 	ld d, a
-	ld a, [wd051]
+	ld a, [wLevelXSection]
 	dec a
 	swap a
 	ld e, a
@@ -2743,7 +2666,7 @@ Func_2d2d:
 	ld a, [wSCY]
 	and $0f
 	ld d, a
-	ld a, [wd052]
+	ld a, [wLevelYSection]
 	dec a
 	swap a
 	ld e, a
@@ -3106,11 +3029,11 @@ UpdatePowerUpCounters:
 	bit KIRBY5F_UNK5_F, a
 	ret nz
 	call .RestoreLevelMusicWhenCounterIsLow
-	ld a, [wd3f5]
+	ld a, [wDamageBlinkingCounter]
 	and a
 	jr z, .skip_reset_blinking
 	dec a
-	ld [wd3f5], a
+	ld [wDamageBlinkingCounter], a
 	jr nz, .skip_reset_blinking
 	ld hl, wd1a0 + OBJECT_SLOT_KIRBY
 	res OBJFLAG_BLINKING_F, [hl]
@@ -3119,15 +3042,15 @@ UpdatePowerUpCounters:
 	ld a, [hEngineFlags]
 	bit KABOOLA_BATTLE_F, a
 	ret nz ; skip rest of routine
-	ld hl, wMintLeafCounter
+	ld hl, wFoodPowerUpCounter
 	call .TickCounter
 	ret nz
 	; turn off flashing and blinking
 	ld a, [wd1a0 + OBJECT_SLOT_KIRBY]
 	and ~(OBJFLAG_FLASHING | OBJFLAG_BLINKING)
 	ld [wd1a0 + OBJECT_SLOT_KIRBY], a
-	ld hl, wd3be
-	bit 0, [hl]
+	ld hl, wPowerUpAttack
+	bit POWERUP_MINT_LEAF_F, [hl]
 	jr z, .asm_3030
 	ld hl, hKirbyFlags2
 	set KIRBY2F_SPIT_F, [hl]
@@ -3174,13 +3097,13 @@ UpdatePowerUpCounters:
 	ret
 
 .RestoreLevelMusicWhenCounterIsLow:
-	ld a, [wMintLeafCounter + 1]
+	ld a, [wFoodPowerUpCounter + 1]
 	ld e, a
 	ld a, [wInvincibilityCounter + 1]
 	or e
 	ret nz ; still counting down
 	; get the larger of both counters
-	ld a, [wMintLeafCounter + 0]
+	ld a, [wFoodPowerUpCounter + 0]
 	ld e, a
 	ld a, [wInvincibilityCounter + 0]
 	cp e
@@ -3198,7 +3121,7 @@ Func_3076::
 	swap a
 	ld b, a
 	inc d
-	ld hl, wd051
+	ld hl, wLevelXSection
 	ld a, d
 	sub [hl]
 	add b
@@ -3209,7 +3132,7 @@ Func_3076::
 	swap a
 	ld b, a
 	inc e
-	ld hl, wd052
+	ld hl, wLevelYSection
 	ld a, e
 	sub [hl]
 	add b
@@ -3241,19 +3164,21 @@ Func_30b2::
 	ld hl, wObjectScreenXPositions + OBJECT_SLOT_KIRBY
 	ld a, [hl]
 	add $28
-	ld e, a
+	ld e, a ; Kirby X
 	add hl, bc
 	ld a, [hl]
 	add $28
-	sub e
+	sub e ; obj X - Kirby X
+	; carry set if Kirby's on the right
 	ld a, [wScriptPtr + 0]
 	ld l, a
 	ld a, [wScriptPtr + 1]
 	ld h, a
-	jr nc, .asm_30d3
+	jr nc, .kirby_on_left
+; kirby on right
 	inc hl
 	inc hl
-.asm_30d3
+.kirby_on_left
 	ld a, [hli]
 	ld [wScriptPtr + 0], a
 	ld a, [hl]
@@ -3331,13 +3256,15 @@ SetObjectProperties::
 	add hl, bc
 	ld [hl], a
 	pop hl
-REPT OBJ_UNK4
+
+REPT OBJ_HP
 	inc hl
 ENDR
-	ld a, [hl] ; OBJ_UNK4
-	ld hl, wd39a
+	ld a, [hl] ; OBJ_HP
+	ld hl, wObjectHPs
 	add hl, bc
 	ld [hl], a
+
 	xor a
 	ld hl, wd1a0
 	add hl, bc
@@ -3402,20 +3329,22 @@ Func_319f:
 	ret
 
 .Func_31b7:
-	ld hl, wd3ed
-	ld a, [wd051]
+	ld hl, wLastLevelXSection
+	ld a, [wLevelXSection]
 	cp [hl]
-	jr z, .asm_31c4 ; wd051 == wd3ed
-	jr nc, .asm_31d2 ; wd051 > wd3ed
-	jr .asm_3220 ; wd051 < wd3ed
-.asm_31c4
-	ld hl, wd3ee
-	ld a, [wd052]
+	jr z, .same_section ; wLevelXSection == wLastLevelXSection
+	jr nc, .section_to_right ; wLevelXSection > wLastLevelXSection
+	jr .section_to_left ; wLevelXSection < wLastLevelXSection
+
+.same_section
+	ld hl, wLastLevelYSection
+	ld a, [wLevelYSection]
 	cp [hl]
-	ret z
-	jp nc, .asm_3271
-	jp .asm_32bf
-.asm_31d2
+	ret z ; wLevelYSection == wLastLevelYSection
+	jp nc, .asm_3271 ; wLevelYSection > wLastLevelYSection
+	jp .asm_32bf ; wLevelYSection < wLastLevelYSection
+
+.section_to_right
 	ld e, $05
 	bit 0, d
 	jr z, .asm_31da
@@ -3426,7 +3355,7 @@ Func_319f:
 	and a
 	jr z, .asm_31f0
 	call .Func_330f
-	ld a, [wd051]
+	ld a, [wLevelXSection]
 	add $0b
 	cp [hl]
 	jr c, .asm_31fa
@@ -3439,14 +3368,14 @@ Func_319f:
 	ld [wd3e9], a
 	jr .asm_3200
 .asm_31fa
-	ld a, [wd051]
-	ld [wd3ed], a
+	ld a, [wLevelXSection]
+	ld [wLastLevelXSection], a
 .asm_3200
 	ld a, [wd3ea]
 	add $03
 	ld [wd3ea], a
 	call .Func_330f
-	ld a, [wd051]
+	ld a, [wLevelXSection]
 	sub e
 	jr nc, .asm_3212
 	xor a
@@ -3460,7 +3389,7 @@ Func_319f:
 	ld [wd3ea], a
 	ret
 
-.asm_3220
+.section_to_left
 	ld e, $0d
 	bit 0, d
 	jr z, .asm_3228
@@ -3471,7 +3400,7 @@ Func_319f:
 	and a
 	jr z, .asm_324d
 	call .Func_330f
-	ld a, [wd051]
+	ld a, [wLevelXSection]
 	sub $03
 	jr nc, .asm_3239
 	xor a
@@ -3488,8 +3417,8 @@ Func_319f:
 	ld [wd3ea], a
 	jr .asm_3253
 .asm_324d
-	ld a, [wd051]
-	ld [wd3ed], a
+	ld a, [wLevelXSection]
+	ld [wLastLevelXSection], a
 .asm_3253
 	ld a, [wd3e9]
 	and a
@@ -3497,7 +3426,7 @@ Func_319f:
 	sub $03
 	ld [wd3e9], a
 	call .Func_330f
-	ld a, [wd051]
+	ld a, [wLevelXSection]
 	add e
 	cp [hl]
 	jr c, .asm_3253
@@ -3518,7 +3447,7 @@ Func_319f:
 	and a
 	jr z, .asm_328f
 	call .Func_331c
-	ld a, [wd052]
+	ld a, [wLevelYSection]
 	add $09
 	cp [hl]
 	jr c, .asm_3299
@@ -3531,14 +3460,14 @@ Func_319f:
 	ld [wd3eb], a
 	jr .asm_329f
 .asm_3299
-	ld a, [wd052]
-	ld [wd3ee], a
+	ld a, [wLevelYSection]
+	ld [wLastLevelYSection], a
 .asm_329f
 	ld a, [wd3ec]
 	add $03
 	ld [wd3ec], a
 	call .Func_331c
-	ld a, [wd052]
+	ld a, [wLevelYSection]
 	sub e
 	jr nc, .asm_32b1
 	xor a
@@ -3562,7 +3491,7 @@ Func_319f:
 	and a
 	jr z, .asm_32ec
 	call .Func_331c
-	ld a, [wd052]
+	ld a, [wLevelYSection]
 	sub $03
 	jr nc, .asm_32d8
 	xor a
@@ -3579,8 +3508,8 @@ Func_319f:
 	ld [wd3ec], a
 	jr .asm_32f2
 .asm_32ec
-	ld a, [wd052]
-	ld [wd3ee], a
+	ld a, [wLevelYSection]
+	ld [wLastLevelYSection], a
 .asm_32f2
 	ld a, [wd3eb]
 	and a
@@ -3588,7 +3517,7 @@ Func_319f:
 	sub $03
 	ld [wd3eb], a
 	call .Func_331c
-	ld a, [wd052]
+	ld a, [wLevelYSection]
 	add e
 	cp [hl]
 	jr c, .asm_32f2
@@ -3634,7 +3563,7 @@ Func_319f:
 	ld a, [hEngineFlags]
 	bit ENGINEF_UNK7_F, a
 	jr nz, .asm_3350
-	ld a, [wd051]
+	ld a, [wLevelXSection]
 	sub $03
 	jr nc, .asm_3345
 	xor a
@@ -3643,14 +3572,14 @@ Func_319f:
 	jr z, .asm_3349
 	ret nc
 .asm_3349
-	ld a, [wd051]
+	ld a, [wLevelXSection]
 	add $0b
 	cp d
 	ret c
 .asm_3350
 	ld a, [hli]
 	ld e, a ; y
-	ld a, [wd052]
+	ld a, [wLevelYSection]
 	sub $03
 	jr nc, .asm_335a
 	xor a
@@ -3659,7 +3588,7 @@ Func_319f:
 	jr z, .asm_335e
 	ret nc
 .asm_335e
-	ld a, [wd052]
+	ld a, [wLevelYSection]
 	add $09
 	cp e
 	ret c
@@ -3819,18 +3748,18 @@ MACRO object_properties
 	db \1 ; ?
 	db \2 ; ?
 	db \3 ; ?
-	db \4 ; item ID or damage dealt to Kirby
-	db \5 ; ?
+	db \4 ; damage dealt to Kirby
+	db \5 ; health points
 	db \6 ; ?
 	db (\7) / 10 ; score when defeated
 	dw \8 ; 
 ENDM
 
 Data_3421::
-	db $05, $00, $00, $00
+	db PROPERTY_0 | PROPERTY_2, $00, $00, $00
 
 Data_3425::
-	db $04, $00, $00, 0
+	db PROPERTY_2, $00, $00, 0
 Data_3429::
 	db PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, $08, $08, INVINCIBILITY_CANDY
 	dw Data_1c154
@@ -3942,7 +3871,7 @@ Data_358f::
 
 SECTION "Home@35a7", ROM0[$35a7]
 
-Data_35a7::
+SpitStarProperties::
 	db PROPERTY_0 | PROPERTY_2 | PROPERTY_3, $0a, $0a, $01
 
 Data_35ab::
@@ -4047,7 +3976,7 @@ Func_37b9:
 	ld a, [wSCX]
 	and $0f
 	ld b, a
-	ld a, [wd051]
+	ld a, [wLevelXSection]
 	dec a
 	swap a
 	ld d, a
@@ -4072,7 +4001,7 @@ Func_37b9:
 	ld a, [wSCY]
 	and $0f
 	ld b, a
-	ld a, [wd052]
+	ld a, [wLevelYSection]
 	dec a
 	swap a
 	ld d, a
@@ -4165,11 +4094,11 @@ Func_388a:
 StageHeaders::
 ; starting area, ?, ?, starting X, starting Y, black/white fade, intro music
 	table_width 7
-	db GREEN_GREENS_0,   01, $01, $28, $3c, FALSE, MUSIC_GREEN_GREENS_INTRO  ; GREEN_GREENS
-	db CASTLE_LOLOLO_00, 01, $01, $28, $58, FALSE, MUSIC_CASTLE_LOLOLO_INTRO ; CASTLE_LOLOLO
-	db FLOAT_ISLANDS_0,  01, $01, $28, $32, FALSE, MUSIC_FLOAT_ISLANDS_INTRO ; FLOAT_ISLANDS
-	db BUBBLY_CLOUDS_0,  01, $01, $48, $41, FALSE, MUSIC_BUBBLY_CLOUDS_INTRO ; BUBBLY_CLOUDS
-	db MT_DEDEDE_0,      01, $01, $28, $70, FALSE, MUSIC_KING_DEDEDE_BATTLE  ; MT_DEDEDE
+	db GREEN_GREENS_0,   1, 1, $28, $3c, FALSE, MUSIC_GREEN_GREENS_INTRO  ; GREEN_GREENS
+	db CASTLE_LOLOLO_00, 1, 1, $28, $58, FALSE, MUSIC_CASTLE_LOLOLO_INTRO ; CASTLE_LOLOLO
+	db FLOAT_ISLANDS_0,  1, 1, $28, $32, FALSE, MUSIC_FLOAT_ISLANDS_INTRO ; FLOAT_ISLANDS
+	db BUBBLY_CLOUDS_0,  1, 1, $48, $41, FALSE, MUSIC_BUBBLY_CLOUDS_INTRO ; BUBBLY_CLOUDS
+	db MT_DEDEDE_0,      1, 1, $28, $70, FALSE, MUSIC_KING_DEDEDE_BATTLE  ; MT_DEDEDE
 	assert_table_length NUM_STAGES
 
 MACRO area
@@ -4405,7 +4334,7 @@ Func_3d32::
 	call Func_139b
 	ld a, BANK("Bank 1")
 	bankswitch
-	jp Func_1f2
+	jp StageLoop_SkipHUDUpdate
 
 Func_3d48::
 	ld a, $15

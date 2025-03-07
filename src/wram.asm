@@ -97,11 +97,8 @@ wJoypadDown:: ; d04f
 wd050:: ; d050
 	db
 
-wd051:: ; d051
-	db
-
-wd052:: ; d052
-	db
+wLevelXSection:: db ; d051
+wLevelYSection:: db ; d052
 
 wSCX:: db ; d053
 ; Kirby's x acceleration
@@ -109,16 +106,13 @@ wKirbyXAcc:: db ; d054
 wSCY:: db ; d055
 wd056:: db ; d056
 
-wXCoord:: ; d057
-	db
-
-wYCoord:: ; d058
-	db
+wXCoord:: db ; d057
+wYCoord:: db ; d058
 
 wd059:: ; d059
 	dw
 
-wd05b:: ; d05b
+wCreditsTextScroll:: ; d05b
 	db
 
 wCurScreenX:: db ; d05c
@@ -168,15 +162,16 @@ wd06a:: ; d06a
 
 UNION
 
-wOAMFlagsOverride::
-wMenuCursorPos::
+wBGPtr_d06b::
 wd06b:: ; d06b
 	dw
 
 NEXTU
 
-wBGPtr_d06b:: ; d06b
-	dw
+wOAMFlagsOverride::
+wMenuCursorPos::
+wItemWasInhaled:: ; d06b
+	db
 
 ENDU
 
@@ -369,8 +364,8 @@ wObjectCustomFuncs:: ; d35a
 wObjectCustomFuncArgs:: ; d37a
 	ds $2 * NUM_OBJECT_SLOTS
 
-wd39a:: ; d39a
-	ds $10
+wObjectHPs:: ; d39a
+	ds NUM_OBJECT_SLOTS
 
 wd3aa:: ; d3aa
 	ds $10
@@ -383,7 +378,7 @@ wd3ba:: ; d3ba
 wd3bd:: ; d3bd
 	db
 
-wd3be:: ; d3be
+wPowerUpAttack:: ; d3be
 	db
 
 wd3bf:: ; d3bf
@@ -455,9 +450,13 @@ wd3dd:: ; d3dd
 wd3de:: ; d3de
 	db
 
-wMintLeafCounter:: ; d3df
+; remaining duration of the effects
+; of Mint Leaf and Spicy Food
+wFoodPowerUpCounter:: ; d3df
 	dw
 
+; remaining duration of the effects
+; of Invincibility Candy
 wInvincibilityCounter:: ; d3e1
 	dw
 
@@ -480,11 +479,8 @@ wd3eb:: ; d3eb
 wd3ec:: ; d3ec
 	db
 
-wd3ed:: ; d3ed
-	db
-
-wd3ee:: ; d3ee
-	db
+wLastLevelXSection:: db ; d3ed
+wLastLevelYSection:: db ; d3ee
 
 wScriptBank:: ; d3ef
 	db
@@ -500,7 +496,9 @@ wScene:: ; d3f2
 
 	ds $2
 
-wd3f5:: ; d3f5
+; remaining duration of Kirby blinking
+; after taking damage
+wDamageBlinkingCounter:: ; d3f5
 	db
 
 wd3f6:: ; d3f6
@@ -545,10 +543,10 @@ wd410:: ; d410
 wd411:: ; d411
 	db
 
-wd412:: ; d412
+wCurObjCollisionX:: ; d412
 	db
 
-wd413:: ; d413
+wCurObjCollisionY:: ; d413
 	db
 
 wDisableBumpStars:: ; d414
