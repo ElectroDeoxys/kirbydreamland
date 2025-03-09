@@ -3789,12 +3789,13 @@ ASSERT _NARG == 5
 
 ELSE
 
-ASSERT _NARG == 8
 	db \4 ; damage dealt to Kirby
 	db \5 ; health points
 	db \6 ; ?
 	db (\7) / 10 ; score when defeated
+IF _NARG == 8
 	dw \8 ; when object is defeated
+ENDC
 
 ENDC
 ENDM
@@ -3807,6 +3808,9 @@ Data_3425::
 
 Data_3429::
 	object_properties PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, $00, Data_1c154
+
+InvincibilityCandyProperties::
+	object_properties PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, INVINCIBILITY_CANDY, Data_1c172
 ; 0x342f
 
 SECTION "Home@3435", ROM0[$3435]
@@ -3822,9 +3826,9 @@ SECTION "Home@344d", ROM0[$344d]
 
 WarpStarProperties::
 	object_properties PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, WARP_STAR, Data_1c172
-; 0x3453
 
-SECTION "Home@3459", ROM0[$3459]
+Data_3453::
+	object_properties PROPERTY_0 | PROPERTY_3 | PROPERTY_PERSISTENT, 16, 16, WARP_STAR, Data_1c172
 
 MaximTomatoProperties::
 	object_properties PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, MAXIM_TOMATO, Data_1c172
@@ -3848,9 +3852,18 @@ WaddleDeeProperties::
 	object_properties PROPERTY_0, 12, 12, 1, 1, $03, 200, Data_1c154
 ; 0x3495
 
-SECTION "Home@34db", ROM0[$34db]
+SECTION "Home@34b9", ROM0[$34b9]
 
-Data_34db::
+GordoProperties::
+	object_properties PROPERTY_0, 12, 12, 3, 100, $00, 0
+; 0x34be
+
+SECTION "Home@34d2", ROM0[$34d2]
+
+ShotzoBulletProperties::
+	object_properties PROPERTY_0, 6, 6, 1, 100, $01, 0, Data_1c154
+
+ShotzoProperties::
 	object_properties PROPERTY_0, 12, 12, 1, 100, $01, 30, Data_1c154
 
 SECTION "Home@34ff", ROM0[$34ff]
@@ -3932,21 +3945,31 @@ SECTION "Home@35cd", ROM0[$35cd]
 
 Data_35cd::
 	object_properties PROPERTY_0 | PROPERTY_2 | PROPERTY_3, 2, 36, $10
-
-	db $01, $28, $09, $00
-	dw $41d8
-; 0x35d7
+; 0x35d1
 
 SECTION "Home@364f", ROM0[$364f]
 
 Data_364f::
 	object_properties PROPERTY_0, 12, 12, 1, 1, $03, 300, Data_1c154
 
+GlunkProperties::
+	object_properties PROPERTY_0, 12, 12, 1, 1, $03, 500, Data_1c154
+; 0x3658
+
 SECTION "Home@3685", ROM0[$3685]
 
 Data_3685::
 	db PROPERTY_0, $06, $06, $01
 ; 0x3689
+
+SECTION "Home@368e", ROM0[$368e]
+
+Data_368e::
+	object_properties PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY, 12, 12, 1, 1, $03, 500, Data_1c154
+
+Data_3697::
+	object_properties PROPERTY_0, 12, 12, 1, 1, $03, 500, Data_1c154
+; 0x36a0
 
 SECTION "Home@375d", ROM0[$375d]
 

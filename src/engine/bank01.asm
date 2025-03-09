@@ -1184,6 +1184,87 @@ ScriptFunc_ResetImmuneFlag:
 	ret
 ; 0x48f5
 
+SECTION "Bank 1@495c", ROMX[$495c], BANK[$1]
+
+Func_495c:
+	push bc
+	ld e, $00
+	ld hl, wObjectScreenXPositions
+	ld a, [hl] ; Kirby's x pos
+	add $28
+	add hl, bc
+	ld b, a
+	ld a, [hl] ; object's x pos
+	add $28
+	sub b
+	; carry set if Kirby is on right
+	jr nc, .kirby_on_left
+	set 3, e
+	cpl
+	inc a
+.kirby_on_left
+	ld d, a ; x distance to Kirby
+	pop bc
+	push bc
+	ld hl, wObjectScreenYPositions
+	ld a, [hl] ; Kirby's y pos
+	add hl, bc
+	sub [hl]
+	; carry set if Kirby is on top
+	jr nc, .kirby_below
+	set 2, e
+	cpl
+	inc a
+.kirby_below
+	ld c, a ; y distance to Kirby
+	cp d
+	; carry set if x dist > y dist
+	jr nc, .asm_4988
+	set 1, e
+	ld c, d
+	ld d, a
+
+.asm_4988
+	srl c
+	ld a, c
+	cp d
+	jr nc, .asm_4990
+	set 0, e
+.asm_4990
+	ld d, $00
+	ld hl, .data
+	add hl, de
+	ld a, [hl]
+	ld [wd3bd], a
+	pop bc
+	ret
+
+.data
+; going left
+	; going down
+	db $4 ; $0
+	db $5 ; $1
+	db $6 ; $2
+	db $5 ; $3
+	; going up
+	db $0 ; $4
+	db $7 ; $5
+	db $6 ; $6
+	db $7 ; $7
+
+; going right
+	; going down
+	db $4 ; $8
+	db $3 ; $9
+	db $2 ; $a
+	db $3 ; $b
+	; going up
+	db $0 ; $c
+	db $1 ; $d
+	db $2 ; $e
+	db $1 ; $f
+; 0x49ac
+
 SECTION "Bank 1@49fb", ROMX[$49fb], BANK[$1]
 
 ScriptFunc_CheckHalfSideOfScreen:

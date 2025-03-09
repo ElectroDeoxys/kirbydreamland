@@ -36,9 +36,9 @@ Data_1c000::
 	dw Data_1c692, Data_1c6a2 ; CASTLE_LOLOLO_02
 	dw Data_1c5ca, Data_1c5e0 ; CASTLE_LOLOLO_03
 	dw Data_1c6d0, Data_1c6d7 ; CASTLE_LOLOLO_04
-	dw $4729, $4748 ; CASTLE_LOLOLO_05
-	dw $47c2, $47c6 ; CASTLE_LOLOLO_06
-	dw $4819, $4835 ; CASTLE_LOLOLO_07
+	dw Data_1c729, Data_1c748 ; CASTLE_LOLOLO_05
+	dw Data_1c7c2, Data_1c7c6 ; CASTLE_LOLOLO_06
+	dw Data_1c819, Data_1c835 ; CASTLE_LOLOLO_07
 	dw $5936, $593d ; CASTLE_LOLOLO_08
 	dw $48e0, $48ea ; CASTLE_LOLOLO_09
 	dw $4909, $4919 ; CASTLE_LOLOLO_10
@@ -510,7 +510,7 @@ Data_1c641:
 Data_1c64c:
 	object $00, $03, $00, $00, AnimScript_212da, MotionScript_102d1, WaddleDeeProperties
 Data_1c656:
-	object $07, $01, $08, $00, AnimScript_21c31, MotionScript_10008, Data_34db
+	object $07, $01, $08, $00, AnimScript_StationaryShotzo, MotionScript_10008, ShotzoProperties
 Data_1c660:
 	object $00, $07, $00, $00, AnimScript_20650, MotionScript_1167c, WaddleDeeProperties
 Data_1c66a:
@@ -545,7 +545,7 @@ Data_1c6c5:
 
 Data_1c6d0:
 	dbw $00, NULL
-	dbw $09, $4715
+	dbw $09, Data_1c715
 	db $ff ; end
 
 Data_1c6d7:
@@ -570,7 +570,112 @@ Data_1c715:
 	object $09, $0a, $00, $00, AnimScript_2146b, MotionScript_11585, Data_3421
 Data_1c71f:
 	object $11, $06, $00, $00, AnimScript_2146b, MotionScript_11585, Data_3421
-; 0x1c729
+
+Data_1c729:
+	dbw $00, NULL
+	dbw $02, Data_1c772
+	dbw $05, Data_1c7a4
+	dbw $08, Data_1c767
+	dbw $09, Data_1c790
+	dbw $09, Data_1c7ae
+	dbw $0b, Data_1c7b8
+	dbw $0d, Data_1c77c
+	dbw $0e, Data_1c79a
+	dbw $0f, Data_1c786
+	db $ff ; end
+
+Data_1c748:
+	dbw $00, NULL
+	dbw $01, Data_1c790
+	dbw $01, Data_1c79a
+	dbw $02, Data_1c7b8
+	dbw $03, Data_1c7ae
+	dbw $05, Data_1c772
+	dbw $06, Data_1c786
+	dbw $07, Data_1c767
+	dbw $09, Data_1c77c
+	dbw $07, Data_1c7a4
+	db $ff ; end
+
+Data_1c767:
+	object $08, $07, $00, $00, AnimScript_2092e, MotionScript_10008, EnergyDrinkProperties, 8
+Data_1c772:
+	object $02, $05, $00, $00, AnimScript_211e4, MotionScript_10008, GlunkProperties
+Data_1c77c:
+	object $0d, $09, $00, $00, AnimScript_211e4, MotionScript_10008, GlunkProperties
+Data_1c786:
+	object $0f, $06, $00, $00, AnimScript_211e4, MotionScript_10008, GlunkProperties
+Data_1c790:
+	object $09, $01, $e0, $00, AnimScript_211c3, MotionScript_11241, GlunkProperties
+Data_1c79a:
+	object $0e, $01, $e0, $00, AnimScript_211c3, MotionScript_11241, GlunkProperties
+Data_1c7a4:
+	object $05, $07, $00, $00, AnimScript_20572, MotionScript_10508, GordoProperties
+Data_1c7ae:
+	object $09, $03, $00, $00, AnimScript_20572, MotionScript_114b2, GordoProperties
+Data_1c7b8:
+	object $0b, $02, $00, $00, AnimScript_20647, MotionScript_102ce, WaddleDeeProperties
+
+Data_1c7c2:
+	dbw $00, NULL
+	db $ff ; end
+
+Data_1c7c6:
+	dbw $00, NULL
+	dbw $05, Data_1c7dc
+	dbw $06, Data_1c7f0
+	dbw $07, Data_1c7fa
+	dbw $08, Data_1c804
+	dbw $0b, Data_1c80e
+	dbw $12, Data_1c7e6
+	db $ff ; end
+
+Data_1c7dc:
+	object $09, $05, $00, $00, AnimScript_213fa, MotionScript_114fa, WaddleDeeProperties
+Data_1c7e6:
+	object $01, $12, $00, $00, AnimScript_211e4, MotionScript_10008, GlunkProperties
+Data_1c7f0:
+	object $01, $07, $00, $f0, AnimScript_20650, MotionScript_11682, WaddleDeeProperties
+Data_1c7fa:
+	object $04, $07, $00, $00, AnimScript_20650, MotionScript_11688, WaddleDeeProperties
+Data_1c804:
+	object $08, $08, $00, $00, AnimScript_21524, MotionScript_10008, ShotzoProperties
+Data_1c80e:
+	object $08, $0b, $00, $00, AnimScript_2090a, MotionScript_10008, InvincibilityCandyProperties, 2
+
+Data_1c819:
+	dbw $00, NULL
+	dbw $07, Data_1c844
+	dbw $0a, Data_1c86c
+	dbw $0b, Data_1c84e
+	dbw $0f, Data_1c876
+	dbw $0f, Data_1c858
+	dbw $11, Data_1c862
+	dbw $14, Data_1c880
+	dbw $19, Data_1c839
+	db $ff ; end
+
+Data_1c835:
+	dbw $00, NULL
+	db $ff ; end
+
+Data_1c839:
+	object $19, $06, $f8, $00, AnimScript_20958, MotionScript_1031d, Data_3453, 3
+Data_1c844:
+	object $07, $00, $00, $00, AnimScript_213a1, MotionScript_11425, Data_3697
+Data_1c84e:
+	object $0b, $03, $00, $00, AnimScript_20000, MotionScript_11461, Data_3697
+Data_1c858:
+	object $0f, $05, $00, $00, AnimScript_213a1, MotionScript_11443, Data_3697
+Data_1c862:
+	object $11, $00, $00, $00, AnimScript_213a1, MotionScript_11425, Data_3697
+Data_1c86c:
+	object $0a, $04, $00, $00, AnimScript_212d1, MotionScript_112d9, WaddleDeeProperties
+Data_1c876:
+	object $0f, $05, $16, $ee, AnimScript_212d1, MotionScript_11300, WaddleDeeProperties
+Data_1c880:
+	object $14, $04, $00, $00, AnimScript_212d1, MotionScript_112d9, WaddleDeeProperties
+; 0x1c88a
 
 SECTION "Bank 7@558f", ROMX[$558f], BANK[$7]
 

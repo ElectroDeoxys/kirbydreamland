@@ -421,9 +421,18 @@ AnimScript_20566::
 AnimScript_2056c::
 	frame  4, $5b99
 	frame  0, $5ba1
-; 0x20572
 
-SECTION "Bank 8@4587", ROMX[$4587], BANK[$8]
+AnimScript_20572:
+.loop
+	script_repeat 2
+	frame 10, $5e45
+	frame 10, $5e4d
+	script_repeat_end
+	script_repeat 4
+	frame  6, $5e45
+	frame  6, $5e4d
+	script_repeat_end
+	jump_abs .loop
 
 AnimScript_20587:
 .loop
@@ -704,6 +713,13 @@ AnimScript_208fc:
 	jump_rel .loop
 ; 0x20907
 
+SECTION "Bank 8@490a", ROMX[$490a], BANK[$8]
+
+AnimScript_2090a:
+	script_exec Func_4ad6
+	frame  0, $5c5d
+; 0x20910
+
 SECTION "Bank 8@4925", ROMX[$4925], BANK[$8]
 
 AnimScript_20925:
@@ -781,7 +797,21 @@ AnimScript_20967:
 	script_end
 ; 0x209c0
 
-SECTION "Bank 8@49f6", ROMX[$49f6], BANK[$8]
+SECTION "Bank 8@49d6", ROMX[$49d6], BANK[$8]
+
+AnimScript_209d6:
+	script_exec_arg PlaySFX, SFX_17
+	script_repeat 30
+	frame  1, $5e2d
+	frame  1, $5e31
+	frame  1, $5e35
+	frame  1, $5e39
+	frame  1, $5e3d
+	frame  1, $5e41
+	script_repeat_end
+	frame  4, $5c1d
+	frame  4, $5c19
+	script_end
 
 AnimScript_209f6:
 	frame  4, $5d21
@@ -1558,6 +1588,36 @@ AnimScript_BossHPIncrementer:
 	script_end
 ; 0x211c0
 
+SECTION "Bank 8@51c3", ROMX[$51c3], BANK[$8]
+
+AnimScript_211c3:
+.loop
+	frame 10, $447c
+	frame 10, $4484
+	frame 10, $448c
+	jump_abs .loop
+; 0x211cf
+
+SECTION "Bank 8@51d8", ROMX[$51d8], BANK[$8]
+
+AnimScript_211d8:
+.loop
+	frame 20, $43ec
+	frame 20, $43f4
+	frame 20, $43fc
+	jump_abs .loop
+
+AnimScript_211e4:
+	script_repeat 6
+	frame 30, $43ec
+	frame 20, $43f4
+	script_repeat_end
+	frame 50, $43ec
+	frame 15, $43f4
+	frame 10, $43fc
+	branch_kirby_pos $5200, $520D
+; 0x211fd
+
 SECTION "Bank 8@522f", ROMX[$522f], BANK[$8]
 
 AnimScript_2122f:
@@ -1573,7 +1633,13 @@ AnimScript_21238:
 	frame  8, $43c0
 	frame  3, $43b4
 	jump_abs AnimScript_2122f
-; 0x2124a
+
+AnimScript_2124a:
+.loop
+	frame  8, $43b4
+	frame  8, $43c0
+	jump_abs .loop
+; 0x21253
 
 SECTION "Bank 8@527a", ROMX[$527a], BANK[$8]
 
@@ -1614,9 +1680,12 @@ AnimScript_212a4:
 	frame  4, $4394
 	frame  4, $438c
 	jump_abs AnimScript_2127a
-; 0x212d1
 
-SECTION "Bank 8@52da", ROMX[$52da], BANK[$8]
+AnimScript_212d1:
+.loop
+	frame  8, $437c
+	frame  8, $4384
+	jump_abs .loop
 
 AnimScript_212da:
 .loop
@@ -1636,7 +1705,86 @@ AnimScript_2134f:
 	frame 32, $4384
 	frame 32, $437c
 	jump_rel .loop
-; 0x21363
+
+AnimScript_21363:
+	set_custom_func Func_14105, NULL
+	script_exec ScriptFunc_SetImmuneFlag
+	branch_kirby_pos .script_21372, .script_2137d
+
+.script_21372
+	script_repeat 10
+	frame  4, $58b8
+	frame  4, $441c
+	script_repeat_end
+	jump_rel .asm_21388
+
+.script_2137d
+	script_repeat 10
+	frame  4, $58b8
+	frame  4, $442c
+	script_repeat_end
+	jump_rel .asm_21388 ; useless jump
+
+.asm_21388
+	branch_kirby_pos .script_21398, .script_2138f
+
+.script_2138f
+	frame 24, $442c
+	frame 12, $4434
+	jump_abs .asm_21388
+
+.script_21398
+	frame 24, $441c
+	frame 12, $4424
+	jump_abs .asm_21388
+
+AnimScript_213a1:
+.loop
+	set_custom_func Func_14105, NULL
+	script_exec ScriptFunc_SetImmuneFlag
+	script_repeat 3
+	frame 16, $442c
+	frame 16, $4434
+	script_repeat_end
+	frame 16, $442c
+	frame 16, $4424
+	script_repeat 5
+	frame 16, $441c
+	frame 16, $4424
+	script_repeat_end
+	frame 16, $441c
+	frame 16, $4434
+	script_repeat 2
+	frame 16, $442c
+	frame 16, $4434
+	script_repeat_end
+	jump_abs .loop
+; 0x213d3
+
+SECTION "Bank 8@53fa", ROMX[$53fa], BANK[$8]
+
+AnimScript_213fa:
+.loop
+	frame 10, $445c
+	frame  6, $4464
+	frame  6, $446c
+	frame 10, $4474
+	frame  4, $446c
+	frame  4, $4464
+	frame  4, $445c
+	frame  4, $4464
+	frame  4, $446c
+	frame  4, $4474
+	frame  4, $446c
+	frame  4, $4464
+	frame 10, $445c
+	frame  6, $4464
+	frame  6, $446c
+	frame 10, $4474
+	frame  8, $446c
+	frame  8, $4464
+	jump_abs .loop
+; 0x21433
 
 SECTION "Bank 8@543e", ROMX[$543e], BANK[$8]
 
@@ -1680,6 +1828,17 @@ AnimScript_21486:
 	jump_abs .loop
 ; 0x214ae
 
+SECTION "Bank 8@5524", ROMX[$5524], BANK[$8]
+
+AnimScript_21524:
+.loop
+	frame 65, $5ee5
+	create_object AnimScript_209d6, MotionScript_102da, ShotzoBulletProperties
+	set_motion_script MotionScript_1028c
+	frame 65, $5ee5
+	jump_abs .loop
+; 0x21539
+
 SECTION "Bank 8@5aa8", ROMX[$5aa8], BANK[$8]
 
 AnimScript_21aa8:
@@ -1692,26 +1851,172 @@ AnimScript_21aa8:
 
 SECTION "Bank 8@5c31", ROMX[$5c31], BANK[$8]
 
-AnimScript_21c31:
-	jump_abs AnimScript_21c59
-; 0x21c34
+AnimScript_StationaryShotzo:
+	jump_abs .script_21c59
 
-SECTION "Bank 8@5c59", ROMX[$5c59], BANK[$8]
+.turn_up
+	frame 30, $5ef5
+	script_exec Func_495c
+	jumptable wd3bd
+	dw .shoot_up ; $0
+	dw .turn_up_right ; $1
+	dw .script_21c9d ; $2
+	dw .script_21c9d ; $3
+	dw .script_21c72 ; $4
+	dw .script_21d63 ; $5
+	dw .script_21d63 ; $6
+	dw .turn_up_left ; $7
 
-AnimScript_21c59:
+.shoot_up
+	create_object AnimScript_209d6, MotionScript_102ec, ShotzoBulletProperties
+	set_motion_script MotionScript_102a4
+
+.script_21c59
 	frame 15, $5ef5
 .loop
-	script_exec $495c
+	script_exec Func_495c
 	jumptable wd3bd
-	dw $5c34
-	dw $5c78
-	dw $5c9d
-	dw $5c9d
-	dw $5c72
-	dw $5d63
-	dw $5d63
-	dw $5d3e
-; 0x21c72
+	dw .turn_up ; $0
+	dw .turn_up_right ; $1
+	dw .script_21c9d ; $2
+	dw .script_21c9d ; $3
+	dw .script_21c72 ; $4
+	dw .script_21d63 ; $5
+	dw .script_21d63 ; $6
+	dw .turn_up_left ; $7
+
+.script_21c72
+	frame 60, $5ef5
+	jump_abs .loop
+
+.turn_up_right
+	frame 30, $5efd
+	script_exec Func_495c
+	jumptable wd3bd
+	dw .turn_up ; $0
+	dw .shoot_up_right ; $1
+	dw .turn_right ; $2
+	dw .script_21cf4 ; $3
+	dw .script_21c72 ; $4
+	dw .script_21c59 ; $5
+	dw .script_21c59 ; $6
+	dw .script_21c59 ; $7
+
+.shoot_up_right
+	create_object AnimScript_209d6, MotionScript_102ef, ShotzoBulletProperties
+	set_motion_script MotionScript_102b0
+
+.script_21c9d
+	frame 15, $5efd
+	script_exec Func_495c
+	jumptable wd3bd
+	dw .turn_up ; $0
+	dw .turn_up_right ; $1
+	dw .turn_right ; $2
+	dw .script_21cf4 ; $3
+	dw .script_21c72 ; $4
+	dw .script_21c59 ; $5
+	dw .script_21c59 ; $6
+	dw .script_21c59 ; $7
+
+.turn_right
+	frame 30, $5f05
+	script_exec Func_495c
+	jumptable wd3bd
+	dw .script_21c9d ; $0
+	dw .turn_up_right ; $1
+	dw .shoot_right ; $2
+	dw .script_21cf4 ; $3
+	dw .script_21c9d ; $4
+	dw .script_21c9d ; $5
+	dw .script_21c9d ; $6
+	dw .script_21c9d ; $7
+
+.shoot_right
+	create_object AnimScript_209d6, MotionScript_102e9, ShotzoBulletProperties
+	set_motion_script MotionScript_102bc
+	frame 30, $5f05
+
+.script_21cde
+	script_exec Func_495c
+	jumptable wd3bd
+	dw .script_21c9d ; $0
+	dw .turn_up_right ; $1
+	dw .turn_right ; $2
+	dw .script_21cf4 ; $3
+	dw .script_21c9d ; $4
+	dw .script_21c9d ; $5
+	dw .script_21c9d ; $6
+	dw .script_21c9d ; $7
+
+.script_21cf4
+	frame 60, $5f05
+	jump_abs .script_21cde
+
+.turn_left
+	frame 30, $5ee5
+	script_exec Func_495c
+	jumptable wd3bd
+	dw .script_21d63 ; $0
+	dw .script_21d63 ; $1
+	dw .script_21d63 ; $2
+	dw .script_21d63 ; $3
+	dw .script_21d63 ; $4
+	dw .script_21d38 ; $5
+	dw .shoot_left ; $6
+	dw .turn_up_left ; $7
+
+.shoot_left
+	create_object AnimScript_209d6, MotionScript_102e6, ShotzoBulletProperties
+	set_motion_script MotionScript_1028c
+	frame 30, $5ee5
+
+.script_21d22
+	script_exec Func_495c
+	jumptable wd3bd
+	dw .script_21d63 ; $0
+	dw .script_21d63 ; $1
+	dw .script_21d63 ; $2
+	dw .script_21d63 ; $3
+	dw .script_21d63 ; $4
+	dw .script_21d38 ; $5
+	dw .turn_left ; $6
+	dw .turn_up_left ; $7
+
+.script_21d38
+	frame 60, $5ee5
+	jump_abs .script_21d22
+
+.turn_up_left
+	frame 30, $5eed
+	script_exec Func_495c
+	jumptable wd3bd
+	dw .turn_up ; $0
+	dw .script_21c59 ; $1
+	dw .script_21c59 ; $2
+	dw .script_21c59 ; $3
+	dw .script_21c72 ; $4
+	dw .script_21d38 ; $5
+	dw .turn_left ; $6
+	dw .shoot_up_left ; $7
+
+.shoot_up_left
+	create_object AnimScript_209d6, MotionScript_102f2, ShotzoBulletProperties
+	set_motion_script MotionScript_10298
+
+.script_21d63
+	frame 15, $5eed
+	script_exec Func_495c
+	jumptable wd3bd
+	dw .turn_up ; $0
+	dw .script_21c59 ; $1
+	dw .script_21c59 ; $2
+	dw .script_21c59 ; $3
+	dw .script_21c72 ; $4
+	dw .script_21d38 ; $5
+	dw .turn_left ; $6
+	dw .turn_up_left ; $7
+; 0x21d7c
 
 SECTION "Bank 8@5e6c", ROMX[$5e6c], BANK[$8]
 
