@@ -1135,7 +1135,7 @@ MotionScript_10db7:
 	set_velocities  8, VEL_RIGHT_0_75, VEL_UP_0_75
 	set_velocities  8, VEL_RIGHT_0_75, VEL_DOWN_0_75
 	set_velocities  8, VEL_RIGHT_0_75, VEL_DOWN_1_00
-	set_object_properties BroomHatterProperties
+	set_object_properties StandardEnemyGravityProperties
 	set_velocities  0, 0, 0
 
 MotionScript_10dcb:
@@ -1143,7 +1143,7 @@ MotionScript_10dcb:
 	set_velocities  8, VEL_LEFT_0_75, VEL_UP_0_75
 	set_velocities  8, VEL_LEFT_0_75, VEL_DOWN_0_75
 	set_velocities  8, VEL_LEFT_0_75, VEL_DOWN_1_00
-	set_object_properties BroomHatterProperties
+	set_object_properties StandardEnemyGravityProperties
 	set_velocities  0, 0, 0
 
 MotionScript_10ddf:
@@ -1653,7 +1653,7 @@ MotionScript_11251:
 
 MotionScript_11265:
 .loop
-	create_object AnimScript_2124a, MotionScript_11297, WaddleDeeProperties
+	create_object AnimScript_2124a, MotionScript_11297, StandardEnemyProperties
 	set_velocities  1, 0, 0
 	script_delay 250
 	script_delay 200

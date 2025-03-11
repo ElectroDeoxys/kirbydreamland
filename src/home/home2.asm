@@ -3848,10 +3848,10 @@ SparklingStarProperties::
 
 SECTION "Home@3483", ROM0[$3483]
 
-BroomHatterProperties::
+StandardEnemyGravityProperties::
 	object_properties PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY, 12, 12, 1, 1, $03, 200, Data_1c154
 
-WaddleDeeProperties::
+StandardEnemyProperties::
 	object_properties PROPERTY_0, 12, 12, 1, 1, $03, 200, Data_1c154
 ; 0x3495
 

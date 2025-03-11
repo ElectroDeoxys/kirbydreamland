@@ -308,49 +308,49 @@ Data_1c2f9:
 	db $ff ; end
 
 LevelObject_1c304:
-	object 15, 5, 0, 0, AnimScript_20587, MotionScript_102c8, WaddleDeeProperties
+	object 15, 5, 0, 0, AnimScript_20587, MotionScript_102c8, StandardEnemyProperties
 ; unreferenced
 	object 17, 5, -8, 0, AnimScript_20d19, MotionScript_111d8, CappyProperties
 LevelObject_1c318:
-	object 17, 5, 0, 0, AnimScript_20587, MotionScript_102c8, WaddleDeeProperties
+	object 17, 5, 0, 0, AnimScript_20587, MotionScript_102c8, StandardEnemyProperties
 LevelObject_1c322:
-	object 21, 4, 0, 0, AnimScript_205ae, MotionScript_103ff, WaddleDeeProperties
+	object 21, 4, 0, 0, AnimScript_205ae, MotionScript_103ff, StandardEnemyProperties
 LevelObject_1c32c:
 	object 22, 2, 0, 0, AnimScript_20c52, MotionScript_10d5d, TwizzyProperties
 LevelObject_1c336:
 	object 24, 4, 0, 0, AnimScript_20c5b, MotionScript_10d99, TwizzyProperties
 LevelObject_1c340:
-	object 31, 1, 0, 0, AnimScript_20647, MotionScript_10508, WaddleDeeProperties
+	object 31, 1, 0, 0, AnimScript_20647, MotionScript_10508, StandardEnemyProperties
 LevelObject_1c34a:
-	object 33, 5, 0, 0, AnimScript_205ae, MotionScript_103ff, WaddleDeeProperties
+	object 33, 5, 0, 0, AnimScript_205ae, MotionScript_103ff, StandardEnemyProperties
 LevelObject_1c354:
 	object 41, 5, 8, 0, AnimScript_20d0b, MotionScript_111e4, CappyProperties
 LevelObject_1c35e:
-	object 48, 2, 0, 0, AnimScript_20d28, MotionScript_1067d, WaddleDeeProperties
+	object 48, 2, 0, 0, AnimScript_20d28, MotionScript_1067d, StandardEnemyProperties
 LevelObject_1c368:
 	object 48, 5, -8, 0, AnimScript_20d19, MotionScript_111d8, CappyProperties
 LevelObject_1c372:
-	object 49, 2, 0, 8, AnimScript_20d28, MotionScript_1067d, WaddleDeeProperties
+	object 49, 2, 0, 8, AnimScript_20d28, MotionScript_1067d, StandardEnemyProperties
 ; unreferenced
 	object 51, 3, 0, 0, AnimScript_20c5b, MotionScript_10d99, TwizzyProperties
 LevelObject_1c386:
 	object 57, 4, 0, 0, AnimScript_20c5b, MotionScript_10d99, TwizzyProperties
 LevelObject_1c390:
-	object 61, 1, 0, 0, AnimScript_20647, MotionScript_10508, WaddleDeeProperties
+	object 61, 1, 0, 0, AnimScript_20647, MotionScript_10508, StandardEnemyProperties
 LevelObject_1c39a:
-	object 64, 5, 0, 0, AnimScript_205cc, MotionScript_1042f, WaddleDeeProperties
+	object 64, 5, 0, 0, AnimScript_205cc, MotionScript_1042f, StandardEnemyProperties
 LevelObject_1c3a4:
 	object 66, 5, 0, 0, AnimScript_20d3f, MotionScript_10eae, PoppyBrosJrProperties
 LevelObject_1c3ae:
 	object 67, 5, 8, 0, AnimScript_20d19, MotionScript_111d8, CappyProperties
 LevelObject_1c3b8:
-	object 70, 5, 0, 0, AnimScript_205ae, MotionScript_103ff, WaddleDeeProperties
+	object 70, 5, 0, 0, AnimScript_205ae, MotionScript_103ff, StandardEnemyProperties
 LevelObject_1c3c2:
 	object 71, 3, 0, 0, AnimScript_20c52, MotionScript_10d5d, TwizzyProperties
 LevelObject_1c3cc:
 	object 74, 4, 0, 0, AnimScript_20c5b, MotionScript_10d99, TwizzyProperties
 LevelObject_1c3d6:
-	object 79, 2, 0, 0, AnimScript_20647, MotionScript_1067d, WaddleDeeProperties
+	object 79, 2, 0, 0, AnimScript_20647, MotionScript_1067d, StandardEnemyProperties
 LevelObject_1c3e0:
 	object 78, 3, -6, 0, AnimScript_WarpStar, MotionScript_WarpStar, WarpStarFloorProperties, 2
 
@@ -360,27 +360,27 @@ LevelObject_1c3f6:
 	object 10, 6, 0, 0, AnimScript_EnergyDrink, MotionScript_10008, EnergyDrinkProperties, 1
 
 LevelObject_1c401:
-	object 18, 1, 0, 0, AnimScript_20647, MotionScript_10508, WaddleDeeProperties
+	object 18, 1, 0, 0, AnimScript_20647, MotionScript_10508, StandardEnemyProperties
 LevelObject_1c40b:
 	object 15, 6, 0, 0, AnimScript_20e58, MotionScript_10f84, PoppyBrosJrOnAppleProperties
 LevelObject_1c415:
 	object 21, 6, -8, 0, AnimScript_20d0b, MotionScript_111e4, CappyProperties
 LevelObject_1c41f:
-	object 25, 4, 0, 0, AnimScript_205ae, MotionScript_103ff, WaddleDeeProperties
+	object 25, 4, 0, 0, AnimScript_205ae, MotionScript_103ff, StandardEnemyProperties
 LevelObject_1c429:
-	object 27, 3, 0, 0, AnimScript_20d28, MotionScript_1067d, WaddleDeeProperties
+	object 27, 3, 0, 0, AnimScript_20d28, MotionScript_1067d, StandardEnemyProperties
 LevelObject_1c433:
-	object 31, 6, 0, 0, AnimScript_205ae, MotionScript_103ff, WaddleDeeProperties
+	object 31, 6, 0, 0, AnimScript_205ae, MotionScript_103ff, StandardEnemyProperties
 LevelObject_1c43d:
-	object 33, 1, 0, 0, AnimScript_20647, MotionScript_10508, WaddleDeeProperties
+	object 33, 1, 0, 0, AnimScript_20647, MotionScript_10508, StandardEnemyProperties
 LevelObject_1c447:
 	object 36, 6, 0, 0, AnimScript_20d92, MotionScript_10f06, GrizzoProperties
 LevelObject_1c451:
-	object 38, 0, -48, 0, AnimScript_20647, MotionScript_10d16, WaddleDeeProperties
+	object 38, 0, -48, 0, AnimScript_20647, MotionScript_10d16, StandardEnemyProperties
 LevelObject_1c45b:
 	object 10, 0, -32, 0, AnimScript_PoppyBrosSr, MotionScript_PoppyBrosSr, Data_3429, 6
 ; unreferenced
-	object 55, 6, -8, 0, AnimScript_2063b, MotionScript_10cf4, WaddleDeeProperties
+	object 55, 6, -8, 0, AnimScript_2063b, MotionScript_10cf4, StandardEnemyProperties
 LevelObject_1c470:
 	object 42, 2, 0, 0, AnimScript_20c52, MotionScript_10d5d, TwizzyProperties
 LevelObject_1c47a:
@@ -392,11 +392,11 @@ LevelObject_1c484:
 LevelObject_1c498:
 	object 47, 6, -8, 0, AnimScript_20d19, MotionScript_111d8, CappyProperties
 LevelObject_1c4a2:
-	object 48, 5, 0, 0, AnimScript_2063b, MotionScript_10cf4, WaddleDeeProperties
+	object 48, 5, 0, 0, AnimScript_2063b, MotionScript_10cf4, StandardEnemyProperties
 LevelObject_1c4ac:
-	object 50, 0, -70, 0, AnimScript_20647, MotionScript_10d16, WaddleDeeProperties
+	object 50, 0, -70, 0, AnimScript_20647, MotionScript_10d16, StandardEnemyProperties
 LevelObject_1c4b6:
-	object 56, 0, -72, 0, AnimScript_20647, MotionScript_10d16, WaddleDeeProperties
+	object 56, 0, -72, 0, AnimScript_20647, MotionScript_10d16, StandardEnemyProperties
 LevelObject_1c4c0:
 	object 58, 6, 0, 0, AnimScript_20d3f, MotionScript_10e96, PoppyBrosJrProperties
 LevelObject_1c4ca:
@@ -406,11 +406,11 @@ LevelObject_1c4ca:
 LevelObject_1c4de:
 	object 63, 6, 0, 0, AnimScript_20e10, MotionScript_10f06, PoppyBrosJrOnGrizzoProperties
 LevelObject_1c4e8:
-	object 65, 6, -16, 0, AnimScript_2063b, MotionScript_10cf4, WaddleDeeProperties
+	object 65, 6, -16, 0, AnimScript_2063b, MotionScript_10cf4, StandardEnemyProperties
 LevelObject_1c4f2:
 	object 66, 6, 8, 0, AnimScript_20d0b, MotionScript_111e4, CappyProperties
 LevelObject_1c4fc:
-	object 68, 1, 0, 0, AnimScript_20647, MotionScript_10508, WaddleDeeProperties
+	object 68, 1, 0, 0, AnimScript_20647, MotionScript_10508, StandardEnemyProperties
 LevelObject_1c506:
 	object 69, 2, 0, 0, AnimScript_20c52, MotionScript_10d5d, TwizzyProperties
 LevelObject_1c510:
@@ -421,9 +421,9 @@ LevelObject_1c51a:
 LevelObject_1c524:
 	object 6, 4, 0, 0, AnimScript_20c5b, MotionScript_10d99, TwizzyProperties
 LevelObject_1c52e:
-	object 9, 4, 0, 0, AnimScript_205ae, MotionScript_103ff, WaddleDeeProperties
+	object 9, 4, 0, 0, AnimScript_205ae, MotionScript_103ff, StandardEnemyProperties
 LevelObject_1c538:
-	object 10, 7, 0, 0, AnimScript_205cc, MotionScript_1042f, WaddleDeeProperties
+	object 10, 7, 0, 0, AnimScript_205cc, MotionScript_1042f, StandardEnemyProperties
 LevelObject_1c542:
 	object 11, 19, -7, 0, AnimScript_20cef, MotionScript_10e3b, CaplessCappyProperties
 LevelObject_1c54c:
@@ -460,7 +460,7 @@ Data_1c5b9:
 	db $ff ; end
 
 LevelObject_1c5c0:
-	object 8, 1, 0, 0, AnimScript_2143e, MotionScript_1154d, BroomHatterProperties
+	object 8, 1, 0, 0, AnimScript_2143e, MotionScript_1154d, StandardEnemyGravityProperties
 
 Data_1c5ca:
 	dbw $00, NULL
@@ -477,17 +477,17 @@ Data_1c5e0:
 	db $ff ; end
 
 LevelObject_1c5e4:
-	object 11, 0, -64, 0, AnimScript_21238, MotionScript_11251, WaddleDeeProperties
+	object 11, 0, -64, 0, AnimScript_21238, MotionScript_11251, StandardEnemyProperties
 LevelObject_1c5ee:
-	object 21, 0, -64, 0, AnimScript_21238, MotionScript_11251, WaddleDeeProperties
+	object 21, 0, -64, 0, AnimScript_21238, MotionScript_11251, StandardEnemyProperties
 LevelObject_1c5f8:
 	object 11, 6, 0, 0, AnimScript_BombItem, MotionScript_10008, BombProperties, -1
 LevelObject_1c603:
-	object 10, 6, -32, 0, AnimScript_2134f, MotionScript_113e2, WaddleDeeProperties
+	object 10, 6, -32, 0, AnimScript_2134f, MotionScript_113e2, StandardEnemyProperties
 LevelObject_1c60d:
-	object 20, 6, -32, 0, AnimScript_2134f, MotionScript_113e2, WaddleDeeProperties
+	object 20, 6, -32, 0, AnimScript_2134f, MotionScript_113e2, StandardEnemyProperties
 LevelObject_1c617:
-	object 22, 6, 0, 0, AnimScript_2143e, MotionScript_1154d, WaddleDeeProperties
+	object 22, 6, 0, 0, AnimScript_2143e, MotionScript_1154d, StandardEnemyProperties
 
 Data_1c621:
 	dbw $00, NULL
@@ -508,19 +508,19 @@ Data_1c625:
 LevelObject_1c641:
 	object 4, 11, 8, 0, AnimScript_20925, MotionScript_10008, MikeProperties, 7
 LevelObject_1c64c:
-	object 0, 3, 0, 0, AnimScript_212da, MotionScript_102d1, WaddleDeeProperties
+	object 0, 3, 0, 0, AnimScript_212da, MotionScript_102d1, StandardEnemyProperties
 LevelObject_1c656:
 	object 7, 1, 8, 0, AnimScript_StationaryShotzo, MotionScript_10008, ShotzoProperties
 LevelObject_1c660:
-	object 0, 7, 0, 0, AnimScript_20650, MotionScript_1167c, WaddleDeeProperties
+	object 0, 7, 0, 0, AnimScript_20650, MotionScript_1167c, StandardEnemyProperties
 LevelObject_1c66a:
-	object 2, 11, 0, 0, AnimScript_20650, MotionScript_11679, WaddleDeeProperties
+	object 2, 11, 0, 0, AnimScript_20650, MotionScript_11679, StandardEnemyProperties
 LevelObject_1c674:
-	object 3, 14, 0, 0, AnimScript_205ae, MotionScript_103ff, WaddleDeeProperties
+	object 3, 14, 0, 0, AnimScript_205ae, MotionScript_103ff, StandardEnemyProperties
 LevelObject_1c67e:
-	object 5, 14, 0, 0, AnimScript_2061d, MotionScript_103ff, WaddleDeeProperties
+	object 5, 14, 0, 0, AnimScript_2061d, MotionScript_103ff, StandardEnemyProperties
 LevelObject_1c688:
-	object 7, 14, 0, 0, AnimScript_205ae, MotionScript_103ff, WaddleDeeProperties
+	object 7, 14, 0, 0, AnimScript_205ae, MotionScript_103ff, StandardEnemyProperties
 
 Data_1c692:
 	dbw $00, NULL
@@ -535,9 +535,9 @@ Data_1c6a2:
 	db $ff ; end
 
 LevelObject_1c6a6:
-	object 0, 3, 0, 0, AnimScript_212a4, MotionScript_11345, WaddleDeeProperties
+	object 0, 3, 0, 0, AnimScript_212a4, MotionScript_11345, StandardEnemyProperties
 LevelObject_1c6b0:
-	object 9, 3, 0, 0, AnimScript_2127a, MotionScript_1130c, WaddleDeeProperties
+	object 9, 3, 0, 0, AnimScript_2127a, MotionScript_1130c, StandardEnemyProperties
 LevelObject_1c6ba:
 	object 7, 6, 0, 0, AnimScript_EnergyDrink, MotionScript_10008, EnergyDrinkProperties, 0
 LevelObject_1c6c5:
@@ -614,7 +614,7 @@ LevelObject_1c7a4:
 LevelObject_1c7ae:
 	object 9, 3, 0, 0, AnimScript_20572, MotionScript_114b2, GordoProperties
 LevelObject_1c7b8:
-	object 11, 2, 0, 0, AnimScript_20647, MotionScript_102ce, WaddleDeeProperties
+	object 11, 2, 0, 0, AnimScript_20647, MotionScript_102ce, StandardEnemyProperties
 
 Data_1c7c2:
 	dbw $00, NULL
@@ -631,13 +631,13 @@ Data_1c7c6:
 	db $ff ; end
 
 LevelObject_1c7dc:
-	object 9, 5, 0, 0, AnimScript_213fa, MotionScript_114fa, WaddleDeeProperties
+	object 9, 5, 0, 0, AnimScript_213fa, MotionScript_114fa, StandardEnemyProperties
 LevelObject_1c7e6:
 	object 1, 18, 0, 0, AnimScript_211e4, MotionScript_10008, GlunkProperties
 LevelObject_1c7f0:
-	object 1, 7, 0, -16, AnimScript_20650, MotionScript_11682, WaddleDeeProperties
+	object 1, 7, 0, -16, AnimScript_20650, MotionScript_11682, StandardEnemyProperties
 LevelObject_1c7fa:
-	object 4, 7, 0, 0, AnimScript_20650, MotionScript_11688, WaddleDeeProperties
+	object 4, 7, 0, 0, AnimScript_20650, MotionScript_11688, StandardEnemyProperties
 LevelObject_1c804:
 	object 8, 8, 0, 0, AnimScript_21524, MotionScript_10008, ShotzoProperties
 LevelObject_1c80e:
@@ -670,11 +670,11 @@ LevelObject_1c858:
 LevelObject_1c862:
 	object 17, 0, 0, 0, AnimScript_213a1, MotionScript_11425, MumbiesProperties
 LevelObject_1c86c:
-	object 10, 4, 0, 0, AnimScript_212d1, MotionScript_112d9, WaddleDeeProperties
+	object 10, 4, 0, 0, AnimScript_212d1, MotionScript_112d9, StandardEnemyProperties
 LevelObject_1c876:
-	object 15, 5, 22, -18, AnimScript_212d1, MotionScript_11300, WaddleDeeProperties
+	object 15, 5, 22, -18, AnimScript_212d1, MotionScript_11300, StandardEnemyProperties
 LevelObject_1c880:
-	object 20, 4, 0, 0, AnimScript_212d1, MotionScript_112d9, WaddleDeeProperties
+	object 20, 4, 0, 0, AnimScript_212d1, MotionScript_112d9, StandardEnemyProperties
 
 Data_1c88a:
 	dbw $00, NULL
@@ -691,17 +691,17 @@ Data_1c8a0:
 	db $ff ; end
 
 LevelObject_1c8a4:
-	object 11, 8, 0, 0, AnimScript_2122f, MotionScript_11637, WaddleDeeProperties
+	object 11, 8, 0, 0, AnimScript_2122f, MotionScript_11637, StandardEnemyProperties
 LevelObject_1c8ae:
-	object 15, 8, 0, 0, AnimScript_2122f, MotionScript_11637, WaddleDeeProperties
+	object 15, 8, 0, 0, AnimScript_2122f, MotionScript_11637, StandardEnemyProperties
 LevelObject_1c8b8:
-	object 6, 0, 0, 0, AnimScript_21433, MotionScript_11545, BroomHatterProperties
+	object 6, 0, 0, 0, AnimScript_21433, MotionScript_11545, StandardEnemyGravityProperties
 LevelObject_1c8c2:
-	object 8, 0, 0, 0, AnimScript_21433, MotionScript_11545, BroomHatterProperties
+	object 8, 0, 0, 0, AnimScript_21433, MotionScript_11545, StandardEnemyGravityProperties
 LevelObject_1c8cc:
-	object 10, 0, 0, 0, AnimScript_21433, MotionScript_11545, BroomHatterProperties
+	object 10, 0, 0, 0, AnimScript_21433, MotionScript_11545, StandardEnemyGravityProperties
 LevelObject_1c8d6:
-	object 15, 0, 0, 0, AnimScript_21433, MotionScript_11545, BroomHatterProperties
+	object 15, 0, 0, 0, AnimScript_21433, MotionScript_11545, StandardEnemyGravityProperties
 
 Data_1c8e0:
 	dbw $00, NULL
@@ -733,9 +733,9 @@ Data_1c919:
 	db $ff ; end
 
 LevelObject_1c91d:
-	object 1, 1, 8, 8, AnimScript_2130d, MotionScript_11396, WaddleDeeProperties
+	object 1, 1, 8, 8, AnimScript_2130d, MotionScript_11396, StandardEnemyProperties
 LevelObject_1c927:
-	object 8, 1, -8, 8, AnimScript_212e3, MotionScript_11381, WaddleDeeProperties
+	object 8, 1, -8, 8, AnimScript_212e3, MotionScript_11381, StandardEnemyProperties
 LevelObject_1c931:
 	object 1, 1, 8, 0, AnimScript_SpicyFood, MotionScript_10008, SpicyFoodProperties, 4
 LevelObject_1c93c:
@@ -766,7 +766,7 @@ Data_1c960:
 LevelObject_1c979:
 	object 0, 10, 0, 0, AnimScript_EnergyDrink, MotionScript_10008, EnergyDrinkProperties, 6
 LevelObject_1c984:
-	object 10, 14, 0, 0, AnimScript_21457, MotionScript_103ff, WaddleDeeProperties
+	object 10, 14, 0, 0, AnimScript_21457, MotionScript_103ff, StandardEnemyProperties
 LevelObject_1c98e:
 	object 11, 4, 0, 0, AnimScript_TwoFace_Waiting, MotionScript_10008, Data_3421
 LevelObject_1c998:
@@ -793,17 +793,17 @@ Data_1c9d6:
 	db $ff ; end
 
 LevelObject_1c9da:
-	object 1, 3, 0, 0, AnimScript_2133a, MotionScript_116e5, WaddleDeeProperties
+	object 1, 3, 0, 0, AnimScript_2133a, MotionScript_116e5, StandardEnemyProperties
 LevelObject_1c9e4:
-	object 13, 3, 0, 0, AnimScript_21433, MotionScript_11691, WaddleDeeProperties
+	object 13, 3, 0, 0, AnimScript_21433, MotionScript_11691, StandardEnemyProperties
 LevelObject_1c9ee:
-	object 6, 4, 0, 0, AnimScript_20587, MotionScript_102ce, BroomHatterProperties
+	object 6, 4, 0, 0, AnimScript_20587, MotionScript_102ce, StandardEnemyGravityProperties
 LevelObject_1c9f8:
-	object 7, 3, 0, 0, AnimScript_20587, MotionScript_102ce, BroomHatterProperties
+	object 7, 3, 0, 0, AnimScript_20587, MotionScript_102ce, StandardEnemyGravityProperties
 LevelObject_1ca02:
-	object 10, 5, 0, 0, AnimScript_21238, MotionScript_11251, WaddleDeeProperties
+	object 10, 5, 0, 0, AnimScript_21238, MotionScript_11251, StandardEnemyProperties
 LevelObject_1ca0c:
-	object 12, 5, 0, 0, AnimScript_21238, MotionScript_11251, WaddleDeeProperties
+	object 12, 5, 0, 0, AnimScript_21238, MotionScript_11251, StandardEnemyProperties
 
 Data_1ca16:
 	dbw $00, NULL

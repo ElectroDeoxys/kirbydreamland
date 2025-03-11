@@ -149,7 +149,7 @@ AnimScript_20154:
 
 AnimScript_201b7:
 	script_f2
-	set_object_properties BroomHatterProperties
+	set_object_properties StandardEnemyGravityProperties
 	set_custom_func Func_141b1, AnimScript_2073c
 	jump_if_not_flags hKirbyFlags3, KIRBY3F_FACE_LEFT, .script_201d2
 	set_motion_script MotionScript_10a92
