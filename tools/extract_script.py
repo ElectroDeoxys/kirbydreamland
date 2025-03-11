@@ -1,26 +1,14 @@
 import reader
 import argparse
+import symbols
 
-parser = argparse.ArgumentParser(description='Extracts animation data.')
+parser = argparse.ArgumentParser(description='Extracts animation and motion scripts.')
 parser.add_argument('offsets', metavar='offsets', type=str, nargs='+',
                     help='offset(s) to parse')
 
 args = parser.parse_args()
 
-symbols = {}
-
-with open("kirbydreamland.sym", "r") as file:
-    for line in file.readlines():
-        line = line.split(":")
-        if len(line) != 2:
-            continue
-        offs = int(line[1][0:4], 16)
-        bank = int(line[0], 16)
-        if bank not in [0, 1, 4, 5, 8]:
-            continue
-        absOffs = offs + (bank - 1) * 0x4000 if bank > 1 else offs
-        symString = line[1].split()[1]
-        symbols[absOffs] = symString
+syms = symbols.read_symbols()
 
 def parseByte(args):
     return args
@@ -186,8 +174,8 @@ def getCommandString(cmdByte, args, addressLabels):
     def parseAddress(a):
         if a in addressLabels:
             return addressLabels[a]
-        elif a in symbols:
-            return symbols[a]
+        elif a in syms:
+            return syms[a]
         elif a == 0x0000:
             return "NULL"
         else:
@@ -297,7 +285,7 @@ for o in args.offsets:
 
             elif cmdByte == 0xe8:
                 funcAddr = parsedCommands[-1][2][0]
-                if funcAddr in symbols and symbols[funcAddr] == "ScriptFunc_SetObjectProperties":
+                if funcAddr in syms and syms[funcAddr] == "ScriptFunc_SetObjectProperties":
                     parsedCommands[-1] = (0x103, cmdPos, parseWord(source[pos : pos + 2]))
                     pos += 2
 

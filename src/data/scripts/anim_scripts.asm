@@ -149,7 +149,7 @@ AnimScript_20154:
 
 AnimScript_201b7:
 	script_f2
-	set_object_properties Data_3483
+	set_object_properties BroomHatterProperties
 	set_custom_func Func_141b1, AnimScript_2073c
 	jump_if_not_flags hKirbyFlags3, KIRBY3F_FACE_LEFT, .script_201d2
 	set_motion_script MotionScript_10a92
@@ -720,6 +720,13 @@ AnimScript_2090a:
 	frame  0, $5c5d
 ; 0x20910
 
+SECTION "Bank 8@4913", ROMX[$4913], BANK[$8]
+
+AnimScript_SpicyFood:
+	script_exec Func_4ad6
+	frame  0, $5c65
+; 0x20919
+
 SECTION "Bank 8@4925", ROMX[$4925], BANK[$8]
 
 AnimScript_20925:
@@ -729,7 +736,7 @@ AnimScript_20925:
 
 SECTION "Bank 8@492e", ROMX[$492e], BANK[$8]
 
-AnimScript_2092e:
+AnimScript_EnergyDrink:
 	script_exec Func_4ad6
 	frame  0, $5c7d
 
@@ -745,7 +752,7 @@ AnimScript_20934:
 
 SECTION "Bank 8@4958", ROMX[$4958], BANK[$8]
 
-AnimScript_20958:
+AnimScript_WarpStar:
 .loop
 	frame 20, $5c25
 	frame 20, $5c2d
@@ -800,7 +807,7 @@ AnimScript_20967:
 SECTION "Bank 8@49d6", ROMX[$49d6], BANK[$8]
 
 AnimScript_209d6:
-	script_exec_arg PlaySFX, SFX_17
+	play_sfx SFX_17
 	script_repeat 30
 	frame  1, $5e2d
 	frame  1, $5e31
@@ -1692,9 +1699,55 @@ AnimScript_212da:
 	frame  8, $4394
 	frame  8, $439c
 	jump_abs .loop
-; 0x212e3
 
-SECTION "Bank 8@534f", ROMX[$534f], BANK[$8]
+AnimScript_212e3:
+	frame 10, $437c
+	script_repeat 4
+	frame  8, $4384
+	frame  8, $437c
+	script_repeat_end
+	frame  8, $4384
+	frame 10, $4374
+	script_repeat 9
+	frame  8, $4384
+	frame  8, $437c
+	script_repeat_end
+	frame 10, $4374
+	script_repeat 4
+	frame  8, $4384
+	frame  8, $437c
+	script_repeat_end
+	frame  8, $4384
+AnimScript_2130d:
+	frame 10, $4394
+	script_repeat 4
+	frame  8, $439c
+	frame  8, $4394
+	script_repeat_end
+	frame  8, $439c
+	frame 10, $438c
+	script_repeat 9
+	frame  8, $439c
+	frame  8, $4394
+	script_repeat_end
+	frame 10, $438c
+	script_repeat 4
+	frame  8, $439c
+	frame  8, $4394
+	script_repeat_end
+	frame  8, $439c
+	jump_abs AnimScript_212e3
+
+AnimScript_2133a:
+	script_repeat 5
+	frame  8, $4394
+	frame  8, $439c
+	script_repeat_end
+	frame  5, $4394
+.loop
+	frame  8, $437c
+	frame  8, $4384
+	jump_abs .loop
 
 AnimScript_2134f:
 	frame 48, $4374
@@ -1784,41 +1837,65 @@ AnimScript_213fa:
 	frame  8, $446c
 	frame  8, $4464
 	jump_abs .loop
-; 0x21433
 
-SECTION "Bank 8@543e", ROMX[$543e], BANK[$8]
+AnimScript_21433:
+.loop
+	script_call AnimScript_21444
+	jump_abs .loop
+
+AnimScript_21439:
+	set_scripts AnimScript_21433, MotionScript_102ce
 
 AnimScript_2143e:
 .loop
-	script_call $5444
+	script_call AnimScript_21444
 	jump_abs .loop
 ; 0x21444
 
-SECTION "Bank 8@546b", ROMX[$546b], BANK[$8]
+SECTION "Bank 8@5444", ROMX[$5444], BANK[$8]
 
-AnimScript_2146b:
+AnimScript_21444:
+	frame 10, $445c
+	frame  6, $4464
+	frame  6, $446c
+	frame 10, $4474
+	frame  6, $446c
+	frame  6, $4464
+	script_ret
+
+AnimScript_21457:
+.loop
+	frame 11, $445c
+	frame  7, $4464
+	frame  7, $446c
+	frame 11, $4474
+	frame  7, $446c
+	frame  7, $4464
+	jump_rel .loop
+
+AnimScript_Chuckie:
 .loop
 	frame 10, $440c
 	frame 10, $4414
 	jump_abs .loop
 
-AnimScript_21474:
+AnimScript_PuffOfSmoke:
 	position_offset 0, -8
 	frame  6, $5d29
 	frame  6, $5d31
 	script_end
 
-AnimScript_2147e:
-	set_custom_func Func_14252, AnimScript_21486
+AnimScript_TwoFace_Waiting:
+	set_custom_func Func_14252, AnimScript_TwoFace_Chasing
 	frame  0, $443c
 
-AnimScript_21486:
+AnimScript_TwoFace_Chasing:
 	frame  4, $444c
 	frame 10, $4454
 	frame 10, $4454
 	frame  4, $4450
 	frame 10, $4444
-	set_object_properties Data_364f
+	set_object_properties TwoFaceProperties
 	set_custom_func Func_14208, NULL
 .loop
 	frame 10, $4444
@@ -1838,6 +1915,98 @@ AnimScript_21524:
 	frame 65, $5ee5
 	jump_abs .loop
 ; 0x21539
+
+SECTION "Bank 8@5598", ROMX[$5598], BANK[$8]
+
+AnimScript_21598:
+	set_custom_func Func_14252, AnimScript_215a0
+	frame  0, $58b8
+
+AnimScript_215a0:
+	create_object .script_215d9, MotionScript_10008, Data_3421
+	create_object .script_215e7, MotionScript_10008, Data_3421
+	create_object .script_215f5, MotionScript_10008, Data_3421
+	create_object .script_21603, MotionScript_10008, Data_3421
+	create_object .script_21611, MotionScript_10008, Data_3421
+	create_object .script_21624, MotionScript_10008, Data_3421
+	create_object .script_21637, MotionScript_10008, Data_3421
+	create_object .script_2164a, MotionScript_10008, Data_3421
+	script_end
+
+.script_215d9
+	position_offset 0, -48
+	frame  8, $5d29
+	frame  8, $5d31
+	set_scripts .script_2165d, $569a
+
+.script_215e7
+	position_offset 48, 0
+	frame  8, $5d29
+	frame  8, $5d31
+	set_scripts .script_2165d, $56d0
+
+.script_215f5
+	position_offset 0, 48
+	frame  8, $5d29
+	frame  8, $5d31
+	set_scripts .script_2165d, $56be
+
+.script_21603
+	position_offset -48, 0
+	frame  8, $5d29
+	frame  8, $5d31
+	set_scripts .script_2165d, $56ac
+
+.script_21611
+	position_offset 34, -34
+	frame  8, $5d29
+	frame  8, $5d31
+	set_object_properties MumbiesOrbitingProperties
+	set_scripts $5388, $56d9
+
+.script_21624
+	position_offset 34, 34
+	frame  8, $5d29
+	frame  8, $5d31
+	set_object_properties MumbiesOrbitingProperties
+	set_scripts $5388, $56c7
+
+.script_21637
+	position_offset -34, 34
+	frame  8, $5d29
+	frame  8, $5d31
+	set_object_properties MumbiesOrbitingProperties
+	set_scripts $5388, $56b5
+
+.script_2164a
+	position_offset -34, -34
+	frame  8, $5d29
+	frame  8, $5d31
+	set_object_properties MumbiesOrbitingProperties
+	set_scripts $5388, $56a3
+
+.script_2165d
+; 0x2165d
+
+SECTION "Bank 8@567b", ROMX[$567b], BANK[$8]
+
+AnimScript_2167b:
+	frame  1, $58b8
+	set_object_properties Data_3421
+	set_custom_func Func_14252, MotionScript_1168b
+	frame  0, $58b8
+
+AnimScript_2168b:
+	branch_on_kirby_vertical_alignment AnimScript_2167b, .script_21694
+	jump_rel AnimScript_2167b
+
+.script_21694:
+	create_object AnimScript_PuffOfSmoke, MotionScript_10008, PuffOfSmokeProperties
+	position_offset 0, -16
+	play_sfx SFX_PUFF
+	set_object_properties MaximTomatoProperties
+	frame  0, $5c81
+; 0x216aa
 
 SECTION "Bank 8@5aa8", ROMX[$5aa8], BANK[$8]
 

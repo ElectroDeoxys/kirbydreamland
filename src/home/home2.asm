@@ -3822,12 +3822,15 @@ MikeProperties::
 	object_properties PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, MIKE, Data_1c172
 ; 0x3441
 
-SECTION "Home@344d", ROM0[$344d]
+SECTION "Home@3447", ROM0[$3447]
 
-WarpStarProperties::
+SpicyFoodProperties::
+	object_properties PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, SPICY_FOOD, Data_1c172
+
+WarpStarFloorProperties::
 	object_properties PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, WARP_STAR, Data_1c172
 
-Data_3453::
+WarpStarFloatingProperties::
 	object_properties PROPERTY_0 | PROPERTY_3 | PROPERTY_PERSISTENT, 16, 16, WARP_STAR, Data_1c172
 
 MaximTomatoProperties::
@@ -3845,7 +3848,7 @@ SparklingStarProperties::
 
 SECTION "Home@3483", ROM0[$3483]
 
-Data_3483::
+BroomHatterProperties::
 	object_properties PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY, 12, 12, 1, 1, $03, 200, Data_1c154
 
 WaddleDeeProperties::
@@ -3871,7 +3874,7 @@ SECTION "Home@34ff", ROM0[$34ff]
 CappyProperties::
 	object_properties PROPERTY_0 | PROPERTY_3, 12, 12, 1, 1, $03, 200, Data_1c154
 
-Data_3508::
+CaplessCappyProperties::
 	object_properties PROPERTY_0 | PROPERTY_3, 12, 12, 1, 1, $03, 200, Data_1c154
 ; 0x3511
 
@@ -3886,13 +3889,13 @@ PoppyBrosJrProperties::
 Data_352c::
 	object_properties PROPERTY_0 | PROPERTY_3, 12, 12, 1, 1, $03, 200, Data_1c154
 
-Data_3535::
+GrizzoProperties::
 	object_properties PROPERTY_0, 20, 20, 2, 1, $03, 400, Data_1c154
 ; 0x353e
 
 SECTION "Home@3547", ROM0[$3547]
 
-Data_3547::
+PoppyBrosJrOnGrizzoProperties::
 	object_properties PROPERTY_0, 20, 26, 2, 1, $03, 200, Data_1c1a8
 
 Data_3550::
@@ -3901,7 +3904,7 @@ Data_3550::
 Data_3559::
 	object_properties PROPERTY_0 | PROPERTY_3, 12, 12, 1, 1, $01, 200, Data_1c154
 
-Data_3562::
+PoppyBrosJrOnAppleProperties::
 	object_properties PROPERTY_0, 16, 32, 1, 1, $03, 300, Data_1c1b4
 
 Data_356b::
@@ -3943,13 +3946,13 @@ ExplosionProperties::
 
 SECTION "Home@35cd", ROM0[$35cd]
 
-Data_35cd::
+PuffOfSmokeProperties::
 	object_properties PROPERTY_0 | PROPERTY_2 | PROPERTY_3, 2, 36, $10
 ; 0x35d1
 
 SECTION "Home@364f", ROM0[$364f]
 
-Data_364f::
+TwoFaceProperties::
 	object_properties PROPERTY_0, 12, 12, 1, 1, $03, 300, Data_1c154
 
 GlunkProperties::
@@ -3967,8 +3970,11 @@ SECTION "Home@368e", ROM0[$368e]
 Data_368e::
 	object_properties PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY, 12, 12, 1, 1, $03, 500, Data_1c154
 
-Data_3697::
+MumbiesProperties::
 	object_properties PROPERTY_0, 12, 12, 1, 1, $03, 500, Data_1c154
+
+MumbiesOrbitingProperties::
+	object_properties PROPERTY_0, 12, 12, 1, 1, $01, 500, Data_1c154
 ; 0x36a0
 
 SECTION "Home@375d", ROM0[$375d]

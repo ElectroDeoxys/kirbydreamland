@@ -39,14 +39,14 @@ Data_1c000::
 	dw Data_1c729, Data_1c748 ; CASTLE_LOLOLO_05
 	dw Data_1c7c2, Data_1c7c6 ; CASTLE_LOLOLO_06
 	dw Data_1c819, Data_1c835 ; CASTLE_LOLOLO_07
-	dw $5936, $593d ; CASTLE_LOLOLO_08
-	dw $48e0, $48ea ; CASTLE_LOLOLO_09
-	dw $4909, $4919 ; CASTLE_LOLOLO_10
-	dw $488a, $48a0 ; CASTLE_LOLOLO_11
-	dw $4947, $4960 ; CASTLE_LOLOLO_12
-	dw $49c0, $49d6 ; CASTLE_LOLOLO_13
-	dw $5944, $594e ; CASTLE_LOLOLO_14
-	dw $4a16, $4a20 ; CASTLE_LOLOLO_15
+	dw Data_1d936, Data_1d93d ; CASTLE_LOLOLO_08
+	dw Data_1c8e0, Data_1c8ea ; CASTLE_LOLOLO_09
+	dw Data_1c909, Data_1c919 ; CASTLE_LOLOLO_10
+	dw Data_1c88a, Data_1c8a0 ; CASTLE_LOLOLO_11
+	dw Data_1c947, Data_1c960 ; CASTLE_LOLOLO_12
+	dw Data_1c9c0, Data_1c9d6 ; CASTLE_LOLOLO_13
+	dw Data_1d944, Data_1d94e ; CASTLE_LOLOLO_14
+	dw Data_1ca16, Data_1ca20 ; CASTLE_LOLOLO_15
 	assert_table_length NUM_CASTLE_LOLOLO_AREAS
 
 .FloatIslands:
@@ -133,7 +133,7 @@ Data_1c14e::
 	dw AnimScript_20000, MotionScript_10008, Data_3425
 
 Data_1c154::
-	dw AnimScript_20a01, MotionScript_10008, Data_35cd
+	dw AnimScript_20a01, MotionScript_10008, PuffOfSmokeProperties
 ; 0x1c15a
 
 SECTION "Bank 7@4160", ROMX[$4160], BANK[$7]
@@ -200,84 +200,84 @@ SECTION "Bank 7@4202", ROMX[$4202], BANK[$7]
 
 Data_1c202:
 	dbw $00, NULL
-	dbw $0f, Data_1c304
-	dbw $11, Data_1c318
-	dbw $15, Data_1c322
-	dbw $16, Data_1c32c
-	dbw $18, Data_1c336
-	dbw $1f, Data_1c340
-	dbw $21, Data_1c34a
-	dbw $29, Data_1c354
-	dbw $30, Data_1c35e
-	dbw $30, Data_1c368
-	dbw $31, Data_1c372
-	dbw $39, Data_1c386
-	dbw $3d, Data_1c390
-	dbw $40, Data_1c39a
-	dbw $42, Data_1c3a4
-	dbw $43, Data_1c3ae
-	dbw $46, Data_1c3b8
-	dbw $47, Data_1c3c2
-	dbw $4a, Data_1c3cc
-	dbw $4f, Data_1c3d6
-	dbw $4e, Data_1c3e0
+	dbw $0f, LevelObject_1c304
+	dbw $11, LevelObject_1c318
+	dbw $15, LevelObject_1c322
+	dbw $16, LevelObject_1c32c
+	dbw $18, LevelObject_1c336
+	dbw $1f, LevelObject_1c340
+	dbw $21, LevelObject_1c34a
+	dbw $29, LevelObject_1c354
+	dbw $30, LevelObject_1c35e
+	dbw $30, LevelObject_1c368
+	dbw $31, LevelObject_1c372
+	dbw $39, LevelObject_1c386
+	dbw $3d, LevelObject_1c390
+	dbw $40, LevelObject_1c39a
+	dbw $42, LevelObject_1c3a4
+	dbw $43, LevelObject_1c3ae
+	dbw $46, LevelObject_1c3b8
+	dbw $47, LevelObject_1c3c2
+	dbw $4a, LevelObject_1c3cc
+	dbw $4f, LevelObject_1c3d6
+	dbw $4e, LevelObject_1c3e0
 	db $ff ; end
 
 Data_1c245:
 	dbw $00, NULL
-	dbw $05, Data_1c3eb
-	dbw $0a, Data_1c3f6
+	dbw $05, LevelObject_1c3eb
+	dbw $0a, LevelObject_1c3f6
 	db $ff ; end
 
 Data_1c24f:
 	dbw $00, NULL
-	dbw $0a, Data_1c45b
-	dbw $0f, Data_1c40b
-	dbw $12, Data_1c401
-	dbw $15, Data_1c415
-	dbw $19, Data_1c41f
-	dbw $1b, Data_1c429
-	dbw $1f, Data_1c433
-	dbw $21, Data_1c43d
-	dbw $24, Data_1c447
-	dbw $26, Data_1c451
-	dbw $2a, Data_1c470
-	dbw $2b, Data_1c47a
-	dbw $2a, Data_1c484
-	dbw $2f, Data_1c498
-	dbw $30, Data_1c4a2
-	dbw $32, Data_1c4ac
-	dbw $38, Data_1c4b6
-	dbw $3a, Data_1c4c0
-	dbw $3b, Data_1c4ca
-	dbw $3f, Data_1c4de
-	dbw $41, Data_1c4e8
-	dbw $42, Data_1c4f2
-	dbw $44, Data_1c4fc
-	dbw $45, Data_1c506
-	dbw $46, Data_1c510
-	dbw $4c, Data_1c51a
+	dbw $0a, LevelObject_1c45b
+	dbw $0f, LevelObject_1c40b
+	dbw $12, LevelObject_1c401
+	dbw $15, LevelObject_1c415
+	dbw $19, LevelObject_1c41f
+	dbw $1b, LevelObject_1c429
+	dbw $1f, LevelObject_1c433
+	dbw $21, LevelObject_1c43d
+	dbw $24, LevelObject_1c447
+	dbw $26, LevelObject_1c451
+	dbw $2a, LevelObject_1c470
+	dbw $2b, LevelObject_1c47a
+	dbw $2a, LevelObject_1c484
+	dbw $2f, LevelObject_1c498
+	dbw $30, LevelObject_1c4a2
+	dbw $32, LevelObject_1c4ac
+	dbw $38, LevelObject_1c4b6
+	dbw $3a, LevelObject_1c4c0
+	dbw $3b, LevelObject_1c4ca
+	dbw $3f, LevelObject_1c4de
+	dbw $41, LevelObject_1c4e8
+	dbw $42, LevelObject_1c4f2
+	dbw $44, LevelObject_1c4fc
+	dbw $45, LevelObject_1c506
+	dbw $46, LevelObject_1c510
+	dbw $4c, LevelObject_1c51a
 	db $ff ; end
 
 Data_1c2a1:
 	dbw $00, NULL
-	dbw $01, Data_1c556
-	dbw $02, Data_1c594
-	dbw $03, Data_1c58a
-	dbw $06, Data_1c524
-	dbw $06, Data_1c56c
-	dbw $07, Data_1c562
-	dbw $09, Data_1c52e
-	dbw $09, Data_1c54c
-	dbw $0a, Data_1c538
-	dbw $0b, Data_1c580
-	dbw $0b, Data_1c542
-	dbw $0c, Data_1c54c
+	dbw $01, LevelObject_1c556
+	dbw $02, LevelObject_1c594
+	dbw $03, LevelObject_1c58a
+	dbw $06, LevelObject_1c524
+	dbw $06, LevelObject_1c56c
+	dbw $07, LevelObject_1c562
+	dbw $09, LevelObject_1c52e
+	dbw $09, LevelObject_1c54c
+	dbw $0a, LevelObject_1c538
+	dbw $0b, LevelObject_1c580
+	dbw $0b, LevelObject_1c542
+	dbw $0c, LevelObject_1c54c
 	db $ff ; end
 
 Data_1c2c9:
 	dbw $00, NULL
-	dbw $07, Data_1c59e
+	dbw $07, LevelObject_1c59e
 	db $ff ; end
 
 Data_1c2d0:
@@ -286,208 +286,208 @@ Data_1c2d0:
 
 Data_1c2d4:
 	dbw $00, NULL
-	dbw $04, Data_1c52e
-	dbw $04, Data_1c524
-	dbw $07, Data_1c538
-	dbw $0e, Data_1c556
-	dbw $13, Data_1c562
-	dbw $13, Data_1c542
-	dbw $13, Data_1c54c
-	dbw $17, Data_1c56c
-	dbw $1c, Data_1c580
-	dbw $20, Data_1c58a
-	dbw $25, Data_1c594
+	dbw $04, LevelObject_1c52e
+	dbw $04, LevelObject_1c524
+	dbw $07, LevelObject_1c538
+	dbw $0e, LevelObject_1c556
+	dbw $13, LevelObject_1c562
+	dbw $13, LevelObject_1c542
+	dbw $13, LevelObject_1c54c
+	dbw $17, LevelObject_1c56c
+	dbw $1c, LevelObject_1c580
+	dbw $20, LevelObject_1c58a
+	dbw $25, LevelObject_1c594
 	db $ff ; end
 
 Data_1c2f9:
 	dbw $00, NULL
-	dbw $16, Data_1c59e
-	dbw $1a, Data_1c5a8
+	dbw $16, LevelObject_1c59e
+	dbw $1a, LevelObject_1c5a8
 	db $ff ; end
 
 	db $ff ; end
 
-Data_1c304:
-	object $0f, $05, $00, $00, AnimScript_20587, MotionScript_102c8, WaddleDeeProperties
+LevelObject_1c304:
+	object 15, 5, 0, 0, AnimScript_20587, MotionScript_102c8, WaddleDeeProperties
 ; unreferenced
-	object $11, $05, $f8, $00, AnimScript_20d19, MotionScript_111d8, CappyProperties
-Data_1c318:
-	object $11, $05, $00, $00, AnimScript_20587, MotionScript_102c8, WaddleDeeProperties
-Data_1c322:
-	object $15, $04, $00, $00, AnimScript_205ae, MotionScript_103ff, WaddleDeeProperties
-Data_1c32c:
-	object $16, $02, $00, $00, AnimScript_20c52, MotionScript_10d5d, TwizzyProperties
-Data_1c336:
-	object $18, $04, $00, $00, AnimScript_20c5b, MotionScript_10d99, TwizzyProperties
-Data_1c340:
-	object $1f, $01, $00, $00, AnimScript_20647, MotionScript_10508, WaddleDeeProperties
-Data_1c34a:
-	object $21, $05, $00, $00, AnimScript_205ae, MotionScript_103ff, WaddleDeeProperties
-Data_1c354:
-	object $29, $05, $08, $00, AnimScript_20d0b, MotionScript_111e4, CappyProperties
-Data_1c35e:
-	object $30, $02, $00, $00, AnimScript_20d28, MotionScript_1067d, WaddleDeeProperties
-Data_1c368:
-	object $30, $05, $f8, $00, AnimScript_20d19, MotionScript_111d8, CappyProperties
-Data_1c372:
-	object $31, $02, $00, $08, AnimScript_20d28, MotionScript_1067d, WaddleDeeProperties
+	object 17, 5, -8, 0, AnimScript_20d19, MotionScript_111d8, CappyProperties
+LevelObject_1c318:
+	object 17, 5, 0, 0, AnimScript_20587, MotionScript_102c8, WaddleDeeProperties
+LevelObject_1c322:
+	object 21, 4, 0, 0, AnimScript_205ae, MotionScript_103ff, WaddleDeeProperties
+LevelObject_1c32c:
+	object 22, 2, 0, 0, AnimScript_20c52, MotionScript_10d5d, TwizzyProperties
+LevelObject_1c336:
+	object 24, 4, 0, 0, AnimScript_20c5b, MotionScript_10d99, TwizzyProperties
+LevelObject_1c340:
+	object 31, 1, 0, 0, AnimScript_20647, MotionScript_10508, WaddleDeeProperties
+LevelObject_1c34a:
+	object 33, 5, 0, 0, AnimScript_205ae, MotionScript_103ff, WaddleDeeProperties
+LevelObject_1c354:
+	object 41, 5, 8, 0, AnimScript_20d0b, MotionScript_111e4, CappyProperties
+LevelObject_1c35e:
+	object 48, 2, 0, 0, AnimScript_20d28, MotionScript_1067d, WaddleDeeProperties
+LevelObject_1c368:
+	object 48, 5, -8, 0, AnimScript_20d19, MotionScript_111d8, CappyProperties
+LevelObject_1c372:
+	object 49, 2, 0, 8, AnimScript_20d28, MotionScript_1067d, WaddleDeeProperties
 ; unreferenced
-	object $33, $03, $00, $00, AnimScript_20c5b, MotionScript_10d99, TwizzyProperties
-Data_1c386:
-	object $39, $04, $00, $00, AnimScript_20c5b, MotionScript_10d99, TwizzyProperties
-Data_1c390:
-	object $3d, $01, $00, $00, AnimScript_20647, MotionScript_10508, WaddleDeeProperties
-Data_1c39a:
-	object $40, $05, $00, $00, AnimScript_205cc, MotionScript_1042f, WaddleDeeProperties
-Data_1c3a4:
-	object $42, $05, $00, $00, AnimScript_20d3f, MotionScript_10eae, PoppyBrosJrProperties
-Data_1c3ae:
-	object $43, $05, $08, $00, AnimScript_20d19, MotionScript_111d8, CappyProperties
-Data_1c3b8:
-	object $46, $05, $00, $00, AnimScript_205ae, MotionScript_103ff, WaddleDeeProperties
-Data_1c3c2:
-	object $47, $03, $00, $00, AnimScript_20c52, MotionScript_10d5d, TwizzyProperties
-Data_1c3cc:
-	object $4a, $04, $00, $00, AnimScript_20c5b, MotionScript_10d99, TwizzyProperties
-Data_1c3d6:
-	object $4f, $02, $00, $00, AnimScript_20647, MotionScript_1067d, WaddleDeeProperties
-Data_1c3e0:
-	object $4e, $03, $fa, $00, AnimScript_20958, MotionScript_1031d, WarpStarProperties, 2
+	object 51, 3, 0, 0, AnimScript_20c5b, MotionScript_10d99, TwizzyProperties
+LevelObject_1c386:
+	object 57, 4, 0, 0, AnimScript_20c5b, MotionScript_10d99, TwizzyProperties
+LevelObject_1c390:
+	object 61, 1, 0, 0, AnimScript_20647, MotionScript_10508, WaddleDeeProperties
+LevelObject_1c39a:
+	object 64, 5, 0, 0, AnimScript_205cc, MotionScript_1042f, WaddleDeeProperties
+LevelObject_1c3a4:
+	object 66, 5, 0, 0, AnimScript_20d3f, MotionScript_10eae, PoppyBrosJrProperties
+LevelObject_1c3ae:
+	object 67, 5, 8, 0, AnimScript_20d19, MotionScript_111d8, CappyProperties
+LevelObject_1c3b8:
+	object 70, 5, 0, 0, AnimScript_205ae, MotionScript_103ff, WaddleDeeProperties
+LevelObject_1c3c2:
+	object 71, 3, 0, 0, AnimScript_20c52, MotionScript_10d5d, TwizzyProperties
+LevelObject_1c3cc:
+	object 74, 4, 0, 0, AnimScript_20c5b, MotionScript_10d99, TwizzyProperties
+LevelObject_1c3d6:
+	object 79, 2, 0, 0, AnimScript_20647, MotionScript_1067d, WaddleDeeProperties
+LevelObject_1c3e0:
+	object 78, 3, -6, 0, AnimScript_WarpStar, MotionScript_WarpStar, WarpStarFloorProperties, 2
 
-Data_1c3eb:
-	object $05, $06, $00, $00, AnimScript_2092e, MotionScript_10008, EnergyDrinkProperties, 0
-Data_1c3f6:
-	object $0a, $06, $00, $00, AnimScript_2092e, MotionScript_10008, EnergyDrinkProperties, 1
+LevelObject_1c3eb:
+	object 5, 6, 0, 0, AnimScript_EnergyDrink, MotionScript_10008, EnergyDrinkProperties, 0
+LevelObject_1c3f6:
+	object 10, 6, 0, 0, AnimScript_EnergyDrink, MotionScript_10008, EnergyDrinkProperties, 1
 
-Data_1c401:
-	object $12, $01, $00, $00, AnimScript_20647, MotionScript_10508, WaddleDeeProperties
-Data_1c40b:
-	object $0f, $06, $00, $00, AnimScript_20e58, MotionScript_10f84, Data_3562
-Data_1c415:
-	object $15, $06, $f8, $00, AnimScript_20d0b, MotionScript_111e4, CappyProperties
-Data_1c41f:
-	object $19, $04, $00, $00, AnimScript_205ae, MotionScript_103ff, WaddleDeeProperties
-Data_1c429:
-	object $1b, $03, $00, $00, AnimScript_20d28, MotionScript_1067d, WaddleDeeProperties
-Data_1c433:
-	object $1f, $06, $00, $00, AnimScript_205ae, MotionScript_103ff, WaddleDeeProperties
-Data_1c43d:
-	object $21, $01, $00, $00, AnimScript_20647, MotionScript_10508, WaddleDeeProperties
-Data_1c447:
-	object $24, $06, $00, $00, AnimScript_20d92, MotionScript_10f06, Data_3535
-Data_1c451:
-	object $26, $00, $d0, $00, AnimScript_20647, MotionScript_10d16, WaddleDeeProperties
-Data_1c45b:
-	object $0a, $00, $e0, $00, AnimScript_PoppyBrosSr, MotionScript_PoppyBrosSr, Data_3429, 6
+LevelObject_1c401:
+	object 18, 1, 0, 0, AnimScript_20647, MotionScript_10508, WaddleDeeProperties
+LevelObject_1c40b:
+	object 15, 6, 0, 0, AnimScript_20e58, MotionScript_10f84, PoppyBrosJrOnAppleProperties
+LevelObject_1c415:
+	object 21, 6, -8, 0, AnimScript_20d0b, MotionScript_111e4, CappyProperties
+LevelObject_1c41f:
+	object 25, 4, 0, 0, AnimScript_205ae, MotionScript_103ff, WaddleDeeProperties
+LevelObject_1c429:
+	object 27, 3, 0, 0, AnimScript_20d28, MotionScript_1067d, WaddleDeeProperties
+LevelObject_1c433:
+	object 31, 6, 0, 0, AnimScript_205ae, MotionScript_103ff, WaddleDeeProperties
+LevelObject_1c43d:
+	object 33, 1, 0, 0, AnimScript_20647, MotionScript_10508, WaddleDeeProperties
+LevelObject_1c447:
+	object 36, 6, 0, 0, AnimScript_20d92, MotionScript_10f06, GrizzoProperties
+LevelObject_1c451:
+	object 38, 0, -48, 0, AnimScript_20647, MotionScript_10d16, WaddleDeeProperties
+LevelObject_1c45b:
+	object 10, 0, -32, 0, AnimScript_PoppyBrosSr, MotionScript_PoppyBrosSr, Data_3429, 6
 ; unreferenced
-	object $37, $06, $f8, $00, AnimScript_2063b, MotionScript_10cf4, WaddleDeeProperties
-Data_1c470:
-	object $2a, $02, $00, $00, AnimScript_20c52, MotionScript_10d5d, TwizzyProperties
-Data_1c47a:
-	object $2b, $02, $00, $0a, AnimScript_20c52, MotionScript_10d5d, TwizzyProperties
-Data_1c484:
-	object $2a, $06, $00, $00, AnimScript_20e58, MotionScript_10f84, Data_3562
+	object 55, 6, -8, 0, AnimScript_2063b, MotionScript_10cf4, WaddleDeeProperties
+LevelObject_1c470:
+	object 42, 2, 0, 0, AnimScript_20c52, MotionScript_10d5d, TwizzyProperties
+LevelObject_1c47a:
+	object 43, 2, 0, 10, AnimScript_20c52, MotionScript_10d5d, TwizzyProperties
+LevelObject_1c484:
+	object 42, 6, 0, 0, AnimScript_20e58, MotionScript_10f84, PoppyBrosJrOnAppleProperties
 ; unreferenced
-	object $2d, $06, $00, $00, AnimScript_20c5b, MotionScript_10d99, TwizzyProperties
-Data_1c498:
-	object $2f, $06, $f8, $00, AnimScript_20d19, MotionScript_111d8, CappyProperties
-Data_1c4a2:
-	object $30, $05, $00, $00, AnimScript_2063b, MotionScript_10cf4, WaddleDeeProperties
-Data_1c4ac:
-	object $32, $00, $ba, $00, AnimScript_20647, MotionScript_10d16, WaddleDeeProperties
-Data_1c4b6:
-	object $38, $00, $b8, $00, AnimScript_20647, MotionScript_10d16, WaddleDeeProperties
-Data_1c4c0:
-	object $3a, $06, $00, $00, AnimScript_20d3f, MotionScript_10e96, PoppyBrosJrProperties
-Data_1c4ca:
-	object $3b, $02, $00, $00, AnimScript_20c52, MotionScript_10d5d, TwizzyProperties
+	object 45, 6, 0, 0, AnimScript_20c5b, MotionScript_10d99, TwizzyProperties
+LevelObject_1c498:
+	object 47, 6, -8, 0, AnimScript_20d19, MotionScript_111d8, CappyProperties
+LevelObject_1c4a2:
+	object 48, 5, 0, 0, AnimScript_2063b, MotionScript_10cf4, WaddleDeeProperties
+LevelObject_1c4ac:
+	object 50, 0, -70, 0, AnimScript_20647, MotionScript_10d16, WaddleDeeProperties
+LevelObject_1c4b6:
+	object 56, 0, -72, 0, AnimScript_20647, MotionScript_10d16, WaddleDeeProperties
+LevelObject_1c4c0:
+	object 58, 6, 0, 0, AnimScript_20d3f, MotionScript_10e96, PoppyBrosJrProperties
+LevelObject_1c4ca:
+	object 59, 2, 0, 0, AnimScript_20c52, MotionScript_10d5d, TwizzyProperties
 ; unreferenced
-	object $3b, $06, $f8, $00, AnimScript_20d0b, MotionScript_111e4, CappyProperties
-Data_1c4de:
-	object $3f, $06, $00, $00, AnimScript_20e10, MotionScript_10f06, Data_3547
-Data_1c4e8:
-	object $41, $06, $f0, $00, AnimScript_2063b, MotionScript_10cf4, WaddleDeeProperties
-Data_1c4f2:
-	object $42, $06, $08, $00, AnimScript_20d0b, MotionScript_111e4, CappyProperties
-Data_1c4fc:
-	object $44, $01, $00, $00, AnimScript_20647, MotionScript_10508, WaddleDeeProperties
-Data_1c506:
-	object $45, $02, $00, $00, AnimScript_20c52, MotionScript_10d5d, TwizzyProperties
-Data_1c510:
-	object $46, $06, $08, $00, AnimScript_20d0b, MotionScript_111e4, CappyProperties
-Data_1c51a:
-	object $4c, $06, $00, $00, AnimScript_20e10, MotionScript_10f06, Data_3547
+	object 59, 6, -8, 0, AnimScript_20d0b, MotionScript_111e4, CappyProperties
+LevelObject_1c4de:
+	object 63, 6, 0, 0, AnimScript_20e10, MotionScript_10f06, PoppyBrosJrOnGrizzoProperties
+LevelObject_1c4e8:
+	object 65, 6, -16, 0, AnimScript_2063b, MotionScript_10cf4, WaddleDeeProperties
+LevelObject_1c4f2:
+	object 66, 6, 8, 0, AnimScript_20d0b, MotionScript_111e4, CappyProperties
+LevelObject_1c4fc:
+	object 68, 1, 0, 0, AnimScript_20647, MotionScript_10508, WaddleDeeProperties
+LevelObject_1c506:
+	object 69, 2, 0, 0, AnimScript_20c52, MotionScript_10d5d, TwizzyProperties
+LevelObject_1c510:
+	object 70, 6, 8, 0, AnimScript_20d0b, MotionScript_111e4, CappyProperties
+LevelObject_1c51a:
+	object 76, 6, 0, 0, AnimScript_20e10, MotionScript_10f06, PoppyBrosJrOnGrizzoProperties
 
-Data_1c524:
-	object $06, $04, $00, $00, AnimScript_20c5b, MotionScript_10d99, TwizzyProperties
-Data_1c52e:
-	object $09, $04, $00, $00, AnimScript_205ae, MotionScript_103ff, WaddleDeeProperties
-Data_1c538:
-	object $0a, $07, $00, $00, AnimScript_205cc, MotionScript_1042f, WaddleDeeProperties
-Data_1c542:
-	object $0b, $13, $f9, $00, AnimScript_20cef, MotionScript_10e3b, Data_3508
-Data_1c54c:
-	object $0c, $13, $f9, $00, AnimScript_20cef, MotionScript_10e3b, Data_3508
-Data_1c556:
-	object $01, $0e, $08, $00, AnimScript_20934, MotionScript_10008, MaximTomatoProperties, 4
+LevelObject_1c524:
+	object 6, 4, 0, 0, AnimScript_20c5b, MotionScript_10d99, TwizzyProperties
+LevelObject_1c52e:
+	object 9, 4, 0, 0, AnimScript_205ae, MotionScript_103ff, WaddleDeeProperties
+LevelObject_1c538:
+	object 10, 7, 0, 0, AnimScript_205cc, MotionScript_1042f, WaddleDeeProperties
+LevelObject_1c542:
+	object 11, 19, -7, 0, AnimScript_20cef, MotionScript_10e3b, CaplessCappyProperties
+LevelObject_1c54c:
+	object 12, 19, -7, 0, AnimScript_20cef, MotionScript_10e3b, CaplessCappyProperties
+LevelObject_1c556:
+	object 1, 14, 8, 0, AnimScript_20934, MotionScript_10008, MaximTomatoProperties, 4
 	db $00
-Data_1c562:
-	object $07, $13, $00, $00, AnimScript_20c5b, MotionScript_10d99, TwizzyProperties
-Data_1c56c:
-	object $06, $17, $02, $00, AnimScript_20ccb, MotionScript_10de7, Data_3508
+LevelObject_1c562:
+	object 7, 19, 0, 0, AnimScript_20c5b, MotionScript_10d99, TwizzyProperties
+LevelObject_1c56c:
+	object 6, 23, 2, 0, AnimScript_20ccb, MotionScript_10de7, CaplessCappyProperties
 ; unreferenced
-	object $0e, $17, $02, $00, AnimScript_20dda, MotionScript_10008, Data_3508
-Data_1c580:
-	object $0b, $1c, $00, $00, AnimScript_20d92, MotionScript_10f06, Data_3535
-Data_1c58a:
-	object $03, $20, $00, $00, AnimScript_20da4, MotionScript_10f0e, Data_3535
-Data_1c594:
-	object $02, $25, $00, $00, AnimScript_20ccb, MotionScript_10de7, Data_3508
+	object 14, 23, 2, 0, AnimScript_20dda, MotionScript_10008, CaplessCappyProperties
+LevelObject_1c580:
+	object 11, 28, 0, 0, AnimScript_20d92, MotionScript_10f06, GrizzoProperties
+LevelObject_1c58a:
+	object 3, 32, 0, 0, AnimScript_20da4, MotionScript_10f0e, GrizzoProperties
+LevelObject_1c594:
+	object 2, 37, 0, 0, AnimScript_20ccb, MotionScript_10de7, CaplessCappyProperties
 
-Data_1c59e:
-	object $07, $16, $02, $d5, AnimScript_WhispyWoods, MotionScript_10008, Data_3421
-Data_1c5a8:
-	object $00, $1a, $00, $00, AnimScript_21181, MotionScript_10008, Data_3421
+LevelObject_1c59e:
+	object 7, 22, 2, -43, AnimScript_WhispyWoods, MotionScript_10008, Data_3421
+LevelObject_1c5a8:
+	object 0, 26, 0, 0, AnimScript_21181, MotionScript_10008, Data_3421
 
 Data_1c5b2:
 	dbw $00, NULL
-	dbw $08, Data_1c5c0
+	dbw $08, LevelObject_1c5c0
 	db $ff ; end
 
 Data_1c5b9:
 	dbw $00, NULL
-	dbw $01, Data_1c5c0
+	dbw $01, LevelObject_1c5c0
 	db $ff ; end
 
-Data_1c5c0:
-	object $08, $01, $00, $00, AnimScript_2143e, MotionScript_1154d, Data_3483
+LevelObject_1c5c0:
+	object 8, 1, 0, 0, AnimScript_2143e, MotionScript_1154d, BroomHatterProperties
 
 Data_1c5ca:
 	dbw $00, NULL
-	dbw $0a, Data_1c603
-	dbw $0b, Data_1c5e4
-	dbw $0b, Data_1c5f8
-	dbw $14, Data_1c60d
-	dbw $15, Data_1c5ee
-	dbw $16, Data_1c617
+	dbw $0a, LevelObject_1c603
+	dbw $0b, LevelObject_1c5e4
+	dbw $0b, LevelObject_1c5f8
+	dbw $14, LevelObject_1c60d
+	dbw $15, LevelObject_1c5ee
+	dbw $16, LevelObject_1c617
 	db $ff ; end
 
 Data_1c5e0:
 	dbw $00, NULL
 	db $ff ; end
 
-Data_1c5e4:
-	object $0b, $00, $c0, $00, AnimScript_21238, MotionScript_11251, WaddleDeeProperties
-Data_1c5ee:
-	object $15, $00, $c0, $00, AnimScript_21238, MotionScript_11251, WaddleDeeProperties
-Data_1c5f8:
-	object $0b, $06, $00, $00, AnimScript_BombItem, MotionScript_10008, BombProperties, $ff
-Data_1c603:
-	object $0a, $06, $e0, $00, AnimScript_2134f, MotionScript_113e2, WaddleDeeProperties
-Data_1c60d:
-	object $14, $06, $e0, $00, AnimScript_2134f, MotionScript_113e2, WaddleDeeProperties
-Data_1c617:
-	object $16, $06, $00, $00, AnimScript_2143e, MotionScript_1154d, WaddleDeeProperties
+LevelObject_1c5e4:
+	object 11, 0, -64, 0, AnimScript_21238, MotionScript_11251, WaddleDeeProperties
+LevelObject_1c5ee:
+	object 21, 0, -64, 0, AnimScript_21238, MotionScript_11251, WaddleDeeProperties
+LevelObject_1c5f8:
+	object 11, 6, 0, 0, AnimScript_BombItem, MotionScript_10008, BombProperties, -1
+LevelObject_1c603:
+	object 10, 6, -32, 0, AnimScript_2134f, MotionScript_113e2, WaddleDeeProperties
+LevelObject_1c60d:
+	object 20, 6, -32, 0, AnimScript_2134f, MotionScript_113e2, WaddleDeeProperties
+LevelObject_1c617:
+	object 22, 6, 0, 0, AnimScript_2143e, MotionScript_1154d, WaddleDeeProperties
 
 Data_1c621:
 	dbw $00, NULL
@@ -495,126 +495,126 @@ Data_1c621:
 
 Data_1c625:
 	dbw $00, NULL
-	dbw $01, Data_1c64c
-	dbw $01, Data_1c656
-	dbw $07, Data_1c660
-	dbw $0b, Data_1c66a
-	dbw $0b, Data_1c641
-	dbw $0e, Data_1c674
-	dbw $0e, Data_1c67e
-	dbw $0e, Data_1c688
+	dbw $01, LevelObject_1c64c
+	dbw $01, LevelObject_1c656
+	dbw $07, LevelObject_1c660
+	dbw $0b, LevelObject_1c66a
+	dbw $0b, LevelObject_1c641
+	dbw $0e, LevelObject_1c674
+	dbw $0e, LevelObject_1c67e
+	dbw $0e, LevelObject_1c688
 	db $ff ; end
 
-Data_1c641:
-	object $04, $0b, $08, $00, AnimScript_20925, MotionScript_10008, MikeProperties, 7
-Data_1c64c:
-	object $00, $03, $00, $00, AnimScript_212da, MotionScript_102d1, WaddleDeeProperties
-Data_1c656:
-	object $07, $01, $08, $00, AnimScript_StationaryShotzo, MotionScript_10008, ShotzoProperties
-Data_1c660:
-	object $00, $07, $00, $00, AnimScript_20650, MotionScript_1167c, WaddleDeeProperties
-Data_1c66a:
-	object $02, $0b, $00, $00, AnimScript_20650, MotionScript_11679, WaddleDeeProperties
-Data_1c674:
-	object $03, $0e, $00, $00, AnimScript_205ae, MotionScript_103ff, WaddleDeeProperties
-Data_1c67e:
-	object $05, $0e, $00, $00, AnimScript_2061d, MotionScript_103ff, WaddleDeeProperties
-Data_1c688:
-	object $07, $0e, $00, $00, AnimScript_205ae, MotionScript_103ff, WaddleDeeProperties
+LevelObject_1c641:
+	object 4, 11, 8, 0, AnimScript_20925, MotionScript_10008, MikeProperties, 7
+LevelObject_1c64c:
+	object 0, 3, 0, 0, AnimScript_212da, MotionScript_102d1, WaddleDeeProperties
+LevelObject_1c656:
+	object 7, 1, 8, 0, AnimScript_StationaryShotzo, MotionScript_10008, ShotzoProperties
+LevelObject_1c660:
+	object 0, 7, 0, 0, AnimScript_20650, MotionScript_1167c, WaddleDeeProperties
+LevelObject_1c66a:
+	object 2, 11, 0, 0, AnimScript_20650, MotionScript_11679, WaddleDeeProperties
+LevelObject_1c674:
+	object 3, 14, 0, 0, AnimScript_205ae, MotionScript_103ff, WaddleDeeProperties
+LevelObject_1c67e:
+	object 5, 14, 0, 0, AnimScript_2061d, MotionScript_103ff, WaddleDeeProperties
+LevelObject_1c688:
+	object 7, 14, 0, 0, AnimScript_205ae, MotionScript_103ff, WaddleDeeProperties
 
 Data_1c692:
 	dbw $00, NULL
-	dbw $00, Data_1c6a6
-	dbw $02, Data_1c6c5
-	dbw $07, Data_1c6ba
-	dbw $09, Data_1c6b0
+	dbw $00, LevelObject_1c6a6
+	dbw $02, LevelObject_1c6c5
+	dbw $07, LevelObject_1c6ba
+	dbw $09, LevelObject_1c6b0
 	db $ff ; end
 
 Data_1c6a2:
 	dbw $00, NULL
 	db $ff ; end
 
-Data_1c6a6:
-	object $00, $03, $00, $00, AnimScript_212a4, MotionScript_11345, WaddleDeeProperties
-Data_1c6b0:
-	object $09, $03, $00, $00, AnimScript_2127a, MotionScript_1130c, WaddleDeeProperties
-Data_1c6ba:
-	object $07, $06, $00, $00, AnimScript_2092e, MotionScript_10008, EnergyDrinkProperties, 0
-Data_1c6c5:
-	object $02, $06, $00, $00, AnimScript_2092e, MotionScript_10008, EnergyDrinkProperties, 1
+LevelObject_1c6a6:
+	object 0, 3, 0, 0, AnimScript_212a4, MotionScript_11345, WaddleDeeProperties
+LevelObject_1c6b0:
+	object 9, 3, 0, 0, AnimScript_2127a, MotionScript_1130c, WaddleDeeProperties
+LevelObject_1c6ba:
+	object 7, 6, 0, 0, AnimScript_EnergyDrink, MotionScript_10008, EnergyDrinkProperties, 0
+LevelObject_1c6c5:
+	object 2, 6, 0, 0, AnimScript_EnergyDrink, MotionScript_10008, EnergyDrinkProperties, 1
 
 Data_1c6d0:
 	dbw $00, NULL
-	dbw $09, Data_1c715
+	dbw $09, LevelObject_1c715
 	db $ff ; end
 
 Data_1c6d7:
 	dbw $00, NULL
-	dbw $01, Data_1c6ed
-	dbw $06, Data_1c701
-	dbw $06, Data_1c71f
-	dbw $09, Data_1c6f7
-	dbw $0a, Data_1c70b
-	dbw $0a, Data_1c715
+	dbw $01, LevelObject_1c6ed
+	dbw $06, LevelObject_1c701
+	dbw $06, LevelObject_1c71f
+	dbw $09, LevelObject_1c6f7
+	dbw $0a, LevelObject_1c70b
+	dbw $0a, LevelObject_1c715
 	db $ff ; end
 
-Data_1c6ed:
-	object $07, $01, $00, $00, AnimScript_2147e, MotionScript_10008, Data_3421
-Data_1c6f7:
-	object $11, $09, $00, $00, AnimScript_2147e, MotionScript_10008, Data_3421
-Data_1c701:
-	object $04, $06, $00, $00, AnimScript_2146b, MotionScript_11585, Data_3421
-Data_1c70b:
-	object $05, $0a, $00, $00, AnimScript_2146b, MotionScript_11585, Data_3421
-Data_1c715:
-	object $09, $0a, $00, $00, AnimScript_2146b, MotionScript_11585, Data_3421
-Data_1c71f:
-	object $11, $06, $00, $00, AnimScript_2146b, MotionScript_11585, Data_3421
+LevelObject_1c6ed:
+	object 7, 1, 0, 0, AnimScript_TwoFace_Waiting, MotionScript_10008, Data_3421
+LevelObject_1c6f7:
+	object 17, 9, 0, 0, AnimScript_TwoFace_Waiting, MotionScript_10008, Data_3421
+LevelObject_1c701:
+	object 4, 6, 0, 0, AnimScript_Chuckie, MotionScript_Chuckie, Data_3421
+LevelObject_1c70b:
+	object 5, 10, 0, 0, AnimScript_Chuckie, MotionScript_Chuckie, Data_3421
+LevelObject_1c715:
+	object 9, 10, 0, 0, AnimScript_Chuckie, MotionScript_Chuckie, Data_3421
+LevelObject_1c71f:
+	object 17, 6, 0, 0, AnimScript_Chuckie, MotionScript_Chuckie, Data_3421
 
 Data_1c729:
 	dbw $00, NULL
-	dbw $02, Data_1c772
-	dbw $05, Data_1c7a4
-	dbw $08, Data_1c767
-	dbw $09, Data_1c790
-	dbw $09, Data_1c7ae
-	dbw $0b, Data_1c7b8
-	dbw $0d, Data_1c77c
-	dbw $0e, Data_1c79a
-	dbw $0f, Data_1c786
+	dbw $02, LevelObject_1c772
+	dbw $05, LevelObject_1c7a4
+	dbw $08, LevelObject_1c767
+	dbw $09, LevelObject_1c790
+	dbw $09, LevelObject_1c7ae
+	dbw $0b, LevelObject_1c7b8
+	dbw $0d, LevelObject_1c77c
+	dbw $0e, LevelObject_1c79a
+	dbw $0f, LevelObject_1c786
 	db $ff ; end
 
 Data_1c748:
 	dbw $00, NULL
-	dbw $01, Data_1c790
-	dbw $01, Data_1c79a
-	dbw $02, Data_1c7b8
-	dbw $03, Data_1c7ae
-	dbw $05, Data_1c772
-	dbw $06, Data_1c786
-	dbw $07, Data_1c767
-	dbw $09, Data_1c77c
-	dbw $07, Data_1c7a4
+	dbw $01, LevelObject_1c790
+	dbw $01, LevelObject_1c79a
+	dbw $02, LevelObject_1c7b8
+	dbw $03, LevelObject_1c7ae
+	dbw $05, LevelObject_1c772
+	dbw $06, LevelObject_1c786
+	dbw $07, LevelObject_1c767
+	dbw $09, LevelObject_1c77c
+	dbw $07, LevelObject_1c7a4
 	db $ff ; end
 
-Data_1c767:
-	object $08, $07, $00, $00, AnimScript_2092e, MotionScript_10008, EnergyDrinkProperties, 8
-Data_1c772:
-	object $02, $05, $00, $00, AnimScript_211e4, MotionScript_10008, GlunkProperties
-Data_1c77c:
-	object $0d, $09, $00, $00, AnimScript_211e4, MotionScript_10008, GlunkProperties
-Data_1c786:
-	object $0f, $06, $00, $00, AnimScript_211e4, MotionScript_10008, GlunkProperties
-Data_1c790:
-	object $09, $01, $e0, $00, AnimScript_211c3, MotionScript_11241, GlunkProperties
-Data_1c79a:
-	object $0e, $01, $e0, $00, AnimScript_211c3, MotionScript_11241, GlunkProperties
-Data_1c7a4:
-	object $05, $07, $00, $00, AnimScript_20572, MotionScript_10508, GordoProperties
-Data_1c7ae:
-	object $09, $03, $00, $00, AnimScript_20572, MotionScript_114b2, GordoProperties
-Data_1c7b8:
-	object $0b, $02, $00, $00, AnimScript_20647, MotionScript_102ce, WaddleDeeProperties
+LevelObject_1c767:
+	object 8, 7, 0, 0, AnimScript_EnergyDrink, MotionScript_10008, EnergyDrinkProperties, 8
+LevelObject_1c772:
+	object 2, 5, 0, 0, AnimScript_211e4, MotionScript_10008, GlunkProperties
+LevelObject_1c77c:
+	object 13, 9, 0, 0, AnimScript_211e4, MotionScript_10008, GlunkProperties
+LevelObject_1c786:
+	object 15, 6, 0, 0, AnimScript_211e4, MotionScript_10008, GlunkProperties
+LevelObject_1c790:
+	object 9, 1, -32, 0, AnimScript_211c3, MotionScript_11241, GlunkProperties
+LevelObject_1c79a:
+	object 14, 1, -32, 0, AnimScript_211c3, MotionScript_11241, GlunkProperties
+LevelObject_1c7a4:
+	object 5, 7, 0, 0, AnimScript_20572, MotionScript_10508, GordoProperties
+LevelObject_1c7ae:
+	object 9, 3, 0, 0, AnimScript_20572, MotionScript_114b2, GordoProperties
+LevelObject_1c7b8:
+	object 11, 2, 0, 0, AnimScript_20647, MotionScript_102ce, WaddleDeeProperties
 
 Data_1c7c2:
 	dbw $00, NULL
@@ -622,76 +622,215 @@ Data_1c7c2:
 
 Data_1c7c6:
 	dbw $00, NULL
-	dbw $05, Data_1c7dc
-	dbw $06, Data_1c7f0
-	dbw $07, Data_1c7fa
-	dbw $08, Data_1c804
-	dbw $0b, Data_1c80e
-	dbw $12, Data_1c7e6
+	dbw $05, LevelObject_1c7dc
+	dbw $06, LevelObject_1c7f0
+	dbw $07, LevelObject_1c7fa
+	dbw $08, LevelObject_1c804
+	dbw $0b, LevelObject_1c80e
+	dbw $12, LevelObject_1c7e6
 	db $ff ; end
 
-Data_1c7dc:
-	object $09, $05, $00, $00, AnimScript_213fa, MotionScript_114fa, WaddleDeeProperties
-Data_1c7e6:
-	object $01, $12, $00, $00, AnimScript_211e4, MotionScript_10008, GlunkProperties
-Data_1c7f0:
-	object $01, $07, $00, $f0, AnimScript_20650, MotionScript_11682, WaddleDeeProperties
-Data_1c7fa:
-	object $04, $07, $00, $00, AnimScript_20650, MotionScript_11688, WaddleDeeProperties
-Data_1c804:
-	object $08, $08, $00, $00, AnimScript_21524, MotionScript_10008, ShotzoProperties
-Data_1c80e:
-	object $08, $0b, $00, $00, AnimScript_2090a, MotionScript_10008, InvincibilityCandyProperties, 2
+LevelObject_1c7dc:
+	object 9, 5, 0, 0, AnimScript_213fa, MotionScript_114fa, WaddleDeeProperties
+LevelObject_1c7e6:
+	object 1, 18, 0, 0, AnimScript_211e4, MotionScript_10008, GlunkProperties
+LevelObject_1c7f0:
+	object 1, 7, 0, -16, AnimScript_20650, MotionScript_11682, WaddleDeeProperties
+LevelObject_1c7fa:
+	object 4, 7, 0, 0, AnimScript_20650, MotionScript_11688, WaddleDeeProperties
+LevelObject_1c804:
+	object 8, 8, 0, 0, AnimScript_21524, MotionScript_10008, ShotzoProperties
+LevelObject_1c80e:
+	object 8, 11, 0, 0, AnimScript_2090a, MotionScript_10008, InvincibilityCandyProperties, 2
 
 Data_1c819:
 	dbw $00, NULL
-	dbw $07, Data_1c844
-	dbw $0a, Data_1c86c
-	dbw $0b, Data_1c84e
-	dbw $0f, Data_1c876
-	dbw $0f, Data_1c858
-	dbw $11, Data_1c862
-	dbw $14, Data_1c880
-	dbw $19, Data_1c839
+	dbw $07, LevelObject_1c844
+	dbw $0a, LevelObject_1c86c
+	dbw $0b, LevelObject_1c84e
+	dbw $0f, LevelObject_1c876
+	dbw $0f, LevelObject_1c858
+	dbw $11, LevelObject_1c862
+	dbw $14, LevelObject_1c880
+	dbw $19, LevelObject_1c839
 	db $ff ; end
 
 Data_1c835:
 	dbw $00, NULL
 	db $ff ; end
 
-Data_1c839:
-	object $19, $06, $f8, $00, AnimScript_20958, MotionScript_1031d, Data_3453, 3
-Data_1c844:
-	object $07, $00, $00, $00, AnimScript_213a1, MotionScript_11425, Data_3697
-Data_1c84e:
-	object $0b, $03, $00, $00, AnimScript_20000, MotionScript_11461, Data_3697
-Data_1c858:
-	object $0f, $05, $00, $00, AnimScript_213a1, MotionScript_11443, Data_3697
-Data_1c862:
-	object $11, $00, $00, $00, AnimScript_213a1, MotionScript_11425, Data_3697
-Data_1c86c:
-	object $0a, $04, $00, $00, AnimScript_212d1, MotionScript_112d9, WaddleDeeProperties
-Data_1c876:
-	object $0f, $05, $16, $ee, AnimScript_212d1, MotionScript_11300, WaddleDeeProperties
-Data_1c880:
-	object $14, $04, $00, $00, AnimScript_212d1, MotionScript_112d9, WaddleDeeProperties
-; 0x1c88a
+LevelObject_1c839:
+	object 25, 6, -8, 0, AnimScript_WarpStar, MotionScript_WarpStar, WarpStarFloatingProperties, 3
+LevelObject_1c844:
+	object 7, 0, 0, 0, AnimScript_213a1, MotionScript_11425, MumbiesProperties
+LevelObject_1c84e:
+	object 11, 3, 0, 0, AnimScript_20000, MotionScript_11461, MumbiesProperties
+LevelObject_1c858:
+	object 15, 5, 0, 0, AnimScript_213a1, MotionScript_11443, MumbiesProperties
+LevelObject_1c862:
+	object 17, 0, 0, 0, AnimScript_213a1, MotionScript_11425, MumbiesProperties
+LevelObject_1c86c:
+	object 10, 4, 0, 0, AnimScript_212d1, MotionScript_112d9, WaddleDeeProperties
+LevelObject_1c876:
+	object 15, 5, 22, -18, AnimScript_212d1, MotionScript_11300, WaddleDeeProperties
+LevelObject_1c880:
+	object 20, 4, 0, 0, AnimScript_212d1, MotionScript_112d9, WaddleDeeProperties
+
+Data_1c88a:
+	dbw $00, NULL
+	dbw $06, LevelObject_1c8b8
+	dbw $08, LevelObject_1c8c2
+	dbw $0a, LevelObject_1c8cc
+	dbw $0b, LevelObject_1c8a4
+	dbw $0f, LevelObject_1c8d6
+	dbw $0f, LevelObject_1c8ae
+	db $ff ; end
+
+Data_1c8a0:
+	dbw $00, NULL
+	db $ff ; end
+
+LevelObject_1c8a4:
+	object 11, 8, 0, 0, AnimScript_2122f, MotionScript_11637, WaddleDeeProperties
+LevelObject_1c8ae:
+	object 15, 8, 0, 0, AnimScript_2122f, MotionScript_11637, WaddleDeeProperties
+LevelObject_1c8b8:
+	object 6, 0, 0, 0, AnimScript_21433, MotionScript_11545, BroomHatterProperties
+LevelObject_1c8c2:
+	object 8, 0, 0, 0, AnimScript_21433, MotionScript_11545, BroomHatterProperties
+LevelObject_1c8cc:
+	object 10, 0, 0, 0, AnimScript_21433, MotionScript_11545, BroomHatterProperties
+LevelObject_1c8d6:
+	object 15, 0, 0, 0, AnimScript_21433, MotionScript_11545, BroomHatterProperties
+
+Data_1c8e0:
+	dbw $00, NULL
+	dbw $0b, LevelObject_1c8ff
+	dbw $0b, LevelObject_1c8f4
+	db $ff ; end
+
+Data_1c8ea:
+	dbw $00, NULL
+	dbw $03, LevelObject_1c8ff
+	dbw $09, LevelObject_1c8f4
+	db $ff ; end
+
+LevelObject_1c8f4:
+	object 11, 9, 0, 0, AnimScript_2167b, MotionScript_10008, MaximTomatoProperties, 10
+LevelObject_1c8ff:
+	object 11, 3, 0, 0, AnimScript_21598, MotionScript_10008, Data_3421
+
+Data_1c909:
+	dbw $00, NULL
+	dbw $01, LevelObject_1c931
+	dbw $01, LevelObject_1c91d
+	dbw $07, LevelObject_1c93c
+	dbw $08, LevelObject_1c927
+	db $ff ; end
+
+Data_1c919:
+	dbw $00, NULL
+	db $ff ; end
+
+LevelObject_1c91d:
+	object 1, 1, 8, 8, AnimScript_2130d, MotionScript_11396, WaddleDeeProperties
+LevelObject_1c927:
+	object 8, 1, -8, 8, AnimScript_212e3, MotionScript_11381, WaddleDeeProperties
+LevelObject_1c931:
+	object 1, 1, 8, 0, AnimScript_SpicyFood, MotionScript_10008, SpicyFoodProperties, 4
+LevelObject_1c93c:
+	object 7, 3, 8, 0, AnimScript_EnergyDrink, MotionScript_10008, EnergyDrinkProperties, 5
+
+Data_1c947:
+	dbw $00, NULL
+	dbw $00, LevelObject_1c979
+	dbw $03, LevelObject_1c9b6
+	dbw $06, LevelObject_1c9a2
+	dbw $08, LevelObject_1c9ac
+	dbw $0a, LevelObject_1c984
+	dbw $0b, LevelObject_1c98e
+	dbw $0c, LevelObject_1c998
+	db $ff ; end
+
+Data_1c960:
+	dbw $00, NULL
+	dbw $03, LevelObject_1c9a2
+	dbw $04, LevelObject_1c98e
+	dbw $05, LevelObject_1c9b6
+	dbw $07, LevelObject_1c998
+	dbw $08, LevelObject_1c9ac
+	dbw $0a, LevelObject_1c979
+	dbw $0e, LevelObject_1c984
+	db $ff ; end
+
+LevelObject_1c979:
+	object 0, 10, 0, 0, AnimScript_EnergyDrink, MotionScript_10008, EnergyDrinkProperties, 6
+LevelObject_1c984:
+	object 10, 14, 0, 0, AnimScript_21457, MotionScript_103ff, WaddleDeeProperties
+LevelObject_1c98e:
+	object 11, 4, 0, 0, AnimScript_TwoFace_Waiting, MotionScript_10008, Data_3421
+LevelObject_1c998:
+	object 12, 7, 0, 0, AnimScript_20000, MotionScript_11265, Data_3421
+LevelObject_1c9a2:
+	object 6, 3, 0, 0, AnimScript_20572, MotionScript_114b2, GordoProperties
+LevelObject_1c9ac:
+	object 8, 8, 0, 0, AnimScript_20572, MotionScript_10508, GordoProperties
+LevelObject_1c9b6:
+	object 3, 5, 0, 0, AnimScript_20572, MotionScript_114b2, GordoProperties
+
+Data_1c9c0:
+	dbw $00, NULL
+	dbw $01, LevelObject_1c9da
+	dbw $06, LevelObject_1c9ee
+	dbw $07, LevelObject_1c9f8
+	dbw $0a, LevelObject_1ca02
+	dbw $0c, LevelObject_1ca0c
+	dbw $0d, LevelObject_1c9e4
+	db $ff ; end
+
+Data_1c9d6:
+	dbw $00, NULL
+	db $ff ; end
+
+LevelObject_1c9da:
+	object 1, 3, 0, 0, AnimScript_2133a, MotionScript_116e5, WaddleDeeProperties
+LevelObject_1c9e4:
+	object 13, 3, 0, 0, AnimScript_21433, MotionScript_11691, WaddleDeeProperties
+LevelObject_1c9ee:
+	object 6, 4, 0, 0, AnimScript_20587, MotionScript_102ce, BroomHatterProperties
+LevelObject_1c9f8:
+	object 7, 3, 0, 0, AnimScript_20587, MotionScript_102ce, BroomHatterProperties
+LevelObject_1ca02:
+	object 10, 5, 0, 0, AnimScript_21238, MotionScript_11251, WaddleDeeProperties
+LevelObject_1ca0c:
+	object 12, 5, 0, 0, AnimScript_21238, MotionScript_11251, WaddleDeeProperties
+
+Data_1ca16:
+	dbw $00, NULL
+	dbw $01, $4a24
+	dbw $05, $4a2e
+	db $ff ; end
+
+Data_1ca20:
+	dbw $00, NULL
+	db $ff ; end
+; 0x1ca24
 
 SECTION "Bank 7@558f", ROMX[$558f], BANK[$7]
 
 Data_1d58f:
 	dbw $00, NULL
-	dbw $00, Data_1d5b0
-	dbw $00, Data_1d5a6
-	dbw $04, Data_1d59c
+	dbw $00, LevelObject_1d5b0
+	dbw $00, LevelObject_1d5a6
+	dbw $04, LevelObject_1d59c
 	db $ff ; end
 
-Data_1d59c:
-	object $04, $03, $0a, $e6, AnimScript_TitleScreenWarpStarKirby, MotionScript_TitleScreenWarpStarKirby, Data_3425
-Data_1d5a6:
-	object $00, $07, $f0, $f8, AnimScript_TitleScreenKirbySpawner, MotionScript_10008, Data_3425
-Data_1d5b0:
-	object $00, $00, $00, $00, AnimScript_TitleScreenStarSpawner, MotionScript_10008, Data_3425
+LevelObject_1d59c:
+	object 4, 3, 10, -26, AnimScript_TitleScreenWarpStarKirby, MotionScript_TitleScreenWarpStarKirby, Data_3425
+LevelObject_1d5a6:
+	object 0, 7, -16, -8, AnimScript_TitleScreenKirbySpawner, MotionScript_10008, Data_3425
+LevelObject_1d5b0:
+	object 0, 0, 0, 0, AnimScript_TitleScreenStarSpawner, MotionScript_10008, Data_3425
 
 Data_1d5ba:
 	dbw $00, NULL
@@ -713,7 +852,6 @@ SECTION "Bank 7@564b", ROMX[$564b], BANK[$7]
 
 Data_1d64b:
 	object $06, $06, $f8, $00, AnimScript_224e4, MotionScript_124b9, Data_3425
-
 Data_1d655:
 	object $05, $06, $fb, $f8, AnimScript_224af, MotionScript_12491, Data_3425
 ; 0x1d65f
@@ -733,3 +871,28 @@ Data_1d7e7:
 	dbw $00, NULL
 	db $ff ; end
 ; 0x1d7eb
+
+SECTION "Bank 7@5936", ROMX[$5936], BANK[$7]
+
+Data_1d936:
+	dbw $00, NULL
+	dbw $01, $5958
+	db $ff ; end
+
+Data_1d93d:
+	dbw $00, NULL
+	dbw $01, $5958
+	db $ff ; end
+
+Data_1d944:
+	dbw $00, NULL
+	dbw $01, $5962
+	dbw $09, $596c
+	db $ff ; end
+
+Data_1d94e:
+	dbw $00, NULL
+	dbw $01, $5962
+	dbw $09, $596c
+	db $ff ; end
+; 0x1d958
