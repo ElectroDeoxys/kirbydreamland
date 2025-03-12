@@ -263,6 +263,7 @@ MACRO trans_wait
 	db \1, $00
 ENDM
 
+; functionally the same as trans_move_kirby_1
 ; \1 = x velocity
 ; \2 = duration
 MACRO trans_move_kirby_1
@@ -270,6 +271,7 @@ MACRO trans_move_kirby_1
 	bigdw \1
 ENDM
 
+; functionally the same as trans_move_kirby_1
 ; \1 = x velocity
 ; \2 = duration
 MACRO trans_move_kirby_2
@@ -278,8 +280,8 @@ MACRO trans_move_kirby_2
 ENDM
 
 ; \1 = area
-; \2 = ?
-; \3 = ?
+; \2 = x section
+; \3 = y section
 ; \4 = duration
 MACRO trans_change_area
 	db \4, 1 << 2, \1, \2, \3

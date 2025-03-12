@@ -126,9 +126,9 @@ Func_140c2:
 SECTION "Bank 5@40d5", ROMX[$40d5], BANK[$5]
 
 Func_140d5:
-	ld hl, wd1b0
+	ld hl, wObjectStatuses
 	add hl, bc
-	set 5, [hl]
+	set OBJSTAT_UNK5_F, [hl]
 	ld hl, wd1a0
 	add hl, bc
 	bit OBJFLAG_INHALED_F, [hl]
@@ -149,17 +149,17 @@ Func_140d5:
 SECTION "Bank 5@4105", ROMX[$4105], BANK[$5]
 
 Func_14105:
-	ld hl, wd1b0
+	ld hl, wObjectStatuses
 	add hl, bc
-	res 1, [hl]
+	res OBJSTAT_UNK1_F, [hl]
 	ld hl, wd1a0
 	add hl, bc
 	bit OBJFLAG_INHALED_F, [hl]
 	ret z ; not being inhaled
 	res OBJFLAG_INHALED_F, [hl]
-	ld hl, wd1b0
+	ld hl, wObjectStatuses
 	add hl, bc
-	set 1, [hl]
+	set OBJSTAT_UNK1_F, [hl]
 	ld hl, wObjectXCoords
 	add hl, bc
 	add hl, bc
@@ -214,11 +214,11 @@ Func_1415e:
 	jp Func_241f
 
 Func_14172:
-	ld hl, wd1b0
+	ld hl, wObjectStatuses
 	add hl, bc
-	bit 7, [hl]
+	bit OBJSTAT_HURT_F, [hl]
 	ret z
-	res 7, [hl]
+	res OBJSTAT_HURT_F, [hl]
 	ld a, [wd3cd]
 	and a
 	ret z
@@ -242,9 +242,9 @@ Func_14172:
 SECTION "Bank 5@41b1", ROMX[$41b1], BANK[$5]
 
 Func_141b1:
-	ld hl, wd1b0
+	ld hl, wObjectStatuses
 	add hl, bc
-	bit 6, [hl]
+	bit OBJSTAT_UNK6_F, [hl]
 	ret z
 	jp Func_1415e
 ; 0x141bb
@@ -432,8 +432,8 @@ ProcessObjectInteractions::
 	ld hl, wd1a0 + OBJECT_SLOT_13
 	bit OBJFLAG_7_F, [hl]
 	ret z
-	ld a, [wd1b0 + OBJECT_SLOT_13]
-	bit 2, a
+	ld a, [wObjectStatuses + OBJECT_SLOT_13]
+	bit OBJSTAT_UNK2_F, a
 	ret nz
 	ld [wd410], a
 	ld a, [wObjectScreenXPositions + OBJECT_SLOT_13]
@@ -453,8 +453,8 @@ ProcessObjectInteractions::
 	ld hl, wd1a0 + OBJECT_SLOT_14
 	bit OBJFLAG_7_F, [hl]
 	ret z
-	ld a, [wd1b0 + OBJECT_SLOT_14]
-	bit 2, a
+	ld a, [wObjectStatuses + OBJECT_SLOT_14]
+	bit OBJSTAT_UNK2_F, a
 	ret nz
 	ld [wd410], a
 	ld a, [wObjectScreenXPositions + OBJECT_SLOT_14]
@@ -710,9 +710,9 @@ ProcessObjectInteractions::
 ; output:
 ; - z set if HP decremented to 0
 .DecrementObjectHP:
-	ld hl, wd1b0
+	ld hl, wObjectStatuses
 	add hl, bc
-	set 7, [hl]
+	set OBJSTAT_HURT_F, [hl]
 	ld hl, wObjectHPs
 	add hl, bc
 	dec [hl]
@@ -864,8 +864,8 @@ ExecuteItemEffect:
 
 ; ITEM_A
 	call ConsumeItem
-	ld a, $81
-	ld [wd3bf], a
+	ld a, CLEAR_ACTIVE | CLEAR_NON_MIKE
+	ld [wClearScreenFlags], a
 	ld a, SFX_BOSS_DEFEAT
 	call PlaySFX
 	jp DestroyObject
@@ -1192,10 +1192,10 @@ ENDR
 	set OBJFLAG_INHALED_F, [hl]
 	bit OBJFLAG_IMMUNE_F, [hl]
 	jr nz, .next_obj
-	ld hl, wd1b0
+	ld hl, wObjectStatuses
 	add hl, bc
 	ld a, [hl]
-	and $22
+	and OBJSTAT_UNK1 | OBJSTAT_UNK5
 	jr nz, .next_obj
 	ld hl, AnimScript_20003
 	ld de, MotionScript_InhaledObject

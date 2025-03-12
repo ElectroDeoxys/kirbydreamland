@@ -90,8 +90,8 @@ StartStage::
 
 	ld a, HUD_UPDATE_LABEL | HUD_UPDATE_LIVES | HUD_UPDATE_SCORE_DIGITS
 	ld [hHUDFlags], a
-	ld a, $15
-	ld [wd07e], a
+	ld a, 0.082
+	ld [wKirbyYAcceleration], a
 	ld a, $16
 	ld [wd065], a
 
@@ -108,16 +108,17 @@ StartStage::
 	ld [wSCY], a
 	ld [wKirbyXAcc], a
 	ld [wd056], a
-	ld [wd078], a
-	ld [wd079], a
-	ld a, $20
-	ld [wd07c], a
-	ld a, 14
+	ld [wKirbyYVel + 0], a
+	ld [wKirbyYVel + 1], a
+
+	ld a, 0.125
+	ld [wKirbyXAcceleration], a
+	ld a, 0.055
 	ld [wKirbyXDeceleration], a
-	ld a, $01
-	ld [wd076], a
-	ld a, $33
-	ld [wd077], a
+	ld a, HIGH(1.2)
+	ld [wKirbyMaxXVel + 0], a
+	ld a, LOW(1.2)
+	ld [wKirbyMaxXVel + 1], a
 
 	ld a, [wMaxHP]
 	ld [wHP], a
@@ -427,7 +428,7 @@ HandleStageTransition::
 	add a ; *2
 	ld c, a
 	ld b, $00
-	ld hl, StageTransistions
+	ld hl, StageTransitions
 	add hl, bc
 	ld a, [hli]
 	ld c, a
@@ -441,8 +442,8 @@ HandleStageTransition::
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	ld a, $01
-	ld [wd3dd], a
+	ld a, 1
+	ld [wStageTransitionCounter], a
 
 .asm_183ec
 	wait_vblank_a
@@ -452,16 +453,19 @@ HandleStageTransition::
 	call Func_19098
 	pop hl
 
-	ld a, [wd3dd]
+	; decrement counter
+	ld a, [wStageTransitionCounter]
 	dec a
-	ld [wd3dd], a
-	jr nz, .asm_18440
+	ld [wStageTransitionCounter], a
+	jr nz, .wait ; still waiting
+
+	; counter reached 0, do next command
 	ld a, [hli]
-	ld [wd3dd], a
+	ld [wStageTransitionCounter], a
 	ld a, [hli]
-	ld [wd3de], a
+	ld [wStageTransitionCmd], a
 	bit 7, a
-	jp nz, Func_3d2d
+	jp nz, EndStageTransition
 	bit 0, a
 	call nz, .SetKirbyXVel
 	bit 1, a
@@ -473,14 +477,14 @@ HandleStageTransition::
 	bit 5, a
 	jp nz, Epilogue
 	bit 3, a
-	jr z, .asm_18440
+	jr z, .wait
 ; next stage
 	ld hl, wStage
 	inc [hl]
 	call StartStage
 	jp Func_3d32
-.asm_18440
-	ld a, [wd3de]
+.wait
+	ld a, [wStageTransitionCmd]
 	bit 0, a
 	call nz, .Func_18506
 	bit 1, a
@@ -589,8 +593,8 @@ HandleStageTransition::
 	ld a, [hli]
 	ld [wKirbyXVel + 1], a
 	xor a
-	ld [wd076], a
-	ld [wd077], a
+	ld [wKirbyMaxXVel + 0], a
+	ld [wKirbyMaxXVel + 1], a
 	pop af
 	ret
 
@@ -599,16 +603,16 @@ HandleStageTransition::
 	push hl
 	ld a, [wKirbyXVel + 1]
 	ld e, a
-	ld a, [wd077]
+	ld a, [wKirbyMaxXVel + 1]
 	add e
-	ld [wd077], a
+	ld [wKirbyMaxXVel + 1], a
 	ld a, [wKirbyXVel + 0]
 	ld e, a
-	ld a, [wd076]
+	ld a, [wKirbyMaxXVel + 0]
 	adc e
 	ld [wd063], a
 	xor a
-	ld [wd076], a
+	ld [wKirbyMaxXVel + 0], a
 	call Func_1062
 	pop hl
 	pop af
@@ -618,17 +622,17 @@ HandleStageTransition::
 	push hl
 	ld a, [wKirbyXVel + 1]
 	ld e, a
-	ld a, [wd077]
+	ld a, [wKirbyMaxXVel + 1]
 	add e
-	ld [wd077], a
+	ld [wKirbyMaxXVel + 1], a
 	ld a, [wKirbyXVel + 0]
 	ld e, a
-	ld a, [wd076]
+	ld a, [wKirbyMaxXVel + 0]
 	adc e
 	ld b, a
 	ld [wd067], a
 	xor a
-	ld [wd076], a
+	ld [wKirbyMaxXVel + 0], a
 	cp b
 	jr z, .asm_18591
 	ld a, [wSCY]
@@ -2102,7 +2106,7 @@ Data_190bb:
 	db $06, $7a, $af ; MT_DEDEDE
 	assert_table_length NUM_STAGES
 
-StageTransistions:
+StageTransitions:
 	table_width 2
 	dw .GreenGreens  ; GREEN_GREENS
 	dw .CastleLololo ; CASTLE_LOLOLO
@@ -2195,7 +2199,7 @@ StageTransistions:
 	trans_move_kirby_1 1.0, 10
 	trans_move_kirby_1 0.5, 10
 	trans_wait 120
-	trans_change_area GREEN_GREENS_2, $01, $01, 1
+	trans_change_area GREEN_GREENS_2, 1, 1, 1
 	trans_set_motion_script MotionScript_1000b, 1
 	trans_wait 255
 	trans_end 1
@@ -2218,19 +2222,19 @@ StageTransistions:
 	trans_move_kirby_1 1.0, 10
 	trans_move_kirby_1 0.5, 10
 	trans_wait 30
-	trans_change_area CASTLE_LOLOLO_08, $01, $01, 1
+	trans_change_area CASTLE_LOLOLO_08, 1, 1, 1
 	trans_set_motion_script MotionScript_10014, 1
 	trans_wait 240
 	trans_end 1
 
 .CastleLololo08:
-	trans_change_area CASTLE_LOLOLO_09, $01, $09, 1
+	trans_change_area CASTLE_LOLOLO_09, 1, 9, 1
 	trans_set_motion_script MotionScript_10276, 1
 	trans_wait 30
 	trans_end 1
 
 .CastleLololo14:
-	trans_change_area CASTLE_LOLOLO_15, $01, $01, 1
+	trans_change_area CASTLE_LOLOLO_15, 1, 1, 1
 	trans_end 1
 
 .CastleLololo15:
@@ -2249,10 +2253,10 @@ StageTransistions:
 	trans_move_kirby_2 2.0, 10
 	trans_move_kirby_2 1.0, 10
 	trans_wait 140
-	trans_change_area FLOAT_ISLANDS_6, $01, $01, 1
+	trans_change_area FLOAT_ISLANDS_6, 1, 1, 1
 	trans_set_motion_script MotionScript_1002f, 1
 	trans_wait 200
-	trans_change_area FLOAT_ISLANDS_7, $01, $01, 1
+	trans_change_area FLOAT_ISLANDS_7, 1, 1, 1
 	trans_set_motion_script MotionScript_10056, 1
 	trans_wait 255
 	trans_end 1
@@ -2271,7 +2275,7 @@ StageTransistions:
 	trans_move_kirby_2 3.0, 11
 	trans_move_kirby_2 4.0, 44
 	trans_wait 120
-	trans_change_area BUBBLY_CLOUDS_5, $01, $01, 1
+	trans_change_area BUBBLY_CLOUDS_5, 1, 1, 1
 	trans_set_motion_script MotionScript_100bf, 1
 	trans_wait 255
 	trans_end 1
@@ -2299,7 +2303,7 @@ StageTransistions:
 .MtDedede7:
 .MtDedede8:
 .MtDedede9:
-	trans_change_area MT_DEDEDE_0, $33, $01, 1
+	trans_change_area MT_DEDEDE_0, 51, 1, 1
 	trans_set_motion_script MotionScript_1011d, 1
 	trans_wait 240
 	trans_end 1

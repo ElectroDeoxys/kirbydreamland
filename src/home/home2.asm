@@ -941,7 +941,7 @@ ENDR
 	ld hl, wd1a0
 	add hl, bc
 	ld [hl], a
-	ld hl, wd1b0
+	ld hl, wObjectStatuses
 	add hl, bc
 	ld [hl], a
 	ld de, $58b8
@@ -1257,7 +1257,7 @@ DoCommonScriptCommand:
 	add hl, hl
 	add hl, hl
 	add hl, hl
-	add hl, hl
+	add hl, hl ; *16
 	ld a, l
 	or e
 	ld l, a
@@ -1279,6 +1279,7 @@ DoCommonScriptCommand:
 	ld [hl], e
 	inc hl
 	ld [hl], d
+
 	ld a, [wSCY]
 	and $0f
 	ld e, a
@@ -1289,7 +1290,7 @@ DoCommonScriptCommand:
 	add hl, hl
 	add hl, hl
 	add hl, hl
-	add hl, hl
+	add hl, hl ; *16
 	ld a, l
 	or e
 	ld l, a
@@ -2006,9 +2007,9 @@ ExecuteObjectScripts:
 	ld a, c
 	cp OBJECT_GROUP_2_BEGIN
 	jr nc, .group_2
-	ld hl, wd1b0
+	ld hl, wObjectStatuses
 	add hl, bc
-	bit 1, [hl]
+	bit OBJSTAT_UNK1_F, [hl]
 	ret nz
 .group_2
 	ld a, c
@@ -2243,9 +2244,9 @@ Func_2b26:
 	ld hl, wd1a0
 	add hl, bc
 	res OBJFLAG_7_F, [hl]
-	ld hl, wd1b0
+	ld hl, wObjectStatuses
 	add hl, bc
-	bit 1, [hl]
+	bit OBJSTAT_UNK1_F, [hl]
 	jp nz, .asm_2b8b
 	call Func_2ce5
 	jp c, .asm_2b8b
@@ -2431,9 +2432,9 @@ Func_2b26:
 	xor a
 	ld [hli], a
 	ld [hl], a
-	ld hl, wd1b0
+	ld hl, wObjectStatuses
 	add hl, bc
-	set 6, [hl]
+	set OBJSTAT_UNK6_F, [hl]
 .asm_2c5b
 	ld d, b
 	ld e, c
@@ -2521,8 +2522,8 @@ Func_2ce5:
 	ld a, c
 	and a
 	jr z, .no_carry ; is Kirby
-	ld hl, wd3bf
-	bit 3, [hl]
+	ld hl, wClearScreenFlags
+	bit CLEAR_UNK3_F, [hl]
 	jr z, .no_carry
 	ld hl, wObjectPropertyFlags
 	add hl, bc
@@ -2871,9 +2872,9 @@ UpdateObjects::
 	ld a, $01
 	bankswitch
 	call UpdatePowerUpCounters
-	ld hl, wd3bf
-	bit 0, [hl]
-	call nz, Func_4bb4
+	ld hl, wClearScreenFlags
+	bit CLEAR_ACTIVE_F, [hl]
+	call nz, ClearAllEnemies
 
 	ld b, NUM_OBJECT_SLOTS
 	ld c, OBJECT_SLOT_KIRBY
@@ -3292,7 +3293,7 @@ ENDR
 	ld hl, wd1a0
 	add hl, bc
 	ld [hl], a
-	ld hl, wd1b0
+	ld hl, wObjectStatuses
 	add hl, bc
 	ld [hl], a
 	ret
@@ -4003,17 +4004,18 @@ Func_3768::
 	ld [hKirbyFlags2], a
 	xor a
 	ld [hKirbyFlags4], a
-	ld a, $01
-	ld [wd07a], a
-	ld a, $33
-	ld [wd07b], a
-	ld a, $01
-	ld [wd076], a
-	ld a, $33
-	ld [wd077], a
-	ld a, $16
-	ld [wd07c], a
-	ld a, 9
+
+	ld a, HIGH(1.2)
+	ld [wKirbyMaxYVel + 0], a
+	ld a, LOW(1.2)
+	ld [wKirbyMaxYVel + 1], a
+	ld a, HIGH(1.2)
+	ld [wKirbyMaxXVel + 0], a
+	ld a, LOW(1.2)
+	ld [wKirbyMaxXVel + 1], a
+	ld a, 0.085
+	ld [wKirbyXAcceleration], a
+	ld a, 0.035
 	ld [wKirbyXDeceleration], a
 	ret
 
@@ -4104,9 +4106,9 @@ StarSpit::
 	ld hl, Data_1c190
 	call CreateObject_Group2
 	jr c, Func_3889
-	ld hl, wd1b0
+	ld hl, wObjectStatuses
 	add hl, bc
-	set 1, [hl]
+	set OBJSTAT_UNK1_F, [hl]
 	jr Func_384a
 
 Func_383b:
@@ -4116,10 +4118,10 @@ Func_383b:
 	ld hl, Data_1c18a
 	call CreateObject_Group2
 	jr c, Func_388a
-	ld hl, wd1b0
+	ld hl, wObjectStatuses
 	add hl, bc
 Func_384a:
-	set 0, [hl]
+	set OBJSTAT_UNK0_F, [hl]
 	jr Func_3873
 Func_384e::
 	push hl
@@ -4140,9 +4142,9 @@ PuffSpit::
 	ld a, [hEngineFlags]
 	bit KABOOLA_BATTLE_F, a
 	jr nz, Func_3873
-	ld hl, wd1b0
+	ld hl, wObjectStatuses
 	add hl, bc
-	set 3, [hl]
+	set OBJSTAT_UNK3_F, [hl]
 ;	fallthrough
 Func_3873:
 	ld a, [wROMBank]
@@ -4393,7 +4395,7 @@ DoorConnections:
 	db MT_DEDEDE,     MT_DEDEDE_4,      $03, $31, MT_DEDEDE_9,      $00, $00, $02, $06
 	db $ff
 
-Func_3d2d::
+EndStageTransition::
 	ld hl, hKirbyFlags5
 	res KIRBY5F_TRIGGER_TRANSITION_F, [hl]
 ;	fallthrough
@@ -4408,8 +4410,8 @@ Func_3d32::
 	jp StageLoop_SkipHUDUpdate
 
 Func_3d48::
-	ld a, $15
-	ld [wd07e], a
+	ld a, 0.082
+	ld [wKirbyYAcceleration], a
 	ld a, $16
 	ld [wd065], a
 	xor a
@@ -4418,22 +4420,24 @@ Func_3d48::
 	ld [hKirbyFlags3], a
 	ld [hKirbyFlags4], a
 	ld [wd064], a
-	ld [wd078], a
-	ld [wd079], a
+	ld [wKirbyYVel + 0], a
+	ld [wKirbyYVel + 1], a
 	ld hl, hPalFadeFlags
 	set SCROLLINGF_UNK3_F, [hl]
-	ld a, $20
-	ld [wd07c], a
-	ld a, 14
+
+	ld a, 0.125
+	ld [wKirbyXAcceleration], a
+	ld a, 0.055
 	ld [wKirbyXDeceleration], a
-	ld a, $01
-	ld [wd076], a
-	ld a, $33
-	ld [wd077], a
-	ld a, $02
-	ld [wd07a], a
-	ld a, $00
-	ld [wd07b], a
+	ld a, HIGH(1.2)
+	ld [wKirbyMaxXVel + 0], a
+	ld a, LOW(1.2)
+	ld [wKirbyMaxXVel + 1], a
+	ld a, HIGH(2.0)
+	ld [wKirbyMaxYVel + 0], a
+	ld a, LOW(2.0)
+	ld [wKirbyMaxYVel + 1], a
+
 	xor a
 	ld hl, wKirbyAnimScript
 	ld [hli], a

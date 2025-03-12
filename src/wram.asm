@@ -184,37 +184,15 @@ wd06e:: ; d06e
 wScoreDigits:: ; d06f
 	ds $5
 
-; absolute value of Kirby's x velocity
-; in big endian
-wKirbyXVel:: ; d074
-	dw
-
-wd076:: ; d076
-	db
-
-wd077:: ; d077
-	db
-
-wd078:: ; d078
-	db
-
-wd079:: ; d079
-	db
-
-wd07a:: ; d07a
-	db
-
-wd07b:: ; d07b
-	db
-
-wd07c:: ; d07c
-	db
-
-wKirbyXDeceleration:: ; d07d
-	db
-
-wd07e:: ; d07e
-	db
+; absolute value of Kirby's x velocity in big endian
+wKirbyXVel::          dw ; d074
+wKirbyMaxXVel::       dw ; d076
+; (non-absolute) Kirby's y velocity in big endian
+wKirbyYVel::          dw ; d078
+wKirbyMaxYVel::       dw ; d07a
+wKirbyXAcceleration:: db ; d07c
+wKirbyXDeceleration:: db ; d07d
+wKirbyYAcceleration:: db ; d07e
 
 wd07f:: ; d07f
 	db
@@ -308,7 +286,7 @@ wObjectPropertyFlags:: ; d190
 wd1a0:: ; d1a0
 	ds NUM_OBJECT_SLOTS
 
-wd1b0:: ; d1b0
+wObjectStatuses:: ; d1b0
 	ds NUM_OBJECT_SLOTS
 
 wSpriteOAMPtrs:: ; d1c0
@@ -381,7 +359,9 @@ wd3bd:: ; d3bd
 wPowerUpAttack:: ; d3be
 	db
 
-wd3bf:: ; d3bf
+; flags to determine behaviour of clearing the screen
+; from enemies (e.g. through Mike)
+wClearScreenFlags:: ; d3bf
 	db
 
 wd3c0:: ; d3c0
@@ -447,11 +427,8 @@ wd3db:: ; d3db
 wd3dc:: ; d3dc
 	db
 
-wd3dd:: ; d3dd
-	db
-
-wd3de:: ; d3de
-	db
+wStageTransitionCounter:: db ; d3dd
+wStageTransitionCmd::     db ; d3de
 
 ; remaining duration of the effects
 ; of Mint Leaf and Spicy Food

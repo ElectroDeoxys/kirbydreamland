@@ -94,12 +94,13 @@ Func_4000::
 	and KIRBY3F_UNK2 | KIRBY3F_DIVE
 	jr nz, .asm_40d5
 	ld a, [wKirbyXVel + 0]
-	cp HIGH($182)
+	cp HIGH(1.5078)
 	jr nc, .asm_40c1
 	ld a, [wKirbyXVel + 1]
-	cp LOW($182)
+	cp LOW(1.5078)
 	jr c, .asm_40d5
 .asm_40c1
+	; x vel >= 1.5078
 	ldh a, [hKirbyFlags1]
 	res KIRBY1F_WALK_F, a
 	ldh [hKirbyFlags1], a
@@ -297,7 +298,7 @@ Func_417c::
 	and KIRBY3F_UNK2 | KIRBY3F_DIVE
 	jr nz, .asm_4245
 	ld a, [wKirbyXVel + 0]
-	cp $01
+	cp HIGH(1.0)
 	jr nz, .asm_4245
 	ld b, KIRBY3F_UNK0 | KIRBY3F_UNK1 | KIRBY3F_LAND
 	ldh a, [hKirbyFlags3]
@@ -361,9 +362,9 @@ Func_42a1::
 	and KIRBY3F_UNK2 | KIRBY3F_DIVE
 	jr nz, .stop_walking
 	ld a, [wKirbyXVel + 0]
-	cp 1
-	jr c, .stop_walking
-	; has x velocity
+	cp HIGH(1.0)
+	jr c, .stop_walking ; < 1.0
+	; x velocity >= 1.0
 	ld b, KIRBY3F_UNK0 | KIRBY3F_UNK1 | KIRBY3F_LAND
 	ldh a, [hKirbyFlags3]
 	and KIRBY3F_DUCK | KIRBY3F_FACE_LEFT | KIRBY3F_UNK6 | KIRBY3F_LAND
@@ -491,22 +492,24 @@ KirbyControl::
 	ldh a, [hKirbyFlags2]
 	bit KIRBY2F_UNK6_F, a
 	jp nz, .asm_440b
-	ld a, $20
-	ld [wd07c], a
-	ld a, 14
+
+	ld a, 0.125
+	ld [wKirbyXAcceleration], a
+	ld a, 0.055
 	ld [wKirbyXDeceleration], a
-	ld a, $01
-	ld [wd076], a
-	ld a, $33
-	ld [wd077], a
-	ld a, $02
-	ld [wd07a], a
-	ld a, $00
-	ld [wd07b], a
+	ld a, HIGH(1.2)
+	ld [wKirbyMaxXVel + 0], a
+	ld a, LOW(1.2)
+	ld [wKirbyMaxXVel + 1], a
+	ld a, HIGH(2.0)
+	ld [wKirbyMaxYVel + 0], a
+	ld a, LOW(2.0)
+	ld [wKirbyMaxYVel + 1], a
 	xor a
-	ld [wd079], a
-	ld a, $15
-	ld [wd07e], a
+	ld [wKirbyYVel + 1], a
+	ld a, 0.082
+	ld [wKirbyYAcceleration], a
+
 .asm_43cd
 	ld hl, hKirbyFlags2
 	set KIRBY2F_SPIT_F, [hl]
@@ -658,18 +661,20 @@ KirbyControl::
 	ldh a, [hKirbyFlags1]
 	and $ff ^ (KIRBY1F_JUMP_RISE | KIRBY1F_GROUNDED | KIRBY1F_AIRBORNE)
 	ldh [hKirbyFlags1], a
-	ld a, $00
-	ld [wd07a], a
-	ld a, $cc
-	ld [wd07b], a
-	ld a, $00
-	ld [wd076], a
-	ld a, $c0
-	ld [wd077], a
-	ld a, $16
-	ld [wd07c], a
-	ld a, 9
+
+	ld a, HIGH(0.797)
+	ld [wKirbyMaxYVel + 0], a
+	ld a, LOW(0.797)
+	ld [wKirbyMaxYVel + 1], a
+	ld a, HIGH(0.75)
+	ld [wKirbyMaxXVel + 0], a
+	ld a, LOW(0.75)
+	ld [wKirbyMaxXVel + 1], a
+	ld a, 0.085
+	ld [wKirbyXAcceleration], a
+	ld a, 0.035
 	ld [wKirbyXDeceleration], a
+
 	ld a, SFX_NONE
 	call PlaySFX
 	xor a
@@ -771,26 +776,27 @@ KirbyControl::
 	ldh a, [hKirbyFlags2]
 	bit KIRBY2F_MOUTHFUL_F, a
 	jr nz, .asm_45d9
-	ld a, $15
-	ld [wd07e], a
-	ld a, $00
-	ld [wd078], a
-	ld a, $cc
+	ld a, 0.082
+	ld [wKirbyYAcceleration], a
+	ld a, HIGH(0.797)
+	ld [wKirbyYVel + 0], a
+	ld a, LOW(0.797)
 	jr .asm_45e5
 .asm_45d9
-	ld a, $30
-	ld [wd07e], a
-	ld a, $01
-	ld [wd078], a
-	ld a, $54
+	ld a, 0.188
+	ld [wKirbyYAcceleration], a
+	ld a, HIGH(1.33)
+	ld [wKirbyYVel + 0], a
+	ld a, LOW(1.33)
 .asm_45e5
-	ld [wd079], a
+	ld [wKirbyYVel + 1], a
 	jp Func_426
+
 .asm_45eb
-	ld a, $00
-	ld [wd078], a
-	ld a, $b3
-	ld [wd079], a
+	ld a, HIGH(0.7)
+	ld [wKirbyYVel + 0], a
+	ld a, LOW(0.7)
+	ld [wKirbyYVel + 1], a
 	ld a, [wUnkTimer]
 	cp $0a
 	jp c, Func_426
@@ -800,19 +806,21 @@ KirbyControl::
 	ld [wUnkTimer], a
 	ld [wd064], a
 	jp Func_426
+
 .asm_460c
 	bit KIRBY2F_SPIT_F, a
 	jr nz, .asm_45c0
-	ld a, $ff
-	ld [wd078], a
-	ld a, $c0
-	ld [wd079], a
+	ld a, HIGH(-0.25)
+	ld [wKirbyYVel + 0], a
+	ld a, LOW(-0.25)
+	ld [wKirbyYVel + 1], a
 	ld a, [wUnkTimer]
 	cp $0a
 	jp c, Func_426
 	xor a
 	ld [wUnkTimer], a
 	jp Func_426
+
 .asm_4629
 	ld a, [wd064]
 	and a
@@ -836,9 +844,9 @@ KirbyControl::
 	ld hl, Data_4820
 	add hl, bc
 	ld a, [hli]
-	ld [wd078], a
+	ld [wKirbyYVel + 0], a
 	ld a, [hl]
-	ld [wd079], a
+	ld [wKirbyYVel + 1], a
 	jp Func_426
 .asm_4655
 	xor a
@@ -882,53 +890,55 @@ KirbyControl::
 	ld b, a
 	and (D_RIGHT | D_LEFT) >> 4
 	ldh [hVBlankFlags], a
-	ld a, 255
+
+	ld a, 0.996
 	ld [wKirbyXDeceleration], a
-	ld [wd07c], a
+	ld [wKirbyXAcceleration], a
 	inc a
 	ld [wKirbyXVel + 1], a
 	inc a
 	ld [wKirbyXVel + 0], a
+
 	ldh a, [hJoypadPressed]
 	bit D_UP_F, a
 	jr nz, .asm_46c8
 	bit D_DOWN_F, a
 	jr nz, .asm_46dc
 	xor a
-	ld [wd078], a
-	ld [wd079], a
-	ld [wd07e], a
+	ld [wKirbyYVel + 0], a
+	ld [wKirbyYVel + 1], a
+	ld [wKirbyYAcceleration], a
 	jr .asm_4709
 .asm_46c8
-	ld a, $fe
-	ld [wd078], a
-	xor a
-	ld [wd079], a
-	ld [wd07e], a
+	ld a, HIGH(-2.0)
+	ld [wKirbyYVel + 0], a
+	xor a ; LOW(-2.0)
+	ld [wKirbyYVel + 1], a
+	ld [wKirbyYAcceleration], a
 	ld hl, hKirbyFlags3
 	set KIRBY3F_UNK6_F, [hl]
 	jp Func_426
 .asm_46dc
-	xor a
-	ld [wd079], a
-	ld [wd07e], a
-	inc a
-	ld [wd078], a
+	xor a ; LOW(1.0)
+	ld [wKirbyYVel + 1], a
+	ld [wKirbyYAcceleration], a
+	inc a ; HIGH(1.0)
+	ld [wKirbyYVel + 0], a
 	ld hl, hKirbyFlags3
 	res KIRBY3F_UNK6_F, [hl]
 	jp Func_426
 .asm_46ef
 	ld hl, hKirbyFlags3
 	set KIRBY3F_UNK6_F, [hl]
-	ld a, $50
-	ld [wd07e], a
-	jp Func_3b3
+	ld a, 0.313
+	ld [wKirbyYAcceleration], a
+	jp ApplyKirbyYAcceleration
 .asm_46fc
 	ld hl, hKirbyFlags3
 	res KIRBY3F_UNK6_F, [hl]
-	ld a, $14
-	ld [wd07e], a
-	jp Func_3b3
+	ld a, 0.08
+	ld [wKirbyYAcceleration], a
+	jp ApplyKirbyYAcceleration
 
 .asm_4709
 	ldh a, [hKirbyFlags3]
@@ -938,11 +948,11 @@ KirbyControl::
 	set KIRBY1F_JUMP_RISE_F, [hl]
 	ld hl, hKirbyFlags3
 	res KIRBY3F_UNK6_F, [hl]
-	ld a, $40
-	ld [wd07e], a
+	ld a, 0.25
+	ld [wKirbyYAcceleration], a
 	ld a, [wd04d]
 	ldh [hVBlankFlags], a
-	jp Func_3b3
+	jp ApplyKirbyYAcceleration
 .asm_4726
 	ldh a, [hKirbyFlags1]
 	bit KIRBY1F_AIRBORNE_F, a
@@ -959,7 +969,7 @@ KirbyControl::
 	ldh [hVBlankFlags], a
 	ld a, [wd065]
 	cp $16
-	jp nc, Func_3b3
+	jp nc, ApplyKirbyYAcceleration
 	ld c, a
 	inc a
 	ld [wd065], a
@@ -972,13 +982,13 @@ KirbyControl::
 	ld hl, Data_4860
 	add hl, bc
 	ld a, [hli]
-	ld [wd078], a
+	ld [wKirbyYVel + 0], a
 	ld a, [hl]
-	ld [wd079], a
+	ld [wKirbyYVel + 1], a
 	jp Func_426
 .asm_4765
 	call Func_38f
-	jp Func_3b3
+	jp ApplyKirbyYAcceleration
 
 .asm_476b
 	ldh a, [hJoypadPressed]
@@ -1049,18 +1059,20 @@ Func_4783::
 	ldh a, [hKirbyFlags1]
 	and $ff ^ (KIRBY1F_JUMP_RISE | KIRBY1F_GROUNDED | KIRBY1F_AIRBORNE)
 	ldh [hKirbyFlags1], a
-	ld a, $00
-	ld [wd07a], a
-	ld a, $cc
-	ld [wd07b], a
-	ld a, $00
-	ld [wd076], a
-	ld a, $c0
-	ld [wd077], a
-	ld a, $16
-	ld [wd07c], a
-	ld a, 9
+
+	ld a, HIGH(0.797)
+	ld [wKirbyMaxYVel + 0], a
+	ld a, LOW(0.797)
+	ld [wKirbyMaxYVel + 1], a
+	ld a, HIGH(0.75)
+	ld [wKirbyMaxXVel + 0], a
+	ld a, LOW(0.75)
+	ld [wKirbyMaxXVel + 1], a
+	ld a, 0.085
+	ld [wKirbyXAcceleration], a
+	ld a, 0.035
 	ld [wKirbyXDeceleration], a
+
 	ld a, $02
 	ld [wd094], a
 .asm_47fe
@@ -1081,62 +1093,62 @@ Func_4783::
 	jp Func_246
 
 Data_4820:
-	db $fe, $80
-	db $fe, $80
-	db $fe, $80
-	db $fe, $80
-	db $fe, $80
-	db $fe, $80
-	db $fe, $80
-	db $fe, $80
-	db $ff, $bf
-	db $ff, $bf
-	db $ff, $bf
-	db $ff, $bf
-	db $ff, $bf
-	db $ff, $bf
-	db $ff, $bf
-	db $ff, $bf
-	db $ff, $3f
-	db $ff, $3f
-	db $ff, $3f
-	db $ff, $3f
-	db $ff, $3f
-	db $ff, $3f
-	db $ff, $3f
-	db $ff, $3f
-	db $00, $3f
-	db $00, $3f
-	db $00, $3f
-	db $00, $3f
-	db $00, $3f
-	db $00, $3f
-	db $00, $3f
-	db $00, $3f
+	bigdw -1.5
+	bigdw -1.5
+	bigdw -1.5
+	bigdw -1.5
+	bigdw -1.5
+	bigdw -1.5
+	bigdw -1.5
+	bigdw -1.5
+	bigdw -0.253
+	bigdw -0.253
+	bigdw -0.253
+	bigdw -0.253
+	bigdw -0.253
+	bigdw -0.253
+	bigdw -0.253
+	bigdw -0.253
+	bigdw -0.754
+	bigdw -0.754
+	bigdw -0.754
+	bigdw -0.754
+	bigdw -0.754
+	bigdw -0.754
+	bigdw -0.754
+	bigdw -0.754
+	bigdw  0.246
+	bigdw  0.246
+	bigdw  0.246
+	bigdw  0.246
+	bigdw  0.246
+	bigdw  0.246
+	bigdw  0.246
+	bigdw  0.246
 
 Data_4860:
-	db $fc, $00
-	db $fc, $00
-	db $fc, $00
-	db $fc, $00
-	db $fc, $00
-	db $fc, $00
-	db $fd, $00
-	db $fd, $00
-	db $fd, $00
-	db $fd, $00
-	db $fd, $00
-	db $fd, $00
-	db $fe, $00
-	db $fe, $00
-	db $fe, $00
-	db $fe, $00
-	db $fe, $00
-	db $ff, $80
-	db $ff, $80
-	db $ff, $80
-	db $ff, $80
-	db $ff, $80
+	bigdw -4.0
+	bigdw -4.0
+	bigdw -4.0
+	bigdw -4.0
+	bigdw -4.0
+	bigdw -4.0
+	bigdw -3.0
+	bigdw -3.0
+	bigdw -3.0
+	bigdw -3.0
+	bigdw -3.0
+	bigdw -3.0
+	bigdw -2.0
+	bigdw -2.0
+	bigdw -2.0
+	bigdw -2.0
+	bigdw -2.0
+	bigdw -0.5
+	bigdw -0.5
+	bigdw -0.5
+	bigdw -0.5
+	bigdw -0.5
 
 DamageKnockBackVelocities::
 	db HIGH($400)
@@ -1178,9 +1190,9 @@ ScriptFunc_ResetImmuneFlag:
 	ld hl, wd1a0
 	add hl, bc
 	res OBJFLAG_IMMUNE_F, [hl]
-	ld hl, wd1b0
+	ld hl, wObjectStatuses
 	add hl, bc
-	res 5, [hl]
+	res OBJSTAT_UNK5_F, [hl]
 	ret
 ; 0x48f5
 
@@ -1396,15 +1408,15 @@ Func_4ad6:
 	ret
 
 Func_4adf:
-	ld hl, wd1b0
+	ld hl, wObjectStatuses
 	add hl, bc
-	set 4, [hl]
+	set OBJSTAT_UNK4_F, [hl]
 	ret
 
 Func_4ae6:
-	ld hl, wd1b0
+	ld hl, wObjectStatuses
 	add hl, bc
-	set 2, [hl]
+	set OBJSTAT_UNK2_F, [hl]
 	ret
 
 ScriptFunc_CreateExplosion:
@@ -1470,13 +1482,17 @@ ScriptFunc_AddScore:
 
 SECTION "Bank 1@4bb4", ROMX[$4bb4], BANK[$1]
 
-Func_4bb4::
-	ld hl, wd3bf
-	res 0, [hl]
-	set 3, [hl]
-	bit 7, [hl]
+; called when a Sparkling Star is collected
+; or when the Mike item is activated
+; defeats all enemies on screen
+ClearAllEnemies::
+	ld hl, wClearScreenFlags
+	res CLEAR_ACTIVE_F, [hl]
+	set CLEAR_UNK3_F, [hl]
+	bit CLEAR_NON_MIKE_F, [hl]
 	jr nz, .skip_overwrite_anim_script
 
+	; it was a clear activated by the Mike
 	; temporarily replaces Kirby's script with AnimScript_20405
 	ld a, [wKirbyAnimScript + 1]
 	push af
@@ -1502,14 +1518,14 @@ Func_4bb4::
 	ld a, [hl]
 	and a
 	jr z, .next_object ; inactive
-	ld hl, wd3bf
-	res 1, [hl]
-	ld hl, wd1b0
+	ld hl, wClearScreenFlags
+	res CLEAR_NEXT_OBJ_F, [hl]
+	ld hl, wObjectStatuses
 	add hl, bc
 	ld a, [hl]
 	ld hl, AnimScript_2037c
-	bit 2, a
-	jr nz, .asm_4c39
+	bit OBJSTAT_UNK2_F, a
+	jr nz, .defeated_without_score
 	ld hl, wObjectPropertyFlags
 	add hl, bc
 	ld a, [hl]
@@ -1535,24 +1551,28 @@ Func_4bb4::
 	bit 0, [hl]
 	jr nz, .next_object
 	bit 7, [hl]
-	jr nz, .asm_4c2f
+	jr nz, .defeated_with_score
 	call DestroyObject
 	jr .next_object
-.asm_4c2f
+
+.defeated_with_score
 	; double the score to add
 	ld a, [wScoreToAdd]
 	add a
 	call AddToScore
 	ld hl, AnimScript_2036c
-.asm_4c39
+.defeated_without_score
 	ld de, MotionScript_10008
 	call SetObjectScripts
+
+; wait for star animation to finish
 .loop_wait
 	ld a, 1
 	call DoFrames
-	ld hl, wd3bf
-	bit 1, [hl]
+	ld hl, wClearScreenFlags
+	bit CLEAR_NEXT_OBJ_F, [hl]
 	jr z, .loop_wait
+
 .next_object
 	pop bc
 	inc c
@@ -1561,10 +1581,10 @@ Func_4bb4::
 	jr nz, .loop_objects
 	xor a
 	ld [wVirtualOAMSize], a
-	ld hl, wd3bf
-	res 0, [hl]
-	res 3, [hl]
-	bit 7, [hl]
+	ld hl, wClearScreenFlags
+	res CLEAR_ACTIVE_F, [hl]
+	res CLEAR_UNK3_F, [hl]
+	bit CLEAR_NON_MIKE_F, [hl]
 	ret nz ; skip loading backed up script
 
 	ld hl, hKirbyFlags5
@@ -1620,10 +1640,10 @@ Func_4c9b::
 	jr nz, .asm_4cd0
 	ld a, $01
 	ld [wKirbyAnimScript + 0], a
-	ld a, $01
-	ld [wd078], a
-	ld a, $80
-	ld [wd079], a
+	ld a, HIGH(1.5)
+	ld [wKirbyYVel + 0], a
+	ld a, LOW(1.5)
+	ld [wKirbyYVel + 1], a
 	xor a
 	ret
 
@@ -1663,10 +1683,10 @@ Func_4ced::
 	jr nz, .asm_4d20
 	ld a, $01
 	ld [wKirbyAnimScript + 0], a
-	ld a, $fe
-	ld [wd078], a
-	ld a, $80
-	ld [wd079], a
+	ld a, HIGH(-1.5)
+	ld [wKirbyYVel + 0], a
+	ld a, LOW(-1.5)
+	ld [wKirbyYVel + 1], a
 	xor a
 	ret
 .set_carry
@@ -1719,25 +1739,27 @@ _StartLevelAfterContinue::
 	call Func_1964
 	ld a, $16
 	ld [wd065], a
-	ld a, $20
-	ld [wd07c], a
-	ld a, 14
+
+	ld a, 0.125
+	ld [wKirbyXAcceleration], a
+	ld a, 0.055
 	ld [wKirbyXDeceleration], a
-	ld a, $15
-	ld [wd07e], a
-	ld a, $01
-	ld [wd076], a
-	ld a, $33
-	ld [wd077], a
-	ld a, $02
-	ld [wd07a], a
-	ld a, $00
-	ld [wd07b], a
+	ld a, 0.082
+	ld [wKirbyYAcceleration], a
+	ld a, HIGH(1.2)
+	ld [wKirbyMaxXVel + 0], a
+	ld a, LOW(1.2)
+	ld [wKirbyMaxXVel + 1], a
+	ld a, HIGH(2.0)
+	ld [wKirbyMaxYVel + 0], a
+	ld a, LOW(2.0)
+	ld [wKirbyMaxYVel + 1], a
+
 	xor a
 	ld [wKirbyXVel + 0], a
 	ld [wKirbyXVel + 1], a
-	ld [wd078], a
-	ld [wd079], a
+	ld [wKirbyYVel + 0], a
+	ld [wKirbyYVel + 1], a
 	ld [wd064], a
 	ld [wVirtualOAMSize], a
 

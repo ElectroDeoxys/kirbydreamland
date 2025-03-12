@@ -231,7 +231,7 @@ AnimScript_2028f:
 	frame  8, $5bc9
 	set_kirby_pos
 	set_flags hPalFadeFlags, $00, SCROLL_LOCKED
-	set_value wd3dd, $01
+	set_value wStageTransitionCounter, 1
 	set_motion_script MotionScript_10008
 	frame  0, $58b9
 
@@ -304,7 +304,7 @@ AnimScript_20311::
 AnimScript_2036c:
 	create_object AnimScript_20a01, MotionScript_10008, Data_3421
 	frame 16, $58b8
-	set_flags wd3bf, $00, $02
+	set_flags wClearScreenFlags, $00, CLEAR_NEXT_OBJ
 	script_end
 
 AnimScript_2037c:
@@ -324,7 +324,7 @@ AnimScript_2037c:
 	frame  2, $5ccd
 	frame  2, $5cd9
 	frame  2, $5ce5
-	set_flags wd3bf, $00, $02
+	set_flags wClearScreenFlags, $00, CLEAR_NEXT_OBJ
 	script_end
 
 AnimScript_203b2:
@@ -597,7 +597,7 @@ AnimScript_KirbyStageClearDance_GreenGreens:
 	script_call AnimScript_208cb
 	frame 23, $5bad
 	frame 60, $5911
-	set_value wd3dd, $01
+	set_value wStageTransitionCounter, 1
 	script_delay 0
 
 AnimScript_KirbyStageClearDance_CastleLololo:
@@ -628,7 +628,7 @@ AnimScript_KirbyStageClearDance_CastleLololo:
 	script_repeat_end
 	script_call AnimScript_208b8
 	frame 60, $58e1
-	set_value wd3dd, $01
+	set_value wStageTransitionCounter, 1
 	script_delay 0
 
 AnimScript_KirbyStageClearDance_FloatIslands:
@@ -650,7 +650,7 @@ AnimScript_KirbyStageClearDance_FloatIslands:
 	script_call AnimScript_208b8
 	frame 32, $5bad
 	frame 60, $5911
-	set_value wd3dd, $01
+	set_value wStageTransitionCounter, 1
 	script_delay 0
 
 AnimScript_KirbyStageClearDance_BubblyClouds:
@@ -669,7 +669,7 @@ AnimScript_KirbyStageClearDance_BubblyClouds:
 	script_call AnimScript_208cb
 	frame 32, $5bad
 	frame 60, $5911
-	set_value wd3dd, $01
+	set_value wStageTransitionCounter, 1
 	script_delay 0
 
 AnimScript_208b8:
@@ -1513,7 +1513,7 @@ AnimScript_210f1:
 	script_exec_arg ScriptFunc_AddScore, SCORE_1000
 	set_flags hHUDFlags, HUD_BOSS_BATTLE, HUD_UPDATE_FIRST_ROW | HUD_UPDATE_LABEL | HUD_UPDATE_SCORE_DIGITS
 	frame 30, $58b8
-	set_value wd3bf, $81
+	set_value wClearScreenFlags, CLEAR_ACTIVE | CLEAR_NON_MIKE
 	frame  0, $4044
 
 AnimScript_WhispyWoodsPuff:

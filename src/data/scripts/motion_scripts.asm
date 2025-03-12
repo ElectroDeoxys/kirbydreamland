@@ -85,7 +85,7 @@ MotionScript_1011d:
 	set_velocities  1, 0, 0
 	set_kirby_pos
 	set_flags hKirbyFlags3, KIRBY3F_UNK2 | KIRBY3F_DIVE, $00
-	set_value wd3dd, $01
+	set_value wStageTransitionCounter, 1
 	set_velocities  0, 0, 0
 
 MotionScript_10137:
@@ -288,7 +288,7 @@ MotionScript_10346:
 SECTION "Bank 4@4370", ROMX[$4370], BANK[$4]
 
 MotionScript_10370:
-	set_value wd3bf, $01
+	set_value wClearScreenFlags, CLEAR_ACTIVE
 	set_flags hKirbyFlags5, $00, KIRBY5F_UNK5
 	jump_if_not_flags hKirbyFlags3, KIRBY3F_FACE_LEFT, .script_1038d
 	position_offset 0, 6
@@ -377,7 +377,7 @@ MotionScript_106a2:
 MotionScript_106dc:
 	set_kirby_pos
 	set_flags hKirbyFlags3, KIRBY3F_UNK2 | KIRBY3F_DIVE, $00
-	set_value wd3dd, $01
+	set_value wStageTransitionCounter, 1
 	set_velocities  0, 0, 0
 
 MotionScript_106eb:
