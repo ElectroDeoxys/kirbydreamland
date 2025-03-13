@@ -1108,7 +1108,7 @@ InhaleObjectsInRange::
 	ret z ; not inhaling
 	bit KIRBY2F_SPIT_F, a
 	ret nz ; is in spitting state
-	call Func_14993
+	call UpdateInhaleParticles
 	ld hl, hKirbyFlags5
 	bit KIRBY5F_INHALING_OBJECT_F, [hl]
 	call z, Func_148ea
@@ -1379,27 +1379,27 @@ Func_148ea:
 	pop bc
 	ret
 
-Func_14993:
-	ld bc, OBJECT_SLOT_KIRBY
-.asm_14996
+UpdateInhaleParticles:
+	ld bc, 0
+.loop_particles
 	ld hl, wd3f9
 	add hl, bc
 	ld a, [hli]
 	or [hl]
-	jr nz, .asm_149a1
-	call .Func_149ae
-.asm_149a1
+	jr nz, .update
+	call .GenerateParticle
+.update
 	push bc
-	call .Func_149fb
+	call .UpdateParticle
 	pop bc
 	inc c
 	inc c
 	ld a, c
 	cp $06
-	jr nz, .asm_14996
+	jr nz, .loop_particles
 	ret
 
-.Func_149ae:
+.GenerateParticle:
 	call Random
 	and $1e
 	add LOW(.data)
@@ -1420,7 +1420,7 @@ Func_14993:
 	pop hl
 	ld [hl], a
 	inc de
-	ld hl, wd406
+	ld hl, wd405 + 1
 	add hl, bc
 	ld a, [de]
 	ld [hl], a
@@ -1432,7 +1432,7 @@ Func_14993:
 	ret
 
 ; first byte goes to second byte of wd3f9
-; second byte goes to wd406
+; second byte goes to second byte of wd405
 .data
 	db 15, -20
 	db 20, -20
@@ -1451,7 +1451,7 @@ Func_14993:
 	db 20,  20
 	db 15,  20
 
-.Func_149fb:
+.UpdateParticle:
 	ld hl, wd3f9 + 1
 	add hl, bc
 	ld a, [hl]
@@ -1495,7 +1495,7 @@ Func_14993:
 	inc a
 	inc a
 	ld d, a
-	ld hl, wd406
+	ld hl, wd405 + 1
 	add hl, bc
 	ld a, [hld]
 	cpl
@@ -1512,7 +1512,7 @@ Func_14993:
 	ld a, [hl]
 	adc e
 	ld [hl], a
-	ld hl, wObjectScreenYPositions
+	ld hl, wObjectScreenYPositions + OBJECT_SLOT_KIRBY
 	add [hl]
 	dec a
 	ld c, a

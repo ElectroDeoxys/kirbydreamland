@@ -492,18 +492,9 @@ wEnemyScoreMultiplier:: ; d3f7
 wd3f8:: ; d3f8
 	db
 
-wd3f9:: ; d3f9
-	ds 3 * $2
-
-wd3ff:: ; d3ff
-	db
-
-	ds $6
-
-wd406:: ; d406
-	db
-
-	ds $4
+wd3f9:: ds 3 * $2 ; d3f9
+wd3ff:: ds 3 * $2 ; d3ff
+wd405:: ds 3 * $2 ; d405
 
 wDamage:: ; d40b
 	db
