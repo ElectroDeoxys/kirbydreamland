@@ -37,10 +37,11 @@ ASSERT BANK(ProcessObjectInteractions) == BANK(InhaleObjectsInRange)
 
 	ld hl, hHUDFlags
 	bit HUD_UPDATE_SCORE_DIGITS_F, [hl]
-	jr z, .asm_29b
+	jr z, .check_transition_trigger
 	res HUD_UPDATE_SCORE_DIGITS_F, [hl]
 	call GetScoreDigitTiles
-.asm_29b
+
+.check_transition_trigger
 	ldh a, [hKirbyFlags5]
 	bit KIRBY5F_TRIGGER_TRANSITION_F, a
 	jp z, .no_transition ; can be jr
@@ -52,11 +53,12 @@ ASSERT BANK(ProcessObjectInteractions) == BANK(InhaleObjectsInRange)
 	bit KIRBY5F_UNK5_F, [hl]
 	jr z, .asm_2d1
 	ld hl, hVBlankFlags
-.asm_2b7
+.loop_frames
+	; wait VBlank
 	set VBLANK_PENDING_F, [hl]
-.asm_2b9
+.loop_wait_vblank
 	bit VBLANK_PENDING_F, [hl]
-	jr nz, .asm_2b9
+	jr nz, .loop_wait_vblank
 	push hl
 	xor a
 	ld [wVirtualOAMSize], a
@@ -65,8 +67,8 @@ ASSERT BANK(ProcessObjectInteractions) == BANK(InhaleObjectsInRange)
 	pop hl
 	ldh a, [hKirbyFlags5]
 	bit KIRBY5F_UNK5_F, a
-	jr nz, .asm_2b7
-	jr .asm_29b
+	jr nz, .loop_frames
+	jr .check_transition_trigger
 
 .asm_2d1
 	ld hl, hKirbyFlags5
@@ -814,7 +816,7 @@ GetKirbyLevelXCoord::
 Func_7a7:
 	ld [wd05f], a
 	call GetKirbyLevelYCoord
-	call Func_1ccb
+	call ConvertPositionCoordinateToBlock
 	ld a, c
 	dec a
 	dec a
@@ -822,7 +824,7 @@ Func_7a7:
 Func_7b5:
 	ld [wd05f], a
 	call GetKirbyLevelYCoord
-	call Func_1ccb
+	call ConvertPositionCoordinateToBlock
 	ld a, c
 ;	fallthrough
 Func_7bf:
@@ -832,37 +834,43 @@ Func_7bf:
 	ld [wd05e], a
 	jp Func_7cd ; useless jump
 
+; input:
+; - [wd05f] = ?
+; output:
+; - a = block type
 Func_7cd:
 	push bc
 	push de
 	push hl
+	; if wd05f == 0xff, return 0
 	ld a, [wd05f]
 	cp $ff
-	jr z, .asm_816
+	jr z, .return_zero
 	ld b, a
 	ld a, [wLevelWidth]
 	ld e, a
 	call FixedPointMultiply
+	; bc = wd05f * wLevelWidth
 	ld hl, wLevelBlockMap
 	add hl, bc
 	push hl
 	call GetKirbyLevelXCoord
-	call Func_1ccb
+	call ConvertPositionCoordinateToBlock
 	pop hl
 	ld a, [wLevelWidth]
 	cp c
-	jr z, .asm_7ff
+	jr z, .rightmost_block
 	xor a
 	cp c
-	jr z, .asm_7f7
+	jr z, .leftmost_block
 	dec bc
 	inc hl
-.asm_7f7
+.leftmost_block
 	ld a, [wLevelWidth]
-	sub $02
+	sub 2
 	cp c
 	jr nc, .asm_808
-.asm_7ff
+.rightmost_block
 	ld a, [wLevelWidth]
 	ld e, a
 	ld a, c
@@ -874,24 +882,24 @@ Func_7cd:
 	ld a, [hl]
 	ld c, a
 	ld b, $00
-	ld hl, wca00
+	ld hl, wBlockTypesByID
 	add hl, bc
 	ld a, [hl]
-.asm_812
+.done
 	pop hl
 	pop de
 	pop bc
 	ret
-.asm_816
+.return_zero
 	xor a
-	jr .asm_812
+	jr .done
 
 Func_819::
 	push bc
 	push de
 	push hl
 	call GetKirbyLevelYCoord
-	call Func_1ccb
+	call ConvertPositionCoordinateToBlock
 	ld b, c
 	ld a, [wLevelWidth]
 	ld e, a
@@ -926,7 +934,7 @@ Func_819::
 	ld a, [hl]
 	ld c, a
 	ld b, $00
-	ld hl, wca00
+	ld hl, wBlockTypesByID
 	add hl, bc
 	ld a, [hl]
 	pop hl
@@ -1182,7 +1190,7 @@ Func_9de:
 	jp .asm_ab8
 
 .asm_a13
-	call Func_1ccb
+	call ConvertPositionCoordinateToBlock
 	ld a, c
 	dec a
 	dec a
@@ -1251,7 +1259,7 @@ Func_9de:
 .asm_a93
 	push bc
 	push de
-	call Func_4c9b
+	call InflictHalfDamage_MoveUp
 	pop de
 	pop bc
 	jr c, .asm_aa9
@@ -1418,7 +1426,7 @@ Func_9de:
 	add $18
 	call Func_7a7
 	cp $07
-	jp z, Func_4c9b
+	jp z, InflictHalfDamage_MoveUp
 .asm_be0
 	ldh a, [hKirbyFlags2]
 	bit KIRBY2F_UNK6_F, a
@@ -1560,7 +1568,7 @@ Func_caf:
 	jr nz, .asm_ce7
 	jp .asm_ee0
 .asm_cf5
-	call Func_1ccb
+	call ConvertPositionCoordinateToBlock
 	ld a, c
 	ld [wd05f], a
 	ld a, [wKirbyScreenX]
@@ -1631,7 +1639,7 @@ Func_caf:
 .asm_d72
 	push bc
 	push de
-	call Func_4ced
+	call InflictHalfDamage_MoveDown
 	pop de
 	pop bc
 	jp c, .asm_ece
@@ -2007,7 +2015,7 @@ Func_caf:
 	call Func_7b5
 	cp $08
 	ret nz
-	jp Func_4ced
+	jp InflictHalfDamage_MoveDown
 
 Func_1046:
 	push bc
@@ -3917,8 +3925,10 @@ GetScoreDigits:
 	ret
 
 ; input:
-; - hl = level x coordinate
-Func_1ccb::
+; - hl = level coordinate
+; output:
+; - bc = block coordinate
+ConvertPositionCoordinateToBlock::
 	push af
 	ld a, l
 	and $f0
@@ -3933,7 +3943,7 @@ Func_1ccb::
 	ld a, b
 	and $0f
 	ld b, a
-	; bc = hl >> 4
+	; bc = hl / 16
 	pop af
 	ret
 

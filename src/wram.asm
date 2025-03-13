@@ -16,7 +16,7 @@ wLevelBlockMap:: ; c100
 wBlockTileMap:: ; c600
 	ds $4 * $100
 
-wca00:: ; ca00
+wBlockTypesByID:: ; ca00
 	ds $100
 
 UNION
@@ -390,7 +390,7 @@ wBossHPCounter:: ; d3c3
 ; represents a bit in this array
 ; bit set means the item was consumed
 wConsumedItems:: ; d3c4
-	ds $8
+	ds MAX_NUM_STAGE_ITEMS / 8
 
 wd3cc:: ; d3cc
 	db

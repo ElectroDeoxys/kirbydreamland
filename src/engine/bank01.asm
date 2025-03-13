@@ -49,7 +49,7 @@ Func_4000::
 	jr nz, .asm_4049
 	jp .asm_40e1
 .aligned
-	call Func_1ccb
+	call ConvertPositionCoordinateToBlock
 	ld a, c
 	ld [wd05e], a
 	ld a, [wKirbyScreenY]
@@ -253,7 +253,7 @@ Func_417c::
 	jr nz, .asm_41c6
 	jp .asm_4250
 .aligned
-	call Func_1ccb
+	call ConvertPositionCoordinateToBlock
 	ld a, c
 	ld [wd05e], a
 	ld a, [wKirbyScreenY]
@@ -1328,10 +1328,10 @@ Func_4a1c:
 	call GetLevelBlock
 	pop bc
 	push bc
-	ld a, LOW(wca00)
+	ld a, LOW(wBlockTypesByID)
 	add [hl]
 	ld e, a
-	ld a, HIGH(wca00)
+	ld a, HIGH(wBlockTypesByID)
 	adc 0
 	ld d, a
 	ld a, [de]
@@ -1604,14 +1604,14 @@ ClearAllEnemies::
 
 SECTION "Bank 1@4c9b", ROMX[$4c9b], BANK[$1]
 
-Func_4c9b::
+InflictHalfDamage_MoveUp::
 	ld a, [wDamageBlinkingCounter]
 	and a
-	jp nz, Func_4ced.set_carry
+	jp nz, InflictHalfDamage_MoveDown.set_carry
 	ld hl, wInvincibilityCounter
 	ld a, [hli]
 	or [hl]
-	jp nz, Func_4ced.set_carry
+	jp nz, InflictHalfDamage_MoveDown.set_carry
 
 	; halve HP
 	ld a, [wHP]
@@ -1647,7 +1647,7 @@ Func_4c9b::
 	xor a
 	ret
 
-Func_4ced::
+InflictHalfDamage_MoveDown::
 	ld a, [wDamageBlinkingCounter]
 	and a
 	jr nz, .set_carry

@@ -757,7 +757,7 @@ ClearConsumedItems::
 	push hl
 	push bc
 	xor a
-	ld b, $08
+	ld b, MAX_NUM_STAGE_ITEMS / 8
 	ld hl, wConsumedItems
 .loop
 	ld [hli], a
@@ -2826,7 +2826,7 @@ Func_2e20:
 	; a = y coordinate in blocks
 	ld e, a
 	call GetLevelBlock
-	call Func_2e90
+	call GetLevelBlockTypeFromID
 	pop bc
 	ret
 
@@ -2839,6 +2839,7 @@ GetLevelBlock::
 	ld a, [wLevelWidth]
 	ld b, a
 	call FixedPointMultiply
+	; bc = wLevelWidth * e
 	ld hl, wLevelBlockMap
 	add hl, bc
 	ld e, d
@@ -2847,8 +2848,8 @@ GetLevelBlock::
 	ld e, [hl]
 	ret
 
-Func_2e90:
-	ld hl, wca00
+GetLevelBlockTypeFromID:
+	ld hl, wBlockTypesByID
 	add hl, de
 	ld a, [hl]
 	ret
