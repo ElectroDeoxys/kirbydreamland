@@ -150,3 +150,6 @@ DEF KIRBY6F_UNK6       EQU 1 << KIRBY6F_UNK6_F ; $40
 DEF KIRBY6F_UNK7       EQU 1 << KIRBY6F_UNK7_F ; $80
 
 DEF DAMAGE_BLINK_DURATION EQU 90
+
+; how many particles appear while Kirby is inhaling
+DEF NUM_INHALE_PARTICLES EQU 3

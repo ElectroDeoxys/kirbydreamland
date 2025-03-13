@@ -193,7 +193,7 @@ wScoreDigits:: ; d06f
 ; absolute value of Kirby's x velocity in big endian
 wKirbyXVel::          dw ; d074
 wKirbyMaxXVel::       dw ; d076
-; (non-absolute) Kirby's y velocity in big endian
+; signed Kirby's y velocity in big endian
 wKirbyYVel::          dw ; d078
 wKirbyMaxYVel::       dw ; d07a
 wKirbyXAcceleration:: db ; d07c
@@ -498,9 +498,10 @@ wEnemyScoreMultiplier:: ; d3f7
 wd3f8:: ; d3f8
 	db
 
-wInhaleParticleXCoords:: ds 3 * $2 ; d3f9
-wd3ff:: ds 3 * $2 ; d3ff
-wInhaleParticleYCoords:: ds 3 * $2 ; d405
+; particle coordinates are relative to Kirby
+wInhaleParticleXCoords:: ds NUM_INHALE_PARTICLES * $2 ; d3f9
+wInhaleParticleXVel::    ds NUM_INHALE_PARTICLES * $2 ; d3ff
+wInhaleParticleYCoords:: ds NUM_INHALE_PARTICLES * $2 ; d405
 
 wDamage:: ; d40b
 	db

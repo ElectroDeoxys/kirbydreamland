@@ -1108,7 +1108,10 @@ InhaleObjectsInRange::
 	ret z ; not inhaling
 	bit KIRBY2F_SPIT_F, a
 	ret nz ; is in spitting state
+
+	; handles the inhale particles
 	call UpdateInhaleParticles
+
 	ld hl, hKirbyFlags5
 	bit KIRBY5F_INHALING_OBJECT_F, [hl]
 	call z, Func_148ea
@@ -1395,17 +1398,17 @@ UpdateInhaleParticles:
 	inc c
 	inc c
 	ld a, c
-	cp $06
+	cp NUM_INHALE_PARTICLES * $2
 	jr nz, .loop_particles
 	ret
 
 .GenerateParticle:
 	call Random
-	and $1e
+	and %11110
 	add LOW(.ParticleCoordinates)
 	ld e, a
 	ld a, HIGH(.ParticleCoordinates)
-	adc $00
+	adc 0
 	ld d, a
 	ld hl, wInhaleParticleXCoords + 1
 	add hl, bc
@@ -1426,14 +1429,14 @@ UpdateInhaleParticles:
 	ld a, [de]
 	ld [hl], a
 	xor a
-	ld hl, wd3ff
+	ld hl, wInhaleParticleXVel
 	add hl, bc
 	ld [hli], a
 	ld [hl], a
 	ret
 
-; first byte goes to second byte of wInhaleParticleXCoords
-; second byte goes to second byte of wInhaleParticleYCoords
+; first byte goes wInhaleParticleXCoords
+; second byte goes wInhaleParticleYCoords
 .ParticleCoordinates:
 	;   x,   y
 	db 15, -20
@@ -1457,17 +1460,17 @@ UpdateInhaleParticles:
 	ld hl, wInhaleParticleXCoords + 1
 	add hl, bc
 	ld a, [hl]
-	ld de, -60 ; for facing right
+	ld de, -0.234 ; for facing right
 	bit 7, a
 	jr z, .got_abs_value
 	cpl
 	inc a
-	ld de, 60 ; for facing left
+	ld de, 0.234 ; for facing left
 .got_abs_value
 	cp 10
 	jr c, .destroy_particle
-	; wd3ff += de
-	ld hl, wd3ff
+	; wInhaleParticleXVel += de
+	ld hl, wInhaleParticleXVel
 	add hl, bc
 	ld a, [hl]
 	add e
@@ -1478,7 +1481,7 @@ UpdateInhaleParticles:
 	ld d, a
 	ld [hl], a
 
-	; wInhaleParticleXCoords += wd3ff
+	; wInhaleParticleXCoords += wInhaleParticleXVel
 	ld hl, wInhaleParticleXCoords
 	add hl, bc
 	ld a, [hl]
@@ -1489,43 +1492,48 @@ UpdateInhaleParticles:
 	ld [hl], a
 	push af
 	bit 7, a
-	jr z, .asm_14a2d
+	jr z, .got_delta_x
 	cpl
 	inc a
-.asm_14a2d
+.got_delta_x
 	swap a
 	and $0f
 	inc a
 	inc a
-	ld d, a ; = HIGH(wInhaleParticleXCoords) / 16 + 2
+	ld d, a ; = FLOOR(ABS(wInhaleParticleXCoords)) / 16 + 2
 	ld hl, wInhaleParticleYCoords + 1
 	add hl, bc
 	ld a, [hld]
 	cpl
 	inc a
-	ld e, a
+	ld e, a ; = -FLOOR(wInhaleParticleYCoords)
+
 	xor a
 .loop_division
 	sra e
 	rra
 	dec d
 	jr nz, .loop_division
+	; add e/d to Y coordinates
 	add [hl]
 	ld [hli], a
 	ld a, [hl]
 	adc e
 	ld [hl], a
+
+	; got coordinates, load sprite
 	ld hl, wObjectScreenYPositions + OBJECT_SLOT_KIRBY
 	add [hl]
 	dec a
-	ld c, a
+	ld c, a ; (ParticleY + KirbyY) - 1
 	pop af
 	ld hl, wObjectScreenXPositions + OBJECT_SLOT_KIRBY
 	add [hl]
-	ld b, a
+	ld b, a ; (ParticleX + KirbyX)
 	ld hl, $5c19
 	xor a
 	jp LoadSprite
+
 .destroy_particle
 	xor a
 	ld [hld], a
