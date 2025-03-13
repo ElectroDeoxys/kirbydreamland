@@ -38,30 +38,33 @@ VBlank:
 .asm_1d56
 	ld hl, hEngineFlags
 	res RESET_TIMER_PENDING_F, [hl]
-	ld hl, wd037
+
+	ld hl, wBlinkingCounter
 	dec [hl]
-	jr nz, .asm_1d6f
-	ld d, 2
-	ld a, [wd036]
-	xor $1
-	ld [wd036], a
-	jr z, .asm_1d6e
+	jr nz, .flash
+	ld d, BLINK_DURATION_INVISIBLE
+	ld a, [wObjectFlashBlinkFlags]
+	xor BLINK_FLAG
+	ld [wObjectFlashBlinkFlags], a
+	jr z, .got_blink_duration
+ASSERT BLINK_DURATION_VISIBLE == BLINK_DURATION_INVISIBLE + 1
 	inc d
-.asm_1d6e
-	; d = (wd036) ? 3 : 2
-	ld [hl], d
-.asm_1d6f
+.got_blink_duration
+	; d = (blink flag set) ? 3 : 2
+	ld [hl], d ; wBlinkingCounter
+
+.flash
 	inc hl
-	dec [hl] ; wd038
+	dec [hl] ; wFlashingCounter
 	jr nz, .update_audio
-	ld d, 4
-	ld a, [wd036]
-	xor $2
-	ld [wd036], a
-	jr z, .asm_1d81
-	ld d, 6
-.asm_1d81
-	; d = (wd036) ? 6 : 4
+	ld d, FLASH_DURATION_ALTPAL
+	ld a, [wObjectFlashBlinkFlags]
+	xor FLASH_FLAG
+	ld [wObjectFlashBlinkFlags], a
+	jr z, .got_flash_duration
+	ld d, FLASH_DURATION_REGPAL
+.got_flash_duration
+	; d = (flash flag set) ? 6 : 4
 	ld [hl], d
 
 .update_audio

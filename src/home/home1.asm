@@ -3258,7 +3258,12 @@ AnimScript_18f1:
 	frame  2, $58f9
 	jump_rel .loop
 
-AddSprite::
+; input:
+; - hl = OAM pointer
+; - a = OAM flags to override
+; - b = x offset
+; - c = y offset
+LoadSprite::
 	ld [wOAMFlagsOverride], a
 	ld a, [wROMBank]
 	push af

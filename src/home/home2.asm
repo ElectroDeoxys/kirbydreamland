@@ -660,9 +660,9 @@ ASSERT Data_1c000 == Data_3c000
 	ld [wDamageBlinkingCounter], a
 	ld [wd3f8], a
 	inc a ; a = $1
-	ld hl, wd037
+	ld hl, wBlinkingCounter
 	ld [hli], a
-	ld [hl], a ; wd038
+	ld [hl], a ; wFlashingCounter
 
 	ld a, [hEngineFlags]
 	and ~(KABOOLA_BATTLE | ENGINEF_UNK1)
@@ -2486,24 +2486,24 @@ Func_2b26:
 	ld [wOAMFlagsOverride], a
 	ld hl, hKirbyFlags5
 	bit KIRBY5F_UNK5_F, [hl]
-	jr nz, .add_sprite
+	jr nz, .load_sprite
 	ld hl, wd1a0
 	add hl, de
-	ld a, [wd036]
-	bit 0, a
-	jr nz, .asm_2cc4
+	ld a, [wObjectFlashBlinkFlags]
+	bit BLINK_FLAG_F, a
+	jr nz, .skip_blinking
 	bit OBJFLAG_BLINKING_F, [hl]
 	ret nz ; exit
-.asm_2cc4
-	bit 1, a
-	jr nz, .add_sprite
+.skip_blinking
+	bit FLASH_FLAG_F, a
+	jr nz, .load_sprite ; skip flashing
 	bit OBJFLAG_FLASHING_F, [hl]
-	jr z, .add_sprite ; not flashing
+	jr z, .load_sprite ; not flashing
 	; use alternate palette
 	ld a, [wOAMFlagsOverride]
-	xor $10 ; flip pal number
+	xor OAMF_PAL1 ; flip pal number
 	ld [wOAMFlagsOverride], a
-.add_sprite
+.load_sprite
 	ld a, [wOAMFlagsOverride]
 	ld hl, wSpriteOAMPtrs
 	add hl, de
@@ -2512,7 +2512,7 @@ Func_2b26:
 	inc hl
 	ld h, [hl]
 	ld l, e
-	jp AddSprite
+	jp LoadSprite
 .exit
 	pop bc
 	ret
@@ -3982,7 +3982,7 @@ SECTION "Home@375d", ROM0[$375d]
 
 Func_375d::
 	xor a
-	ld hl, wd3f9
+	ld hl, wInhaleParticleXCoords
 	ld c, $06
 .loop
 	ld [hli], a

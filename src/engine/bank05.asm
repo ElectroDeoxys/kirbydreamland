@@ -1382,7 +1382,7 @@ Func_148ea:
 UpdateInhaleParticles:
 	ld bc, 0
 .loop_particles
-	ld hl, wd3f9
+	ld hl, wInhaleParticleXCoords
 	add hl, bc
 	ld a, [hli]
 	or [hl]
@@ -1402,25 +1402,26 @@ UpdateInhaleParticles:
 .GenerateParticle:
 	call Random
 	and $1e
-	add LOW(.data)
+	add LOW(.ParticleCoordinates)
 	ld e, a
-	ld a, HIGH(.data)
+	ld a, HIGH(.ParticleCoordinates)
 	adc $00
 	ld d, a
-	ld hl, wd3f9 + 1
+	ld hl, wInhaleParticleXCoords + 1
 	add hl, bc
 	push hl
 	ld a, [de]
 	ld hl, hKirbyFlags3
 	bit KIRBY3F_FACE_LEFT_F, [hl]
-	jr z, .asm_149ca
+	jr z, .facing_right
+; facing left
 	cpl
 	inc a
-.asm_149ca
+.facing_right
 	pop hl
 	ld [hl], a
 	inc de
-	ld hl, wd405 + 1
+	ld hl, wInhaleParticleYCoords + 1
 	add hl, bc
 	ld a, [de]
 	ld [hl], a
@@ -1431,9 +1432,10 @@ UpdateInhaleParticles:
 	ld [hl], a
 	ret
 
-; first byte goes to second byte of wd3f9
-; second byte goes to second byte of wd405
-.data
+; first byte goes to second byte of wInhaleParticleXCoords
+; second byte goes to second byte of wInhaleParticleYCoords
+.ParticleCoordinates:
+	;   x,   y
 	db 15, -20
 	db 20, -20
 	db 25, -20
@@ -1452,19 +1454,19 @@ UpdateInhaleParticles:
 	db 15,  20
 
 .UpdateParticle:
-	ld hl, wd3f9 + 1
+	ld hl, wInhaleParticleXCoords + 1
 	add hl, bc
 	ld a, [hl]
-	ld de, -$3c
+	ld de, -60 ; for facing right
 	bit 7, a
 	jr z, .got_abs_value
 	cpl
 	inc a
-	ld de, $3c
+	ld de, 60 ; for facing left
 .got_abs_value
 	cp 10
-	jr c, .asm_14a5b
-	; add wd3ff to de
+	jr c, .destroy_particle
+	; wd3ff += de
 	ld hl, wd3ff
 	add hl, bc
 	ld a, [hl]
@@ -1475,8 +1477,9 @@ UpdateInhaleParticles:
 	adc d
 	ld d, a
 	ld [hl], a
-	; add de to wd3f9
-	ld hl, wd3f9
+
+	; wInhaleParticleXCoords += wd3ff
+	ld hl, wInhaleParticleXCoords
 	add hl, bc
 	ld a, [hl]
 	add e
@@ -1494,19 +1497,19 @@ UpdateInhaleParticles:
 	and $0f
 	inc a
 	inc a
-	ld d, a
-	ld hl, wd405 + 1
+	ld d, a ; = HIGH(wInhaleParticleXCoords) / 16 + 2
+	ld hl, wInhaleParticleYCoords + 1
 	add hl, bc
 	ld a, [hld]
 	cpl
 	inc a
 	ld e, a
 	xor a
-.asm_14a3d
+.loop_division
 	sra e
 	rra
 	dec d
-	jr nz, .asm_14a3d
+	jr nz, .loop_division
 	add [hl]
 	ld [hli], a
 	ld a, [hl]
@@ -1522,8 +1525,8 @@ UpdateInhaleParticles:
 	ld b, a
 	ld hl, $5c19
 	xor a
-	jp AddSprite
-.asm_14a5b
+	jp LoadSprite
+.destroy_particle
 	xor a
 	ld [hld], a
 	ld [hl], a

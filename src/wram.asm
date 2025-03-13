@@ -55,10 +55,16 @@ wFadeDelayTimer:: ; d032
 
 wGlobalCounter:: db ; d034
 wUnkTimer:: db ; d035
-wd036:: db ; d036
-wd037:: db ; d037
-wd038:: db ; d038
-wExtraGameEnabled:: db ; d039
+
+; these flags are alternated during VBlank according to their durations
+; if flag is set, the respective visual effect is deactivated
+; meaning blinking yields a visible object
+; and flashing yields an object with its regular palette
+wObjectFlashBlinkFlags:: db ; d036
+wBlinkingCounter::       db ; d037
+wFlashingCounter::       db ; d038
+
+wExtraGameEnabled::  db ; d039
 wExtraGameUnlocked:: db ; d03a
 
 wStage:: ; d03b
@@ -492,9 +498,9 @@ wEnemyScoreMultiplier:: ; d3f7
 wd3f8:: ; d3f8
 	db
 
-wd3f9:: ds 3 * $2 ; d3f9
+wInhaleParticleXCoords:: ds 3 * $2 ; d3f9
 wd3ff:: ds 3 * $2 ; d3ff
-wd405:: ds 3 * $2 ; d405
+wInhaleParticleYCoords:: ds 3 * $2 ; d405
 
 wDamage:: ; d40b
 	db
