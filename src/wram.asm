@@ -342,10 +342,10 @@ wd33a:: ; d33a
 wd34a:: ; d34a
 	ds NUM_OBJECT_SLOTS
 
-wObjectCustomFuncs:: ; d35a
+wObjectUpdateFuncs:: ; d35a
 	ds $2 * NUM_OBJECT_SLOTS
 
-wObjectCustomFuncArgs:: ; d37a
+wObjectUpdateFuncArgs:: ; d37a
 	ds $2 * NUM_OBJECT_SLOTS
 
 wObjectHPs:: ; d39a
@@ -410,13 +410,13 @@ wd3cf:: ; d3cf
 wd3d0:: ; d3d0
 	db
 
-	ds $3
-
-wd3d4:: ; d3d4
+wd3d1:: ; d3d1
 	db
 
-wd3d5:: ; d3d5
-	db
+	ds $2
+
+wEnemyHurtCounter:: db ; d3d4
+wEnemyHurtObjectIndex::   db ; d3d5
 
 wd3d6:: ; d3d6
 	db

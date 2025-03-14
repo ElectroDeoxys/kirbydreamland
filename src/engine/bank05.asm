@@ -120,7 +120,7 @@ Func_140c2:
 	ret c
 	ld hl, hKirbyFlags5
 	set KIRBY5F_INHALING_OBJECT_F, [hl]
-	jp Func_1415e
+	jp SetObjectUpdateFuncArgAsAnimScript
 ; 0x140ce
 
 SECTION "Bank 5@40d5", ROMX[$40d5], BANK[$5]
@@ -197,13 +197,13 @@ Func_14105:
 
 SECTION "Bank 5@415e", ROMX[$415e], BANK[$5]
 
-Func_1415e:
+SetObjectUpdateFuncArgAsAnimScript:
 	ld hl, wObjectAnimScriptPtrs
 	add hl, bc
 	add hl, bc
 	ld d, h
 	ld e, l
-	ld hl, wObjectCustomFuncArgs
+	ld hl, wObjectUpdateFuncArgs
 	add hl, bc
 	add hl, bc
 	ld a, [hli]
@@ -217,12 +217,12 @@ Func_14172:
 	ld hl, wObjectStatuses
 	add hl, bc
 	bit OBJSTAT_HURT_F, [hl]
-	ret z
+	ret z ; not hurt
 	res OBJSTAT_HURT_F, [hl]
 	ld a, [wd3cd]
 	and a
 	ret z
-	ld hl, wObjectCustomFuncArgs
+	ld hl, wObjectUpdateFuncArgs
 	add hl, bc
 	add hl, bc
 	ld a, [hli]
@@ -246,7 +246,7 @@ Func_141b1:
 	add hl, bc
 	bit OBJSTAT_UNK6_F, [hl]
 	ret z
-	jp Func_1415e
+	jp SetObjectUpdateFuncArgAsAnimScript
 ; 0x141bb
 
 SECTION "Bank 5@4208", ROMX[$4208], BANK[$5]
@@ -330,7 +330,7 @@ Func_14252:
 .got_y_distance
 	cp 24
 	ret nc ; too far away
-	jp Func_1415e
+	jp SetObjectUpdateFuncArgAsAnimScript
 ; 0x14276
 
 SECTION "Bank 5@42a3", ROMX[$42a3], BANK[$5]
@@ -356,7 +356,7 @@ Func_142a3:
 	ret
 
 ObjFunc_CountdownToExplosion:
-	ld hl, wObjectCustomFuncArgs
+	ld hl, wObjectUpdateFuncArgs
 	add hl, bc
 	add hl, bc
 	ld a, [hli]
@@ -733,20 +733,20 @@ ProcessObjectInteractions::
 .asm_1458e
 	ld [wd3c2], a
 	ld a, c
-	ld [wd3d5], a
+	ld [wEnemyHurtObjectIndex], a
 	ld hl, hEngineFlags
-	bit ENGINEF_UNK1_F, [hl]
-	jr z, .asm_145aa
+	bit HURT_PAL_EFFECT_F, [hl]
+	jr z, .shake_effect
 	ld hl, wObjectPropertyFlags
 	ld b, $00
 	add hl, bc
 	set PROPERTY_PAL_F, [hl]
-	ld a, $05
-	ld [wd3d4], a
+	ld a, 5
+	ld [wEnemyHurtCounter], a
 	ret
-.asm_145aa
-	ld a, $1e
-	ld [wd3d4], a
+.shake_effect
+	ld a, 30
+	ld [wEnemyHurtCounter], a
 	ret
 
 ; input:
@@ -1041,7 +1041,7 @@ ASSERT FLOAT_ISLANDS_7 == MT_DEDEDE_7
 .kaboola_fight
 	ld a, [hEngineFlags]
 	and ~ENGINEF_UNK6
-	or KABOOLA_BATTLE | ENGINEF_UNK1
+	or KABOOLA_BATTLE | HURT_PAL_EFFECT
 	ld [hEngineFlags], a
 	ld hl, hPalFadeFlags
 	set SCROLLINGF_UNK5_F, [hl]
@@ -1231,9 +1231,9 @@ ENDR
 	ld a, [hl]
 	and a
 	jr z, .next_object ; is inactive
-	; check if its custom function
+	; check if its update function
 	; is InhaleObject, i.e. is being inhaled
-	ld hl, wObjectCustomFuncs
+	ld hl, wObjectUpdateFuncs
 	add hl, bc
 	add hl, bc
 	ld a, [hli]

@@ -2776,7 +2776,7 @@ Func_139b::
 	ld c, KIRBY_WALK_FAST
 .asm_1510
 	ldh a, [hKirbyFlags4]
-	bit KIRBY4F_UNK2_F, a
+	bit KIRBY4F_PAUSED_F, a
 	jr z, .asm_1524
 	bit KIRBY4F_UNK0_F, a
 	jr z, .asm_1524

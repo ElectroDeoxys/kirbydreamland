@@ -665,7 +665,7 @@ ASSERT Data_1c000 == Data_3c000
 	ld [hl], a ; wFlashingCounter
 
 	ld a, [hEngineFlags]
-	and ~(KABOOLA_BATTLE | ENGINEF_UNK1)
+	and ~(KABOOLA_BATTLE | HURT_PAL_EFFECT)
 	ld [hEngineFlags], a
 
 	ld a, [wLevelWidth]
@@ -971,7 +971,7 @@ Func_241f::
 	call .Clear
 	ld hl, wd2da
 	call .Clear
-	ld hl, wObjectCustomFuncs
+	ld hl, wObjectUpdateFuncs
 ;	fallthrough
 .Clear:
 	add hl, bc
@@ -1099,7 +1099,7 @@ DoCommonScriptCommand:
 
 .asm_24ed
 	cp SCRIPT_ED
-	jr nz, .set_custom_func_cmd
+	jr nz, .set_update_func_cmd
 	ld d, h
 	ld e, l
 	ld hl, wObjectActiveStates
@@ -1115,12 +1115,12 @@ DoCommonScriptCommand:
 	ld [wScriptPtr + 1], a
 	ret
 
-.set_custom_func_cmd
-	cp SCRIPT_SET_CUSTOM_FUNC
-	jr nz, .clear_custom_func_cmd
+.set_update_func_cmd
+	cp SCRIPT_SET_UPDATE_FUNC
+	jr nz, .clear_update_func_cmd
 	ld d, h
 	ld e, l
-	ld hl, wObjectCustomFuncs
+	ld hl, wObjectUpdateFuncs
 	add hl, bc
 	add hl, bc
 	ld a, [de]
@@ -1129,7 +1129,7 @@ DoCommonScriptCommand:
 	ld a, [de]
 	ld [hl], a
 	inc de
-	ld hl, wObjectCustomFuncArgs
+	ld hl, wObjectUpdateFuncArgs
 	add hl, bc
 	add hl, bc
 	ld a, [de]
@@ -1144,15 +1144,15 @@ DoCommonScriptCommand:
 	ld [wScriptPtr + 1], a
 	ret
 
-.clear_custom_func_cmd
-	cp SCRIPT_CLEAR_CUSTOM_FUNC
+.clear_update_func_cmd
+	cp SCRIPT_CLEAR_UPDATE_FUNC
 	jr nz, .set_position_cmd
 	ld a, l
 	ld [wScriptPtr + 0], a
 	ld a, h
 	ld [wScriptPtr + 1], a
 	xor a
-	ld hl, wObjectCustomFuncs
+	ld hl, wObjectUpdateFuncs
 	add hl, bc
 	add hl, bc
 	ld [hli], a
@@ -2020,7 +2020,7 @@ ExecuteObjectScripts:
 	jr nz, .pause_animation_active
 .not_kirby
 	ld hl, hKirbyFlags4
-	bit KIRBY4F_UNK2_F, [hl]
+	bit KIRBY4F_PAUSED_F, [hl]
 	ret nz
 .pause_animation_active
 	call Func_2ce5
@@ -2237,9 +2237,9 @@ ExecuteObjectScripts:
 
 ; input:
 ; - bc = object slot
-Func_2b26:
+UpdateObject:
 	ld hl, hKirbyFlags4
-	bit KIRBY4F_UNK2_F, [hl]
+	bit KIRBY4F_PAUSED_F, [hl]
 	jp nz, .asm_2c5b
 	ld hl, wd1a0
 	add hl, bc
@@ -2398,7 +2398,7 @@ Func_2b26:
 	call ApplyGravityToObject
 	pop af
 .not_affected_by_gravity
-	bit PROPERTY_3_F, a
+	bit PROPERTY_SINKABLE_F, a
 	jr z, .asm_2c5b
 	call Func_2e20
 	and a
@@ -2872,11 +2872,15 @@ UpdateObjects::
 	push af
 	ld a, $01
 	bankswitch
-	call UpdatePowerUpCounters
+
+	call TickPowerUpCounters
+
+	; clears all enemies if clear screen flag was set
 	ld hl, wClearScreenFlags
 	bit CLEAR_ACTIVE_F, [hl]
 	call nz, ClearAllEnemies
 
+	; run scripts of each active object
 	ld b, NUM_OBJECT_SLOTS
 	ld c, OBJECT_SLOT_KIRBY
 .loop_objects_1
@@ -2902,9 +2906,10 @@ UpdateObjects::
 	jr nz, .loop_objects_1
 
 	ld hl, hKirbyFlags4
-	bit KIRBY4F_UNK2_F, [hl]
-	jr nz, .asm_2f15
+	bit KIRBY4F_PAUSED_F, [hl]
+	jr nz, .skip_update_funcs
 
+	; run update functions of each active object
 	ld a, [wROMBank]
 	push af
 	ld a, $05
@@ -2919,7 +2924,7 @@ UpdateObjects::
 	ld a, [hl]
 	cp OBJECT_ACTIVE
 	jr nz, .skip_execution
-	ld hl, wObjectCustomFuncs
+	ld hl, wObjectUpdateFuncs
 	add hl, bc
 	add hl, bc
 	ld a, [hli]
@@ -2936,9 +2941,9 @@ UpdateObjects::
 	pop af
 	bankswitch
 
-	call Func_2f34
+	call UpdateHurtEnemies
 
-.asm_2f15
+.skip_update_funcs
 	ld b, NUM_OBJECT_SLOTS
 	ld c, OBJECT_SLOT_KIRBY
 .loop_objects_3
@@ -2948,7 +2953,7 @@ UpdateObjects::
 	add hl, bc
 	ld a, [hl]
 	cp OBJECT_ACTIVE
-	call z, Func_2b26
+	call z, UpdateObject
 	pop bc
 	inc c
 	dec b
@@ -2960,40 +2965,44 @@ UpdateObjects::
 JumpHL:
 	jp hl
 
-Func_2f34:
-	ld a, [wd3d4]
+UpdateHurtEnemies:
+	; tick down hurt counter
+	ld a, [wEnemyHurtCounter]
 	and a
-	jr z, .asm_2fa2
+	jr z, .skip
 	dec a
-	ld [wd3d4], a
+	ld [wEnemyHurtCounter], a
 	ld hl, hEngineFlags
-	bit ENGINEF_UNK1_F, [hl]
-	jr z, .asm_2f57
-	ld a, [wd3d4]
+	bit HURT_PAL_EFFECT_F, [hl]
+	jr z, .shake
+
+; change pal effect
+	ld a, [wEnemyHurtCounter]
 	and a
 	ret nz
-	ld a, [wd3d5]
+	ld a, [wEnemyHurtObjectIndex]
 	ld e, a
 	ld d, $00
 	ld hl, wObjectPropertyFlags
 	add hl, de
 	res PROPERTY_PAL_F, [hl]
 	ret
-.asm_2f57
+
+.shake
 	push bc
-	ld e, LOW(.data_1)
+	ld e, LOW(.XOffsets)
 	add e
 	ld e, a
-	ld d, HIGH(.data_1)
+	ld d, HIGH(.XOffsets)
 	incc d
 	ld a, [de]
 	ld e, a
 	ld d, 0
 	bit 7, a
-	jr z, .asm_2f6a
-	dec d
-.asm_2f6a
-	ld a, [wd3d5]
+	jr z, .non_negative_x
+	dec d ; -1
+.non_negative_x
+	ld a, [wEnemyHurtObjectIndex]
 	ld c, a
 	ld hl, wObjectXCoords + $1
 	add hl, bc
@@ -3007,20 +3016,20 @@ Func_2f34:
 	ld [hl], a
 	pop bc
 	push bc
-	ld a, [wd3d4]
-	ld e, LOW(.data_2)
+	ld a, [wEnemyHurtCounter]
+	ld e, LOW(.YOffsets)
 	add e
 	ld e, a
-	ld d, HIGH(.data_2)
+	ld d, HIGH(.YOffsets)
 	incc d
 	ld a, [de]
 	ld e, a
 	ld d, 0
 	bit 7, a
-	jr z, .asm_2f91
-	dec d
-.asm_2f91
-	ld a, [wd3d5]
+	jr z, .non_negative_y
+	dec d ; -1
+.non_negative_y
+	ld a, [wEnemyHurtObjectIndex]
 	ld c, a
 	ld hl, wObjectYCoords + $1
 	add hl, bc
@@ -3033,19 +3042,19 @@ Func_2f34:
 	adc d
 	ld [hl], a
 	pop bc
-.asm_2fa2
+.skip
 	ret
 
-.data_1
+.XOffsets:
 	db -1, -1,  1,  1, -1, -1,  1,  1,  1, -1, -2, -2,  2,  2, -2, -2,  2,  2,  2, -2, -1, -1,  1,  1, -1, -1,  1,  1,  1, -1
 
-.data_2
+.YOffsets:
 	db -1,  1,  1,  1, -1, -1, -1,  1,  1, -1, -2,  2,  2,  2, -2, -2, -2,  2,  2, -2, -1,  1,  1,  1, -1, -1, -1,  1,  1, -1
 
 ; handles ticking down both Invincibility and Mint Leaf counters
-UpdatePowerUpCounters:
+TickPowerUpCounters:
 	ld a, [hKirbyFlags4]
-	bit KIRBY4F_UNK2_F, a
+	bit KIRBY4F_PAUSED_F, a
 	ret nz
 	ld a, [hKirbyFlags5]
 	bit KIRBY5F_UNK5_F, a
@@ -3079,7 +3088,7 @@ UpdatePowerUpCounters:
 	ld hl, hPalFadeFlags
 	set SCROLLINGF_UNK3_F, [hl]
 	ld a, [hEngineFlags]
-	and ~(KABOOLA_BATTLE | ENGINEF_UNK1)
+	and ~(KABOOLA_BATTLE | HURT_PAL_EFFECT)
 	ld [hEngineFlags], a
 .asm_3030
 	ld a, [hKirbyFlags6]
@@ -3809,49 +3818,49 @@ Data_3425::
 	object_properties PROPERTY_2, 0, 0, $00
 
 Data_3429::
-	object_properties PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, $00, Data_1c154
+	object_properties PROPERTY_0 | PROPERTY_SINKABLE | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, $00, Data_1c154
 
 InvincibilityCandyProperties::
-	object_properties PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, INVINCIBILITY_CANDY, Data_1c172
+	object_properties PROPERTY_0 | PROPERTY_SINKABLE | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, INVINCIBILITY_CANDY, Data_1c172
 ; 0x342f
 
 SECTION "Home@3435", ROM0[$3435]
 
 BombProperties::
-	object_properties PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, BOMB, Data_1c172
+	object_properties PROPERTY_0 | PROPERTY_SINKABLE | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, BOMB, Data_1c172
 
 MikeProperties::
-	object_properties PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, MIKE, Data_1c172
+	object_properties PROPERTY_0 | PROPERTY_SINKABLE | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, MIKE, Data_1c172
 ; 0x3441
 
 SECTION "Home@3447", ROM0[$3447]
 
 SpicyFoodProperties::
-	object_properties PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, SPICY_FOOD, Data_1c172
+	object_properties PROPERTY_0 | PROPERTY_SINKABLE | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, SPICY_FOOD, Data_1c172
 
 WarpStarFloorProperties::
-	object_properties PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, WARP_STAR, Data_1c172
+	object_properties PROPERTY_0 | PROPERTY_SINKABLE | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, WARP_STAR, Data_1c172
 
 WarpStarFloatingProperties::
-	object_properties PROPERTY_0 | PROPERTY_3 | PROPERTY_PERSISTENT, 16, 16, WARP_STAR, Data_1c172
+	object_properties PROPERTY_0 | PROPERTY_SINKABLE | PROPERTY_PERSISTENT, 16, 16, WARP_STAR, Data_1c172
 
 MaximTomatoProperties::
-	object_properties PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, MAXIM_TOMATO, Data_1c172
+	object_properties PROPERTY_0 | PROPERTY_SINKABLE | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, MAXIM_TOMATO, Data_1c172
 ; 0x345f
 
 SECTION "Home@3465", ROM0[$3465]
 
 EnergyDrinkProperties::
-	object_properties PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 12, 16, ENERGY_DRINK, Data_1c172
+	object_properties PROPERTY_0 | PROPERTY_SINKABLE | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 12, 16, ENERGY_DRINK, Data_1c172
 
 SparklingStarProperties::
-	object_properties PROPERTY_0 | PROPERTY_3 | PROPERTY_PERSISTENT, 16, 16, SPARKLING_STAR, Data_1c172
+	object_properties PROPERTY_0 | PROPERTY_SINKABLE | PROPERTY_PERSISTENT, 16, 16, SPARKLING_STAR, Data_1c172
 ; 0x3471
 
 SECTION "Home@3483", ROM0[$3483]
 
 StandardEnemyGravityProperties::
-	object_properties PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY, 12, 12, 1, 1, $03, 200, Data_1c154
+	object_properties PROPERTY_0 | PROPERTY_SINKABLE | PROPERTY_GRAVITY, 12, 12, 1, 1, $03, 200, Data_1c154
 
 StandardEnemyProperties::
 	object_properties PROPERTY_0, 12, 12, 1, 1, $03, 200, Data_1c154
@@ -3863,7 +3872,10 @@ GordoProperties::
 	object_properties PROPERTY_0, 12, 12, 3, 100, $00, 0
 ; 0x34be
 
-SECTION "Home@34d2", ROM0[$34d2]
+SECTION "Home@34c9", ROM0[$34c9]
+
+GlunkPodProperties::
+	object_properties PROPERTY_0, 6, 6, 1, 0, $11, 10, Data_1c154
 
 ShotzoBulletProperties::
 	object_properties PROPERTY_0, 6, 6, 1, 100, $01, 0, Data_1c154
@@ -3874,10 +3886,10 @@ ShotzoProperties::
 SECTION "Home@34ff", ROM0[$34ff]
 
 CappyProperties::
-	object_properties PROPERTY_0 | PROPERTY_3, 12, 12, 1, 1, $03, 200, Data_1c154
+	object_properties PROPERTY_0 | PROPERTY_SINKABLE, 12, 12, 1, 1, $03, 200, Data_1c154
 
 CaplessCappyProperties::
-	object_properties PROPERTY_0 | PROPERTY_3, 12, 12, 1, 1, $03, 200, Data_1c154
+	object_properties PROPERTY_0 | PROPERTY_SINKABLE, 12, 12, 1, 1, $03, 200, Data_1c154
 ; 0x3511
 
 SECTION "Home@351a", ROM0[$351a]
@@ -3889,7 +3901,7 @@ PoppyBrosJrProperties::
 	object_properties PROPERTY_0, 12, 12, 1, 1, $03, 200, Data_1c154
 
 Data_352c::
-	object_properties PROPERTY_0 | PROPERTY_3, 12, 12, 1, 1, $03, 200, Data_1c154
+	object_properties PROPERTY_0 | PROPERTY_SINKABLE, 12, 12, 1, 1, $03, 200, Data_1c154
 
 GrizzoProperties::
 	object_properties PROPERTY_0, 20, 20, 2, 1, $03, 400, Data_1c154
@@ -3901,10 +3913,10 @@ PoppyBrosJrOnGrizzoProperties::
 	object_properties PROPERTY_0, 20, 26, 2, 1, $03, 200, Data_1c1a8
 
 Data_3550::
-	object_properties PROPERTY_0 | PROPERTY_3, 12, 12, 1, 1, $03, 200, Data_1c154
+	object_properties PROPERTY_0 | PROPERTY_SINKABLE, 12, 12, 1, 1, $03, 200, Data_1c154
 
 Data_3559::
-	object_properties PROPERTY_0 | PROPERTY_3, 12, 12, 1, 1, $01, 200, Data_1c154
+	object_properties PROPERTY_0 | PROPERTY_SINKABLE, 12, 12, 1, 1, $01, 200, Data_1c154
 
 PoppyBrosJrOnAppleProperties::
 	object_properties PROPERTY_0, 16, 32, 1, 1, $03, 300, Data_1c1b4
@@ -3928,19 +3940,19 @@ Data_358f::
 SECTION "Home@35a7", ROM0[$35a7]
 
 SpitStarProperties::
-	object_properties PROPERTY_0 | PROPERTY_2 | PROPERTY_3, 20, 20, $01
+	object_properties PROPERTY_0 | PROPERTY_2 | PROPERTY_SINKABLE, 20, 20, $01
 
 Data_35ab::
-	object_properties PROPERTY_0 | PROPERTY_2 | PROPERTY_3, 20, 28, $01
+	object_properties PROPERTY_0 | PROPERTY_2 | PROPERTY_SINKABLE, 20, 28, $01
 
 Data_35af::
 	object_properties PROPERTY_2, 20, 20, $01
 
 Data_35b3::
-	object_properties PROPERTY_0 | PROPERTY_2 | PROPERTY_3, 12, 12, $01
+	object_properties PROPERTY_0 | PROPERTY_2 | PROPERTY_SINKABLE, 12, 12, $01
 
 Data_35b7::
-	object_properties PROPERTY_0 | PROPERTY_2 | PROPERTY_3, 40, 40, $01
+	object_properties PROPERTY_0 | PROPERTY_2 | PROPERTY_SINKABLE, 40, 40, $01
 
 ExplosionProperties::
 	object_properties PROPERTY_0, 40, 40, 1, 5, $00, 0, Data_1c160
@@ -3949,8 +3961,14 @@ ExplosionProperties::
 SECTION "Home@35cd", ROM0[$35cd]
 
 PuffOfSmokeProperties::
-	object_properties PROPERTY_0 | PROPERTY_2 | PROPERTY_3, 2, 36, $10
+	object_properties PROPERTY_0 | PROPERTY_2 | PROPERTY_SINKABLE, 2, 36, $10
 ; 0x35d1
+
+SECTION "Home@35f2", ROM0[$35f2]
+
+LololoProperties::
+	object_properties $00, 12, 12, 1, 3, $09, 0, Data_1c1d2
+; 0x35fb
 
 SECTION "Home@364f", ROM0[$364f]
 
@@ -3970,7 +3988,7 @@ Data_3685::
 SECTION "Home@368e", ROM0[$368e]
 
 Data_368e::
-	object_properties PROPERTY_0 | PROPERTY_3 | PROPERTY_GRAVITY, 12, 12, 1, 1, $03, 500, Data_1c154
+	object_properties PROPERTY_0 | PROPERTY_SINKABLE | PROPERTY_GRAVITY, 12, 12, 1, 1, $03, 500, Data_1c154
 
 MumbiesProperties::
 	object_properties PROPERTY_0, 12, 12, 1, 1, $03, 500, Data_1c154
@@ -4096,7 +4114,7 @@ StarSpit::
 	push de
 	ld hl, Data_1c184
 	call CreateObject_Group2
-	jr c, Func_388a
+	jr c, KirbyAttackCommon.done
 	ld a, [wROMBank]
 	push af
 	ld a, BANK(Func_14a5f)
@@ -4106,7 +4124,7 @@ StarSpit::
 	bankswitch
 	ld hl, Data_1c190
 	call CreateObject_Group2
-	jr c, Func_3889
+	jr c, KirbyAttackCommon.no_carry
 	ld hl, wObjectStatuses
 	add hl, bc
 	set OBJSTAT_UNK1_F, [hl]
@@ -4118,20 +4136,21 @@ Func_383b:
 	push de
 	ld hl, Data_1c18a
 	call CreateObject_Group2
-	jr c, Func_388a
+	jr c, KirbyAttackCommon.done
 	ld hl, wObjectStatuses
 	add hl, bc
 Func_384a:
 	set OBJSTAT_UNK0_F, [hl]
-	jr Func_3873
-Func_384e::
+	jr KirbyAttackCommon
+
+ShootFirePellet::
 	push hl
 	push bc
 	push de
 	ld hl, Data_1c196
 	call CreateObject_Group2
-	jr c, Func_388a
-	jr Func_3873
+	jr c, KirbyAttackCommon.done
+	jr KirbyAttackCommon
 
 PuffSpit::
 	push hl
@@ -4139,15 +4158,16 @@ PuffSpit::
 	push de
 	ld hl, Data_1c19c
 	call CreateObject_Group2
-	jr c, Func_388a
+	jr c, KirbyAttackCommon.done
 	ld a, [hEngineFlags]
 	bit KABOOLA_BATTLE_F, a
-	jr nz, Func_3873
+	jr nz, KirbyAttackCommon
 	ld hl, wObjectStatuses
 	add hl, bc
 	set OBJSTAT_UNK3_F, [hl]
 ;	fallthrough
-Func_3873:
+
+KirbyAttackCommon:
 	ld a, [wROMBank]
 	push af
 	ld a, BANK(Func_14a5f)
@@ -4155,9 +4175,9 @@ Func_3873:
 	call Func_14a5f
 	pop af
 	bankswitch
-Func_3889:
+.no_carry
 	xor a
-Func_388a:
+.done
 	pop de
 	pop bc
 	pop hl

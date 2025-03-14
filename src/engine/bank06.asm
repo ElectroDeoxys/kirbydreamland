@@ -696,7 +696,7 @@ Pause::
 	ld [hJoypadPressed], a
 
 	ld a, [hKirbyFlags4]
-	set KIRBY4F_UNK2_F, a
+	set KIRBY4F_PAUSED_F, a
 	ld [hKirbyFlags4], a
 .loop
 	ld a, [hVBlankFlags]
@@ -749,7 +749,7 @@ Pause::
 	ld a, SFX_PAUSE
 	call PlaySFX
 	ld a, [hKirbyFlags4]
-	and $ff ^ (KIRBY4F_UNK0 | KIRBY4F_UNK2)
+	and $ff ^ (KIRBY4F_UNK0 | KIRBY4F_PAUSED)
 	ld [hKirbyFlags4], a
 	ld hl, hEngineFlags
 	res PAUSE_ANIMATION_F, [hl]

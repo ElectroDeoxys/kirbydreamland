@@ -6,13 +6,13 @@ AnimScript_20003:
 
 AnimScript_20005:
 	set_object_properties Data_35b7
-	set_custom_func Func_141b1, AnimScript_20ba2
+	set_update_func Func_141b1, AnimScript_20ba2
 	script_exec Func_4adf
 	set_scripts AnimScript_Explosion, MotionScript_102fb
 
 AnimScript_20017:
 	set_object_properties Data_35b7
-	set_custom_func Func_141b1, AnimScript_20ba2
+	set_update_func Func_141b1, AnimScript_20ba2
 	set_scripts AnimScript_Explosion, MotionScript_10008
 
 AnimScript_20026:
@@ -150,7 +150,7 @@ AnimScript_20154:
 AnimScript_201b7:
 	script_f2
 	set_object_properties StandardEnemyGravityProperties
-	set_custom_func Func_141b1, AnimScript_2073c
+	set_update_func Func_141b1, AnimScript_2073c
 	jump_if_not_flags hKirbyFlags3, KIRBY3F_FACE_LEFT, .script_201d2
 	set_motion_script MotionScript_10a92
 .loop_1
@@ -367,7 +367,7 @@ AnimScript_SpitStar:
 	play_sfx SFX_STAR_SPIT
 	jump_if_flags wPowerUpAttack, POWERUP_MIKE, AnimScript_20bc9
 	jump_if_flags wPowerUpAttack, POWERUP_BOMB, AnimScript_20bb7
-	set_custom_func Func_141b1, AnimScript_20b9a
+	set_update_func Func_141b1, AnimScript_20b9a
 	jump_if_not_flags hKirbyFlags3, KIRBY3F_FACE_LEFT, .script_2045b
 	script_repeat 2
 	frame  4, $5c25
@@ -400,7 +400,7 @@ AnimScript_KirbyPuff:
 	jump_if_flags wPowerUpAttack, POWERUP_MIKE, AnimScript_20bc9
 	jump_if_flags wPowerUpAttack, POWERUP_BOMB, AnimScript_20bb7
 	jump_if_flags hEngineFlags, KABOOLA_BATTLE, .script_2049e
-	set_custom_func Func_141b1, AnimScript_20b9a
+	set_update_func Func_141b1, AnimScript_20b9a
 .check_land
 	jump_if_not_flags hKirbyFlags3, KIRBY3F_FACE_LEFT, .script_2049b
 	frame  0, $5cf9
@@ -704,7 +704,7 @@ AnimScript_208f1:
 
 AnimScript_BombItem:
 	script_exec Func_4ad6
-	set_custom_func ObjFunc_CountdownToExplosion, 256
+	set_update_func ObjFunc_CountdownToExplosion, 256
 AnimScript_208fc:
 	frame 162, $5c4d
 .loop
@@ -952,13 +952,13 @@ AnimScript_20ba2:
 	set_object_properties Data_35b7
 	set_scripts AnimScript_Explosion, MotionScript_10008
 AnimScript_20baf:
-	set_custom_func Func_142a3, NULL
+	set_update_func Func_142a3, NULL
 	jump_abs AnimScript_20000
 
 AnimScript_20bb7:
 	set_flags wPowerUpAttack, $ff ^ POWERUP_MINT_LEAF, $00
 	script_exec Func_4adf
-	set_custom_func Func_141b1, AnimScript_20ba2
+	set_update_func Func_141b1, AnimScript_20ba2
 	set_scripts AnimScript_208fc, MotionScript_SpitStar
 
 AnimScript_20bc9:
@@ -970,7 +970,7 @@ AnimScript_20bc9:
 AnimScript_20bda:
 	position_offset 0, 5
 	play_sfx SFX_19
-	set_custom_func Func_141b1, AnimScript_20b9a
+	set_update_func Func_141b1, AnimScript_20b9a
 	jump_if_not_flags hKirbyFlags3, KIRBY3F_FACE_LEFT, .loop_2
 
 .loop_1
@@ -1022,7 +1022,7 @@ AnimScript_20c6d:
 	script_exec Func_4afb
 
 AnimScript_20c7e:
-	set_custom_func Func_14105, NULL
+	set_update_func Func_14105, NULL
 	script_exec ScriptFunc_SetImmuneFlag
 	branch_kirby_pos .branch_1, .branch_2
 .branch_1
@@ -1099,7 +1099,7 @@ GfxSubScript_20d01:
 	script_ret
 
 AnimScript_20d0b:
-	set_custom_func Func_140c2, AnimScript_20c6d
+	set_update_func Func_140c2, AnimScript_20c6d
 .loop
 	frame 20, $41c4
 	frame 20, $41bc
@@ -1140,14 +1140,14 @@ AnimScript_20d47:
 AnimScript_20d4f:
 	position_offset 0, -10
 	set_object_properties Data_352c
-	set_custom_func Func_141b1, AnimScript_20d79
+	set_update_func Func_141b1, AnimScript_20d79
 	set_motion_script MotionScript_10ef1
 	frame  0, $417c
 
 AnimScript_20d64:
 	position_offset 0, -10
 	set_object_properties Data_352c
-	set_custom_func Func_141b1, AnimScript_20d83
+	set_update_func Func_141b1, AnimScript_20d83
 	set_motion_script MotionScript_10ef1
 	frame  0, $418c
 
@@ -1234,7 +1234,7 @@ AnimScript_20e10:
 SECTION "Bank 8@4e20", ROMX[$4e20], BANK[$8]
 
 GfxSubScript_20e20:
-	set_custom_func Func_140c2, AnimScript_20e2f
+	set_update_func Func_140c2, AnimScript_20e2f
 	script_repeat 9
 	frame  3, $42d4
 	frame 16, $42b4
@@ -1247,7 +1247,7 @@ AnimScript_20e2f:
 	jump_abs AnimScript_20e8d
 
 GfxSubScript_20e3c:
-	set_custom_func Func_140c2, AnimScript_20e4b
+	set_update_func Func_140c2, AnimScript_20e4b
 	script_repeat 9
 	frame  3, $4334
 	frame 16, $4354
@@ -1260,7 +1260,7 @@ AnimScript_20e4b:
 	jump_abs AnimScript_20e92
 
 AnimScript_20e58:
-	set_custom_func Func_140c2, AnimScript_20e83
+	set_update_func Func_140c2, AnimScript_20e83
 .loop
 	frame 10, $4324
 	frame 10, $4314
@@ -1435,7 +1435,7 @@ AnimScript_WhispyWoods:
 	frame 60, $4000
 	script_exec Func_48a3
 	set_value wd3cd, $01
-	set_custom_func Func_14172, Data_1c1c6
+	set_update_func Func_14172, Data_1c1c6
 	script_call .BlinkTwice
 	jump_random 50 percent + 1, .spawn_apples
 
@@ -1597,7 +1597,7 @@ AnimScript_BossHPIncrementer:
 
 SECTION "Bank 8@51c3", ROMX[$51c3], BANK[$8]
 
-AnimScript_211c3:
+AnimScript_FallingGlunk:
 .loop
 	frame 10, $447c
 	frame 10, $4484
@@ -1614,7 +1614,8 @@ AnimScript_211d8:
 	frame 20, $43fc
 	jump_abs .loop
 
-AnimScript_211e4:
+AnimScript_ShootingGlunk:
+.loop
 	script_repeat 6
 	frame 30, $43ec
 	frame 20, $43f4
@@ -1622,10 +1623,30 @@ AnimScript_211e4:
 	frame 50, $43ec
 	frame 15, $43f4
 	frame 10, $43fc
-	branch_kirby_pos $5200, $520D
-; 0x211fd
+	branch_kirby_pos .shoot_left, .shoot_right
+	; unreachable
+	jump_abs .loop
 
-SECTION "Bank 8@522f", ROMX[$522f], BANK[$8]
+.shoot_left
+	create_object AnimScript_21220, MotionScript_1123a, GlunkPodProperties
+	frame 80, $43fc
+	jump_abs .loop
+
+.shoot_right
+	create_object AnimScript_21220, MotionScript_11233, GlunkPodProperties
+	frame 80, $43fc
+	jump_abs .loop
+; 0x2121a
+
+SECTION "Bank 8@5220", ROMX[$5220], BANK[$8]
+
+AnimScript_21220:
+.loop
+	frame  2, $6899
+	frame  2, $689d
+	frame  2, $68a1
+	frame  2, $68a5
+	jump_abs .loop
 
 AnimScript_2122f:
 .loop
@@ -1760,7 +1781,7 @@ AnimScript_2134f:
 	jump_rel .loop
 
 AnimScript_21363:
-	set_custom_func Func_14105, NULL
+	set_update_func Func_14105, NULL
 	script_exec ScriptFunc_SetImmuneFlag
 	branch_kirby_pos .script_21372, .script_2137d
 
@@ -1793,7 +1814,7 @@ AnimScript_21363:
 
 AnimScript_213a1:
 .loop
-	set_custom_func Func_14105, NULL
+	set_update_func Func_14105, NULL
 	script_exec ScriptFunc_SetImmuneFlag
 	script_repeat 3
 	frame 16, $442c
@@ -1886,7 +1907,7 @@ AnimScript_PuffOfSmoke:
 	script_end
 
 AnimScript_TwoFace_Waiting:
-	set_custom_func Func_14252, AnimScript_TwoFace_Chasing
+	set_update_func Func_14252, AnimScript_TwoFace_Chasing
 	frame  0, $443c
 
 AnimScript_TwoFace_Chasing:
@@ -1896,7 +1917,7 @@ AnimScript_TwoFace_Chasing:
 	frame  4, $4450
 	frame 10, $4444
 	set_object_properties TwoFaceProperties
-	set_custom_func Func_14208, NULL
+	set_update_func Func_14208, NULL
 .loop
 	frame 10, $4444
 	frame 10, $444c
@@ -1919,7 +1940,7 @@ AnimScript_21524:
 SECTION "Bank 8@5598", ROMX[$5598], BANK[$8]
 
 AnimScript_21598:
-	set_custom_func Func_14252, AnimScript_215a0
+	set_update_func Func_14252, AnimScript_215a0
 	frame  0, $58b8
 
 AnimScript_215a0:
@@ -1993,7 +2014,7 @@ SECTION "Bank 8@567b", ROMX[$567b], BANK[$8]
 AnimScript_2167b:
 	frame  1, $58b8
 	set_object_properties Data_3421
-	set_custom_func Func_14252, MotionScript_1168b
+	set_update_func Func_14252, MotionScript_1168b
 	frame  0, $58b8
 
 AnimScript_2168b:
@@ -2500,6 +2521,123 @@ AnimScript_224e4:
 	frame 80, $58b8
 	frame  0, $4f90
 ; 0x224ea
+
+SECTION "Bank 8@6a33", ROMX[$6a33], BANK[$8]
+
+AnimScript_22a33:
+	frame  0, $58b8
+
+AnimScript_22a36:
+	create_object AnimScript_22afa, MotionScript_12fc0, StandardEnemyProperties
+	frame  4, $58b8
+	frame 10, $44a0
+	frame  4, $58b8
+	frame  5, $44a0
+	frame 12, $44a8
+	script_repeat 11
+	frame  8, $44c0
+	frame  8, $44b8
+	script_repeat_end
+	frame 10, $44b8
+	frame  5, $44d8
+	set_pal_dark
+	frame  5, $44d8
+	set_pal_light
+	frame  0, $58b8
+
+AnimScript_22a67:
+	create_object AnimScript_22afa, MotionScript_12fd6, StandardEnemyProperties
+	frame  4, $58b8
+	frame 10, $44a0
+	frame  4, $58b8
+	frame  5, $44a0
+	frame 12, $44a8
+	script_repeat 11
+	frame  8, $44d0
+	frame  8, $44c8
+	script_repeat_end
+	frame 10, $44c8
+	frame  5, $44d8
+	set_pal_dark
+	frame  5, $44d8
+	set_pal_light
+	frame  0, $58b8
+; 0x22a98
+
+SECTION "Bank 8@6afa", ROMX[$6afa], BANK[$8]
+
+AnimScript_22afa:
+	play_sfx SFX_30
+	frame  0, $4494
+
+AnimScript_22b01:
+	create_object AnimScript_22b53, MotionScript_130cf, StandardEnemyProperties
+	jump_abs AnimScript_22c09
+; unreferenced
+	create_object AnimScript_22b53, MotionScript_130cf, StandardEnemyProperties
+	jump_abs AnimScript_22c09
+AnimScript_22b15:
+	create_object AnimScript_22b53, MotionScript_130d8, StandardEnemyProperties
+	jump_abs AnimScript_22c09
+AnimScript_22b1f:
+	create_object AnimScript_22b53, MotionScript_130e1, StandardEnemyProperties
+;	fallthrough
+AnimScript_22c09:
+.loop
+	script_repeat 5
+	frame  8, $44b8
+	frame  8, $44c0
+	script_repeat_end
+	frame  4, $44b8
+	frame  4, $44c0
+	frame 20, $44b0
+	script_repeat 5
+	frame  8, $44b8
+	frame  8, $44c0
+	script_repeat_end
+	frame  8, $44b8
+	frame  5, $44d8
+	set_pal_dark
+	frame  5, $44d8
+	set_pal_light
+	frame  0, $58b8
+
+AnimScript_22b53:
+	position_offset -16, 0
+	frame 80, $4494
+	play_sfx SFX_JUMP
+	frame  0, $4494
+
+AnimScript_22b60:
+	jump_if_equal wBossHP, 0, .script_22b7a
+	script_call AnimScript_20b49
+	set_value wKirbySideOfScreen, $00
+	set_value wd3cf, $00
+	set_value wd3d0, $00
+	set_value wd3d1, $00
+	script_end
+
+.script_22b7a
+	jump_if_equal wStage, MT_DEDEDE, .mt_dedede
+	jump_if_equal wArea, CASTLE_LOLOLO_08, .castle_lololo_midstage
+.mt_dedede
+	play_music MUSIC_NONE
+	play_sfx SFX_29
+	script_call AnimScript_20b05
+	script_exec_arg ScriptFunc_AddScore, SCORE_650
+	set_flags hHUDFlags, HUD_BOSS_BATTLE, HUD_UPDATE_FIRST_ROW | HUD_UPDATE_LABEL | HUD_UPDATE_SCORE_DIGITS
+	script_delay 120
+	set_flags hKirbyFlags5, $ff, KIRBY5F_TRIGGER_TRANSITION
+	script_end
+
+.castle_lololo_midstage
+	script_call AnimScript_20b49
+	script_exec_arg ScriptFunc_AddScore, SCORE_400
+	set_flags hHUDFlags, HUD_BOSS_BATTLE, HUD_UPDATE_FIRST_ROW | HUD_UPDATE_LABEL | HUD_UPDATE_SCORE_DIGITS
+	script_delay 120
+	set_flags hKirbyFlags5, $ff, KIRBY5F_TRIGGER_TRANSITION
+	script_end
+; 0x22bb6
 
 SECTION "Bank 8@6f63", ROMX[$6f63], BANK[$8]
 

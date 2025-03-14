@@ -88,16 +88,16 @@ MACRO script_ed
 	db \1 ; value
 ENDM
 
-	const SCRIPT_SET_CUSTOM_FUNC ; $ee
-MACRO set_custom_func
-	db SCRIPT_SET_CUSTOM_FUNC
+	const SCRIPT_SET_UPDATE_FUNC ; $ee
+MACRO set_update_func
+	db SCRIPT_SET_UPDATE_FUNC
 	dw \1 ; function
 	dw \2 ; argument
 ENDM
 
-	const SCRIPT_CLEAR_CUSTOM_FUNC ; $ef
-MACRO clear_custom_func
-	db SCRIPT_CLEAR_CUSTOM_FUNC
+	const SCRIPT_CLEAR_UPDATE_FUNC ; $ef
+MACRO clear_update_func
+	db SCRIPT_CLEAR_UPDATE_FUNC
 ENDM
 
 	const SCRIPT_SET_POSITION ; $f0

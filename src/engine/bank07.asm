@@ -194,7 +194,10 @@ Data_1c1c6::
 
 Data_1c1cc::
 	dw AnimScript_210f1, MotionScript_10008, Data_3421
-; 0x1c1d2
+
+Data_1c1d2::
+	dw AnimScript_22b60, MotionScript_10008, Data_3421
+; 0x1c1d8
 
 SECTION "Bank 7@4202", ROMX[$4202], BANK[$7]
 
@@ -600,15 +603,15 @@ Data_1c748:
 LevelObject_1c767:
 	object 8, 7, 0, 0, AnimScript_EnergyDrink, MotionScript_10008, EnergyDrinkProperties, 8
 LevelObject_1c772:
-	object 2, 5, 0, 0, AnimScript_211e4, MotionScript_10008, GlunkProperties
+	object 2, 5, 0, 0, AnimScript_ShootingGlunk, MotionScript_10008, GlunkProperties
 LevelObject_1c77c:
-	object 13, 9, 0, 0, AnimScript_211e4, MotionScript_10008, GlunkProperties
+	object 13, 9, 0, 0, AnimScript_ShootingGlunk, MotionScript_10008, GlunkProperties
 LevelObject_1c786:
-	object 15, 6, 0, 0, AnimScript_211e4, MotionScript_10008, GlunkProperties
+	object 15, 6, 0, 0, AnimScript_ShootingGlunk, MotionScript_10008, GlunkProperties
 LevelObject_1c790:
-	object 9, 1, -32, 0, AnimScript_211c3, MotionScript_11241, GlunkProperties
+	object 9, 1, -32, 0, AnimScript_FallingGlunk, MotionScript_11241, GlunkProperties
 LevelObject_1c79a:
-	object 14, 1, -32, 0, AnimScript_211c3, MotionScript_11241, GlunkProperties
+	object 14, 1, -32, 0, AnimScript_FallingGlunk, MotionScript_11241, GlunkProperties
 LevelObject_1c7a4:
 	object 5, 7, 0, 0, AnimScript_20572, MotionScript_10508, GordoProperties
 LevelObject_1c7ae:
@@ -633,7 +636,7 @@ Data_1c7c6:
 LevelObject_1c7dc:
 	object 9, 5, 0, 0, AnimScript_213fa, MotionScript_114fa, StandardEnemyProperties
 LevelObject_1c7e6:
-	object 1, 18, 0, 0, AnimScript_211e4, MotionScript_10008, GlunkProperties
+	object 1, 18, 0, 0, AnimScript_ShootingGlunk, MotionScript_10008, GlunkProperties
 LevelObject_1c7f0:
 	object 1, 7, 0, -16, AnimScript_20650, MotionScript_11682, StandardEnemyProperties
 LevelObject_1c7fa:
@@ -807,14 +810,18 @@ LevelObject_1ca0c:
 
 Data_1ca16:
 	dbw $00, NULL
-	dbw $01, $4a24
-	dbw $05, $4a2e
+	dbw $01, LevelObject_1ca24
+	dbw $05, LevelObject_1ca2e
 	db $ff ; end
 
 Data_1ca20:
 	dbw $00, NULL
 	db $ff ; end
-; 0x1ca24
+
+LevelObject_1ca24:
+	object 1, 1, 0, 0, AnimScript_20000, MotionScript_10008, Data_3425
+LevelObject_1ca2e:
+	object 5, 3, -8, 0, AnimScript_20967, MotionScript_1032d, Data_3421
 
 SECTION "Bank 7@558f", ROMX[$558f], BANK[$7]
 
@@ -876,23 +883,30 @@ SECTION "Bank 7@5936", ROMX[$5936], BANK[$7]
 
 Data_1d936:
 	dbw $00, NULL
-	dbw $01, $5958
+	dbw $01, LevelObject_1d958
 	db $ff ; end
 
 Data_1d93d:
 	dbw $00, NULL
-	dbw $01, $5958
+	dbw $01, LevelObject_1d958
 	db $ff ; end
 
 Data_1d944:
 	dbw $00, NULL
-	dbw $01, $5962
-	dbw $09, $596c
+	dbw $01, LevelObject_1d962
+	dbw $09, LevelObject_1d96c
 	db $ff ; end
 
 Data_1d94e:
 	dbw $00, NULL
-	dbw $01, $5962
-	dbw $09, $596c
+	dbw $01, LevelObject_1d962
+	dbw $09, LevelObject_1d96c
 	db $ff ; end
-; 0x1d958
+
+LevelObject_1d958:
+	object 1, 1, 0, 0, AnimScript_22a33, MotionScript_13038, LololoProperties
+LevelObject_1d962:
+	object 1, 1, 0, 0, AnimScript_22a33, MotionScript_12e09, LololoProperties
+LevelObject_1d96c:
+	object 9, 9, 0, 0, AnimScript_22a33, MotionScript_12f5a, LololoProperties
+; 0x1d976

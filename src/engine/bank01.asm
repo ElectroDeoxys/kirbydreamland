@@ -604,7 +604,7 @@ KirbyControl::
 	xor a
 	ld [wd06a], a
 	call Func_11c9
-	call Func_384e
+	call ShootFirePellet
 	jr nc, .asm_4492
 	ld hl, hKirbyFlags6
 	res KIRBY6F_UNK2_F, [hl]
@@ -708,7 +708,7 @@ KirbyControl::
 	cp $02
 	jr nz, .check_d_right
 	ldh a, [hEngineFlags]
-	bit ENGINEF_UNK1_F, a
+	bit HURT_PAL_EFFECT_F, a
 	jr nz, .set_walking_flags_left
 .set_face_left
 	ld hl, hKirbyFlags3
@@ -1404,7 +1404,7 @@ Func_4ad6:
 	ld hl, wObjectPropertyFlags
 	add hl, bc
 	res PROPERTY_GRAVITY_F, [hl]
-	res PROPERTY_3_F, [hl]
+	res PROPERTY_SINKABLE_F, [hl]
 	ret
 
 Func_4adf:
@@ -1480,7 +1480,19 @@ ScriptFunc_AddScore:
 	dw    0 ; $8
 ; 0x4ba4
 
-SECTION "Bank 1@4bb4", ROMX[$4bb4], BANK[$1]
+SECTION "Bank 1@4ba6", ROMX[$4ba6], BANK[$1]
+
+Func_4ba6:
+	ld hl, wObjectPropertyFlags
+	add hl, bc
+	res PROPERTY_2_F, [hl]
+	ret
+
+Func_4bad:
+	ld hl, wObjectPropertyFlags
+	add hl, bc
+	set PROPERTY_2_F, [hl]
+	ret
 
 ; called when a Sparkling Star is collected
 ; or when the Mike item is activated
