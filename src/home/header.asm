@@ -4,15 +4,15 @@ SECTION "romheader", ROM0
 	ds $20, $ff
 
 ; interrupts
-SECTION "vblank", ROM0
+SECTION "VBlank", ROM0
 	jp VBlank
 	ds 5
 
-SECTION "stat", ROM0
+SECTION "Stat", ROM0
 	jp Stat
 	ds 5
 
-SECTION "timer", ROM0
+SECTION "Timer", ROM0
 	jp Timer
 	ds 5
 

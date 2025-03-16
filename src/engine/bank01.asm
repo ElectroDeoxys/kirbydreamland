@@ -1790,10 +1790,3 @@ _StartLevelAfterContinue::
 	ld [wd03d], a
 	ret
 ; 0x4def
-
-REPT 120
-DS ALIGN[6]
-REPT $20
-	db $ff
-ENDR
-ENDR

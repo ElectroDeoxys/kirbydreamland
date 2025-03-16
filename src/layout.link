@@ -2,11 +2,11 @@ ROM0
 	org $0000
 	"romheader"
 	org $0040
-	"vblank"
+	"VBlank"
 	org $0048
-	"stat"
+	"Stat"
 	org $0050
-	"timer"
+	"Timer"
 	org $0100
 	"Start"
 	org $0150
