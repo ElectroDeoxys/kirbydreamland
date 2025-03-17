@@ -590,22 +590,22 @@ wAudioCommandPointersLo:: ; de5a
 wAudioCommandPointersHi:: ; de62
 	ds NUM_CHANNELS
 
-wde6a:: ; de6a
+wInstrumentCommandDurations:: ; de6a
 	ds NUM_CHANNELS
 
-wde72:: ; de72
+wInstrumentAudioCommandPointersLo:: ; de72
 	ds NUM_CHANNELS
 
-wde7a:: ; de7a
+wInstrumentAudioCommandPointersHi:: ; de7a
 	ds NUM_CHANNELS
 
-wde82:: ; de82
+wInstrumentSustain:: ; de82
 	ds NUM_CHANNELS
 
 wChannelBaseNotes:: ; de8a
 	ds NUM_CHANNELS
 
-wde92:: ; de92
+wInstrumentSustainLength:: ; de92
 	ds NUM_CHANNELS
 
 ; low nybble is note and instrument volume
@@ -613,13 +613,13 @@ wde92:: ; de92
 wChannelVolumes:: ; de9a
 	ds NUM_CHANNELS
 
-wdea2:: ; dea2
+wChannelInstruments:: ; dea2
 	ds NUM_CHANNELS
 
 wChannelTempoModes:: ; deaa
 	ds NUM_CHANNELS
 
-wdeb2:: ; deb2
+wNoteFrequencyTables:: ; deb2
 	ds NUM_CHANNELS
 
 ; low byte of the pointer in wAudioStack
@@ -627,7 +627,9 @@ wdeb2:: ; deb2
 wAudioStackPointers:: ; deba
 	ds NUM_CHANNELS
 
-wdec2:: ; dec2
+; low byte of the pointer in wAudioStack
+; corresponding to each channel's instrument
+wInstrumentStackPointers:: ; dec2
 	ds NUM_CHANNELS
 
 wChannelSFXFlags:: ; deca
@@ -647,31 +649,26 @@ wded4:: ; ded4
 
 	ds $2b
 
+; each channel has 2 stacks
+; one for the general audio commands
+; and another specific for the instrument attack/release scripts
 wAudioStack:: ; df00
-wChannel1AudioStack:: ; df00
-	ds $10
-wChannel1AudioStackBottom:: ; df10
-wChannel2AudioStack:: ; df00
-	ds $10
-wChannel2AudioStackBottom:: ; df20
-wChannel3AudioStack:: ; df00
-	ds $10
-wChannel3AudioStackBottom:: ; df30
-wChannel4AudioStack:: ; df00
-	ds $10
-wChannel4AudioStackBottom:: ; df40
-wChannel5AudioStack:: ; df00
-	ds $10
-wChannel5AudioStackBottom:: ; df50
-wChannel6AudioStack:: ; df00
-	ds $10
-wChannel6AudioStackBottom:: ; df60
-wChannel7AudioStack:: ; df00
-	ds $10
-wChannel7AudioStackBottom:: ; df70
-wChannel8AudioStack:: ; df00
-	ds $10
-wChannel8AudioStackBottom:: ; df80
+wChannel1Stack:: ; df00
+	channel_stack_struct wChannel1Stack
+wChannel2Stack:: ; df10
+	channel_stack_struct wChannel2Stack
+wChannel3Stack:: ; df20
+	channel_stack_struct wChannel3Stack
+wChannel4Stack:: ; df30
+	channel_stack_struct wChannel4Stack
+wChannel5Stack:: ; df40
+	channel_stack_struct wChannel5Stack
+wChannel6Stack:: ; df50
+	channel_stack_struct wChannel6Stack
+wChannel7Stack:: ; df60
+	channel_stack_struct wChannel7Stack
+wChannel8Stack:: ; df70
+	channel_stack_struct wChannel8Stack
 
 wChannelConfigLowByte:: ; df80
 	db

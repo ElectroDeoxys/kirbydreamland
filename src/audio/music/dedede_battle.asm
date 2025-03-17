@@ -3,14 +3,14 @@ DededeBattle_Channel1:
 	instrument INSTRUMENT_00
 	volume 10
 	pan PAN_CENTER
-	audio_f4 $00
+	sustain_length 0.0
 	base_note F#1
 	note_long -5, 40
 	volume 15
 	note_long -5, 40
 	instrument INSTRUMENT_07
 	base_note F#3
-	audio_f4 $64
+	sustain_length 0.391
 	note 2, 1
 	note -1, 1
 	rest 1
@@ -21,7 +21,7 @@ DededeBattle_Channel1:
 	note -1, 1
 	base_note F#2
 	volume 15
-	audio_f4 $82
+	sustain_length 0.508
 	audio_repeat 3
 	note 0, 1
 	note 0, 1
@@ -30,10 +30,10 @@ DededeBattle_Channel1:
 	audio_repeat_end
 	note 0, 1
 	note 0, 1
-	audio_f4 $e6
+	sustain_length 0.898
 	note -5, 0
 	note -5, 0
-	audio_f4 $82
+	sustain_length 0.508
 	note -2, 1
 .main_loop
 	audio_call .sub_1
@@ -79,7 +79,7 @@ DededeBattle_Channel1:
 
 DededeBattle_Channel2:
 	tempo_mode TEMPO_01
-	audio_f4 $00
+	sustain_length 0.0
 	instrument INSTRUMENT_02
 	pan PAN_CENTER
 	base_note F#1
@@ -87,10 +87,10 @@ DededeBattle_Channel2:
 	note_long -5, 40
 	audio_repeat 8
 	volume_shift 1
-	audio_f3 $05
+	sustain 5
 	audio_repeat_end
 	base_note F#2
-	audio_f4 $64
+	sustain_length 0.391
 	note 10, 1
 	note 7, 1
 	rest 1
@@ -111,30 +111,30 @@ DededeBattle_Channel2:
 	audio_jump .main_loop
 
 .sub_1
-	audio_f4 $ff
+	sustain_length 0.996
 	note 3, 1
-	audio_f4 $c8
+	sustain_length 0.781
 	note 0, 1
 	rest 4
 	note -2, 1
 	note 0, 1
-	audio_f4 $ff
+	sustain_length 0.996
 	note 3, 3
 	note 0, 1
 	rest 4
-	audio_f4 $c8
+	sustain_length 0.781
 	note 5, 1
 	note 7, 1
 	rest 1
-	audio_f4 $00
+	sustain_length 0.0
 	note 3, 0
 	note 2, 0
 	note 0, 1
 	rest 4
-	audio_f4 $8c
+	sustain_length 0.547
 	note -5, 1
 	note 3, 1
-	audio_f4 $ff
+	sustain_length 0.996
 	audio_repeat 3
 	note 0, 3
 	note -2, 0
@@ -167,7 +167,7 @@ DededeBattle_Channel2:
 
 DededeBattle_Channel3:
 	tempo_mode TEMPO_01
-	audio_f4 $00
+	sustain_length 0.0
 	instrument INSTRUMENT_03
 	volume 7
 	base_note F#1
@@ -175,10 +175,10 @@ DededeBattle_Channel3:
 	note_long -5, 40
 	audio_repeat 8
 	volume_shift 1
-	audio_f3 $05
+	sustain 5
 	audio_repeat_end
 	base_note F#2
-	audio_f4 $64
+	sustain_length 0.391
 	instrument INSTRUMENT_02
 	note 5, 1
 	note 2, 1
@@ -190,7 +190,7 @@ DededeBattle_Channel3:
 	note 2, 1
 	volume 12
 	base_note F#0
-	audio_f4 $82
+	sustain_length 0.508
 	audio_repeat 4
 	note 0, 1
 	note 0, 1
@@ -198,7 +198,7 @@ DededeBattle_Channel3:
 	note -2, 1
 	audio_repeat_end
 .main_loop
-	audio_f4 $ff
+	sustain_length 0.996
 	base_note F#2
 	instrument INSTRUMENT_00
 	volume 8
@@ -245,7 +245,7 @@ DededeBattle_Channel3:
 DededeBattle_Channel4:
 	tempo_mode TEMPO_01
 	instrument INSTRUMENT_10
-	audio_f4 $ff
+	sustain_length 0.996
 	pan PAN_CENTER
 	volume 12
 	note_long 15, 80

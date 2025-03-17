@@ -192,15 +192,15 @@ MACRO tempo_mode
 	db \1 ; ?
 ENDM
 
-	const AUDIOCMD_F3 ; $f3
-MACRO audio_f3
-	db AUDIOCMD_F3
+	const AUDIOCMD_SUSTAIN ; $f3
+MACRO sustain
+	db AUDIOCMD_SUSTAIN
 	db \1 ; ?
 ENDM
 
-	const AUDIOCMD_F4 ; $f4
-MACRO audio_f4
-	db AUDIOCMD_F4
+	const AUDIOCMD_SUSTAIN_LENGTH ; $f4
+MACRO sustain_length
+	db AUDIOCMD_SUSTAIN_LENGTH
 	db \1 ; ?
 ENDM
 
@@ -216,9 +216,9 @@ MACRO instrument
 	db \1 ; ?
 ENDM
 
-	const AUDIOCMD_F7 ; $f7
-MACRO audio_f7
-	db AUDIOCMD_F7
+	const AUDIOCMD_NOTE_FREQUENCIES ; $f7
+MACRO note_frequencies
+	db AUDIOCMD_NOTE_FREQUENCIES
 	db \1 ; ?
 ENDM
 

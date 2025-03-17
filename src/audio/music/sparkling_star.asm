@@ -2,7 +2,7 @@ SparklingStar_Channel1:
 	tempo_mode TEMPO_04
 	pan PAN_CENTER
 	volume 11
-	audio_f4 $00
+	sustain_length 0.0
 	instrument INSTRUMENT_0E
 	base_note G#4
 .main_loop
@@ -19,7 +19,7 @@ SparklingStar_Channel2:
 	pan PAN_CENTER
 	volume 11
 	rest 2
-	audio_f4 $00
+	sustain_length 0.0
 	instrument INSTRUMENT_0E
 	base_note G#4
 	audio_jump SparklingStar_Channel1.main_loop

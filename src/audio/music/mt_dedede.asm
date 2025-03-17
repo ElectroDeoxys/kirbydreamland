@@ -4,7 +4,7 @@ MtDedede_Channel1:
 	instrument INSTRUMENT_07
 	pan PAN_CENTER
 	volume 15
-	audio_f4 $fa
+	sustain_length 0.977
 	base_note G#2
 	note -10, 2
 	note -10, 2
@@ -34,7 +34,7 @@ MtDedede_Channel2:
 	tempo_mode TEMPO_03
 	pan PAN_CENTER
 	volume 11
-	audio_f4 $f5
+	sustain_length 0.957
 	instrument INSTRUMENT_17
 	base_note G#3
 	note 0, 2
@@ -64,7 +64,7 @@ MtDedede_Channel3:
 .main_loop
 	tempo_mode TEMPO_03
 	instrument INSTRUMENT_18
-	audio_f4 $f5
+	sustain_length 0.957
 	volume 11
 	pan PAN_CENTER
 	base_note G#2
@@ -90,7 +90,7 @@ MtDedede_Channel4:
 	instrument INSTRUMENT_10
 	pan PAN_LEFT
 	volume 11
-	audio_f4 $ff
+	sustain_length 0.996
 .main_loop
 	note 1, 0
 	volume_shift -1

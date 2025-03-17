@@ -3,33 +3,33 @@ GreenGreensIntro_Channel1:
 	pan PAN_CENTER
 	volume 15
 	instrument INSTRUMENT_02
-	audio_f4 $f0
+	sustain_length 0.938
 	base_note D#2
 	note -5
 	note -5
 	rest 0
 	note -5
-	audio_f4 $80
+	sustain_length 0.5
 	note -5, 1
 	note -5, 1
 	note -5, 1
 	base_note D#4
-	audio_f4 $b4
+	sustain_length 0.703
 	note 2
 	note 2
 	note 2
 	rest 0
-	audio_f4 $00
+	sustain_length 0.0
 	base_note D#1
 	note_long -5, 3
 	note_long -3, 4
 	note_long -1, 3
-	audio_f4 $32
+	sustain_length 0.195
 	base_note D#2
 	note -12, 5
 	note -12, 5
 	note -10, 5
-	audio_f4 $82
+	sustain_length 0.508
 	instrument INSTRUMENT_11
 	rest 1
 	note -5, 1
@@ -43,15 +43,15 @@ GreenGreensIntro_Channel1:
 	instrument INSTRUMENT_11
 	audio_call .sub_1
 	audio_call .sub_1
-	audio_f3 $14
+	sustain 20
 	audio_call .sub_2
 	base_note D#2
 	instrument INSTRUMENT_02
-	audio_f4 $32
+	sustain_length 0.195
 	note -12, 5
 	note -12, 5
 	base_note D#1
-	audio_f4 $f0
+	sustain_length 0.938
 	audio_repeat 3
 	audio_call .sub_3
 	audio_repeat_end
@@ -59,36 +59,36 @@ GreenGreensIntro_Channel1:
 	audio_jump .main_loop
 
 .sub_1
-	audio_f4 $96
+	sustain_length 0.586
 	note -5, 2
-	audio_f4 $ff
+	sustain_length 0.996
 	note -5
 	note_long 0, 57
 	rest_long 3
 	note 0, 2
 	note 4
 	note 7, 1
-	audio_f4 $8c
+	sustain_length 0.547
 	note 12, 1
 	note 11, 1
 	note 9, 1
-	audio_f4 $ff
+	sustain_length 0.996
 	note 7, 3
 	note 4, 2
 	note 7
-	audio_f4 $f0
+	sustain_length 0.938
 	note 5, 3
 	note 2, 2
 	note 4
 	note 2, 3
 	note 4, 2
 	note 2
-	audio_f4 $e6
+	sustain_length 0.898
 	note_long 0, 60
 	audio_ret
 
 .sub_2
-	audio_f4 $e6
+	sustain_length 0.898
 	note 0, 2
 	note 0
 	note 2
@@ -153,7 +153,7 @@ GreenGreensIntro_Channel1:
 	note 10
 	note 5
 	audio_repeat 2
-	audio_f4 $f0
+	sustain_length 0.938
 	note -5
 	rest 0
 	note -5
@@ -170,7 +170,7 @@ GreenGreensIntro_Channel2:
 	volume 10
 	instrument INSTRUMENT_08
 	base_note D#3
-	audio_f4 $f0
+	sustain_length 0.938
 	note 5
 	note 5
 	note 5
@@ -193,7 +193,7 @@ GreenGreensIntro_Channel2:
 	base_note D#3
 	instrument INSTRUMENT_12
 	volume 12
-	audio_f4 $00
+	sustain_length 0.0
 	audio_call .sub_7
 	audio_call .sub_8
 	volume 11
@@ -204,7 +204,7 @@ GreenGreensIntro_Channel2:
 
 .sub_1
 	rest 1
-	audio_f4 $8c
+	sustain_length 0.547
 	audio_repeat 7
 	note -5, 1
 	audio_repeat_end
@@ -226,53 +226,53 @@ GreenGreensIntro_Channel2:
 
 .sub_3
 	audio_repeat 2
-	audio_f4 $00
+	sustain_length 0.0
 	note -12, 1
-	audio_f4 $82
+	sustain_length 0.508
 	audio_repeat 7
 	note -5, 1
 	audio_repeat_end
 	audio_repeat_end
-	audio_f4 $00
+	sustain_length 0.0
 	note -10, 1
-	audio_f4 $8c
+	sustain_length 0.547
 	note -3, 1
 	note -3, 1
 	note -3, 1
 	audio_ret
 
 .sub_4
-	audio_f4 $00
+	sustain_length 0.0
 	note -10, 1
-	audio_f4 $8c
+	sustain_length 0.547
 	note -5, 1
 	note -5, 1
 	note -5, 1
-	audio_f4 $00
+	sustain_length 0.0
 	note -12, 1
 	audio_repeat 7
-	audio_f4 $8c
+	sustain_length 0.547
 	note -5, 1
 	audio_repeat_end
 	audio_ret
 
 .sub_5
-	audio_f4 $00
+	sustain_length 0.0
 	note -8, 1
-	audio_f4 $8c
+	sustain_length 0.547
 	note -1, 1
 	note -1, 1
 	note -1, 1
-	audio_f4 $00
+	sustain_length 0.0
 	pan PAN_LEFT
 	note -3, 1
-	audio_f4 $8c
+	sustain_length 0.547
 	note 9, 1
 	note 9, 1
 	note 9, 1
-	audio_f4 $00
+	sustain_length 0.0
 	note -5, 1
-	audio_f4 $8c
+	sustain_length 0.547
 	note 7, 1
 	note 7, 1
 	note 7, 1
@@ -280,7 +280,7 @@ GreenGreensIntro_Channel2:
 	audio_ret
 
 .sub_6
-	audio_f4 $96
+	sustain_length 0.586
 	note -3, 2
 	note -3, 1
 	rest 2
@@ -316,7 +316,7 @@ GreenGreensIntro_Channel2:
 	rest 1
 	instrument INSTRUMENT_0D
 	base_note D#4
-	audio_f4 $e6
+	sustain_length 0.898
 	note 0, 2
 	note 2
 	audio_ret
@@ -332,22 +332,22 @@ GreenGreensIntro_Channel3:
 	volume 10
 	instrument INSTRUMENT_08
 	base_note D#1
-	audio_f4 $f0
+	sustain_length 0.938
 	note -5
 	note -5
 	rest 0
 	note -5
-	audio_f4 $80
+	sustain_length 0.5
 	note -5, 1
 	note -5, 1
 	note -5, 1
-	audio_f4 $b4
+	sustain_length 0.703
 	base_note D#3
 	note 7
 	note 7
 	note 7
 	rest 0
-	audio_f4 $00
+	sustain_length 0.0
 	base_note D#1
 	volume 13
 	note_long -5, 3
@@ -355,7 +355,7 @@ GreenGreensIntro_Channel3:
 	note_long -1, 3
 	base_note D#3
 	volume 10
-	audio_f4 $8c
+	sustain_length 0.547
 	audio_call .sub_1
 	audio_call .sub_1
 	audio_call .sub_2
@@ -373,7 +373,7 @@ GreenGreensIntro_Channel3:
 	base_note D#3
 	instrument INSTRUMENT_12
 	volume 12
-	audio_f4 $00
+	sustain_length 0.0
 	audio_call .sub_7
 	audio_call .sub_8
 	volume 11
@@ -405,44 +405,44 @@ GreenGreensIntro_Channel3:
 
 .sub_3
 	audio_repeat 2
-	audio_f4 $00
+	sustain_length 0.0
 	note -5, 1
-	audio_f4 $8c
+	sustain_length 0.547
 	audio_repeat 7
 	note 4, 1
 	audio_repeat_end
 	audio_repeat_end
-	audio_f4 $00
+	sustain_length 0.0
 	note -3, 1
-	audio_f4 $8c
+	sustain_length 0.547
 	note 0, 1
 	note 0, 1
 	note 0, 1
 	audio_ret
 
 .sub_4
-	audio_f4 $00
+	sustain_length 0.0
 	note -5, 1
-	audio_f4 $8c
+	sustain_length 0.547
 	note -1, 1
 	note -1, 1
 	note -1, 1
-	audio_f4 $00
+	sustain_length 0.0
 	note -5, 1
-	audio_f4 $8c
+	sustain_length 0.547
 	audio_repeat 7
 	note 4, 1
 	audio_repeat_end
 	audio_ret
 
 .sub_5
-	audio_f4 $00
+	sustain_length 0.0
 	note -4, 1
-	audio_f4 $8c
+	sustain_length 0.547
 	note 4, 1
 	note 4, 1
 	note 4, 1
-	audio_f4 $ff
+	sustain_length 0.996
 	pan PAN_RIGHT
 	audio_repeat 8
 	note 0
@@ -452,7 +452,7 @@ GreenGreensIntro_Channel3:
 	audio_ret
 
 .sub_6
-	audio_f4 $96
+	sustain_length 0.586
 	note 5, 2
 	note 5, 1
 	rest 2
@@ -486,7 +486,7 @@ GreenGreensIntro_Channel3:
 	note_long 3, 40
 	note 7, 1
 	rest 1
-	audio_f4 $e6
+	sustain_length 0.898
 	base_note D#4
 	instrument INSTRUMENT_0D
 	note -4, 2
@@ -503,7 +503,7 @@ GreenGreensIntro_Channel4:
 	pan PAN_CENTER
 	volume 10
 	instrument INSTRUMENT_10
-	audio_f4 $f0
+	sustain_length 0.938
 	note 15, 5
 	note_long 15, 250
 	note 2, 1

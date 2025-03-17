@@ -3,7 +3,7 @@ Credits_Channel1:
 	volume 15
 	instrument INSTRUMENT_07
 	pan PAN_CENTER
-	audio_f4 $ff
+	sustain_length 0.996
 	base_note D#2
 	audio_call .sub_1
 .main_loop
@@ -106,12 +106,12 @@ Credits_Channel1:
 	note 7, 1
 	note -5, 1
 	note 7, 1
-	audio_f4 $78
+	sustain_length 0.469
 	note 7, 1
 	note 2, 1
 	note -1, 1
 	note -3, 1
-	audio_f4 $ff
+	sustain_length 0.996
 	audio_ret
 
 .sub_7
@@ -233,11 +233,11 @@ Credits_Channel1:
 	audio_ret
 
 .sub_11
-	audio_f4 $a0
+	sustain_length 0.625
 	note_long 7, 16
 	note_long 7, 16
 	note_long 7, 16
-	audio_f4 $ff
+	sustain_length 0.996
 	audio_ret
 
 Credits_Channel2:
@@ -269,7 +269,7 @@ Credits_Channel2:
 	audio_jump .main_loop
 
 .sub_1
-	audio_f4 $f5
+	sustain_length 0.957
 	base_note D#2
 	volume 13
 	instrument INSTRUMENT_19
@@ -285,14 +285,14 @@ Credits_Channel2:
 	audio_ret
 
 .sub_2
-	audio_f4 $00
+	sustain_length 0.0
 	note_long 7, 12
 	volume_shift -3
 	audio_repeat 6
 	pitch 3
-	audio_f3 $01
+	sustain 1
 	pitch 4
-	audio_f3 $01
+	sustain 1
 	audio_repeat_end
 	volume_shift 3
 	note -5, 0
@@ -300,36 +300,36 @@ Credits_Channel2:
 	audio_ret
 
 .sub_3
-	audio_f4 $f5
+	sustain_length 0.957
 	note -5, 3
 	note 0, 2
 	note 2, 0
-	audio_f4 $78
+	sustain_length 0.469
 	note 4, 1
 	note 2, 1
 	note 4, 1
 	note 5, 1
-	audio_f4 $f5
+	sustain_length 0.957
 	note 7, 3
 	note 4, 2
 	note 7, 0
-	audio_f4 $ff
+	sustain_length 0.996
 	note 0, 3
 	note 2, 3
-	audio_f4 $f5
+	sustain_length 0.957
 	note -5, 3
 	note 0, 2
 	note 2, 0
-	audio_f4 $78
+	sustain_length 0.469
 	note 4, 1
 	note 2, 1
 	note 4, 1
 	note 5, 1
-	audio_f4 $fa
+	sustain_length 0.977
 	note 7, 3
 	note 9, 2
 	note 7, 0
-	audio_f4 $dc
+	sustain_length 0.859
 	note 5, 1
 	note 4, 1
 	note 2, 1
@@ -337,16 +337,16 @@ Credits_Channel2:
 	audio_ret
 
 .sub_4
-	audio_f4 $fa
+	sustain_length 0.977
 	note 5, 3
 	note 4, 2
 	note 5, 0
-	audio_f4 $8c
+	sustain_length 0.547
 	note 7, 1
 	note 5, 1
 	note 4, 1
 	note 7, 1
-	audio_f4 $f6
+	sustain_length 0.961
 	note 4, 3
 	note 0, 2
 	note 2, 0
@@ -357,20 +357,20 @@ Credits_Channel2:
 	note 2, 3
 	note 4, 2
 	note 2, 0
-	audio_f4 $80
+	sustain_length 0.5
 	note 2, 1
 	note 0, 1
 	note -1, 1
 	note 0, 1
-	audio_f4 $00
+	sustain_length 0.0
 	note_long 2, 24
 	volume_shift -5
 	audio_repeat 12
 	pitch -2
-	audio_f3 $02
+	sustain 2
 	audio_repeat_end
 	volume_shift 5
-	audio_f4 $80
+	sustain_length 0.5
 	note 7, 1
 	note 2, 1
 	note -1, 1
@@ -378,16 +378,16 @@ Credits_Channel2:
 	audio_ret
 
 .sub_6
-	audio_f4 $fd
+	sustain_length 0.988
 	note 7, 3
 	note 7, 2
 	note 7, 0
-	audio_f4 $82
+	sustain_length 0.508
 	note 7, 1
 	note 5, 1
 	note 3, 1
 	note 5, 1
-	audio_f4 $00
+	sustain_length 0.0
 	note_long 7, 96
 	audio_ret
 
@@ -429,7 +429,7 @@ Credits_Channel2:
 	audio_ret
 
 .sub_9
-	audio_f4 $a0
+	sustain_length 0.625
 	note_long 7, 16
 	note_long 7, 16
 	note_long 7, 16
@@ -446,7 +446,7 @@ Credits_Channel3:
 	instrument INSTRUMENT_0A
 	base_note D#2
 	volume 9
-	audio_f4 $ff
+	sustain_length 0.996
 	audio_repeat 3
 	audio_call .sub_3
 	audio_repeat_end
@@ -483,7 +483,7 @@ Credits_Channel3:
 	audio_jump .main_loop
 
 .sub_1
-	audio_f4 $f5
+	sustain_length 0.957
 	instrument INSTRUMENT_19
 	note -7, 3
 	note -7, 2
@@ -497,14 +497,14 @@ Credits_Channel3:
 	audio_ret
 
 .sub_2
-	audio_f4 $00
+	sustain_length 0.0
 	note_long -1, 12
 	volume_shift -3
 	audio_repeat 6
 	pitch 3
-	audio_f3 $01
+	sustain 1
 	pitch 4
-	audio_f3 $01
+	sustain 1
 	audio_repeat_end
 	volume_shift 3
 	note -13, 0
@@ -602,25 +602,25 @@ Credits_Channel3:
 	note -7, 0
 	note -1, 0
 	note -7, 0
-	audio_f4 $78
+	sustain_length 0.469
 	note -5, 1
 	note -10, 1
 	note -13, 1
 	note -15, 1
-	audio_f4 $ff
+	sustain_length 0.996
 	audio_ret
 
 .sub_8
-	audio_f4 $fd
+	sustain_length 0.988
 	note 3, 3
 	note 3, 2
 	note 3, 0
-	audio_f4 $82
+	sustain_length 0.508
 	note 3, 1
 	note 2, 1
 	note 0, 1
 	note 2, 1
-	audio_f4 $fa
+	sustain_length 0.977
 	note 0, 3
 	note 2, 2
 	note 0, 0
@@ -667,7 +667,7 @@ Credits_Channel3:
 	audio_ret
 
 .sub_11
-	audio_f4 $a0
+	sustain_length 0.625
 	note_long -1, 16
 	note_long -1, 16
 	note_long -1, 16
@@ -676,7 +676,7 @@ Credits_Channel3:
 Credits_Channel4:
 	tempo_mode TEMPO_04
 	volume 8
-	audio_f4 $ff
+	sustain_length 0.996
 	pan PAN_CENTER
 	audio_repeat 6
 	audio_call .sub_1

@@ -39,3 +39,12 @@ MACRO channel4_struct
 \1Frequency:: db
 \1Control::   db
 ENDM
+
+MACRO channel_stack_struct
+\1Instrument::
+	ds $6
+\1InstrumentBottom::
+\1Audio::
+	ds $a
+\1AudioBottom::
+ENDM

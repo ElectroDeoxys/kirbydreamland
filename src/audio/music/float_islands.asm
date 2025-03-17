@@ -14,13 +14,13 @@ FloatIslands_Channel3:
 	base_note G#2
 	instrument INSTRUMENT_07
 	volume 15
-	audio_f4 $ff
+	sustain_length 0.996
 	audio_jump FloatIslandsIntro_Channel1.main_loop
 
 FloatIslands_Channel4:
 	tempo_mode TEMPO_03
 	pan PAN_CENTER
-	audio_f4 $ff
+	sustain_length 0.996
 	instrument INSTRUMENT_10
 	volume 9
 	audio_jump FloatIslandsIntro_Channel4.main_loop

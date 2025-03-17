@@ -4,7 +4,7 @@ MintLeaf_Channel1:
 	pan PAN_CENTER
 	instrument INSTRUMENT_07
 	volume 15
-	audio_f4 $7f
+	sustain_length 0.496
 	base_note B_1
 	audio_repeat 3
 	audio_call .sub_1
@@ -33,12 +33,12 @@ MintLeaf_Channel1:
 
 .sub_2
 	note -3, 1
-	audio_f4 $d2
+	sustain_length 0.820
 	note -3, 0
 	volume_shift -2
 	note -3, 0
 	volume_shift 2
-	audio_f4 $7f
+	sustain_length 0.496
 	note 4, 1
 	note -3, 1
 	note 6, 1
@@ -52,14 +52,14 @@ MintLeaf_Channel1:
 	note -7, 1
 	note 5, 1
 	note -7, 1
-	audio_f4 $fa
+	sustain_length 0.977
 	note 4, 1
 	note 5, 0
 	rest 0
 	note -1, 1
 	note 0, 0
 	rest 0
-	audio_f4 $7f
+	sustain_length 0.496
 	audio_ret
 
 .sub_4
@@ -67,28 +67,28 @@ MintLeaf_Channel1:
 	note -8, 1
 	note 4, 1
 	note -8, 1
-	audio_f4 $fa
+	sustain_length 0.977
 	note -8, 0
 	volume_shift -3
 	note 4, 0
 	volume_shift 3
-	audio_f4 $7f
+	sustain_length 0.496
 	note -8, 1
 	note 4, 1
 	note -8, 1
 	audio_ret
 
 .sub_5
-	audio_f4 $5a
+	sustain_length 0.352
 	note -5, 1
-	audio_f4 $fa
+	sustain_length 0.977
 	note 7, 1
-	audio_f4 $78
+	sustain_length 0.469
 	note 6, 1
 	note 5, 1
 	note 3, 1
 	note 0, 1
-	audio_f4 $f0
+	sustain_length 0.938
 	note -5, 1
 	note -2, 1
 	audio_ret
@@ -100,7 +100,7 @@ MintLeaf_Channel2:
 	volume 12
 	instrument INSTRUMENT_17
 	base_note B_1
-	audio_f4 $7f
+	sustain_length 0.496
 	audio_call MintLeaf_Channel1.sub_1
 	audio_call MintLeaf_Channel1.sub_1
 	base_note B_2
@@ -124,39 +124,39 @@ MintLeaf_Channel2:
 
 .sub_1
 	rest 1
-	audio_f4 $00
+	sustain_length 0.0
 	note_long 2, 3
-	audio_f4 $e6
+	sustain_length 0.898
 	note_long 3, 7
-	audio_f4 $7f
+	sustain_length 0.496
 	note 4, 1
 	note 7, 1
-	audio_f4 $f4
+	sustain_length 0.953
 	note 4, 1
 	note 3, 0
 	rest 0
-	audio_f4 $7f
+	sustain_length 0.496
 	note 2, 1
-	audio_f4 $fa
+	sustain_length 0.977
 	note -5, 1
-	audio_f4 $78
+	sustain_length 0.469
 	note -3, 1
 	note -3, 1
-	audio_f4 $fa
+	sustain_length 0.977
 	note 0, 1
 	audio_ret
 
 .sub_2
-	audio_f4 $96
+	sustain_length 0.586
 	note 2, 1
 	note 7, 1
 	rest 1
 	note 2, 1
 	note 7, 1
 	rest 1
-	audio_f4 $dc
+	sustain_length 0.859
 	note 2, 1
-	audio_f4 $82
+	sustain_length 0.508
 	note 7, 1
 	audio_ret
 
@@ -164,7 +164,7 @@ MintLeaf_Channel3:
 .main_loop
 	tempo_mode TEMPO_01
 	pan PAN_CENTER
-	audio_f4 $78
+	sustain_length 0.469
 	volume 5
 	instrument INSTRUMENT_05
 	base_note B_4
@@ -207,38 +207,38 @@ MintLeaf_Channel3:
 	audio_ret
 
 .sub_2
-	audio_f4 $96
+	sustain_length 0.586
 	note -1, 1
 	note 2, 1
 	rest 1
 	note -1, 1
 	note 2, 1
 	rest 1
-	audio_f4 $dc
+	sustain_length 0.859
 	note -1, 1
-	audio_f4 $82
+	sustain_length 0.508
 	note 2, 1
-	audio_f4 $96
+	sustain_length 0.586
 	note -3, 1
 	note 0, 1
 	rest 1
 	note -3, 1
 	note 0, 1
 	rest 1
-	audio_f4 $dc
+	sustain_length 0.859
 	note -3, 1
-	audio_f4 $82
+	sustain_length 0.508
 	note 0, 1
-	audio_f4 $96
+	sustain_length 0.586
 	note -4, 1
 	note -4, 1
 	rest 1
 	note -4, 1
 	note -4, 1
 	rest 1
-	audio_f4 $dc
+	sustain_length 0.859
 	note -4, 1
-	audio_f4 $82
+	sustain_length 0.508
 	note -4, 1
 	audio_ret
 
@@ -247,7 +247,7 @@ MintLeaf_Channel4:
 	tempo_mode TEMPO_01
 	instrument INSTRUMENT_10
 	volume 9
-	audio_f4 $ff
+	sustain_length 0.996
 	audio_repeat 4
 	audio_repeat 3
 	pan PAN_LEFT

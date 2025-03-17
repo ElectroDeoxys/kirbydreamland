@@ -29,7 +29,7 @@ InitAudio::
 
 	; loads triangle wave sample for Channel 3
 	ld hl, TriangleWaveSample
-	call LoadWaveSample
+	call ExecuteInstrumentCommands.LoadWaveSample
 
 	; no music and no SFX
 	ld a, MUSIC_NONE
@@ -196,28 +196,32 @@ InitChannel:
 	ld hl, wChannelBaseNotes
 	add hl, bc
 	ld [hl], C_3
+
 	xor a
-	ld hl, wde92
+	ld hl, wInstrumentSustainLength
 	add hl, bc
-	ld [hl], a
+	ld [hl], a ; $00
 	ld hl, wChannelVolumes
 	add hl, bc
-	ld [hl], a
-	ld hl, wdea2
+	ld [hl], a ; $00
+	ld hl, wChannelInstruments
 	add hl, bc
-	ld [hl], a
+	ld [hl], a ; $00
 	ld hl, wChannelTempoModes
 	add hl, bc
-	ld [hl], a
-	ld hl, wdeb2
+	ld [hl], a ; $00
+	ld hl, wNoteFrequencyTables
 	add hl, bc
-	ld [hl], a
+	ld [hl], a ; $00
+
 	ld hl, ChannelAudioStackOffsets
 	add hl, bc
 	ld a, [hl]
 	ld hl, wAudioStackPointers
 	add hl, bc
 	ld [hl], a
+
+	; set command pointer for this channel
 	inc de
 	ld a, [de]
 	ld hl, wAudioCommandPointersLo
@@ -228,6 +232,7 @@ InitChannel:
 	ld hl, wAudioCommandPointersHi
 	add hl, bc
 	ld [hl], a
+
 	inc de
 	ld a, [de]
 	sra a
@@ -240,11 +245,12 @@ InitChannel:
 	ld hl, wChannelSelectorOffsets
 	add hl, bc
 	ld [hl], a
+
 	; set this channel active
 	ld hl, wAudioCommandDurations
 	add hl, bc
 	ld [hl], 1
-	ld hl, wde82
+	ld hl, wInstrumentSustain
 	add hl, bc
 	ld [hl], $01
 	ret
@@ -349,19 +355,19 @@ UpdateAudio::
 	pop hl
 	ld [hl], e ; wAudioCommandPointersLo
 
-	call Func_15235
-	ld h, HIGH(wde72)
-	ld a, LOW(wde72)
+	call UpdateInstrumentSustain
+	ld h, HIGH(wInstrumentAudioCommandPointersLo)
+	ld a, LOW(wInstrumentAudioCommandPointersLo)
 	add b
 	ld l, a
 	push hl
 	ld e, [hl]
-	add wde7a - wde72
+	add wInstrumentAudioCommandPointersHi - wInstrumentAudioCommandPointersLo
 	ld l, a
 	push hl
 	ld d, [hl]
 	push bc
-	call Func_1524f
+	call ExecuteInstrumentCommands
 	pop bc
 	pop hl
 	ld [hl], d
@@ -553,6 +559,9 @@ ApplyChannelConfigurations:
 	ldh [rAUDTERM], a
 	ret
 
+; input:
+; - [de] = audio commands
+; - b = channel
 ExecuteAudioCommands:
 	ld h, HIGH(wAudioCommandDurations)
 	ld a, LOW(wAudioCommandDurations)
@@ -566,7 +575,7 @@ ExecuteAudioCommands:
 .do_cmds
 	ld h, $de
 	ld a, [de]
-	ld c, a
+	ld c, a ; command byte
 	and $e0
 	cp AUDIO_COMMANDS_BEGIN
 	jp z, .audio_command
@@ -616,14 +625,14 @@ ExecuteAudioCommands:
 .asm_14fb6
 	call .Func_15038
 	ld c, a
-	ld h, HIGH(wde82)
-	ld a, LOW(wde82)
+	ld h, HIGH(wInstrumentSustain)
+	ld a, LOW(wInstrumentSustain)
 	add b
 	ld l, a
 	ld a, [hl]
 	and a
 	jr z, .asm_14fc6
-	ld [hl], $01
+	ld [hl], 1
 .asm_14fc6
 	ld a, c
 	and a
@@ -634,29 +643,30 @@ ExecuteAudioCommands:
 .asm_14fcd
 	call .Func_15038
 	ld c, a
-	ld h, HIGH(wde82)
-	ld a, LOW(wde82)
+	ld h, HIGH(wInstrumentSustain)
+	ld a, LOW(wInstrumentSustain)
 	add b
 	ld l, a
-	ld [hl], $ff
-	add wde92 - wde82
+	ld [hl], -1
+	add wInstrumentSustainLength - wInstrumentSustain
 	ld l, a
 	ld a, [hl]
 	and a
 	jr z, .asm_14ff3
 	push bc
 	push de
-	ld e, a ; value from wde92
-	ld h, HIGH(wde82)
-	ld a, LOW(wde82)
+	ld e, a ; value from wInstrumentSustainLength
+	ld h, HIGH(wInstrumentSustain)
+	ld a, LOW(wInstrumentSustain)
 	add b
 	ld l, a
 	push hl
 	ld a, c
-	call Func_153d3
+	call Multiply
+	; hl = a * wInstrumentSustainLength
 	ld b, h
 	pop hl
-	ld [hl], b
+	ld [hl], b ; wInstrumentSustain
 	pop de
 	pop bc
 .asm_14ff3
@@ -666,48 +676,54 @@ ExecuteAudioCommands:
 	jp .asm_14fc6
 
 .Func_14ffb:
-	ld h, HIGH(wdea2)
-	ld a, LOW(wdea2)
+	ld h, HIGH(wChannelInstruments)
+	ld a, LOW(wChannelInstruments)
 	add b
 	ld l, a
 	ld a, [hl]
 	bit 7, a
 	jr nz, .asm_15037
-.Func_15006:
+;	fallthrough
+
+; input:
+; - a = INSTRUMENT_* constant
+.SetChannelInstrument_Attack:
 	add a
 	add a ; *4
-.asm_15008
+.SetChannelInstrument_Release
 	push de
 	add LOW(Instruments)
 	ld e, a
 	ld d, HIGH(Instruments)
 	incc d
-	ld h, HIGH(wde72)
-	ld a, LOW(wde72)
+	ld h, HIGH(wInstrumentAudioCommandPointersLo)
+	ld a, LOW(wInstrumentAudioCommandPointersLo)
 	add b
 	ld l, a
 	ld a, [de]
 	ld [hl], a
-	ld a, LOW(wde7a)
+	ld a, LOW(wInstrumentAudioCommandPointersHi)
 	add b
 	ld l, a
 	inc de
 	ld a, [de]
 	ld [hl], a
-	ld h, HIGH(Data_15496)
-	ld a, LOW(Data_15496)
+
+	; reset instrument stack for this channel
+	ld h, HIGH(ChannelInstrumentStackOffsets)
+	ld a, LOW(ChannelInstrumentStackOffsets)
 	add b
 	ld l, a
 	incc h
 	ld c, [hl]
-	ld h, HIGH(wdec2)
-	ld a, LOW(wdec2)
+	ld h, HIGH(wInstrumentStackPointers)
+	ld a, LOW(wInstrumentStackPointers)
 	add b
 	ld l, a
 	ld [hl], c
-	add wde6a - wdec2
+	add wInstrumentCommandDurations - wInstrumentStackPointers
 	ld l, a
-	ld [hl], $01
+	ld [hl], 1
 	pop de
 .asm_15037
 	ret
@@ -750,14 +766,14 @@ ExecuteAudioCommands:
 .audio_command
 	ld a, c
 	cp AUDIOCMD_VOLUME
-	jr nz, .asm_15081
+	jr nz, .volumn_shift_cmd
 	inc de
 	ld h, HIGH(wChannelVolumes)
 	ld a, LOW(wChannelVolumes)
 	add b
 	ld l, a
 	ld a, [de]
-.asm_15071
+.set_channel_base_volume
 	; set high nybble of wChannelVolumes to
 	; the command argument
 	swap a
@@ -767,10 +783,10 @@ ExecuteAudioCommands:
 	and $0f
 	or c
 	ld [hl], a
-	call Func_15347
+	call UpdateChannelVolume
 	jp .next_cmd
 
-.asm_15081
+.volumn_shift_cmd
 	cp AUDIOCMD_VOLUME_SHIFT
 	jr nz, .tempo_mode_cmd
 	inc de
@@ -785,20 +801,20 @@ ExecuteAudioCommands:
 	and $0f
 	add c
 	bit 7, c
-	jr nz, .asm_150a0
+	jr nz, .negative_volume_shift
 	cp $10
-	jr c, .asm_150a3
+	jr c, .got_volume_shift
 	ld a, 15 ; cap it to max 15
-	jr .asm_150a3
-.asm_150a0
-	jr c, .asm_150a3
+	jr .got_volume_shift
+.negative_volume_shift
+	jr c, .got_volume_shift
 	xor a ; cap it to min 0
-.asm_150a3
-	jr .asm_15071
+.got_volume_shift
+	jr .set_channel_base_volume
 
 .tempo_mode_cmd
 	cp AUDIOCMD_SET_TEMPO_MODE
-	jr nz, .asm_150ba
+	jr nz, .sustain_cmd
 	inc de
 	ld a, [de]
 	add a
@@ -814,9 +830,9 @@ ExecuteAudioCommands:
 	ld [hl], c
 	jp .next_cmd
 
-.asm_150ba
-	cp AUDIOCMD_F3
-	jr nz, .asm_150cf
+.sustain_cmd
+	cp AUDIOCMD_SUSTAIN
+	jr nz, .sustain_length_cmd
 	inc de
 	ld h, HIGH(wAudioCommandDurations)
 	ld a, LOW(wAudioCommandDurations)
@@ -824,49 +840,49 @@ ExecuteAudioCommands:
 	ld l, a
 	ld a, [de]
 	ld [hl], a
-	ld a, LOW(wde82)
+	ld a, LOW(wInstrumentSustain)
 	add b
 	ld l, a
-	ld [hl], $ff
+	ld [hl], -1
 	inc de
 	ret
 
-.asm_150cf
-	cp AUDIOCMD_F4
+.sustain_length_cmd
+	cp AUDIOCMD_SUSTAIN_LENGTH
 	jr nz, .base_note_cmd
 	inc de
 	ld a, [de]
-	ld hl, wde92
+	ld hl, wInstrumentSustainLength
 	jp .set_channel_value
 
 .base_note_cmd
 	cp AUDIOCMD_SET_BASE_NOTE
-	jr nz, .asm_150e7
+	jr nz, .instrument_cmd
 	inc de
 	ld a, [de]
 	ld hl, wChannelBaseNotes
 	jp .set_channel_value
 
-.asm_150e7
+.instrument_cmd
 	cp AUDIOCMD_SET_INSTRUMENT
-	jr nz, .asm_150fc
+	jr nz, .note_frequencies_cmd
 	inc de
-	ld h, HIGH(wdea2)
-	ld a, LOW(wdea2)
+	ld h, HIGH(wChannelInstruments)
+	ld a, LOW(wChannelInstruments)
 	add b
 	ld l, a
 	ld a, [de]
 	ld [hl], a
 	bit 7, a
-	call nz, .Func_15006
+	call nz, .SetChannelInstrument_Attack ; bug? should be call z
 	jp .next_cmd
 
-.asm_150fc
-	cp AUDIOCMD_F7
+.note_frequencies_cmd
+	cp AUDIOCMD_NOTE_FREQUENCIES
 	jr nz, .set_frequency_cmd
 	inc de
 	ld a, [de]
-	ld hl, wdeb2
+	ld hl, wNoteFrequencyTables
 	jp .set_channel_value
 
 .set_frequency_cmd
@@ -894,18 +910,18 @@ ExecuteAudioCommands:
 	cpl
 	inc a
 	ld e, a
-	ld d, $00
+	ld d, 0
 	rla
-	jr nc, .asm_1512e
-	dec d ; $ff
-.asm_1512e
+	jr nc, .got_pitch_val
+	dec d ; -1
+.got_pitch_val
 	call AddToChannelFrequency
 	pop de
 	jp .next_cmd
 
 .pan_cmd
 	cp AUDIOCMD_SET_PAN
-	jr nz, .asm_1516f
+	jr nz, .audio_e1_cmd
 	inc de
 	ld a, [de]
 	ld c, a
@@ -950,15 +966,15 @@ ENDR
 	pop de
 	jp .next_cmd
 
-.asm_1516f
+.audio_e1_cmd
 	cp AUDIOCMD_E1
-	jr nz, .asm_1517b
+	jr nz, .audio_end_cmd
 	inc de
 	ld a, [de]
 	ld [wde00], a
 	jp .next_cmd
 
-.asm_1517b
+.audio_end_cmd
 	cp AUDIOCMD_END
 	jr nz, .stack_commands
 	ld h, HIGH(wAudioCommandDurations)
@@ -966,11 +982,11 @@ ENDR
 	add b
 	ld l, a
 	ld [hl], 0
-	add wde6a - wAudioCommandDurations
+	add wInstrumentCommandDurations - wAudioCommandDurations
 	ld l, a
 	xor a
 	ld [hl], a
-	jp Func_1533b
+	jp SetChannelNoteVolume
 
 .stack_commands
 	ld hl, wAudioStackPointers
@@ -1077,7 +1093,7 @@ ExecuteStackAudioCommands:
 ; - a = note constant
 SetChannelNoteFrequency:
 	ld e, a
-	ld a, LOW(wdeb2)
+	ld a, LOW(wNoteFrequencyTables)
 	add b
 	ld l, a
 	ld a, [hl]
@@ -1128,48 +1144,50 @@ SetChannelFrequency:
 	ld [hl], d
 	ret
 
-Func_15235:
-	ld h, HIGH(wde82)
-	ld a, LOW(wde82)
+; tick down sustain counter for instrument
+; if it reaches 0, then do release audio scripts
+; if sustain is -1, then don't release note
+UpdateInstrumentSustain:
+	ld h, HIGH(wInstrumentSustain)
+	ld a, LOW(wInstrumentSustain)
 	add b
 	ld l, a
 	ld a, [hl]
 	and a
-	ret z
-	cp $ff
-	ret z
+	ret z ; not playing
+	cp -1
+	ret z ; no releasing
 	dec [hl]
-	ret nz
-	ld a, LOW(wdea2)
+	ret nz ; still waiting delay
+	ld a, LOW(wChannelInstruments)
 	add b
 	ld l, a
 	ld a, [hl]
 	add a
 	add a
-	add $02 ; a = a*4 + 2
-	jp ExecuteAudioCommands.asm_15008
+	add $2 ; a = a*4 + 2
+	jp ExecuteAudioCommands.SetChannelInstrument_Release
 
-Func_1524f:
-	ld h, HIGH(wde6a)
-	ld a, LOW(wde6a)
+ExecuteInstrumentCommands:
+	ld h, HIGH(wInstrumentCommandDurations)
+	ld a, LOW(wInstrumentCommandDurations)
 	add b
 	ld l, a
 	dec [hl]
-	jr z, Func_1525a
-	ret
-
-Func_15259:
+	jr z, .do_cmds
+	ret ; still waiting delay
+.next_cmd
 	inc de
-Func_1525a:
+.do_cmds
 	ld h, $de
 	ld a, [de]
-	ld c, a
+	ld c, a ; command byte
 	and $e0
 	jr nz, .check_change_pitch
 	ld a, c
 	and $1f
 	ld c, a
-	ld a, LOW(wde6a)
+	ld a, LOW(wInstrumentCommandDurations)
 	add b
 	ld l, a
 	ld [hl], c
@@ -1177,20 +1195,20 @@ Func_1525a:
 	ret
 
 .check_change_pitch
-	cp $20
+	cp AUDIOCMD_PITCH_SHIFT
 	jr nz, .volume_cmd
 	push bc
 	push de
-	call Func_153a8
+	call ConvertTo16BitFrequency
 	call AddToChannelFrequency
 	pop de
 	pop bc
 .asm_1527b
 	ld a, [de]
 	and AUDIOCMD_BREAK
-	jr z, Func_15259
-	ld h, HIGH(wde6a)
-	ld a, LOW(wde6a)
+	jr z, .next_cmd
+	ld h, HIGH(wInstrumentCommandDurations)
+	ld a, LOW(wInstrumentCommandDurations)
 	add b
 	ld l, a
 	ld [hl], 1
@@ -1208,7 +1226,7 @@ Func_1525a:
 	cp AUDIOCMD_NOTE_VOLUME_SHIFT
 	jr nz, .wave_cmd
 	push de
-	call Func_153a8
+	call ConvertTo16BitFrequency
 	ld h, HIGH(wChannelVolumes)
 	ld a, LOW(wChannelVolumes)
 	add b
@@ -1227,13 +1245,13 @@ Func_1525a:
 	pop de
 .asm_152b2
 	push de
-	call Func_1533b
+	call SetChannelNoteVolume
 	pop de
 	jp .asm_1527b
 
 .wave_cmd
 	cp AUDIOCMD_WAVE
-	jr nz, Func_15311
+	jr nz, .asm_15311
 	ld h, HIGH(wChannelSelectorOffsets)
 	ld a, LOW(wChannelSelectorOffsets)
 	add b
@@ -1268,7 +1286,7 @@ Func_1525a:
 	add hl, de
 	xor a ; AUD3ENA_OFF
 	ldh [rAUD3ENA], a
-	call LoadWaveSample
+	call .LoadWaveSample
 	ld a, AUD3ENA_ON
 	ldh [rAUD3ENA], a
 	ld a, [wChannel3FreqHi]
@@ -1280,7 +1298,7 @@ Func_1525a:
 
 ; input:
 ; - hl = wave sample data
-LoadWaveSample:
+.LoadWaveSample:
 	ld de, _AUD3WAVERAM
 	ld c, $10
 .loop
@@ -1291,37 +1309,39 @@ LoadWaveSample:
 	jr nz, .loop
 	ret
 
-Func_15311:
+.asm_15311
 	cp $e0
-	jr nz, .asm_1533a
+	jr nz, .done
 	ld a, c
 	cp $f0
-	jr nz, .asm_15326
+	jr nz, .audio_end_cmd
 	inc de
 	ld a, [de]
 	ld c, a
 	ld a, CHANNEL_SELECTOR_ENABLED
 	call GetPointerToChannelProperty
 	ld [hl], c
-	jp Func_15259
-.asm_15326
-	cp $ff
-	jr nz, .asm_15331
-	ld a, LOW(wde6a)
+	jp .next_cmd
+.audio_end_cmd
+	cp AUDIOCMD_END
+	jr nz, .stack_commands
+	ld a, LOW(wInstrumentCommandDurations)
 	add b
 	ld l, a
-	ld [hl], $00
+	ld [hl], 0
 	ret
-.asm_15331
-	ld hl, wdec2
+
+.stack_commands
+	ld hl, wInstrumentStackPointers
 	call ExecuteStackAudioCommands
-	jp Func_1525a
-.asm_1533a
+	jp .do_cmds
+
+.done
 	ret
 
 ; input:
-; - a = ?
-Func_1533b:
+; - a = volume value (between 0 and 15)
+SetChannelNoteVolume:
 	; set low nybble of wChannelVolumes to input
 	ld c, a
 	ld h, HIGH(wChannelVolumes)
@@ -1334,7 +1354,9 @@ Func_1533b:
 	ld [hl], a
 ;	fallthrough
 
-Func_15347:
+; input:
+; - hl = channel volume
+UpdateChannelVolume:
 	push de
 	ld a, -1
 	sub [hl]
@@ -1345,7 +1367,7 @@ Func_15347:
 	and $0f
 	sub e
 	ld e, a
-	; e = low nybble [hl] - (15 - high nybble [hl])
+	; e = noteVolume - (15 - channelVolume)
 	jr nc, .no_underflow
 	ld e, 0 ; minimum of 0
 .no_underflow
@@ -1356,7 +1378,7 @@ Func_15347:
 	jr c, .is_sfx
 	inc l ; wde02
 .is_sfx
-	ld a, $ff
+	ld a, -1
 	sub [hl]
 	swap a
 	and $0f
@@ -1396,28 +1418,28 @@ Func_15347:
 	ret
 
 Channel3OutputLevels:
-	db AUD3LEVEL_MUTE ; $0
-	db AUD3LEVEL_25   ; $1
-	db AUD3LEVEL_25   ; $2
-	db AUD3LEVEL_25   ; $3
-	db AUD3LEVEL_50   ; $4
-	db AUD3LEVEL_50   ; $5
-	db AUD3LEVEL_50   ; $6
-	db AUD3LEVEL_50   ; $7
-	db AUD3LEVEL_100  ; $8
-	db AUD3LEVEL_100  ; $9
-	db AUD3LEVEL_100  ; $a
-	db AUD3LEVEL_100  ; $b
-	db AUD3LEVEL_100  ; $c
-	db AUD3LEVEL_100  ; $d
-	db AUD3LEVEL_100  ; $e
-	db AUD3LEVEL_100  ; $f
+	db AUD3LEVEL_MUTE ;  0
+	db AUD3LEVEL_25   ;  1
+	db AUD3LEVEL_25   ;  2
+	db AUD3LEVEL_25   ;  3
+	db AUD3LEVEL_50   ;  4
+	db AUD3LEVEL_50   ;  5
+	db AUD3LEVEL_50   ;  6
+	db AUD3LEVEL_50   ;  7
+	db AUD3LEVEL_100  ;  8
+	db AUD3LEVEL_100  ;  9
+	db AUD3LEVEL_100  ; 10
+	db AUD3LEVEL_100  ; 11
+	db AUD3LEVEL_100  ; 12
+	db AUD3LEVEL_100  ; 13
+	db AUD3LEVEL_100  ; 14
+	db AUD3LEVEL_100  ; 15
 
 ; input:
 ; - c = 4-bit two's compliment frequency
 ; output:
 ; - de = frequency
-Func_153a8:
+ConvertTo16BitFrequency:
 	ld a, c
 	and $0f
 	ld d, $00
@@ -1474,12 +1496,9 @@ GetPointerToChannelConfig:
 	ld h, HIGH(wSFXChannels) ; aka HIGH(wMusicChannels)
 	ret
 
-; input:
-; - a = note/rest duration
-; - e = ?
 ; output:
-; - hl = ?
-Func_153d3:
+; - hl = a * e
+Multiply:
 	push bc
 	push de
 	ld d, HIGH(wdc00)
@@ -1594,25 +1613,28 @@ NoteFrequencies:
 SECTION "Bank 5@548e", ROMX[$548e], BANK[$5]
 
 ; offsets in wAudioStack reserved for each channel
+; holds stack for general audio commands
 ChannelAudioStackOffsets:
-	db LOW(wChannel1AudioStackBottom) ; CHANNEL1
-	db LOW(wChannel2AudioStackBottom) ; CHANNEL2
-	db LOW(wChannel3AudioStackBottom) ; CHANNEL3
-	db LOW(wChannel4AudioStackBottom) ; CHANNEL4
-	db LOW(wChannel5AudioStackBottom) ; CHANNEL5
-	db LOW(wChannel6AudioStackBottom) ; CHANNEL6
-	db LOW(wChannel7AudioStackBottom) ; CHANNEL7
-	db LOW(wChannel8AudioStackBottom) ; CHANNEL8
+	db LOW(wChannel1StackAudioBottom) ; CHANNEL1
+	db LOW(wChannel2StackAudioBottom) ; CHANNEL2
+	db LOW(wChannel3StackAudioBottom) ; CHANNEL3
+	db LOW(wChannel4StackAudioBottom) ; CHANNEL4
+	db LOW(wChannel5StackAudioBottom) ; CHANNEL5
+	db LOW(wChannel6StackAudioBottom) ; CHANNEL6
+	db LOW(wChannel7StackAudioBottom) ; CHANNEL7
+	db LOW(wChannel8StackAudioBottom) ; CHANNEL8
 
-Data_15496:
-	db $06 ; CHANNEL1
-	db $16 ; CHANNEL2
-	db $26 ; CHANNEL3
-	db $36 ; CHANNEL4
-	db $46 ; CHANNEL5
-	db $56 ; CHANNEL6
-	db $66 ; CHANNEL7
-	db $76 ; CHANNEL8
+; offsets in wAudioStack reserved for each channel
+; holds stack for instrument audio commands
+ChannelInstrumentStackOffsets:
+	db LOW(wChannel1StackInstrumentBottom) ; CHANNEL1
+	db LOW(wChannel2StackInstrumentBottom) ; CHANNEL2
+	db LOW(wChannel3StackInstrumentBottom) ; CHANNEL3
+	db LOW(wChannel4StackInstrumentBottom) ; CHANNEL4
+	db LOW(wChannel5StackInstrumentBottom) ; CHANNEL5
+	db LOW(wChannel6StackInstrumentBottom) ; CHANNEL6
+	db LOW(wChannel7StackInstrumentBottom) ; CHANNEL7
+	db LOW(wChannel8StackInstrumentBottom) ; CHANNEL8
 
 NoteFrequencyTable:
 	dw NoteFrequencies - 6

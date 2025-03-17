@@ -3,7 +3,7 @@ CastleLololoIntro_Channel1:
 	volume 15
 	instrument INSTRUMENT_07
 	pan PAN_CENTER
-	audio_f4 $ff
+	sustain_length 0.996
 	base_note G#2
 	audio_call .sub_1
 	base_note G_2
@@ -96,7 +96,7 @@ CastleLololoIntro_Channel1:
 CastleLololoIntro_Channel2:
 	tempo_mode TEMPO_04
 	instrument INSTRUMENT_04
-	audio_f4 $de
+	sustain_length 0.867
 	volume 9
 	base_note G#2
 	audio_call .sub_1
@@ -117,7 +117,7 @@ CastleLololoIntro_Channel2:
 .main_loop
 	instrument INSTRUMENT_13
 	volume 13
-	audio_f4 $f0
+	sustain_length 0.938
 	audio_call .sub_6
 	base_note G_3
 	audio_call .sub_6
@@ -276,7 +276,7 @@ CastleLololoIntro_Channel2:
 	note 9, 0
 	note_long 2, 120
 	instrument INSTRUMENT_17
-	audio_f4 $de
+	sustain_length 0.867
 	volume 13
 	pan PAN_LEFT
 	note 6, 0
@@ -293,7 +293,7 @@ CastleLololoIntro_Channel3:
 	tempo_mode TEMPO_04
 	instrument INSTRUMENT_02
 	volume 6
-	audio_f4 $96
+	sustain_length 0.586
 	base_note G#5
 	pan PAN_CENTER
 	audio_call .sub_1
@@ -304,7 +304,7 @@ CastleLololoIntro_Channel3:
 	audio_call .sub_2
 .post_intro
 	base_note G#3
-	audio_f4 $fa
+	sustain_length 0.977
 	volume 12
 	instrument INSTRUMENT_16
 	pan PAN_CENTER
@@ -316,12 +316,12 @@ CastleLololoIntro_Channel3:
 	base_note G#3
 	instrument INSTRUMENT_13
 	volume 12
-	audio_f4 $f0
+	sustain_length 0.938
 	audio_call .sub_3
 	base_note G_3
 	audio_call .sub_3
 	base_note G#2
-	audio_f4 $00
+	sustain_length 0.0
 	instrument INSTRUMENT_06
 	volume 7
 	audio_call .sub_4
@@ -354,7 +354,7 @@ CastleLololoIntro_Channel3:
 	base_note G#2
 	pan PAN_RIGHT
 	instrument INSTRUMENT_15
-	audio_f4 $de
+	sustain_length 0.867
 	volume 12
 	note 3, 0
 	rest 0
@@ -427,7 +427,7 @@ CastleLololoIntro_Channel3:
 	instrument INSTRUMENT_17
 	volume 13
 	pan PAN_RIGHT
-	audio_f4 $de
+	sustain_length 0.867
 	note 3, 0
 	note 3, 0
 	rest 1
@@ -446,7 +446,7 @@ CastleLololoIntro_Channel3:
 
 CastleLololoIntro_Channel4:
 	tempo_mode TEMPO_04
-	audio_f4 $ff
+	sustain_length 0.996
 	volume 8
 	pan PAN_CENTER
 	audio_repeat 14

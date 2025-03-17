@@ -4,7 +4,7 @@ FloatIslandsIntro_Channel1:
 	instrument INSTRUMENT_07
 	base_note G#2
 	volume 15
-	audio_f4 $ff
+	sustain_length 0.996
 	audio_call .sub_1
 	audio_call .sub_2
 	audio_call .sub_1
@@ -151,7 +151,7 @@ FloatIslandsIntro_Channel2:
 	tempo_mode TEMPO_03
 	pan PAN_CENTER
 	instrument INSTRUMENT_15
-	audio_f4 $fa
+	sustain_length 0.977
 	volume 11
 	base_note G#3
 	audio_call .sub_1
@@ -159,7 +159,7 @@ FloatIslandsIntro_Channel2:
 	audio_call .sub_1
 	audio_call .sub_3
 .main_loop
-	audio_f4 $00
+	sustain_length 0.0
 	instrument INSTRUMENT_0D
 	volume 10
 	base_note G#3
@@ -310,7 +310,7 @@ FloatIslandsIntro_Channel3:
 	pan PAN_CENTER
 	volume 11
 	instrument INSTRUMENT_15
-	audio_f4 $ff
+	sustain_length 0.996
 	base_note G#3
 	audio_call .sub_1
 	audio_call .sub_2
@@ -318,7 +318,7 @@ FloatIslandsIntro_Channel3:
 	audio_call .sub_3
 .main_loop
 	instrument INSTRUMENT_0B
-	audio_f4 $be
+	sustain_length 0.742
 	volume 10
 	audio_repeat 4
 	audio_call .sub_4
@@ -498,7 +498,7 @@ FloatIslandsIntro_Channel4:
 	tempo_mode TEMPO_03
 	pan PAN_CENTER
 	volume 9
-	audio_f4 $ff
+	sustain_length 0.996
 	instrument INSTRUMENT_10
 	audio_repeat 7
 	audio_call .sub_3

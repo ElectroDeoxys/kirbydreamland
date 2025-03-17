@@ -15,7 +15,7 @@ GreenGreens_Channel4:
 	note 15, 3
 	pan PAN_CENTER
 	instrument INSTRUMENT_10
-	audio_f4 $f0
+	sustain_length 0.938
 	audio_jump GreenGreensIntro_Channel4.main_loop
 
 GreenGreens_Channel3:

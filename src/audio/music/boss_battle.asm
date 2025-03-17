@@ -2,15 +2,15 @@ BossBattle_Channel1:
 	tempo_mode TEMPO_01
 	pan PAN_CENTER
 	instrument INSTRUMENT_00
-	audio_f4 $00
+	sustain_length 0.0
 	volume 0
 	base_note G#2
 	note_long -1, 10
 	audio_repeat 14
 	volume_shift 1
-	audio_f3 $05
+	sustain 5
 	audio_repeat_end
-	audio_f4 $fa
+	sustain_length 0.977
 	volume 15
 	instrument INSTRUMENT_07
 	note -5, 0
@@ -25,7 +25,7 @@ BossBattle_Channel1:
 .main_loop
 	audio_repeat 2
 	instrument INSTRUMENT_07
-	audio_f4 $ff
+	sustain_length 0.996
 	base_note G#2
 	note -3, 2
 	note -3, 0
@@ -97,17 +97,17 @@ BossBattle_Channel1:
 BossBattle_Channel2:
 	tempo_mode TEMPO_01
 	pan PAN_CENTER
-	audio_f4 $00
+	sustain_length 0.0
 	instrument INSTRUMENT_14
 	volume 1
 	base_note G#2
 	note_long 7, 10
 	audio_repeat 14
 	volume_shift 1
-	audio_f3 $05
+	sustain 5
 	audio_repeat_end
 	instrument INSTRUMENT_15
-	audio_f4 $fa
+	sustain_length 0.977
 	note 11, 0
 	note 11, 0
 	rest 3
@@ -120,7 +120,7 @@ BossBattle_Channel2:
 .main_loop
 	audio_repeat 2
 	instrument INSTRUMENT_13
-	audio_f4 $ff
+	sustain_length 0.996
 	volume 12
 	base_note G#3
 	audio_repeat 8
@@ -147,7 +147,7 @@ BossBattle_Channel2:
 	audio_repeat_end
 	rest 0
 	volume 12
-	audio_f4 $f5
+	sustain_length 0.957
 	instrument INSTRUMENT_13
 	note -7, 0
 	audio_repeat 3
@@ -198,14 +198,14 @@ BossBattle_Channel3:
 	pan PAN_CENTER
 	volume 1
 	base_note G#2
-	audio_f4 $00
+	sustain_length 0.0
 	instrument INSTRUMENT_14
 	note_long 2, 10
 	audio_repeat 14
 	volume_shift 1
-	audio_f3 $05
+	sustain 5
 	audio_repeat_end
-	audio_f4 $fa
+	sustain_length 0.977
 	instrument INSTRUMENT_15
 	note 4, 0
 	note 4, 0
@@ -220,7 +220,7 @@ BossBattle_Channel3:
 	audio_repeat 2
 	instrument INSTRUMENT_13
 	volume 12
-	audio_f4 $ff
+	sustain_length 0.996
 	base_note G#3
 	audio_repeat 8
 	note -5, 0
@@ -247,7 +247,7 @@ BossBattle_Channel3:
 	volume 12
 	rest 0
 	instrument INSTRUMENT_13
-	audio_f4 $f5
+	sustain_length 0.957
 	note -12, 0
 	audio_repeat 3
 	note -3, 0
@@ -294,7 +294,7 @@ BossBattle_Channel4:
 	pan PAN_CENTER
 	volume 3
 	instrument INSTRUMENT_10
-	audio_f4 $aa
+	sustain_length 0.664
 	audio_repeat 2
 	note 4, 0
 	note 6, 0
@@ -318,7 +318,7 @@ BossBattle_Channel4:
 	note 15, 1
 .main_loop
 	audio_repeat 16
-	audio_f4 $e1
+	sustain_length 0.879
 	volume 10
 	instrument INSTRUMENT_10
 	pan PAN_LEFT

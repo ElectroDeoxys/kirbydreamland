@@ -3,7 +3,7 @@ Victory_Channel1:
 	pan PAN_CENTER
 	instrument INSTRUMENT_0A
 	volume 12
-	audio_f4 $ff
+	sustain_length 0.996
 	base_note D#4
 	audio_call .sub_1
 	note 0, 1
@@ -39,7 +39,7 @@ Victory_Channel2:
 	tempo_mode TEMPO_03
 	instrument INSTRUMENT_0A
 	pan PAN_CENTER
-	audio_f4 $ff
+	sustain_length 0.996
 	volume 11
 	base_note D#4
 	audio_call .sub_1
@@ -79,7 +79,7 @@ Victory_Channel3:
 	instrument INSTRUMENT_07
 	pan PAN_CENTER
 	volume 15
-	audio_f4 $ff
+	sustain_length 0.996
 	base_note D#3
 	note 2, 1
 	note 2, 0
@@ -120,7 +120,7 @@ Victory_Channel4:
 	tempo_mode TEMPO_03
 	volume 10
 	instrument INSTRUMENT_10
-	audio_f4 $eb
+	sustain_length 0.918
 	audio_repeat 7
 	note 6, 1
 	note 6, 0

@@ -3,7 +3,7 @@ Titlescreen_Channel1:
 	tempo_mode TEMPO_04
 	pan PAN_CENTER
 	volume 12
-	audio_f4 $ff
+	sustain_length 0.996
 	base_note D#3
 	audio_call .sub_1
 	note 7, 0
@@ -13,16 +13,16 @@ Titlescreen_Channel1:
 	rest 0
 	audio_call .sub_1
 	rest 1
-	audio_f4 $00
+	sustain_length 0.0
 	note_long 7, 12
 	audio_repeat 6
 	pitch 2
-	audio_f3 $02
+	sustain 2
 	audio_repeat_end
 	instrument INSTRUMENT_0D
 	base_note D#4
 	volume 11
-	audio_f4 $c8
+	sustain_length 0.781
 	audio_call .sub_2
 	audio_jump .main_loop
 
@@ -31,13 +31,13 @@ Titlescreen_Channel1:
 	note_long -8, 4
 	note_long -5, 4
 	note_long 0, 4
-	audio_f4 $6c
+	sustain_length 0.422
 	note 4, 1
 	note 2, 1
 	note 0, 1
 	note -1, 1
 	note 0, 1
-	audio_f4 $ff
+	sustain_length 0.996
 	note -3, 0
 	note 0, 0
 	note -5, 0
@@ -76,7 +76,7 @@ Titlescreen_Channel1:
 	rest 0
 	note_long 0, 60
 	volume 13
-	audio_f4 $c8
+	sustain_length 0.781
 	instrument INSTRUMENT_07
 	note 2, 0
 	note 2, 0
@@ -91,7 +91,7 @@ Titlescreen_Channel2:
 	pan PAN_CENTER
 	instrument INSTRUMENT_07
 	volume 15
-	audio_f4 $ff
+	sustain_length 0.996
 	rest 1
 	audio_call .sub_1
 	note 9, 0
@@ -101,15 +101,15 @@ Titlescreen_Channel2:
 	audio_call .sub_1
 	rest 1
 	instrument INSTRUMENT_00
-	audio_f4 $00
+	sustain_length 0.0
 	note_long 11, 12
 	audio_repeat 6
 	pitch 2
-	audio_f3 $02
+	sustain 2
 	volume_shift -2
 	audio_repeat_end
 	instrument INSTRUMENT_07
-	audio_f4 $fa
+	sustain_length 0.977
 	volume 15
 	base_note D#2
 	audio_call .sub_2
@@ -198,7 +198,7 @@ Titlescreen_Channel3:
 	tempo_mode TEMPO_04
 	pan PAN_CENTER
 	rest 1
-	audio_f4 $96
+	sustain_length 0.586
 	base_note D#4
 	audio_call .sub_1
 	note -10, 0
@@ -207,14 +207,14 @@ Titlescreen_Channel3:
 	rest 1
 	audio_call .sub_1
 	rest 1
-	audio_f4 $00
+	sustain_length 0.0
 	note_long -10, 12
 	audio_repeat 6
 	pitch 2
-	audio_f3 $02
+	sustain 2
 	audio_repeat_end
 	instrument INSTRUMENT_09
-	audio_f4 $a0
+	sustain_length 0.625
 	volume 8
 	audio_repeat 7
 	audio_call .sub_2
@@ -225,7 +225,7 @@ Titlescreen_Channel3:
 	audio_repeat_end
 	volume 12
 	instrument INSTRUMENT_07
-	audio_f4 $b4
+	sustain_length 0.703
 	base_note D#4
 	pan PAN_CENTER
 	audio_call .sub_4
@@ -283,7 +283,7 @@ Titlescreen_Channel3:
 Titlescreen_Channel4:
 	tempo_mode TEMPO_04
 	pan PAN_CENTER
-	audio_f4 $ff
+	sustain_length 0.996
 	instrument INSTRUMENT_10
 	volume 9
 	note 15, 1

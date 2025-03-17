@@ -11,7 +11,7 @@ BubblyClouds_Channel2:
 
 BubblyClouds_Channel3:
 	tempo_mode TEMPO_02
-	audio_f4 $a0
+	sustain_length 0.625
 	pan PAN_CENTER
 	base_note D#3
 	instrument INSTRUMENT_07

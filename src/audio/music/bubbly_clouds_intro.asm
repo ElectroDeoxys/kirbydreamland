@@ -4,7 +4,7 @@ BubblyCloudsIntro_Channel1:
 	base_note D#4
 	instrument INSTRUMENT_05
 	volume 11
-	audio_f4 $80
+	sustain_length 0.5
 	audio_call .sub_2
 	audio_call .sub_3
 	audio_call .sub_2
@@ -12,7 +12,7 @@ BubblyCloudsIntro_Channel1:
 .main_loop
 	instrument INSTRUMENT_0D
 	volume 10
-	audio_f4 $00
+	sustain_length 0.0
 	audio_call .sub_5
 	audio_call .sub_6
 	audio_call .sub_5
@@ -31,7 +31,7 @@ BubblyCloudsIntro_Channel1:
 	audio_jump .main_loop
 
 .sub_1
-	audio_f4 $80
+	sustain_length 0.5
 	instrument INSTRUMENT_05
 	volume 8
 	audio_repeat 6
@@ -42,7 +42,7 @@ BubblyCloudsIntro_Channel1:
 
 .sub_2
 	rest 1
-	audio_f4 $80
+	sustain_length 0.5
 	note -1
 	note -1
 	note -1
@@ -67,7 +67,7 @@ BubblyCloudsIntro_Channel1:
 	note 0
 	note -3, 1
 	instrument INSTRUMENT_0C
-	audio_f4 $c8
+	sustain_length 0.781
 	audio_repeat 3
 	note 7
 	volume_shift -1
@@ -164,7 +164,7 @@ BubblyCloudsIntro_Channel1:
 
 .sub_10
 	audio_repeat 6
-	audio_f4 $00
+	sustain_length 0.0
 	note -1
 	note -5
 	audio_repeat_end
@@ -186,7 +186,7 @@ BubblyCloudsIntro_Channel2:
 	tempo_mode TEMPO_02
 	pan PAN_CENTER
 	instrument INSTRUMENT_05
-	audio_f4 $80
+	sustain_length 0.5
 	volume 11
 	base_note D#4
 	audio_call .sub_1
@@ -197,19 +197,19 @@ BubblyCloudsIntro_Channel2:
 	pan PAN_CENTER
 	instrument INSTRUMENT_0D
 	volume 10
-	audio_f4 $00
+	sustain_length 0.0
 	audio_call .sub_4
 	audio_call .sub_5
 	audio_call .sub_4
 	audio_call .sub_6
 	instrument INSTRUMENT_05
-	audio_f4 $8c
+	sustain_length 0.547
 	volume 8
 	base_note D#3
 	audio_call .sub_7
 	audio_call .sub_7
 	instrument INSTRUMENT_0E
-	audio_f4 $ff
+	sustain_length 0.996
 	volume 10
 	pan PAN_CENTER
 	audio_call BubblyCloudsIntro_Channel1.sub_9
@@ -217,7 +217,7 @@ BubblyCloudsIntro_Channel2:
 	base_note D#3
 	pan PAN_CENTER
 	instrument INSTRUMENT_0E
-	audio_f4 $00
+	sustain_length 0.0
 	volume 9
 	audio_call .sub_8
 	audio_call .sub_3
@@ -247,7 +247,7 @@ BubblyCloudsIntro_Channel2:
 .sub_3
 	instrument INSTRUMENT_0C
 	base_note D#4
-	audio_f4 $c8
+	sustain_length 0.781
 	pan PAN_LEFT
 	note 7
 	volume_shift -1
@@ -365,30 +365,30 @@ BubblyCloudsIntro_Channel3:
 	audio_call .sub_4
 	base_note D#3
 	instrument INSTRUMENT_0B
-	audio_f4 $8c
+	sustain_length 0.547
 	audio_call .sub_7
 	audio_call .sub_7
 	base_note D#2
-	audio_f4 $c8
+	sustain_length 0.781
 	audio_call .sub_7
-	audio_f4 $00
+	sustain_length 0.0
 	audio_call .sub_8
 	audio_jump .main_loop
 
 .sub_1
-	audio_f4 $dc
+	sustain_length 0.859
 	base_note D#3
 	note -12
 	note -5
-	audio_f4 $c8
+	sustain_length 0.781
 	note 2
 	note 2
 	note 0
 	rest 0
-	audio_f4 $dc
+	sustain_length 0.859
 	note -12
 	note -5
-	audio_f4 $c8
+	sustain_length 0.781
 	note 2, 1
 	note 0, 1
 	audio_ret
@@ -413,7 +413,7 @@ BubblyCloudsIntro_Channel3:
 	note 4
 	note 4
 	note 2, 1
-	audio_f4 $a0
+	sustain_length 0.625
 	note -5
 	note -5
 	note -5
@@ -497,7 +497,7 @@ BubblyCloudsIntro_Channel3:
 	note 7
 	note 11
 	note 5
-	audio_f4 $a0
+	sustain_length 0.625
 	note -5
 	note -5
 	note -5
@@ -512,7 +512,7 @@ BubblyClouds_Channel4:
 	pan PAN_CENTER
 	volume 10
 	instrument INSTRUMENT_10
-	audio_f4 $00
+	sustain_length 0.0
 .main_loop
 	note 2
 	volume_shift -5

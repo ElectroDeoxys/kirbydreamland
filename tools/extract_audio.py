@@ -206,10 +206,10 @@ while len(offsets_to_process) != 0:
             line_strings.append((offset, "\ttempo_mode {}".format(tempo_modes[next(gen)])))
             offset += 2
         elif b == 0xf3:
-            line_strings.append((offset, "\taudio_f3 ${:02x}".format(next(gen))))
+            line_strings.append((offset, "\tsustain ${:02x}".format(next(gen))))
             offset += 2
         elif b == 0xf4:
-            line_strings.append((offset, "\taudio_f4 ${:02x}".format(next(gen))))
+            line_strings.append((offset, "\tsustain_length ${:02x}".format(next(gen))))
             offset += 2
         elif b == 0xf5:
             line_strings.append((offset, "\tbase_note {}".format(notes[next(gen)])))
@@ -218,7 +218,7 @@ while len(offsets_to_process) != 0:
             line_strings.append((offset, "\tinstrument {}".format(instruments[next(gen)])))
             offset += 2
         elif b == 0xf7:
-            line_strings.append((offset, "\taudio_f7 ${:02x}".format(next(gen))))
+            line_strings.append((offset, "\tnote_frequencies ${:02x}".format(next(gen))))
             offset += 2
         elif b == 0xf8:
             main_loop = next(gen) + (next(gen) << 8)
