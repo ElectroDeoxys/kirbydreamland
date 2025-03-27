@@ -47,7 +47,7 @@ DEF NUM_MUSICS EQU const_value
 	const SFX_LOSE_LIFE ; $15
 	const SFX_1UP ; $16
 	const SFX_23 ; $17
-	const SFX_PAUSE ; $18
+	const SFX_PAUSE_OFF ; $18
 	const SFX_25 ; $19
 	const SFX_CURSOR ; $1a
 	const SFX_GAME_START ; $1b
@@ -57,7 +57,7 @@ DEF NUM_MUSICS EQU const_value
 	const SFX_31 ; $1f
 	const SFX_BOSS_DEFEAT ; $20
 DEF NUM_SOUNDCHECK_SFX EQU const_value
-	const SFX_33 ; $21
+	const SFX_PAUSE_ON ; $21
 	const SFX_34 ; $22
 	const SFX_35 ; $23
 DEF NUM_SFX EQU const_value

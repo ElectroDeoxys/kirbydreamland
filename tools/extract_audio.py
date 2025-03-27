@@ -170,7 +170,15 @@ notes = {
 def signed(x):
     return x if (x < 0x80) else (x - 0x100)
 
-offsets_to_process =  args.offsets
+offsets_to_process =  []
+
+def add_offset(offset):
+    if offset not in offsets_to_process:
+        offsets_to_process.append(offset)
+        offsets_to_process.sort()
+
+for o in args.offsets:
+    add_offset(o)
 
 while len(offsets_to_process) != 0:
     line_strings = []
@@ -178,8 +186,9 @@ while len(offsets_to_process) != 0:
     offset = int(offsets_to_process[0], 16)
     offsets_to_process = offsets_to_process[1:]
 
+    base_offset = offset
     new_offsets = []
-    main_loop = None
+    jump_addresses = []
 
     def nextByte():
         curOffs = offset
@@ -221,9 +230,12 @@ while len(offsets_to_process) != 0:
             line_strings.append((offset, "\tnote_frequencies ${:02x}".format(next(gen))))
             offset += 2
         elif b == 0xf8:
-            main_loop = next(gen) + (next(gen) << 8)
-            line_strings.append((offset, "\taudio_jump .main_loop"))
-            #line_strings.append((offset, "\taudio_jump ${:x}".format(main_loop)))
+            jump_addr = next(gen) + (next(gen) << 8)
+            if jump_addr + 0x10000 < base_offset:
+                line_strings.append((offset, "\taudio_jump AudioScript_1{:x}".format(jump_addr)))
+            else:
+                line_strings.append((offset, "\taudio_jump .audio_1{:x}".format(jump_addr)))
+            jump_addresses.append(0x10000 + jump_addr)
             break
         elif b == 0xfa:
             addr = next(gen) + (next(gen) << 8)
@@ -268,10 +280,11 @@ while len(offsets_to_process) != 0:
                     offset += 1
 
     for o, s in line_strings:
-        if main_loop == o - 0x10000:
-            print(".main_loop")
+        if o in jump_addresses:
+            print(".audio_{:x}".format(o))
         print("{}".format(s))
     print("")
 
     new_offsets.sort()
-    offsets_to_process = new_offsets + offsets_to_process
+    for o in new_offsets:
+        add_offset(o)

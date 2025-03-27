@@ -1,0 +1,59 @@
+
+Instruments:
+	table_width 4
+	;  attack,            release
+	dw AudioScript_16f6d, AudioScript_16f79 ; INSTRUMENT_00
+	dw AudioScript_16f70, AudioScript_16f79 ; INSTRUMENT_01
+	dw AudioScript_16f73, AudioScript_16f79 ; INSTRUMENT_02
+	dw AudioScript_16f76, AudioScript_16f79 ; INSTRUMENT_03
+	dw AudioScript_16f7d, AudioScript_16f79 ; INSTRUMENT_04
+	dw AudioScript_16f85, AudioScript_16f79 ; INSTRUMENT_05
+	dw AudioScript_16f8d, AudioScript_16f79 ; INSTRUMENT_06
+	dw AudioScript_16f91, AudioScript_16f79 ; INSTRUMENT_07
+	dw AudioScript_16f99, AudioScript_16f79 ; INSTRUMENT_08
+	dw AudioScript_16f9d, AudioScript_16f79 ; INSTRUMENT_09
+	dw AudioScript_16fa7, AudioScript_16f79 ; INSTRUMENT_0A
+	dw AudioScript_16fab, AudioScript_16f79 ; INSTRUMENT_0B
+	dw AudioScript_16fb5, AudioScript_16f79 ; INSTRUMENT_0C
+	dw AudioScript_16fc3, AudioScript_16fd8 ; INSTRUMENT_0D
+	dw AudioScript_16fe9, AudioScript_16fd8 ; INSTRUMENT_0E
+	dw AudioScript_16fed, AudioScript_16f79 ; INSTRUMENT_0F
+	dw AudioScript_16fff, AudioScript_16f79 ; INSTRUMENT_10
+	dw AudioScript_17008, AudioScript_1702a ; INSTRUMENT_11
+	dw AudioScript_1701a, AudioScript_16fd8 ; INSTRUMENT_12
+	dw AudioScript_1701e, AudioScript_1702a ; INSTRUMENT_13
+	dw AudioScript_1702e, AudioScript_16f79 ; INSTRUMENT_14
+	dw AudioScript_1703c, AudioScript_16f79 ; INSTRUMENT_15
+	dw AudioScript_17050, AudioScript_16f79 ; INSTRUMENT_16
+	dw AudioScript_17054, AudioScript_1702a ; INSTRUMENT_17
+	dw AudioScript_17060, AudioScript_1702a ; INSTRUMENT_18
+	dw AudioScript_17069, AudioScript_1702a ; INSTRUMENT_19
+	dw AudioScript_17074, AudioScript_1702a ; INSTRUMENT_1A
+	dw AudioScript_177c2, AudioScript_177ce ; INSTRUMENT_1B
+	dw AudioScript_177c5, AudioScript_177ce ; INSTRUMENT_1C
+	dw AudioScript_177c8, AudioScript_177ce ; INSTRUMENT_1D
+	dw AudioScript_177cb, AudioScript_177ce ; INSTRUMENT_1E
+	dw AudioScript_177d2, AudioScript_177ce ; INSTRUMENT_1F
+	dw AudioScript_177da, AudioScript_177ce ; INSTRUMENT_20
+	dw AudioScript_177e2, AudioScript_177ce ; INSTRUMENT_21
+	dw AudioScript_177e6, AudioScript_177ce ; INSTRUMENT_22
+	dw AudioScript_177ee, AudioScript_177ce ; INSTRUMENT_23
+	dw AudioScript_177f2, AudioScript_177ce ; INSTRUMENT_24
+	dw AudioScript_177fc, AudioScript_177ce ; INSTRUMENT_25
+	dw AudioScript_17800, AudioScript_177ce ; INSTRUMENT_26
+	dw AudioScript_1780a, AudioScript_177ce ; INSTRUMENT_27
+	dw AudioScript_17818, AudioScript_1782d ; INSTRUMENT_28
+	dw AudioScript_1783e, AudioScript_1782d ; INSTRUMENT_29
+	dw AudioScript_17842, AudioScript_177ce ; INSTRUMENT_2A
+	dw AudioScript_17854, AudioScript_177ce ; INSTRUMENT_2B
+	dw AudioScript_1785d, AudioScript_1787f ; INSTRUMENT_2C
+	dw AudioScript_1786f, AudioScript_1782d ; INSTRUMENT_2D
+	dw AudioScript_17873, AudioScript_1787f ; INSTRUMENT_2E
+	dw AudioScript_17883, AudioScript_177ce ; INSTRUMENT_2F
+	dw AudioScript_17891, AudioScript_177ce ; INSTRUMENT_30
+	dw AudioScript_178a5, AudioScript_177ce ; INSTRUMENT_31
+	dw AudioScript_178a9, AudioScript_1787f ; INSTRUMENT_32
+	dw AudioScript_178b5, AudioScript_1787f ; INSTRUMENT_33
+	dw AudioScript_178be, AudioScript_1787f ; INSTRUMENT_34
+	dw AudioScript_178c9, AudioScript_1787f ; INSTRUMENT_35
+	assert_table_length NUM_INSTRUMENTS

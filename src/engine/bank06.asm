@@ -687,7 +687,7 @@ HandleStageTransition::
 ; then after button press, waits 30 frames
 ; before game resumes
 Pause::
-	ld a, SFX_33
+	ld a, SFX_PAUSE_ON
 	call PlaySFX
 
 	xor a
@@ -746,7 +746,7 @@ Pause::
 	jr z, .loop
 
 	; player pressed Start
-	ld a, SFX_PAUSE
+	ld a, SFX_PAUSE_OFF
 	call PlaySFX
 	ld a, [hKirbyFlags4]
 	and $ff ^ (KIRBY4F_UNK0 | KIRBY4F_PAUSED)

@@ -23,7 +23,7 @@ PlayMusic::
 	cp MUSIC_TITLESCREEN
 	jr z, .play_music
 	ld a, [wCurSFX]
-	cp SFX_33
+	cp SFX_PAUSE_ON
 	jr z, .play_music
 	ld a, [wCurMusic]
 	cp c
