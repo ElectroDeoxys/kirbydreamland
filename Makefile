@@ -3,9 +3,8 @@ rom := kirbydreamland.gb
 rom_obj := \
 src/audio.o \
 src/home.o \
-src/hram.o \
 src/main.o \
-src/wram.o
+src/ram.o
 
 kirbydreamland_obj := $(rom_obj:.o=.o)
 

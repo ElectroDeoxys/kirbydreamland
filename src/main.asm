@@ -2,21 +2,6 @@ SECTION "Bank 1", ROMX
 
 INCLUDE "engine/bank01.asm"
 
-REPT 120
-DS ALIGN[6]
-	ds $20, $ff
-ENDR
-	ds $1d
-	db $01
-REPT 2
-DS ALIGN[6]
-	ds $20, $ff
-ENDR
-	db $80
-REPT 78
-DS ALIGN[6]
-	ds $20, $ff
-ENDR
 
 SECTION "Bank 2", ROMX
 
@@ -28,13 +13,6 @@ Gfx_9b2c:: INCBIN "gfx/gfx_9b2c.2bpp.lz"
 Gfx_a3ee:: INCBIN "gfx/gfx_a3ee.2bpp.lz"
 Gfx_ac49:: INCBIN "gfx/gfx_ac49.2bpp.lz"
 Gfx_b7e9: INCBIN "gfx/gfx_b7e9.2bpp.lz"
-
-	ds $1a
-	ds $20, $ff
-REPT 27
-	ds $20
-	ds $20, $ff
-ENDR
 
 
 SECTION "Bank 3", ROMX
@@ -58,7 +36,6 @@ Gfx_cfcf: INCBIN "gfx/gfx_cfcf.2bpp.lz"
 Gfx_d894: INCBIN "gfx/gfx_d894.2bpp.lz"
 Gfx_dcdd: INCBIN "gfx/gfx_dcdd.2bpp.lz"
 
-
 SECTION "Bank 3@e273", ROMX[$6273], BANK[$3]
 
 Data_e273:: INCBIN "data/data_e273.bin.lz"
@@ -68,7 +45,6 @@ Data_e5bc:: INCBIN "data/data_e5bc.bin.lz"
 Data_e688:: INCBIN "data/data_e688.bin.lz"
 Data_e86f:: INCBIN "data/data_e86f.bin.lz"
 Data_e8d3:: INCBIN "data/data_e8d3.bin.lz"
-
 
 SECTION "Bank 3@ea54", ROMX[$6a54], BANK[$3]
 
@@ -176,12 +152,6 @@ BG_3acce: INCBIN "data/bg_3acce.bin.lz"
 Gfx_3add9: INCBIN "gfx/gfx_3add9.2bpp.lz"
 BG_3be4a: INCBIN "data/bg_3be4a.bin.lz"
 
-	ds $c
-	ds $20, $ff
-REPT 2
-	ds $20
-	ds $20, $ff
-ENDR
 
 SECTION "Bank F", ROMX
 

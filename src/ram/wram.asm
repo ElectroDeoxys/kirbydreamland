@@ -1,5 +1,3 @@
-INCLUDE "vram.asm"
-
 SECTION "WRAM0", WRAM0
 
 wVirtualOAM:: ; c000
