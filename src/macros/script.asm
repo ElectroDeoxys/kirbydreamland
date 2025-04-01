@@ -114,14 +114,14 @@ MACRO position_offset
 	db \2 ; value 2
 ENDM
 
-	const SCRIPT_F2 ; $f2
-MACRO script_f2
-	db SCRIPT_F2
+	const SCRIPT_SET_REL_POS ; $f2
+MACRO set_rel_pos
+	db SCRIPT_SET_REL_POS
 ENDM
 
-	const SCRIPT_F3 ; $f3
-MACRO script_f3
-	db SCRIPT_F3
+	const SCRIPT_SET_ABS_POS ; $f3
+MACRO set_abs_pos
+	db SCRIPT_SET_ABS_POS
 ENDM
 
 	const SCRIPT_SET_VALUE ; $f4

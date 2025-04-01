@@ -26,21 +26,23 @@ Stat:
 	pop af
 	reti
 
-Func_1e2e:
-	ld hl, hff96
+; fills block in BG location wBlockFillPtr
+; with tile in wBlockFillTileIndex
+ProcessPendingBlockFill:
+	ld hl, hBlockFillPending
 	bit 7, [hl]
 	ret z
 	res 7, [hl]
-	ld hl, wd029
+	ld hl, wBlockFillPtr
 	ld a, [hli]
 	ld e, a
 	ld a, [hli]
 	ld d, a
-	ld a, [hli] ; wd02b
+	ld a, [hli] ; wBlockFillTileIndex
 	ld [de], a
 	inc e
 	ld [de], a
-	ld hl, $20
+	ld hl, SCRN_VX_B ; next row
 	add hl, de
 	ld [hld], a
 	ld [hl], a

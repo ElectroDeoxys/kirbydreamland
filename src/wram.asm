@@ -33,21 +33,21 @@ SECTION "WRAM1", WRAMX
 
 	ds $29
 
-wd029:: dw ; d029
-wd02b:: db ; d02b
+wBlockFillPtr:: dw ; d029
+wBlockFillTileIndex:: db ; d02b
 
+; currently loaded ROM bank
 wROMBank:: ; d02c
 	db
 
-wCurMusic:: ; d02d
-	db
-
-wCurSFX:: ; d02e
-	db
+wCurMusic:: db ; d02d
+wCurSFX::   db ; d02e
 
 wRNG:: ; d02f
 	ds $3
 
+; timer to control palette fading
+; ticks up on every V-Blank
 wFadeDelayTimer:: ; d032
 	db
 
@@ -70,10 +70,17 @@ wExtraGameUnlocked:: db ; d03a
 wStage:: ; d03b
 	db
 
-wMusic:: ; d03c
+; music for this level
+; isn't necessarily the current music
+; because it can be temporarily replaced
+wLevelMusic:: ; d03c
 	db
 
-wd03d:: ; d03d
+; holds a music ID to override normal
+; level music when area is loaded (e.g. through door connection)
+; used for special cases like Mt. Dedede's areas
+; and Boss Battle music
+wOverrideMusic:: ; d03d
 	db
 
 wArea:: ; d03e
@@ -100,15 +107,20 @@ wd04d:: ; d04d
 wJoypadDown:: ; d04f
 	db
 
-wd050:: ; d050
+; by default all keys are "sticky", as in their
+; bits remain set in hJoypadPressed for as long
+; as they are pressed, this variable holds
+; keys where they only remain pressed for 1 frame
+wNonStickyKeys:: ; d050
 	db
 
 wLevelXSection:: db ; d051
 wLevelYSection:: db ; d052
 
 wSCX:: db ; d053
-; Kirby's x acceleration
-wKirbyXAcc:: db ; d054
+wKirbyXAccumulator::
+wCreditsSCXDecrementCounter::
+	db ; d054
 wSCY:: db ; d055
 wd056:: db ; d056
 
@@ -169,14 +181,18 @@ wd06a:: ; d06a
 UNION
 
 wBGPtr_d06b::
-wd06b:: ; d06b
 	dw
 
 NEXTU
 
 wOAMFlagsOverride::
 wMenuCursorPos::
-wItemWasInhaled:: ; d06b
+wItemWasInhaled::
+wd06b:: ; d06b
+	db
+
+wObjOutsideView::
+wd06c:: ; d06c
 	db
 
 ENDU
@@ -532,7 +548,8 @@ wDisableBumpStars:: ; d414
 
 SECTION "Audio WRAM", WRAMX, ALIGN[8]
 
-wdc00:: ; dc00
+; used in Multiply
+wMultiplicationTable:: ; dc00
 	ds $200
 
 wde00:: ; de00

@@ -160,7 +160,7 @@ Data_1c184::
 	dw AnimScript_SpitStar, MotionScript_SpitStar, SpitStarProperties
 
 Data_1c18a::
-	dw AnimScript_20baf, MotionScript_10008, Data_35af
+	dw AnimScript_20baf, MotionScript_10008, DiveHitboxProperties
 
 Data_1c190::
 	dw AnimScript_20b96, MotionScript_10008, Data_35ab

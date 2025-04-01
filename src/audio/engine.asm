@@ -1500,7 +1500,7 @@ GetPointerToChannelConfig:
 Multiply:
 	push bc
 	push de
-	ld d, HIGH(wdc00)
+	ld d, HIGH(wMultiplicationTable)
 	ld l, a
 	ld h, d
 	and e

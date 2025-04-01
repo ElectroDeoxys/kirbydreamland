@@ -610,7 +610,7 @@ ASSERT Data_1c0ce == Data_3c0ce
 	jr .asm_2249
 .asm_222b
 	ld hl, hKirbyFlags5
-	bit KIRBY5F_UNK1_F, [hl]
+	bit KIRBY5F_STAGE_INTRO_F, [hl]
 	jr z, .asm_223a
 ASSERT Data_1c13a == Data_3c13a
 	ld hl, Data_1c13a ; aka Data_3c13a
@@ -683,7 +683,7 @@ ASSERT Data_1c000 == Data_3c000
 	and a
 	jr nz, .asm_22c5
 	ld a, [hKirbyFlags5]
-	and KIRBY5F_UNK1
+	and KIRBY5F_STAGE_INTRO
 	jr nz, .asm_22c5
 	ld hl, Data_1c14e
 	lb de, $80, $80
@@ -709,7 +709,7 @@ ASSERT Data_1c000 == Data_3c000
 	bit KIRBY6F_UNK0_F, [hl]
 	ret nz
 	ld hl, hKirbyFlags5
-	bit KIRBY5F_UNK1_F, [hl]
+	bit KIRBY5F_STAGE_INTRO_F, [hl]
 	ret nz
 	ld b, $00
 	ld hl, wFoodPowerUpCounter
@@ -1238,15 +1238,20 @@ DoCommonScriptCommand:
 	ret
 
 .asm_25a3
-	cp SCRIPT_F2
+	cp SCRIPT_SET_REL_POS
 	jr nz, .asm_260c
 	ld a, l
 	ld [wScriptPtr + 0], a
 	ld a, h
 	ld [wScriptPtr + 1], a
+
+	; sets relative position flag
 	ld hl, wObjectPropertyFlags
 	add hl, bc
-	set PROPERTY_0_F, [hl]
+	set PROPERTY_REL_POS_F, [hl]
+
+	; translate its coordinates into
+	; coordinates relative to the level
 	ld a, [wSCX]
 	and $0f
 	ld e, a
@@ -1315,15 +1320,20 @@ DoCommonScriptCommand:
 	ret
 
 .asm_260c
-	cp SCRIPT_F3
+	cp SCRIPT_SET_ABS_POS
 	jr nz, .set_cmd
 	ld a, l
 	ld [wScriptPtr + 0], a
 	ld a, h
 	ld [wScriptPtr + 1], a
+
+	; unsets relative position flag
 	ld hl, wObjectPropertyFlags
 	add hl, bc
-	res PROPERTY_0_F, [hl]
+	res PROPERTY_REL_POS_F, [hl]
+
+	; overwrites coordinates with
+	; its screen position
 	ld hl, wObjectScreenXPositions
 	add hl, bc
 	ld a, [hl]
@@ -1531,7 +1541,7 @@ Func_2708::
 
 	ld hl, wObjectPropertyFlags
 	add hl, de
-	bit PROPERTY_0_F, [hl]
+	bit PROPERTY_REL_POS_F, [hl]
 	jr nz, CopyObjectCoordinates
 
 	; copies only whole part of coordinates
@@ -2023,7 +2033,7 @@ ExecuteObjectScripts:
 	bit KIRBY4F_PAUSED_F, [hl]
 	ret nz
 .pause_animation_active
-	call Func_2ce5
+	call CanObjMove
 	ret c
 
 ; motion script
@@ -2240,27 +2250,30 @@ ExecuteObjectScripts:
 UpdateObject:
 	ld hl, hKirbyFlags4
 	bit KIRBY4F_PAUSED_F, [hl]
-	jp nz, .asm_2c5b
+	jp nz, .handle_screen_position
+
+	; assume it's not in view
 	ld hl, wd1a0
 	add hl, bc
-	res OBJFLAG_7_F, [hl]
+	res OBJFLAG_IN_VIEW_F, [hl]
+
 	ld hl, wObjectStatuses
 	add hl, bc
 	bit OBJSTAT_UNK1_F, [hl]
-	jp nz, .asm_2b8b
-	call Func_2ce5
-	jp c, .asm_2b8b
+	jp nz, .skip_velocities
+	call CanObjMove
+	jp c, .skip_velocities
 
 	ld de, wObjectXCoords
 	ld hl, wObjectXVels
 	call ApplyObjectVelocity
 
 	ld hl, hEngineFlags
-	bit ENGINEF_UNK7_F, [hl]
+	bit ENGINEF_XWARP_F, [hl]
 	jr z, .y_velocity
 	ld hl, wObjectPropertyFlags
 	add hl, bc
-	bit PROPERTY_0_F, [hl]
+	bit PROPERTY_REL_POS_F, [hl]
 	jr z, .y_velocity
 	ld a, [wLevelWidthPx + 0]
 	ld e, a
@@ -2300,16 +2313,16 @@ UpdateObject:
 	ld hl, wObjectYVels
 	call ApplyObjectVelocity
 
-.asm_2b8b
+.skip_velocities
 	ld hl, wd3cc
 	bit 0, [hl]
-	jp nz, .asm_2c18
+	jp nz, .gravity
 	ld hl, wObjectPropertyFlags
 	add hl, bc
-	bit PROPERTY_0_F, [hl]
+	bit PROPERTY_REL_POS_F, [hl]
 	jr z, .asm_2bf9
 	ld hl, hEngineFlags
-	bit ENGINEF_UNK7_F, [hl]
+	bit ENGINEF_XWARP_F, [hl]
 	jr nz, .asm_2bca
 	ld hl, wObjectXCoords + $1
 	add hl, bc
@@ -2324,24 +2337,27 @@ UpdateObject:
 	and $f0
 	or e
 	ld e, a
+	; e = obj level x section
 	ld a, [wLevelXSection]
-	add $0e
+	add 14
 	cp e
-	jr c, .asm_2bc7
-	sub $14
+	jr c, .outside_active_area
+	sub 14 + 6
 	jr nc, .asm_2bc2
-	xor a
+	xor a ; minimum 0
 .asm_2bc2
 	cp e
 	jr z, .asm_2bca
 	jr c, .asm_2bca
-.asm_2bc7
+.outside_active_area
+	; if outside active area, then destroy it
 	jp DestroyObject
+
 .asm_2bca
 	ld hl, wObjectPropertyFlags
 	add hl, bc
-	bit PROPERTY_0_F, [hl]
-	jr z, .asm_2c18
+	bit PROPERTY_REL_POS_F, [hl]
+	jr z, .gravity
 	ld hl, wObjectYCoords + $1
 	add hl, bc
 	add hl, bc
@@ -2355,26 +2371,28 @@ UpdateObject:
 	and $f0
 	or e
 	ld e, a
+	; e = obj level y section
 	ld a, [wLevelYSection]
-	add $0c
+	add 12
 	cp e
-	jr c, .asm_2bc7
-	sub $12
+	jr c, .outside_active_area
+	sub 12 + 6
 	jr nc, .asm_2bf2
-	xor a
+	xor a ; minimum 0
 .asm_2bf2
 	cp e
-	jr z, .asm_2c18
-	jr nc, .asm_2bc7
-	jr .asm_2c18
+	jr z, .gravity
+	jr nc, .outside_active_area
+	jr .gravity
+
 .asm_2bf9
 	ld hl, wObjectXCoords + $1
 	add hl, bc
 	add hl, bc
 	add hl, bc
 	ld a, [hl]
-	cp $a8
-	jr nc, .asm_2bc7
+	cp SCRN_X + 8
+	jr nc, .outside_active_area
 	ld d, SCRN_Y
 	ld a, [wScene]
 	and a
@@ -2387,8 +2405,9 @@ UpdateObject:
 	add hl, bc
 	ld a, [hl]
 	cp d
-	jr nc, .asm_2bc7
-.asm_2c18
+	jr nc, .outside_active_area
+
+.gravity
 	ld hl, wObjectPropertyFlags
 	add hl, bc
 	ld a, [hl]
@@ -2399,10 +2418,10 @@ UpdateObject:
 	pop af
 .not_affected_by_gravity
 	bit PROPERTY_SINKABLE_F, a
-	jr z, .asm_2c5b
+	jr z, .handle_screen_position
 	call Func_2e20
 	and a
-	jr z, .asm_2c5b
+	jr z, .handle_screen_position
 	cp $06
 	jr nz, .zero_y_velocity
 	; a == $6
@@ -2423,7 +2442,7 @@ UpdateObject:
 	ld hl, wObjectPropertyFlags
 	add hl, bc
 	set PROPERTY_PRIORITY_F, [hl]
-	jr .asm_2c5b
+	jr .handle_screen_position
 
 .zero_y_velocity
 	ld hl, wObjectYVels
@@ -2435,50 +2454,57 @@ UpdateObject:
 	ld hl, wObjectStatuses
 	add hl, bc
 	set OBJSTAT_UNK6_F, [hl]
-.asm_2c5b
+
+.handle_screen_position
 	ld d, b
 	ld e, c
 	ld hl, wObjectPropertyFlags
 	add hl, de
-	bit PROPERTY_0_F, [hl]
-	jr z, .asm_2c6b
-	call Func_2d2d
-	jr nc, .asm_2c6e
+	bit PROPERTY_REL_POS_F, [hl]
+	jr z, .abs_position
+	call CalculateObjScreenPosition_Relative
+	jr nc, .check_obj_within_limits
 	ret
-.asm_2c6b
-	call Func_2deb
-.asm_2c6e
+.abs_position
+	call CalculateObjScreenPosition_Absolute
+
+.check_obj_within_limits
 	push bc
-	ld b, $b0
+	ld b, SCRN_Y + 32
 	ld a, [wScene]
 	and a
-	jr nz, .asm_2c96
-	ld b, $90
+	jr nz, .got_y_limit ; in a scene
+	; inside a level
+	ld b, SCRN_Y
 	ld hl, hKirbyFlags5
-	bit KIRBY5F_UNK1_F, [hl]
-	jr z, .asm_2c96
+	bit KIRBY5F_STAGE_INTRO_F, [hl]
+	jr z, .got_y_limit
 	ld a, [wStage]
 	cp MT_DEDEDE
-	jr z, .asm_2c94
+	jr z, .set_y_limit_158
+	; don't render object if x < 24 or x >= 152
 	ld hl, wObjectScreenXPositions
 	add hl, de
 	ld a, [hl]
-	cp $18
+	cp 24
 	jr c, .exit
-	cp $98
+	cp 152
 	jr nc, .exit
-.asm_2c94
-	ld b, $9e
-.asm_2c96
+.set_y_limit_158
+	ld b, 158
+.got_y_limit
 	ld hl, wObjectScreenYPositions
 	add hl, de
 	ld a, [hl]
 	cp b
-	jr nc, .exit
+	jr nc, .exit ; y >= b
 	pop bc
+
+	; set object as in view
 	ld hl, wd1a0
 	add hl, de
-	set OBJFLAG_7_F, [hl]
+	set OBJFLAG_IN_VIEW_F, [hl]
+
 	ld hl, wObjectPropertyFlags
 	add hl, de
 	ld a, [hl]
@@ -2517,8 +2543,10 @@ UpdateObject:
 	pop bc
 	ret
 
-; c = object slot
-Func_2ce5:
+; returns carry if object cannot move
+; input:
+; - c = object slot
+CanObjMove:
 	ld a, c
 	and a
 	jr z, .no_carry ; is Kirby
@@ -2583,9 +2611,17 @@ ApplyObjectVelocity:
 	ld [de], a
 	ret
 
-Func_2d2d:
+; for objects with PROPERTY_REL_POS, their coordinates
+; are relative to the level and need to be
+; translated to screen position
+; output:
+; - bc = screen position
+; - carry set if outside view
+CalculateObjScreenPosition_Relative:
 	xor a
-	ld [wd06b + 1], a
+	ld [wObjOutsideView], a
+
+	; update object's screen position
 	push de
 	ld a, [wSCX]
 	and $0f
@@ -2621,12 +2657,12 @@ Func_2d2d:
 	sbc c
 	jr nz, .asm_2d69
 	ld a, b
-	cp $b0
-	jr c, .asm_2da5
+	cp SCRN_X + 16
+	jr c, .y_position
 .asm_2d69
 	ld a, [hEngineFlags]
-	bit ENGINEF_UNK7_F, a
-	jr z, .asm_2da2
+	bit ENGINEF_XWARP_F, a
+	jr z, .outside_view
 	ld a, [wd3db]
 	ld b, a
 	ld a, [wd3dc]
@@ -2640,7 +2676,9 @@ Func_2d2d:
 	add hl, hl
 	add hl, hl
 	add hl, hl
-	add hl, hl
+	add hl, hl ; *16
+	; hl = level width in px
+	; add object's x coord to hl
 	ld a, [de]
 	add l
 	ld l, a
@@ -2661,13 +2699,15 @@ Func_2d2d:
 	pop af
 	ld a, h
 	sbc c
-	jr nz, .asm_2da2
+	jr nz, .outside_view
 	ld a, b
-	cp $b0
-	jr c, .asm_2da5
-.asm_2da2
-	call .Func_2de3
-.asm_2da5
+	cp SCRN_X + 16
+	jr c, .y_position
+.outside_view
+	call .SetObjOutsideView
+
+.y_position
+	; update object's screen position
 	push bc
 	push de
 	ld a, [wSCY]
@@ -2700,26 +2740,31 @@ Func_2d2d:
 	pop af
 	ld a, [hl]
 	sbc c
-	call nz, .Func_2de3
+	call nz, .SetObjOutsideView
 	ld a, b
 	pop bc
 	ld c, a
 	cp SCRN_Y
-	call nc, .Func_2de3
-	ld a, [wd06b + 1]
+	call nc, .SetObjOutsideView
+	ld a, [wObjOutsideView]
 	and a
 	ret z
+	; outside view, return carry set
 	scf
 	ret
 
-.Func_2de3:
+.SetObjOutsideView:
 	push af
-	ld a, $01
-	ld [wd06b + 1], a
+	ld a, TRUE
+	ld [wObjOutsideView], a
 	pop af
 	ret
 
-Func_2deb:
+; for objects without PROPERTY_REL_POS, their coordinates
+; are absolute and correspond to their screen position
+; output:
+; - bc = screen position
+CalculateObjScreenPosition_Absolute:
 	ld hl, wObjectXCoords + $1
 	add hl, de
 	add hl, de
@@ -3144,9 +3189,12 @@ TickPowerUpCounters:
 	cp 120
 	ret nz
 	; restore level music
-	ld a, [wMusic]
+	ld a, [wLevelMusic]
 	jp PlayMusic
 
+; input:
+; - de = coordinates in blocks
+; - c = tile index
 Func_3076::
 	ld a, [wSCX]
 	swap a
@@ -3180,12 +3228,12 @@ Func_3076::
 	add hl, de
 	ld a, l
 	ld d, h
-	ld hl, wd029
+	ld hl, wBlockFillPtr
 	ld [hli], a
 	ld [hl], d
 	inc hl
-	ld [hl], c
-	ld hl, hff96
+	ld [hl], c ; wBlockFillTileIndex
+	ld hl, hBlockFillPending
 	set 7, [hl]
 	ret
 
@@ -3587,15 +3635,15 @@ Func_319f:
 .CreateObjectIfInRange:
 	inc hl
 	ld a, [hli]
-	ld [wd06b + 0], a
+	ld [wd06b], a
 	ld h, [hl]
 	ld l, a
 	ld a, h
-	ld [wd06b + 1], a
+	ld [wd06c], a
 	ld a, [hli]
 	ld d, a ; x
 	ld a, [hEngineFlags]
-	bit ENGINEF_UNK7_F, a
+	bit ENGINEF_XWARP_F, a
 	jr nz, .asm_3350
 
 	; check if object X is within [wLevelXSection - 3, wLevelXSection + 11]
@@ -3645,11 +3693,11 @@ Func_319f:
 	ld a, [de]
 	and a
 	jr z, .next_1 ; is inactive
-	ld a, [wd06b + 0]
+	ld a, [wd06b]
 	cp [hl]
 	jr nz, .next_1
 	inc hl
-	ld a, [wd06b + 1]
+	ld a, [wd06c]
 	cp [hl]
 	jr nz, .next_2
 	pop de
@@ -3748,9 +3796,9 @@ Func_319f:
 	ld hl, wd200
 	add hl, bc
 	add hl, bc
-	ld a, [wd06b + 0]
+	ld a, [wd06b]
 	ld [hli], a
-	ld a, [wd06b + 1]
+	ld a, [wd06c]
 	ld [hl], a
 	ret
 
@@ -3812,156 +3860,156 @@ ENDC
 ENDM
 
 Data_3421::
-	object_properties PROPERTY_0 | PROPERTY_2, 0, 0, $00
+	object_properties PROPERTY_REL_POS | PROPERTY_2, 0, 0, $00
 
 Data_3425::
 	object_properties PROPERTY_2, 0, 0, $00
 
 Data_3429::
-	object_properties PROPERTY_0 | PROPERTY_SINKABLE | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, $00, Data_1c154
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, $00, Data_1c154
 
 InvincibilityCandyProperties::
-	object_properties PROPERTY_0 | PROPERTY_SINKABLE | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, INVINCIBILITY_CANDY, Data_1c172
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, INVINCIBILITY_CANDY, Data_1c172
 ; 0x342f
 
 SECTION "Home@3435", ROM0[$3435]
 
 BombProperties::
-	object_properties PROPERTY_0 | PROPERTY_SINKABLE | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, BOMB, Data_1c172
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, BOMB, Data_1c172
 
 MikeProperties::
-	object_properties PROPERTY_0 | PROPERTY_SINKABLE | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, MIKE, Data_1c172
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, MIKE, Data_1c172
 ; 0x3441
 
 SECTION "Home@3447", ROM0[$3447]
 
 SpicyFoodProperties::
-	object_properties PROPERTY_0 | PROPERTY_SINKABLE | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, SPICY_FOOD, Data_1c172
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, SPICY_FOOD, Data_1c172
 
 WarpStarFloorProperties::
-	object_properties PROPERTY_0 | PROPERTY_SINKABLE | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, WARP_STAR, Data_1c172
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, WARP_STAR, Data_1c172
 
 WarpStarFloatingProperties::
-	object_properties PROPERTY_0 | PROPERTY_SINKABLE | PROPERTY_PERSISTENT, 16, 16, WARP_STAR, Data_1c172
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_PERSISTENT, 16, 16, WARP_STAR, Data_1c172
 
 MaximTomatoProperties::
-	object_properties PROPERTY_0 | PROPERTY_SINKABLE | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, MAXIM_TOMATO, Data_1c172
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, MAXIM_TOMATO, Data_1c172
 ; 0x345f
 
 SECTION "Home@3465", ROM0[$3465]
 
 EnergyDrinkProperties::
-	object_properties PROPERTY_0 | PROPERTY_SINKABLE | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 12, 16, ENERGY_DRINK, Data_1c172
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 12, 16, ENERGY_DRINK, Data_1c172
 
 SparklingStarProperties::
-	object_properties PROPERTY_0 | PROPERTY_SINKABLE | PROPERTY_PERSISTENT, 16, 16, SPARKLING_STAR, Data_1c172
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_PERSISTENT, 16, 16, SPARKLING_STAR, Data_1c172
 ; 0x3471
 
 SECTION "Home@3483", ROM0[$3483]
 
 StandardEnemyGravityProperties::
-	object_properties PROPERTY_0 | PROPERTY_SINKABLE | PROPERTY_GRAVITY, 12, 12, 1, 1, $03, 200, Data_1c154
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY, 12, 12, 1, 1, $03, 200, Data_1c154
 
 StandardEnemyProperties::
-	object_properties PROPERTY_0, 12, 12, 1, 1, $03, 200, Data_1c154
+	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $03, 200, Data_1c154
 ; 0x3495
 
 SECTION "Home@34b9", ROM0[$34b9]
 
 GordoProperties::
-	object_properties PROPERTY_0, 12, 12, 3, 100, $00, 0
+	object_properties PROPERTY_REL_POS, 12, 12, 3, 100, $00, 0
 ; 0x34be
 
 SECTION "Home@34c9", ROM0[$34c9]
 
 GlunkPodProperties::
-	object_properties PROPERTY_0, 6, 6, 1, 0, $11, 10, Data_1c154
+	object_properties PROPERTY_REL_POS, 6, 6, 1, 0, $11, 10, Data_1c154
 
 ShotzoBulletProperties::
-	object_properties PROPERTY_0, 6, 6, 1, 100, $01, 0, Data_1c154
+	object_properties PROPERTY_REL_POS, 6, 6, 1, 100, $01, 0, Data_1c154
 
 ShotzoProperties::
-	object_properties PROPERTY_0, 12, 12, 1, 100, $01, 30, Data_1c154
+	object_properties PROPERTY_REL_POS, 12, 12, 1, 100, $01, 30, Data_1c154
 
 SECTION "Home@34ff", ROM0[$34ff]
 
 CappyProperties::
-	object_properties PROPERTY_0 | PROPERTY_SINKABLE, 12, 12, 1, 1, $03, 200, Data_1c154
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE, 12, 12, 1, 1, $03, 200, Data_1c154
 
 CaplessCappyProperties::
-	object_properties PROPERTY_0 | PROPERTY_SINKABLE, 12, 12, 1, 1, $03, 200, Data_1c154
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE, 12, 12, 1, 1, $03, 200, Data_1c154
 ; 0x3511
 
 SECTION "Home@351a", ROM0[$351a]
 
 TwizzyProperties::
-	object_properties PROPERTY_0, 12, 12, 1, 1, $03, 200, Data_1c154
+	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $03, 200, Data_1c154
 
 PoppyBrosJrProperties::
-	object_properties PROPERTY_0, 12, 12, 1, 1, $03, 200, Data_1c154
+	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $03, 200, Data_1c154
 
 Data_352c::
-	object_properties PROPERTY_0 | PROPERTY_SINKABLE, 12, 12, 1, 1, $03, 200, Data_1c154
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE, 12, 12, 1, 1, $03, 200, Data_1c154
 
 GrizzoProperties::
-	object_properties PROPERTY_0, 20, 20, 2, 1, $03, 400, Data_1c154
+	object_properties PROPERTY_REL_POS, 20, 20, 2, 1, $03, 400, Data_1c154
 ; 0x353e
 
 SECTION "Home@3547", ROM0[$3547]
 
 PoppyBrosJrOnGrizzoProperties::
-	object_properties PROPERTY_0, 20, 26, 2, 1, $03, 200, Data_1c1a8
+	object_properties PROPERTY_REL_POS, 20, 26, 2, 1, $03, 200, Data_1c1a8
 
 Data_3550::
-	object_properties PROPERTY_0 | PROPERTY_SINKABLE, 12, 12, 1, 1, $03, 200, Data_1c154
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE, 12, 12, 1, 1, $03, 200, Data_1c154
 
 Data_3559::
-	object_properties PROPERTY_0 | PROPERTY_SINKABLE, 12, 12, 1, 1, $01, 200, Data_1c154
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE, 12, 12, 1, 1, $01, 200, Data_1c154
 
 PoppyBrosJrOnAppleProperties::
-	object_properties PROPERTY_0, 16, 32, 1, 1, $03, 300, Data_1c1b4
+	object_properties PROPERTY_REL_POS, 16, 32, 1, 1, $03, 300, Data_1c1b4
 
 Data_356b::
-	object_properties PROPERTY_0, 16, 22, 1, 3, $09, 0, Data_1c1c0
+	object_properties PROPERTY_REL_POS, 16, 22, 1, 3, $09, 0, Data_1c1c0
 
 Data_3574::
-	object_properties PROPERTY_0, 12, 12, 1, 1, $03, 10, Data_1c160
+	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $03, 10, Data_1c160
 ; 0x357d
 
 SECTION "Home@3586", ROM0[$3586]
 
 Data_3586::
-	object_properties PROPERTY_0, 26, 64, 2, 6, $09, 0, Data_1c1cc
+	object_properties PROPERTY_REL_POS, 26, 64, 2, 6, $09, 0, Data_1c1cc
 
 Data_358f::
-	object_properties PROPERTY_0 | PROPERTY_2, 26, 32, $06
+	object_properties PROPERTY_REL_POS | PROPERTY_2, 26, 32, $06
 ; 0x3593
 
 SECTION "Home@35a7", ROM0[$35a7]
 
 SpitStarProperties::
-	object_properties PROPERTY_0 | PROPERTY_2 | PROPERTY_SINKABLE, 20, 20, $01
+	object_properties PROPERTY_REL_POS | PROPERTY_2 | PROPERTY_SINKABLE, 20, 20, $01
 
 Data_35ab::
-	object_properties PROPERTY_0 | PROPERTY_2 | PROPERTY_SINKABLE, 20, 28, $01
+	object_properties PROPERTY_REL_POS | PROPERTY_2 | PROPERTY_SINKABLE, 20, 28, $01
 
-Data_35af::
+DiveHitboxProperties::
 	object_properties PROPERTY_2, 20, 20, $01
 
 Data_35b3::
-	object_properties PROPERTY_0 | PROPERTY_2 | PROPERTY_SINKABLE, 12, 12, $01
+	object_properties PROPERTY_REL_POS | PROPERTY_2 | PROPERTY_SINKABLE, 12, 12, $01
 
 Data_35b7::
-	object_properties PROPERTY_0 | PROPERTY_2 | PROPERTY_SINKABLE, 40, 40, $01
+	object_properties PROPERTY_REL_POS | PROPERTY_2 | PROPERTY_SINKABLE, 40, 40, $01
 
 ExplosionProperties::
-	object_properties PROPERTY_0, 40, 40, 1, 5, $00, 0, Data_1c160
+	object_properties PROPERTY_REL_POS, 40, 40, 1, 5, $00, 0, Data_1c160
 ; 0x35c4
 
 SECTION "Home@35cd", ROM0[$35cd]
 
 PuffOfSmokeProperties::
-	object_properties PROPERTY_0 | PROPERTY_2 | PROPERTY_SINKABLE, 2, 36, $10
+	object_properties PROPERTY_REL_POS | PROPERTY_2 | PROPERTY_SINKABLE, 2, 36, $10
 ; 0x35d1
 
 SECTION "Home@35f2", ROM0[$35f2]
@@ -3973,36 +4021,36 @@ LololoProperties::
 SECTION "Home@364f", ROM0[$364f]
 
 TwoFaceProperties::
-	object_properties PROPERTY_0, 12, 12, 1, 1, $03, 300, Data_1c154
+	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $03, 300, Data_1c154
 
 GlunkProperties::
-	object_properties PROPERTY_0, 12, 12, 1, 1, $03, 500, Data_1c154
+	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $03, 500, Data_1c154
 ; 0x3658
 
 SECTION "Home@3685", ROM0[$3685]
 
 Data_3685::
-	db PROPERTY_0, $06, $06, $01
+	db PROPERTY_REL_POS, $06, $06, $01
 ; 0x3689
 
 SECTION "Home@368e", ROM0[$368e]
 
 Data_368e::
-	object_properties PROPERTY_0 | PROPERTY_SINKABLE | PROPERTY_GRAVITY, 12, 12, 1, 1, $03, 500, Data_1c154
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY, 12, 12, 1, 1, $03, 500, Data_1c154
 
 MumbiesProperties::
-	object_properties PROPERTY_0, 12, 12, 1, 1, $03, 500, Data_1c154
+	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $03, 500, Data_1c154
 
 MumbiesOrbitingProperties::
-	object_properties PROPERTY_0, 12, 12, 1, 1, $01, 500, Data_1c154
+	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $01, 500, Data_1c154
 ; 0x36a0
 
 SECTION "Home@375d", ROM0[$375d]
 
-Func_375d::
+InitInhaleParticleXCoords::
 	xor a
 	ld hl, wInhaleParticleXCoords
-	ld c, $06
+	ld c, NUM_INHALE_PARTICLES * $2
 .loop
 	ld [hli], a
 	dec c
@@ -4130,7 +4178,7 @@ StarSpit::
 	set OBJSTAT_UNK1_F, [hl]
 	jr Func_384a
 
-Func_383b:
+SpawnDiveHitbox:
 	push hl
 	push bc
 	push de

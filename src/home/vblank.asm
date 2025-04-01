@@ -19,7 +19,7 @@ VBlank:
 
 	call UpdateHUD
 	call ProcessBlockQueue
-	call Func_1e2e
+	call ProcessPendingBlockFill
 
 	; write to OAM
 	call hTransferVirtualOAM

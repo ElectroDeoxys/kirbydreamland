@@ -36,7 +36,10 @@ hKirbyFlags5:: ; ff94
 hKirbyFlags6:: ; ff95
 	db
 
-hff96:: ; ff96
+; if bit 7 is set, then block in wBlockFillPtr
+; will be filled by tile index in wBlockFillTileIndex
+; during next V-Blank
+hBlockFillPending:: ; ff96
 	db
 
 SECTION "Stack", HRAM

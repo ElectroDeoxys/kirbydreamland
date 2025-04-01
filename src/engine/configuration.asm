@@ -30,7 +30,7 @@ ConfigurationMenu:
 	xor a
 	ld [wMenuCursorPos], a
 	dec a ; $ff, all buttons
-	ld [wd050], a
+	ld [wNonStickyKeys], a
 
 	hlbgcoord 11, 7
 	ld a, [wConfigMaxHP]
@@ -82,7 +82,7 @@ ConfigurationMenu:
 .exit_config_menu
 	pop hl
 	ld a, SELECT | START
-	ld [wd050], a
+	ld [wNonStickyKeys], a
 	jp TitleScreen
 
 .config_d_up

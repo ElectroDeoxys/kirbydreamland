@@ -22,9 +22,9 @@ Func_4000::
 	ld e, a
 	ld a, [wKirbyXVel + 1]
 	ld b, a
-	ld a, [wKirbyXAcc]
+	ld a, [wKirbyXAccumulator]
 	add b
-	ld [wKirbyXAcc], a
+	ld [wKirbyXAccumulator], a
 	incc e
 	ld a, e
 	and a
@@ -115,7 +115,7 @@ Func_4000::
 .asm_40d5
 	call StopKirbyWalking
 	ld a, 255
-	ld [wKirbyXAcc], a
+	ld [wKirbyXAccumulator], a
 	ld a, d
 	ld [wKirbyScreenDeltaX], a
 .asm_40e1
@@ -133,7 +133,7 @@ Func_4000::
 	jr nz, .asm_4115
 	ld c, $4c
 	ldh a, [hEngineFlags]
-	bit ENGINEF_UNK7_F, a
+	bit ENGINEF_XWARP_F, a
 	jr nz, .asm_4117
 	ldh a, [hPalFadeFlags]
 	bit SCROLLINGF_UNK5_F, a
@@ -224,9 +224,9 @@ Func_417c::
 	ld e, a
 	ld a, [wKirbyXVel + 1]
 	ld b, a
-	ld a, [wKirbyXAcc]
+	ld a, [wKirbyXAccumulator]
 	sub b
-	ld [wKirbyXAcc], a
+	ld [wKirbyXAccumulator], a
 	incc e
 	ld a, e
 	ld [wd063], a
@@ -311,7 +311,7 @@ Func_417c::
 .asm_4245
 	call StopKirbyWalking
 	xor a
-	ld [wKirbyXAcc], a
+	ld [wKirbyXAccumulator], a
 	ld a, d
 	ld [wd063], a
 .asm_4250
@@ -328,7 +328,7 @@ Func_417c::
 	bit SCROLLINGF_UNK5_F, a
 	jp nz, .asm_427e
 	ldh a, [hEngineFlags]
-	bit ENGINEF_UNK7_F, a
+	bit ENGINEF_XWARP_F, a
 	jr nz, .asm_4280
 	ld a, [wLevelXSection]
 	cp $01
@@ -537,7 +537,7 @@ KirbyControl::
 	jp .asm_4492
 .asm_4403
 	ld hl, hKirbyFlags4
-	res KIRBY4F_UNK1_F, [hl]
+	res KIRBY4F_NONSTICKY_B_F, [hl]
 	jp .asm_447d
 
 .asm_440b
@@ -554,7 +554,7 @@ KirbyControl::
 	bit D_UP_F, c
 	jp nz, .asm_4492
 	ld hl, hKirbyFlags4
-	res KIRBY4F_UNK1_F, [hl]
+	res KIRBY4F_NONSTICKY_B_F, [hl]
 	and $ff ^ (KIRBY2F_MOUTHFUL)
 	jr nz, .asm_4492
 	ldh a, [hKirbyFlags3]
@@ -573,7 +573,7 @@ KirbyControl::
 	call PlaySFX
 	xor a
 	ld [wInhaleDuration], a
-	call Func_375d
+	call InitInhaleParticleXCoords
 	jp .asm_4590
 
 .asm_444e
@@ -597,7 +597,7 @@ KirbyControl::
 	set KIRBY6F_UNK4_F, a
 	ldh [hKirbyFlags6], a
 	ld hl, hKirbyFlags4
-	res KIRBY4F_UNK1_F, [hl]
+	res KIRBY4F_NONSTICKY_B_F, [hl]
 	xor a
 	ld [wJoypadDown], a
 .asm_447d
@@ -655,7 +655,7 @@ KirbyControl::
 	and $ff ^ (KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_SPIT | KIRBY2F_UNK5 | KIRBY2F_UNK6)
 	ldh [hKirbyFlags2], a
 	ld hl, hKirbyFlags4
-	set KIRBY4F_UNK1_F, [hl]
+	set KIRBY4F_NONSTICKY_B_F, [hl]
 	ld hl, hKirbyFlags6
 	res KIRBY6F_UNK2_F, [hl]
 	ldh a, [hKirbyFlags1]
@@ -681,6 +681,7 @@ KirbyControl::
 	ld [wd094], a
 	ld [wd064], a
 	jr .check_d_left
+
 .asm_451a
 	ldh a, [hKirbyFlags5]
 	and KIRBY5F_UNK6 | KIRBY5F_INHALING_OBJECT
@@ -688,7 +689,7 @@ KirbyControl::
 	ld hl, hKirbyFlags2
 	set KIRBY2F_SPIT_F, [hl]
 	ld hl, hKirbyFlags4
-	set KIRBY4F_UNK1_F, [hl]
+	set KIRBY4F_NONSTICKY_B_F, [hl]
 
 .check_d_left
 	ldh a, [hJoypadPressed]
@@ -1054,7 +1055,7 @@ Func_4783::
 	and $ff ^ (KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_SPIT | KIRBY2F_UNK5 | KIRBY2F_UNK6)
 	ldh [hKirbyFlags2], a
 	ldh a, [hKirbyFlags4]
-	set KIRBY4F_UNK1_F, a
+	set KIRBY4F_NONSTICKY_B_F, a
 	ldh [hKirbyFlags4], a
 	ldh a, [hKirbyFlags1]
 	and $ff ^ (KIRBY1F_JUMP_RISE | KIRBY1F_GROUNDED | KIRBY1F_AIRBORNE)
@@ -1712,7 +1713,7 @@ _StartLevelAfterContinue::
 	xor a ; unnecessary
 	ld [wSCX], a
 	ld [wSCY], a
-	ld [wKirbyXAcc], a
+	ld [wKirbyXAccumulator], a
 	ld [wd056], a
 
 	ld a, [hHUDFlags]
@@ -1781,12 +1782,12 @@ _StartLevelAfterContinue::
 	call StopTimerAndSwitchOnLCD
 	call FadeIn
 
-	ld a, [wd03d]
+	ld a, [wOverrideMusic]
 	cp MUSIC_NONE
 	ret z
-	ld [wMusic], a
+	ld [wLevelMusic], a
 	call PlayMusic
 	ld a, MUSIC_NONE
-	ld [wd03d], a
+	ld [wOverrideMusic], a
 	ret
 ; 0x4def

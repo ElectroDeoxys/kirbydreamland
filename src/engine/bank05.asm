@@ -101,7 +101,7 @@ InhaleObject:
 	ld hl, hKirbyFlags2
 	res KIRBY2F_INHALE_F, [hl]
 	ld hl, hKirbyFlags4
-	set KIRBY4F_UNK1_F, [hl]
+	set KIRBY4F_NONSTICKY_B_F, [hl]
 	ld a, SFX_02
 	call PlaySFX
 	ld hl, wPowerUpAttack
@@ -430,8 +430,8 @@ ProcessObjectInteractions::
 	and a
 	ret z ; OBJECT_NOT_ACTIVE
 	ld hl, wd1a0 + OBJECT_SLOT_13
-	bit OBJFLAG_7_F, [hl]
-	ret z
+	bit OBJFLAG_IN_VIEW_F, [hl]
+	ret z ; not in view
 	ld a, [wObjectStatuses + OBJECT_SLOT_13]
 	bit OBJSTAT_UNK2_F, a
 	ret nz
@@ -451,8 +451,8 @@ ProcessObjectInteractions::
 	and a
 	ret z ; OBJECT_NOT_ACTIVE
 	ld hl, wd1a0 + OBJECT_SLOT_14
-	bit OBJFLAG_7_F, [hl]
-	ret z
+	bit OBJFLAG_IN_VIEW_F, [hl]
+	ret z ; not in view
 	ld a, [wObjectStatuses + OBJECT_SLOT_14]
 	bit OBJSTAT_UNK2_F, a
 	ret nz
@@ -753,7 +753,7 @@ ProcessObjectInteractions::
 ; - bc = object slot
 ; output:
 ; - carry set if object is inactive 
-;   OR OBJFLAG_7 is not set
+;   OR OBJFLAG_IN_VIEW is not set
 ;   OR OBJFLAG_INHALED is set
 ;   OR PROPERTY_2 is set
 .CheckObjIsInteractible:
@@ -765,7 +765,7 @@ ProcessObjectInteractions::
 	ld hl, wd1a0
 	add hl, bc
 	ld a, [hl]
-	bit OBJFLAG_7_F, a
+	bit OBJFLAG_IN_VIEW_F, a
 	jr z, .set_carry
 	bit OBJFLAG_INHALED_F, a
 	jr nz, .set_carry
@@ -1127,8 +1127,8 @@ InhaleObjectsInRange::
 	jp z, .next_obj
 	ld hl, wd1a0
 	add hl, bc
-	bit OBJFLAG_7_F, [hl]
-	jr z, .next_obj
+	bit OBJFLAG_IN_VIEW_F, [hl]
+	jr z, .next_obj ; not in view
 	bit OBJFLAG_INHALED_F, [hl]
 	jr nz, .next_obj ; already being inhaled
 	ld hl, wObjectPropertyFlags
@@ -1656,7 +1656,7 @@ InitRAM::
 	ld [wKirbyScreenY], a
 	ld a, $ff
 	ld [wd096], a
-	ld [wd03d], a ; MUSIC_NONE
+	ld [wOverrideMusic], a ; MUSIC_NONE
 	xor a
 	ld [hl], a
 	ld a, $e4
@@ -1668,7 +1668,7 @@ InitRAM::
 	ld a, $00
 	ld [hKirbyFlags1], a
 	ld a, SELECT | START
-	ld [wd050], a
+	ld [wNonStickyKeys], a
 	ld a, TRUE
 	ld [wMtDededeDefeatedBosses + MT_DEDEDE_5], a
 
@@ -1681,11 +1681,11 @@ InitRAM::
 	ld [hl], a  ; $3
 	ret
 
-Func_14b30::
-	ld hl, Data_14b3a
-	ld de, wdc00
+LoadMultiplicationTable::
+	ld hl, .MultiplicationTableData
+	ld de, wMultiplicationTable
 	call Decompress
 	ret
 
-Data_14b3a:
+.MultiplicationTableData:
 	INCBIN "data/data_14b3a.bin.lz"

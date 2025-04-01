@@ -52,7 +52,7 @@ TitleScreen::
 	call DoFrames
 	call FadeIn
 	ld a, START
-	ld [wd050], a
+	ld [wNonStickyKeys], a
 
 ; loop until player presses Start
 .loop

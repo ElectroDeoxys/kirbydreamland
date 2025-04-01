@@ -19,7 +19,7 @@ Reset::
 	call InitDMATransferFunction
 	call ClearSprites
 	call InitDelayedCopyAToDEFunc
-	call Func_14b30
+	call LoadMultiplicationTable
 
 	; initialize audio engine
 	ld a, BANK(InitAudio)
@@ -63,7 +63,7 @@ Reset::
 	ld [wConfigMaxHP], a
 	call TitleScreen
 	ld a, SELECT | START
-	ld [wd050], a
+	ld [wNonStickyKeys], a
 	ld a, [wConfigLives]
 	ld [wLives], a
 	call ClearAllObjects

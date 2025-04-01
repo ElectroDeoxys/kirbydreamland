@@ -131,7 +131,7 @@ Func_326::
 	ld a, [wCurMusic]
 	cp MUSIC_MINT_LEAF
 	jr nz, .asm_359
-	ld a, [wMusic]
+	ld a, [wLevelMusic]
 	call PlayMusic
 	xor a
 	ld [wFoodPowerUpCounter + 0], a
@@ -565,13 +565,13 @@ ProcessDoorConnection::
 	call FadeIn
 	ld a, VBLANK_3
 	ldh [hVBlankFlags], a
-	ld a, [wd03d]
+	ld a, [wOverrideMusic]
 	cp MUSIC_NONE
 	jr z, .asm_641
-	ld [wMusic], a
+	ld [wLevelMusic], a
 	call PlayMusic
 	ld a, MUSIC_NONE
-	ld [wd03d], a
+	ld [wOverrideMusic], a
 .asm_641
 	xor a
 	ret
@@ -677,13 +677,13 @@ ENDR
 	jp Reset
 
 .no_reset
-	ld a, [wd050]
+	ld a, [wNonStickyKeys]
 	ld c, a
 	ldh a, [hKirbyFlags4]
-	and B_BUTTON
+	and B_BUTTON ; KIRBY4F_NONSTICKY_B
 	or c
 	ld c, a
-	ld a, [wJoypadDown]
+	ld a, [wJoypadDown] ; keys that were already down
 	and c
 	and b
 	xor b
@@ -715,7 +715,7 @@ Func_6ec::
 	res ENGINEF_UNK6_F, [hl]
 	ret
 .asm_70e
-	bit ENGINEF_UNK7_F, [hl]
+	bit ENGINEF_XWARP_F, [hl]
 	jr nz, .asm_720
 	ld a, [wLevelXSection]
 	cp $01
@@ -734,7 +734,7 @@ Func_6ec::
 	ret
 .asm_733
 	jr z, .asm_708
-	bit ENGINEF_UNK7_F, [hl]
+	bit ENGINEF_XWARP_F, [hl]
 	jr nz, .asm_747
 	ld a, [wd042]
 	and a
@@ -910,7 +910,7 @@ Func_819::
 	ld b, a
 	ld a, [wd05e]
 	ld c, a
-	bit ENGINEF_UNK7_F, b
+	bit ENGINEF_XWARP_F, b
 	jr z, .asm_850
 	cp $01
 	jr z, .asm_84b
@@ -1850,7 +1850,7 @@ Func_caf:
 	bit KIRBY2F_MOUTHFUL_F, a
 	jr nz, .asm_f0f
 	set KIRBY3F_DIVE_F, [hl]
-	call Func_383b
+	call SpawnDiveHitbox
 .asm_f0f
 	ldh a, [hKirbyFlags1]
 	set KIRBY1F_AIRBORNE_F, a
@@ -2070,7 +2070,7 @@ Func_1062::
 	jr .asm_1102
 .aligned
 	ldh a, [hEngineFlags]
-	bit ENGINEF_UNK7_F, a
+	bit ENGINEF_XWARP_F, a
 	jr nz, .asm_10ac
 	ld a, [wd042]
 	inc a
@@ -2117,7 +2117,7 @@ Func_1062::
 	cp b
 	jr nz, .asm_10fe
 	ldh a, [hEngineFlags]
-	bit ENGINEF_UNK7_F, a
+	bit ENGINEF_XWARP_F, a
 	jr z, .asm_10fe
 	xor a
 	ld [wLevelXSection], a
@@ -2177,7 +2177,7 @@ Func_110b:
 
 .asm_115d
 	ldh a, [hEngineFlags]
-	bit ENGINEF_UNK7_F, a
+	bit ENGINEF_XWARP_F, a
 	jr nz, .asm_116d
 	ld a, [wLevelXSection]
 	cp $01
@@ -2197,7 +2197,7 @@ Func_110b:
 	cp $01
 	jr nz, .asm_11ac
 	ldh a, [hEngineFlags]
-	bit ENGINEF_UNK7_F, a
+	bit ENGINEF_XWARP_F, a
 	jr z, .asm_11ac
 	ld a, [wLevelWidth]
 	inc a
@@ -2484,9 +2484,9 @@ AddBlockTilesToQueue:
 	add hl, bc
 
 	ld a, [wXCoord]
-	ld [wd06b + 0], a
+	ld [wd06b], a
 	ld a, [wYCoord]
-	ld [wd06b + 1], a
+	ld [wd06c], a
 	ld [wd07f], a
 
 	; write BG coordinate
@@ -2502,9 +2502,9 @@ ENDR
 	ld [de], a
 	inc de
 
-	ld a, [wd06b + 0]
+	ld a, [wd06b]
 	ld [wXCoord], a
-	ld a, [wd06b + 1]
+	ld a, [wd06c]
 	ld [wYCoord], a
 	pop hl
 	pop bc
@@ -3398,7 +3398,7 @@ Func_1964::
 	or VBLANK_5 | VBLANK_PENDING
 	ldh [hVBlankFlags], a
 	call ProcessBlockQueue
-	ld a, [wd06b + 0] ; useless
+	ld a, [wd06b] ; useless
 	xor a
 	ldh [hVBlankFlags], a
 	pop de
@@ -3443,7 +3443,7 @@ LoadArea::
 	push bc
 	push hl
 	ld a, $ff
-	ld [wd03d], a ; MUSIC_NONE
+	ld [wOverrideMusic], a ; MUSIC_NONE
 	ld [wd096], a
 	call ResetTimer
 	ld hl, Data_38b1
@@ -3481,13 +3481,13 @@ LoadArea::
 
 	ld a, [hli]
 	ld [wLevelWidth], a
-	sub $0a
+	sub 10
 	ld [wd041], a
 
 	ld a, [hli]
 	ld [wLevelHeight], a
 	ldh a, [hEngineFlags]
-	and $ff ^ ENGINEF_UNK7
+	and $ff ^ ENGINEF_XWARP
 	ldh [hEngineFlags], a
 
 	ldh a, [hHUDFlags]
@@ -3504,7 +3504,7 @@ LoadArea::
 	jr nz, .asm_1a68
 
 	ldh a, [hEngineFlags]
-	set ENGINEF_UNK7_F, a
+	set ENGINEF_XWARP_F, a
 	ldh [hEngineFlags], a
 	jr .asm_1a6e
 
@@ -3524,7 +3524,7 @@ LoadArea::
 	jr z, .asm_1a79
 	push hl
 	ld a, MUSIC_BOSS_BATTLE
-	ld [wd03d], a
+	ld [wOverrideMusic], a
 	pop hl
 .asm_1a79
 	inc hl
@@ -3615,7 +3615,7 @@ LoadArea::
 	ld hl, Data_1bc5
 	add hl, bc
 	ld a, [hl]
-	ld [wd06b + 1], a
+	ld [wd06c], a
 	cp MT_DEDEDE
 	jr z, .asm_1b69
 
@@ -3663,7 +3663,7 @@ LoadArea::
 .asm_1b7c
 	add hl, bc
 	ld a, [hli]
-	ld [wd06b + 0], a
+	ld [wd06b], a
 	ld a, [hli]
 	ld b, a
 	ld a, [hli]
@@ -3674,11 +3674,11 @@ LoadArea::
 	ld d, a
 	ld h, b
 	ld l, c
-	ld a, [wd06b + 0]
+	ld a, [wd06b]
 	ld c, a
 	call FarDecompress
 
-	ld a, [wd06b + 1]
+	ld a, [wd06c]
 	ld c, a
 	add a
 	add c ; *3
@@ -3706,7 +3706,7 @@ LoadArea::
 	ld b, $00
 	add hl, bc
 	ld a, [hl]
-	ld [wd03d], a
+	ld [wOverrideMusic], a
 .done
 	pop hl
 	pop bc

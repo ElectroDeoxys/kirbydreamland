@@ -148,7 +148,7 @@ AnimScript_20154:
 	jump_abs .loop
 
 AnimScript_201b7:
-	script_f2
+	set_rel_pos
 	set_object_properties StandardEnemyGravityProperties
 	set_update_func Func_141b1, AnimScript_2073c
 	jump_if_not_flags hKirbyFlags3, KIRBY3F_FACE_LEFT, .script_201d2
@@ -408,7 +408,7 @@ AnimScript_KirbyPuff:
 	frame  0, $5cf1
 .script_2049e
 	frame  1, $58b8
-	script_f3
+	set_abs_pos
 	jump_rel .check_land
 ; 0x204a4
 
@@ -517,7 +517,7 @@ AnimScript_20662:
 SECTION "Bank 8@473c", ROMX[$473c], BANK[$8]
 
 AnimScript_2073c:
-	script_f3
+	set_abs_pos
 	set_object_properties Data_3425
 
 	; check which half side of the screen Kirby is
@@ -1579,8 +1579,8 @@ SECTION "Bank 8@5195", ROMX[$5195], BANK[$8]
 
 AnimScript_BossHPIncrementer:
 	frame  1, $58b8
-	script_f3
-	set_position $14, $14
+	set_abs_pos
+	set_position 20, 20
 	set_value wBossHP, 0
 	set_flags hHUDFlags, $00, HUD_UPDATE_LABEL | HUD_BOSS_BATTLE
 .loop

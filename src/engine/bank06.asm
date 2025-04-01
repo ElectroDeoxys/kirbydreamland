@@ -106,7 +106,7 @@ StartStage::
 	ld [wd064], a
 	ld [wSCX ], a
 	ld [wSCY], a
-	ld [wKirbyXAcc], a
+	ld [wCreditsSCXDecrementCounter], a
 	ld [wd056], a
 	ld [wKirbyYVel + 0], a
 	ld [wKirbyYVel + 1], a
@@ -153,7 +153,7 @@ StartStage::
 	ld hl, StageMusics
 	add hl, de
 	ld a, [hl]
-	ld [wMusic], a
+	ld [wLevelMusic], a
 
 	ld bc, $0
 	ld a, MT_DEDEDE
@@ -203,7 +203,7 @@ StartStage::
 	ld a, [wStage]
 	cp MT_DEDEDE
 	jr z, .skip_music
-	ld a, [wMusic]
+	ld a, [wLevelMusic]
 	call PlayMusic
 
 .skip_music
@@ -271,7 +271,7 @@ Func_18285:
 .asm_182d1
 	add hl, bc
 	ld a, [hli]
-	ld [wd06b + 0], a
+	ld [wd06b], a
 	ld a, [hli]
 	ld b, a
 	ld a, [hli]
@@ -282,7 +282,7 @@ Func_18285:
 	ld d, a
 	ld h, b
 	ld l, c
-	ld a, [wd06b + 0]
+	ld a, [wd06b]
 	ld c, a
 	call FarDecompress
 	ret
@@ -297,7 +297,7 @@ StageIntro:
 	ld [wLevelXSection], a
 	ld [wLevelYSection], a
 	ld hl, hKirbyFlags5
-	set KIRBY5F_UNK1_F, [hl]
+	set KIRBY5F_STAGE_INTRO_F, [hl]
 	call ClearSprites
 	call ResetTimer
 
@@ -320,7 +320,7 @@ StageIntro:
 	ld hl, Data_2070
 	add hl, bc
 	ld a, [hli]
-	ld [wd06b + 0], a
+	ld [wd06b], a
 	ld a, [hli]
 	ld b, a
 	ld a, [hli]
@@ -331,7 +331,7 @@ StageIntro:
 	ld d, a
 	ld h, b
 	ld l, c
-	ld a, [wd06b + 0]
+	ld a, [wd06b]
 	ld c, a
 	call FarDecompress
 
@@ -374,7 +374,7 @@ StageIntro:
 
 	pop hl
 	ld a, [hl]
-	ld [wMusic], a
+	ld [wLevelMusic], a
 	call PlayMusic
 
 	ld a, [wStage]
@@ -405,7 +405,7 @@ StageIntro:
 
 .start_btn
 	ld hl, hKirbyFlags5
-	res KIRBY5F_UNK1_F, [hl]
+	res KIRBY5F_STAGE_INTRO_F, [hl]
 	ret
 
 StageIntroDurations:
@@ -906,7 +906,7 @@ _LoseLife::
 	ld a, [wStage]
 	cp MT_DEDEDE
 	jr z, .skip_play_music
-	ld a, [wMusic]
+	ld a, [wLevelMusic]
 	call PlayMusic
 .skip_play_music
 	ld a, [hEngineFlags]
@@ -1060,7 +1060,7 @@ GameOver:
 	ld hl, hEngineFlags
 	set ENGINEF_UNK5_F, [hl]
 	call StartStage
-	ld a, [wMusic]
+	ld a, [wLevelMusic]
 	call PlayMusic
 	jp StageLoop_UpdateHUD
 
@@ -1429,10 +1429,10 @@ Epilogue:
 	ld a, l
 	ld [wCreditsTextPtr + 1], a
 	xor a
-	ld [wKirbyXAcc], a
+	ld [wCreditsSCXDecrementCounter], a
 	ld [wKirbyScreenDeltaY], a
 	ld [wd061], a
-	ld [wKirbyXAcc], a ; unnecessary
+	ld [wCreditsSCXDecrementCounter], a ; unnecessary
 	ld [wd065], a
 	ld [wd067], a
 
@@ -1449,13 +1449,13 @@ Epilogue:
 	ld a, [wd065]
 	and a
 	call nz, .PrintText
-	ld a, [wKirbyXAcc]
+	ld a, [wCreditsSCXDecrementCounter]
 	inc a
-	ld [wKirbyXAcc], a
+	ld [wCreditsSCXDecrementCounter], a
 	cp 4
 	jr c, .loop_credits
 	xor a
-	ld [wKirbyXAcc], a
+	ld [wCreditsSCXDecrementCounter], a
 	ld a, [wSCX]
 	dec a
 	ld [wSCX], a
@@ -2079,18 +2079,18 @@ Func_19098:
 	push bc
 	push de
 	push hl
-	ld a, [wd06b + 0]
+	ld a, [wd06b]
 	push af
-	ld a, [wd06b + 1]
+	ld a, [wd06c]
 	push af
 	xor a
 	ld [wVirtualOAMSize], a
 	call UpdateObjects
 	call ClearSprites
 	pop af
-	ld [wd06b + 1], a
+	ld [wd06c], a
 	pop af
-	ld [wd06b + 0], a
+	ld [wd06b], a
 	pop hl
 	pop de
 	pop bc
