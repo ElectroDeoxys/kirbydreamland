@@ -1195,9 +1195,72 @@ ScriptFunc_ResetImmuneFlag:
 	add hl, bc
 	res OBJSTAT_UNK5_F, [hl]
 	ret
-; 0x48f5
 
-SECTION "Bank 1@495c", ROMX[$495c], BANK[$1]
+Func_48f5:
+	push bc
+	ld e, $03
+	ld hl, wObjectScreenYPositions
+	ld a, [hl] ; Kirby's y
+	add hl, bc
+	sub [hl]
+	bit 7, a
+	jr z, .got_y_dist
+	cpl
+	inc a
+	ld e, $00
+.got_y_dist
+	ld d, a ; dist between obj y and Kirby y
+
+	ld hl, wObjectScreenXPositions
+	ld a, [hl] ; Kirby's x
+	add hl, bc
+	sub [hl]
+	bit 7, a
+	jr z, .got_x_dist
+	cpl
+	inc a
+	push af
+	ld a, e
+	xor $07
+	ld e, a
+	pop af
+.got_x_dist
+	ld b, a ; dist between obj x and Kirby x
+	cp d
+	jr c, .asm_4923
+	ld a, e
+	xor $01
+	ld e, a
+	ld a, d
+	ld d, b
+.asm_4923
+	call Func_3410
+	ld c, $00
+	cp $33
+	jr c, .asm_4932
+	inc c
+	cp $ad
+	jr c, .asm_4932
+	inc c
+.asm_4932
+	ld a, c
+	add a
+	add a
+	add a ; *8
+	or e
+	ld e, a
+	ld d, $00
+	ld hl, .data
+	add hl, de
+	ld a, [hl]
+	ld [wd3bd], a
+	pop bc
+	ret
+
+.data
+	db $00, $04, $04, $08, $08, $0c, $0c, $00
+	db $01, $03, $05, $07, $09, $0b, $0d, $0f
+	db $02, $02, $06, $06, $0a, $0a, $0e, $0e
 
 Func_495c:
 	push bc

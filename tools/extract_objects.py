@@ -18,7 +18,9 @@ itemProperties = {
     "BombProperties",
     "MikeProperties",
     "SpicyFoodProperties",
-    "InvincibilityCandyProperties"
+    "InvincibilityCandyProperties",
+    "OneUpProperties",
+    "MintLeafProperties"
 }
 
 def parseSigned(b):

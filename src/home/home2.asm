@@ -1940,10 +1940,11 @@ DoAnimScriptCommand:
 	ret
 
 ; if $70 <= a < $90, then return
-; corresponding entry in Data_2977
+; corresponding entry in PredefinedVelocities
 ; otherwise, return a << 5
+; this means velocities in the interval [14, 18[ cannot be used
 ; input:
-; - a = either entry in Data_2977 or a velocity value
+; - a = either entry in PredefinedVelocities or a velocity value
 ; output:
 ; - de = velocity
 SetObjectVelocity:
@@ -1953,7 +1954,7 @@ SetObjectVelocity:
 	jr nc, .use_input_value
 	; $70 <= a < $90
 	sub $70
-	ld hl, Data_2977
+	ld hl, PredefinedVelocities
 	add a ; *2
 	add l
 	ld l, a
@@ -1977,7 +1978,7 @@ SetObjectVelocity:
 	rr e ; /8
 	ret
 
-Data_2977:
+PredefinedVelocities:
 	dw        0.00 ; VEL_RIGHT_0_00   | VEL_DOWN_0_00
 	dw  DIV(1, 64) ; VEL_RIGHT_1_64TH | VEL_DOWN_1_64TH
 	dw  DIV(1, 32) ; VEL_RIGHT_1_32TH | VEL_DOWN_1_32TH
@@ -3812,20 +3813,24 @@ PowersOfTwo::
 	db 1 << 6
 	db 1 << 7
 
-; unreferenced
-Func_3410:
+; input:
+; - a = ?
+; - d = ?
+; output:
+; - a = ?
+Func_3410::
 	push bc
 	ld b, $8
-.asm_3413
+.loop
 	add a
 	cp d
-	jr c, .asm_3418
+	jr c, .skip_sub
 	sub d
-.asm_3418
+.skip_sub
 	ccf
 	rl c
 	dec b
-	jr nz, .asm_3413
+	jr nz, .loop
 	ld a, c
 	pop bc
 	ret
@@ -3879,9 +3884,9 @@ BombProperties::
 
 MikeProperties::
 	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, MIKE, Data_1c172
-; 0x3441
 
-SECTION "Home@3447", ROM0[$3447]
+MintLeafProperties::
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, MINT_LEAF, Data_1c172
 
 SpicyFoodProperties::
 	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, SPICY_FOOD, Data_1c172
@@ -3904,6 +3909,12 @@ EnergyDrinkProperties::
 SparklingStarProperties::
 	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_PERSISTENT, 16, 16, SPARKLING_STAR, Data_1c172
 ; 0x3471
+
+SECTION "Home@3477", ROM0[$3477]
+
+OneUpProperties::
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, ONE_UP, Data_1c172
+; 0x347d
 
 SECTION "Home@3483", ROM0[$3483]
 
@@ -3953,9 +3964,9 @@ Data_352c::
 
 GrizzoProperties::
 	object_properties PROPERTY_REL_POS, 20, 20, 2, 1, $03, 400, Data_1c154
-; 0x353e
 
-SECTION "Home@3547", ROM0[$3547]
+Properties_353e::
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY, 18, 18, 2, 1, 1, 400, Data_1c154
 
 PoppyBrosJrOnGrizzoProperties::
 	object_properties PROPERTY_REL_POS, 20, 26, 2, 1, $03, 200, Data_1c1a8
@@ -3985,7 +3996,15 @@ Data_358f::
 	object_properties PROPERTY_REL_POS | PROPERTY_2, 26, 32, $06
 ; 0x3593
 
-SECTION "Home@35a7", ROM0[$35a7]
+SECTION "Home@3596", ROM0[$3596]
+
+Data_3596::
+	object_properties PROPERTY_REL_POS, 12, 12, 1, 60, $01, 0
+
+Data_359d::
+	object_properties $00, 12, 12, 1, 1, $03, 200, $415a
+
+	db $04
 
 SpitStarProperties::
 	object_properties PROPERTY_REL_POS | PROPERTY_2 | PROPERTY_SINKABLE, 20, 20, $01
@@ -4009,8 +4028,14 @@ ExplosionProperties::
 SECTION "Home@35cd", ROM0[$35cd]
 
 PuffOfSmokeProperties::
-	object_properties PROPERTY_REL_POS | PROPERTY_2 | PROPERTY_SINKABLE, 2, 36, $10
-; 0x35d1
+	db PROPERTY_REL_POS | PROPERTY_2 | PROPERTY_SINKABLE
+
+KaboolaProperties::
+	object_properties PROPERTY_REL_POS, 36, 32, 1, 40, $09, 0, Data_1c1d8
+
+KaboolaBulletProperties::
+	object_properties $00, 6, 4, 1, 0, $10, 0, Data_1c154
+; 0x35e0
 
 SECTION "Home@35f2", ROM0[$35f2]
 
@@ -4021,17 +4046,33 @@ LololoProperties::
 SECTION "Home@364f", ROM0[$364f]
 
 TwoFaceProperties::
+BlipperProperties::
 	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $03, 300, Data_1c154
 
 GlunkProperties::
 	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $03, 500, Data_1c154
 ; 0x3658
 
-SECTION "Home@3685", ROM0[$3685]
+SECTION "Home@367c", ROM0[$367c]
+
+Data_367c::
+	object_properties PROPERTY_REL_POS, 8, 8, 1, 1, $01, 50, Data_1c154
 
 Data_3685::
 	db PROPERTY_REL_POS, $06, $06, $01
 ; 0x3689
+
+SECTION "Home@3661", ROM0[$3661]
+
+CoconutProperties::
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE, 6, 6, 1, 1, $03, 50, Data_1c154
+; 0x366a
+
+SECTION "Home@36a9", ROM0[$36a9]
+
+ConerProperties::
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY, 12, 12, 1, 1, $03, 300, Data_1c154
+; 0x366a
 
 SECTION "Home@368e", ROM0[$368e]
 

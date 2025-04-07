@@ -51,14 +51,14 @@ Data_1c000::
 
 .FloatIslands:
 	table_width 4
-	dw $4a39, $4aa9 ; FLOAT_ISLANDS_0
-	dw $4aad, $4ae4 ; FLOAT_ISLANDS_1
-	dw $4b1b, $4b31 ; FLOAT_ISLANDS_2
-	dw $4b47, $4b84 ; FLOAT_ISLANDS_3
-	dw $4b88, $4b92 ; FLOAT_ISLANDS_4
-	dw $4b9c, $4ba3 ; FLOAT_ISLANDS_5
-	dw $4bad, $4bb4 ; FLOAT_ISLANDS_6
-	dw $4bb8, $4bcb ; FLOAT_ISLANDS_7
+	dw Data_1ca39, Data_1caa9 ; FLOAT_ISLANDS_0
+	dw Data_1caad, Data_1cae4 ; FLOAT_ISLANDS_1
+	dw Data_1cb1b, Data_1cb31 ; FLOAT_ISLANDS_2
+	dw Data_1cb47, Data_1cb84 ; FLOAT_ISLANDS_3
+	dw Data_1cb88, Data_1cb92 ; FLOAT_ISLANDS_4
+	dw Data_1cb9c, Data_1cba3 ; FLOAT_ISLANDS_5
+	dw Data_1cbad, Data_1cbb4 ; FLOAT_ISLANDS_6
+	dw Data_1cbb8, Data_1cbcb ; FLOAT_ISLANDS_7
 	assert_table_length NUM_FLOAT_ISLANDS_AREAS
 
 .BubblyClouds:
@@ -197,7 +197,10 @@ Data_1c1cc::
 
 Data_1c1d2::
 	dw AnimScript_22b60, MotionScript_10008, Data_3421
-; 0x1c1d8
+
+Data_1c1d8::
+	dw AnimScript_21a79, MotionScript_10008, Data_3425
+; 0x1c1de
 
 SECTION "Bank 7@4202", ROMX[$4202], BANK[$7]
 
@@ -450,7 +453,7 @@ LevelObject_1c594:
 LevelObject_1c59e:
 	object 7, 22, 2, -43, AnimScript_WhispyWoods, MotionScript_10008, Data_3421
 LevelObject_1c5a8:
-	object 0, 26, 0, 0, AnimScript_21181, MotionScript_10008, Data_3421
+	object 0, 26, 0, 0, AnimScript_WhispyWoodsScrollLocker, MotionScript_10008, Data_3421
 
 Data_1c5b2:
 	dbw $00, NULL
@@ -721,7 +724,7 @@ Data_1c8ea:
 LevelObject_1c8f4:
 	object 11, 9, 0, 0, AnimScript_2167b, MotionScript_10008, MaximTomatoProperties, 10
 LevelObject_1c8ff:
-	object 11, 3, 0, 0, AnimScript_21598, MotionScript_10008, Data_3421
+	object 11, 3, 0, 0, AnimScript_CirclingEnemiesTrap, MotionScript_10008, Data_3421
 
 Data_1c909:
 	dbw $00, NULL
@@ -822,6 +825,369 @@ LevelObject_1ca24:
 	object 1, 1, 0, 0, AnimScript_20000, MotionScript_10008, Data_3425
 LevelObject_1ca2e:
 	object 5, 3, -8, 0, AnimScript_20967, MotionScript_1032d, Data_3421
+	db $1f
+
+Data_1ca39:
+	dbw $00, NULL
+	dbw $10, LevelObject_1cbcf
+	dbw $12, LevelObject_1cbd9
+	dbw $13, LevelObject_1cbe3
+	dbw $14, LevelObject_1cbed
+	dbw $16, LevelObject_1cbf7
+	dbw $19, LevelObject_1cc01
+	dbw $1b, LevelObject_1cc0b
+	dbw $20, LevelObject_1cc15
+	dbw $20, LevelObject_1cc1f
+	dbw $22, LevelObject_1cc29
+	dbw $25, LevelObject_1cc33
+	dbw $2d, LevelObject_1cc3d
+	dbw $2e, LevelObject_1cc47
+	dbw $36, LevelObject_1cc51
+	dbw $38, LevelObject_1cc5b
+	dbw $3c, LevelObject_1cc65
+	dbw $3d, LevelObject_1cc6f
+	dbw $43, LevelObject_1cc79
+	dbw $45, LevelObject_1cc83
+	dbw $50, LevelObject_1cc8d
+	dbw $50, LevelObject_1cc97
+	dbw $50, LevelObject_1cca1
+	dbw $53, LevelObject_1ccab
+	dbw $57, LevelObject_1ccb5
+	dbw $5a, LevelObject_1ccbf
+	dbw $5a, LevelObject_1ccc9
+	dbw $5c, LevelObject_1ccd4
+	dbw $61, LevelObject_1ccde
+	dbw $61, LevelObject_1cce8
+	dbw $67, LevelObject_1ccf2
+	dbw $68, LevelObject_1ccfc
+	dbw $6a, LevelObject_1cd06
+	dbw $6b, LevelObject_1cd10
+	dbw $6f, LevelObject_1cd1a
+	dbw $6f, LevelObject_1cd24
+	dbw $6f, LevelObject_1cd2e
+	db $ff ; end
+
+Data_1caa9:
+	dbw $00, NULL
+	db $ff ; end
+
+Data_1caad:
+	dbw $00, NULL
+	dbw $01, LevelObject_1cd38
+	dbw $02, LevelObject_1cd43
+	dbw $05, LevelObject_1cd4d
+	dbw $05, LevelObject_1cd57
+	dbw $0a, LevelObject_1cd61
+	dbw $0f, LevelObject_1cd6b
+	dbw $10, LevelObject_1cd75
+	dbw $15, LevelObject_1cd9d
+	dbw $17, LevelObject_1cd7f
+	dbw $18, LevelObject_1cda7
+	dbw $1a, LevelObject_1cd89
+	dbw $1e, LevelObject_1cd93
+	dbw $23, LevelObject_1cdb1
+	dbw $28, LevelObject_1cdbb
+	dbw $29, LevelObject_1cdc5
+	dbw $2b, LevelObject_1cdcf
+	dbw $2e, LevelObject_1cdd9
+	db $ff ; end
+
+Data_1cae4:
+	dbw $00, NULL
+	dbw $01, LevelObject_1cdbb
+	dbw $02, LevelObject_1cdd9
+	dbw $02, LevelObject_1cd6b
+	dbw $02, LevelObject_1cd93
+	dbw $03, LevelObject_1cd89
+	dbw $03, LevelObject_1cd7f
+	dbw $05, LevelObject_1cdc5
+	dbw $05, LevelObject_1cd61
+	dbw $08, LevelObject_1cdb1
+	dbw $09, LevelObject_1cd43
+	dbw $09, LevelObject_1cd57
+	dbw $09, LevelObject_1cdcf
+	dbw $0C, LevelObject_1cd75
+	dbw $0D, LevelObject_1cda7
+	dbw $0D, LevelObject_1cd38
+	dbw $0E, LevelObject_1cd9d
+	dbw $0E, LevelObject_1cd4d
+	db $ff ; end
+
+Data_1cb1b:
+	dbw $00, NULL
+	dbw $01, LevelObject_1cde4
+	dbw $02, LevelObject_1cdee
+	dbw $06, LevelObject_1cdf8
+	dbw $05, LevelObject_1ce16
+	dbw $07, LevelObject_1ce02
+	dbw $0F, LevelObject_1ce0c
+	db $ff ; end
+
+Data_1cb31:
+	dbw $00, NULL
+	dbw $01, LevelObject_1ce02
+	dbw $02, LevelObject_1cde4
+	dbw $03, LevelObject_1cdee
+	dbw $03, LevelObject_1cdf8
+	dbw $07, LevelObject_1ce0c
+	dbw $16, LevelObject_1ce16
+	db $ff ; end
+
+Data_1cb47:
+	dbw $00, NULL
+	dbw $0A, LevelObject_1ce21
+	dbw $0E, LevelObject_1ce2b
+	dbw $0F, LevelObject_1ce35
+	dbw $12, LevelObject_1ce40
+	dbw $14, LevelObject_1ce4a
+	dbw $1C, LevelObject_1ce54
+	dbw $1D, LevelObject_1ce5e
+	dbw $1E, LevelObject_1ce68
+	dbw $26, LevelObject_1ce72
+	dbw $26, LevelObject_1ce7c
+	dbw $27, LevelObject_1ce86
+	dbw $2C, LevelObject_1ce90
+	dbw $2E, LevelObject_1ce9a
+	dbw $31, LevelObject_1cea4
+	dbw $31, LevelObject_1ceae
+	dbw $33, LevelObject_1ceb8
+	dbw $36, LevelObject_1cec2
+	dbw $3C, LevelObject_1cecc
+	dbw $44, LevelObject_1ced6
+	db $ff ; end
+
+Data_1cb84:
+	dbw $00, NULL
+	db $ff ; end
+
+Data_1cb88:
+	dbw $00, NULL
+	dbw $01, LevelObject_1cee0
+	dbw $02, LevelObject_1ceeb
+	db $ff ; end
+
+Data_1cb92:
+	dbw $00, NULL
+	dbw $04, LevelObject_1cee0
+	dbw $04, LevelObject_1ceeb
+	db $ff ; end
+
+Data_1cb9c:
+	dbw $00, NULL
+	dbw $06, LevelObject_1cef6
+	db $ff ; end
+
+Data_1cba3:
+	dbw $00, NULL
+	dbw $02, LevelObject_1cef6
+	dbw $15, LevelObject_1cf00
+	db $ff ; end
+
+Data_1cbad:
+	dbw $00, NULL
+	dbw $05, LevelObject_1cf0b
+	db $ff ; end
+
+Data_1cbb4:
+	dbw $00, NULL
+	db $ff ; end
+
+Data_1cbb8:
+	dbw $00, NULL
+	dbw $0A, LevelObject_1cf29
+	dbw $0D, LevelObject_1cf15
+	dbw $0E, LevelObject_1cf1f
+	dbw $18, LevelObject_1cf33
+	dbw $26, LevelObject_1cf3e
+	db $ff ; end 
+
+Data_1cbcb:
+	dbw $00, NULL
+	db $ff ; end
+
+LevelObject_1cbcf:
+	object 16, 5, 0, 0, AnimScript_218b5, MotionScript_118d1, StandardEnemyProperties
+LevelObject_1cbd9:
+	object 18, 1, 0, 0, AnimScript_20647, MotionScript_104aa, StandardEnemyProperties
+LevelObject_1cbe3:
+	object 19, 3, 0, -8, AnimScript_20647, MotionScript_1067d, StandardEnemyProperties
+LevelObject_1cbed:
+	object 20, 0, 0, 0, AnimScript_218c7, MotionScript_1190f, StandardEnemyProperties
+LevelObject_1cbf7:
+	object 22, 5, 0, 0, AnimScript_2171c, MotionScript_10008, GlunkProperties
+LevelObject_1cc01:
+	object 25, 1, 0, 0, AnimScript_21906, MotionScript_10008, CoconutProperties
+LevelObject_1cc0b:
+	object 27, 4, 0, 0, AnimScript_BombItem, MotionScript_10008, BombProperties ; bug, missing consumable flag
+LevelObject_1cc15:
+	object 32, 4, 0, 0, AnimScript_205ae, MotionScript_103ff, StandardEnemyProperties
+LevelObject_1cc1f:
+	object 32, 4, 20, 0, AnimScript_205ae, MotionScript_103ff, StandardEnemyProperties
+LevelObject_1cc29:
+	object 34, 1, 0, 8, AnimScript_20647, MotionScript_1067d, StandardEnemyProperties
+LevelObject_1cc33:
+	object 37, 7, 0, 0, AnimScript_2187f, MotionScript_1179b, BlipperProperties
+LevelObject_1cc3d:
+	object 45, 7, 0, 0, AnimScript_2187f, MotionScript_117dd, BlipperProperties
+LevelObject_1cc47:
+	object 46, 4, 0, 0, AnimScript_21fff, MotionScript_10008, StandardEnemyProperties
+LevelObject_1cc51:
+	object 54, 7, -36, 0, AnimScript_20707, MotionScript_10459, ShotzoProperties
+LevelObject_1cc5b:
+	object 56, 7, 0, 0, AnimScript_2187f, MotionScript_117dd, BlipperProperties
+LevelObject_1cc65:
+	object 60, 0, -60, 0, AnimScript_20647, MotionScript_105bb, StandardEnemyProperties
+LevelObject_1cc6f:
+	object 61, 4, 0, 0, AnimScript_Coner, MotionScript_1170f, ConerProperties
+LevelObject_1cc79:
+	object 67, 4, 0, 0, AnimScript_218be, MotionScript_11945, StandardEnemyProperties
+LevelObject_1cc83:
+	object 69, 0, -120, 0, AnimScript_20650, MotionScript_105bb, StandardEnemyProperties
+LevelObject_1cc8d:
+	object 80, 7, -110, 16, AnimScript_218cd, MotionScript_11975, StandardEnemyProperties
+LevelObject_1cc97:
+	object 80, 7, -80, 40, AnimScript_218cd, MotionScript_11975, StandardEnemyProperties
+LevelObject_1cca1:
+	object 80, 7, -50, 16, AnimScript_218cd, MotionScript_11975, StandardEnemyProperties
+LevelObject_1ccab:
+	object 83, 3, 0, 0, AnimScript_218b5, MotionScript_11920, StandardEnemyProperties
+LevelObject_1ccb5:
+	object 87, 7, 0, 0, AnimScript_2187f, MotionScript_117dd, BlipperProperties
+LevelObject_1ccbf:
+	object 90, 7, -64, 0, AnimScript_20707, MotionScript_10459, ShotzoProperties
+LevelObject_1ccc9:
+	object 90, 4, 0, 0, AnimScript_20925, MotionScript_10008, MikeProperties, 0
+LevelObject_1ccd4:
+	object 92, 4, 0, 0, AnimScript_20647, MotionScript_10639, StandardEnemyProperties
+LevelObject_1ccde:
+	object 97, 4, 0, 0, AnimScript_20587, MotionScript_102ce, StandardEnemyGravityProperties
+LevelObject_1cce8:
+	object 97, 4, 20, 0, AnimScript_205e1, MotionScript_102ce, StandardEnemyGravityProperties
+LevelObject_1ccf2:
+	object 103, 2, 0, 0, AnimScript_21906, MotionScript_10008, CoconutProperties
+LevelObject_1ccfc:
+	object 104, 0, 0, 0, AnimScript_21906, MotionScript_10008, CoconutProperties
+LevelObject_1cd06:
+	object 106, 3, 0, 0, AnimScript_21906, MotionScript_10008, CoconutProperties
+LevelObject_1cd10:
+	object 107, 1, 0, 0, AnimScript_21906, MotionScript_10008, CoconutProperties
+LevelObject_1cd1a:
+	object 111, 3, 0, 0, AnimScript_Coner, MotionScript_1170f, ConerProperties
+LevelObject_1cd24:
+	object 111, 3, 20, 0, AnimScript_Coner, MotionScript_1170f, ConerProperties
+LevelObject_1cd2e:
+	object 111, 3, 40, 0, AnimScript_Coner, MotionScript_1170f, ConerProperties
+
+LevelObject_1cd38:
+	object 1, 13, 8, 0, AnimScript_EnergyDrink, MotionScript_10008, EnergyDrinkProperties, 1
+LevelObject_1cd43:
+	object 2, 9, 0, 0, AnimScript_217d7, MotionScript_10008, StandardEnemyProperties
+LevelObject_1cd4d:
+	object 5, 12, 0, 0, AnimScript_21796, MotionScript_10008, GlunkProperties
+LevelObject_1cd57:
+	object 5, 9, 0, 0, AnimScript_217c8, MotionScript_10008, StandardEnemyProperties
+LevelObject_1cd61:
+	object 10, 5, 0, 0, AnimScript_2186a, MotionScript_1059a, StandardEnemyProperties
+LevelObject_1cd6b:
+	object 15, 2, 0, 0, AnimScript_21906, MotionScript_10008, CoconutProperties
+LevelObject_1cd75:
+	object 16, 12, 0, 0, AnimScript_217c8, MotionScript_1042f, StandardEnemyProperties
+LevelObject_1cd7f:
+	object 23, 4, 0, 0, AnimScript_217fe, MotionScript_10444, StandardEnemyProperties
+LevelObject_1cd89:
+	object 26, 3, 0, 0, AnimScript_217fe, MotionScript_10444, StandardEnemyProperties
+LevelObject_1cd93:
+	object 30, 2, 8, 3, AnimScript_217fe, MotionScript_10444, StandardEnemyProperties
+LevelObject_1cd9d:
+	object 21, 12, 0, 0, AnimScript_217e9, MotionScript_10008, StandardEnemyProperties
+LevelObject_1cda7:
+	object 24, 11, 0, 0, AnimScript_217e9, MotionScript_10008, StandardEnemyProperties
+LevelObject_1cdb1:
+	object 35, 8, 0, 0, AnimScript_20572, MotionScript_1048f, GordoProperties
+LevelObject_1cdbb:
+	object 40, 1, 8, 8, AnimScript_217fe, MotionScript_10444, StandardEnemyProperties
+LevelObject_1cdc5:
+	object 41, 5, 8, 0, AnimScript_218e2, MotionScript_103ff, StandardEnemyProperties
+LevelObject_1cdcf:
+	object 43, 9, 0, 0, AnimScript_216f9, MotionScript_10008, BlipperProperties
+LevelObject_1cdd9:
+	object 46, 2, 8, 0, AnimScript_20934, MotionScript_10008, MaximTomatoProperties, 2
+
+LevelObject_1cde4:
+	object 1, 2, 0, 0, AnimScript_21911, MotionScript_10008, CoconutProperties
+LevelObject_1cdee:
+	object 2, 3, 0, 0, AnimScript_21911, MotionScript_10008, CoconutProperties
+LevelObject_1cdf8:
+	object 6, 3, 0, 0, AnimScript_21911, MotionScript_10008, CoconutProperties
+LevelObject_1ce02:
+	object 7, 1, 0, 0, AnimScript_21911, MotionScript_10008, CoconutProperties
+LevelObject_1ce0c:
+	object 15, 7, 0, 0, AnimScript_2187f, MotionScript_117dd, BlipperProperties
+LevelObject_1ce16:
+	object 6, 19, 8, 0, AnimScript_20946, MotionScript_10008, OneUpProperties, 3
+
+LevelObject_1ce21:
+	object 10, 7, 0, 0, AnimScript_2187f, MotionScript_117a7, BlipperProperties
+LevelObject_1ce2b:
+	object 14, 7, 0, 0, AnimScript_2187f, MotionScript_117b3, BlipperProperties
+LevelObject_1ce35:
+	object 15, 2, 8, 0, AnimScript_SpicyFood, MotionScript_10008, SpicyFoodProperties, 8
+LevelObject_1ce40:
+	object 18, 2, 0, 0, AnimScript_218e2, MotionScript_103ff, StandardEnemyProperties
+LevelObject_1ce4a:
+	object 20, 2, 0, 0, AnimScript_StationaryShotzo, MotionScript_10008, ShotzoProperties
+LevelObject_1ce54:
+	object 28, 1, 0, 0, AnimScript_218b5, MotionScript_11920, StandardEnemyProperties
+LevelObject_1ce5e:
+	object 29, 2, 3, 0, AnimScript_218b5, MotionScript_11920, StandardEnemyProperties
+LevelObject_1ce68:
+	object 30, 7, 0, 0, AnimScript_2187f, MotionScript_117a7, BlipperProperties
+LevelObject_1ce72:
+	object 38, 0, -48, 7, AnimScript_20647, MotionScript_105bb, StandardEnemyProperties
+LevelObject_1ce7c:
+	object 38, 0, -128, 7, AnimScript_20650, MotionScript_10602, StandardEnemyProperties
+LevelObject_1ce86:
+	object 39, 5, 0, 0, AnimScript_20671, MotionScript_10008, ShotzoProperties
+LevelObject_1ce90:
+	object 44, 3, 0, 0, AnimScript_2063b, MotionScript_10639, StandardEnemyProperties
+LevelObject_1ce9a:
+	object 46, 7, 0, 0, AnimScript_2187f, MotionScript_117dd, BlipperProperties
+LevelObject_1cea4:
+	object 49, 7, -8, 7, AnimScript_218fd, MotionScript_11987, StandardEnemyProperties
+LevelObject_1ceae:
+	object 49, 7, -128, 7, AnimScript_218fd, MotionScript_11987, StandardEnemyProperties
+LevelObject_1ceb8:
+	object 51, 5, 0, 0, AnimScript_2186a, MotionScript_1059a, StandardEnemyProperties
+LevelObject_1cec2:
+	object 54, 4, 0, 0, AnimScript_20671, MotionScript_10008, ShotzoProperties
+LevelObject_1cecc:
+	object 60, 4, 0, 0, AnimScript_216c2, MotionScript_1172d, BlipperProperties
+LevelObject_1ced6:
+	object 68, 2, 0, 0, AnimScript_2068c, MotionScript_10008, ShotzoProperties
+
+LevelObject_1cee0:
+	object 1, 4, 0, 0, AnimScript_20937, MotionScript_10008, OneUpProperties, 4
+LevelObject_1ceeb:
+	object 2, 4, 0, 0, AnimScript_2092b, MotionScript_10008, EnergyDrinkProperties, 5
+
+LevelObject_1cef6:
+	object 6, 2, 8, 0, AnimScript_2192e, MotionScript_10008, Data_3421
+LevelObject_1cf00:
+	object 5, 21, 8, 0, AnimScript_WarpStar, MotionScript_WarpStar, WarpStarFloorProperties, 6
+
+LevelObject_1cf0b:
+	object 4, 3, 8, -8, AnimScript_21943, MotionScript_10008, Data_3421
+
+LevelObject_1cf15:
+	object 13, 5, 0, 0, AnimScript_Coner, MotionScript_1170f, ConerProperties
+LevelObject_1cf1f:
+	object 14, 2, 0, 0, AnimScript_217d7, MotionScript_10414, StandardEnemyProperties
+LevelObject_1cf29:
+	object 10, 3, 0, 0, AnimScript_217d7, MotionScript_10414, StandardEnemyProperties
+LevelObject_1cf33:
+	object 24, 4, 8, 0, AnimScript_MintLeaf, MotionScript_10444, MintLeafProperties, 7
+LevelObject_1cf3e:
+	object 38, 1, 0, -5, AnimScript_2195e, MotionScript_Kaboola, KaboolaProperties
 
 SECTION "Bank 7@558f", ROMX[$558f], BANK[$7]
 

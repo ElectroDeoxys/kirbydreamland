@@ -143,7 +143,7 @@ SFXInhale_Channel2:
 
 SFX02_Channel1:
 	base_note A#1
-	audio_call $7246
+	audio_call AudioScript_17246
 	base_note C#2
 	audio_call AudioScript_17256
 	audio_end

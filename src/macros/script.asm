@@ -205,8 +205,18 @@ ENDM
 
 MACRO set_velocities
 	db \1 ; duration
+
+IF \2 >= $70 && \2 < $90
 	db \2 ; x vel
+ELSE
+	db (\2 << 3) >> 8 ; x vel
+ENDC
+
+IF \3 >= $70 && \3 < $90
 	db \3 ; y vel
+ELSE
+	db (\3 << 3) >> 8 ; y vel
+ENDC
 ENDM
 
 MACRO set_anim_script

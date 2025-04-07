@@ -2934,7 +2934,7 @@ AnimScript_1605:
 	frame  4, $5931
 	jump_rel .loop
 
-AnimScript_1623:
+AnimScript_1623::
 .loop
 	frame 20, $5919
 	frame 20, $5931
