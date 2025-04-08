@@ -121,7 +121,12 @@ Func_140c2:
 	ld hl, hKirbyFlags5
 	set KIRBY5F_INHALING_OBJECT_F, [hl]
 	jp SetObjectUpdateFuncArgAsAnimScript
-; 0x140ce
+
+Func_140ce:
+	call Func_140d5
+	ret c
+	jp SetObjectUpdateFuncArgAsAnimScript
+; 0x140d5
 
 SECTION "Bank 5@40d5", ROMX[$40d5], BANK[$5]
 

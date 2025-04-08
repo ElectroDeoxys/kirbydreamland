@@ -1435,7 +1435,30 @@ ScriptFunc_EnableScrollingAndFadeOut:
 	ld hl, hEngineFlags
 	set FADE_MODE_F, [hl] ; fade out
 	ret
-; 0x4a93
+
+; adds random amount between [-64, 63]
+; to object's x coordinate
+Func_4a93:
+	push bc
+	ld hl, wObjectXCoords + $1
+	add hl, bc
+	add hl, bc
+	add hl, bc
+	call Random
+	sra a ; /2
+	ld b, 0
+	bit 7, a
+	jr z, .positive
+	dec b ; -1
+.positive
+	add [hl]
+	ld [hli], a
+	ld a, [hl]
+	adc b
+	ld [hl], a
+	pop bc
+	ret
+; 0x4aad
 
 SECTION "Bank 1@4ab3", ROMX[$4ab3], BANK[$1]
 

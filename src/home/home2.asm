@@ -3942,7 +3942,16 @@ ShotzoBulletProperties::
 ShotzoProperties::
 	object_properties PROPERTY_REL_POS, 12, 12, 1, 100, $01, 30, Data_1c154
 
-SECTION "Home@34ff", ROM0[$34ff]
+SECTION "Home@34e4", ROM0[$34e4]
+
+ScarfyProperties::
+	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $03, 400, Data_1c160
+
+Properties_34ed::
+	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $01, 700, Data_1c154
+
+ParasolWaddleDeeProperties::
+	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $03, 300, Data_1c1ba
 
 CappyProperties::
 	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE, 12, 12, 1, 1, $03, 200, Data_1c154
@@ -4047,15 +4056,17 @@ SECTION "Home@364f", ROM0[$364f]
 
 TwoFaceProperties::
 BlipperProperties::
+PuffyProperties::
 	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $03, 300, Data_1c154
 
 GlunkProperties::
+SirKibbleProperties::
 	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $03, 500, Data_1c154
 ; 0x3658
 
 SECTION "Home@367c", ROM0[$367c]
 
-Data_367c::
+SirKibbleBladeProperties::
 	object_properties PROPERTY_REL_POS, 8, 8, 1, 1, $01, 50, Data_1c154
 
 Data_3685::
