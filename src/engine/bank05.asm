@@ -1639,7 +1639,7 @@ InitRAM::
 .loop_clear_wram
 	xor a
 	ld [hli], a
-	ld a, HIGH(STARTOF(WRAM0) + SIZEOF(WRAM0) + SIZEOF(WRAMX))
+	ld a, HIGH(STARTOF(WRAM0) + SIZEOF(WRAM0))
 	cp h
 	jr nz, .loop_clear_wram
 

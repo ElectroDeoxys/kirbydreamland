@@ -83,7 +83,7 @@ endif
 opts = -jv -l 0x01 -m MBC1 -p 0 -t "KIRBY DREAM LAND" -r 0
 
 $(rom): $(rom_obj) src/layout.link
-	$(RGBLINK) -m $(rom:.gb=.map) -n $(rom:.gb=.sym) -l src/layout.link -o $@ $(filter %.o,$^) -O baserom.gb
+	$(RGBLINK) -d -m $(rom:.gb=.map) -n $(rom:.gb=.sym) -l src/layout.link -o $@ $(filter %.o,$^) -O baserom.gb
 	$(RGBFIX) $(opts) $@
 
 

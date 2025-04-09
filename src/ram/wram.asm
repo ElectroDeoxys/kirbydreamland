@@ -27,9 +27,7 @@ wBlockQueue:: ; cb00
 	ds $80 * 6
 ENDU
 
-SECTION "WRAM1", WRAMX
-
-	ds $29
+	ds $229
 
 wBlockFillPtr:: dw ; d029
 wBlockFillTileIndex:: db ; d02b
@@ -544,7 +542,7 @@ wCurObjCollisionY:: ; d413
 wDisableBumpStars:: ; d414
 	db
 
-SECTION "Audio WRAM", WRAMX, ALIGN[8]
+SECTION "Audio WRAM", WRAM0, ALIGN[8]
 
 ; used in Multiply
 wMultiplicationTable:: ; dc00

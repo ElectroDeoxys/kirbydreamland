@@ -3347,7 +3347,7 @@ Func_1964::
 	ld [wYCoord], a
 	ld de, wBlockQueue
 	ld a, 10 ; can be ld b, 10
-	ld b, a   ;
+	ld b, a  ;
 .loop_rows
 	ld a, [wLevelWidth]
 	cp 10

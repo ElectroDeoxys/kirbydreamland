@@ -39,8 +39,6 @@ ROMX $f
 	"Bank F"
 WRAM0
 	"WRAM0"
-WRAMX 1
-	"WRAM1"
 	org $dc00
 	"Audio WRAM"
 VRAM $00
