@@ -202,9 +202,12 @@ MotionScript_102ce:
 
 MotionScript_102d1:
 	set_velocities  0, VEL_RIGHT_0_50, 0
-; 0x102d4
 
-SECTION "Bank 4@42da", ROMX[$42da], BANK[$4]
+MotionScript_102d4:
+	set_velocities  0, VEL_LEFT_0_75, 0
+
+MotionScript_102d7:
+	set_velocities  0, VEL_RIGHT_0_75, 0
 
 MotionScript_102da:
 	set_velocities  0, VEL_LEFT_1_00, 0
@@ -2281,7 +2284,13 @@ MotionScript_1166a:
 	set_velocities  0, 0, VEL_DOWN_3_00
 ; 0x1166d
 
-SECTION "Bank 4@5679", ROMX[$5679], BANK[$4]
+SECTION "Bank 4@5673", ROMX[$5673], BANK[$4]
+
+MotionScript_11673:
+	set_velocities  0, VEL_LEFT_2_00, VEL_DOWN_2_00
+
+MotionScript_11676:
+	set_velocities  0, VEL_LEFT_2_00, VEL_UP_2_00
 
 MotionScript_11679:
 	set_velocities 128, 0, VEL_UP_0_50
@@ -2542,9 +2551,9 @@ MotionScript_11920:
 	set_velocities  6, VEL_LEFT_0_75, VEL_UP_0_25
 	set_velocities  6, VEL_LEFT_0_75, VEL_DOWN_0_25
 	set_velocities  6, VEL_LEFT_0_75, VEL_DOWN_0_75
-	jump_random $55, $5920
+	jump_random 33 percent + 1, $5920
 	set_velocities  3, VEL_LEFT_0_75, VEL_DOWN_1_25
-	jump_random $80, $5920
+	jump_random 50 percent + 1, $5920
 	set_velocities  3, VEL_LEFT_0_75, VEL_DOWN_1_25
 	jump_abs .loop
 
@@ -2765,16 +2774,21 @@ MotionScript_11b2b:
 
 MotionScript_11b63:
 	set_velocities 40, VEL_LEFT_0_50, VEL_UP_2_00
-	script_call $5b75
+	script_call MotionScript_11b75
 	set_velocities  0, VEL_LEFT_0_50, VEL_UP_2_00
 
 MotionScript_11b6c:
 	set_velocities 40, VEL_LEFT_0_50, VEL_DOWN_2_00
-	script_call $5b75
+	script_call MotionScript_11b75
 	set_velocities  0, VEL_LEFT_0_50, VEL_DOWN_2_00
-; 0x11b75
 
-SECTION "Bank 4@5b93", ROMX[$5b93], BANK[$4]
+MotionScript_11b75:
+	set_anim_script AnimScript_21af6
+	set_velocities 10, 0, 0
+	create_object AnimScript_21220, MotionScript_11676, GlunkPodProperties
+	create_object AnimScript_21220, MotionScript_SpitStar_Left, GlunkPodProperties
+	create_object AnimScript_21220, MotionScript_11673, GlunkPodProperties
+	script_ret
 
 MotionScript_11b93:
 .loop
@@ -3047,8 +3061,8 @@ MotionScript_11dd5:
 
 MotionScript_11de9:
 	set_update_func Func_140c2, $5dc9
-	script_call $5db9
-	create_object $5ded, MotionScript_10008, Data_3685
+	script_call MotionScript_11db9
+	create_object AnimScript_21ded, MotionScript_10008, Data_3685
 	set_scripts $5e14, MotionScript_10008
 
 MotionScript_11dfd:
@@ -3059,8 +3073,8 @@ MotionScript_11dfd:
 
 MotionScript_11e11:
 	set_update_func Func_140c2, $5ddb
-	script_call $5db9
-	create_object $5ded, MotionScript_10008, Data_3685
+	script_call MotionScript_11db9
+	create_object AnimScript_21ded, MotionScript_10008, Data_3685
 	set_scripts $5e38, MotionScript_10008
 
 MotionScript_11e25:
@@ -3375,14 +3389,14 @@ MotionScript_128fe:
 	set_value wBossHPCounter, 3
 	set_value wd3c1, $01
 	create_object AnimScript_BossHPIncrementer, MotionScript_10008, Data_3421
-	set_anim_script $6863
+	set_anim_script AnimScript_22863
 	set_velocities 100, 0, 0
 	set_velocities 20, 0, VEL_DOWN_1_00
 	set_velocities  8, 0, VEL_DOWN_0_50
 	set_velocities  8, 0, 0
 	set_velocities  8, VEL_LEFT_1_8TH, VEL_UP_0_50
 	set_object_properties $35e0
-	set_anim_script $6846
+	set_anim_script AnimScript_22846
 .loop
 	script_call .script_12a71
 	script_call .script_129f4
@@ -3391,7 +3405,7 @@ MotionScript_128fe:
 	jump_rel .loop
 
 .script_12939
-	set_anim_script $6846
+	set_anim_script AnimScript_22846
 	set_velocities  3, VEL_RIGHT_1_25, VEL_DOWN_0_25
 	set_velocities  3, VEL_RIGHT_1_00, VEL_DOWN_0_50
 	set_velocities  3, VEL_RIGHT_0_75, VEL_DOWN_0_50
@@ -3441,22 +3455,22 @@ MotionScript_128fe:
 	script_ret
 
 .script_129c9
-	set_anim_script $6854
+	set_anim_script AnimScript_22854
 	set_velocities 40, 0, 0
-	set_anim_script $6846
+	set_anim_script AnimScript_22846
 	jump_abs .spawn_waddle_doo ; unnecessary jump
 .spawn_waddle_doo
 	play_sfx SFX_30
 	branch_kirby_pos .script_129e4, .script_129ec
 .script_129e4
-	create_object $69c9, $42d4, StandardEnemyGravityProperties
+	create_object AnimScript_229c9, MotionScript_102d4, StandardEnemyGravityProperties
 	script_ret
 .script_129ec
-	create_object $69fe, $42d7, StandardEnemyGravityProperties
+	create_object AnimScript_229fe, MotionScript_102d7, StandardEnemyGravityProperties
 	script_ret
 
 .script_129f4
-	set_anim_script $6854
+	set_anim_script AnimScript_22854
 	set_velocities  3, VEL_LEFT_0_25, VEL_DOWN_1_00
 	set_velocities  3, VEL_LEFT_0_50, VEL_DOWN_1_00
 	set_velocities  3, VEL_LEFT_0_75, VEL_DOWN_1_00
@@ -3501,18 +3515,54 @@ MotionScript_128fe:
 	script_ret
 
 .script_12a71
-	create_object $49d6, $6b18, GlunkPodProperties
+	create_object AnimScript_Bullet, MotionScript_12b18, GlunkPodProperties
 	set_velocities  3, 0, 0
-	create_object $49d6, $6ad9, GlunkPodProperties
+	create_object AnimScript_Bullet, MotionScript_12ad9, GlunkPodProperties
 	set_velocities  3, 0, 0
-	create_object $49d6, $6aee, GlunkPodProperties
+	create_object AnimScript_Bullet, MotionScript_12aee, GlunkPodProperties
 	set_velocities  3, 0, 0
-	create_object $49d6, $6b03, GlunkPodProperties
+	create_object AnimScript_Bullet, MotionScript_12b03, GlunkPodProperties
 	set_velocities  3, 0, 0
 	script_ret
 ; 0x12a9a
 
-SECTION "Bank 4@6b2d", ROMX[$6b2d], BANK[$4]
+SECTION "Bank 4@6ad9", ROMX[$6ad9], BANK[$4]
+
+MotionScript_12ad9:
+	set_velocities  8, VEL_LEFT_0_50, VEL_UP_0_75
+	set_velocities  8, VEL_LEFT_0_50, VEL_UP_1_8TH
+	set_velocities  8, VEL_LEFT_0_50, VEL_DOWN_0_75
+	set_velocities  8, VEL_LEFT_0_50, VEL_DOWN_1_25
+	set_velocities  8, VEL_LEFT_0_50, VEL_DOWN_3_00
+	set_velocities  8, VEL_LEFT_0_50, VEL_DOWN_4_00
+	set_velocities  0, VEL_LEFT_0_50, VEL_DOWN_6_00
+
+MotionScript_12aee:
+	set_velocities  8, VEL_LEFT_1_25, VEL_UP_0_75
+	set_velocities  8, VEL_LEFT_1_25, VEL_UP_1_8TH
+	set_velocities  8, VEL_LEFT_1_25, VEL_DOWN_0_75
+	set_velocities  8, VEL_LEFT_1_25, VEL_DOWN_1_25
+	set_velocities  8, VEL_LEFT_1_25, VEL_DOWN_3_00
+	set_velocities  8, VEL_LEFT_1_25, VEL_DOWN_4_00
+	set_velocities  0, VEL_LEFT_1_25, VEL_DOWN_6_00
+
+MotionScript_12b03:
+	set_velocities  8, VEL_LEFT_2_00, VEL_UP_0_75
+	set_velocities  8, VEL_LEFT_2_00, VEL_UP_1_8TH
+	set_velocities  8, VEL_LEFT_2_00, VEL_DOWN_0_75
+	set_velocities  8, VEL_LEFT_2_00, VEL_DOWN_1_25
+	set_velocities  8, VEL_LEFT_2_00, VEL_DOWN_3_00
+	set_velocities  8, VEL_LEFT_2_00, VEL_DOWN_4_00
+	set_velocities  0, VEL_LEFT_2_00, VEL_DOWN_6_00
+
+MotionScript_12b18:
+	set_velocities  8, VEL_RIGHT_1_8TH, VEL_UP_0_75
+	set_velocities  8, VEL_RIGHT_1_8TH, VEL_UP_1_8TH
+	set_velocities  8, VEL_RIGHT_1_8TH, VEL_DOWN_0_75
+	set_velocities  8, VEL_RIGHT_1_8TH, VEL_DOWN_1_25
+	set_velocities  8, VEL_RIGHT_1_8TH, VEL_DOWN_3_00
+	set_velocities  8, VEL_RIGHT_1_8TH, VEL_DOWN_4_00
+	set_velocities  0, VEL_RIGHT_1_8TH, VEL_DOWN_6_00
 
 MotionScript_12b2d:
 	set_value wBossHPCounter, 6
@@ -3536,20 +3586,20 @@ MotionScript_12b2d:
 	set_velocities  8, 0, 0
 	set_object_properties $35e9
 	set_value wKirbySideOfScreen, $00
-	script_call $6d57
+	script_call MotionScript_12d57
 .asm_12b7a
-	jump_random $4e, $6bee
+	jump_random 31 percent - 1, $6bee
 	jump_abs .asm_12b8f
 
 .asm_12b81
-	jump_random $4e, $6b8f
+	jump_random 31 percent - 1, $6b8f
 	jump_abs .script_12bcc
 
-	jump_random $4e, $6bcc
+	jump_random 31 percent - 1, $6bcc
 	jump_abs .asm_12bee
 
 .asm_12b8f
-	script_call $6dcf
+	script_call MotionScript_12dcf
 	jump_if_equal wKirbySideOfScreen, $ff, .script_12bb2
 	set_value wKirbySideOfScreen, $ff
 	script_exec Func_495c
@@ -3577,19 +3627,19 @@ MotionScript_12b2d:
 	dw $6cdd
 
 .script_12bcc
-	script_call $6dcf
+	script_call MotionScript_12dcf
 	play_sfx SFX_30
 	branch_kirby_pos .script_12bda, .script_12be4
 .script_12bda
-	create_object $69c9, $42d4, StandardEnemyGravityProperties
+	create_object AnimScript_229c9, $42d4, StandardEnemyGravityProperties
 	jump_abs .asm_12b7a
 .script_12be4
-	create_object $69fe, $42d7, StandardEnemyGravityProperties
+	create_object AnimScript_229fe, $42d7, StandardEnemyGravityProperties
 	jump_abs .asm_12b7a
 
 .asm_12bee
-	script_call $6dcf
-	set_anim_script $6949
+	script_call MotionScript_12dcf
+	set_anim_script AnimScript_22949
 	script_repeat 2
 	create_object $49c0, $6d6f, GlunkPodProperties
 	create_object $49c0, $6d9f, GlunkPodProperties
@@ -3642,6 +3692,46 @@ MotionScript_12b2d:
 	script_repeat_end
 	jump_abs .asm_12b81
 ; 0x12cc1
+
+SECTION "Bank 4@6d57", ROMX[$6d57], BANK[$4]
+
+MotionScript_12d57:
+	set_anim_script AnimScript_228f9
+	set_velocities  9, 0, VEL_UP_1_8TH
+	set_velocities  9, 0, VEL_UP_0_25
+	set_velocities  9, 0, VEL_UP_1_8TH
+	set_velocities  9, 0, VEL_DOWN_1_8TH
+	set_velocities  9, 0, VEL_DOWN_0_25
+	set_velocities  9, 0, VEL_DOWN_1_8TH
+	script_ret
+; 0x12d6f
+
+SECTION "Bank 4@6dcf", ROMX[$6dcf], BANK[$4]
+
+MotionScript_12dcf:
+	set_anim_script AnimScript_22960
+	jumptable_random 1
+	dw .script_12dda
+	dw .script_12df0
+
+.script_12dda
+	script_repeat 2
+	set_velocities  9, 0, VEL_UP_1_8TH
+	set_velocities  9, 0, VEL_UP_0_25
+	set_velocities  9, 0, VEL_UP_1_8TH
+	set_velocities  9, 0, VEL_DOWN_1_8TH
+	set_velocities  9, 0, VEL_DOWN_0_25
+	set_velocities  9, 0, VEL_DOWN_1_8TH
+	script_repeat_end
+	script_ret
+
+.script_12df0
+	set_velocities  9, 0, VEL_UP_1_8TH
+	set_velocities  9, 0, VEL_UP_0_25
+	set_velocities  9, 0, VEL_DOWN_0_25
+	set_velocities  9, 0, VEL_DOWN_1_8TH
+	script_ret
+; 0x12dfd
 
 SECTION "Bank 4@6e09", ROMX[$6e09], BANK[$4]
 

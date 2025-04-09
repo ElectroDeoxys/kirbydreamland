@@ -2696,6 +2696,15 @@ AnimScript_21aa8:
 	script_end
 ; 0x21ab6
 
+SECTION "Bank 8@5af6", ROMX[$5af6], BANK[$8]
+
+AnimScript_21af6:
+.loop
+	frame  8, $4518
+	frame  8, $4520
+	jump_abs .loop
+; 0x21aff
+
 SECTION "Bank 8@5b08", ROMX[$5b08], BANK[$8]
 
 AnimScript_21b08:
@@ -3576,7 +3585,23 @@ AnimScript_224e4:
 	frame  0, $4f90
 ; 0x224ea
 
-SECTION "Bank 8@6863", ROMX[$6863], BANK[$8]
+SECTION "Bank 8@6846", ROMX[$6846], BANK[$8]
+
+AnimScript_22846:
+.loop
+	frame  6, $67b9
+	frame  6, $67d1
+	frame  6, $67e9
+	frame  6, $6801
+	jump_rel .loop
+
+AnimScript_22854:
+.loop
+	frame  2, $67b9
+	frame  2, $67d1
+	frame  2, $67e9
+	frame  2, $6801
+	jump_abs .loop
 
 AnimScript_22863:
 .loop
@@ -3620,7 +3645,74 @@ AnimScript_228aa:
 	frame  8, $6469
 	frame  8, $6429
 	frame  0, $6469
-; 0x228f9
+
+AnimScript_228f9:
+.loop
+	script_exec Func_495c
+	branch_kirby_pos .script_22903, .script_22916
+.script_22903
+	jumptable wd3bd
+	dw .script_22929
+	dw .script_22929
+	dw .script_22941
+	dw .script_22941
+	dw .script_22941
+	dw .script_22941
+	dw .script_22941
+	dw .script_22929
+
+.script_22916
+	jumptable wd3bd
+	dw .script_22931
+	dw .script_22931
+	dw .script_22939
+	dw .script_22939
+	dw .script_22939
+	dw .script_22939
+	dw .script_22939
+	dw .script_22931
+
+.script_22929
+	frame 20, $6529
+	frame 20, $6569
+	jump_rel .loop
+.script_22931
+	frame 20, $65a9
+	frame 20, $65e9
+	jump_rel .loop
+.script_22939
+	frame 20, $64a9
+	frame 20, $64e9
+	jump_rel .loop
+.script_22941
+	frame 20, $6429
+	frame 20, $6469
+	jump_rel .loop
+
+AnimScript_22949:
+.loop
+	branch_kirby_pos .script_22950, .script_22958
+.script_22950
+	frame  2, $6429
+	frame  2, $6469
+	jump_rel .loop
+.script_22958
+	frame  2, $64a9
+	frame  2, $64e9
+	jump_rel .loop
+
+AnimScript_22960:
+.loop
+	branch_kirby_pos .script_22967, .script_2296f
+.script_22967
+	frame  8, $6429
+	frame  8, $6469
+	jump_rel .loop
+.script_2296f
+	frame  8, $64a9
+	frame  8, $64e9
+	jump_rel .loop
+; 0x22977
 
 SECTION "Bank 8@69c9", ROMX[$69c9], BANK[$8]
 

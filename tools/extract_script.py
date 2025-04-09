@@ -160,7 +160,7 @@ commands = {
 
 def get_command_string(cmd_byte, args, address_labels, cur_bank):
     def format_address_in_bank(addr, bank, default_prefix):
-        abs_offset = addr + (bank - 1) * 0x4000
+        abs_offset = addr if bank == 0 else addr + (bank - 1) * 0x4000
         if abs_offset in address_labels:
             return address_labels[abs_offset]
         elif abs_offset in syms:
@@ -224,6 +224,8 @@ def get_command_string(cmd_byte, args, address_labels, cur_bank):
     res_str = cmd_str + ' '
 
     for arg_type, arg in args:
+        if arg_type == 't':
+            res_str = res_str[:-2]
         res_str += arg_formatter_map[arg_type](arg) + ', '
 
     return res_str[:-2]
@@ -237,7 +239,6 @@ for o in reader.standardise_list(args.offsets):
     bank = int(offset / 0x4000)
     source = reader.get_rom_bytes(bank * 0x4000, 0x4000)
     pos = offset % 0x4000
-
 
     parsed_commands = []
     jump_addresses = set()
@@ -282,7 +283,7 @@ for o in reader.standardise_list(args.offsets):
                     local_address = abs_address - (bank - 1) * 0x4000
                 jump_addresses.add(abs_address)
                 parsed_commands[-1][2][0] = ('l', local_address)
-                if abs_address < cmd_pos:
+                if abs_address < cmd_pos and (pos + bank * 0x4000) not in jump_addresses:
                     break
             elif cmd_byte == SET_SCRIPTS:
                 gfx_script_addr = parsed_commands[-1][2][0]
@@ -304,15 +305,17 @@ for o in reader.standardise_list(args.offsets):
                         parsed_commands[-1] = (SET_OBJECT_PROPERTIES, cmd_pos, [arg])
                         pos += n
                     elif syms[func_addr] == "ScriptFunc_SetObjectPalLight":
-                        parsed_commands[-1] = (SET_PAL_LIGHT, cmd_pos, None)
+                        parsed_commands[-1] = (SET_PAL_LIGHT, cmd_pos, [])
                     elif syms[func_addr] == "ScriptFunc_SetObjectPalDark":
-                        parsed_commands[-1] = (SET_PAL_DARK, cmd_pos, None)
+                        parsed_commands[-1] = (SET_PAL_DARK, cmd_pos, [])
                     elif syms[func_addr] == "ScriptFunc_SetKirbyPosition":
-                        parsed_commands[-1] = (SET_KIRBY_POS, cmd_pos, None)
+                        parsed_commands[-1] = (SET_KIRBY_POS, cmd_pos, [])
                     elif syms[func_addr] == "ScriptFunc_BranchOnKirbyRelativePosition" or syms[func_addr] == "ScriptFuncBranchOnKirbyVerticalAlignment":
                         n1, arg1 = parse_local_address(source[pos : pos + 2])
                         n2, arg2 = parse_local_address(source[pos + 2: pos + 4])
-                        parsed_commands[-1] = (BRANCH_KIRBY_POS if syms[func_addr] == "ScriptFuncBranchOnKirbyRelativePosition" else BRANCH_ON_KIRBY_VERTICAL_ALIGNMENT, cmd_pos, [arg1, arg2])
+                        jump_addresses.add(arg1[1] + (bank - 1) * 0x4000)
+                        jump_addresses.add(arg2[1] + (bank - 1) * 0x4000)
+                        parsed_commands[-1] = (BRANCH_KIRBY_POS if syms[func_addr] == "ScriptFunc_BranchOnKirbyRelativePosition" else BRANCH_ON_KIRBY_VERTICAL_ALIGNMENT, cmd_pos, [arg1, arg2])
                         pos += n1 + n2
 
             elif cmd_byte == SCRIPT_EXEC_ARG:
@@ -332,7 +335,19 @@ for o in reader.standardise_list(args.offsets):
                     jump_addresses.add(ptr + (bank - 1) * 0x4000)
                     entries.append(ptr)
                     pos += 2
-                parsed_commands[-1] = (cmd_byte, cmd_pos, [('t', entries)])
+                parsed_commands[-1][2].append(('t', entries))
+            elif cmd_byte == JUMPTABLE:
+                # parse pointer table until we get to an entry
+                # that doesn't look like a pointer
+                entries = []
+                while True:
+                    ptr = parse_word(source[pos : pos + 2])
+                    if ptr < 0x4000 or ptr > 0x8000:
+                        break
+                    jump_addresses.add(ptr + (bank - 1) * 0x4000)
+                    entries.append(ptr)
+                    pos += 2
+                parsed_commands[-1][2].append(('t', entries))
 
             if cmd_byte in [SCRIPT_END, SCRIPT_RET, SET_SCRIPTS]:
                 break # end of script
