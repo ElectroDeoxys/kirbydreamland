@@ -1,49 +1,49 @@
 import mmap
 from math import floor as floor
 
-def getROMBytes(offset, len):
+def get_rom_bytes(offset, len):
 # get len number of bytes from offset
     with open('baserom.gb') as rom:
         romMap = mmap.mmap(rom.fileno(), 0, access=mmap.ACCESS_READ)
         return romMap[offset : offset + len]
 
-def getROMByte(offset):
+def get_rom_byte(offset):
 # get one byte from offset
-    return getROMBytes(offset, 1)
+    return get_rom_bytes(offset, 1)
 
-def getPointerAt(offset):
+def get_pointer_at(offset):
 # returns the abs offset of pointer at offset
     bank = int(offset / 0x4000) # round down
-    return pointerBytesToBankOffset(getROMBytes(offset, 2), bank)
+    return pointer_bytes_to_bank_offset(get_rom_bytes(offset, 2), bank)
 
-def absOffsetToRel(offset):
+def abs_offset_to_rel(offset):
     if offset >= 0x4000:
         return (offset % 0x4000) + 0x4000
     else:
         return offset
 
-def pointerBytesToOffset(ptrBytes):
+def pointer_bytes_to_offset(ptrBytes):
     assert(len(ptrBytes) == 3)
-    return pointerBytesToBankOffset(ptrBytes[1:2], ptrBytes[0])
+    return pointer_bytes_to_bank_offset(ptrBytes[1:2], ptrBytes[0])
 
-def pointerBytesToBankOffset(ptrBytes, bank):
+def pointer_bytes_to_bank_offset(ptrBytes, bank):
     assert(len(ptrBytes) == 2)
     if bank == 0 or ptrBytes[1] < 0x40:
         return ptrBytes[0] + ptrBytes[1] * 0x100
     else:
         return (bank * 0x4000) + (ptrBytes[0] + ptrBytes[1] * 0x100) - 0x4000
 
-def standardiseList(ls):
+def standardise_list(ls):
 # sorts list 
     listSorted = sorted(ls)
     return list(dict.fromkeys(listSorted))
 
-def offsetHeaderStr(offset):
-    return '; {:0x} ('.format(offset) + '{:02x}:'.format(floor(offset / 0x4000)) + '{:0x}'.format(absOffsetToRel(offset)) + ')'
+def offset_header_str(offset):
+    return '; {:0x} ('.format(offset) + '{:02x}:'.format(floor(offset / 0x4000)) + '{:0x}'.format(abs_offset_to_rel(offset)) + ')'
 
-def getDataString(offset, len, suffix = 'Data_', export = False):
-    outStr = suffix + '{:0x}'.format(offset)
-    outStr += (': ', ':: ')[export] + offsetHeaderStr(offset) + '\n'
-    outStr += '{}' # for inserting the content
-    outStr += '; 0x{:0x}\n'.format(offset + len)
-    return outStr
+def get_data_string(offset, len, suffix = 'Data_', export = False):
+    out_str = suffix + '{:0x}'.format(offset)
+    out_str += (': ', ':: ')[export] + offset_header_str(offset) + '\n'
+    out_str += '{}' # for inserting the content
+    out_str += '; 0x{:0x}\n'.format(offset + len)
+    return out_str

@@ -1,6 +1,7 @@
 import reader
 import argparse
 import symbols
+import re
 
 parser = argparse.ArgumentParser(description='Extracts animation and motion scripts.')
 parser.add_argument('offsets', metavar='offsets', type=str, nargs='+',
@@ -9,295 +10,361 @@ parser.add_argument('offsets', metavar='offsets', type=str, nargs='+',
 args = parser.parse_args()
 
 syms = symbols.read_symbols()
+ram = symbols.read_ram()
 
-def parseByte(args):
-    return args
+x_velocities = { 0X00: "0", 0X70: "VEL_RIGHT_0_00", 0X71: "VEL_RIGHT_1_64TH", 0X72: "VEL_RIGHT_1_32TH", 0X73: "VEL_RIGHT_1_16TH", 0X74: "VEL_RIGHT_1_8TH", 0X75: "VEL_RIGHT_0_25", 0X76: "VEL_RIGHT_0_50", 0X77: "VEL_RIGHT_0_75", 0X78: "VEL_RIGHT_1_00", 0X79: "VEL_RIGHT_1_25", 0X7A: "VEL_RIGHT_2_00", 0X7B: "VEL_RIGHT_3_00", 0X7C: "VEL_RIGHT_4_00", 0X7D: "VEL_RIGHT_6_00", 0X7E: "VEL_RIGHT_8_00", 0X7F: "VEL_RIGHT_16_00", 0X80: "VEL_LEFT_0_00", 0X81: "VEL_LEFT_1_64TH", 0X82: "VEL_LEFT_1_32TH", 0X83: "VEL_LEFT_1_16TH", 0X84: "VEL_LEFT_1_8TH", 0X85: "VEL_LEFT_0_25", 0X86: "VEL_LEFT_0_50", 0X87: "VEL_LEFT_0_75", 0X88: "VEL_LEFT_1_00", 0X89: "VEL_LEFT_1_25", 0X8A: "VEL_LEFT_2_00", 0X8B: "VEL_LEFT_3_00", 0X8C: "VEL_LEFT_4_00", 0X8D: "VEL_LEFT_6_00", 0X8E: "VEL_LEFT_8_00", 0X8F: "VEL_LEFT_16_00" }
+y_velocities = { 0X00: "0", 0X70: "VEL_DOWN_0_00", 0X71: "VEL_DOWN_1_64TH", 0X72: "VEL_DOWN_1_32TH", 0X73: "VEL_DOWN_1_16TH", 0X74: "VEL_DOWN_1_8TH", 0X75: "VEL_DOWN_0_25", 0X76: "VEL_DOWN_0_50", 0X77: "VEL_DOWN_0_75", 0X78: "VEL_DOWN_1_00", 0X79: "VEL_DOWN_1_25", 0X7A: "VEL_DOWN_2_00", 0X7B: "VEL_DOWN_3_00", 0X7C: "VEL_DOWN_4_00", 0X7D: "VEL_DOWN_6_00", 0X7E: "VEL_DOWN_8_00", 0X7F: "VEL_DOWN_16_00", 0X80: "VEL_UP_0_00", 0X81: "VEL_UP_1_64TH", 0X82: "VEL_UP_1_32TH", 0X83: "VEL_UP_1_16TH", 0X84: "VEL_UP_1_8TH", 0X85: "VEL_UP_0_25", 0X86: "VEL_UP_0_50", 0X87: "VEL_UP_0_75", 0X88: "VEL_UP_1_00", 0X89: "VEL_UP_1_25", 0X8A: "VEL_UP_2_00", 0X8B: "VEL_UP_3_00", 0X8C: "VEL_UP_4_00", 0X8D: "VEL_UP_6_00", 0X8E: "VEL_UP_8_00", 0X8F: "VEL_UP_16_00" }
+sfx = {0X00: "SFX_00", 0X01: "SFX_INHALE", 0X02: "SFX_02", 0X03: "SFX_SWALLOW", 0X04: "SFX_JUMP", 0X05: "SFX_BUMP", 0X06: "SFX_DAMAGE", 0X07: "SFX_ENTER_DOOR", 0X08: "SFX_08", 0X09: "SFX_POWER_UP", 0X0A: "SFX_EXPLOSION", 0X0B: "SFX_RESTORE_HP", 0X0C: "SFX_WARP_STAR", 0X0D: "SFX_13", 0X0E: "SFX_14", 0X0F: "SFX_PUFF", 0X10: "SFX_STAR_SPIT", 0X11: "SFX_17", 0X12: "SFX_18", 0X13: "SFX_19", 0X14: "SFX_20", 0X15: "SFX_LOSE_LIFE", 0X16: "SFX_1UP", 0X17: "SFX_23", 0X18: "SFX_PAUSE_OFF", 0X19: "SFX_25", 0X1A: "SFX_CURSOR", 0X1B: "SFX_GAME_START", 0X1C: "SFX_28", 0X1D: "SFX_29", 0X1E: "SFX_30", 0X1F: "SFX_31", 0X20: "SFX_BOSS_DEFEAT", 0X21: "SFX_PAUSE_ON", 0X22: "SFX_34", 0X23: "SFX_35", 0XFF: "SFX_NONE"}
+music = {0X00: "MUSIC_BUBBLY_CLOUDS_INTRO", 0X01: "MUSIC_GREEN_GREENS_INTRO", 0X02: "MUSIC_INVINCIBILITY_CANDY", 0X03: "MUSIC_GAME_OVER", 0X04: "MUSIC_SPARKLING_STAR", 0X05: "MUSIC_TITLESCREEN", 0X06: "MUSIC_FLOAT_ISLANDS_INTRO", 0X07: "MUSIC_LIFE_LOST", 0X08: "MUSIC_BOSS_BATTLE", 0X09: "MUSIC_MINT_LEAF", 0X0A: "MUSIC_VICTORY", 0X0B: "MUSIC_CREDITS", 0X0C: "MUSIC_CASTLE_LOLOLO_INTRO", 0X0D: "MUSIC_GREEN_GREENS", 0X0E: "MUSIC_FLOAT_ISLANDS", 0X0F: "MUSIC_BUBBLY_CLOUDS", 0X10: "MUSIC_CASTLE_LOLOLO", 0X11: "MUSIC_KING_DEDEDE_BATTLE", 0X12: "MUSIC_MT_DEDEDE", 0XFF: "MUSIC_NONE"}
 
-def parseWord(args):
-    return [args[0] + args[1] * 0x100]
+def parse_word(args):
+    return args[0] + args[1] * 0x100
 
-def parse2Words(args):
-    return parseWord(args[0:2]) + parseWord(args[2:4])
+def parse_local_address(data):
+    return (2, ('l', parse_word(data)))
 
-def parseWordWithByte(args):
-    return parseWord(args[0:2]) + [args[2]]
-
-def parseByteWithWord(args):
-    return [args[0]] + parseWord(args[1:3])
-
-def parseWordByteWord(args):
-    return parseWord(args[0:2]) + [args[2]] + parseWord(args[3:5])
-
-def parseWord2Bytes(args):
-    return parseWord(args[0:2])+ [args[2], args[3]]
-
-def parseAnimJr(args):
+def parse_jump_offset(args):
     offs = args[0]
     if offs >= 0x80:
         offs = offs - 0x100
-    return [offs]
+    return (1, ('j', offs))
 
-def parseCreateObject(args):
-    return parseWord(args[0:2]) + parseWord(args[2:4]) + parseWord(args[4:6])
+def parse_anim_script(data):
+    return (2, ('a', parse_word(data)))
 
-xVelocities = { 0x00: "0", 0x70: "VEL_RIGHT_0_00", 0x71: "VEL_RIGHT_1_64TH", 0x72: "VEL_RIGHT_1_32TH", 0x73: "VEL_RIGHT_1_16TH", 0x74: "VEL_RIGHT_1_8TH", 0x75: "VEL_RIGHT_0_25", 0x76: "VEL_RIGHT_0_50", 0x77: "VEL_RIGHT_0_75", 0x78: "VEL_RIGHT_1_00", 0x79: "VEL_RIGHT_1_25", 0x7a: "VEL_RIGHT_2_00", 0x7b: "VEL_RIGHT_3_00", 0x7c: "VEL_RIGHT_4_00", 0x7d: "VEL_RIGHT_6_00", 0x7e: "VEL_RIGHT_8_00", 0x7f: "VEL_RIGHT_16_00", 0x80: "VEL_LEFT_0_00", 0x81: "VEL_LEFT_1_64TH", 0x82: "VEL_LEFT_1_32TH", 0x83: "VEL_LEFT_1_16TH", 0x84: "VEL_LEFT_1_8TH", 0x85: "VEL_LEFT_0_25", 0x86: "VEL_LEFT_0_50", 0x87: "VEL_LEFT_0_75", 0x88: "VEL_LEFT_1_00", 0x89: "VEL_LEFT_1_25", 0x8a: "VEL_LEFT_2_00", 0x8b: "VEL_LEFT_3_00", 0x8c: "VEL_LEFT_4_00", 0x8d: "VEL_LEFT_6_00", 0x8e: "VEL_LEFT_8_00", 0x8f: "VEL_LEFT_16_00" }
-yVelocities = { 0x00: "0", 0x70: "VEL_DOWN_0_00", 0x71: "VEL_DOWN_1_64TH", 0x72: "VEL_DOWN_1_32TH", 0x73: "VEL_DOWN_1_16TH", 0x74: "VEL_DOWN_1_8TH", 0x75: "VEL_DOWN_0_25", 0x76: "VEL_DOWN_0_50", 0x77: "VEL_DOWN_0_75", 0x78: "VEL_DOWN_1_00", 0x79: "VEL_DOWN_1_25", 0x7a: "VEL_DOWN_2_00", 0x7b: "VEL_DOWN_3_00", 0x7c: "VEL_DOWN_4_00", 0x7d: "VEL_DOWN_6_00", 0x7e: "VEL_DOWN_8_00", 0x7f: "VEL_DOWN_16_00", 0x80: "VEL_UP_0_00", 0x81: "VEL_UP_1_64TH", 0x82: "VEL_UP_1_32TH", 0x83: "VEL_UP_1_16TH", 0x84: "VEL_UP_1_8TH", 0x85: "VEL_UP_0_25", 0x86: "VEL_UP_0_50", 0x87: "VEL_UP_0_75", 0x88: "VEL_UP_1_00", 0x89: "VEL_UP_1_25", 0x8a: "VEL_UP_2_00", 0x8b: "VEL_UP_3_00", 0x8c: "VEL_UP_4_00", 0x8d: "VEL_UP_6_00", 0x8e: "VEL_UP_8_00", 0x8f: "VEL_UP_16_00" }
-sfx = {0x00: "SFX_00", 0x01: "SFX_INHALE", 0x02: "SFX_02", 0x03: "SFX_SWALLOW", 0x04: "SFX_JUMP", 0x05: "SFX_BUMP", 0x06: "SFX_DAMAGE", 0x07: "SFX_ENTER_DOOR", 0x08: "SFX_08", 0x09: "SFX_POWER_UP", 0x0a: "SFX_EXPLOSION", 0x0b: "SFX_RESTORE_HP", 0x0c: "SFX_WARP_STAR", 0x0d: "SFX_13", 0x0e: "SFX_14", 0x0f: "SFX_PUFF", 0x10: "SFX_STAR_SPIT", 0x11: "SFX_17", 0x12: "SFX_18", 0x13: "SFX_19", 0x14: "SFX_20", 0x15: "SFX_LOSE_LIFE", 0x16: "SFX_1UP", 0x17: "SFX_23", 0x18: "SFX_PAUSE_OFF", 0x19: "SFX_25", 0x1a: "SFX_CURSOR", 0x1b: "SFX_GAME_START", 0x1c: "SFX_28", 0x1d: "SFX_29", 0x1e: "SFX_30", 0x1f: "SFX_31", 0x20: "SFX_BOSS_DEFEAT", 0x21: "SFX_PAUSE_ON", 0x22: "SFX_34", 0x23: "SFX_35", 0xff: "SFX_NONE"}
-music = {0x00: "MUSIC_BUBBLY_CLOUDS_INTRO", 0x01: "MUSIC_GREEN_GREENS_INTRO", 0x02: "MUSIC_INVINCIBILITY_CANDY", 0x03: "MUSIC_GAME_OVER", 0x04: "MUSIC_SPARKLING_STAR", 0x05: "MUSIC_TITLESCREEN", 0x06: "MUSIC_FLOAT_ISLANDS_INTRO", 0x07: "MUSIC_LIFE_LOST", 0x08: "MUSIC_BOSS_BATTLE", 0x09: "MUSIC_MINT_LEAF", 0x0a: "MUSIC_VICTORY", 0x0b: "MUSIC_CREDITS", 0x0c: "MUSIC_CASTLE_LOLOLO_INTRO", 0x0d: "MUSIC_GREEN_GREENS", 0x0e: "MUSIC_FLOAT_ISLANDS", 0x0f: "MUSIC_BUBBLY_CLOUDS", 0x10: "MUSIC_CASTLE_LOLOLO", 0x11: "MUSIC_KING_DEDEDE_BATTLE", 0x12: "MUSIC_MT_DEDEDE", 0xff: "MUSIC_NONE"}
+def parse_motion_script(data):
+    return (2, ('m', parse_word(data)))
+
+def parse_properties(data):
+    return (2, ('o', parse_word(data)))
+
+def parse_int(data):
+    return (1, ('i', data[0]))
+
+def parse_signed(data):
+    x = data[0]
+    if x >= 0x80:
+        x = x - 0x100
+    return (1, ('i', x))
+
+def parse_bank1_func(data):
+    return (2, ('f1', parse_word(data)))
+
+def parse_bank5_func(data):
+    return (2, ('f5', parse_word(data)))
+
+def parse_byte(data):
+    return (1, ('b', data[0]))
+
+def parse_compliment_byte(data):
+    x = data[0] ^ 0xff
+    return (1, ('b', x))
+
+def parse_percent(data):
+    x = data[0] * 100 / 0xff
+    return (1, ('p', x))
+
+def parse_wram_address(data):
+    return (2, ('w', parse_word(data)))
+
+SCRIPT_END = 0xe0
+JUMP_ABS = 0xe1
+JUMP_REL = 0xe2
+SCRIPT_CALL = 0xe3
+SCRIPT_RET = 0xe4
+SET_SCRIPTS = 0xe5
+SCRIPT_REPEAT = 0xe6
+SCRIPT_REPEAT_END = 0xe7
+SCRIPT_EXEC = 0xe8
+SCRIPT_EXEC_ARG = 0xe9
+JUMP_IF_EQUAL = 0xea
+JUMPTABLE = 0xeb
+SCRIPT_DELAY = 0xec
+SCRIPT_ED = 0xed
+SET_UPDATE_FUNC = 0xee
+CLEAR_UPDATE_FUNC = 0xef
+SET_POSITION = 0xf0
+POSITION_OFFSET = 0xf1
+SET_REL_POS = 0xf2
+SET_ABS_POS = 0xf3
+SET_VALUE = 0xf4
+INC_VALUE = 0xf5
+DEC_VALUE = 0xf6
+JUMP_IF_FLAGS = 0xf7
+JUMP_IF_NOT_FLAGS = 0xf8
+SET_FLAGS = 0xf9
+JUMP_RANDOM = 0xfa
+JUMPTABLE_RANDOM = 0xfb
+CREATE_OBJECT = 0xfc
+SCRIPT_CALL_RANDOM = 0xfd
+CALLTABLE_RANDOM = 0xfe
+SET_ANIM_SCRIPT = 0x100
+SET_MOTION_SCRIPT = 0x101
+SET_OBJECT_PROPERTIES = 0x102
+SET_PAL_LIGHT = 0x103
+SET_PAL_DARK = 0x104
+SET_KIRBY_POS = 0x105
+BRANCH_KIRBY_POS = 0x106
+BRANCH_ON_KIRBY_VERTICAL_ALIGNMENT = 0x107
+PLAY_SFX = 0x200
+PLAY_MUSIC = 0x201
 
 commands = {
-    0xe0: ("script_end", 0, None),
-    0xe1: ("jump_abs", 2, parseWord),
-    0xe2: ("jump_rel", 1, parseAnimJr),
-    0xe3: ("script_call", 2, parseWord),
-    0xe4: ("script_ret", 0, None),
-    0xe5: ("set_scripts", 4, parse2Words),
-    0xe6: ("script_repeat", 1, parseByte),
-    0xe7: ("script_repeat_end", 0, None),
-    0xe8: ("script_exec", 2, parseWord),
-    0xe9: ("script_exec_arg", 3, parseWordWithByte),
-    0xea: ("jump_if_equal", 5, parseWordByteWord),
-    0xeb: ("jumptable", 0, None),
-    0xec: ("script_delay", 1, parseByte),
-    0xed: ("script_ed", 1, parseByte),
-    0xee: ("set_update_func", 4, parse2Words),
-    0xef: ("clear_update_func", 0, None),
-    0xf0: ("set_position", 2, parseByte),
-    0xf1: ("position_offset", 2, parseByte),
-    0xf2: ("set_rel_pos", 0, None),
-    0xf3: ("set_abs_pos", 0, None),
-    0xf4: ("set_value", 3, parseWordWithByte),
-    0xf5: ("inc_value", 2, parseWord),
-    0xf6: ("dec_value", 2, parseWord),
-    0xf7: ("jump_if_flags", 5, parseWordByteWord),
-    0xf8: ("jump_if_not_flags", 5, parseWordByteWord),
-    0xf9: ("set_flags", 4, parseWord2Bytes),
-    0xfa: ("jump_random", 3, parseByteWithWord),
-    0xfb: ("jumptable_random", 1, parseByte),
-    0xfc: ("create_object", 6, parseCreateObject),
-    0xfd: ("script_call_random", 1, parseByte),
-    0xfe: ("calltable_random", 1, parseByte),
+    SCRIPT_END: ("script_end", []),
+    JUMP_ABS: ("jump_abs", [parse_local_address]),
+    JUMP_REL: ("jump_rel", [parse_jump_offset]),
+    SCRIPT_CALL: ("script_call", [parse_local_address]),
+    SCRIPT_RET: ("script_ret", []),
+    SET_SCRIPTS: ("set_scripts", [parse_anim_script, parse_motion_script]),
+    SCRIPT_REPEAT: ("script_repeat", [parse_int]),
+    SCRIPT_REPEAT_END: ("script_repeat_end", []),
+    SCRIPT_EXEC: ("script_exec", [parse_bank1_func]),
+    SCRIPT_EXEC_ARG: ("script_exec_arg", [parse_bank1_func, parse_byte]),
+    JUMP_IF_EQUAL: ("jump_if_equal", [parse_wram_address, parse_byte, parse_local_address]),
+    JUMPTABLE: ("jumptable", [parse_wram_address]),
+    SCRIPT_DELAY: ("script_delay", [parse_int]),
+    SCRIPT_ED: ("script_ed", [parse_int]),
+    SET_UPDATE_FUNC: ("set_update_func", [parse_bank5_func, parse_anim_script]),
+    CLEAR_UPDATE_FUNC: ("clear_update_func", []),
+    SET_POSITION: ("set_position", [parse_int, parse_int]),
+    POSITION_OFFSET: ("position_offset", [parse_signed, parse_signed]),
+    SET_REL_POS: ("set_rel_pos", []),
+    SET_ABS_POS: ("set_abs_pos", []),
+    SET_VALUE: ("set_value", [parse_wram_address, parse_byte]),
+    INC_VALUE: ("inc_value", [parse_wram_address]),
+    DEC_VALUE: ("dec_value", [parse_wram_address]),
+    JUMP_IF_FLAGS: ("jump_if_flags", [parse_wram_address, parse_byte, parse_local_address]),
+    JUMP_IF_NOT_FLAGS: ("jump_if_not_flags", [parse_wram_address, parse_byte, parse_local_address]),
+    SET_FLAGS: ("set_flags", [parse_wram_address, parse_compliment_byte, parse_byte]),
+    JUMP_RANDOM: ("jump_random", [parse_percent, parse_local_address]),
+    JUMPTABLE_RANDOM: ("jumptable_random", [parse_int]),
+    CREATE_OBJECT: ("create_object", [parse_anim_script, parse_motion_script, parse_properties]),
+    SCRIPT_CALL_RANDOM: ("script_call_random", [parse_byte, parse_local_address]),
+    CALLTABLE_RANDOM: ("calltable_random", [parse_byte]),
 
     # higher order commands: script_exec
-    0x100: ("set_anim_script", 2, None),
-    0x101: ("set_motion_script", 2, None),
-    0x102: ("set_object_properties", 2, None),
-    0x103: ("set_pal_light", 0, None),
-    0x104: ("set_pal_dark", 0, None),
-    0x105: ("set_kirby_pos", 0, None),
-    0x106: ("branch_kirby_pos", 4, None),
-    0x107: ("branch_on_kirby_vertical_alignment", 4, None),
+    SET_ANIM_SCRIPT: ("set_anim_script", []),
+    SET_MOTION_SCRIPT: ("set_motion_script", []),
+    SET_OBJECT_PROPERTIES: ("set_object_properties", []),
+    SET_PAL_LIGHT: ("set_pal_light", []),
+    SET_PAL_DARK: ("set_pal_dark", []),
+    SET_KIRBY_POS: ("set_kirby_pos", []),
+    BRANCH_KIRBY_POS: ("branch_kirby_pos", []),
+    BRANCH_ON_KIRBY_VERTICAL_ALIGNMENT: ("branch_on_kirby_vertical_alignment", []),
 
     # higher order commands: script_exec_arg
-    0x200: ("play_sfx", 3, None),
-    0x201: ("play_music", 3, None),
+    PLAY_SFX: ("play_sfx", []),
+    PLAY_MUSIC: ("play_music", []),
 }
 
-commandsWithNum = { 0xe6, 0xec, 0xed, 0x200, 0x201 }
-commandsWithByte = { 0xfd }
-commandsWith2Bytes = { 0xf0 }
-commandsWith2Offsets = { 0xf1 }
-commandsWithAddressAndByte = { 0xe9, 0xf4 }
-commandsWithByteAndAddress = { 0xfa }
-commandsWithAddressByteAddress = { 0xea, 0xf7, 0xf8 }
-commandsWithAddress = { 0xe1, 0xe2, 0xe3, 0xe8, 0xf5, 0xf6, 0x100, 0x101, 0x102 }
-commandsWith2Addresses = { 0xe5, 0xee, 0x106, 0x107 }
-commandsWithAddressAnd2Bytes = { 0xf9 }
-commandsWithTable = { 0xfb, 0xfe }
 
-def getCommandString(cmdByte, args, addressLabels):
-    cmdStr, nArgBytes, _ = commands[cmdByte]
-    resStr = cmdStr
-    if nArgBytes == 0:
-        return resStr
-
-    def parseAddress(a):
-        if a in addressLabels:
-            return addressLabels[a]
-        elif a in syms:
-            return syms[a]
-        elif a == 0x0000:
-            return "NULL"
+def get_command_string(cmd_byte, args, address_labels, cur_bank):
+    def format_address_in_bank(addr, bank, default_prefix):
+        abs_offset = addr + (bank - 1) * 0x4000
+        if abs_offset in address_labels:
+            return address_labels[abs_offset]
+        elif abs_offset in syms:
+            return syms[abs_offset]
         else:
-            return "${:04x}".format(a % 0x8000)
+            return default_prefix + f"{abs_offset:0x}"
 
-    def convertToSignedInt(b):
-        if b >= 0x80:
-            return b - 0x100
+    def format_local_address(addr):
+        return format_address_in_bank(addr, cur_bank, ".script_")
+
+    def format_anim_script(addr):
+        return format_address_in_bank(addr, 8, "AnimScript_")
+
+    def format_motion_script(addr):
+        return format_address_in_bank(addr, 4, "MotionScript_")
+
+    def format_properties(addr):
+        return format_address_in_bank(addr, 0, "Properties_")
+
+    def format_func_bank1(addr):
+        return format_address_in_bank(addr, 1, "Func_")
+
+    def format_func_bank5(addr):
+        return format_address_in_bank(addr, 5, "Func_")
+
+    def format_wram(addr):
+        if addr in ram:
+            return ram[addr]
         else:
-            return b
+            return f"${addr:04x}"
 
-    if cmdByte in commandsWithNum:
-        return resStr + " {}".format(args[0])
+    def format_percent(x):
+        return str(x * 100 / 0xff) + " percent + 1"
 
-    if cmdByte in commandsWithByte:
-        return resStr + " ${:02x}".format(args[0])
+    def format_pointer_table(ptrs):
+        out_str = "\n"
+        for ptr in ptrs:
+            out_str += "\tdw {}\n".format(format_local_address(ptr))
+        return out_str
 
-    if cmdByte in commandsWith2Bytes:
-        return resStr + " ${:02x}, ".format(args[0]) + "${:02x}".format(args[1])
+    arg_formatter_map = {
+        'l': format_local_address,
+        'a': format_anim_script,
+        'm': format_motion_script,
+        'o': format_properties,
+        'i': lambda x: f"{x}",
+        'f1': format_func_bank1,
+        'f5': format_func_bank5,
+        'b': lambda x: f"{x:02x}",
+        'p': format_percent,
+        'w': format_wram,
+        's': lambda s: s,
+        't': format_pointer_table
+    }
 
-    if cmdByte in commandsWith2Offsets:
-        return resStr + " {}, ".format(convertToSignedInt(args[0])) + "{}".format(convertToSignedInt(args[1]))
+    cmd_str, _ = commands[cmd_byte]
 
-    if cmdByte in commandsWithAddressAndByte:
-        return resStr + " " + parseAddress(args[0]) + ", ${:02x}".format(args[1])
+    if len(args) == 0:
+        return cmd_str
 
-    if cmdByte in commandsWithByteAndAddress:
-        return resStr + " " + "${:02x}, ".format(args[0]) + parseAddress(args[1])
+    res_str = cmd_str + ' '
 
-    if cmdByte in commandsWithAddressByteAddress:
-        return resStr + " " + parseAddress(args[0]) + ", ${:02x}, ".format(args[1]) + parseAddress(args[2])
+    for arg_type, arg in args:
+        res_str += arg_formatter_map[arg_type](arg) + ', '
 
-    if cmdByte in commandsWithAddress:
-        return resStr + " " + parseAddress(args[0])
+    return res_str[:-2]
 
-    if cmdByte in commandsWith2Addresses:
-        return resStr + " " + parseAddress(args[0]) + ", " + parseAddress(args[1])
+out_str = ""
 
-    if cmdByte in commandsWithAddressAnd2Bytes:
-        return resStr + " " + parseAddress(args[0]) + ", ${:02x}".format(args[1]) + ", ${:02x}".format(args[2])
-
-    if cmdByte == 0xfc:
-        return resStr + " " + parseAddress(args[0]) + ", " + parseAddress(args[1]) + ", " + parseAddress(args[2])
-    
-    if cmdByte in commandsWithTable:
-        resStr += " {}\n".format(len(args) - 1)
-        for arg in args:
-            resStr += "\tdw {}\n".format(parseAddress(arg))
-
-    return resStr
-
-for o in args.offsets:
+for o in reader.standardise_list(args.offsets):
     # cache whole bank
     offset = int(o, 16)
-    isMotionScript = (offset >= 0x10000 and offset < 0x14000)
+    is_motion_script = (offset >= 0x10000 and offset < 0x14000)
     bank = int(offset / 0x4000)
-    source = reader.getROMBytes(bank * 0x4000, 0x4000)
+    source = reader.get_rom_bytes(bank * 0x4000, 0x4000)
     pos = offset % 0x4000
 
-    parsedCommands = []
-    jumpAddresses = set()
+
+    parsed_commands = []
+    jump_addresses = set()
     while True:
-        cmdPos = bank * 0x4000 + pos
-        cmdByte = source[pos]
+        cmd_pos = bank * 0x4000 + pos
+        cmd_byte = source[pos]
         pos += 1
 
-        if cmdByte == 0xff:
+        if cmd_byte == 0xff:
             break
 
-        if cmdByte < 0xe0:
-            if isMotionScript:
-                xVel = source[pos+0]
-                yVel = source[pos+1]
+        if cmd_byte < 0xe0:
+            if is_motion_script:
+                x_vel = source[pos+0]
+                y_vel = source[pos+1]
                 pos += 2
-                parsedCommands.append((cmdByte, cmdPos, [xVel, yVel]))
+                parsed_commands.append((cmd_byte, cmd_pos, [x_vel, y_vel]))
             else:
                 pointer = source[pos] + source[pos + 1] * 0x100
                 pos += 2
-                parsedCommands.append((cmdByte, cmdPos, [pointer]))
+                parsed_commands.append((cmd_byte, cmd_pos, [pointer]))
 
-            if cmdByte == 0:
+            if cmd_byte == 0:
                 break # permanent motion
         else:
-            cmdStr, nArgBytes, parseFunc = commands[cmdByte]
+            cmd_str, parse_funcs = commands[cmd_byte]
             args = []
-            if parseFunc != None:
-                args = parseFunc(source[pos : pos + nArgBytes])
-            pos += nArgBytes
-            parsedCommands.append((cmdByte, cmdPos, args))
+            for parse_func in parse_funcs:
+                n_bytes, arg = parse_func(source[pos : pos + 2])
+                args.append(arg)
+                pos += n_bytes
+            parsed_commands.append((cmd_byte, cmd_pos, args))
 
-            if cmdByte in [0xe1, 0xe2]:
-                absAddress = 0
-                if cmdByte == 0xe1:
-                    absAddress = (bank - 1) * 0x4000 + parsedCommands[-1][2][0]
+            if cmd_byte in [JUMP_ABS, JUMP_REL]:
+                abs_address = 0
+                local_address = None
+                if cmd_byte == JUMP_ABS:
+                    abs_address = (bank - 1) * 0x4000 + parsed_commands[-1][2][0][1]
+                    local_address = parsed_commands[-1][2][0][1]
                 else:
-                    absAddress = cmdPos + 1 + parsedCommands[-1][2][0]
-                jumpAddresses.add(absAddress)
-                parsedCommands[-1][2][0] = absAddress
-                if absAddress < cmdPos:
+                    abs_address = cmd_pos + 1 + parsed_commands[-1][2][0][1]
+                    local_address = abs_address - (bank - 1) * 0x4000
+                jump_addresses.add(abs_address)
+                parsed_commands[-1][2][0] = ('l', local_address)
+                if abs_address < cmd_pos:
                     break
-            elif cmdByte == 0xe5:
-                gfxScriptAddr = parsedCommands[-1][2][0]
-                motionScriptAddr = parsedCommands[-1][2][1]
-                if isMotionScript:
-                    if motionScriptAddr == pos + 0x4000:
-                        cmdByte = 0x100
-                        parsedCommands[-1] = (cmdByte, cmdPos, [gfxScriptAddr])
+            elif cmd_byte == SET_SCRIPTS:
+                gfx_script_addr = parsed_commands[-1][2][0]
+                motion_script_addr = parsed_commands[-1][2][1]
+                if is_motion_script:
+                    if motion_script_addr[1] == pos + 0x4000:
+                        cmd_byte = SET_ANIM_SCRIPT
+                        parsed_commands[-1] = (cmd_byte, cmd_pos, [gfx_script_addr])
                 else:
-                    if gfxScriptAddr == pos + 0x4000:
-                        cmdByte = 0x101
-                        parsedCommands[-1] = (cmdByte, cmdPos, [motionScriptAddr])
+                    if gfx_script_addr[1] == pos + 0x4000:
+                        cmd_byte = SET_MOTION_SCRIPT
+                        parsed_commands[-1] = (cmd_byte, cmd_pos, [motion_script_addr])
 
-            elif cmdByte == 0xe8:
-                funcAddr = parsedCommands[-1][2][0]
-                if funcAddr in syms:
-                    if syms[funcAddr] == "ScriptFunc_SetObjectProperties":
-                        parsedCommands[-1] = (0x102, cmdPos, parseWord(source[pos : pos + 2]))
-                        pos += 2
-                    elif syms[funcAddr] == "ScriptFunc_SetObjectPalLight":
-                        parsedCommands[-1] = (0x103, cmdPos, None)
-                    elif syms[funcAddr] == "ScriptFunc_SetObjectPalDark":
-                        parsedCommands[-1] = (0x104, cmdPos, None)
-                    elif syms[funcAddr] == "ScriptFunc_SetKirbyPosition":
-                        parsedCommands[-1] = (0x105, cmdPos, None)
-                    elif syms[funcAddr] == "ScriptFunc_BranchOnKirbyRelativePosition":
-                        parsedCommands[-1] = (0x106, cmdPos, parse2Words(source[pos : pos + 4]))
-                        pos += 4
-                    elif syms[funcAddr] == "ScriptFunc_BranchOnKirbyVerticalAlignment":
-                        parsedCommands[-1] = (0x107, cmdPos, parse2Words(source[pos : pos + 4]))
-                        pos += 4
+            elif cmd_byte == SCRIPT_EXEC:
+                _, func_addr = parsed_commands[-1][2][0]
+                if func_addr in syms:
+                    if syms[func_addr] == "ScriptFunc_SetObjectProperties":
+                        n, arg = parse_properties(source[pos : pos + 2])
+                        parsed_commands[-1] = (SET_OBJECT_PROPERTIES, cmd_pos, [arg])
+                        pos += n
+                    elif syms[func_addr] == "ScriptFunc_SetObjectPalLight":
+                        parsed_commands[-1] = (SET_PAL_LIGHT, cmd_pos, None)
+                    elif syms[func_addr] == "ScriptFunc_SetObjectPalDark":
+                        parsed_commands[-1] = (SET_PAL_DARK, cmd_pos, None)
+                    elif syms[func_addr] == "ScriptFunc_SetKirbyPosition":
+                        parsed_commands[-1] = (SET_KIRBY_POS, cmd_pos, None)
+                    elif syms[func_addr] == "ScriptFunc_BranchOnKirbyRelativePosition" or syms[func_addr] == "ScriptFuncBranchOnKirbyVerticalAlignment":
+                        n1, arg1 = parse_local_address(source[pos : pos + 2])
+                        n2, arg2 = parse_local_address(source[pos + 2: pos + 4])
+                        parsed_commands[-1] = (BRANCH_KIRBY_POS if syms[func_addr] == "ScriptFuncBranchOnKirbyRelativePosition" else BRANCH_ON_KIRBY_VERTICAL_ALIGNMENT, cmd_pos, [arg1, arg2])
+                        pos += n1 + n2
 
-            elif cmdByte == 0xe9:
-                funcAddr = parsedCommands[-1][2][0]
-                funcArg = parsedCommands[-1][2][1]
-                if funcAddr in syms:
-                    if syms[funcAddr] == "PlaySFX":
-                        parsedCommands[-1] = (0x200, cmdPos, [sfx[funcArg]])
-                    if syms[funcAddr] == "PlayMusic":
-                        parsedCommands[-1] = (0x201, cmdPos, [music[funcArg]])
+            elif cmd_byte == SCRIPT_EXEC_ARG:
+                _, func_addr = parsed_commands[-1][2][0]
+                _, func_arg = parsed_commands[-1][2][1]
+                if func_addr in syms:
+                    if syms[func_addr] == "PlaySFX":
+                        parsed_commands[-1] = (PLAY_SFX, cmd_pos, [('s', sfx[func_arg])])
+                    if syms[func_addr] == "PlayMusic":
+                        parsed_commands[-1] = (PLAY_MUSIC, cmd_pos, [('s', music[func_arg])])
 
-            elif cmdByte == 0xee:
-                def convertAddress(addr):
-                    return addr + (5 - 1) * 0x4000 if addr != 0x0000 else addr
-                funcAddr1 = convertAddress(parsedCommands[-1][2][0])
-                funcAddr2 = convertAddress(parsedCommands[-1][2][1])
-                parsedCommands[-1] = (cmdByte, cmdPos, [funcAddr1, funcAddr2])
-
-            elif cmdByte in [0xfb, 0xfe]:
-                numEntries = parsedCommands[-1][2][0] + 1
+            elif cmd_byte in [JUMPTABLE_RANDOM, CALLTABLE_RANDOM]:
+                num_entries = parsed_commands[-1][2][0][1] + 1
                 entries = []
-                for _ in range(0, numEntries):
-                    entries.append(parseWord(source[pos : pos + 2])[0])
+                for _ in range(0, num_entries):
+                    ptr = parse_word(source[pos : pos + 2])
+                    jump_addresses.add(ptr + (bank - 1) * 0x4000)
+                    entries.append(ptr)
                     pos += 2
-                parsedCommands[-1] = (cmdByte, cmdPos, entries)
+                parsed_commands[-1] = (cmd_byte, cmd_pos, [('t', entries)])
 
-            if cmdByte == 0xe0 or cmdByte == 0xe4 or cmdByte == 0xe5:
+            if cmd_byte in [SCRIPT_END, SCRIPT_RET, SET_SCRIPTS]:
                 break # end of script
 
-    addressLabels = {}
-    for jumpAddress in jumpAddresses:
-        addressLabels[jumpAddress] = ".asm_{:0x}".format(jumpAddress)
+    address_labels = {}
+    for jump_address in jump_addresses:
+        address_labels[jump_address] = ".script_{:0x}".format(jump_address)
 
     # for the common case where the animation is a simple loop
-    if len(addressLabels) == 1:
-        for k, v in addressLabels.items():
+    if len(address_labels) == 1:
+        for k, v in address_labels.items():
             if k >= offset and k < offset + pos:
-                addressLabels[k] = ".loop"
+                address_labels[k] = ".loop"
 
-    label = "MotionScript" if isMotionScript else "AnimScript"
-    outStr = label + "_{}:\n".format(o)
-    for cmdByte, cmdPos, args in parsedCommands:
-        if cmdPos in addressLabels:
-            outStr += addressLabels[cmdPos] + "\n"
-        if cmdByte < 0xe0:
-            if isMotionScript:
-                xVel = xVelocities[args[0]] if args[0] in xVelocities else str(args[0] / 8)
-                yVel = yVelocities[args[1]] if args[1] in yVelocities else str(args[1] / 8)
-                outStr += "\tset_velocities {:2d}".format(cmdByte) + ", {}".format(xVel) + ", {}\n".format(yVel)
+    #print(parsed_commands)
+
+    label = "MotionScript" if is_motion_script else "AnimScript"
+    out_str += label + f"_{o}:\n"
+    for cmd_byte, cmd_pos, args in parsed_commands:
+        if cmd_pos in address_labels:
+            out_str += address_labels[cmd_pos] + "\n"
+        if cmd_byte < 0xe0:
+            if is_motion_script:
+                x_vel = x_velocities[args[0]] if args[0] in x_velocities else str(args[0] / 8)
+                y_vel = y_velocities[args[1]] if args[1] in y_velocities else str(args[1] / 8)
+                out_str += f"\tset_velocities {cmd_byte:2d}, {x_vel}, {y_vel}\n"
             else:
-                outStr += "\tframe {:2d}".format(cmdByte) + ", ${:04x}\n".format(args[0])
+                out_str += f"\tframe {cmd_byte:2d}, ${args[0]:04x}\n"
         else:
-            outStr += "\t{}\n".format(getCommandString(cmdByte, args, addressLabels))
+            out_str += "\t{}\n".format(get_command_string(cmd_byte, args, address_labels, bank))
 
-    outStr += "; 0x{:04x}".format(bank * 0x4000 + pos)
-    print(outStr)
+    out_str += "; 0x{:04x}\n\n".format(bank * 0x4000 + pos)
+
+out_str = re.sub(r"; 0x([a-f0-9]{5})\n(\n.+)\1:", lambda m: m[2] + m[1] + ":", out_str)
+print(out_str)
