@@ -193,7 +193,7 @@ def get_command_string(cmd_byte, args, address_labels, cur_bank):
             return f"${addr:04x}"
 
     def format_percent(x):
-        return str(x * 100 / 0xff) + " percent + 1"
+        return f"{x:.0f} percent + 1"
 
     def format_pointer_table(ptrs):
         out_str = "\n"
@@ -209,7 +209,7 @@ def get_command_string(cmd_byte, args, address_labels, cur_bank):
         'i': lambda x: f"{x}",
         'f1': format_func_bank1,
         'f5': format_func_bank5,
-        'b': lambda x: f"{x:02x}",
+        'b': lambda x: f"${x:02x}",
         'p': format_percent,
         'w': format_wram,
         's': lambda s: s,
@@ -310,7 +310,7 @@ for o in reader.standardise_list(args.offsets):
                         parsed_commands[-1] = (SET_PAL_DARK, cmd_pos, [])
                     elif syms[func_addr] == "ScriptFunc_SetKirbyPosition":
                         parsed_commands[-1] = (SET_KIRBY_POS, cmd_pos, [])
-                    elif syms[func_addr] == "ScriptFunc_BranchOnKirbyRelativePosition" or syms[func_addr] == "ScriptFuncBranchOnKirbyVerticalAlignment":
+                    elif syms[func_addr] == "ScriptFunc_BranchOnKirbyRelativePosition" or syms[func_addr] == "ScriptFunc_BranchOnKirbyVerticalAlignment":
                         n1, arg1 = parse_local_address(source[pos : pos + 2])
                         n2, arg2 = parse_local_address(source[pos + 2: pos + 4])
                         jump_addresses.add(arg1[1] + (bank - 1) * 0x4000)
@@ -348,8 +348,10 @@ for o in reader.standardise_list(args.offsets):
                     entries.append(ptr)
                     pos += 2
                 parsed_commands[-1][2].append(('t', entries))
+            elif cmd_byte in [JUMP_IF_EQUAL, JUMP_IF_FLAGS, JUMP_IF_NOT_FLAGS]:
+                jump_addresses.add(parsed_commands[-1][2][-1][1] + (bank - 1) * 0x4000)
 
-            if cmd_byte in [SCRIPT_END, SCRIPT_RET, SET_SCRIPTS]:
+            if cmd_byte in [SCRIPT_END, SCRIPT_RET, SET_SCRIPTS] and (pos + bank * 0x4000) not in jump_addresses:
                 break # end of script
 
     address_labels = {}

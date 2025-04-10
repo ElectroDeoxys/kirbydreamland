@@ -252,7 +252,24 @@ Func_141b1:
 	bit OBJSTAT_UNK6_F, [hl]
 	ret z
 	jp SetObjectUpdateFuncArgAsAnimScript
-; 0x141bb
+
+Func_141bb:
+	ld a, [wd3bc]
+	add $28
+	ld e, a
+	ld hl, wObjectScreenXPositions
+	add hl, bc
+	ld a, [hl]
+	add $28
+	sub e
+	jr nc, .asm_141cd
+	cpl
+	inc a
+.asm_141cd
+	cp $18
+	ret nc
+	jp SetObjectUpdateFuncArgAsAnimScript
+; 0x141d3
 
 SECTION "Bank 5@4208", ROMX[$4208], BANK[$5]
 
@@ -336,7 +353,24 @@ Func_14252:
 	cp 24
 	ret nc ; too far away
 	jp SetObjectUpdateFuncArgAsAnimScript
-; 0x14276
+
+Func_14276:
+	ld hl, wObjectScreenXPositions
+	ld a, [hl]
+	add $28
+	ld e, a
+	add hl, bc
+	ld a, [hl]
+	add $28
+	sub e
+	jr nc, .asm_14286
+	cpl
+	inc a
+.asm_14286
+	cp $18
+	ret nc
+	jp SetObjectUpdateFuncArgAsAnimScript
+; 0x1428c
 
 SECTION "Bank 5@42a3", ROMX[$42a3], BANK[$5]
 
@@ -380,9 +414,59 @@ ObjFunc_CountdownToExplosion:
 	ld de, MotionScript_10008
 	call SetObjectScripts
 	ret
-; 0x142dc
 
-SECTION "Bank 5@432c", ROMX[$432c], BANK[$5]
+Func_142dc:
+	push bc
+	ld a, [wd3d3]
+	ld c, a
+	ld hl, wObjectScreenXPositions
+	ld e, [hl]
+	add hl, bc
+	ld a, [hl]
+	sub e
+	ld de, 30
+	jr nc, .asm_142f2
+	cpl
+	inc a
+	ld de, -30
+.asm_142f2
+	cp $0a
+	jr c, .asm_14318
+	ld hl, wObjectXVels
+	ld a, [hl]
+	add e
+	ld [hli], a
+	ld a, [hl]
+	adc d
+	ld [hl], a
+	ld d, $03
+	ld hl, wObjectScreenYPositions
+	ld e, [hl]
+	add hl, bc
+	ld a, [hl]
+	inc a
+	sub e
+	ld e, a
+	xor a
+.asm_1430b
+	sra e
+	rra
+	dec d
+	jr nz, .asm_1430b
+	ld hl, wObjectYVels
+	ld [hli], a
+	ld [hl], e
+	pop bc
+	ret
+.asm_14318
+	ld a, $ff
+	ld [wd3d2], a
+	ld c, OBJECT_SLOT_KIRBY
+	ld hl, AnimScript_20000
+	ld de, MotionScript_10008
+	call SetObjectScripts
+	pop bc
+	jp Func_241f
 
 ProcessObjectInteractions::
 	call .ProcessKirbyInteractions
@@ -867,7 +951,7 @@ ExecuteItemEffect:
 	dec a
 	jp z, .OneUp ; ONE_UP
 
-; ITEM_A
+; KIRBY_ITEM
 	call ConsumeItem
 	ld a, CLEAR_ACTIVE | CLEAR_NON_MIKE
 	ld [wClearScreenFlags], a
@@ -1159,7 +1243,7 @@ ENDR
 	jr z, .next_obj
 	cp SPARKLING_STAR
 	jr z, .next_obj
-	cp ITEM_A
+	cp KIRBY_ITEM
 	jr z, .next_obj
 	jr .check_y
 

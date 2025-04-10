@@ -1177,9 +1177,50 @@ Func_48a3:
 	ld a, c
 	ld [wd3ba], a
 	ret
-; 0x48a8
 
-SECTION "Bank 1@48e1", ROMX[$48e1], BANK[$1]
+Func_48a8:
+	ld a, [wObjectScreenXPositions]
+	ld [wd3bc], a
+	ret
+
+Func_48af:
+	ld a, c
+	ld [wd3bb], a
+	ret
+
+Func_48b4:
+	push bc
+	ld d, b
+	ld e, c
+	ld a, [wd3bb]
+	ld c, a
+	call CopyObjectCoordinates
+	pop bc
+	ret
+
+Func_48c0:
+	push bc
+	ld a, [wd3bb]
+	ld c, a
+	ld hl, wObjectHPs
+	add hl, bc
+	dec [hl]
+	jr nz, .asm_48df
+	ld hl, wObjectPropertyPtrs
+	add hl, bc
+	add hl, bc
+	ld a, [hli]
+	add OBJ_UNK7
+	ld h, [hl]
+	incc h
+	ld l, a
+	ld a, [hli]
+	ld d, [hl]
+	ld e, a
+	call Func_23af
+.asm_48df
+	pop bc
+	ret
 
 ScriptFunc_SetImmuneFlag:
 	ld hl, wd1a0
@@ -1339,9 +1380,57 @@ Func_495c:
 	db $1 ; $d
 	db $2 ; $e
 	db $1 ; $f
-; 0x49ac
 
-SECTION "Bank 1@49fb", ROMX[$49fb], BANK[$1]
+Func_49ac:
+	call Func_495c
+	ld e, a
+	ld d, $00
+	ld hl, $49cc
+	add hl, de
+	ld a, [hl]
+	bit 7, a
+	jr z, .asm_49c8
+	ld e, $04
+	ld hl, wObjectScreenXPositions
+	ld a, [hl]
+	add hl, bc
+	cp [hl]
+	jr nc, .asm_49c7
+	ld e, $00
+.asm_49c7
+	ld a, e
+.asm_49c8
+	ld [wd3bd], a
+	ret
+; 0x49cc
+
+SECTION "Bank 1@49d5", ROMX[$49d5], BANK[$1]
+
+Func_49d5:
+	ld e, $01
+	ld hl, $d0a2
+	add hl, bc
+	add hl, bc
+	add hl, bc
+	ld a, [hld]
+	and a
+	jr nz, .asm_49f0
+	ld a, [hl]
+	cp $48
+	jr c, .asm_49f6
+	ld e, $00
+	cp $e8
+	jr c, .asm_49f6
+	ld e, $02
+	jr .asm_49f6
+.asm_49f0
+	bit 7, a
+	jr nz, .asm_49f6
+	ld e, $02
+.asm_49f6
+	ld a, e
+	ld [wd3bd], a
+	ret
 
 ScriptFunc_CheckHalfSideOfScreen:
 	ld d, $0
@@ -1458,9 +1547,11 @@ Func_4a93:
 	ld [hl], a
 	pop bc
 	ret
-; 0x4aad
 
-SECTION "Bank 1@4ab3", ROMX[$4ab3], BANK[$1]
+Func_4aad:
+	ld hl, wd3cc
+	set 0, [hl]
+	ret
 
 ScriptFunc_SetObjectPalLight:
 	ld hl, wObjectPropertyFlags
@@ -1530,9 +1621,75 @@ Func_4afb:
 	ld a, $ff
 	ld [wScriptCommand], a
 	ret
-; 0x4b19
 
-SECTION "Bank 1@4b77", ROMX[$4b77], BANK[$1]
+Func_4b19:
+	ld hl, wObjectScreenXPositions
+	ld a, [hl]
+	add hl, bc
+	sub [hl]
+	ret nc
+	cpl
+	inc a
+	cp $2e
+	ret nc
+	jr Func_4b31
+
+Func_4b27:
+	ld hl, wObjectScreenXPositions
+	ld a, [hl]
+	add hl, bc
+	sub [hl]
+	ret c
+	cp $2e
+	ret nc
+;	fallthrough
+
+Func_4b31:
+	ld a, [wDamageBlinkingCounter]
+	and a
+	ret nz
+	ld hl, wObjectScreenYPositions
+	ld a, [hl]
+	add hl, bc
+	sub [hl]
+	jr nc, .asm_4b40
+	cpl
+	inc a
+.asm_4b40
+	cp $14
+	ret nc
+	ld a, $ff
+	ld [wd3d2], a
+	push bc
+	ld a, c
+	ld [wd3d3], a
+	ld c, OBJECT_SLOT_KIRBY
+	ld hl, AnimScript_203de
+	ld de, MotionScript_10008
+	call SetObjectScripts
+	pop bc
+	ret
+
+Func_4b5a:
+	ld de, MotionScript_10194
+	jr Func_4b62
+Func_4b5f:
+	ld de, MotionScript_101df
+Func_4b62:
+	push bc
+	ld c, OBJECT_SLOT_KIRBY
+	ld hl, AnimScript_203f6
+	call SetObjectScripts
+	pop bc
+	ret
+
+Func_4b6d:
+	ld a, [wHP]
+	and a
+	ret z
+	dec a
+	ld [wHP], a
+	ret
 
 ScriptFunc_AddScore:
 	ld d, $00
@@ -1556,15 +1713,16 @@ ScriptFunc_AddScore:
 	ret
 
 .ScoreValues:
-	dw  300 ; SCORE_300
-	dw 1000 ; SCORE_1000
-	dw  400 ; SCORE_400
-	dw  650 ; SCORE_650
-	dw    0 ; $4
-	dw 2000 ; SCORE_2000
-	dw  750 ; SCORE_750
-	dw 2500 ; SCORE_2500
-	dw    0 ; $8
+	dw   300 ; SCORE_300
+	dw  1000 ; SCORE_1000
+	dw   400 ; SCORE_400
+	dw   650 ; SCORE_650
+	dw     0 ; $4
+	dw  2000 ; SCORE_2000
+	dw   750 ; SCORE_750
+	dw  2500 ; SCORE_2500
+	dw     0 ; $8
+	dw 10000 ; SCORE_10000
 ; 0x4ba4
 
 SECTION "Bank 1@4ba6", ROMX[$4ba6], BANK[$1]

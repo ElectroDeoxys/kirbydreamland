@@ -185,11 +185,13 @@ DEF FLASH_DURATION_REGPAL EQU 6
 
 ; score constants for ScriptFunc_AddScore
 	const_def
-	const SCORE_300  ; $0
-	const SCORE_1000 ; $1
-	const SCORE_400  ; $2
-	const SCORE_650  ; $3
+	const SCORE_300   ; $0
+	const SCORE_1000  ; $1
+	const SCORE_400   ; $2
+	const SCORE_650   ; $3
 	const_skip
-	const SCORE_2000 ; $5
-	const SCORE_750  ; $6
-	const SCORE_2500 ; $7
+	const SCORE_2000  ; $5
+	const SCORE_750   ; $6
+	const SCORE_2500  ; $7
+	const_skip
+	const SCORE_10000 ; $9

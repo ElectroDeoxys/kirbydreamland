@@ -3914,16 +3914,22 @@ SECTION "Home@3477", ROM0[$3477]
 
 OneUpProperties::
 	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, ONE_UP, Data_1c172
-; 0x347d
 
-SECTION "Home@3483", ROM0[$3483]
+KirbyItemProperties::
+	object_properties PROPERTY_REL_POS | PROPERTY_PERSISTENT, 16, 16, KIRBY_ITEM, Data_1c172
 
 StandardEnemyGravityProperties::
 	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY, 12, 12, 1, 1, $03, 200, Data_1c154
 
 StandardEnemyProperties::
 	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $03, 200, Data_1c154
-; 0x3495
+
+Properties_3495::
+	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $01, 200, Data_1c154
+
+Properties_349e::
+	object_properties PROPERTY_REL_POS | PROPERTY_2, 12, 12, $01
+; 0x34a2
 
 SECTION "Home@34b9", ROM0[$34b9]
 
@@ -4044,15 +4050,51 @@ KaboolaProperties::
 
 KaboolaBulletProperties::
 	object_properties $00, 6, 4, 1, 0, $10, 0, Data_1c154
-; 0x35e0
 
-SECTION "Home@35f2", ROM0[$35f2]
+Properties_35e0::
+	object_properties $00, 20, 20, 1, 3, $09, 0, Data_1c1de
+
+Properties_35e9::
+	object_properties PROPERTY_REL_POS, 32, 26, 1, 6, $09, 0, Data_1c1ea
 
 LololoProperties::
 	object_properties $00, 12, 12, 1, 3, $09, 0, Data_1c1d2
 ; 0x35fb
 
-SECTION "Home@364f", ROM0[$364f]
+SECTION "Home@3604", ROM0[$3604]
+
+Properties_3604::
+	object_properties PROPERTY_REL_POS | PROPERTY_2, 0, 0, $00
+; 0x3608
+
+SECTION "Home@360d", ROM0[$360d]
+
+Properties_360d::
+	object_properties PROPERTY_REL_POS | PROPERTY_2 | PROPERTY_SINKABLE | PROPERTY_GRAVITY, 0, 0, $00
+; 0x3611
+
+SECTION "Home@3616", ROM0[$3616]
+
+Properties_3616::
+	object_properties PROPERTY_REL_POS, 22, 26, 1, 10, $09, 0, Data_1c1f6
+
+Properties_361f::
+	object_properties PROPERTY_REL_POS, 0, 0, 1, 100, $00, 10, Data_1c1fc
+
+Properties_3628::
+	object_properties PROPERTY_REL_POS, 20, 16, 1, 1, $00, 0
+
+Properties_362f::
+	object_properties PROPERTY_REL_POS, 52, 16, 1, 1, $00, 0
+
+Properties_3636::
+	object_properties PROPERTY_REL_POS, 2, 2, 0, 80, $01, 0, Data_1c154
+
+Properties_363f::
+	object_properties PROPERTY_REL_POS, 16, 16, 6, 100, $01, 0, Data_1c154
+
+Properties_3648::
+	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $02, 0
 
 TwoFaceProperties::
 BlipperProperties::
@@ -4064,7 +4106,13 @@ SirKibbleProperties::
 	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $03, 500, Data_1c154
 ; 0x3658
 
-SECTION "Home@367c", ROM0[$367c]
+SECTION "Home@366a", ROM0[$366a]
+
+Data_366a::
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY, 6, 6, 1, 1, $03, 50, Data_1c154
+
+Data_3673::
+	object_properties PROPERTY_REL_POS, 18, 18, 1, 5, $01, 0, Data_1c172
 
 SirKibbleBladeProperties::
 	object_properties PROPERTY_REL_POS, 8, 8, 1, 1, $01, 50, Data_1c154

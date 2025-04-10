@@ -20,7 +20,9 @@ itemProperties = {
     "SpicyFoodProperties",
     "InvincibilityCandyProperties",
     "OneUpProperties",
-    "MintLeafProperties"
+    "MintLeafProperties",
+    "KirbyItemProperties",
+    "Data_3429"
 }
 
 def parseSigned(b):
@@ -31,7 +33,7 @@ offsets = sorted([o for o in offsetsSet]) # sort offsets
 
 for o in offsets:
     offset = int(o, 16)
-    objData = reader.getROMBytes(offset, 11)
+    objData = reader.get_rom_bytes(offset, 11)
 
     x = objData[0]
     y = objData[1]

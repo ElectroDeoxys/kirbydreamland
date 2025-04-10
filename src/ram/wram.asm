@@ -369,7 +369,11 @@ wd3aa:: ; d3aa
 wd3ba:: ; d3ba
 	db
 
-	ds $2
+wd3bb:: ; d3bb
+	db
+
+wd3bc:: ; d3bc
+	db
 
 wd3bd:: ; d3bd
 	db
@@ -425,7 +429,11 @@ wd3d0:: ; d3d0
 wd3d1:: ; d3d1
 	db
 
-	ds $2
+wd3d2:: ; d3d2
+	db
+
+wd3d3:: ; d3d3
+	db
 
 wEnemyHurtCounter:: db ; d3d4
 wEnemyHurtObjectIndex::   db ; d3d5

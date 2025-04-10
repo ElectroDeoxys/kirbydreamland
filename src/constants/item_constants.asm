@@ -10,7 +10,7 @@
 	const ENERGY_DRINK        ; $7
 	const SPARKLING_STAR      ; $8
 	const ONE_UP              ; $9
-	const ITEM_A              ; $a
+	const KIRBY_ITEM          ; $a
 
 DEF INVINCIBILITY_DURATION EQU 900
 DEF SPICY_FOOD_DURATION    EQU 1020
