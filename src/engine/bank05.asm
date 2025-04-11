@@ -269,9 +269,39 @@ Func_141bb:
 	cp $18
 	ret nc
 	jp SetObjectUpdateFuncArgAsAnimScript
-; 0x141d3
 
-SECTION "Bank 5@4208", ROMX[$4208], BANK[$5]
+Func_141d3:
+	ld a, [wd3cf]
+	ld hl, hJoypadPressed
+	bit 2, [hl]
+	jr z, .asm_141e1
+	xor $01
+	jr .asm_141ee
+.asm_141e1
+	bit 7, [hl]
+	jr z, .asm_141e9
+	ld a, $01
+	jr .asm_141ee
+.asm_141e9
+	bit 6, [hl]
+	jr z, .asm_141f4
+	xor a
+.asm_141ee
+	ld [wd3cf], a
+	jp SetObjectUpdateFuncArgAsAnimScript
+.asm_141f4
+	ld a, [hl]
+	and $09
+	ret z
+	ld a, $01
+	ld [wKirbySideOfScreen], a
+	jp SetObjectUpdateFuncArgAsAnimScript
+
+Func_14200:
+	ld a, [wKirbySideOfScreen]
+	and a
+	ret z
+	jp SetObjectUpdateFuncArgAsAnimScript
 
 Func_14208:
 	ld hl, wd1a0
@@ -370,9 +400,21 @@ Func_14276:
 	cp $18
 	ret nc
 	jp SetObjectUpdateFuncArgAsAnimScript
-; 0x1428c
 
-SECTION "Bank 5@42a3", ROMX[$42a3], BANK[$5]
+Func_1428c:
+	push bc
+	ld a, [wd3ba]
+	ld c, a
+	ld hl, wObjectScreenXPositions
+	add hl, bc
+	ld a, [hl]
+	ld [wSCX], a
+	ld hl, wObjectScreenYPositions
+	add hl, bc
+	ld a, [hl]
+	ld [wSCY], a
+	pop bc
+	ret
 
 Func_142a3:
 	ld hl, wObjectScreenXPositions + OBJECT_SLOT_KIRBY

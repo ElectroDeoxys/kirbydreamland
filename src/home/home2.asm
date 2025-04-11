@@ -4017,9 +4017,10 @@ Data_3596::
 	object_properties PROPERTY_REL_POS, 12, 12, 1, 60, $01, 0
 
 Data_359d::
-	object_properties $00, 12, 12, 1, 1, $03, 200, $415a
+	object_properties $00, 12, 12, 1, 1, $03, 200, Data_1c15a
 
-	db $04
+Properties_35a6::
+	db PROPERTY_2
 
 SpitStarProperties::
 	object_properties PROPERTY_REL_POS | PROPERTY_2 | PROPERTY_SINKABLE, 20, 20, $01

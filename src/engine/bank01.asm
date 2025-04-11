@@ -1385,7 +1385,7 @@ Func_49ac:
 	call Func_495c
 	ld e, a
 	ld d, $00
-	ld hl, $49cc
+	ld hl, .data
 	add hl, de
 	ld a, [hl]
 	bit 7, a
@@ -1402,13 +1402,15 @@ Func_49ac:
 .asm_49c8
 	ld [wd3bd], a
 	ret
-; 0x49cc
 
-SECTION "Bank 1@49d5", ROMX[$49d5], BANK[$1]
+.data
+	db  2,  3,  4,  4, -1,  0,  0,  1
+
+	ret ; stray ret
 
 Func_49d5:
 	ld e, $01
-	ld hl, $d0a2
+	ld hl, wObjectXCoords + $2
 	add hl, bc
 	add hl, bc
 	add hl, bc

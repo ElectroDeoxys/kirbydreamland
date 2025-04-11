@@ -1001,10 +1001,9 @@ AnimScript_209f6:
 	frame  4, $5d29
 	frame  4, $5d31
 	script_end
-; 0x20a00
 
-SECTION "Bank 8@4a01", ROMX[$4a01], BANK[$8]
-
+AnimScript_20a00:
+	set_rel_pos
 AnimScript_20a01:
 	play_sfx SFX_28
 	jumptable_random %11
@@ -3713,9 +3712,271 @@ AnimScript_SoundTestKirbyEyes:
 	frame   8, $52c0
 	frame 120, $58b8
 	jump_abs .loop
-; 0x222a4
 
-SECTION "Bank 8@64af", ROMX[$64af], BANK[$8]
+AnimScript_222a4:
+	frame 32, $58b8
+	frame 32, $58d9
+	frame 24, $5b69
+	frame  8, $5bc9
+	script_repeat 2
+	frame  8, $58c1
+	frame  8, $58c9
+	frame  8, $58d1
+	frame  8, $58c9
+	script_repeat_end
+	frame 32, $58b8
+	script_repeat 5
+	frame  8, $5be1
+	frame  8, $5be9
+	frame  8, $5bf9
+	frame  8, $5bf1
+	script_repeat_end
+	frame 32, $5bf1
+	script_end
+
+AnimScript_222d5:
+	script_repeat 4
+	frame  8, $4bb4
+	frame  8, $4bb8
+	script_repeat_end
+	script_repeat 30
+	frame  4, $4bac
+	frame  4, $4bb0
+	script_repeat_end
+	frame  4, $4bac
+	script_end
+; 0x222eb
+
+SECTION "Bank 8@62f0", ROMX[$62f0], BANK[$8]
+
+AnimScript_222f0:
+	frame  8, $4bb8
+AnimScript_222f3:
+	script_repeat 100
+	frame  8, $4bb4
+	frame  8, $4bb8
+	script_repeat_end
+	script_end
+
+AnimScript_222fd:
+	script_call AnimScript_2232d
+	set_scripts AnimScript_222f0, MotionScript_12121
+
+AnimScript_22305:
+	script_call AnimScript_2232d
+	set_scripts AnimScript_222f0, MotionScript_12127
+
+AnimScript_2230d:
+	script_call AnimScript_2232d
+	set_scripts AnimScript_222f3, MotionScript_1212a
+
+AnimScript_22315:
+	script_call AnimScript_2232d
+	set_scripts AnimScript_222f0, MotionScript_1212d
+
+AnimScript_2231d:
+	script_call AnimScript_2232d
+	set_scripts AnimScript_222f0, MotionScript_12133
+
+AnimScript_22325:
+	script_call AnimScript_2232d
+	set_scripts AnimScript_222f3, MotionScript_12136
+
+AnimScript_2232d:
+	frame 104, $58b8
+	script_delay 94
+	script_ret
+
+AnimScript_22333:
+	frame  0, $5c21
+
+AnimScript_22336:
+	frame  8, $4d6c
+	frame  8, $4d78
+	script_end
+
+AnimScript_2233d:
+	frame 48, $58e9
+	frame 16, $4d84
+	script_delay 15
+	frame 16, $4d8c
+	frame 48, $58e9
+	frame 32, $4d84
+	frame 16, $4d8c
+	frame 52, $58e9
+	frame  0, $5be1
+
+AnimScript_22357:
+	frame 96, $58b8
+	frame 96, $58b8
+	frame  0, $5c21
+
+AnimScript_22360:
+	frame 48, $4bbc
+	frame  8, $4bcc
+	frame 16, $4bbc
+	frame  8, $4bcc
+	frame 16, $4bbc
+	frame 10, $4bdc
+	frame 32, $4bf4
+	frame 48, $4c0c
+	frame 16, $4c18
+	frame 16, $4c24
+	frame 32, $4c84
+	frame 10, $4c38
+	frame 20, $4c54
+	frame 20, $4c60
+	frame  8, $4c6c
+	frame 16, $4c60
+	frame 32, $4c6c
+	frame 16, $4c60
+	frame 160, $4c6c
+	frame  0, $4c60
+
+AnimScript_2239c:
+	frame 96, $58b8
+.loop
+	frame 24, $4c7c
+	frame 24, $4c80
+	jump_abs .loop
+
+AnimScript_223a8:
+	frame 104, $58b8
+.loop
+	frame  6, $4ca0
+	frame  6, $4ca8
+	frame  6, $4ca0
+	frame  6, $4ca8
+	frame  6, $4cb0
+	frame  6, $4cb8
+	jump_abs .loop
+
+AnimScript_223c0:
+	frame 50, $58b8
+	frame 50, $5b69
+	frame  8, $5d29
+	frame  8, $5d31
+	script_end
+
+AnimScript_223cd:
+	jumptable_random 15
+	dw .script_223f1
+	dw .script_223f4
+	dw .script_223f7
+	dw .script_223f7
+	dw .script_22412
+	dw .script_223fa
+	dw .script_223fd
+	dw .script_22400
+	dw .script_22403
+	dw .script_22406
+	dw .script_22409
+	dw .script_2240c
+	dw .script_2240f
+	dw .script_22412
+	dw .script_22412
+	dw .script_22412
+	dw .script_22412 ; extra entry
+
+.script_223f1
+	frame  0, $4cc0
+
+.script_223f4
+	frame  0, $4cc4
+
+.script_223f7
+	frame  0, $4ce4
+
+.script_223fa
+	frame  0, $5901
+
+.script_223fd
+	frame  0, $58e1
+
+.script_22400
+	frame  0, $5ae9
+
+.script_22403
+	frame  0, $5b71
+
+.script_22406
+	frame  0, $5be9
+
+.script_22409
+	frame  0, $58d9
+
+.script_2240c
+	frame  0, $5bf1
+
+.script_2240f
+	frame  0, $5bad
+
+.script_22412
+	jump_abs AnimScript_203f6
+
+AnimScript_22415:
+	frame 128, $58b8
+	script_repeat 4
+	frame  6, $4cfc
+	frame  6, $4d1c
+	frame  6, $4d3c
+	frame  6, $4d5c
+	script_repeat_end
+	frame  0, $58b8
+
+AnimScript_2242a:
+	frame  8, $58c1
+	frame  8, $58c9
+	frame  8, $58d1
+	frame  8, $58c9
+	frame  8, $58c1
+	frame  8, $58c9
+	frame 30, $58d9
+	script_end
+
+AnimScript_22440:
+	script_delay 120
+	script_delay 160
+	script_delay 96
+	script_delay 80
+	script_delay 64
+	jump_abs AnimScript_208f1
+
+AnimScript_2244d:
+	frame 156, $58b8
+	script_delay 160
+	script_delay 96
+	script_delay 80
+	frame  0, $4b30
+
+AnimScript_22459:
+	script_repeat 4
+	frame  4, $5c25
+	frame  4, $5c2d
+	frame  4, $5c3d
+	frame  4, $5c45
+	script_repeat_end
+	frame  5, $5c25
+	frame  5, $5c2d
+	frame  5, $5c3d
+	create_object AnimScript_208f1, MotionScript_10709, Data_3425
+	create_object AnimScript_208f1, MotionScript_106ff, Data_3425
+	create_object AnimScript_208f1, MotionScript_106f5, Data_3425
+	create_object AnimScript_208f1, MotionScript_106eb, Data_3425
+	frame 100, $5c01
+	script_repeat 28
+	script_delay 4
+	create_object AnimScript_224a8, MotionScript_123ac, Data_3425
+	script_repeat_end
+.loop
+	create_object AnimScript_224a8, MotionScript_135bc, Data_3425
+	script_delay 8
+	jump_abs .loop
+
+AnimScript_224a8:
+	position_offset -5, 4
+	frame 25, $5c1d
+	script_end
 
 AnimScript_224af:
 	frame 80, $4d98
@@ -3723,16 +3984,472 @@ AnimScript_224af:
 	frame 16, $4dcc
 	frame 16, $4e00
 	frame  0, $4e34
-; 0x224bf
 
-SECTION "Bank 8@64e4", ROMX[$64e4], BANK[$8]
+AnimScript_224bf:
+	frame 80, $4e34
+	set_motion_script MotionScript_10008
+	script_delay 80
+	set_motion_script MotionScript_124a0
+	script_delay 128
+	frame 32, $4e68
+	frame 32, $4e98
+	frame 32, $4ed0
+	frame 32, $4f20
+	set_motion_script MotionScript_124ac
+	frame  0, $4f20
 
 AnimScript_224e4:
 	frame 80, $58b8
 	frame  0, $4f90
-; 0x224ea
 
-SECTION "Bank 8@6846", ROMX[$6846], BANK[$8]
+AnimScript_224ea:
+	script_call AnimScript_22512
+	set_scripts AnimScript_2252e, MotionScript_1251c
+
+AnimScript_224f2:
+	script_call AnimScript_22512
+	set_scripts AnimScript_2252e, MotionScript_12549
+
+AnimScript_224fa:
+	script_call AnimScript_22512
+	set_scripts AnimScript_2252e, MotionScript_1255f
+
+AnimScript_22502:
+	script_call AnimScript_22512
+	set_scripts AnimScript_2252e, MotionScript_1252d
+
+AnimScript_2250a:
+	script_call AnimScript_22512
+	set_scripts AnimScript_2252e, MotionScript_1257b
+
+AnimScript_22512:
+	script_repeat 9
+	frame  5, $5c91
+	frame  5, $5c9d
+	frame  5, $5ca9
+	frame  5, $5cb5
+	frame  5, $5cc1
+	frame  5, $5ccd
+	frame  5, $5cd9
+	frame  5, $5ce5
+	script_repeat_end
+	script_ret
+
+AnimScript_2252e:
+.loop
+	frame  2, $5c91
+	frame  2, $5c9d
+	frame  2, $5ca9
+	frame  2, $5cb5
+	frame  2, $5cc1
+	frame  2, $5ccd
+	frame  2, $5cd9
+	frame  2, $5ce5
+	jump_rel .loop
+
+AnimScript_22548:
+	play_music MUSIC_SPARKLING_STAR
+	script_call AnimScript_208b8
+	frame 20, $5bc9
+	frame 40, $58e1
+	script_repeat 3
+	frame 12, $58c1
+	frame 10, $58c9
+	frame 12, $58d1
+	frame 10, $58c9
+	script_repeat_end
+	script_call AnimScript_208b8
+	script_call AnimScript_208cb
+	script_call AnimScript_208b8
+	frame  0, $58e1
+
+AnimScript_22570:
+	frame 200, $4fbc
+	frame 21, $4fbc
+	frame  0, $4f94
+
+AnimScript_22579:
+	frame 200, $4fbc
+	frame 21, $4fbc
+	frame  0, $4fa4
+
+AnimScript_22582:
+	create_object AnimScript_225a8, MotionScript_125c6, Data_3425
+	frame 50, $4fbc
+	create_object AnimScript_225a8, MotionScript_125ec, Data_3425
+	frame 90, $4fbc
+	create_object AnimScript_225a8, MotionScript_1260b, Data_3425
+	frame 64, $4fbc
+	set_motion_script MotionScript_11643
+	frame 136, $4fbc
+AnimScript_225a8:
+	frame  0, $4fbc
+
+AnimScript_225ab:
+	frame  0, $4fc0
+
+AnimScript_225ae:
+.loop
+	frame 12, $4fc4
+	frame 12, $4fcc
+	frame 12, $4fd4
+	frame 12, $4fdc
+	jump_rel .loop
+
+AnimScript_225bc:
+.loop
+	frame 12, $4fe4
+	frame 12, $4fec
+	frame 12, $4ff4
+	frame 12, $4ffc
+	jump_rel .loop
+
+AnimScript_225ca:
+.loop
+	frame 13, $5004
+	frame 13, $500c
+	frame 13, $5014
+	frame 13, $501c
+	jump_rel .loop
+
+AnimScript_225d8:
+.loop
+	frame 11, $5024
+	frame 11, $502c
+	frame 11, $5034
+	frame 11, $503c
+	jump_rel .loop
+
+AnimScript_225e6:
+.loop
+	frame 12, $5044
+	frame 12, $504c
+	frame 12, $5054
+	frame 12, $505c
+	jump_rel .loop
+
+AnimScript_225f4:
+.loop
+	frame 18, $5064
+	frame 18, $5068
+	frame 18, $506c
+	frame 18, $5070
+	jump_rel .loop
+
+AnimScript_22602:
+.loop
+	frame 16, $5074
+	frame 16, $5078
+	frame 16, $507c
+	frame 16, $5080
+	jump_rel .loop
+
+AnimScript_22610:
+	frame  0, $5084
+
+AnimScript_22613:
+	frame  0, $5094
+
+AnimScript_22616:
+	frame 64, $4f20
+	play_sfx SFX_EXPLOSION
+	frame  0, $50b4
+
+AnimScript_22620:
+	frame 64, $58b8
+	script_repeat 7
+	frame  1, $50e4
+	frame  1, $50fc
+	frame  1, $5110
+	frame  1, $5128
+	frame  1, $513c
+	frame  1, $5154
+	frame  1, $5168
+	script_repeat_end
+	frame 30, $5194
+	play_sfx SFX_13
+	frame  0, $5194
+
+AnimScript_22645:
+	frame 64, $58b8
+	frame  0, $52ac
+
+AnimScript_2264b:
+	frame  0, $4fbc
+
+AnimScript_2264e:
+	frame 11, $58b8
+AnimScript_22651:
+	frame 12, $529c
+AnimScript_22654:
+	frame 11, $58b8
+AnimScript_22657:
+	frame 11, $58b8
+AnimScript_2265a:
+	frame 12, $529c
+	jump_rel AnimScript_2264e
+
+AnimScript_2265f:
+	frame 44, $5198
+	play_sfx SFX_BUMP
+	frame 32, $51b0
+	frame 80, $51bc
+	frame 32, $51d4
+	script_repeat 3
+	frame 16, $51d4
+	frame 10, $51ec
+	script_repeat_end
+	frame 64, $51ec
+	frame  8, $5204
+	frame  8, $5234
+	play_sfx SFX_JUMP
+	frame  0, $5264
+
+AnimScript_22688:
+.loop
+	frame 20, $4fbc
+	create_object AnimScript_2269e, MotionScript_10008, Data_3425
+	frame 20, $4fbc
+	create_object AnimScript_226b2, MotionScript_10008, Data_3425
+	jump_rel .loop
+
+AnimScript_2269e:
+	calltable_random 7
+	dw AnimScript_226fe
+	dw AnimScript_22702
+	dw AnimScript_22706
+	dw AnimScript_2270a
+	dw AnimScript_2270e
+	dw AnimScript_22712
+	dw AnimScript_22716
+	dw AnimScript_2271a
+	jump_rel AnimScript_226c4
+
+AnimScript_226b2:
+	calltable_random 7
+	dw AnimScript_2271e
+	dw AnimScript_22722
+	dw AnimScript_22726
+	dw AnimScript_2272a
+	dw AnimScript_2272e
+	dw AnimScript_22732
+	dw AnimScript_22736
+	dw AnimScript_2273a
+
+AnimScript_226c4:
+	jumptable_random 7
+	dw AnimScript_226db
+	dw AnimScript_226e0
+	dw AnimScript_226e5
+	dw AnimScript_226ea
+	dw AnimScript_226d6
+	dw AnimScript_226ef
+	dw AnimScript_226f4
+	dw AnimScript_226f9
+
+AnimScript_226d6:
+	set_scripts AnimScript_225d8, MotionScript_127fa
+
+AnimScript_226db:
+	set_scripts AnimScript_225e6, MotionScript_127fa
+
+AnimScript_226e0:
+	set_scripts AnimScript_225ae, MotionScript_127fa
+
+AnimScript_226e5:
+	set_scripts AnimScript_225bc, MotionScript_127fa
+
+AnimScript_226ea:
+	set_scripts AnimScript_225ca, MotionScript_127fa
+
+AnimScript_226ef:
+	set_scripts AnimScript_225f4, MotionScript_127fe
+
+AnimScript_226f4:
+	set_scripts AnimScript_22602, MotionScript_127fe
+
+AnimScript_226f9:
+	set_scripts AnimScript_225ab, MotionScript_12802
+
+
+AnimScript_226fe:
+	position_offset -62, 0
+	script_ret
+
+AnimScript_22702:
+	position_offset -56, 0
+	script_ret
+
+AnimScript_22706:
+	position_offset -51, 0
+	script_ret
+
+AnimScript_2270a:
+	position_offset -46, 0
+	script_ret
+
+AnimScript_2270e:
+	position_offset -41, 0
+	script_ret
+
+AnimScript_22712:
+	position_offset -36, 0
+	script_ret
+
+AnimScript_22716:
+	position_offset -31, 0
+	script_ret
+
+AnimScript_2271a:
+	position_offset -26, 0
+	script_ret
+
+AnimScript_2271e:
+	position_offset 26, 0
+	script_ret
+
+AnimScript_22722:
+	position_offset 31, 0
+	script_ret
+
+AnimScript_22726:
+	position_offset 36, 0
+	script_ret
+
+AnimScript_2272a:
+	position_offset 41, 0
+	script_ret
+
+AnimScript_2272e:
+	position_offset 46, 0
+	script_ret
+
+AnimScript_22732:
+	position_offset 51, 0
+	script_ret
+
+AnimScript_22736:
+	position_offset 56, 0
+	script_ret
+
+AnimScript_2273a:
+	position_offset 62, 0
+	script_ret
+
+AnimScript_2273e:
+	frame 15, $58b8
+	script_repeat 15
+	script_delay 4
+	set_value wd065, $01
+	script_delay 204
+	create_object AnimScript_2275c, MotionScript_10008, Data_3425
+	script_repeat_end
+	script_delay 180
+	script_delay 160
+	set_value wd067, $01
+	script_end
+
+AnimScript_2275c:
+	script_repeat 32
+	inc_value wCreditsTextScroll
+	frame  2, $58b8
+	script_repeat_end
+	script_end
+
+AnimScript_22766:
+	frame  0, $5884
+
+AnimScript_22769:
+	set_scripts AnimScript_22766, MotionScript_1281a
+
+AnimScript_2276e:
+	set_scripts AnimScript_22766, MotionScript_12829
+
+AnimScript_22773:
+	set_update_func Func_14200, AnimScript_22781
+.loop
+	frame 40, $589c
+	frame 40, $58a4
+	jump_abs .loop
+
+AnimScript_22781:
+	play_sfx SFX_GAME_START
+	jump_if_equal wd3cf, $01, .script_227cd
+	set_motion_script MotionScript_1289e
+	frame 40, $589c
+	frame 40, $58a4
+	frame 44, $589c
+	frame  4, $58a4
+	play_sfx SFX_PUFF
+	frame  7, $5bad
+	frame 15, $589c
+	frame  4, $58a4
+	play_sfx SFX_PUFF
+	frame  7, $5bad
+	frame 10, $58a4
+	play_sfx SFX_08
+	frame 60, $58b0
+	frame  8, $58b9
+	script_repeat 4
+	frame  7, $58c1
+	frame  5, $58c9
+	frame  7, $58d1
+	frame  5, $58c9
+	script_repeat_end
+	script_end
+.script_227cd
+	play_sfx SFX_19
+	set_motion_script MotionScript_128f0
+	script_repeat 2
+	frame 35, $589c
+	frame 35, $58a4
+	script_repeat_end
+	frame 10, $589c
+	play_sfx SFX_DAMAGE
+.script_227e6
+	frame  4, $5be1
+	create_object AnimScript_22333, MotionScript_107c3, Data_3425
+	jump_rel .script_227e6
+
+AnimScript_227f2:
+	set_update_func Func_14200, AnimScript_227ff
+.loop
+	frame 40, $58b8
+	frame 40, $58ac
+	jump_rel .loop
+
+AnimScript_227ff:
+	jump_if_equal wd3cf, $00, .loop
+	script_end
+.loop
+	script_repeat 2
+	frame 20, $58b8
+	frame 20, $58ac
+	script_repeat_end
+	script_end
+
+AnimScript_22810:
+	frame 10, $587c
+	frame 50, $5884
+	frame 120, $5894
+	frame  5, $5884
+	frame  5, $588c
+	script_delay 150
+	set_value wd3d0, $01
+	set_flags hKirbyFlags6, $ff, $80
+	script_end
+
+AnimScript_2282b:
+	frame 10, $587c
+	frame 10, $5884
+	frame  0, $587c
+
+AnimScript_22834:
+	frame  2, $5884
+	frame 26, $588c
+	set_value wd3d0, $01
+	set_flags hKirbyFlags6, $80, $00
+	frame  0, $588c
 
 AnimScript_22846:
 .loop

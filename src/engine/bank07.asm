@@ -94,39 +94,39 @@ Data_1c0ce::
 	dw Data_1d58f, Data_1d7e7 ; SCENE_TITLE_SCREEN
 	dw Data_1d5ba, Data_1d7e7 ; SCENE_SOUND_TEST
 	dw Data_1d5fd, Data_1d7e7 ; SCENE_EPILOGUE_DEDEDE_LAUNCH
-	dw $5607, Data_1d7e7 ; SCENE_EPILOGUE_KIRBY_DANCE
-	dw $561d, Data_1d7e7 ; SCENE_EPILOGUE_KIRBY_INFLATE
-	dw $5624, Data_1d7e7 ; SCENE_EPILOGUE_FALLING_FOOD
-	dw $5631, Data_1d7e7 ; SCENE_CREDITS
-	dw $55c4, Data_1d7e7 ; SCENE_EPILOGUE_KIRBY_DEFLATE
-	dw $55e0, Data_1d7e7 ; SCENE_EPILOGUE_BYE_BYE
-	dw $55f9, Data_1d7e7 ; SCENE_GAME_OVER
-	dw $563e, Data_1d7e7 ; SCENE_CONTINUE
-	dw $57e7, Data_1d7e7 ; SCENE_GREEN_GREENS_ENEMIES_1
-	dw $57e7, Data_1d7e7 ; SCENE_GREEN_GREENS_ENEMIES_2
-	dw $57e7, Data_1d7e7 ; SCENE_GREEN_GREENS_ENEMIES_3
-	dw $57e7, Data_1d7e7 ; SCENE_CASTLE_LOLOLO_ENEMIES_1
-	dw $57e7, Data_1d7e7 ; SCENE_CASTLE_LOLOLO_ENEMIES_2
-	dw $57e7, Data_1d7e7 ; SCENE_FLOAT_ISLANDS_ENEMIES_1
-	dw $57e7, Data_1d7e7 ; SCENE_FLOAT_ISLANDS_ENEMIES_2
-	dw $57e7, Data_1d7e7 ; SCENE_BUBBLE_CLOUDS_ENEMIES_1
-	dw $57e7, Data_1d7e7 ; SCENE_BUBBLE_CLOUDS_ENEMIES_2
-	dw $57e7, Data_1d7e7 ; SCENE_GREEN_GREENS_ENEMIES_4
-	dw $57e7, Data_1d7e7 ; SCENE_CASTLE_LOLOLO_ENEMIES_3
-	dw $57e7, Data_1d7e7 ; SCENE_FLOAT_ISLANDS_ENEMIES_3
-	dw $57e7, Data_1d7e7 ; SCENE_BUBBLE_CLOUDS_ENEMIES_3
-	dw $57e7, Data_1d7e7 ; SCENE_KING_DEDEDE
-	dw $57e7, Data_1d7e7 ; SCENE_CONFIG_MODE_UNLOCK
-	dw $57e7, Data_1d7e7 ; SCENE_EXTRA_GAME_UNLOCK
+	dw Data_1d607, Data_1d7e7 ; SCENE_EPILOGUE_KIRBY_DANCE
+	dw Data_1d61d, Data_1d7e7 ; SCENE_EPILOGUE_KIRBY_INFLATE
+	dw Data_1d624, Data_1d7e7 ; SCENE_EPILOGUE_FALLING_FOOD
+	dw Data_1d631, Data_1d7e7 ; SCENE_CREDITS
+	dw Data_1d5c4, Data_1d7e7 ; SCENE_EPILOGUE_KIRBY_DEFLATE
+	dw Data_1d5e0, Data_1d7e7 ; SCENE_EPILOGUE_BYE_BYE
+	dw Data_1d5f9, Data_1d7e7 ; SCENE_GAME_OVER
+	dw Data_1d63e, Data_1d7e7 ; SCENE_CONTINUE
+	dw Data_1d7e7, Data_1d7e7 ; SCENE_GREEN_GREENS_ENEMIES_1
+	dw Data_1d7e7, Data_1d7e7 ; SCENE_GREEN_GREENS_ENEMIES_2
+	dw Data_1d7e7, Data_1d7e7 ; SCENE_GREEN_GREENS_ENEMIES_3
+	dw Data_1d7e7, Data_1d7e7 ; SCENE_CASTLE_LOLOLO_ENEMIES_1
+	dw Data_1d7e7, Data_1d7e7 ; SCENE_CASTLE_LOLOLO_ENEMIES_2
+	dw Data_1d7e7, Data_1d7e7 ; SCENE_FLOAT_ISLANDS_ENEMIES_1
+	dw Data_1d7e7, Data_1d7e7 ; SCENE_FLOAT_ISLANDS_ENEMIES_2
+	dw Data_1d7e7, Data_1d7e7 ; SCENE_BUBBLE_CLOUDS_ENEMIES_1
+	dw Data_1d7e7, Data_1d7e7 ; SCENE_BUBBLE_CLOUDS_ENEMIES_2
+	dw Data_1d7e7, Data_1d7e7 ; SCENE_GREEN_GREENS_ENEMIES_4
+	dw Data_1d7e7, Data_1d7e7 ; SCENE_CASTLE_LOLOLO_ENEMIES_3
+	dw Data_1d7e7, Data_1d7e7 ; SCENE_FLOAT_ISLANDS_ENEMIES_3
+	dw Data_1d7e7, Data_1d7e7 ; SCENE_BUBBLE_CLOUDS_ENEMIES_3
+	dw Data_1d7e7, Data_1d7e7 ; SCENE_KING_DEDEDE
+	dw Data_1d7e7, Data_1d7e7 ; SCENE_CONFIG_MODE_UNLOCK
+	dw Data_1d7e7, Data_1d7e7 ; SCENE_EXTRA_GAME_UNLOCK
 	assert_table_length NUM_SCENES
 
 Data_1c13a::
 	table_width 4
-	dw $578b, Data_1d7e7 ; GREEN_GREENS
-	dw $57a7, Data_1d7e7 ; CASTLE_LOLOLO
-	dw $57bd, Data_1d7e7 ; FLOAT_ISLANDS
-	dw $57ca, Data_1d7e7 ; BUBBLY_CLOUDS
-	dw $57d4, Data_1d7e7 ; MT_DEDEDE
+	dw Data_1d78b, Data_1d7e7 ; GREEN_GREENS
+	dw Data_1d7a7, Data_1d7e7 ; CASTLE_LOLOLO
+	dw Data_1d7bd, Data_1d7e7 ; FLOAT_ISLANDS
+	dw Data_1d7ca, Data_1d7e7 ; BUBBLY_CLOUDS
+	dw Data_1d7d4, Data_1d7e7 ; MT_DEDEDE
 	assert_table_length NUM_STAGES
 
 Data_1c14e::
@@ -134,9 +134,9 @@ Data_1c14e::
 
 Data_1c154::
 	dw AnimScript_20a01, MotionScript_10008, PuffOfSmokeProperties
-; 0x1c15a
 
-SECTION "Bank 7@4160", ROMX[$4160], BANK[$7]
+Data_1c15a::
+	dw AnimScript_20a00, MotionScript_10008, Properties_35a6
 
 Data_1c160::
 	dw AnimScript_Explosion, MotionScript_10008, ExplosionProperties
@@ -1659,42 +1659,255 @@ Data_1d5ba:
 	dbw $06, Data_1d777
 	dbw $07, Data_1d781
 	db $ff ; end
-; 0x1d5c4
 
-SECTION "Bank 7@55fd", ROMX[$55fd], BANK[$7]
+Data_1d5c4:
+	dbw $00, NULL
+	dbw $05, LevelObject_1d6e1
+	dbw $05, LevelObject_1d6eb
+	dbw $05, LevelObject_1d6f5
+	dbw $05, LevelObject_1d6ff
+	dbw $05, LevelObject_1d709
+	dbw $05, LevelObject_1d713
+	dbw $05, LevelObject_1d71d
+	dbw $05, LevelObject_1d727
+	db $ff ; end
+
+Data_1d5e0:
+	dbw $00, NULL
+	dbw $01, LevelObject_1d763
+	dbw $03, LevelObject_1d76d
+	dbw $04, LevelObject_1d731
+	dbw $04, LevelObject_1d73b
+	dbw $05, LevelObject_1d745
+	dbw $07, LevelObject_1d74f
+	dbw $09, LevelObject_1d759
+	db $ff ; end
+
+Data_1d5f9:
+	dbw $00, NULL
+	db $ff ; end
 
 Data_1d5fd:
 	dbw $00, NULL
 	dbw $05, Data_1d655
 	dbw $06, Data_1d64b
 	db $ff ; end
-; 0x1d607
 
-SECTION "Bank 7@564b", ROMX[$564b], BANK[$7]
+Data_1d607:
+	dbw $00, NULL
+	dbw $01, LevelObject_1d687
+	dbw $02, LevelObject_1d67d
+	dbw $04, LevelObject_1d691
+	dbw $04, LevelObject_1d65f
+	dbw $06, LevelObject_1d673
+	dbw $07, LevelObject_1d669
+	db $ff ; end
+
+Data_1d61d:
+	dbw $00, NULL
+	dbw $05, LevelObject_1d69b
+	db $ff ; end
+
+Data_1d624:
+	dbw $00, NULL
+	dbw $03, LevelObject_1d6a5
+	dbw $05, LevelObject_1d6af
+	dbw $05, LevelObject_1d6b9
+	db $ff ; end
+
+Data_1d631:
+	dbw $00, NULL
+	dbw $01, LevelObject_1d6c3
+	dbw $04, LevelObject_1d6cd
+	dbw $07, LevelObject_1d6d7
+	db $ff ; end
+
+Data_1d63e:
+	dbw $00, NULL
+	dbw $02, LevelObject_1d8e5
+	dbw $03, LevelObject_1d8ef
+	dbw $04, LevelObject_1d8db
+	db $ff ; end
 
 Data_1d64b:
 	object $06, $06, $f8, $00, AnimScript_224e4, MotionScript_124b9, Data_3425
 Data_1d655:
 	object $05, $06, $fb, $f8, AnimScript_224af, MotionScript_12491, Data_3425
-; 0x1d65f
 
-SECTION "Bank 7@5777", ROMX[$5777], BANK[$7]
+LevelObject_1d65f:
+	object 4, 0, 8, 8, AnimScript_224ea, MotionScript_124c5, Data_3425
+LevelObject_1d669:
+	object 7, 1, 12, 11, AnimScript_224f2, MotionScript_124cb, Data_3425
+LevelObject_1d673:
+	object 6, 3, 8, 8, AnimScript_224fa, MotionScript_124d1, Data_3425
+LevelObject_1d67d:
+	object 2, 3, 8, 8, AnimScript_22502, MotionScript_124d7, Data_3425
+LevelObject_1d687:
+	object 1, 1, 4, 11, AnimScript_2250a, MotionScript_124bf, Data_3425
+LevelObject_1d691:
+	object 4, 6, 8, 0, AnimScript_22548, MotionScript_12591, Data_3425
+
+LevelObject_1d69b:
+	object 5, 6, -5, -8, AnimScript_224bf, MotionScript_124a0, Data_3425
+
+LevelObject_1d6a5:
+	object 3, 0, -4, 0, AnimScript_22570, MotionScript_125b5, Data_3425
+LevelObject_1d6af:
+	object 5, 0, -4, 0, AnimScript_22579, MotionScript_125b5, Data_3425
+LevelObject_1d6b9:
+	object 5, 0, -4, 0, AnimScript_22582, MotionScript_10008, Data_3425
+
+LevelObject_1d6c3:
+	object 1, 1, 0, 0, AnimScript_2273e, MotionScript_10008, Data_3425
+LevelObject_1d6cd:
+	object 4, 4, 0, 4, AnimScript_22613, MotionScript_10008, Data_3425
+LevelObject_1d6d7:
+	object 7, 3, 0, 0, AnimScript_22610, MotionScript_126cd, Data_3425
+
+LevelObject_1d6e1:
+	object 5, 3, -8, 8, AnimScript_22616, MotionScript_126e7, Data_3425
+LevelObject_1d6eb:
+	object 5, 2, -8, 0, AnimScript_22620, MotionScript_126fc, Data_3425
+LevelObject_1d6f5:
+	object 5, 2, -8, 0, AnimScript_22645, MotionScript_12715, Data_3425
+LevelObject_1d6ff:
+	object 5, 2, -8, 0, AnimScript_22645, MotionScript_1272d, Data_3425
+LevelObject_1d709:
+	object 5, 2, -8, 0, AnimScript_22645, MotionScript_12745, Data_3425
+LevelObject_1d713:
+	object 5, 2, -8, 0, AnimScript_22645, MotionScript_1275d, Data_3425
+LevelObject_1d71d:
+	object 5, 2, -8, 0, AnimScript_22645, MotionScript_1276f, Data_3425
+LevelObject_1d727:
+	object 5, 5, -8, 8, AnimScript_2264b, MotionScript_12781, Data_3425
+
+LevelObject_1d731:
+	object 4, 0, 4, 0, AnimScript_2265f, MotionScript_127d9, Data_3425
+LevelObject_1d73b:
+	object 4, 0, 8, 0, AnimScript_22688, MotionScript_10008, Data_3425
+LevelObject_1d745:
+	object 5, 7, -8, 7, AnimScript_2264e, MotionScript_127c1, Data_3425
+LevelObject_1d74f:
+	object 7, 7, -8, 7, AnimScript_22651, MotionScript_127c4, Data_3425
+LevelObject_1d759:
+	object 9, 7, -8, 7, AnimScript_22654, MotionScript_127ca, Data_3425
+LevelObject_1d763:
+	object 1, 7, -8, 7, AnimScript_22657, MotionScript_127cd, Data_3425
+LevelObject_1d76d:
+	object 3, 7, -8, 7, AnimScript_2265a, MotionScript_127d0, Data_3425
 
 Data_1d777:
 	object $06, $06, $00, $00, AnimScript_SoundTestNote, MotionScript_SoundTestNote, Data_3425
-
 Data_1d781:
 	object $08, $07, $f0, $f8, AnimScript_SoundTestKirbyEyes, MotionScript_10008, Data_3425
-; 0x1d78b
 
-SECTION "Bank 7@57e7", ROMX[$57e7], BANK[$7]
+Data_1d78b:
+	dbw $00, NULL
+	dbw $01, LevelObject_1d7eb
+	dbw $05, LevelObject_1d7f5
+	dbw $08, LevelObject_1d831
+	dbw $09, LevelObject_1d7ff
+	dbw $0a, LevelObject_1d809
+	dbw $0b, LevelObject_1d81d
+	dbw $0b, LevelObject_1d827
+	dbw $0c, LevelObject_1d813
+	db $ff ; end
+
+Data_1d7a7:
+	dbw $00, NULL
+	dbw $01, LevelObject_1d83b
+	dbw $02, LevelObject_1d845
+	dbw $03, LevelObject_1d84f
+	dbw $04, LevelObject_1d859
+	dbw $05, LevelObject_1d863
+	dbw $05, LevelObject_1d86d
+	db $ff ; end
+
+Data_1d7bd:
+	dbw $00, NULL
+	dbw $01, LevelObject_1d877
+	dbw $06, LevelObject_1d881
+	dbw $06, LevelObject_1d88b
+	db $ff ; end
+
+Data_1d7ca:
+	dbw $00, NULL
+	dbw $05, LevelObject_1d895
+	dbw $05, LevelObject_1d89f
+	db $ff ; end
+
+Data_1d7d4:
+	dbw $00, NULL
+	dbw $00, LevelObject_1d8a9
+	dbw $00, LevelObject_1d8d1
+	dbw $04, LevelObject_1d8b3
+	dbw $04, LevelObject_1d8bd
+	dbw $07, LevelObject_1d8c7
+	db $ff ; end
 
 Data_1d7e7:
 	dbw $00, NULL
 	db $ff ; end
-; 0x1d7eb
 
-SECTION "Bank 7@58f9", ROMX[$58f9], BANK[$7]
+LevelObject_1d7eb:
+	object 0, 3, 8, 6, AnimScript_222a4, MotionScript_120c6, Data_3421
+LevelObject_1d7f5:
+	object 5, 5, 0, 0, AnimScript_222d5, MotionScript_12100, Data_3421
+LevelObject_1d7ff:
+	object 8, 3, 0, 8, AnimScript_222fd, MotionScript_10008, Data_3421
+LevelObject_1d809:
+	object 9, 4, 0, -8, AnimScript_22305, MotionScript_10008, Data_3421
+LevelObject_1d813:
+	object 10, 3, 0, 0, AnimScript_2230d, MotionScript_10008, Data_3421
+LevelObject_1d81d:
+	object 11, 4, 0, 0, AnimScript_22315, MotionScript_10008, Data_3421
+LevelObject_1d827:
+	object 12, 5, 0, -8, AnimScript_2231d, MotionScript_10008, Data_3421
+LevelObject_1d831:
+	object 13, 3, 0, 0, AnimScript_22325, MotionScript_10008, Data_3421
+
+LevelObject_1d83b:
+	object 1, 2, 0, 5, AnimScript_22333, MotionScript_1213c, Data_3421
+LevelObject_1d845:
+	object 2, 3, 0, 5, AnimScript_22333, MotionScript_12153, Data_3421
+LevelObject_1d84f:
+	object 3, 2, 0, -10, AnimScript_22333, MotionScript_12167, Data_3421
+LevelObject_1d859:
+	object 4, 2, 0, 0, AnimScript_22333, MotionScript_1217e, Data_3421
+LevelObject_1d863:
+	object 5, 5, 0, 1, AnimScript_2233d, MotionScript_121a2, Data_3421
+LevelObject_1d86d:
+	object 5, 0, 0, -2, AnimScript_22357, MotionScript_121bf, Data_3421
+
+LevelObject_1d877:
+	object 5, 6, -2, -14, AnimScript_22360, MotionScript_121d7, Data_3421
+LevelObject_1d881:
+	object 7, 7, 0, -16, AnimScript_2239c, MotionScript_121ec, Data_3421
+LevelObject_1d88b:
+	object 7, 7, 0, -16, AnimScript_223a8, MotionScript_1221a, Data_3421
+
+LevelObject_1d895:
+	object 5, 0, -8, -10, AnimScript_223c0, MotionScript_1224e, Data_3421
+LevelObject_1d89f:
+	object 5, 6, -8, -8, AnimScript_22415, MotionScript_12258, Data_3421
+
+LevelObject_1d8a9:
+	object 0, 5, -3, 0, AnimScript_2242a, MotionScript_123c2, Data_3425
+LevelObject_1d8b3:
+	object 5, 5, 0, 0, AnimScript_22459, MotionScript_1235a, Data_3425
+LevelObject_1d8bd:
+	object 4, 0, -3, 2, AnimScript_22440, MotionScript_12340, Data_3425
+LevelObject_1d8c7:
+	object 9, 7, 16, 0, AnimScript_2244d, MotionScript_123d8, Data_3425
+LevelObject_1d8d1:
+	object 0, 0, 0, 0, AnimScript_20000, MotionScript_123ea, Data_3425
+
+LevelObject_1d8db:
+	object 4, 6, 8, -8, AnimScript_22773, MotionScript_10008, Data_3421
+LevelObject_1d8e5:
+	object 2, 2, 2, -2, AnimScript_22766, MotionScript_12806, Data_3421
+LevelObject_1d8ef:
+	object 3, 5, 14, 2, AnimScript_227f2, MotionScript_128f6, Data_3421
 
 Data_1d8f9:
 	dbw $00, NULL
