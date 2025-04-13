@@ -500,7 +500,8 @@ wd3f1:: ; d3f1
 wScene:: ; d3f2
 	db
 
-	ds $2
+wd3f3:: ; d3f3
+	dw
 
 ; remaining duration of Kirby blinking
 ; after taking damage

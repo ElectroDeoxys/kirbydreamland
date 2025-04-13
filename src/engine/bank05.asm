@@ -1,4 +1,18 @@
-SECTION "Bank 5@401a", ROMX[$401a], BANK[$5]
+Func_14000:
+	ld a, [wd3f3 + 1]
+	ld l, a
+	ld a, [wd3f3 + 0]
+	ld h, a
+	ld a, [wd056]
+	ld c, a
+	ld a, [wSCY]
+	ld b, a
+	add hl, bc
+	ld a, l
+	ld [wd056], a
+	ld a, h
+	ld [wSCY], a
+	ret
 
 ; handles motion of object in slot bc
 ; that is being inhaled by Kirby

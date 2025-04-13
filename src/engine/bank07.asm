@@ -140,9 +140,9 @@ Data_1c15a::
 
 Data_1c160::
 	dw AnimScript_Explosion, MotionScript_10008, ExplosionProperties
-; 0x1c166
 
-SECTION "Bank 7@416c", ROMX[$416c], BANK[$7]
+Data_1c166::
+	dw AnimScript_Explosion, MotionScript_10008, Properties_35c4
 
 Data_1c16c:
 	dw AnimScript_203b2, MotionScript_10008, ExplosionProperties

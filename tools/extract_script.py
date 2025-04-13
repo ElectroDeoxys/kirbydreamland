@@ -23,6 +23,9 @@ def parse_word(args):
 def parse_local_address(data):
     return (2, ('l', parse_word(data)))
 
+def parse_call_address(data):
+    return (2, ('c', parse_word(data)))
+
 def parse_jump_offset(args):
     offs = args[0]
     if offs >= 0x80:
@@ -111,9 +114,9 @@ PLAY_MUSIC = 0x201
 
 commands = {
     SCRIPT_END: ("script_end", []),
-    JUMP_ABS: ("jump_abs", [parse_local_address]),
+    JUMP_ABS: ("jump_abs", [parse_call_address]),
     JUMP_REL: ("jump_rel", [parse_jump_offset]),
-    SCRIPT_CALL: ("script_call", [parse_local_address]),
+    SCRIPT_CALL: ("script_call", [parse_call_address]),
     SCRIPT_RET: ("script_ret", []),
     SET_SCRIPTS: ("set_scripts", [parse_anim_script, parse_motion_script]),
     SCRIPT_REPEAT: ("script_repeat", [parse_int]),
@@ -139,7 +142,7 @@ commands = {
     JUMP_RANDOM: ("jump_random", [parse_percent, parse_local_address]),
     JUMPTABLE_RANDOM: ("jumptable_random", [parse_int]),
     CREATE_OBJECT: ("create_object", [parse_anim_script, parse_motion_script, parse_properties]),
-    SCRIPT_CALL_RANDOM: ("script_call_random", [parse_byte, parse_local_address]),
+    SCRIPT_CALL_RANDOM: ("script_call_random", [parse_byte, parse_call_address]),
     CALLTABLE_RANDOM: ("calltable_random", [parse_byte]),
 
     # higher order commands: script_exec
@@ -172,10 +175,10 @@ def get_command_string(cmd_byte, args, address_labels, cur_bank):
         return format_address_in_bank(addr, cur_bank, ".script_")
 
     def format_anim_script(addr):
-        return format_address_in_bank(addr, 8, "AnimScript_")
+        return format_address_in_bank(addr, 9, "AnimScript_")
 
     def format_motion_script(addr):
-        return format_address_in_bank(addr, 4, "MotionScript_")
+        return format_address_in_bank(addr, 0xc, "MotionScript_")
 
     def format_properties(addr):
         return format_address_in_bank(addr, 0, "Properties_")
@@ -226,6 +229,9 @@ def get_command_string(cmd_byte, args, address_labels, cur_bank):
     for arg_type, arg in args:
         if arg_type == 't':
             res_str = res_str[:-2]
+        if arg_type == 'c':
+            arg_type = 'a' if cur_bank == 0x9 else 'm'
+
         res_str += arg_formatter_map[arg_type](arg) + ', '
 
     return res_str[:-2]
@@ -235,8 +241,8 @@ out_str = ""
 for o in reader.standardise_list(args.offsets):
     # cache whole bank
     offset = int(o, 16)
-    is_motion_script = (offset >= 0x10000 and offset < 0x14000)
     bank = int(offset / 0x4000)
+    is_motion_script = (bank == 0xc)
     source = reader.get_rom_bytes(bank * 0x4000, 0x4000)
     pos = offset % 0x4000
 
@@ -278,11 +284,12 @@ for o in reader.standardise_list(args.offsets):
                 if cmd_byte == JUMP_ABS:
                     abs_address = (bank - 1) * 0x4000 + parsed_commands[-1][2][0][1]
                     local_address = parsed_commands[-1][2][0][1]
+                    parsed_commands[-1][2][0] = ('c', local_address)
                 else:
                     abs_address = cmd_pos + 1 + parsed_commands[-1][2][0][1]
                     local_address = abs_address - (bank - 1) * 0x4000
-                jump_addresses.add(abs_address)
-                parsed_commands[-1][2][0] = ('l', local_address)
+                    jump_addresses.add(abs_address)
+                    parsed_commands[-1][2][0] = ('l', local_address)
                 if abs_address < cmd_pos and (pos + bank * 0x4000) not in jump_addresses:
                     break
             elif cmd_byte == SET_SCRIPTS:
@@ -361,7 +368,7 @@ for o in reader.standardise_list(args.offsets):
     # for the common case where the animation is a simple loop
     if len(address_labels) == 1:
         for k, v in address_labels.items():
-            if k >= offset and k < offset + pos:
+            if k >= offset and k < (pos + bank * 0x4000):
                 address_labels[k] = ".loop"
 
     #print(parsed_commands)

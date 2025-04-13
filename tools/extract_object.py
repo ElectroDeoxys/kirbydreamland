@@ -40,10 +40,10 @@ for o in offsets:
     xOffs = parseSigned(objData[2])
     yOffs = parseSigned(objData[3])
 
-    animScriptOffset = (objData[4] + (objData[5] << 8)) - 0x4000 + 0x20000
+    animScriptOffset = (objData[4] + (objData[5] << 8)) - 0x4000 + 0x24000
     animScript = syms[animScriptOffset] if animScriptOffset in syms else "AnimScript_{:0x}".format(animScriptOffset)
 
-    motionScriptOffset = (objData[6] + (objData[7] << 8)) - 0x4000 + 0x10000
+    motionScriptOffset = (objData[6] + (objData[7] << 8)) - 0x4000 + 0x30000
     motionScript = syms[motionScriptOffset] if motionScriptOffset in syms else "MotionScript_{:0x}".format(motionScriptOffset)
 
     propertiesOffset = objData[8] + (objData[9] << 8)

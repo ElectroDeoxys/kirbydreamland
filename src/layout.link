@@ -18,7 +18,7 @@ ROMX $2
 ROMX $3
 	"Bank 3"
 ROMX $4
-	"Motion Scripts"
+	"Motion Scripts Normal"
 ROMX $5
 	"Bank 5"
 	org $4c4a
@@ -28,9 +28,13 @@ ROMX $6
 ROMX $7
 	"Bank 7"
 ROMX $8
-	"Animation Scripts"
+	"Animation Scripts Normal"
+ROMX $9
+	"Animation Scripts Extra"
 ROMX $a
 	"Bank A"
+ROMX $c
+	"Motion Scripts Extra"
 ROMX $d
 	"Bank D"
 ROMX $e

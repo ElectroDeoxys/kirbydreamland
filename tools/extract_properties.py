@@ -70,7 +70,7 @@ for o in reader.standardise_list(args.offsets):
         score = data[6] * 10
 
         data_ptr = data[7] + data[8] * 0x100
-        abs_ptr = data_ptr + 0x1c000 - 0x4000
+        abs_ptr = data_ptr + 0x3c000 - 0x4000
         data_str = syms[abs_ptr] if abs_ptr in syms else f"${data_ptr:04x}"
         properties = f"{flag_str}, {x_box}, {y_box}, {damage}, {hp}, ${unk:02x}, {score}, {data_str}"
         len = 9

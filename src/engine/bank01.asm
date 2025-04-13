@@ -1859,9 +1859,31 @@ ClearAllEnemies::
 	pop af
 	ld [wKirbyAnimScript + 1], a
 	ret
-; 0x4c7b
 
-SECTION "Bank 1@4c9b", ROMX[$4c9b], BANK[$1]
+Func_4c7b:
+	call SetObjectVelocity
+	ld a, e
+	ld [wd3f3 + 1], a
+	ld a, d
+	ld [wd3f3 + 0], a
+	ret
+
+Func_4c87:
+	ld e, NUM_OBJECT_SLOTS
+	ld d, $00
+.loop
+	ld a, e
+	cp c
+	jr z, .next_obj
+	ld hl, wObjectAnimScriptTimers
+	add hl, de
+	ld [hl], $00
+.next_obj
+	ld a, e
+	and a
+	ret z
+	dec e
+	jr .loop
 
 InflictHalfDamage_MoveUp::
 	ld a, [wDamageBlinkingCounter]

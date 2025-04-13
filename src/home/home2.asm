@@ -1947,7 +1947,7 @@ DoAnimScriptCommand:
 ; - a = either entry in PredefinedVelocities or a velocity value
 ; output:
 ; - de = velocity
-SetObjectVelocity:
+SetObjectVelocity::
 	cp $70
 	jr c, .use_input_value
 	cp $90
@@ -2040,9 +2040,9 @@ ExecuteObjectScripts:
 ; motion script
 	ld a, [wExtraGameEnabled]
 	and a
-	ld a, BANK("Motion Scripts")
+	ld a, BANK("Motion Scripts Normal")
 	jr z, .asm_29e2
-	ld a, $0c
+	ld a, BANK("Motion Scripts Extra")
 .asm_29e2
 	bankswitch
 	ld hl, wObjectMotionScriptTimers
@@ -2145,9 +2145,9 @@ ExecuteObjectScripts:
 .anim_script
 	ld a, [wExtraGameEnabled]
 	and a
-	ld a, BANK("Animation Scripts")
+	ld a, BANK("Animation Scripts Normal")
 	jr z, .asm_2a8a
-	ld a, $09
+	ld a, BANK("Animation Scripts Extra")
 .asm_2a8a
 	bankswitch
 	ld hl, wObjectAnimScriptTimers
@@ -3937,7 +3937,10 @@ GordoProperties::
 	object_properties PROPERTY_REL_POS, 12, 12, 3, 100, $00, 0
 ; 0x34be
 
-SECTION "Home@34c9", ROM0[$34c9]
+SECTION "Home@34c0", ROM0[$34c0]
+
+Properties_34c0::
+	object_properties $00, 12, 12, 3, 100, $01, 0, Data_1c154
 
 GlunkPodProperties::
 	object_properties PROPERTY_REL_POS, 6, 6, 1, 0, $11, 10, Data_1c154
@@ -3981,7 +3984,7 @@ GrizzoProperties::
 	object_properties PROPERTY_REL_POS, 20, 20, 2, 1, $03, 400, Data_1c154
 
 Properties_353e::
-	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY, 18, 18, 2, 1, 1, 400, Data_1c154
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY, 18, 18, 2, 1, $01, 400, Data_1c154
 
 PoppyBrosJrOnGrizzoProperties::
 	object_properties PROPERTY_REL_POS, 20, 26, 2, 1, $03, 200, Data_1c1a8
@@ -4000,9 +4003,9 @@ Data_356b::
 
 Data_3574::
 	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $03, 10, Data_1c160
-; 0x357d
 
-SECTION "Home@3586", ROM0[$3586]
+Properties_357d::
+	object_properties $00, 12, 12, 1, 1, $03, 10, Data_1c166
 
 Data_3586::
 	object_properties PROPERTY_REL_POS, 26, 64, 2, 6, $09, 0, Data_1c1cc
@@ -4039,9 +4042,9 @@ Data_35b7::
 
 ExplosionProperties::
 	object_properties PROPERTY_REL_POS, 40, 40, 1, 5, $00, 0, Data_1c160
-; 0x35c4
 
-SECTION "Home@35cd", ROM0[$35cd]
+Properties_35c4::
+	object_properties $00, 40, 40, 1, 5, $00, 0, Data_1c160
 
 PuffOfSmokeProperties::
 	db PROPERTY_REL_POS | PROPERTY_2 | PROPERTY_SINKABLE
@@ -4128,12 +4131,6 @@ CoconutProperties::
 	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE, 6, 6, 1, 1, $03, 50, Data_1c154
 ; 0x366a
 
-SECTION "Home@36a9", ROM0[$36a9]
-
-ConerProperties::
-	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY, 12, 12, 1, 1, $03, 300, Data_1c154
-; 0x366a
-
 SECTION "Home@368e", ROM0[$368e]
 
 Data_368e::
@@ -4145,6 +4142,48 @@ MumbiesProperties::
 MumbiesOrbitingProperties::
 	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $01, 500, Data_1c154
 ; 0x36a0
+
+SECTION "Home@36a9", ROM0[$36a9]
+
+ConerProperties::
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY, 12, 12, 1, 1, $03, 300, Data_1c154
+; 0x366a
+
+SECTION "Home@36cd", ROM0[$36cd]
+
+Properties_36cd::
+	object_properties PROPERTY_REL_POS, 12, 12, 2, 1, $03, 200, Data_1c154
+; 0x36d6
+
+SECTION "Home@3703", ROM0[$3703]
+
+Properties_3703::
+	object_properties PROPERTY_REL_POS, 12, 12, 2, 100, $01, 0, Data_1c154
+
+Properties_370c::
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE, 12, 12, 2, 1, $03, 200, Data_1c154
+
+Properties_3715::
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE, 12, 12, 2, 1, $03, 200, Data_1c154
+
+Properties_371e::
+	object_properties PROPERTY_REL_POS, 12, 12, 2, 1, $03, 200, Data_1c154
+
+Properties_3727::
+	object_properties PROPERTY_REL_POS, 12, 12, 2, 1, $03, 300, Data_1c154
+
+Properties_3730::
+	object_properties PROPERTY_REL_POS, 12, 12, 2, 1, $03, 500, Data_1c154
+; 0x3739
+
+SECTION "Home@3742", ROM0[$3742]
+
+Properties_3742::
+	object_properties PROPERTY_REL_POS, 12, 12, 2, 1, $03, 500, Data_1c154
+
+Properties_374b::
+	object_properties PROPERTY_REL_POS, 12, 12, 2, 1, $01, 500, Data_1c154
+; 0x3754
 
 SECTION "Home@375d", ROM0[$375d]
 
