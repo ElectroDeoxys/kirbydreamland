@@ -4286,7 +4286,7 @@ MotionScript_331aa:
 	set_value wd3c1, $01
 	create_object AnimScript_2526d, MotionScript_30008, Data_3421
 	script_exec Func_48a3
-	set_update_func Func_14172, $41e4
+	set_update_func Func_14172, Data_1c1e4
 	set_velocities  8, VEL_LEFT_1_25, VEL_DOWN_0_50
 	set_velocities  8, VEL_LEFT_1_25, VEL_DOWN_1_00
 	set_velocities  8, VEL_LEFT_1_25, VEL_DOWN_2_00
@@ -5194,7 +5194,7 @@ MotionScript_33ac4:
 	set_velocities  0, 0, 0
 
 MotionScript_33aca:
-	set_update_func Func_14172, $41f0
+	set_update_func Func_14172, Data_1c1f0
 .loop
 	script_exec Func_48b4
 	set_velocities  1, 0, 0

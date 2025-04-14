@@ -118,6 +118,11 @@ Gfx_2a3c1:: INCBIN "gfx/gfx_2a3c1.2bpp.lz"
 Gfx_2ac79:: INCBIN "gfx/gfx_2ac79.2bpp.lz"
 
 
+SECTION "Bank B", ROMX
+
+INCLUDE "engine/bank0b.asm"
+
+
 SECTION "Motion Scripts Extra", ROMX
 
 INCLUDE "data/scripts/extra/motion_scripts.asm"

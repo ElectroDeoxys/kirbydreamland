@@ -1,5 +1,5 @@
 AnimScript_20000:
-	frame  0, $58b8
+	frame  0, OAM_2d8b8
 
 AnimScript_20003:
 	script_delay 0
@@ -28,33 +28,33 @@ AnimScript_2003c:
 	script_end
 
 AnimScript_20044:
-	frame  2, $5d29
-	frame  2, $5d31
+	frame  2, OAM_2dd29
+	frame  2, OAM_2dd31
 AnimScript_2004a:
 	script_end
 
 AnimScript_2004b:
 	set_motion_script MotionScript_1092a
-	frame 60, $5c01
-	frame  6, $5c01
+	frame 60, OAM_2dc01
+	frame  6, OAM_2dc01
 	script_repeat 15
-	frame  8, $5c01
+	frame  8, OAM_2dc01
 	create_object AnimScript_208f1, MotionScript_135bc, Data_3425
 	script_repeat_end
-	frame 16, $58b8
+	frame 16, OAM_2d8b8
 	play_sfx SFX_13
-	frame 16, $58b8
-	frame 128, $5c1d
+	frame 16, OAM_2d8b8
+	frame 128, OAM_2dc1d
 	jump_abs AnimScript_209f6
 
 AnimScript_20073:
 	set_motion_script MotionScript_1096c
-	frame 44, $5c01
-	frame 40, $5c01
+	frame 44, OAM_2dc01
+	frame 40, OAM_2dc01
 	create_object AnimScript_Explosion, MotionScript_135bc, Data_3425
-	frame 88, $5c01
+	frame 88, OAM_2dc01
 .loop
-	frame  4, $5c01
+	frame  4, OAM_2dc01
 	create_object AnimScript_Explosion, MotionScript_10317, Data_3425
 	create_object AnimScript_Explosion, MotionScript_135bc, Data_3425
 	create_object AnimScript_Explosion, MotionScript_135bc, Data_3425
@@ -62,19 +62,19 @@ AnimScript_20073:
 
 AnimScript_200a3:
 	set_motion_script MotionScript_109a3
-	frame 100, $5c01
-	frame 142, $5c01
-	frame 20, $58b8
-	frame  0, $5c1d
+	frame 100, OAM_2dc01
+	frame 142, OAM_2dc01
+	frame 20, OAM_2d8b8
+	frame  0, OAM_2dc1d
 
 AnimScript_200b4:
 	set_motion_script MotionScript_10a29
-	frame 80, $5c01
+	frame 80, OAM_2dc01
 	script_repeat 21
 	create_object AnimScript_208f1, MotionScript_10a13, Data_3425
-	frame  4, $5c01
+	frame  4, OAM_2dc01
 	script_repeat_end
-	frame 20, $5c01
+	frame 20, OAM_2dc01
 	create_object AnimScript_20af2, MotionScript_10713, Data_3425
 	create_object AnimScript_20af2, MotionScript_1071f, Data_3425
 	create_object AnimScript_20af2, MotionScript_1072b, Data_3425
@@ -87,7 +87,7 @@ AnimScript_200b4:
 	script_end
 
 AnimScript_2010c:
-	frame  0, $5c01
+	frame  0, OAM_2dc01
 
 AnimScript_2010f:
 	jumptable_random %11
@@ -97,33 +97,33 @@ AnimScript_2010f:
 	dw .sub_20123
 
 .sub_20119
-	frame 48, $5b69
+	frame 48, OAM_2db69
 	jump_rel .common
 
 .sub_2011e
-	frame 48, $58d9
+	frame 48, OAM_2d8d9
 	jump_rel .common
 
 .sub_20123
-	frame 10, $5be1
-	frame 10, $5be9
-	frame 10, $5bf9
-	frame 10, $5bf1
-	frame  8, $58d9
+	frame 10, OAM_2dbe1
+	frame 10, OAM_2dbe9
+	frame 10, OAM_2dbf9
+	frame 10, OAM_2dbf1
+	frame  8, OAM_2d8d9
 .common
-	frame 16, $5bc9
-	frame  0, $58b9
+	frame 16, OAM_2dbc9
+	frame  0, OAM_2d8b9
 
 AnimScript_20138:
 	script_repeat 2
-	frame  2, $5c91
-	frame  2, $5c9d
-	frame  2, $5ca9
-	frame  2, $5cb5
-	frame  2, $5cc1
-	frame  2, $5ccd
-	frame  2, $5cd9
-	frame  2, $5ce5
+	frame  2, OAM_2dc91
+	frame  2, OAM_2dc9d
+	frame  2, OAM_2dca9
+	frame  2, OAM_2dcb5
+	frame  2, OAM_2dcc1
+	frame  2, OAM_2dccd
+	frame  2, OAM_2dcd9
+	frame  2, OAM_2dce5
 	script_repeat_end
 	script_end
 
@@ -137,13 +137,13 @@ AnimScript_20154:
 	create_object AnimScript_20af2, MotionScript_1074f, Data_3425
 	create_object AnimScript_20af2, MotionScript_1075b, Data_3425
 .loop
-	frame  8, $5bf9
+	frame  8, OAM_2dbf9
 	create_object AnimScript_20ae6, MotionScript_107c3, Data_3425
-	frame  8, $5be9
+	frame  8, OAM_2dbe9
 	create_object AnimScript_20ae6, MotionScript_107c3, Data_3425
-	frame  8, $5be1
+	frame  8, OAM_2dbe1
 	create_object AnimScript_20ae6, MotionScript_107c3, Data_3425
-	frame  8, $5bf1
+	frame  8, OAM_2dbf1
 	create_object AnimScript_20ae6, MotionScript_107c3, Data_3425
 	jump_abs .loop
 
@@ -167,17 +167,17 @@ AnimScript_201dc:
 	script_delay 0
 
 	script_repeat 10
-	frame  4, $5be1
-	frame  4, $58b8
-	frame  4, $5be9
-	frame  4, $58b8
-	frame  4, $5bf9
-	frame  4, $58b8
-	frame  4, $5bf1
-	frame  4, $58b8
+	frame  4, OAM_2dbe1
+	frame  4, OAM_2d8b8
+	frame  4, OAM_2dbe9
+	frame  4, OAM_2d8b8
+	frame  4, OAM_2dbf9
+	frame  4, OAM_2d8b8
+	frame  4, OAM_2dbf1
+	frame  4, OAM_2d8b8
 	script_repeat_end
 
-	frame  1, $58d9
+	frame  1, OAM_2d8d9
 	set_kirby_pos
 	set_flags hKirbyFlags5, KIRBY5F_UNK5, $00
 	script_delay 0
@@ -187,13 +187,13 @@ AnimScript_20206:
 	jump_if_flags hKirbyFlags6, KIRBY6F_UNK7, $4008 ; bug?
 	set_motion_script MotionScript_135d2
 	create_object AnimScript_Explosion, MotionScript_10008, Data_3425
-	frame  4, $5c01
+	frame  4, OAM_2dc01
 	create_object AnimScript_Explosion, MotionScript_10008, Data_3425
-	frame  4, $5c01
+	frame  4, OAM_2dc01
 	create_object AnimScript_Explosion, MotionScript_10008, Data_3425
-	frame  8, $5c01
+	frame  8, OAM_2dc01
 	create_object AnimScript_Explosion, MotionScript_10008, Data_3425
-	frame 80, $5c01
+	frame 80, OAM_2dc01
 
 	script_repeat 4
 	create_object AnimScript_22f63, MotionScript_135bc, Data_3425
@@ -215,120 +215,120 @@ AnimScript_20206:
 	create_object AnimScript_208f1, MotionScript_106ff, Data_3425
 	create_object AnimScript_208f1, MotionScript_10709, Data_3425
 .loop
-	frame 10, $5be1
-	frame 10, $5bf1
-	frame 10, $5bf9
-	frame 10, $5be9
+	frame 10, OAM_2dbe1
+	frame 10, OAM_2dbf1
+	frame 10, OAM_2dbf9
+	frame 10, OAM_2dbe9
 	jump_abs .loop
 
 AnimScript_2028f:
 	script_repeat 6
 	create_object AnimScript_22f63, MotionScript_135bc, Data_3425
-	frame 10, $5b69
+	frame 10, OAM_2db69
 	script_repeat_end
 
-	frame 58, $5b69
-	frame  8, $5bc9
+	frame 58, OAM_2db69
+	frame  8, OAM_2dbc9
 	set_kirby_pos
 	set_flags hPalFadeFlags, $00, SCROLL_LOCKED
 	set_value wStageTransitionCounter, 1
 	set_motion_script MotionScript_10008
-	frame  0, $58b9
+	frame  0, OAM_2d8b9
 
 AnimScript_202b6::
-	frame 26, $58c1
-	frame 18, $58c9
-	frame 18, $58d1
-	frame  8, $58c9
-	frame 18, $58c1
+	frame 26, OAM_2d8c1
+	frame 18, OAM_2d8c9
+	frame 18, OAM_2d8d1
+	frame  8, OAM_2d8c9
+	frame 18, OAM_2d8c1
 	script_repeat 6
-	frame 10, $58c9
-	frame 16, $58d1
-	frame 10, $58c9
-	frame 16, $58c1
+	frame 10, OAM_2d8c9
+	frame 16, OAM_2d8d1
+	frame 10, OAM_2d8c9
+	frame 16, OAM_2d8c1
 	script_repeat_end
 	script_call AnimScript_208b8
 	script_call AnimScript_208b8
-	frame 128, $5b79
-	frame 128, $58b9
-	frame  8, $5bc9
-	frame 128, $5b69
-	frame 48, $5bc9
-	frame  4, $58b9
-	frame 10, $5bc5
-	frame 96, $58b9
-	frame 16, $5bd1
-	frame 16, $5bdd
-	frame 16, $5bc9
-	frame 16, $5bd9
-	frame 16, $5bd1
+	frame 128, OAM_2db79
+	frame 128, OAM_2d8b9
+	frame  8, OAM_2dbc9
+	frame 128, OAM_2db69
+	frame 48, OAM_2dbc9
+	frame  4, OAM_2d8b9
+	frame 10, OAM_2dbc5
+	frame 96, OAM_2d8b9
+	frame 16, OAM_2dbd1
+	frame 16, OAM_2dbdd
+	frame 16, OAM_2dbc9
+	frame 16, OAM_2dbd9
+	frame 16, OAM_2dbd1
 	script_call AnimScript_208b8
 	script_call AnimScript_208b8
-	frame  1, $58d9
+	frame  1, OAM_2d8d9
 	set_flags hKirbyFlags5, KIRBY5F_UNK0, KIRBY5F_UNK0
 	script_delay 1
 
 AnimScript_20311::
-	frame 26, $58f1
-	frame 18, $58f9
-	frame 18, $5901
-	frame  8, $58f9
-	frame 18, $58f1
+	frame 26, OAM_2d8f1
+	frame 18, OAM_2d8f9
+	frame 18, OAM_2d901
+	frame  8, OAM_2d8f9
+	frame 18, OAM_2d8f1
 	script_repeat 3
-	frame 10, $58f9
-	frame 16, $5901
-	frame 10, $58f9
-	frame 16, $58f1
+	frame 10, OAM_2d8f9
+	frame 16, OAM_2d901
+	frame 10, OAM_2d8f9
+	frame 16, OAM_2d8f1
 	script_repeat_end
 	script_call AnimScript_208cb
 	script_call AnimScript_208cb
-	frame 128, $5b91
-	frame 128, $58e9
-	frame  8, $5bad
-	frame 128, $5b71
-	frame 48, $5bad
-	frame  4, $58e9
-	frame 10, $5ba9
-	frame 96, $58e9
-	frame 16, $5bb5
-	frame 16, $5bc1
-	frame 16, $5bad
-	frame 16, $5bbd
-	frame 16, $5bb5
+	frame 128, OAM_2db91
+	frame 128, OAM_2d8e9
+	frame  8, OAM_2dbad
+	frame 128, OAM_2db71
+	frame 48, OAM_2dbad
+	frame  4, OAM_2d8e9
+	frame 10, OAM_2dba9
+	frame 96, OAM_2d8e9
+	frame 16, OAM_2dbb5
+	frame 16, OAM_2dbc1
+	frame 16, OAM_2dbad
+	frame 16, OAM_2dbbd
+	frame 16, OAM_2dbb5
 	script_call AnimScript_208cb
 	script_call AnimScript_208cb
-	frame  1, $5909
+	frame  1, OAM_2d909
 	set_flags hKirbyFlags5, $00, KIRBY5F_UNK0
 	script_delay 1
 
 AnimScript_2036c:
 	create_object AnimScript_20a01, MotionScript_10008, Data_3421
-	frame 16, $58b8
+	frame 16, OAM_2d8b8
 	set_flags wClearScreenFlags, $00, CLEAR_NEXT_OBJ
 	script_end
 
 AnimScript_2037c:
-	frame  2, $5c91
-	frame  2, $5c9d
-	frame  2, $5ca9
-	frame  2, $5cb5
-	frame  2, $5cc1
-	frame  2, $5ccd
-	frame  2, $5cd9
-	frame  2, $5ce5
-	frame  2, $5c91
-	frame  2, $5c9d
-	frame  2, $5ca9
-	frame  2, $5cb5
-	frame  2, $5cc1
-	frame  2, $5ccd
-	frame  2, $5cd9
-	frame  2, $5ce5
+	frame  2, OAM_2dc91
+	frame  2, OAM_2dc9d
+	frame  2, OAM_2dca9
+	frame  2, OAM_2dcb5
+	frame  2, OAM_2dcc1
+	frame  2, OAM_2dccd
+	frame  2, OAM_2dcd9
+	frame  2, OAM_2dce5
+	frame  2, OAM_2dc91
+	frame  2, OAM_2dc9d
+	frame  2, OAM_2dca9
+	frame  2, OAM_2dcb5
+	frame  2, OAM_2dcc1
+	frame  2, OAM_2dccd
+	frame  2, OAM_2dcd9
+	frame  2, OAM_2dce5
 	set_flags wClearScreenFlags, $00, CLEAR_NEXT_OBJ
 	script_end
 
 AnimScript_203b2:
-	frame 32, $58b8
+	frame 32, OAM_2d8b8
 	script_end
 
 AnimScript_203b6:
@@ -337,14 +337,14 @@ AnimScript_203b6:
 AnimScript_Explosion:
 	play_sfx SFX_EXPLOSION
 	script_repeat 2
-	frame  2, $5d39
-	frame  2, $5d51
-	frame  2, $5d69
-	frame  2, $5d81
-	frame  2, $5d99
-	frame  2, $5db1
-	frame  2, $5dc9
-	frame  2, $5de1
+	frame  2, OAM_2dd39
+	frame  2, OAM_2dd51
+	frame  2, OAM_2dd69
+	frame  2, OAM_2dd81
+	frame  2, OAM_2dd99
+	frame  2, OAM_2ddb1
+	frame  2, OAM_2ddc9
+	frame  2, OAM_2dde1
 	script_repeat_end
 	script_end
 
@@ -353,31 +353,31 @@ AnimScript_203de:
 	set_update_func Func_142dc, NULL
 AnimScript_203e8:
 .loop
-	frame  8, $5be1
-	frame  8, $5be9
-	frame  8, $5bf9
-	frame  8, $5bf1
+	frame  8, OAM_2dbe1
+	frame  8, OAM_2dbe9
+	frame  8, OAM_2dbf9
+	frame  8, OAM_2dbf1
 	jump_rel .loop
 
 AnimScript_203f6:
 .loop
-	frame  8, $5c25
-	frame  8, $5c2d
-	frame  8, $5c3d
-	frame  8, $5c45
+	frame  8, OAM_2dc25
+	frame  8, OAM_2dc2d
+	frame  8, OAM_2dc3d
+	frame  8, OAM_2dc45
 	jump_abs .loop
 
 AnimScript_20405:
 	jump_if_not_flags hKirbyFlags3, KIRBY3F_FACE_LEFT, .script_20419
-	frame  6, $5af1
-	frame  6, $5ae9
+	frame  6, OAM_2daf1
+	frame  6, OAM_2dae9
 	set_motion_script MotionScript_10c47
-	frame  0, $5af1
+	frame  0, OAM_2daf1
 .script_20419:
-	frame  6, $5a71
-	frame  6, $5a69
+	frame  6, OAM_2da71
+	frame  6, OAM_2da69
 	set_motion_script MotionScript_10c47
-	frame  0, $5a71
+	frame  0, OAM_2da71
 
 AnimScript_SpitStar:
 	play_sfx SFX_STAR_SPIT
@@ -386,30 +386,30 @@ AnimScript_SpitStar:
 	set_update_func Func_141b1, AnimScript_20b9a
 	jump_if_not_flags hKirbyFlags3, KIRBY3F_FACE_LEFT, .script_2045b
 	script_repeat 2
-	frame  4, $5c25
-	frame  4, $5c45
-	frame  4, $5c3d
-	frame  4, $5c2d
+	frame  4, OAM_2dc25
+	frame  4, OAM_2dc45
+	frame  4, OAM_2dc3d
+	frame  4, OAM_2dc2d
 	script_repeat_end
-	frame  4, $5c25
-	frame  4, $5c45
-	frame  2, $5c1d
+	frame  4, OAM_2dc25
+	frame  4, OAM_2dc45
+	frame  2, OAM_2dc1d
 	script_end
 
 .script_2045b
 	script_repeat 2
-	frame  4, $5c25
-	frame  4, $5c2d
-	frame  4, $5c3d
-	frame  4, $5c45
+	frame  4, OAM_2dc25
+	frame  4, OAM_2dc2d
+	frame  4, OAM_2dc3d
+	frame  4, OAM_2dc45
 	script_repeat_end
-	frame  4, $5c25
-	frame  4, $5c45
-	frame  4, $5c1d
+	frame  4, OAM_2dc25
+	frame  4, OAM_2dc45
+	frame  4, OAM_2dc1d
 	script_end
 
 AnimScript_20474:
-	frame  0, $5df9
+	frame  0, OAM_2ddf9
 
 AnimScript_KirbyPuff:
 	play_sfx SFX_PUFF
@@ -419,11 +419,11 @@ AnimScript_KirbyPuff:
 	set_update_func Func_141b1, AnimScript_20b9a
 .check_land
 	jump_if_not_flags hKirbyFlags3, KIRBY3F_FACE_LEFT, .script_2049b
-	frame  0, $5cf9
+	frame  0, OAM_2dcf9
 .script_2049b
-	frame  0, $5cf1
+	frame  0, OAM_2dcf1
 .script_2049e
-	frame  1, $58b8
+	frame  1, OAM_2d8b8
 	set_abs_pos
 	jump_rel .check_land
 
@@ -500,29 +500,29 @@ AnimScript_2051d:
 	script_ret
 
 AnimScript_20566::
-	frame  4, $5b81
-	frame  0, $5b89
+	frame  4, OAM_2db81
+	frame  0, OAM_2db89
 
 AnimScript_2056c::
-	frame  4, $5b99
-	frame  0, $5ba1
+	frame  4, OAM_2db99
+	frame  0, OAM_2dba1
 
 AnimScript_20572:
 .loop
 	script_repeat 2
-	frame 10, $5e45
-	frame 10, $5e4d
+	frame 10, OAM_2de45
+	frame 10, OAM_2de4d
 	script_repeat_end
 	script_repeat 4
-	frame  6, $5e45
-	frame  6, $5e4d
+	frame  6, OAM_2de45
+	frame  6, OAM_2de4d
 	script_repeat_end
 	jump_abs .loop
 
 AnimScript_20587:
 .loop
-	frame 16, $5e55
-	frame 16, $5e5d
+	frame 16, OAM_2de55
+	frame 16, OAM_2de5d
 	jump_abs .loop
 ; 0x20590
 
@@ -530,37 +530,37 @@ SECTION "Bank 8@45ae", ROMX[$45ae], BANK[$8]
 
 AnimScript_205ae:
 .loop
-	frame 10, $5e55
-	frame 10, $5e5d
-	frame 10, $5e55
-	frame 10, $5e5d
-	frame 20, $5e65
-	frame 10, $5e6d
-	frame 10, $5e65
-	frame 10, $5e6d
-	frame 10, $5e55
+	frame 10, OAM_2de55
+	frame 10, OAM_2de5d
+	frame 10, OAM_2de55
+	frame 10, OAM_2de5d
+	frame 20, OAM_2de65
+	frame 10, OAM_2de6d
+	frame 10, OAM_2de65
+	frame 10, OAM_2de6d
+	frame 10, OAM_2de55
 	jump_abs .loop
 
 AnimScript_205cc:
 .loop
-	frame 64, $5e55
-	frame  8, $5e5d
-	frame  8, $5e6d
-	frame 64, $5e65
-	frame  8, $5e6d
-	frame  8, $5e5d
+	frame 64, OAM_2de55
+	frame  8, OAM_2de5d
+	frame  8, OAM_2de6d
+	frame 64, OAM_2de65
+	frame  8, OAM_2de6d
+	frame  8, OAM_2de5d
 	jump_abs .loop
 
 AnimScript_205e1:
 .loop
-	frame 16, $5e75
-	frame 16, $5e7d
+	frame 16, OAM_2de75
+	frame 16, OAM_2de7d
 	jump_abs .loop
 
 AnimScript_205ea:
 .loop
-	frame 16, $5e9d
-	frame 16, $5ea5
+	frame 16, OAM_2de9d
+	frame 16, OAM_2dea5
 	jump_abs .loop
 ; 0x205f3
 
@@ -568,46 +568,46 @@ SECTION "Bank 8@461d", ROMX[$461d], BANK[$8]
 
 AnimScript_2061d:
 .loop
-	frame 10, $5e75
-	frame 10, $5e7d
-	frame 10, $5e75
-	frame 10, $5e7d
-	frame 20, $5e9d
-	frame 10, $5ea5
-	frame 10, $5e9d
-	frame 10, $5ea5
-	frame 10, $5e75
+	frame 10, OAM_2de75
+	frame 10, OAM_2de7d
+	frame 10, OAM_2de75
+	frame 10, OAM_2de7d
+	frame 20, OAM_2de9d
+	frame 10, OAM_2dea5
+	frame 10, OAM_2de9d
+	frame 10, OAM_2dea5
+	frame 10, OAM_2de75
 	jump_abs .loop
 
 AnimScript_2063b:
-	frame  8, $5ecd
-	frame  0, $5ec5
+	frame  8, OAM_2decd
+	frame  0, OAM_2dec5
 
-	frame  8, $5edd
-	frame  0, $5ed5
+	frame  8, OAM_2dedd
+	frame  0, OAM_2ded5
 
 AnimScript_20647:
 .loop
-	frame 10, $5ec5
-	frame 10, $5ecd
+	frame 10, OAM_2dec5
+	frame 10, OAM_2decd
 	jump_abs .loop
 
 AnimScript_20650:
 .loop
-	frame 10, $5ed5
-	frame 10, $5edd
+	frame 10, OAM_2ded5
+	frame 10, OAM_2dedd
 	jump_abs .loop
 
 AnimScript_20659:
 .loop
-	frame  5, $5ec5
-	frame  5, $5ecd
+	frame  5, OAM_2dec5
+	frame  5, OAM_2decd
 	jump_abs .loop
 
 AnimScript_20662:
 .loop
-	frame  5, $5ed5
-	frame  5, $5edd
+	frame  5, OAM_2ded5
+	frame  5, OAM_2dedd
 	jump_abs .loop
 ; 0x2066b
 
@@ -616,57 +616,57 @@ SECTION "Bank 8@4671", ROMX[$4671], BANK[$8]
 AnimScript_20671:
 .loop
 	script_repeat 3
-	frame 10, $5ef5
+	frame 10, OAM_2def5
 	create_object AnimScript_Bullet, MotionScript_1030e, ShotzoBulletProperties
 	set_motion_script MotionScript_102a4
-	frame 10, $5ef5
+	frame 10, OAM_2def5
 	script_repeat_end
-	frame 96, $5ef5
+	frame 96, OAM_2def5
 	jump_abs .loop
 
 AnimScript_2068c:
 .loop
 	create_object AnimScript_Bullet, MotionScript_102e9, ShotzoBulletProperties
 	set_motion_script MotionScript_102bc
-	frame 32, $5f05
+	frame 32, OAM_2df05
 	create_object AnimScript_Bullet, MotionScript_102ef, ShotzoBulletProperties
 	set_motion_script MotionScript_102b0
-	frame 32, $5efd
+	frame 32, OAM_2defd
 	create_object AnimScript_Bullet, MotionScript_102ec, ShotzoBulletProperties
 	set_motion_script MotionScript_102a4
-	frame 32, $5ef5
+	frame 32, OAM_2def5
 	create_object AnimScript_Bullet, MotionScript_102f2, ShotzoBulletProperties
 	set_motion_script MotionScript_10298
-	frame 32, $5eed
+	frame 32, OAM_2deed
 	create_object AnimScript_Bullet, MotionScript_102e6, ShotzoBulletProperties
 	set_motion_script MotionScript_1028c
-	frame 32, $5ee5
+	frame 32, OAM_2dee5
 	create_object AnimScript_Bullet, MotionScript_102f2, ShotzoBulletProperties
 	set_motion_script MotionScript_10298
-	frame 32, $5eed
+	frame 32, OAM_2deed
 	create_object AnimScript_Bullet, MotionScript_102ec, ShotzoBulletProperties
 	set_motion_script MotionScript_102a4
-	frame 32, $5ef5
+	frame 32, OAM_2def5
 	create_object AnimScript_Bullet, MotionScript_102ef, ShotzoBulletProperties
 	set_motion_script MotionScript_102b0
-	frame 32, $5efd
+	frame 32, OAM_2defd
 	jump_abs .loop
 
 AnimScript_20707:
 .loop
-	frame 30, $5ef5
+	frame 30, OAM_2def5
 	script_repeat 3
-	frame 10, $5ef5
+	frame 10, OAM_2def5
 	create_object AnimScript_Bullet, MotionScript_102ec, ShotzoBulletProperties
-	frame 20, $5ef5
-	frame 10, $5efd
+	frame 20, OAM_2def5
+	frame 10, OAM_2defd
 	create_object AnimScript_Bullet, MotionScript_102ef, ShotzoBulletProperties
-	frame 20, $5efd
-	frame  5, $5ef5
-	frame  5, $5eed
+	frame 20, OAM_2defd
+	frame  5, OAM_2def5
+	frame  5, OAM_2deed
 	create_object AnimScript_Bullet, MotionScript_102f2, ShotzoBulletProperties
-	frame 20, $5eed
-	frame 100, $5ef5
+	frame 20, OAM_2deed
+	frame 100, OAM_2def5
 	jump_abs .loop
 
 AnimScript_2073c:
@@ -682,19 +682,19 @@ AnimScript_2073c:
 ; walk left
 	set_motion_script MotionScript_10ae8
 .loop_1
-	frame 10, $58f1
-	frame  6, $58f9
-	frame 10, $5901
-	frame  6, $58f9
+	frame 10, OAM_2d8f1
+	frame  6, OAM_2d8f9
+	frame 10, OAM_2d901
+	frame  6, OAM_2d8f9
 	jump_rel .loop_1
 
 .walk_right
 	set_motion_script MotionScript_10af4
 .loop_2
-	frame 10, $58c1
-	frame  6, $58c9
-	frame 10, $58d1
-	frame  6, $58c9
+	frame 10, OAM_2d8c1
+	frame  6, OAM_2d8c9
+	frame 10, OAM_2d8d1
+	frame  6, OAM_2d8c9
 	jump_rel .loop_2
 
 AnimScript_MainKirbyStageClearDance:
@@ -703,7 +703,7 @@ AnimScript_MainKirbyStageClearDance:
 	create_object AnimScript_LeftKirbyStageClearDance, MotionScript_10008, Data_3425
 	create_object AnimScript_RightKirbyStageClearDance, MotionScript_10008, Data_3425
 	script_call AnimScript_208b8
-	frame 55, $58e1
+	frame 55, OAM_2d8e1
 	play_music MUSIC_VICTORY
 
 AnimScript_KirbyStageClearDance_Common:
@@ -718,151 +718,151 @@ AnimScript_KirbyStageClearDance_Common:
 AnimScript_LeftKirbyStageClearDance:
 	position_offset -30, 0
 	script_call AnimScript_208de
-	frame 55, $58e1
+	frame 55, OAM_2d8e1
 	jump_abs AnimScript_KirbyStageClearDance_Common
 
 AnimScript_RightKirbyStageClearDance:
 	position_offset 30, 0
 	script_call AnimScript_208de
-	frame 55, $58e1
+	frame 55, OAM_2d8e1
 	jump_abs AnimScript_KirbyStageClearDance_Common
 
 AnimScript_KirbyStageClearDance_GreenGreens:
 	set_motion_script MotionScript_10b05
 	script_repeat 2
-	frame 10, $58d1
-	frame  6, $58c9
-	frame 10, $58c1
-	frame  6, $58c9
+	frame 10, OAM_2d8d1
+	frame  6, OAM_2d8c9
+	frame 10, OAM_2d8c1
+	frame  6, OAM_2d8c9
 	script_repeat_end
-	frame  9, $58d1
-	frame  5, $58c9
+	frame  9, OAM_2d8d1
+	frame  5, OAM_2d8c9
 	script_call AnimScript_208b8
 	script_call AnimScript_208b8
-	frame 31, $58e1
-	frame 24, $58d9
-	frame 55, $5b69
-	frame  8, $5bc9
-	frame  4, $58b9
-	frame  8, $5bc5
-	frame  4, $58b9
-	frame  8, $5bc9
+	frame 31, OAM_2d8e1
+	frame 24, OAM_2d8d9
+	frame 55, OAM_2db69
+	frame  8, OAM_2dbc9
+	frame  4, OAM_2d8b9
+	frame  8, OAM_2dbc5
+	frame  4, OAM_2d8b9
+	frame  8, OAM_2dbc9
 	script_call AnimScript_208cb
-	frame 23, $5bad
-	frame 60, $5911
+	frame 23, OAM_2dbad
+	frame 60, OAM_2d911
 	set_value wStageTransitionCounter, 1
 	script_delay 0
 
 AnimScript_KirbyStageClearDance_CastleLololo:
 	set_motion_script MotionScript_10b38
-	frame 10, $5909
-	frame 10, $5ba9
-	frame 10, $58d9
-	frame 10, $5bc5
-	frame 20, $58d9
-	frame 18, $5bc9
-	frame 60, $5b69
-	frame  9, $5bc9
-	frame  9, $58e1
+	frame 10, OAM_2d909
+	frame 10, OAM_2dba9
+	frame 10, OAM_2d8d9
+	frame 10, OAM_2dbc5
+	frame 20, OAM_2d8d9
+	frame 18, OAM_2dbc9
+	frame 60, OAM_2db69
+	frame  9, OAM_2dbc9
+	frame  9, OAM_2d8e1
 	script_repeat 3
-	frame  6, $5be1
-	frame  6, $5be9
-	frame  6, $5bf9
-	frame  6, $5bf1
+	frame  6, OAM_2dbe1
+	frame  6, OAM_2dbe9
+	frame  6, OAM_2dbf9
+	frame  6, OAM_2dbf1
 	script_repeat_end
-	frame  6, $5bc9
-	frame  2, $58c9
-	frame  4, $58d1
+	frame  6, OAM_2dbc9
+	frame  2, OAM_2d8c9
+	frame  4, OAM_2d8d1
 	script_repeat 2
-	frame  6, $5be1
-	frame  6, $5be9
-	frame  6, $5bf9
-	frame  6, $5bf1
+	frame  6, OAM_2dbe1
+	frame  6, OAM_2dbe9
+	frame  6, OAM_2dbf9
+	frame  6, OAM_2dbf1
 	script_repeat_end
 	script_call AnimScript_208b8
-	frame 60, $58e1
+	frame 60, OAM_2d8e1
 	set_value wStageTransitionCounter, 1
 	script_delay 0
 
 AnimScript_KirbyStageClearDance_FloatIslands:
 	set_motion_script MotionScript_10b98
-	frame 60, $5909
-	frame 20, $5bad
+	frame 60, OAM_2d909
+	frame 20, OAM_2dbad
 	script_repeat 2
-	frame  6, $5be1
-	frame  6, $5be9
-	frame  6, $5bf9
-	frame  6, $5bf1
+	frame  6, OAM_2dbe1
+	frame  6, OAM_2dbe9
+	frame  6, OAM_2dbf9
+	frame  6, OAM_2dbf1
 	script_repeat_end
-	frame 31, $58e1
+	frame 31, OAM_2d8e1
 	script_repeat 2
-	frame 10, $5909
-	frame 30, $5b71
+	frame 10, OAM_2d909
+	frame 30, OAM_2db71
 	script_repeat_end
 	script_call AnimScript_208b8
 	script_call AnimScript_208b8
-	frame 32, $5bad
-	frame 60, $5911
+	frame 32, OAM_2dbad
+	frame 60, OAM_2d911
 	set_value wStageTransitionCounter, 1
 	script_delay 0
 
 AnimScript_KirbyStageClearDance_BubblyClouds:
 	set_motion_script MotionScript_10bda
-	frame 60, $5bc5
-	frame 20, $5bc9
-	frame 16, $58d9
-	frame 32, $5909
-	frame 16, $58d9
-	frame 16, $5bc9
-	frame 20, $5b71
-	frame 20, $5ba9
-	frame 20, $5909
-	frame 20, $5ba9
+	frame 60, OAM_2dbc5
+	frame 20, OAM_2dbc9
+	frame 16, OAM_2d8d9
+	frame 32, OAM_2d909
+	frame 16, OAM_2d8d9
+	frame 16, OAM_2dbc9
+	frame 20, OAM_2db71
+	frame 20, OAM_2dba9
+	frame 20, OAM_2d909
+	frame 20, OAM_2dba9
 	script_call AnimScript_208cb
 	script_call AnimScript_208cb
-	frame 32, $5bad
-	frame 60, $5911
+	frame 32, OAM_2dbad
+	frame 60, OAM_2d911
 	set_value wStageTransitionCounter, 1
 	script_delay 0
 
 AnimScript_208b8:
-	frame  4, $58d1
-	frame  4, $5b81
-	frame  4, $5b89
-	frame  4, $5ba1
-	frame  4, $5b99
-	frame  4, $5901
+	frame  4, OAM_2d8d1
+	frame  4, OAM_2db81
+	frame  4, OAM_2db89
+	frame  4, OAM_2dba1
+	frame  4, OAM_2db99
+	frame  4, OAM_2d901
 	script_ret
 
 AnimScript_208cb:
-	frame  4, $5901
-	frame  4, $5b99
-	frame  4, $5ba1
-	frame  4, $5b89
-	frame  4, $5b81
-	frame  4, $58d1
+	frame  4, OAM_2d901
+	frame  4, OAM_2db99
+	frame  4, OAM_2dba1
+	frame  4, OAM_2db89
+	frame  4, OAM_2db81
+	frame  4, OAM_2d8d1
 	script_ret
 
 AnimScript_208de:
-	frame  4, $5c91
-	frame  4, $5c9d
-	frame  4, $5ca9
-	frame  4, $5cb5
-	frame  4, $5cc1
-	frame  4, $5ccd
+	frame  4, OAM_2dc91
+	frame  4, OAM_2dc9d
+	frame  4, OAM_2dca9
+	frame  4, OAM_2dcb5
+	frame  4, OAM_2dcc1
+	frame  4, OAM_2dccd
 	script_ret
 
 AnimScript_208f1:
-	frame  0, $5c1d
+	frame  0, OAM_2dc1d
 
 AnimScript_BombItem:
 	script_exec Func_4ad6
 	set_update_func ObjFunc_CountdownToExplosion, 256
 AnimScript_208fc:
-	frame 162, $5c4d
+	frame 162, OAM_2dc4d
 .loop
-	frame  2, $5c55
-	frame  2, $5c4d
+	frame  2, OAM_2dc55
+	frame  2, OAM_2dc4d
 	jump_rel .loop
 ; 0x20907
 
@@ -870,75 +870,75 @@ SECTION "Bank 8@490a", ROMX[$490a], BANK[$8]
 
 AnimScript_2090a:
 	script_exec Func_4ad6
-	frame  0, $5c5d
+	frame  0, OAM_2dc5d
 ; 0x20910
 
 SECTION "Bank 8@4913", ROMX[$4913], BANK[$8]
 
 AnimScript_SpicyFood:
 	script_exec Func_4ad6
-	frame  0, $5c65
+	frame  0, OAM_2dc65
 ; 0x20919
 
 SECTION "Bank 8@491c", ROMX[$491c], BANK[$8]
 
 AnimScript_MintLeaf:
 	script_exec Func_4ad6
-	frame  0, $5c6d
+	frame  0, OAM_2dc6d
 ; 0x20922
 
 SECTION "Bank 8@4925", ROMX[$4925], BANK[$8]
 
 AnimScript_20925:
 	script_exec Func_4ad6
-	frame  0, $5c75
+	frame  0, OAM_2dc75
 
 AnimScript_2092b:
-	frame  0, $5c7d
+	frame  0, OAM_2dc7d
 
 AnimScript_EnergyDrink:
 	script_exec Func_4ad6
-	frame  0, $5c7d
+	frame  0, OAM_2dc7d
 
 AnimScript_20934:
-	frame  0, $5c81
+	frame  0, OAM_2dc81
 AnimScript_20937:
 .loop
-	frame 16, $5c89
+	frame 16, OAM_2dc89
 	set_pal_dark
-	frame  8, $5c89
+	frame  8, OAM_2dc89
 	set_pal_light
 	jump_abs .loop
 
 AnimScript_20946:
 .loop
 	script_exec Func_4ad6
-	frame 16, $5c89
+	frame 16, OAM_2dc89
 	set_pal_dark
-	frame  8, $5c89
+	frame  8, OAM_2dc89
 	set_pal_light
 	jump_abs .loop
 
 AnimScript_WarpStar:
 .loop
-	frame 20, $5c25
-	frame 20, $5c2d
-	frame 20, $5c3d
-	frame 20, $5c45
+	frame 20, OAM_2dc25
+	frame 20, OAM_2dc2d
+	frame 20, OAM_2dc3d
+	frame 20, OAM_2dc45
 	jump_abs .loop
 
 AnimScript_20967:
 	jump_if_equal wStage, MT_DEDEDE, .mt_dedede
 	play_music MUSIC_SPARKLING_STAR
 .star_loop
-	frame  4, $5c91
-	frame  4, $5c9d
-	frame  4, $5ca9
-	frame  4, $5cb5
-	frame  4, $5cc1
-	frame  4, $5ccd
-	frame  4, $5cd9
-	frame  4, $5ce5
+	frame  4, OAM_2dc91
+	frame  4, OAM_2dc9d
+	frame  4, OAM_2dca9
+	frame  4, OAM_2dcb5
+	frame  4, OAM_2dcc1
+	frame  4, OAM_2dccd
+	frame  4, OAM_2dcd9
+	frame  4, OAM_2dce5
 	jump_abs .star_loop
 
 .mt_dedede
@@ -956,16 +956,16 @@ AnimScript_20967:
 	dw .mt_dedede_9 ; MT_DEDEDE_9
 
 .mt_dedede_6
-	frame 120, $58b8
+	frame 120, OAM_2d8b8
 	jump_rel .trigger_transition
 .mt_dedede_8
-	frame 120, $58b8
+	frame 120, OAM_2d8b8
 	jump_rel .trigger_transition
 .mt_dedede_7
-	frame 120, $58b8
+	frame 120, OAM_2d8b8
 	jump_rel .trigger_transition
 .mt_dedede_9
-	frame 120, $58b8
+	frame 120, OAM_2d8b8
 .trigger_transition
 	set_flags hKirbyFlags5, $00, KIRBY5F_TRIGGER_TRANSITION
 	script_end
@@ -973,10 +973,10 @@ AnimScript_20967:
 AnimScript_209c0:
 .loop
 	play_sfx SFX_18
-	frame  1, $5e01
-	frame  1, $5e05
-	frame  1, $5e09
-	frame  1, $5e0d
+	frame  1, OAM_2de01
+	frame  1, OAM_2de05
+	frame  1, OAM_2de09
+	frame  1, OAM_2de0d
 	jump_abs .loop
 ; 0x209d3
 
@@ -985,21 +985,21 @@ SECTION "Bank 8@49d6", ROMX[$49d6], BANK[$8]
 AnimScript_Bullet:
 	play_sfx SFX_17
 	script_repeat 30
-	frame  1, $5e2d
-	frame  1, $5e31
-	frame  1, $5e35
-	frame  1, $5e39
-	frame  1, $5e3d
-	frame  1, $5e41
+	frame  1, OAM_2de2d
+	frame  1, OAM_2de31
+	frame  1, OAM_2de35
+	frame  1, OAM_2de39
+	frame  1, OAM_2de3d
+	frame  1, OAM_2de41
 	script_repeat_end
-	frame  4, $5c1d
-	frame  4, $5c19
+	frame  4, OAM_2dc1d
+	frame  4, OAM_2dc19
 	script_end
 
 AnimScript_209f6:
-	frame  4, $5d21
-	frame  4, $5d29
-	frame  4, $5d31
+	frame  4, OAM_2dd21
+	frame  4, OAM_2dd29
+	frame  4, OAM_2dd31
 	script_end
 
 AnimScript_20a00:
@@ -1015,13 +1015,13 @@ AnimScript_20a01:
 AnimScript_20a0f:
 	create_object AnimScript_208f1, MotionScript_1083f, Data_3421
 	create_object AnimScript_208f1, MotionScript_10850, Data_3421
-	frame  3, $5c25
-	frame  3, $5c2d
+	frame  3, OAM_2dc25
+	frame  3, OAM_2dc2d
 	create_object AnimScript_208f1, MotionScript_10835, Data_3421
 	create_object AnimScript_208f1, MotionScript_10846, Data_3421
-	frame  3, $5c3d
-	frame  3, $5c45
-	frame  3, $5c25
+	frame  3, OAM_2dc3d
+	frame  3, OAM_2dc45
+	frame  3, OAM_2dc25
 	script_end
 
 AnimScript_20a3b:
@@ -1059,7 +1059,7 @@ AnimScript_20ab7:
 	script_end
 
 AnimScript_20ad4:
-	frame 10, $5c1d
+	frame 10, OAM_2dc1d
 	set_motion_script MotionScript_10008
 	script_delay 10
 	script_end
@@ -1069,17 +1069,17 @@ SECTION "Bank 8@4ae6", ROMX[$4ae6], BANK[$8]
 
 AnimScript_20ae6:
 	set_value wDisableBumpStars, TRUE
-	frame 24, $5c1d
+	frame 24, OAM_2dc1d
 	set_value wDisableBumpStars, FALSE
 	script_end
 
 AnimScript_20af2:
-	frame  4, $5c1d
-	frame  5, $5c25
-	frame  5, $5c2d
-	frame  5, $5c3d
-	frame  5, $5c45
-	frame  6, $5c1d
+	frame  4, OAM_2dc1d
+	frame  5, OAM_2dc25
+	frame  5, OAM_2dc2d
+	frame  5, OAM_2dc3d
+	frame  5, OAM_2dc45
+	frame  6, OAM_2dc1d
 	script_end
 
 AnimScript_20b05:
@@ -1110,12 +1110,12 @@ AnimScript_20b49:
 	script_ret
 
 AnimScript_20b8d:
-	frame  3, $5c1d
-	frame  6, $5c25
-	frame  0, $5c1d
+	frame  3, OAM_2dc1d
+	frame  6, OAM_2dc25
+	frame  0, OAM_2dc1d
 
 AnimScript_20b96:
-	frame  2, $58b8
+	frame  2, OAM_2d8b8
 	script_end
 
 AnimScript_20b9a:
@@ -1149,81 +1149,81 @@ AnimScript_20bda:
 	jump_if_not_flags hKirbyFlags3, KIRBY3F_FACE_LEFT, .loop_2
 
 .loop_1
-	frame  2, $5d11
-	frame  2, $5d19
+	frame  2, OAM_2dd11
+	frame  2, OAM_2dd19
 	jump_abs .loop_1
 
 .loop_2
-	frame  2, $5d01
-	frame  2, $5d09
+	frame  2, OAM_2dd01
+	frame  2, OAM_2dd09
 	jump_abs .loop_2
 
 AnimScript_20bfe:
-	frame  0, $58d9
+	frame  0, OAM_2d8d9
 
 AnimScript_20c01:
 .loop
-	frame  4, $5be1
-	frame  4, $5bf1
-	frame  4, $5bf9
-	frame  4, $5be9
+	frame  4, OAM_2dbe1
+	frame  4, OAM_2dbf1
+	frame  4, OAM_2dbf9
+	frame  4, OAM_2dbe9
 	jump_abs .loop
 
 AnimScript_20c10:
-	frame  0, $5b69
+	frame  0, OAM_2db69
 
 AnimScript_20c13:
 .loop
-	frame 12, $58f1
-	frame  8, $58f9
-	frame 12, $5901
-	frame  8, $58f9
+	frame 12, OAM_2d8f1
+	frame  8, OAM_2d8f9
+	frame 12, OAM_2d901
+	frame  8, OAM_2d8f9
 	jump_abs .loop
 
 AnimScript_20c22:
 .loop
-	frame  8, $5ba9
-	frame  5, $58e9
-	frame  8, $5bad
-	frame  5, $58e9
+	frame  8, OAM_2dba9
+	frame  5, OAM_2d8e9
+	frame  8, OAM_2dbad
+	frame  5, OAM_2d8e9
 	jump_abs .loop
 
 AnimScript_20c31:
 .loop
-	frame  8, $58d1
-	frame  7, $5b81
-	frame  6, $5b89
-	frame  5, $5ba1
-	frame  4, $5b99
-	frame  4, $5901
-	frame 47, $58e1
+	frame  8, OAM_2d8d1
+	frame  7, OAM_2db81
+	frame  6, OAM_2db89
+	frame  5, OAM_2dba1
+	frame  4, OAM_2db99
+	frame  4, OAM_2d901
+	frame 47, OAM_2d8e1
 	jump_abs .loop
 
 AnimScript_20c49:
 .loop
-	frame 20, $5961
-	frame 30, $5949
+	frame 20, OAM_2d961
+	frame 30, OAM_2d949
 	jump_abs .loop
 
 AnimScript_20c52:
 .loop
-	frame 12, $41fc
-	frame 24, $4204
+	frame 12, OAM_2c1fc
+	frame 24, OAM_2c204
 	jump_abs .loop
 
 AnimScript_20c5b:
 .loop
-	frame 80, $41f4
-	frame  8, $41fc
-	frame  8, $4204
-	frame  8, $41fc
-	frame 40, $4204
+	frame 80, OAM_2c1f4
+	frame  8, OAM_2c1fc
+	frame  8, OAM_2c204
+	frame  8, OAM_2c1fc
+	frame 40, OAM_2c204
 	jump_abs .loop
 
 AnimScript_20c6d:
 	create_object AnimScript_20c7e, MotionScript_10008, Data_3421
 	play_sfx SFX_30
-	frame 1, $41cc
+	frame 1, OAM_2c1cc
 	script_exec Func_4afb
 
 AnimScript_20c7e:
@@ -1233,8 +1233,8 @@ AnimScript_20c7e:
 .branch_1
 	set_motion_script MotionScript_10db7
 	script_repeat 6
-	frame 4, $41a4
-	frame 4, $419c
+	frame 4, OAM_2c1a4
+	frame 4, OAM_2c19c
 	script_repeat_end
 	script_exec ScriptFunc_ResetImmuneFlag
 	set_object_properties CappyProperties
@@ -1244,8 +1244,8 @@ AnimScript_20c7e:
 
 AnimScript_20cad:
 	script_repeat 6
-	frame 4, $41b4
-	frame 4, $41ac
+	frame 4, OAM_2c1b4
+	frame 4, OAM_2c1ac
 	script_repeat_end
 	script_exec ScriptFunc_ResetImmuneFlag
 	set_object_properties CappyProperties
@@ -1265,15 +1265,15 @@ AnimScript_20ccb:
 
 GfxSubScript_20cd3:
 	script_repeat 12
-	frame 17, $419c
-	frame 17, $41a4
+	frame 17, OAM_2c19c
+	frame 17, OAM_2c1a4
 	script_repeat_end
 	script_ret
 
 GfxSubScript_20cdd:
 	script_repeat 12
-	frame 17, $41ac
-	frame 17, $41b4
+	frame 17, OAM_2c1ac
+	frame 17, OAM_2c1b4
 	script_repeat_end
 	script_ret
 
@@ -1291,29 +1291,29 @@ AnimScript_20cef:
 
 GfxSubScript_20cf7:
 	script_repeat 3
-	frame 17, $419c
-	frame 17, $41a4
+	frame 17, OAM_2c19c
+	frame 17, OAM_2c1a4
 	script_repeat_end
 	script_ret
 
 GfxSubScript_20d01:
 	script_repeat 3
-	frame 17, $41ac
-	frame 17, $41b4
+	frame 17, OAM_2c1ac
+	frame 17, OAM_2c1b4
 	script_repeat_end
 	script_ret
 
 AnimScript_20d0b:
 	set_update_func Func_140c2, AnimScript_20c6d
 .loop
-	frame 20, $41c4
-	frame 20, $41bc
+	frame 20, OAM_2c1c4
+	frame 20, OAM_2c1bc
 	jump_abs .loop
 
 AnimScript_20d19:
 .loop
-	frame 20, $41c4
-	frame 20, $41bc
+	frame 20, OAM_2c1c4
+	frame 20, OAM_2c1bc
 	jump_abs .loop
 ; 0x20d22
 
@@ -1321,25 +1321,25 @@ SECTION "Bank 8@4d28", ROMX[$4d28], BANK[$8]
 
 AnimScript_20d28:
 	script_repeat 10
-	frame 10, $5ec5
-	frame 10, $5ecd
+	frame 10, OAM_2dec5
+	frame 10, OAM_2decd
 	script_repeat_end
 	set_motion_script MotionScript_10e87
 .loop
-	frame  7, $5ec5
-	frame  7, $5ecd
+	frame  7, OAM_2dec5
+	frame  7, OAM_2decd
 	jump_abs .loop
 
 AnimScript_20d3f:
 .loop
-	frame  9, $417c
-	frame  9, $4184
+	frame  9, OAM_2c17c
+	frame  9, OAM_2c184
 	jump_rel .loop
 
 AnimScript_20d47:
 .loop
-	frame  9, $418c
-	frame  9, $4194
+	frame  9, OAM_2c18c
+	frame  9, OAM_2c194
 	jump_rel .loop
 
 AnimScript_20d4f:
@@ -1347,14 +1347,14 @@ AnimScript_20d4f:
 	set_object_properties Data_352c
 	set_update_func Func_141b1, AnimScript_20d79
 	set_motion_script MotionScript_10ef1
-	frame  0, $417c
+	frame  0, OAM_2c17c
 
 AnimScript_20d64:
 	position_offset 0, -10
 	set_object_properties Data_352c
 	set_update_func Func_141b1, AnimScript_20d83
 	set_motion_script MotionScript_10ef1
-	frame  0, $418c
+	frame  0, OAM_2c18c
 
 AnimScript_20d79:
 	set_object_properties PoppyBrosJrProperties
@@ -1386,32 +1386,32 @@ AnimScript_20da4:
 
 AnimScript_20db1:
 	script_repeat 9
-	frame  3, $4224
-	frame 16, $423c
+	frame  3, OAM_2c224
+	frame 16, OAM_2c23c
 	script_repeat_end
 	script_ret
 
 AnimScript_20dbb:
 	script_repeat 9
-	frame  3, $426c
-	frame 16, $4284
+	frame  3, OAM_2c26c
+	frame 16, OAM_2c284
 	script_repeat_end
 	script_ret
 
 AnimScript_20dc5:
 .loop
 	script_repeat 3
-	frame  3, $4224
-	frame 16, $423c
+	frame  3, OAM_2c224
+	frame 16, OAM_2c23c
 	script_repeat_end
 	script_repeat 3
-	frame  3, $426c
-	frame 16, $4284
+	frame  3, OAM_2c26c
+	frame 16, OAM_2c284
 	script_repeat_end
 	jump_abs .loop
 
 AnimScript_20dda:
-	frame  0, $4224
+	frame  0, OAM_2c224
 ; 0x20ddd
 
 SECTION "Bank 8@4de5", ROMX[$4de5], BANK[$8]
@@ -1420,7 +1420,7 @@ AnimScript_20de5:
 	branch_kirby_pos .script_20de5, .script_20dfe
 .script_20de5
 	set_motion_script MotionScript_10f3c
-	frame 30, $4254
+	frame 30, OAM_2c254
 	set_object_properties GrizzoProperties
 	set_scripts AnimScript_20dc5, MotionScript_10f5a
 
@@ -1441,8 +1441,8 @@ SECTION "Bank 8@4e20", ROMX[$4e20], BANK[$8]
 GfxSubScript_20e20:
 	set_update_func Func_140c2, AnimScript_20e2f
 	script_repeat 9
-	frame  3, $42d4
-	frame 16, $42b4
+	frame  3, OAM_2c2d4
+	frame 16, OAM_2c2b4
 	script_repeat_end
 	script_ret
 
@@ -1454,8 +1454,8 @@ AnimScript_20e2f:
 GfxSubScript_20e3c:
 	set_update_func Func_140c2, AnimScript_20e4b
 	script_repeat 9
-	frame  3, $4334
-	frame 16, $4354
+	frame  3, OAM_2c334
+	frame 16, OAM_2c354
 	script_repeat_end
 	script_ret
 
@@ -1467,47 +1467,47 @@ AnimScript_20e4b:
 AnimScript_20e58:
 	set_update_func Func_140c2, AnimScript_20e83
 .loop
-	frame 10, $4324
-	frame 10, $4314
-	frame 10, $4304
-	frame 10, $42f4
-	frame 10, $4324
-	frame 10, $4314
-	frame 10, $4314
-	frame 10, $4324
-	frame 10, $42f4
-	frame 10, $4304
-	frame 10, $4314
-	frame 10, $4324
+	frame 10, OAM_2c324
+	frame 10, OAM_2c314
+	frame 10, OAM_2c304
+	frame 10, OAM_2c2f4
+	frame 10, OAM_2c324
+	frame 10, OAM_2c314
+	frame 10, OAM_2c314
+	frame 10, OAM_2c324
+	frame 10, OAM_2c2f4
+	frame 10, OAM_2c304
+	frame 10, OAM_2c314
+	frame 10, OAM_2c324
 	jump_rel .loop
 
 AnimScript_20e83:
 	create_object AnimScript_20e9d, MotionScript_10f9c, Data_3559
 	position_offset 0, -16
 AnimScript_20e8d:
-	frame  1, $417c
+	frame  1, OAM_2c17c
 	jump_rel AnimScript_20e95
 AnimScript_20e92:
-	frame  1, $418c
+	frame  1, OAM_2c18c
 AnimScript_20e95:
 	set_object_properties PoppyBrosJrProperties
 	script_exec Func_4afb
 
 AnimScript_20e9d:
 	script_repeat 2
-	frame  2, $41d4
-	frame  2, $41ec
-	frame  2, $41e4
-	frame  2, $41dc
+	frame  2, OAM_2c1d4
+	frame  2, OAM_2c1ec
+	frame  2, OAM_2c1e4
+	frame  2, OAM_2c1dc
 	script_repeat_end
-	frame  2, $41d4
-	frame  8, $41dc
-	frame  8, $41e4
-	frame  8, $41ec
-	frame  8, $41d4
-	frame 20, $41ec
+	frame  2, OAM_2c1d4
+	frame  8, OAM_2c1dc
+	frame  8, OAM_2c1e4
+	frame  8, OAM_2c1ec
+	frame  8, OAM_2c1d4
+	frame 20, OAM_2c1ec
 	set_object_properties Data_3550
-	frame  0, $41ec
+	frame  0, OAM_2c1ec
 
 AnimScript_20ec6:
 	play_sfx SFX_28
@@ -1532,7 +1532,7 @@ AnimScript_PoppyBrosSr:
 	set_value wBossHPCounter, 3
 	set_value wd3c1, $01
 	create_object AnimScript_BossHPIncrementer, MotionScript_10008, Data_3421
-	frame 45, $4088
+	frame 45, OAM_2c088
 .loop
 	; scripted attacks
 	script_call .JumpShort
@@ -1551,66 +1551,66 @@ AnimScript_PoppyBrosSr:
 .JumpShort:
 	set_motion_script MotionScript_PoppyBrosSr.JumpShort
 	script_repeat 2
-	frame  8, $4088
-	frame  8, $4098
-	frame  8, $40a8
-	frame 16, $40b8
-	frame  8, $40a8
-	frame  8, $4098
-	frame  8, $4088
+	frame  8, OAM_2c088
+	frame  8, OAM_2c098
+	frame  8, OAM_2c0a8
+	frame 16, OAM_2c0b8
+	frame  8, OAM_2c0a8
+	frame  8, OAM_2c098
+	frame  8, OAM_2c088
 	script_repeat_end
 	script_ret
 
 .JumpLong:
 	set_motion_script MotionScript_PoppyBrosSr.JumpMid
-	frame 12, $4088
-	frame 12, $4098
-	frame 12, $40b8
-	frame 24, $40a8
-	frame 12, $40b8
-	frame 12, $4098
-	frame 12, $4088
+	frame 12, OAM_2c088
+	frame 12, OAM_2c098
+	frame 12, OAM_2c0b8
+	frame 24, OAM_2c0a8
+	frame 12, OAM_2c0b8
+	frame 12, OAM_2c098
+	frame 12, OAM_2c088
 	set_motion_script MotionScript_PoppyBrosSr.JumpLong
-	frame 15, $4088
-	frame 15, $4098
-	frame 15, $40b8
-	frame 30, $40a8
-	frame 15, $40b8
-	frame 15, $4098
-	frame 15, $4088
+	frame 15, OAM_2c088
+	frame 15, OAM_2c098
+	frame 15, OAM_2c0b8
+	frame 30, OAM_2c0a8
+	frame 15, OAM_2c0b8
+	frame 15, OAM_2c098
+	frame 15, OAM_2c088
 	script_ret
 
 .ThrowBombNoDelay:
 	set_motion_script MotionScript_PoppyBrosSr.JumpHigh
-	frame  6, $40c8
-	frame  6, $40f0
-	frame  6, $410c
-	frame  6, $4128
-	frame  6, $4144
-	frame  8, $4160
-	frame  3, $4144
-	frame  3, $4128
+	frame  6, OAM_2c0c8
+	frame  6, OAM_2c0f0
+	frame  6, OAM_2c10c
+	frame  6, OAM_2c128
+	frame  6, OAM_2c144
+	frame  8, OAM_2c160
+	frame  3, OAM_2c144
+	frame  3, OAM_2c128
 	play_sfx SFX_28
 	create_object AnimScript_PoppyBrosSrBomb, MotionScript_PoppyBrosSrBombBounce, Data_3574
-	frame  3, $40dc
-	frame  8, $40c8
-	frame 21, $4088
+	frame  3, OAM_2c0dc
+	frame  8, OAM_2c0c8
+	frame 21, OAM_2c088
 	script_ret
 
 .ThrowBombWithDelay:
 	set_motion_script MotionScript_PoppyBrosSr.JumpHigh
-	frame  6, $40c8
-	frame  6, $40f0
-	frame  6, $410c
-	frame  6, $4128
-	frame  6, $4144
-	frame 40, $4160
-	frame  3, $4144
-	frame  3, $4128
+	frame  6, OAM_2c0c8
+	frame  6, OAM_2c0f0
+	frame  6, OAM_2c10c
+	frame  6, OAM_2c128
+	frame  6, OAM_2c144
+	frame 40, OAM_2c160
+	frame  3, OAM_2c144
+	frame  3, OAM_2c128
 	play_sfx SFX_28
 	create_object AnimScript_PoppyBrosSrBomb, MotionScript_PoppyBrosSrBombFall, Data_3574
-	frame  3, $40dc
-	frame  8, $40c8
+	frame  3, OAM_2c0dc
+	frame  8, OAM_2c0c8
 	script_ret
 
 AnimScript_21004:
@@ -1624,12 +1624,12 @@ AnimScript_21004:
 
 AnimScript_PoppyBrosSrBomb:
 	position_offset -16, 8
-	frame  0, $5c4d
+	frame  0, OAM_2dc4d
 
 AnimScript_WhispyWoods:
 .loop_wait
 	jump_if_equal wLevelYSection, $11, .init
-	frame  1, $4000
+	frame  1, OAM_2c000
 	jump_abs .loop_wait
 
 .init
@@ -1637,7 +1637,7 @@ AnimScript_WhispyWoods:
 	set_value wBossHPCounter, 6
 	set_value wd3c1, $01
 	create_object AnimScript_BossHPIncrementer, MotionScript_10008, Data_3421
-	frame 60, $4000
+	frame 60, OAM_2c000
 	script_exec Func_48a3
 	set_value wd3cd, $01
 	set_update_func Func_14172, Data_1c1c6
@@ -1655,58 +1655,58 @@ AnimScript_WhispyWoods:
 .shoot_four_puffs
 	script_repeat 4
 	script_call .ShootPuff_Fast
-	frame 10, $4000
+	frame 10, OAM_2c000
 	script_repeat_end
 	jump_random 25 percent + 1, .shoot_two_puffs
 
 .spawn_apples
 	script_repeat 3
 	create_object AnimScript_WhispyWoodsApple_Fall, MotionScript_WhispyWoodsApple, Data_359d
-	frame 30, $4000
-	frame  4, $400c
-	frame  6, $4018
-	frame  4, $400c
-	frame  6, $4000
-	frame 40, $4000
+	frame 30, OAM_2c000
+	frame  4, OAM_2c00c
+	frame  6, OAM_2c018
+	frame  4, OAM_2c00c
+	frame  6, OAM_2c000
+	frame 40, OAM_2c000
 	script_repeat_end
 	script_call .BlinkTwice
 	jump_random 25 percent + 1, .spawn_apples
 	jump_rel .shoot_two_puffs
 
 .BlinkTwice
-	frame 20, $4000
-	frame  3, $400c
-	frame  6, $4018
-	frame  3, $400c
-	frame  4, $4000
-	frame 20, $4000
-	frame  3, $400c
-	frame  8, $4018
-	frame  3, $400c
-	frame 10, $4000
+	frame 20, OAM_2c000
+	frame  3, OAM_2c00c
+	frame  6, OAM_2c018
+	frame  3, OAM_2c00c
+	frame  4, OAM_2c000
+	frame 20, OAM_2c000
+	frame  3, OAM_2c00c
+	frame  8, OAM_2c018
+	frame  3, OAM_2c00c
+	frame 10, OAM_2c000
 	script_ret
 
 .ShootPuff_Slow
-	frame  1, $4068
-	frame 10, $4078
+	frame  1, OAM_2c068
+	frame 10, OAM_2c078
 	create_object AnimScript_WhispyWoodsPuff, MotionScript_WhispyWoodsPuff, Data_3596
-	frame 14, $4078
-	frame  1, $4068
-	frame  1, $4058
+	frame 14, OAM_2c078
+	frame  1, OAM_2c068
+	frame  1, OAM_2c058
 	script_ret
 
 .ShootPuff_Fast
-	frame  1, $4068
-	frame  5, $4078
+	frame  1, OAM_2c068
+	frame  5, OAM_2c078
 	create_object AnimScript_WhispyWoodsPuff, MotionScript_WhispyWoodsPuff, Data_3596
-	frame  5, $4078
-	frame  1, $4068
-	frame  1, $4058
+	frame  5, OAM_2c078
+	frame  1, OAM_2c068
+	frame  1, OAM_2c058
 	script_ret
 
 AnimScript_210e7:
-	frame  6, $4034
-	frame 28, $4024
+	frame  6, OAM_2c034
+	frame 28, OAM_2c024
 	script_exec Func_4897
 	script_end
 
@@ -1717,62 +1717,62 @@ AnimScript_210f1:
 	script_call AnimScript_20b05
 	script_exec_arg ScriptFunc_AddScore, SCORE_1000
 	set_flags hHUDFlags, HUD_BOSS_BATTLE, HUD_UPDATE_FIRST_ROW | HUD_UPDATE_LABEL | HUD_UPDATE_SCORE_DIGITS
-	frame 30, $58b8
+	frame 30, OAM_2d8b8
 	set_value wClearScreenFlags, CLEAR_ACTIVE | CLEAR_NON_MIKE
-	frame  0, $4044
+	frame  0, OAM_2c044
 
 AnimScript_WhispyWoodsPuff:
-	frame  0, $5cf9
+	frame  0, OAM_2dcf9
 
 AnimScript_WhispyWoodsApple_Fall:
-	frame  1, $41d4
+	frame  1, OAM_2c1d4
 	script_repeat 3
 	set_pal_dark
 	script_delay 4
 	set_pal_light
 	script_delay 4
 	script_repeat_end
-	frame 42, $41d4
+	frame 42, OAM_2c1d4
 	script_end
 
 AnimScript_WhispyWoodsApple_RollLeft:
 	play_sfx SFX_30
-	frame 10, $41ec
-	frame 10, $41e4
-	frame 10, $41dc
-	frame 10, $41d4
-	frame  6, $41ec
-	frame  6, $41e4
-	frame  6, $41dc
-	frame  6, $41d4
+	frame 10, OAM_2c1ec
+	frame 10, OAM_2c1e4
+	frame 10, OAM_2c1dc
+	frame 10, OAM_2c1d4
+	frame  6, OAM_2c1ec
+	frame  6, OAM_2c1e4
+	frame  6, OAM_2c1dc
+	frame  6, OAM_2c1d4
 .loop
-	frame  8, $41ec
-	frame  8, $41e4
-	frame  8, $41dc
-	frame  8, $41d4
+	frame  8, OAM_2c1ec
+	frame  8, OAM_2c1e4
+	frame  8, OAM_2c1dc
+	frame  8, OAM_2c1d4
 	jump_rel .loop
 
 AnimScript_WhispyWoodsApple_RollRight:
 	play_sfx SFX_30
-	frame 10, $41d4
-	frame 10, $41dc
-	frame 10, $41e4
-	frame 10, $41ec
-	frame  6, $41d4
-	frame  6, $41dc
-	frame  6, $41e4
-	frame  6, $41ec
+	frame 10, OAM_2c1d4
+	frame 10, OAM_2c1dc
+	frame 10, OAM_2c1e4
+	frame 10, OAM_2c1ec
+	frame  6, OAM_2c1d4
+	frame  6, OAM_2c1dc
+	frame  6, OAM_2c1e4
+	frame  6, OAM_2c1ec
 .loop
-	frame  8, $41d4
-	frame  8, $41dc
-	frame  8, $41e4
-	frame  8, $41ec
+	frame  8, OAM_2c1d4
+	frame  8, OAM_2c1dc
+	frame  8, OAM_2c1e4
+	frame  8, OAM_2c1ec
 	jump_rel .loop
 
 AnimScript_WhispyWoodsScrollLocker:
 .loop
 	jump_if_equal wLevelYSection, $11, .lock_scroll
-	frame  1, $58b8
+	frame  1, OAM_2d8b8
 	jump_abs .loop
 
 .lock_scroll
@@ -1784,13 +1784,13 @@ AnimScript_21191:
 	script_end
 
 AnimScript_BossHPIncrementer:
-	frame  1, $58b8
+	frame  1, OAM_2d8b8
 	set_abs_pos
 	set_position 20, 20
 	set_value wBossHP, 0
 	set_flags hHUDFlags, $00, HUD_UPDATE_LABEL | HUD_BOSS_BATTLE
 .loop
-	frame 10, $58b8
+	frame 10, OAM_2d8b8
 	inc_value wBossHP
 	set_flags hHUDFlags, $00, HUD_UPDATE_FIRST_ROW
 	play_sfx SFX_RESTORE_HP
@@ -1805,9 +1805,9 @@ SECTION "Bank 8@51c3", ROMX[$51c3], BANK[$8]
 
 AnimScript_FallingGlunk:
 .loop
-	frame 10, $447c
-	frame 10, $4484
-	frame 10, $448c
+	frame 10, OAM_2c47c
+	frame 10, OAM_2c484
+	frame 10, OAM_2c48c
 	jump_abs .loop
 ; 0x211cf
 
@@ -1815,32 +1815,32 @@ SECTION "Bank 8@51d8", ROMX[$51d8], BANK[$8]
 
 AnimScript_211d8:
 .loop
-	frame 20, $43ec
-	frame 20, $43f4
-	frame 20, $43fc
+	frame 20, OAM_2c3ec
+	frame 20, OAM_2c3f4
+	frame 20, OAM_2c3fc
 	jump_abs .loop
 
 AnimScript_ShootingGlunk:
 .loop
 	script_repeat 6
-	frame 30, $43ec
-	frame 20, $43f4
+	frame 30, OAM_2c3ec
+	frame 20, OAM_2c3f4
 	script_repeat_end
-	frame 50, $43ec
-	frame 15, $43f4
-	frame 10, $43fc
+	frame 50, OAM_2c3ec
+	frame 15, OAM_2c3f4
+	frame 10, OAM_2c3fc
 	branch_kirby_pos .shoot_left, .shoot_right
 	; unreachable
 	jump_abs .loop
 
 .shoot_left
 	create_object AnimScript_21220, MotionScript_1123a, GlunkPodProperties
-	frame 80, $43fc
+	frame 80, OAM_2c3fc
 	jump_abs .loop
 
 .shoot_right
 	create_object AnimScript_21220, MotionScript_11233, GlunkPodProperties
-	frame 80, $43fc
+	frame 80, OAM_2c3fc
 	jump_abs .loop
 ; 0x2121a
 
@@ -1848,30 +1848,30 @@ SECTION "Bank 8@5220", ROMX[$5220], BANK[$8]
 
 AnimScript_21220:
 .loop
-	frame  2, $6899
-	frame  2, $689d
-	frame  2, $68a1
-	frame  2, $68a5
+	frame  2, OAM_2e899
+	frame  2, OAM_2e89d
+	frame  2, OAM_2e8a1
+	frame  2, OAM_2e8a5
 	jump_abs .loop
 
 AnimScript_2122f:
 .loop
-	frame 30, $43b4
-	frame 20, $43c0
+	frame 30, OAM_2c3b4
+	frame 20, OAM_2c3c0
 	jump_abs .loop
 
 AnimScript_21238:
-	frame 30, $43dc
-	frame 40, $43b4
-	frame 14, $43c0
-	frame  8, $43c0
-	frame  3, $43b4
+	frame 30, OAM_2c3dc
+	frame 40, OAM_2c3b4
+	frame 14, OAM_2c3c0
+	frame  8, OAM_2c3c0
+	frame  3, OAM_2c3b4
 	jump_abs AnimScript_2122f
 
 AnimScript_2124a:
 .loop
-	frame  8, $43b4
-	frame  8, $43c0
+	frame  8, OAM_2c3b4
+	frame  8, OAM_2c3c0
 	jump_abs .loop
 ; 0x21253
 
@@ -1881,123 +1881,123 @@ AnimScript_2125c:
 .loop
 	set_motion_script MotionScript_11297
 	script_repeat 5
-	frame  8, $43b4
-	frame  8, $43c0
+	frame  8, OAM_2c3b4
+	frame  8, OAM_2c3c0
 	script_repeat_end
 	set_motion_script MotionScript_11276
 	script_repeat 5
-	frame  8, $43c8
-	frame  8, $43d4
+	frame  8, OAM_2c3c8
+	frame  8, OAM_2c3d4
 	script_repeat_end
 	jump_rel .loop
 
 AnimScript_2127a:
 	script_repeat 2
-	frame  4, $437c
-	frame  4, $4384
+	frame  4, OAM_2c37c
+	frame  4, OAM_2c384
 	script_repeat_end
-	frame  2, $437c
-	frame 85, $4384
+	frame  2, OAM_2c37c
+	frame 85, OAM_2c384
 	script_repeat 2
-	frame  2, $4384
-	frame  2, $437c
+	frame  2, OAM_2c384
+	frame  2, OAM_2c37c
 	script_repeat_end
-	frame  2, $4384
+	frame  2, OAM_2c384
 	script_repeat 4
-	frame  8, $437c
-	frame  8, $4384
+	frame  8, OAM_2c37c
+	frame  8, OAM_2c384
 	script_repeat_end
-	frame  4, $437c
-	frame  4, $4374
+	frame  4, OAM_2c37c
+	frame  4, OAM_2c374
 AnimScript_212a4:
 	script_repeat 2
-	frame  4, $4394
-	frame  4, $439c
+	frame  4, OAM_2c394
+	frame  4, OAM_2c39c
 	script_repeat_end
-	frame  2, $4394
-	frame 85, $439c
+	frame  2, OAM_2c394
+	frame 85, OAM_2c39c
 	script_repeat 2
-	frame  2, $439c
-	frame  2, $4394
+	frame  2, OAM_2c39c
+	frame  2, OAM_2c394
 	script_repeat_end
-	frame  2, $439c
+	frame  2, OAM_2c39c
 	script_repeat 4
-	frame  8, $4394
-	frame  8, $439c
+	frame  8, OAM_2c394
+	frame  8, OAM_2c39c
 	script_repeat_end
-	frame  4, $4394
-	frame  4, $438c
+	frame  4, OAM_2c394
+	frame  4, OAM_2c38c
 	jump_abs AnimScript_2127a
 
 AnimScript_212d1:
 .loop
-	frame  8, $437c
-	frame  8, $4384
+	frame  8, OAM_2c37c
+	frame  8, OAM_2c384
 	jump_abs .loop
 
 AnimScript_212da:
 .loop
-	frame  8, $4394
-	frame  8, $439c
+	frame  8, OAM_2c394
+	frame  8, OAM_2c39c
 	jump_abs .loop
 
 AnimScript_212e3:
-	frame 10, $437c
+	frame 10, OAM_2c37c
 	script_repeat 4
-	frame  8, $4384
-	frame  8, $437c
+	frame  8, OAM_2c384
+	frame  8, OAM_2c37c
 	script_repeat_end
-	frame  8, $4384
-	frame 10, $4374
+	frame  8, OAM_2c384
+	frame 10, OAM_2c374
 	script_repeat 9
-	frame  8, $4384
-	frame  8, $437c
+	frame  8, OAM_2c384
+	frame  8, OAM_2c37c
 	script_repeat_end
-	frame 10, $4374
+	frame 10, OAM_2c374
 	script_repeat 4
-	frame  8, $4384
-	frame  8, $437c
+	frame  8, OAM_2c384
+	frame  8, OAM_2c37c
 	script_repeat_end
-	frame  8, $4384
+	frame  8, OAM_2c384
 AnimScript_2130d:
-	frame 10, $4394
+	frame 10, OAM_2c394
 	script_repeat 4
-	frame  8, $439c
-	frame  8, $4394
+	frame  8, OAM_2c39c
+	frame  8, OAM_2c394
 	script_repeat_end
-	frame  8, $439c
-	frame 10, $438c
+	frame  8, OAM_2c39c
+	frame 10, OAM_2c38c
 	script_repeat 9
-	frame  8, $439c
-	frame  8, $4394
+	frame  8, OAM_2c39c
+	frame  8, OAM_2c394
 	script_repeat_end
-	frame 10, $438c
+	frame 10, OAM_2c38c
 	script_repeat 4
-	frame  8, $439c
-	frame  8, $4394
+	frame  8, OAM_2c39c
+	frame  8, OAM_2c394
 	script_repeat_end
-	frame  8, $439c
+	frame  8, OAM_2c39c
 	jump_abs AnimScript_212e3
 
 AnimScript_2133a:
 	script_repeat 5
-	frame  8, $4394
-	frame  8, $439c
+	frame  8, OAM_2c394
+	frame  8, OAM_2c39c
 	script_repeat_end
-	frame  5, $4394
+	frame  5, OAM_2c394
 .loop
-	frame  8, $437c
-	frame  8, $4384
+	frame  8, OAM_2c37c
+	frame  8, OAM_2c384
 	jump_abs .loop
 
 AnimScript_2134f:
-	frame 48, $4374
-	frame 32, $437c
-	frame 32, $4384
-	frame 32, $437c
+	frame 48, OAM_2c374
+	frame 32, OAM_2c37c
+	frame 32, OAM_2c384
+	frame 32, OAM_2c37c
 .loop
-	frame 32, $4384
-	frame 32, $437c
+	frame 32, OAM_2c384
+	frame 32, OAM_2c37c
 	jump_rel .loop
 
 AnimScript_21363:
@@ -2007,15 +2007,15 @@ AnimScript_21363:
 
 .script_21372
 	script_repeat 10
-	frame  4, $58b8
-	frame  4, $441c
+	frame  4, OAM_2d8b8
+	frame  4, OAM_2c41c
 	script_repeat_end
 	jump_rel AnimScript_21388
 
 .script_2137d
 	script_repeat 10
-	frame  4, $58b8
-	frame  4, $442c
+	frame  4, OAM_2d8b8
+	frame  4, OAM_2c42c
 	script_repeat_end
 	jump_rel AnimScript_21388 ; useless jump
 
@@ -2023,13 +2023,13 @@ AnimScript_21388:
 	branch_kirby_pos .script_21398, .script_2138f
 
 .script_2138f
-	frame 24, $442c
-	frame 12, $4434
+	frame 24, OAM_2c42c
+	frame 12, OAM_2c434
 	jump_abs AnimScript_21388
 
 .script_21398
-	frame 24, $441c
-	frame 12, $4424
+	frame 24, OAM_2c41c
+	frame 12, OAM_2c424
 	jump_abs AnimScript_21388
 
 AnimScript_213a1:
@@ -2037,60 +2037,60 @@ AnimScript_213a1:
 	set_update_func Func_14105, NULL
 	script_exec ScriptFunc_SetImmuneFlag
 	script_repeat 3
-	frame 16, $442c
-	frame 16, $4434
+	frame 16, OAM_2c42c
+	frame 16, OAM_2c434
 	script_repeat_end
-	frame 16, $442c
-	frame 16, $4424
+	frame 16, OAM_2c42c
+	frame 16, OAM_2c424
 	script_repeat 5
-	frame 16, $441c
-	frame 16, $4424
+	frame 16, OAM_2c41c
+	frame 16, OAM_2c424
 	script_repeat_end
-	frame 16, $441c
-	frame 16, $4434
+	frame 16, OAM_2c41c
+	frame 16, OAM_2c434
 	script_repeat 2
-	frame 16, $442c
-	frame 16, $4434
+	frame 16, OAM_2c42c
+	frame 16, OAM_2c434
 	script_repeat_end
 	jump_abs .loop
 
 AnimScript_213d3:
 .loop
-	frame 16, $5ecd
-	frame 16, $5ec5
-	frame 16, $5ecd
-	frame 16, $5ec5
-	frame 96, $5ec5
+	frame 16, OAM_2decd
+	frame 16, OAM_2dec5
+	frame 16, OAM_2decd
+	frame 16, OAM_2dec5
+	frame 96, OAM_2dec5
 	script_repeat 5
-	frame 16, $5ecd
-	frame 16, $5ec5
+	frame 16, OAM_2decd
+	frame 16, OAM_2dec5
 	script_repeat_end
-	frame 96, $5ec5
-	frame 16, $5ecd
-	frame 16, $5ec5
-	frame 32, $5ec5
+	frame 96, OAM_2dec5
+	frame 16, OAM_2decd
+	frame 16, OAM_2dec5
+	frame 32, OAM_2dec5
 	jump_abs .loop
 
 AnimScript_213fa:
 .loop
-	frame 10, $445c
-	frame  6, $4464
-	frame  6, $446c
-	frame 10, $4474
-	frame  4, $446c
-	frame  4, $4464
-	frame  4, $445c
-	frame  4, $4464
-	frame  4, $446c
-	frame  4, $4474
-	frame  4, $446c
-	frame  4, $4464
-	frame 10, $445c
-	frame  6, $4464
-	frame  6, $446c
-	frame 10, $4474
-	frame  8, $446c
-	frame  8, $4464
+	frame 10, OAM_2c45c
+	frame  6, OAM_2c464
+	frame  6, OAM_2c46c
+	frame 10, OAM_2c474
+	frame  4, OAM_2c46c
+	frame  4, OAM_2c464
+	frame  4, OAM_2c45c
+	frame  4, OAM_2c464
+	frame  4, OAM_2c46c
+	frame  4, OAM_2c474
+	frame  4, OAM_2c46c
+	frame  4, OAM_2c464
+	frame 10, OAM_2c45c
+	frame  6, OAM_2c464
+	frame  6, OAM_2c46c
+	frame 10, OAM_2c474
+	frame  8, OAM_2c46c
+	frame  8, OAM_2c464
 	jump_abs .loop
 
 AnimScript_21433:
@@ -2107,53 +2107,53 @@ AnimScript_2143e:
 	jump_abs .loop
 
 AnimScript_21444:
-	frame 10, $445c
-	frame  6, $4464
-	frame  6, $446c
-	frame 10, $4474
-	frame  6, $446c
-	frame  6, $4464
+	frame 10, OAM_2c45c
+	frame  6, OAM_2c464
+	frame  6, OAM_2c46c
+	frame 10, OAM_2c474
+	frame  6, OAM_2c46c
+	frame  6, OAM_2c464
 	script_ret
 
 AnimScript_21457:
 .loop
-	frame 11, $445c
-	frame  7, $4464
-	frame  7, $446c
-	frame 11, $4474
-	frame  7, $446c
-	frame  7, $4464
+	frame 11, OAM_2c45c
+	frame  7, OAM_2c464
+	frame  7, OAM_2c46c
+	frame 11, OAM_2c474
+	frame  7, OAM_2c46c
+	frame  7, OAM_2c464
 	jump_rel .loop
 
 AnimScript_Chuckie:
 .loop
-	frame 10, $440c
-	frame 10, $4414
+	frame 10, OAM_2c40c
+	frame 10, OAM_2c414
 	jump_abs .loop
 
 AnimScript_PuffOfSmoke:
 	position_offset 0, -8
-	frame  6, $5d29
-	frame  6, $5d31
+	frame  6, OAM_2dd29
+	frame  6, OAM_2dd31
 	script_end
 
 AnimScript_TwoFace_Waiting:
 	set_update_func Func_14252, AnimScript_TwoFace_Chasing
-	frame  0, $443c
+	frame  0, OAM_2c43c
 
 AnimScript_TwoFace_Chasing:
-	frame  4, $444c
-	frame 10, $4454
-	frame 10, $4454
-	frame  4, $4450
-	frame 10, $4444
+	frame  4, OAM_2c44c
+	frame 10, OAM_2c454
+	frame 10, OAM_2c454
+	frame  4, OAM_2c450
+	frame 10, OAM_2c444
 	set_object_properties TwoFaceProperties
 	set_update_func Func_14208, NULL
 .loop
-	frame 10, $4444
-	frame 10, $444c
-	frame 10, $4454
-	frame 10, $4450
+	frame 10, OAM_2c444
+	frame 10, OAM_2c44c
+	frame 10, OAM_2c454
+	frame 10, OAM_2c450
 	jump_abs .loop
 ; 0x214ae
 
@@ -2161,10 +2161,10 @@ SECTION "Bank 8@5524", ROMX[$5524], BANK[$8]
 
 AnimScript_21524:
 .loop
-	frame 65, $5ee5
+	frame 65, OAM_2dee5
 	create_object AnimScript_Bullet, MotionScript_102da, ShotzoBulletProperties
 	set_motion_script MotionScript_1028c
-	frame 65, $5ee5
+	frame 65, OAM_2dee5
 	jump_abs .loop
 ; 0x21539
 
@@ -2173,16 +2173,16 @@ SECTION "Bank 8@5587", ROMX[$5587], BANK[$8]
 AnimScript_21587:
 	set_motion_script MotionScript_11e5a
 .loop
-	frame 64, $46f4
-	frame 48, $46f4
+	frame 64, OAM_2c6f4
+	frame 48, OAM_2c6f4
 	jump_abs .loop
 
 AnimScript_21595:
-	frame  0, $46f4
+	frame  0, OAM_2c6f4
 
 AnimScript_CirclingEnemiesTrap:
 	set_update_func Func_14252, AnimScript_215a0
-	frame  0, $58b8
+	frame  0, OAM_2d8b8
 
 AnimScript_215a0:
 	create_object .script_215d9, MotionScript_10008, Data_3421
@@ -2197,53 +2197,53 @@ AnimScript_215a0:
 
 .script_215d9
 	position_offset 0, -48
-	frame  8, $5d29
-	frame  8, $5d31
+	frame  8, OAM_2dd29
+	frame  8, OAM_2dd31
 	set_scripts AnimScript_2165d, MotionScript_1169a
 
 .script_215e7
 	position_offset 48, 0
-	frame  8, $5d29
-	frame  8, $5d31
+	frame  8, OAM_2dd29
+	frame  8, OAM_2dd31
 	set_scripts AnimScript_2165d, MotionScript_116d0
 
 .script_215f5
 	position_offset 0, 48
-	frame  8, $5d29
-	frame  8, $5d31
+	frame  8, OAM_2dd29
+	frame  8, OAM_2dd31
 	set_scripts AnimScript_2165d, MotionScript_116be
 
 .script_21603
 	position_offset -48, 0
-	frame  8, $5d29
-	frame  8, $5d31
+	frame  8, OAM_2dd29
+	frame  8, OAM_2dd31
 	set_scripts AnimScript_2165d, MotionScript_116ac
 
 .script_21611
 	position_offset 34, -34
-	frame  8, $5d29
-	frame  8, $5d31
+	frame  8, OAM_2dd29
+	frame  8, OAM_2dd31
 	set_object_properties MumbiesOrbitingProperties
 	set_scripts AnimScript_21388, MotionScript_116d9
 
 .script_21624
 	position_offset 34, 34
-	frame  8, $5d29
-	frame  8, $5d31
+	frame  8, OAM_2dd29
+	frame  8, OAM_2dd31
 	set_object_properties MumbiesOrbitingProperties
 	set_scripts AnimScript_21388, MotionScript_116c7
 
 .script_21637
 	position_offset -34, 34
-	frame  8, $5d29
-	frame  8, $5d31
+	frame  8, OAM_2dd29
+	frame  8, OAM_2dd31
 	set_object_properties MumbiesOrbitingProperties
 	set_scripts AnimScript_21388, MotionScript_116b5
 
 .script_2164a
 	position_offset -34, -34
-	frame  8, $5d29
-	frame  8, $5d31
+	frame  8, OAM_2dd29
+	frame  8, OAM_2dd31
 	set_object_properties MumbiesOrbitingProperties
 	set_scripts AnimScript_21388, MotionScript_116a3
 
@@ -2253,20 +2253,20 @@ AnimScript_2165d:
 	branch_kirby_pos .script_21669, .script_21672
 
 .script_21669
-	frame  8, $437c
-	frame  8, $4384
+	frame  8, OAM_2c37c
+	frame  8, OAM_2c384
 	jump_abs .loop
 
 .script_21672
-	frame  8, $4394
-	frame  8, $439c
+	frame  8, OAM_2c394
+	frame  8, OAM_2c39c
 	jump_abs .loop
 
 AnimScript_2167b:
-	frame  1, $58b8
+	frame  1, OAM_2d8b8
 	set_object_properties Data_3421
 	set_update_func Func_14252, MotionScript_1168b
-	frame  0, $58b8
+	frame  0, OAM_2d8b8
 
 AnimScript_2168b:
 	branch_on_kirby_vertical_alignment AnimScript_2167b, .script_21694
@@ -2277,32 +2277,32 @@ AnimScript_2168b:
 	position_offset 0, -16
 	play_sfx SFX_PUFF
 	set_object_properties MaximTomatoProperties
-	frame  0, $5c81
+	frame  0, OAM_2dc81
 ; 0x216aa
 
 SECTION "Bank 8@56b0", ROMX[$56b0], BANK[$8]
 
 AnimScript_Coner:
 .loop
-	frame  8, $5f9d
-	frame 40, $5f95
+	frame  8, OAM_2df9d
+	frame 40, OAM_2df95
 	jump_abs .loop
 
 AnimScript_216b9:
 .loop
-	frame  8, $5fb5
-	frame 40, $5fad
+	frame  8, OAM_2dfb5
+	frame 40, OAM_2dfad
 	jump_abs .loop
 
 AnimScript_216c2:
 .loop
 	script_repeat 3
-	frame  8, $5f9d
-	frame 24, $5f95
+	frame  8, OAM_2df9d
+	frame 24, OAM_2df95
 	script_repeat_end
 	script_repeat 3
-	frame  8, $5fb5
-	frame 24, $5fad
+	frame  8, OAM_2dfb5
+	frame 24, OAM_2dfad
 	script_repeat_end
 	jump_abs .loop
 ; 0x216d7
@@ -2313,12 +2313,12 @@ AnimScript_216f9:
 .loop
 	set_update_func Func_14105, NULL
 	script_exec ScriptFunc_SetImmuneFlag
-	frame 112, $5fbd
-	frame 48, $5fb5
+	frame 112, OAM_2dfbd
+	frame 48, OAM_2dfb5
 	script_exec ScriptFunc_ResetImmuneFlag
 	script_repeat 3
-	frame 32, $5fad
-	frame 10, $5fb5
+	frame 32, OAM_2dfad
+	frame 10, OAM_2dfb5
 	script_repeat_end
 	jump_abs .loop
 ; 0x21716
@@ -2327,39 +2327,39 @@ SECTION "Bank 8@571c", ROMX[$571c], BANK[$8]
 
 AnimScript_2171c:
 .script_2171c
-	frame 10, $5fcd
+	frame 10, OAM_2dfcd
 	branch_kirby_pos .script_21726, .script_21761
 
 .script_21726
-	frame 20, $5fcd
+	frame 20, OAM_2dfcd
 	script_repeat 4
-	frame  4, $5fd5
-	frame  4, $5fcd
+	frame  4, OAM_2dfd5
+	frame  4, OAM_2dfcd
 	script_repeat_end
 	script_call AnimScript_204a4
-	frame 40, $5fcd
+	frame 40, OAM_2dfcd
 	set_update_func Func_14105, NULL
 	script_exec ScriptFunc_SetImmuneFlag
-	frame 50, $5fc5
+	frame 50, OAM_2dfc5
 	script_exec ScriptFunc_ResetImmuneFlag
 	jump_abs .script_2171c
 
 .script_21749
 	set_update_func Func_14105, NULL
 	script_exec ScriptFunc_SetImmuneFlag
-	frame 60, $5fdd
+	frame 60, OAM_2dfdd
 	script_exec ScriptFunc_ResetImmuneFlag
-	frame 20, $5fe5
+	frame 20, OAM_2dfe5
 	branch_kirby_pos .script_21726, .script_21761
 
 .script_21761
-	frame 20, $5fe5
+	frame 20, OAM_2dfe5
 	script_repeat 10
-	frame  4, $5fed
-	frame  4, $5fe5
+	frame  4, OAM_2dfed
+	frame  4, OAM_2dfe5
 	script_repeat_end
 	script_call AnimScript_2051d
-	frame 40, $5fe5
+	frame 40, OAM_2dfe5
 	jump_abs .script_21749
 ; 0x21776
 
@@ -2369,12 +2369,12 @@ AnimScript_21796:
 .loop
 	set_update_func Func_14105, NULL
 	script_exec ScriptFunc_SetImmuneFlag
-	frame 64, $5fdd
+	frame 64, OAM_2dfdd
 	script_exec ScriptFunc_ResetImmuneFlag
-	frame 20, $5fe5
+	frame 20, OAM_2dfe5
 	script_repeat 10
-	frame  4, $5fed
-	frame  4, $5fe5
+	frame  4, OAM_2dfed
+	frame  4, OAM_2dfe5
 	script_repeat_end
 	script_call AnimScript_2051d
 	jump_abs .loop
@@ -2384,18 +2384,18 @@ SECTION "Bank 8@57c8", ROMX[$57c8], BANK[$8]
 
 AnimScript_217c8:
 .loop
-	frame  8, $6045
-	frame  8, $604d
-	frame  8, $6055
-	frame  8, $605d
+	frame  8, OAM_2e045
+	frame  8, OAM_2e04d
+	frame  8, OAM_2e055
+	frame  8, OAM_2e05d
 	jump_abs .loop
 
 AnimScript_217d7:
 .loop
-	frame  4, $6045
-	frame  4, $604d
-	frame  4, $6055
-	frame  4, $605d
+	frame  4, OAM_2e045
+	frame  4, OAM_2e04d
+	frame  4, OAM_2e055
+	frame  4, OAM_2e05d
 	jump_abs .loop
 ; 0x217e6
 
@@ -2403,12 +2403,12 @@ SECTION "Bank 8@57e9", ROMX[$57e9], BANK[$8]
 
 AnimScript_217e9:
 .loop
-	frame  8, $6065
-	frame 48, $6045
-	frame  4, $604d
-	frame  4, $6055
-	frame  4, $605d
-	frame  8, $6045
+	frame  8, OAM_2e065
+	frame 48, OAM_2e045
+	frame  4, OAM_2e04d
+	frame  4, OAM_2e055
+	frame  4, OAM_2e05d
+	frame  8, OAM_2e045
 	jump_abs .loop
 
 AnimScript_217fe:
@@ -2418,15 +2418,15 @@ AnimScript_217fe:
 
 .script_21804
 	script_repeat 3
-	frame 10, $6045
-	frame 10, $604d
-	frame 10, $6055
-	frame 10, $605d
+	frame 10, OAM_2e045
+	frame 10, OAM_2e04d
+	frame 10, OAM_2e055
+	frame 10, OAM_2e05d
 	script_repeat_end
 	set_object_properties Properties_3495
 	script_call AnimScript_2184e
 	set_object_properties Properties_349e
-	frame 100, $58b8
+	frame 100, OAM_2d8b8
 .script_21823
 	set_object_properties Properties_3495
 	script_call AnimScript_21832
@@ -2435,139 +2435,139 @@ AnimScript_217fe:
 
 AnimScript_21832:
 	script_repeat 3
-	frame  1, $6045
-	frame  5, $58b8
+	frame  1, OAM_2e045
+	frame  5, OAM_2d8b8
 	script_repeat_end
 	script_repeat 3
-	frame  2, $6045
-	frame  2, $58b8
+	frame  2, OAM_2e045
+	frame  2, OAM_2d8b8
 	script_repeat_end
 	script_repeat 3
-	frame  5, $6045
-	frame  1, $58b8
+	frame  5, OAM_2e045
+	frame  1, OAM_2d8b8
 	script_repeat_end
 	script_ret
 
 AnimScript_2184e:
 	script_repeat 3
-	frame  5, $6045
-	frame  1, $58b8
+	frame  5, OAM_2e045
+	frame  1, OAM_2d8b8
 	script_repeat_end
 	script_repeat 3
-	frame  2, $6045
-	frame  2, $58b8
+	frame  2, OAM_2e045
+	frame  2, OAM_2d8b8
 	script_repeat_end
 	script_repeat 3
-	frame  1, $6045
-	frame  5, $58b8
+	frame  1, OAM_2e045
+	frame  5, OAM_2d8b8
 	script_repeat_end
 	script_ret
 
 AnimScript_2186a:
 .loop
-	frame 10, $6045
-	frame 10, $604d
-	frame 10, $6055
-	frame 10, $605d
-	frame 10, $6065
-	frame 10, $6045
+	frame 10, OAM_2e045
+	frame 10, OAM_2e04d
+	frame 10, OAM_2e055
+	frame 10, OAM_2e05d
+	frame 10, OAM_2e065
+	frame 10, OAM_2e045
 	jump_abs .loop
 
 AnimScript_2187f:
 .loop
-	frame 16, $5ff5
-	frame  8, $5ffd
-	frame 16, $5ff5
-	frame 16, $5ffd
-	frame  8, $5ff5
+	frame 16, OAM_2dff5
+	frame  8, OAM_2dffd
+	frame 16, OAM_2dff5
+	frame 16, OAM_2dffd
+	frame  8, OAM_2dff5
 	jump_abs .loop
 
 AnimScript_21891:
 .loop
-	frame  8, $6005
-	frame  8, $5ffd
+	frame  8, OAM_2e005
+	frame  8, OAM_2dffd
 	jump_abs .loop
 
 AnimScript_2189a:
-	frame  0, $600d
+	frame  0, OAM_2e00d
 
 AnimScript_2189d:
-	frame  8, $5ffd
-	frame  0, $5ff5
+	frame  8, OAM_2dffd
+	frame  0, OAM_2dff5
 
 AnimScript_218a3:
-	frame  8, $6025
-	frame  0, $601d
+	frame  8, OAM_2e025
+	frame  0, OAM_2e01d
 
 AnimScript_218a9:
-	frame 32, $602d
-	frame  0, $6025
+	frame 32, OAM_2e02d
+	frame  0, OAM_2e025
 
 AnimScript_218af:
-	frame 32, $6005
-	frame  0, $5ffd
+	frame 32, OAM_2e005
+	frame  0, OAM_2dffd
 
 AnimScript_218b5:
 .loop
-	frame 16, $621d
-	frame 16, $6225
+	frame 16, OAM_2e21d
+	frame 16, OAM_2e225
 	jump_abs .loop
 
 AnimScript_218be:
 .loop
-	frame 16, $622d
-	frame 16, $6235
+	frame 16, OAM_2e22d
+	frame 16, OAM_2e235
 	jump_abs .loop
 
 AnimScript_218c7:
-	frame 16, $6245
-	frame  0, $623d
+	frame 16, OAM_2e245
+	frame  0, OAM_2e23d
 
 AnimScript_218cd:
 .loop
-	frame 16, $6245
-	frame 32, $623d
+	frame 16, OAM_2e245
+	frame 32, OAM_2e23d
 	jump_abs .loop
 
 AnimScript_218d6:
 .loop
-	frame  1, $6245
+	frame  1, OAM_2e245
 	jump_abs .loop
 
 AnimScript_218dc:
 .loop
-	frame  1, $623d
+	frame  1, OAM_2e23d
 	jump_abs .loop
 
 AnimScript_218e2:
 .loop
-	frame 10, $622d
+	frame 10, OAM_2e22d
 	script_repeat 2
-	frame 10, $621d
-	frame 10, $6225
+	frame 10, OAM_2e21d
+	frame 10, OAM_2e225
 	script_repeat_end
-	frame 10, $621d
+	frame 10, OAM_2e21d
 	script_repeat 2
-	frame 10, $622d
-	frame 10, $6235
+	frame 10, OAM_2e22d
+	frame 10, OAM_2e235
 	script_repeat_end
 	jump_abs .loop
 
 AnimScript_218fd:
-	frame 100, $623d
-	frame 20, $6245
-	frame  0, $623d
+	frame 100, OAM_2e23d
+	frame 20, OAM_2e245
+	frame  0, OAM_2e23d
 
 AnimScript_21906:
-	frame  1, $624d
+	frame  1, OAM_2e24d
 	set_motion_script MotionScript_11b2b
-	frame  0, $624d
+	frame  0, OAM_2e24d
 
 AnimScript_21911:
-	frame 40, $624d
+	frame 40, OAM_2e24d
 	set_object_properties Data_366a
 	set_update_func Func_141b1, AnimScript_21921
-	frame  0, $624d
+	frame  0, OAM_2e24d
 
 AnimScript_21921:
 	set_object_properties Data_3673
@@ -2577,32 +2577,32 @@ AnimScript_21921:
 SECTION "Bank 8@592e", ROMX[$592e], BANK[$8]
 
 AnimScript_2192e:
-	frame 80, $6255
-	frame  4, $625d
-	frame  4, $6269
+	frame 80, OAM_2e255
+	frame  4, OAM_2e25d
+	frame  4, OAM_2e269
 	script_repeat 8
-	frame  4, $6279
-	frame  4, $6289
+	frame  4, OAM_2e279
+	frame  4, OAM_2e289
 	script_repeat_end
-	frame  0, $6255
+	frame  0, OAM_2e255
 
 AnimScript_21943:
-	frame 40, $6299
-	frame 60, $62a1
-	frame  4, $62a9
-	frame  4, $62c9
+	frame 40, OAM_2e299
+	frame 60, OAM_2e2a1
+	frame  4, OAM_2e2a9
+	frame  4, OAM_2e2c9
 	play_sfx SFX_25
-	frame  4, $62f1
+	frame  4, OAM_2e2f1
 .loop
-	frame  4, $6329
-	frame  4, $6359
+	frame  4, OAM_2e329
+	frame  4, OAM_2e359
 	jump_rel .loop
 
 AnimScript_2195e:
-	frame  0, $606d
+	frame  0, OAM_2e06d
 
 AnimScript_Kaboola_Shoot:
-	frame 10, $606d
+	frame 10, OAM_2e06d
 
 .regular_shot
 	; 33% chance to shoot 1 bullet
@@ -2615,14 +2615,14 @@ AnimScript_Kaboola_Shoot:
 .maybe_invert_shot
 	; 70% chance to invert and shoot
 	; 30% chance to keep shooting regular
-	frame 15, $606d
+	frame 15, OAM_2e06d
 	jump_random 70 percent, .invert_and_shoot
-	frame 15, $606d
+	frame 15, OAM_2e06d
 	jump_rel .regular_shot
 
 .invert_and_shoot
 	script_call AnimScript_21a0d
-	frame 15, $60d5
+	frame 15, OAM_2e0d5
 .inverted_shot
 	; 33% chance to shoot 1 bullet
 	; 33% chance to shoot 3 bullets consecutively
@@ -2634,9 +2634,9 @@ AnimScript_Kaboola_Shoot:
 .maybe_regular_shot
 	; 70% chance to return to regular shooting
 	; 30% chance to keep inverted shooting
-	frame 15, $60d5
+	frame 15, OAM_2e0d5
 	jump_random 70 percent, .return_regular_and_shoot
-	frame 15, $60d5
+	frame 15, OAM_2e0d5
 	jump_rel .inverted_shot
 
 .return_regular_and_shoot
@@ -2652,7 +2652,7 @@ AnimScript_Kaboola_Shoot:
 	script_repeat 3
 	script_call AnimScript_21a35
 	create_object AnimScript_21a73, MotionScript_SpitStar_Left, KaboolaBulletProperties
-	frame 10, $606d
+	frame 10, OAM_2e06d
 	script_repeat_end
 	jump_rel .maybe_invert_shot
 
@@ -2672,7 +2672,7 @@ AnimScript_Kaboola_Shoot:
 	script_repeat 3
 	script_call AnimScript_21a3f
 	create_object AnimScript_21a6d, MotionScript_SpitStar_Left, KaboolaBulletProperties
-	frame 10, $60d5
+	frame 10, OAM_2e0d5
 	script_repeat_end
 	jump_rel .maybe_regular_shot
 
@@ -2684,57 +2684,57 @@ AnimScript_Kaboola_Shoot:
 	jump_rel .maybe_regular_shot
 
 AnimScript_21a0d:
-	frame  4, $6095
-	frame  4, $60b5
-	frame 10, $60d5
+	frame  4, OAM_2e095
+	frame  4, OAM_2e0b5
+	frame 10, OAM_2e0d5
 	script_ret
 
 AnimScript_21a17:
-	frame  4, $60b5
-	frame  4, $6095
-	frame 10, $606d
+	frame  4, OAM_2e0b5
+	frame  4, OAM_2e095
+	frame 10, OAM_2e06d
 	script_ret
 
 AnimScript_21a21:
-	frame  4, $60fd
-	frame  4, $612d
-	frame  4, $615d
+	frame  4, OAM_2e0fd
+	frame  4, OAM_2e12d
+	frame  4, OAM_2e15d
 	script_ret
 
 AnimScript_21a2b:
-	frame  4, $618d
-	frame  4, $61bd
-	frame  4, $61ed
+	frame  4, OAM_2e18d
+	frame  4, OAM_2e1bd
+	frame  4, OAM_2e1ed
 	script_ret
 
 AnimScript_21a35:
-	frame  2, $60fd
-	frame  2, $612d
-	frame  2, $615d
+	frame  2, OAM_2e0fd
+	frame  2, OAM_2e12d
+	frame  2, OAM_2e15d
 	script_ret
 
 AnimScript_21a3f:
-	frame  2, $618d
-	frame  2, $61bd
-	frame  2, $61ed
+	frame  2, OAM_2e18d
+	frame  2, OAM_2e1bd
+	frame  2, OAM_2e1ed
 	script_ret
 
 AnimScript_Kaboola_RamStart:
 .loop
-	frame  4, $606d
-	frame  4, $6095
-	frame  4, $60b5
-	frame  4, $60d5
+	frame  4, OAM_2e06d
+	frame  4, OAM_2e095
+	frame  4, OAM_2e0b5
+	frame  4, OAM_2e0d5
 	jump_abs .loop
 
 AnimScript_Kaboola_RamEnd:
-	frame  8, $606d
-	frame  8, $6095
-	frame 10, $60b5
-	frame 10, $60d5
-	frame 16, $60b5
-	frame 16, $6095
-	frame  0, $606d
+	frame  8, OAM_2e06d
+	frame  8, OAM_2e095
+	frame 10, OAM_2e0b5
+	frame 10, OAM_2e0d5
+	frame 16, OAM_2e0b5
+	frame 16, OAM_2e095
+	frame  0, OAM_2e06d
 
 AnimScript_21a6d:
 	position_offset -10, -16
@@ -2759,131 +2759,131 @@ AnimScript_21a79:
 
 AnimScript_21aa8:
 	play_sfx SFX_28
-	frame  6, $5d21
-	frame  2, $5d29
-	frame  2, $5d31
+	frame  6, OAM_2dd21
+	frame  2, OAM_2dd29
+	frame  2, OAM_2dd31
 	script_end
 
 AnimScript_21ab6:
 .loop
 	set_motion_script MotionScript_11bbf
 	script_repeat 8
-	frame 12, $4528
-	frame 12, $4530
+	frame 12, OAM_2c528
+	frame 12, OAM_2c530
 	script_repeat_end
 	set_motion_script MotionScript_10008
 	script_repeat 2
-	frame  4, $4530
-	frame  4, $4528
+	frame  4, OAM_2c530
+	frame  4, OAM_2c528
 	script_repeat_end
-	frame 10, $4530
+	frame 10, OAM_2c530
 	set_motion_script MotionScript_11baa
 	script_repeat 8
-	frame 12, $4518
-	frame 12, $4520
+	frame 12, OAM_2c518
+	frame 12, OAM_2c520
 	script_repeat_end
 	set_motion_script MotionScript_10008
 	script_repeat 2
-	frame  4, $4520
-	frame  4, $4518
+	frame  4, OAM_2c520
+	frame  4, OAM_2c518
 	script_repeat_end
-	frame 10, $4520
+	frame 10, OAM_2c520
 	jump_rel .loop
 
 AnimScript_21af6:
 .loop
-	frame  8, $4518
-	frame  8, $4520
+	frame  8, OAM_2c518
+	frame  8, OAM_2c520
 	jump_abs .loop
 
 AnimScript_21aff:
 .loop
-	frame  8, $4528
-	frame  8, $4530
+	frame  8, OAM_2c528
+	frame  8, OAM_2c530
 	jump_abs .loop
 
 AnimScript_21b08:
 .loop
-	frame 12, $4518
-	frame 10, $4520
+	frame 12, OAM_2c518
+	frame 10, OAM_2c520
 	jump_abs .loop
 
 AnimScript_21b11:
 .loop
-	frame 12, $4528
-	frame 10, $4530
+	frame 12, OAM_2c528
+	frame 10, OAM_2c530
 	jump_abs .loop
 
 AnimScript_21b1a:
-	frame  0, $4540
+	frame  0, OAM_2c540
 ; 0x21b1d
 
 SECTION "Bank 8@5b23", ROMX[$5b23], BANK[$8]
 
 AnimScript_21b23:
 .loop
-	frame  8, $4538
-	frame  8, $4540
-	frame  8, $4548
-	frame  8, $4550
+	frame  8, OAM_2c538
+	frame  8, OAM_2c540
+	frame  8, OAM_2c548
+	frame  8, OAM_2c550
 	jump_abs .loop
 
 AnimScript_21b32:
 .loop
-	frame  6, $5e45
-	frame  6, $5e4d
+	frame  6, OAM_2de45
+	frame  6, OAM_2de4d
 	script_repeat 2
-	frame 10, $5e45
-	frame 10, $5e4d
+	frame 10, OAM_2de45
+	frame 10, OAM_2de4d
 	script_repeat_end
 	jump_abs .loop
 
 AnimScript_21b44:
-	frame 10, $5ecd
-	frame 10, $5ec5
+	frame 10, OAM_2decd
+	frame 10, OAM_2dec5
 	set_scripts AnimScript_21b6b, MotionScript_113e2
 
 AnimScript_21b4f:
 	script_repeat 2
-	frame 10, $5ecd
-	frame 10, $5ec5
+	frame 10, OAM_2decd
+	frame 10, OAM_2dec5
 	script_repeat_end
 	set_scripts AnimScript_21b6b, MotionScript_113e2
 
 AnimScript_21b5d:
 	script_repeat 3
-	frame 10, $5ecd
-	frame 10, $5ec5
+	frame 10, OAM_2decd
+	frame 10, OAM_2dec5
 	script_repeat_end
 	set_motion_script MotionScript_113e2
 AnimScript_21b6b:
-	frame 10, $5ecd
-	frame 10, $5ec5
-	frame 10, $5ecd
+	frame 10, OAM_2decd
+	frame 10, OAM_2dec5
+	frame 10, OAM_2decd
 .loop
-	frame  8, $5ecd
-	frame  8, $5ec5
+	frame  8, OAM_2decd
+	frame  8, OAM_2dec5
 	jump_abs .loop
 
 AnimScript_21b7d:
 .loop
 	set_motion_script MotionScript_102ce
 	script_repeat 18
-	frame 16, $5e55
-	frame 16, $5e5d
+	frame 16, OAM_2de55
+	frame 16, OAM_2de5d
 	script_repeat_end
 	set_motion_script MotionScript_102d1
 	script_repeat 18
-	frame 16, $5e65
-	frame 16, $5e6d
+	frame 16, OAM_2de65
+	frame 16, OAM_2de6d
 	script_repeat_end
 	jump_rel .loop
 
 AnimScript_Scarfy:
 	set_update_func Func_140ce, AnimScript_MutantScarfy
 .loop
-	frame 10, $4558
-	frame 10, $4560
+	frame 10, OAM_2c558
+	frame 10, OAM_2c560
 	jump_rel .loop
 ; 0x21ba8
 
@@ -2892,56 +2892,56 @@ SECTION "Bank 8@5bb0", ROMX[$5bb0], BANK[$8]
 AnimScript_MutantScarfy:
 	set_object_properties Properties_34ed
 	set_motion_script MotionScript_11d7a
-	frame 12, $4558
-	frame 12, $4578
+	frame 12, OAM_2c558
+	frame 12, OAM_2c578
 	set_motion_script MotionScript_MutantScarfy
 .loop
 	branch_kirby_pos .script_21bcc, .script_21bd4
 
 .script_21bcc
-	frame  8, $4568
-	frame 10, $4578
+	frame  8, OAM_2c568
+	frame 10, OAM_2c578
 	jump_rel .loop
 
 .script_21bd4
-	frame  8, $4590
-	frame 10, $45a0
+	frame  8, OAM_2c590
+	frame 10, OAM_2c5a0
 	jump_rel .loop
 
 AnimScript_21bdc:
 	branch_kirby_pos .script_21be3, .script_21be6
 
 .script_21be3
-	frame  0, $4578
+	frame  0, OAM_2c578
 
 .script_21be6
-	frame  0, $45a0
+	frame  0, OAM_2c5a0
 
 AnimScript_21be9:
 .loop
 	script_repeat 3
-	frame 10, $5e55
-	frame  8, $5e5d
+	frame 10, OAM_2de55
+	frame  8, OAM_2de5d
 	script_repeat_end
 	script_repeat 3
-	frame 10, $5e65
-	frame  8, $5e6d
+	frame 10, OAM_2de65
+	frame  8, OAM_2de6d
 	script_repeat_end
 	script_repeat 2
-	frame 10, $5e55
-	frame  8, $5e5d
+	frame 10, OAM_2de55
+	frame  8, OAM_2de5d
 	script_repeat_end
 	script_repeat 2
-	frame 10, $5e65
-	frame  8, $5e6d
+	frame 10, OAM_2de65
+	frame  8, OAM_2de6d
 	script_repeat_end
-	frame 10, $5e55
-	frame  8, $5e5d
-	frame 10, $5e65
-	frame  8, $5e6d
-	frame 20, $5e5d
-	frame 64, $5e55
-	frame 20, $5e5d
+	frame 10, OAM_2de55
+	frame  8, OAM_2de5d
+	frame 10, OAM_2de65
+	frame  8, OAM_2de6d
+	frame 20, OAM_2de5d
+	frame 64, OAM_2de55
+	frame 20, OAM_2de5d
 	jump_abs .loop
 
 AnimScript_21c25:
@@ -2955,7 +2955,7 @@ AnimScript_StationaryShotzo:
 	jump_abs .script_21c59
 
 .turn_up
-	frame 30, $5ef5
+	frame 30, OAM_2def5
 	script_exec Func_495c
 	jumptable wd3bd
 	dw .shoot_up ; $0
@@ -2972,7 +2972,7 @@ AnimScript_StationaryShotzo:
 	set_motion_script MotionScript_102a4
 
 .script_21c59
-	frame 15, $5ef5
+	frame 15, OAM_2def5
 .loop
 	script_exec Func_495c
 	jumptable wd3bd
@@ -2986,11 +2986,11 @@ AnimScript_StationaryShotzo:
 	dw .turn_up_left ; $7
 
 .script_21c72
-	frame 60, $5ef5
+	frame 60, OAM_2def5
 	jump_abs .loop
 
 .turn_up_right
-	frame 30, $5efd
+	frame 30, OAM_2defd
 	script_exec Func_495c
 	jumptable wd3bd
 	dw .turn_up ; $0
@@ -3007,7 +3007,7 @@ AnimScript_StationaryShotzo:
 	set_motion_script MotionScript_102b0
 
 .script_21c9d
-	frame 15, $5efd
+	frame 15, OAM_2defd
 	script_exec Func_495c
 	jumptable wd3bd
 	dw .turn_up ; $0
@@ -3020,7 +3020,7 @@ AnimScript_StationaryShotzo:
 	dw .script_21c59 ; $7
 
 .turn_right
-	frame 30, $5f05
+	frame 30, OAM_2df05
 	script_exec Func_495c
 	jumptable wd3bd
 	dw .script_21c9d ; $0
@@ -3035,7 +3035,7 @@ AnimScript_StationaryShotzo:
 .shoot_right
 	create_object AnimScript_Bullet, MotionScript_102e9, ShotzoBulletProperties
 	set_motion_script MotionScript_102bc
-	frame 30, $5f05
+	frame 30, OAM_2df05
 
 .script_21cde
 	script_exec Func_495c
@@ -3050,11 +3050,11 @@ AnimScript_StationaryShotzo:
 	dw .script_21c9d ; $7
 
 .script_21cf4
-	frame 60, $5f05
+	frame 60, OAM_2df05
 	jump_abs .script_21cde
 
 .turn_left
-	frame 30, $5ee5
+	frame 30, OAM_2dee5
 	script_exec Func_495c
 	jumptable wd3bd
 	dw .script_21d63 ; $0
@@ -3069,7 +3069,7 @@ AnimScript_StationaryShotzo:
 .shoot_left
 	create_object AnimScript_Bullet, MotionScript_102e6, ShotzoBulletProperties
 	set_motion_script MotionScript_1028c
-	frame 30, $5ee5
+	frame 30, OAM_2dee5
 
 .script_21d22
 	script_exec Func_495c
@@ -3084,11 +3084,11 @@ AnimScript_StationaryShotzo:
 	dw .turn_up_left ; $7
 
 .script_21d38
-	frame 60, $5ee5
+	frame 60, OAM_2dee5
 	jump_abs .script_21d22
 
 .turn_up_left
-	frame 30, $5eed
+	frame 30, OAM_2deed
 	script_exec Func_495c
 	jumptable wd3bd
 	dw .turn_up ; $0
@@ -3105,7 +3105,7 @@ AnimScript_StationaryShotzo:
 	set_motion_script MotionScript_10298
 
 .script_21d63
-	frame 15, $5eed
+	frame 15, OAM_2deed
 	script_exec Func_495c
 	jumptable wd3bd
 	dw .turn_up ; $0
@@ -3118,52 +3118,52 @@ AnimScript_StationaryShotzo:
 	dw .turn_up_left ; $7
 
 AnimScript_21d7c:
-	frame  0, $46a4
+	frame  0, OAM_2c6a4
 
 AnimScript_21d7f:
-	frame  0, $4664
+	frame  0, OAM_2c664
 
 AnimScript_21d82:
-	frame  0, $4654
+	frame  0, OAM_2c654
 
 AnimScript_21d85:
 	set_update_func Func_140c2, AnimScript_21dc9
 .loop
-	frame 10, $46a4
-	frame 10, $46b4
-	frame 10, $46a4
-	frame 10, $46b4
-	frame 20, $46c4
-	frame 10, $46d4
-	frame 10, $46c4
-	frame 10, $46d4
-	frame 10, $46a4
+	frame 10, OAM_2c6a4
+	frame 10, OAM_2c6b4
+	frame 10, OAM_2c6a4
+	frame 10, OAM_2c6b4
+	frame 20, OAM_2c6c4
+	frame 10, OAM_2c6d4
+	frame 10, OAM_2c6c4
+	frame 10, OAM_2c6d4
+	frame 10, OAM_2c6a4
 	jump_rel .loop
 
 AnimScript_21da7:
 	set_update_func Func_140c2, AnimScript_21ddb
 .loop
-	frame 10, $4664
-	frame 10, $4674
-	frame 10, $4664
-	frame 10, $4674
-	frame 20, $4684
-	frame 10, $4694
-	frame 10, $4684
-	frame 10, $4694
-	frame 10, $4664
+	frame 10, OAM_2c664
+	frame 10, OAM_2c674
+	frame 10, OAM_2c664
+	frame 10, OAM_2c674
+	frame 20, OAM_2c684
+	frame 10, OAM_2c694
+	frame 10, OAM_2c684
+	frame 10, OAM_2c694
+	frame 10, OAM_2c664
 	jump_rel .loop
 
 AnimScript_21dc9:
 	create_object AnimScript_21d82, MotionScript_11e25, Data_3421
 	set_object_properties StandardEnemyProperties
-	frame  1, $5e55
+	frame  1, OAM_2de55
 	script_exec Func_4afb
 
 AnimScript_21ddb:
 	create_object AnimScript_21d82, MotionScript_11e25, Data_3421
 	set_object_properties StandardEnemyProperties
-	frame  1, $5e75
+	frame  1, OAM_2de75
 	script_exec Func_4afb
 
 AnimScript_21ded:
@@ -3175,12 +3175,12 @@ SECTION "Bank 8@5df8", ROMX[$5df8], BANK[$8]
 
 AnimScript_21df8:
 	create_object AnimScript_20a01, MotionScript_10008, Data_3421
-	frame  0, $4654
+	frame  0, OAM_2c654
 
 AnimScript_21e02:
 	set_object_properties StandardEnemyGravityProperties
 	set_update_func Func_141b1, AnimScript_21e0f
-	frame  0, $5e55
+	frame  0, OAM_2de55
 
 AnimScript_21e0f:
 	set_scripts AnimScript_20587, MotionScript_102ce
@@ -3188,7 +3188,7 @@ AnimScript_21e0f:
 AnimScript_21e14:
 	set_object_properties StandardEnemyGravityProperties
 	set_update_func Func_141b1, AnimScript_21e21
-	frame  0, $5e55
+	frame  0, OAM_2de55
 
 AnimScript_21e21:
 	set_scripts AnimScript_205ae, MotionScript_103ff
@@ -3196,7 +3196,7 @@ AnimScript_21e21:
 AnimScript_21e26:
 	set_object_properties StandardEnemyGravityProperties
 	set_update_func Func_141b1, AnimScript_21e33
-	frame  0, $5e75
+	frame  0, OAM_2de75
 
 AnimScript_21e33:
 	set_scripts AnimScript_205e1, MotionScript_102ce
@@ -3204,7 +3204,7 @@ AnimScript_21e33:
 AnimScript_21e38:
 	set_object_properties StandardEnemyGravityProperties
 	set_update_func Func_141b1, AnimScript_21e45
-	frame  0, $5e75
+	frame  0, OAM_2de75
 
 AnimScript_21e45:
 	set_scripts AnimScript_2061d, MotionScript_103ff
@@ -3214,28 +3214,28 @@ SECTION "Bank 8@5e5d", ROMX[$5e5d], BANK[$8]
 
 AnimScript_21e5d:
 .loop
-	frame 20, $4794
-	frame 20, $479c
-	frame 20, $4794
-	frame 20, $47a4
+	frame 20, OAM_2c794
+	frame 20, OAM_2c79c
+	frame 20, OAM_2c794
+	frame 20, OAM_2c7a4
 	jump_abs .loop
 
 AnimScript_21e6c:
 	play_sfx SFX_20
 .loop
-	frame  4, $4764
-	frame  4, $476c
-	frame  4, $4770
-	frame  4, $4778
+	frame  4, OAM_2c764
+	frame  4, OAM_2c76c
+	frame  4, OAM_2c770
+	frame  4, OAM_2c778
 	jump_rel .loop
 
 AnimScript_21e7e:
 .loop
 	play_sfx SFX_20
-	frame  4, $477c
-	frame  4, $4784
-	frame  4, $4788
-	frame  4, $4790
+	frame  4, OAM_2c77c
+	frame  4, OAM_2c784
+	frame  4, OAM_2c788
+	frame  4, OAM_2c790
 	jump_abs .loop
 
 AnimScript_21e91:
@@ -3303,68 +3303,68 @@ AnimScript_21f0a:
 	set_motion_script MotionScript_102ce
 AnimScript_21f0f:
 	script_repeat 3
-	frame 10, $4724
-	frame 10, $472c
+	frame 10, OAM_2c724
+	frame 10, OAM_2c72c
 	script_repeat_end
 	set_motion_script MotionScript_10008
-	frame 20, $4734
+	frame 20, OAM_2c734
 	create_object AnimScript_21e6c, MotionScript_11f0c, SirKibbleBladeProperties
-	frame 76, $473c
-	frame 20, $4734
+	frame 76, OAM_2c73c
+	frame 20, OAM_2c734
 	script_ret
 
 AnimScript_21f2e:
 	script_repeat 3
-	frame 10, $4724
-	frame 10, $472c
+	frame 10, OAM_2c724
+	frame 10, OAM_2c72c
 	script_repeat_end
 	set_motion_script MotionScript_10008
-	frame 20, $4734
+	frame 20, OAM_2c734
 	create_object AnimScript_21e6c, MotionScript_11f2b, SirKibbleBladeProperties
-	frame 112, $473c
-	frame 20, $4734
+	frame 112, OAM_2c73c
+	frame 20, OAM_2c734
 	script_ret
 
 AnimScript_21f4d:
 	set_motion_script MotionScript_102d1
 AnimScript_21f52:
 	script_repeat 3
-	frame 10, $4744
-	frame 10, $474c
+	frame 10, OAM_2c744
+	frame 10, OAM_2c74c
 	script_repeat_end
 	set_motion_script MotionScript_10008
-	frame 20, $4754
+	frame 20, OAM_2c754
 	create_object AnimScript_21e7e, MotionScript_11f4a, SirKibbleBladeProperties
-	frame 76, $475c
-	frame 20, $4754
+	frame 76, OAM_2c75c
+	frame 20, OAM_2c754
 	script_ret
 
 AnimScript_Waterfall:
-	frame  0, $58b8
+	frame  0, OAM_2d8b8
 
 AnimScript_WaterfallCurrent:
-	frame  0, $47ac
+	frame  0, OAM_2c7ac
 
 AnimScript_WaterfallParticles:
 	position_offset 0, 96
 .loop
-	frame  2, $47b0
-	frame  2, $47b8
-	frame  2, $47c4
-	frame  2, $47c0
-	frame  2, $47b4
-	frame  2, $47bc
+	frame  2, OAM_2c7b0
+	frame  2, OAM_2c7b8
+	frame  2, OAM_2c7c4
+	frame  2, OAM_2c7c0
+	frame  2, OAM_2c7b4
+	frame  2, OAM_2c7bc
 	jump_abs .loop
 
 AnimScript_FallingStarSpawner:
 .loop
-	frame 40, $58b8
+	frame 40, OAM_2d8b8
 	jump_random 25 percent + 1, .script_21fa7
-	frame 20, $58b8
+	frame 20, OAM_2d8b8
 	jump_random 50 percent + 1, .script_21fa7
-	frame 20, $58b8
+	frame 20, OAM_2d8b8
 	jump_random 75 percent + 1, .script_21fa7
-	frame 20, $58b8
+	frame 20, OAM_2d8b8
 .script_21fa7
 	create_object AnimScript_FallingStar, MotionScript_FallingStar, Data_3421
 	jump_abs .loop
@@ -3382,27 +3382,27 @@ AnimScript_21fb7:
 
 .script_21fbe
 	script_repeat 6
-	frame  3, $5e8d
-	frame  3, $5e75
+	frame  3, OAM_2de8d
+	frame  3, OAM_2de75
 	script_repeat_end
 	set_motion_script MotionScript_11c10
 	script_call AnimScript_2202e
 	script_repeat 2
-	frame  4, $5e75
-	frame  4, $5e7d
+	frame  4, OAM_2de75
+	frame  4, OAM_2de7d
 	script_repeat_end
 	jump_abs .loop
 
 .script_21fdb
 	script_repeat 12
-	frame  3, $5eb5
-	frame  3, $5e9d
+	frame  3, OAM_2deb5
+	frame  3, OAM_2de9d
 	script_repeat_end
 	set_motion_script MotionScript_11c10
 	script_call AnimScript_2208f
 	script_repeat 4
-	frame  4, $5e9d
-	frame  4, $5ea5
+	frame  4, OAM_2de9d
+	frame  4, OAM_2dea5
 	script_repeat_end
 	jump_abs .loop
 
@@ -3410,24 +3410,24 @@ AnimScript_21ff8:
 	branch_kirby_pos AnimScript_21fff, AnimScript_22016
 AnimScript_21fff:
 	script_repeat 8
-	frame  3, $5e8d
-	frame  3, $5e75
+	frame  3, OAM_2de8d
+	frame  3, OAM_2de75
 	script_repeat_end
 	script_call AnimScript_2202e
 	script_repeat 2
-	frame  4, $5e75
-	frame  4, $5e7d
+	frame  4, OAM_2de75
+	frame  4, OAM_2de7d
 	script_repeat_end
 	jump_rel AnimScript_21ff8
 AnimScript_22016:
 	script_repeat 12
-	frame  3, $5eb5
-	frame  3, $5e9d
+	frame  3, OAM_2deb5
+	frame  3, OAM_2de9d
 	script_repeat_end
 	script_call AnimScript_2208f
 	script_repeat 4
-	frame  4, $5e9d
-	frame  4, $5ea5
+	frame  4, OAM_2de9d
+	frame  4, OAM_2dea5
 	script_repeat_end
 	jump_abs AnimScript_21fff
 
@@ -3502,10 +3502,10 @@ AnimScript_2208f:
 	script_ret
 
 AnimScript_220f0:
-	frame  1, $58b8
+	frame  1, OAM_2d8b8
 	set_object_properties Data_3421
 	set_update_func Func_14252, AnimScript_22100
-	frame  0, $58b8
+	frame  0, OAM_2d8b8
 
 AnimScript_22100:
 	branch_on_kirby_vertical_alignment AnimScript_220f0, AnimScript_22109
@@ -3517,76 +3517,76 @@ AnimScript_22109:
 	jump_abs AnimScript_20937
 
 AnimScript_TitleScreenWarpStarKirby:
-	frame 40, $58b8
+	frame 40, OAM_2d8b8
 	create_object AnimScript_TitleScreenStar, MotionScript_10008, Data_3425
 	script_repeat 2
-	frame 40, $5c01
-	frame 10, $5c2d
-	frame 10, $4ba8
-	frame 40, $58b8
-	frame 10, $4ba8
-	frame 10, $5c2d
-	frame 40, $5c01
+	frame 40, OAM_2dc01
+	frame 10, OAM_2dc2d
+	frame 10, OAM_2cba8
+	frame 40, OAM_2d8b8
+	frame 10, OAM_2cba8
+	frame 10, OAM_2dc2d
+	frame 40, OAM_2dc01
 	script_repeat_end
-	frame  0, $5c01
+	frame  0, OAM_2dc01
 
 AnimScript_TitleScreenKirbySpawner:
 .loop
-	frame 170, $58b8
+	frame 170, OAM_2d8b8
 	create_object AnimScript_TitleScreenKirby, MotionScript_TitleScreenKirby, Data_3425
 	jump_rel .loop
 
 AnimScript_TitleScreenKirby:
 	script_repeat 2
-	frame 18, $58c1
-	frame 11, $58c9
-	frame 18, $58d1
-	frame 11, $58c9
+	frame 18, OAM_2d8c1
+	frame 11, OAM_2d8c9
+	frame 18, OAM_2d8d1
+	frame 11, OAM_2d8c9
 	script_repeat_end
 	script_repeat 2
-	frame  8, $58d1
-	frame  8, $5b81
-	frame  8, $5b89
-	frame  8, $5ba1
-	frame  8, $5b99
-	frame  8, $5901
+	frame  8, OAM_2d8d1
+	frame  8, OAM_2db81
+	frame  8, OAM_2db89
+	frame  8, OAM_2dba1
+	frame  8, OAM_2db99
+	frame  8, OAM_2d901
 	script_repeat_end
-	frame 32, $58e1
+	frame 32, OAM_2d8e1
 	script_repeat 2
-	frame 18, $58f1
-	frame 11, $58f9
-	frame 18, $5901
-	frame 11, $58f9
+	frame 18, OAM_2d8f1
+	frame 11, OAM_2d8f9
+	frame 18, OAM_2d901
+	frame 11, OAM_2d8f9
 	script_repeat_end
 	script_repeat 2
-	frame 10, $5bf1
-	frame  8, $5bf9
-	frame  8, $5be9
-	frame 10, $5be1
+	frame 10, OAM_2dbf1
+	frame  8, OAM_2dbf9
+	frame  8, OAM_2dbe9
+	frame 10, OAM_2dbe1
 	script_repeat_end
 	script_repeat 3
-	frame  6, $58e9
-	frame 10, $5ba9
-	frame  6, $58e9
-	frame 10, $5bad
+	frame  6, OAM_2d8e9
+	frame 10, OAM_2dba9
+	frame  6, OAM_2d8e9
+	frame 10, OAM_2dbad
 	script_repeat_end
-	frame 16, $5bc9
-	frame 64, $58d9
-	frame 64, $5b69
-	frame 32, $5bc9
-	frame 64, $5901
-	frame 10, $5ae9
-	frame 10, $5af1
-	frame 10, $5a81
+	frame 16, OAM_2dbc9
+	frame 64, OAM_2d8d9
+	frame 64, OAM_2db69
+	frame 32, OAM_2dbc9
+	frame 64, OAM_2d901
+	frame 10, OAM_2dae9
+	frame 10, OAM_2daf1
+	frame 10, OAM_2da81
 .loop
-	frame 10, $5919
-	frame 10, $5931
+	frame 10, OAM_2d919
+	frame 10, OAM_2d931
 	jump_rel .loop
 
 AnimScript_TitleScreenStarSpawner:
-	frame 200, $58b8
+	frame 200, OAM_2d8b8
 .loop
-	frame 30, $58b8
+	frame 30, OAM_2d8b8
 	create_object AnimScript_TitleScreenStar_RandomPosition, MotionScript_10008, Data_3425
 	jump_abs .loop
 
@@ -3675,86 +3675,86 @@ AnimScript_TitleScreenStar_RandomPosition:
 AnimScript_TitleScreenStar:
 	create_object AnimScript_22265, MotionScript_1083f, Data_3421
 	create_object AnimScript_22265, MotionScript_10850, Data_3421
-	frame  3, $5c25
-	frame  3, $5c2d
+	frame  3, OAM_2dc25
+	frame  3, OAM_2dc2d
 	create_object AnimScript_22265, MotionScript_10835, Data_3421
 	create_object AnimScript_22265, MotionScript_10846, Data_3421
-	frame  3, $5c3d
-	frame  3, $5c45
-	frame  3, $5c25
+	frame  3, OAM_2dc3d
+	frame  3, OAM_2dc45
+	frame  3, OAM_2dc25
 	script_end
 
 AnimScript_22265:
-	frame  0, $4ba8
+	frame  0, OAM_2cba8
 
 AnimScript_SoundTestNote:
 .loop
-	frame 150, $52b0
-	frame   8, $52b4
-	frame   8, $52b8
-	frame  20, $52bc
-	frame   8, $52b8
-	frame   8, $52b4
-	frame 200, $52b0
-	frame   8, $52b4
-	frame   8, $52b8
-	frame  20, $52bc
-	frame   8, $52b8
-	frame   8, $52b4
+	frame 150, OAM_2d2b0
+	frame   8, OAM_2d2b4
+	frame   8, OAM_2d2b8
+	frame  20, OAM_2d2bc
+	frame   8, OAM_2d2b8
+	frame   8, OAM_2d2b4
+	frame 200, OAM_2d2b0
+	frame   8, OAM_2d2b4
+	frame   8, OAM_2d2b8
+	frame  20, OAM_2d2bc
+	frame   8, OAM_2d2b8
+	frame   8, OAM_2d2b4
 	jump_abs .loop
 
 AnimScript_SoundTestKirbyEyes:
 .loop
-	frame   8, $52c0
-	frame 180, $58b8
-	frame   8, $52c0
-	frame  10, $58b8
-	frame   8, $52c0
-	frame 120, $58b8
+	frame   8, OAM_2d2c0
+	frame 180, OAM_2d8b8
+	frame   8, OAM_2d2c0
+	frame  10, OAM_2d8b8
+	frame   8, OAM_2d2c0
+	frame 120, OAM_2d8b8
 	jump_abs .loop
 
 AnimScript_222a4:
-	frame 32, $58b8
-	frame 32, $58d9
-	frame 24, $5b69
-	frame  8, $5bc9
+	frame 32, OAM_2d8b8
+	frame 32, OAM_2d8d9
+	frame 24, OAM_2db69
+	frame  8, OAM_2dbc9
 	script_repeat 2
-	frame  8, $58c1
-	frame  8, $58c9
-	frame  8, $58d1
-	frame  8, $58c9
+	frame  8, OAM_2d8c1
+	frame  8, OAM_2d8c9
+	frame  8, OAM_2d8d1
+	frame  8, OAM_2d8c9
 	script_repeat_end
-	frame 32, $58b8
+	frame 32, OAM_2d8b8
 	script_repeat 5
-	frame  8, $5be1
-	frame  8, $5be9
-	frame  8, $5bf9
-	frame  8, $5bf1
+	frame  8, OAM_2dbe1
+	frame  8, OAM_2dbe9
+	frame  8, OAM_2dbf9
+	frame  8, OAM_2dbf1
 	script_repeat_end
-	frame 32, $5bf1
+	frame 32, OAM_2dbf1
 	script_end
 
 AnimScript_222d5:
 	script_repeat 4
-	frame  8, $4bb4
-	frame  8, $4bb8
+	frame  8, OAM_2cbb4
+	frame  8, OAM_2cbb8
 	script_repeat_end
 	script_repeat 30
-	frame  4, $4bac
-	frame  4, $4bb0
+	frame  4, OAM_2cbac
+	frame  4, OAM_2cbb0
 	script_repeat_end
-	frame  4, $4bac
+	frame  4, OAM_2cbac
 	script_end
 ; 0x222eb
 
 SECTION "Bank 8@62f0", ROMX[$62f0], BANK[$8]
 
 AnimScript_222f0:
-	frame  8, $4bb8
+	frame  8, OAM_2cbb8
 AnimScript_222f3:
 	script_repeat 100
-	frame  8, $4bb4
-	frame  8, $4bb8
+	frame  8, OAM_2cbb4
+	frame  8, OAM_2cbb8
 	script_repeat_end
 	script_end
 
@@ -3783,79 +3783,79 @@ AnimScript_22325:
 	set_scripts AnimScript_222f3, MotionScript_12136
 
 AnimScript_2232d:
-	frame 104, $58b8
+	frame 104, OAM_2d8b8
 	script_delay 94
 	script_ret
 
 AnimScript_22333:
-	frame  0, $5c21
+	frame  0, OAM_2dc21
 
 AnimScript_22336:
-	frame  8, $4d6c
-	frame  8, $4d78
+	frame  8, OAM_2cd6c
+	frame  8, OAM_2cd78
 	script_end
 
 AnimScript_2233d:
-	frame 48, $58e9
-	frame 16, $4d84
+	frame 48, OAM_2d8e9
+	frame 16, OAM_2cd84
 	script_delay 15
-	frame 16, $4d8c
-	frame 48, $58e9
-	frame 32, $4d84
-	frame 16, $4d8c
-	frame 52, $58e9
-	frame  0, $5be1
+	frame 16, OAM_2cd8c
+	frame 48, OAM_2d8e9
+	frame 32, OAM_2cd84
+	frame 16, OAM_2cd8c
+	frame 52, OAM_2d8e9
+	frame  0, OAM_2dbe1
 
 AnimScript_22357:
-	frame 96, $58b8
-	frame 96, $58b8
-	frame  0, $5c21
+	frame 96, OAM_2d8b8
+	frame 96, OAM_2d8b8
+	frame  0, OAM_2dc21
 
 AnimScript_22360:
-	frame 48, $4bbc
-	frame  8, $4bcc
-	frame 16, $4bbc
-	frame  8, $4bcc
-	frame 16, $4bbc
-	frame 10, $4bdc
-	frame 32, $4bf4
-	frame 48, $4c0c
-	frame 16, $4c18
-	frame 16, $4c24
-	frame 32, $4c84
-	frame 10, $4c38
-	frame 20, $4c54
-	frame 20, $4c60
-	frame  8, $4c6c
-	frame 16, $4c60
-	frame 32, $4c6c
-	frame 16, $4c60
-	frame 160, $4c6c
-	frame  0, $4c60
+	frame 48, OAM_2cbbc
+	frame  8, OAM_2cbcc
+	frame 16, OAM_2cbbc
+	frame  8, OAM_2cbcc
+	frame 16, OAM_2cbbc
+	frame 10, OAM_2cbdc
+	frame 32, OAM_2cbf4
+	frame 48, OAM_2cc0c
+	frame 16, OAM_2cc18
+	frame 16, OAM_2cc24
+	frame 32, OAM_2cc84
+	frame 10, OAM_2cc38
+	frame 20, OAM_2cc54
+	frame 20, OAM_2cc60
+	frame  8, OAM_2cc6c
+	frame 16, OAM_2cc60
+	frame 32, OAM_2cc6c
+	frame 16, OAM_2cc60
+	frame 160, OAM_2cc6c
+	frame  0, OAM_2cc60
 
 AnimScript_2239c:
-	frame 96, $58b8
+	frame 96, OAM_2d8b8
 .loop
-	frame 24, $4c7c
-	frame 24, $4c80
+	frame 24, OAM_2cc7c
+	frame 24, OAM_2cc80
 	jump_abs .loop
 
 AnimScript_223a8:
-	frame 104, $58b8
+	frame 104, OAM_2d8b8
 .loop
-	frame  6, $4ca0
-	frame  6, $4ca8
-	frame  6, $4ca0
-	frame  6, $4ca8
-	frame  6, $4cb0
-	frame  6, $4cb8
+	frame  6, OAM_2cca0
+	frame  6, OAM_2cca8
+	frame  6, OAM_2cca0
+	frame  6, OAM_2cca8
+	frame  6, OAM_2ccb0
+	frame  6, OAM_2ccb8
 	jump_abs .loop
 
 AnimScript_223c0:
-	frame 50, $58b8
-	frame 50, $5b69
-	frame  8, $5d29
-	frame  8, $5d31
+	frame 50, OAM_2d8b8
+	frame 50, OAM_2db69
+	frame  8, OAM_2dd29
+	frame  8, OAM_2dd31
 	script_end
 
 AnimScript_223cd:
@@ -3879,59 +3879,59 @@ AnimScript_223cd:
 	dw .script_22412 ; extra entry
 
 .script_223f1
-	frame  0, $4cc0
+	frame  0, OAM_2ccc0
 
 .script_223f4
-	frame  0, $4cc4
+	frame  0, OAM_2ccc4
 
 .script_223f7
-	frame  0, $4ce4
+	frame  0, OAM_2cce4
 
 .script_223fa
-	frame  0, $5901
+	frame  0, OAM_2d901
 
 .script_223fd
-	frame  0, $58e1
+	frame  0, OAM_2d8e1
 
 .script_22400
-	frame  0, $5ae9
+	frame  0, OAM_2dae9
 
 .script_22403
-	frame  0, $5b71
+	frame  0, OAM_2db71
 
 .script_22406
-	frame  0, $5be9
+	frame  0, OAM_2dbe9
 
 .script_22409
-	frame  0, $58d9
+	frame  0, OAM_2d8d9
 
 .script_2240c
-	frame  0, $5bf1
+	frame  0, OAM_2dbf1
 
 .script_2240f
-	frame  0, $5bad
+	frame  0, OAM_2dbad
 
 .script_22412
 	jump_abs AnimScript_203f6
 
 AnimScript_22415:
-	frame 128, $58b8
+	frame 128, OAM_2d8b8
 	script_repeat 4
-	frame  6, $4cfc
-	frame  6, $4d1c
-	frame  6, $4d3c
-	frame  6, $4d5c
+	frame  6, OAM_2ccfc
+	frame  6, OAM_2cd1c
+	frame  6, OAM_2cd3c
+	frame  6, OAM_2cd5c
 	script_repeat_end
-	frame  0, $58b8
+	frame  0, OAM_2d8b8
 
 AnimScript_2242a:
-	frame  8, $58c1
-	frame  8, $58c9
-	frame  8, $58d1
-	frame  8, $58c9
-	frame  8, $58c1
-	frame  8, $58c9
-	frame 30, $58d9
+	frame  8, OAM_2d8c1
+	frame  8, OAM_2d8c9
+	frame  8, OAM_2d8d1
+	frame  8, OAM_2d8c9
+	frame  8, OAM_2d8c1
+	frame  8, OAM_2d8c9
+	frame 30, OAM_2d8d9
 	script_end
 
 AnimScript_22440:
@@ -3943,27 +3943,27 @@ AnimScript_22440:
 	jump_abs AnimScript_208f1
 
 AnimScript_2244d:
-	frame 156, $58b8
+	frame 156, OAM_2d8b8
 	script_delay 160
 	script_delay 96
 	script_delay 80
-	frame  0, $4b30
+	frame  0, OAM_2cb30
 
 AnimScript_22459:
 	script_repeat 4
-	frame  4, $5c25
-	frame  4, $5c2d
-	frame  4, $5c3d
-	frame  4, $5c45
+	frame  4, OAM_2dc25
+	frame  4, OAM_2dc2d
+	frame  4, OAM_2dc3d
+	frame  4, OAM_2dc45
 	script_repeat_end
-	frame  5, $5c25
-	frame  5, $5c2d
-	frame  5, $5c3d
+	frame  5, OAM_2dc25
+	frame  5, OAM_2dc2d
+	frame  5, OAM_2dc3d
 	create_object AnimScript_208f1, MotionScript_10709, Data_3425
 	create_object AnimScript_208f1, MotionScript_106ff, Data_3425
 	create_object AnimScript_208f1, MotionScript_106f5, Data_3425
 	create_object AnimScript_208f1, MotionScript_106eb, Data_3425
-	frame 100, $5c01
+	frame 100, OAM_2dc01
 	script_repeat 28
 	script_delay 4
 	create_object AnimScript_224a8, MotionScript_123ac, Data_3425
@@ -3975,32 +3975,32 @@ AnimScript_22459:
 
 AnimScript_224a8:
 	position_offset -5, 4
-	frame 25, $5c1d
+	frame 25, OAM_2dc1d
 	script_end
 
 AnimScript_224af:
-	frame 80, $4d98
+	frame 80, OAM_2cd98
 	play_sfx SFX_23
-	frame 16, $4dcc
-	frame 16, $4e00
-	frame  0, $4e34
+	frame 16, OAM_2cdcc
+	frame 16, OAM_2ce00
+	frame  0, OAM_2ce34
 
 AnimScript_224bf:
-	frame 80, $4e34
+	frame 80, OAM_2ce34
 	set_motion_script MotionScript_10008
 	script_delay 80
 	set_motion_script MotionScript_124a0
 	script_delay 128
-	frame 32, $4e68
-	frame 32, $4e98
-	frame 32, $4ed0
-	frame 32, $4f20
+	frame 32, OAM_2ce68
+	frame 32, OAM_2ce98
+	frame 32, OAM_2ced0
+	frame 32, OAM_2cf20
 	set_motion_script MotionScript_124ac
-	frame  0, $4f20
+	frame  0, OAM_2cf20
 
 AnimScript_224e4:
-	frame 80, $58b8
-	frame  0, $4f90
+	frame 80, OAM_2d8b8
+	frame  0, OAM_2cf90
 
 AnimScript_224ea:
 	script_call AnimScript_22512
@@ -4024,192 +4024,192 @@ AnimScript_2250a:
 
 AnimScript_22512:
 	script_repeat 9
-	frame  5, $5c91
-	frame  5, $5c9d
-	frame  5, $5ca9
-	frame  5, $5cb5
-	frame  5, $5cc1
-	frame  5, $5ccd
-	frame  5, $5cd9
-	frame  5, $5ce5
+	frame  5, OAM_2dc91
+	frame  5, OAM_2dc9d
+	frame  5, OAM_2dca9
+	frame  5, OAM_2dcb5
+	frame  5, OAM_2dcc1
+	frame  5, OAM_2dccd
+	frame  5, OAM_2dcd9
+	frame  5, OAM_2dce5
 	script_repeat_end
 	script_ret
 
 AnimScript_2252e:
 .loop
-	frame  2, $5c91
-	frame  2, $5c9d
-	frame  2, $5ca9
-	frame  2, $5cb5
-	frame  2, $5cc1
-	frame  2, $5ccd
-	frame  2, $5cd9
-	frame  2, $5ce5
+	frame  2, OAM_2dc91
+	frame  2, OAM_2dc9d
+	frame  2, OAM_2dca9
+	frame  2, OAM_2dcb5
+	frame  2, OAM_2dcc1
+	frame  2, OAM_2dccd
+	frame  2, OAM_2dcd9
+	frame  2, OAM_2dce5
 	jump_rel .loop
 
 AnimScript_22548:
 	play_music MUSIC_SPARKLING_STAR
 	script_call AnimScript_208b8
-	frame 20, $5bc9
-	frame 40, $58e1
+	frame 20, OAM_2dbc9
+	frame 40, OAM_2d8e1
 	script_repeat 3
-	frame 12, $58c1
-	frame 10, $58c9
-	frame 12, $58d1
-	frame 10, $58c9
+	frame 12, OAM_2d8c1
+	frame 10, OAM_2d8c9
+	frame 12, OAM_2d8d1
+	frame 10, OAM_2d8c9
 	script_repeat_end
 	script_call AnimScript_208b8
 	script_call AnimScript_208cb
 	script_call AnimScript_208b8
-	frame  0, $58e1
+	frame  0, OAM_2d8e1
 
 AnimScript_22570:
-	frame 200, $4fbc
-	frame 21, $4fbc
-	frame  0, $4f94
+	frame 200, OAM_2cfbc
+	frame 21, OAM_2cfbc
+	frame  0, OAM_2cf94
 
 AnimScript_22579:
-	frame 200, $4fbc
-	frame 21, $4fbc
-	frame  0, $4fa4
+	frame 200, OAM_2cfbc
+	frame 21, OAM_2cfbc
+	frame  0, OAM_2cfa4
 
 AnimScript_22582:
 	create_object AnimScript_225a8, MotionScript_125c6, Data_3425
-	frame 50, $4fbc
+	frame 50, OAM_2cfbc
 	create_object AnimScript_225a8, MotionScript_125ec, Data_3425
-	frame 90, $4fbc
+	frame 90, OAM_2cfbc
 	create_object AnimScript_225a8, MotionScript_1260b, Data_3425
-	frame 64, $4fbc
+	frame 64, OAM_2cfbc
 	set_motion_script MotionScript_11643
-	frame 136, $4fbc
+	frame 136, OAM_2cfbc
 AnimScript_225a8:
-	frame  0, $4fbc
+	frame  0, OAM_2cfbc
 
 AnimScript_225ab:
-	frame  0, $4fc0
+	frame  0, OAM_2cfc0
 
 AnimScript_225ae:
 .loop
-	frame 12, $4fc4
-	frame 12, $4fcc
-	frame 12, $4fd4
-	frame 12, $4fdc
+	frame 12, OAM_2cfc4
+	frame 12, OAM_2cfcc
+	frame 12, OAM_2cfd4
+	frame 12, OAM_2cfdc
 	jump_rel .loop
 
 AnimScript_225bc:
 .loop
-	frame 12, $4fe4
-	frame 12, $4fec
-	frame 12, $4ff4
-	frame 12, $4ffc
+	frame 12, OAM_2cfe4
+	frame 12, OAM_2cfec
+	frame 12, OAM_2cff4
+	frame 12, OAM_2cffc
 	jump_rel .loop
 
 AnimScript_225ca:
 .loop
-	frame 13, $5004
-	frame 13, $500c
-	frame 13, $5014
-	frame 13, $501c
+	frame 13, OAM_2d004
+	frame 13, OAM_2d00c
+	frame 13, OAM_2d014
+	frame 13, OAM_2d01c
 	jump_rel .loop
 
 AnimScript_225d8:
 .loop
-	frame 11, $5024
-	frame 11, $502c
-	frame 11, $5034
-	frame 11, $503c
+	frame 11, OAM_2d024
+	frame 11, OAM_2d02c
+	frame 11, OAM_2d034
+	frame 11, OAM_2d03c
 	jump_rel .loop
 
 AnimScript_225e6:
 .loop
-	frame 12, $5044
-	frame 12, $504c
-	frame 12, $5054
-	frame 12, $505c
+	frame 12, OAM_2d044
+	frame 12, OAM_2d04c
+	frame 12, OAM_2d054
+	frame 12, OAM_2d05c
 	jump_rel .loop
 
 AnimScript_225f4:
 .loop
-	frame 18, $5064
-	frame 18, $5068
-	frame 18, $506c
-	frame 18, $5070
+	frame 18, OAM_2d064
+	frame 18, OAM_2d068
+	frame 18, OAM_2d06c
+	frame 18, OAM_2d070
 	jump_rel .loop
 
 AnimScript_22602:
 .loop
-	frame 16, $5074
-	frame 16, $5078
-	frame 16, $507c
-	frame 16, $5080
+	frame 16, OAM_2d074
+	frame 16, OAM_2d078
+	frame 16, OAM_2d07c
+	frame 16, OAM_2d080
 	jump_rel .loop
 
 AnimScript_22610:
-	frame  0, $5084
+	frame  0, OAM_2d084
 
 AnimScript_22613:
-	frame  0, $5094
+	frame  0, OAM_2d094
 
 AnimScript_22616:
-	frame 64, $4f20
+	frame 64, OAM_2cf20
 	play_sfx SFX_EXPLOSION
-	frame  0, $50b4
+	frame  0, OAM_2d0b4
 
 AnimScript_22620:
-	frame 64, $58b8
+	frame 64, OAM_2d8b8
 	script_repeat 7
-	frame  1, $50e4
-	frame  1, $50fc
-	frame  1, $5110
-	frame  1, $5128
-	frame  1, $513c
-	frame  1, $5154
-	frame  1, $5168
+	frame  1, OAM_2d0e4
+	frame  1, OAM_2d0fc
+	frame  1, OAM_2d110
+	frame  1, OAM_2d128
+	frame  1, OAM_2d13c
+	frame  1, OAM_2d154
+	frame  1, OAM_2d168
 	script_repeat_end
-	frame 30, $5194
+	frame 30, OAM_2d194
 	play_sfx SFX_13
-	frame  0, $5194
+	frame  0, OAM_2d194
 
 AnimScript_22645:
-	frame 64, $58b8
-	frame  0, $52ac
+	frame 64, OAM_2d8b8
+	frame  0, OAM_2d2ac
 
 AnimScript_2264b:
-	frame  0, $4fbc
+	frame  0, OAM_2cfbc
 
 AnimScript_2264e:
-	frame 11, $58b8
+	frame 11, OAM_2d8b8
 AnimScript_22651:
-	frame 12, $529c
+	frame 12, OAM_2d29c
 AnimScript_22654:
-	frame 11, $58b8
+	frame 11, OAM_2d8b8
 AnimScript_22657:
-	frame 11, $58b8
+	frame 11, OAM_2d8b8
 AnimScript_2265a:
-	frame 12, $529c
+	frame 12, OAM_2d29c
 	jump_rel AnimScript_2264e
 
 AnimScript_2265f:
-	frame 44, $5198
+	frame 44, OAM_2d198
 	play_sfx SFX_BUMP
-	frame 32, $51b0
-	frame 80, $51bc
-	frame 32, $51d4
+	frame 32, OAM_2d1b0
+	frame 80, OAM_2d1bc
+	frame 32, OAM_2d1d4
 	script_repeat 3
-	frame 16, $51d4
-	frame 10, $51ec
+	frame 16, OAM_2d1d4
+	frame 10, OAM_2d1ec
 	script_repeat_end
-	frame 64, $51ec
-	frame  8, $5204
-	frame  8, $5234
+	frame 64, OAM_2d1ec
+	frame  8, OAM_2d204
+	frame  8, OAM_2d234
 	play_sfx SFX_JUMP
-	frame  0, $5264
+	frame  0, OAM_2d264
 
 AnimScript_22688:
 .loop
-	frame 20, $4fbc
+	frame 20, OAM_2cfbc
 	create_object AnimScript_2269e, MotionScript_10008, Data_3425
-	frame 20, $4fbc
+	frame 20, OAM_2cfbc
 	create_object AnimScript_226b2, MotionScript_10008, Data_3425
 	jump_rel .loop
 
@@ -4337,7 +4337,7 @@ AnimScript_2273a:
 	script_ret
 
 AnimScript_2273e:
-	frame 15, $58b8
+	frame 15, OAM_2d8b8
 	script_repeat 15
 	script_delay 4
 	set_value wd065, $01
@@ -4352,12 +4352,12 @@ AnimScript_2273e:
 AnimScript_2275c:
 	script_repeat 32
 	inc_value wCreditsTextScroll
-	frame  2, $58b8
+	frame  2, OAM_2d8b8
 	script_repeat_end
 	script_end
 
 AnimScript_22766:
-	frame  0, $5884
+	frame  0, OAM_2d884
 
 AnimScript_22769:
 	set_scripts AnimScript_22766, MotionScript_1281a
@@ -4368,54 +4368,54 @@ AnimScript_2276e:
 AnimScript_22773:
 	set_update_func Func_14200, AnimScript_22781
 .loop
-	frame 40, $589c
-	frame 40, $58a4
+	frame 40, OAM_2d89c
+	frame 40, OAM_2d8a4
 	jump_abs .loop
 
 AnimScript_22781:
 	play_sfx SFX_GAME_START
 	jump_if_equal wd3cf, $01, .script_227cd
 	set_motion_script MotionScript_1289e
-	frame 40, $589c
-	frame 40, $58a4
-	frame 44, $589c
-	frame  4, $58a4
+	frame 40, OAM_2d89c
+	frame 40, OAM_2d8a4
+	frame 44, OAM_2d89c
+	frame  4, OAM_2d8a4
 	play_sfx SFX_PUFF
-	frame  7, $5bad
-	frame 15, $589c
-	frame  4, $58a4
+	frame  7, OAM_2dbad
+	frame 15, OAM_2d89c
+	frame  4, OAM_2d8a4
 	play_sfx SFX_PUFF
-	frame  7, $5bad
-	frame 10, $58a4
+	frame  7, OAM_2dbad
+	frame 10, OAM_2d8a4
 	play_sfx SFX_08
-	frame 60, $58b0
-	frame  8, $58b9
+	frame 60, OAM_2d8b0
+	frame  8, OAM_2d8b9
 	script_repeat 4
-	frame  7, $58c1
-	frame  5, $58c9
-	frame  7, $58d1
-	frame  5, $58c9
+	frame  7, OAM_2d8c1
+	frame  5, OAM_2d8c9
+	frame  7, OAM_2d8d1
+	frame  5, OAM_2d8c9
 	script_repeat_end
 	script_end
 .script_227cd
 	play_sfx SFX_19
 	set_motion_script MotionScript_128f0
 	script_repeat 2
-	frame 35, $589c
-	frame 35, $58a4
+	frame 35, OAM_2d89c
+	frame 35, OAM_2d8a4
 	script_repeat_end
-	frame 10, $589c
+	frame 10, OAM_2d89c
 	play_sfx SFX_DAMAGE
 .script_227e6
-	frame  4, $5be1
+	frame  4, OAM_2dbe1
 	create_object AnimScript_22333, MotionScript_107c3, Data_3425
 	jump_rel .script_227e6
 
 AnimScript_227f2:
 	set_update_func Func_14200, AnimScript_227ff
 .loop
-	frame 40, $58b8
-	frame 40, $58ac
+	frame 40, OAM_2d8b8
+	frame 40, OAM_2d8ac
 	jump_rel .loop
 
 AnimScript_227ff:
@@ -4423,56 +4423,56 @@ AnimScript_227ff:
 	script_end
 .loop
 	script_repeat 2
-	frame 20, $58b8
-	frame 20, $58ac
+	frame 20, OAM_2d8b8
+	frame 20, OAM_2d8ac
 	script_repeat_end
 	script_end
 
 AnimScript_22810:
-	frame 10, $587c
-	frame 50, $5884
-	frame 120, $5894
-	frame  5, $5884
-	frame  5, $588c
+	frame 10, OAM_2d87c
+	frame 50, OAM_2d884
+	frame 120, OAM_2d894
+	frame  5, OAM_2d884
+	frame  5, OAM_2d88c
 	script_delay 150
 	set_value wd3d0, $01
 	set_flags hKirbyFlags6, $ff, $80
 	script_end
 
 AnimScript_2282b:
-	frame 10, $587c
-	frame 10, $5884
-	frame  0, $587c
+	frame 10, OAM_2d87c
+	frame 10, OAM_2d884
+	frame  0, OAM_2d87c
 
 AnimScript_22834:
-	frame  2, $5884
-	frame 26, $588c
+	frame  2, OAM_2d884
+	frame 26, OAM_2d88c
 	set_value wd3d0, $01
 	set_flags hKirbyFlags6, $80, $00
-	frame  0, $588c
+	frame  0, OAM_2d88c
 
 AnimScript_22846:
 .loop
-	frame  6, $67b9
-	frame  6, $67d1
-	frame  6, $67e9
-	frame  6, $6801
+	frame  6, OAM_2e7b9
+	frame  6, OAM_2e7d1
+	frame  6, OAM_2e7e9
+	frame  6, OAM_2e801
 	jump_rel .loop
 
 AnimScript_22854:
 .loop
-	frame  2, $67b9
-	frame  2, $67d1
-	frame  2, $67e9
-	frame  2, $6801
+	frame  2, OAM_2e7b9
+	frame  2, OAM_2e7d1
+	frame  2, OAM_2e7e9
+	frame  2, OAM_2e801
 	jump_abs .loop
 
 AnimScript_22863:
 .loop
-	frame 16, $67b9
-	frame 16, $67d1
-	frame 16, $67e9
-	frame 16, $6801
+	frame 16, OAM_2e7b9
+	frame 16, OAM_2e7d1
+	frame 16, OAM_2e7e9
+	frame 16, OAM_2e801
 	jump_rel .loop
 
 AnimScript_22871:
@@ -4483,14 +4483,14 @@ AnimScript_22871:
 	script_end
 
 .script_22883
-	frame  2, $5d39
-	frame  2, $5d51
-	frame  2, $5d69
-	frame  2, $5d81
-	frame  2, $5d99
-	frame  2, $5db1
-	frame  2, $5dc9
-	frame  2, $5de1
+	frame  2, OAM_2dd39
+	frame  2, OAM_2dd51
+	frame  2, OAM_2dd69
+	frame  2, OAM_2dd81
+	frame  2, OAM_2dd99
+	frame  2, OAM_2ddb1
+	frame  2, OAM_2ddc9
+	frame  2, OAM_2dde1
 	script_ret
 ; 0x2289c
 
@@ -4498,39 +4498,39 @@ SECTION "Bank 8@68a3", ROMX[$68a3], BANK[$8]
 
 AnimScript_228a3:
 	set_value wClearScreenFlags, CLEAR_ACTIVE | CLEAR_NON_MIKE
-	frame  0, $6889
+	frame  0, OAM_2e889
 
 AnimScript_228aa:
-	frame 72, $6879
+	frame 72, OAM_2e879
 	script_repeat 2
-	frame  1, $67b9
-	frame  1, $6879
+	frame  1, OAM_2e7b9
+	frame  1, OAM_2e879
 	script_repeat_end
-	frame 40, $67b9
-	frame  8, $67d1
-	frame  8, $67e9
-	frame  8, $6801
+	frame 40, OAM_2e7b9
+	frame  8, OAM_2e7d1
+	frame  8, OAM_2e7e9
+	frame  8, OAM_2e801
 	script_repeat 3
-	frame  3, $67b9
-	frame  3, $67d1
-	frame  3, $67e9
-	frame  3, $6801
+	frame  3, OAM_2e7b9
+	frame  3, OAM_2e7d1
+	frame  3, OAM_2e7e9
+	frame  3, OAM_2e801
 	script_repeat_end
 	script_repeat 6
-	frame  1, $67b9
-	frame  1, $67d1
-	frame  1, $67e9
-	frame  1, $6801
+	frame  1, OAM_2e7b9
+	frame  1, OAM_2e7d1
+	frame  1, OAM_2e7e9
+	frame  1, OAM_2e801
 	script_repeat_end
 	play_sfx SFX_BOSS_DEFEAT
 	script_repeat 6
-	frame  2, $6879
-	frame  1, $6469
-	frame  1, $6429
+	frame  2, OAM_2e879
+	frame  1, OAM_2e469
+	frame  1, OAM_2e429
 	script_repeat_end
-	frame  8, $6469
-	frame  8, $6429
-	frame  0, $6469
+	frame  8, OAM_2e469
+	frame  8, OAM_2e429
+	frame  0, OAM_2e469
 
 AnimScript_228f9:
 .loop
@@ -4559,56 +4559,56 @@ AnimScript_228f9:
 	dw .script_22931
 
 .script_22929
-	frame 20, $6529
-	frame 20, $6569
+	frame 20, OAM_2e529
+	frame 20, OAM_2e569
 	jump_rel .loop
 .script_22931
-	frame 20, $65a9
-	frame 20, $65e9
+	frame 20, OAM_2e5a9
+	frame 20, OAM_2e5e9
 	jump_rel .loop
 .script_22939
-	frame 20, $64a9
-	frame 20, $64e9
+	frame 20, OAM_2e4a9
+	frame 20, OAM_2e4e9
 	jump_rel .loop
 .script_22941
-	frame 20, $6429
-	frame 20, $6469
+	frame 20, OAM_2e429
+	frame 20, OAM_2e469
 	jump_rel .loop
 
 AnimScript_22949:
 .loop
 	branch_kirby_pos .script_22950, .script_22958
 .script_22950
-	frame  2, $6429
-	frame  2, $6469
+	frame  2, OAM_2e429
+	frame  2, OAM_2e469
 	jump_rel .loop
 .script_22958
-	frame  2, $64a9
-	frame  2, $64e9
+	frame  2, OAM_2e4a9
+	frame  2, OAM_2e4e9
 	jump_rel .loop
 
 AnimScript_22960:
 .loop
 	branch_kirby_pos .script_22967, .script_2296f
 .script_22967
-	frame  8, $6429
-	frame  8, $6469
+	frame  8, OAM_2e429
+	frame  8, OAM_2e469
 	jump_rel .loop
 .script_2296f
-	frame  8, $64a9
-	frame  8, $64e9
+	frame  8, OAM_2e4a9
+	frame  8, OAM_2e4e9
 	jump_rel .loop
 
 AnimScript_22977:
 .loop
-	frame  8, $6629
-	frame  8, $6669
+	frame  8, OAM_2e629
+	frame  8, OAM_2e669
 	jump_rel .loop
 
 AnimScript_2297f:
 .loop
-	frame  8, $66a9
-	frame  8, $66e9
+	frame  8, OAM_2e6a9
+	frame  8, OAM_2e6e9
 	jump_rel .loop
 ; 0x22987
 
@@ -4616,10 +4616,10 @@ SECTION "Bank 8@6997", ROMX[$6997], BANK[$8]
 
 AnimScript_22997:
 	script_repeat 2
-	frame  2, $6429
-	frame  2, $6569
-	frame  2, $65a9
-	frame  2, $64e9
+	frame  2, OAM_2e429
+	frame  2, OAM_2e569
+	frame  2, OAM_2e5a9
+	frame  2, OAM_2e4e9
 	script_repeat_end
 	script_exec Func_4897
 	script_end
@@ -4630,7 +4630,7 @@ AnimScript_229aa:
 	script_call AnimScript_20b05
 	script_exec_arg ScriptFunc_AddScore, SCORE_2500
 	set_flags hHUDFlags, HUD_BOSS_BATTLE, HUD_UPDATE_FIRST_ROW | HUD_UPDATE_LABEL | HUD_UPDATE_SCORE_DIGITS
-	frame 30, $58b8
+	frame 30, OAM_2d8b8
 	set_value wClearScreenFlags, CLEAR_ACTIVE | CLEAR_NON_MIKE
 	script_end
 
@@ -4643,20 +4643,20 @@ AnimScript_229c9:
 
 .script_229d3
 	script_repeat 1
-	frame 16, $5e75
-	frame 16, $5e7d
+	frame 16, OAM_2de75
+	frame 16, OAM_2de7d
 	script_repeat_end
 	jump_abs .loop
 .script_229df
 	script_repeat 3
-	frame 16, $5e75
-	frame 16, $5e7d
+	frame 16, OAM_2de75
+	frame 16, OAM_2de7d
 	script_repeat_end
 .loop
 	set_motion_script MotionScript_10008
 	script_repeat 8
-	frame  3, $5e8d
-	frame  3, $5e75
+	frame  3, OAM_2de8d
+	frame  3, OAM_2de75
 	script_repeat_end
 	script_call AnimScript_2202e
 .script_229f9
@@ -4671,103 +4671,103 @@ AnimScript_229fe:
 
 .script_22a08
 	script_repeat 1
-	frame 16, $5e9d
-	frame 16, $5ea5
+	frame 16, OAM_2de9d
+	frame 16, OAM_2dea5
 	script_repeat_end
 	jump_abs .loop
 .script_22a14
 	script_repeat 3
-	frame 16, $5e9d
-	frame 16, $5ea5
+	frame 16, OAM_2de9d
+	frame 16, OAM_2dea5
 	script_repeat_end
 .loop
 	set_motion_script MotionScript_10008
 	script_repeat 8
-	frame  3, $5eb5
-	frame  3, $5e9d
+	frame  3, OAM_2deb5
+	frame  3, OAM_2de9d
 	script_repeat_end
 	script_call AnimScript_2208f
 .script_22a2e
 	set_scripts AnimScript_205ea, MotionScript_102d7
 
 AnimScript_22a33:
-	frame  0, $58b8
+	frame  0, OAM_2d8b8
 
 AnimScript_22a36:
 	create_object AnimScript_22afa, MotionScript_12fc0, StandardEnemyProperties
-	frame  4, $58b8
-	frame 10, $44a0
-	frame  4, $58b8
-	frame  5, $44a0
-	frame 12, $44a8
+	frame  4, OAM_2d8b8
+	frame 10, OAM_2c4a0
+	frame  4, OAM_2d8b8
+	frame  5, OAM_2c4a0
+	frame 12, OAM_2c4a8
 	script_repeat 11
-	frame  8, $44c0
-	frame  8, $44b8
+	frame  8, OAM_2c4c0
+	frame  8, OAM_2c4b8
 	script_repeat_end
-	frame 10, $44b8
-	frame  5, $44d8
+	frame 10, OAM_2c4b8
+	frame  5, OAM_2c4d8
 	set_pal_dark
-	frame  5, $44d8
+	frame  5, OAM_2c4d8
 	set_pal_light
-	frame  0, $58b8
+	frame  0, OAM_2d8b8
 
 AnimScript_22a67:
 	create_object AnimScript_22afa, MotionScript_12fd6, StandardEnemyProperties
-	frame  4, $58b8
-	frame 10, $44a0
-	frame  4, $58b8
-	frame  5, $44a0
-	frame 12, $44a8
+	frame  4, OAM_2d8b8
+	frame 10, OAM_2c4a0
+	frame  4, OAM_2d8b8
+	frame  5, OAM_2c4a0
+	frame 12, OAM_2c4a8
 	script_repeat 11
-	frame  8, $44d0
-	frame  8, $44c8
+	frame  8, OAM_2c4d0
+	frame  8, OAM_2c4c8
 	script_repeat_end
-	frame 10, $44c8
-	frame  5, $44d8
+	frame 10, OAM_2c4c8
+	frame  5, OAM_2c4d8
 	set_pal_dark
-	frame  5, $44d8
+	frame  5, OAM_2c4d8
 	set_pal_light
-	frame  0, $58b8
+	frame  0, OAM_2d8b8
 
 AnimScript_22a98:
 	create_object AnimScript_22afa, MotionScript_12fd6, StandardEnemyProperties
-	frame  4, $58b8
-	frame 10, $44a0
-	frame  4, $58b8
-	frame  5, $44a0
-	frame 12, $44e0
+	frame  4, OAM_2d8b8
+	frame 10, OAM_2c4a0
+	frame  4, OAM_2d8b8
+	frame  5, OAM_2c4a0
+	frame 12, OAM_2c4e0
 	script_repeat 11
-	frame  8, $4500
-	frame  8, $4508
+	frame  8, OAM_2c500
+	frame  8, OAM_2c508
 	script_repeat_end
-	frame 10, $4508
-	frame  5, $4510
+	frame 10, OAM_2c508
+	frame  5, OAM_2c510
 	set_pal_dark
-	frame  5, $4510
+	frame  5, OAM_2c510
 	set_pal_light
-	frame  0, $58b8
+	frame  0, OAM_2d8b8
 
 AnimScript_22ac9:
 	create_object AnimScript_22afa, MotionScript_12fc0, StandardEnemyProperties
-	frame  4, $58b8
-	frame 10, $44a0
-	frame  4, $58b8
-	frame  5, $44a0
-	frame 12, $44e0
+	frame  4, OAM_2d8b8
+	frame 10, OAM_2c4a0
+	frame  4, OAM_2d8b8
+	frame  5, OAM_2c4a0
+	frame 12, OAM_2c4e0
 	script_repeat 11
-	frame  8, $44f0
-	frame  8, $44f8
+	frame  8, OAM_2c4f0
+	frame  8, OAM_2c4f8
 	script_repeat_end
-	frame 10, $44f8
-	frame  5, $4510
+	frame 10, OAM_2c4f8
+	frame  5, OAM_2c510
 	set_pal_dark
-	frame  5, $4510
+	frame  5, OAM_2c510
 	set_pal_light
-	frame  0, $58b8
+	frame  0, OAM_2d8b8
 
 AnimScript_22afa:
 	play_sfx SFX_30
-	frame  0, $4494
+	frame  0, OAM_2c494
 
 AnimScript_22b01:
 	create_object AnimScript_22b53, MotionScript_130cf, StandardEnemyProperties
@@ -4784,28 +4784,28 @@ AnimScript_22b1f:
 AnimScript_22c09:
 .loop
 	script_repeat 5
-	frame  8, $44b8
-	frame  8, $44c0
+	frame  8, OAM_2c4b8
+	frame  8, OAM_2c4c0
 	script_repeat_end
-	frame  4, $44b8
-	frame  4, $44c0
-	frame 20, $44b0
+	frame  4, OAM_2c4b8
+	frame  4, OAM_2c4c0
+	frame 20, OAM_2c4b0
 	script_repeat 5
-	frame  8, $44b8
-	frame  8, $44c0
+	frame  8, OAM_2c4b8
+	frame  8, OAM_2c4c0
 	script_repeat_end
-	frame  8, $44b8
-	frame  5, $44d8
+	frame  8, OAM_2c4b8
+	frame  5, OAM_2c4d8
 	set_pal_dark
-	frame  5, $44d8
+	frame  5, OAM_2c4d8
 	set_pal_light
-	frame  0, $58b8
+	frame  0, OAM_2d8b8
 
 AnimScript_22b53:
 	position_offset -16, 0
-	frame 80, $4494
+	frame 80, OAM_2c494
 	play_sfx SFX_JUMP
-	frame  0, $4494
+	frame  0, OAM_2c494
 
 AnimScript_22b60:
 	jump_if_equal wBossHP, 0, .script_22b7a
@@ -4842,75 +4842,75 @@ AnimScript_22bb6:
 	play_sfx SFX_NONE
 	branch_kirby_pos .script_22bc3, .script_22bcb
 .script_22bc3
-	frame 16, $47c8
-	frame 32, $47f8
+	frame 16, OAM_2c7c8
+	frame 32, OAM_2c7f8
 	jump_rel .script_22bc3
 .script_22bcb
-	frame 16, $47e0
-	frame 32, $4810
+	frame 16, OAM_2c7e0
+	frame 32, OAM_2c810
 	jump_rel .script_22bcb
 
 AnimScript_22bd3:
 .loop
-	frame  4, $4828
-	frame 12, $4860
-	frame 10, $4828
+	frame  4, OAM_2c828
+	frame 12, OAM_2c860
+	frame 10, OAM_2c828
 	jump_rel .loop
 
 AnimScript_22bde:
 .loop
-	frame  4, $4844
-	frame 12, $487c
-	frame 10, $4844
+	frame  4, OAM_2c844
+	frame 12, OAM_2c87c
+	frame 10, OAM_2c844
 	jump_rel .loop
 
 AnimScript_22be9:
 .loop
-	frame  4, $49a0
-	frame 12, $49e8
-	frame 10, $49a0
+	frame  4, OAM_2c9a0
+	frame 12, OAM_2c9e8
+	frame 10, OAM_2c9a0
 	jump_rel .loop
 
 AnimScript_22bf4:
 .loop
-	frame  4, $49c4
-	frame 12, $4a0c
-	frame 10, $49c4
+	frame  4, OAM_2c9c4
+	frame 12, OAM_2ca0c
+	frame 10, OAM_2c9c4
 	jump_rel .loop
 
 AnimScript_22bff:
-	frame  6, $49a0
-	frame  0, $49a0
+	frame  6, OAM_2c9a0
+	frame  0, OAM_2c9a0
 
 AnimScript_22c05:
-	frame  6, $49c4
-	frame  0, $4a0c
+	frame  6, OAM_2c9c4
+	frame  0, OAM_2ca0c
 
 AnimScript_22c0b:
 	play_sfx SFX_23
 	set_motion_script MotionScript_13109.script_1315f
-	frame  0, $48c8
+	frame  0, OAM_2c8c8
 
 AnimScript_22c17:
 	play_sfx SFX_23
 	set_motion_script MotionScript_13109.script_1317d
-	frame  0, $48e0
+	frame  0, OAM_2c8e0
 
 AnimScript_22c23:
-	frame 32, $48b8
+	frame 32, OAM_2c8b8
 	play_sfx SFX_DAMAGE
-	frame 80, $4898
+	frame 80, OAM_2c898
 	create_object AnimScript_22f6f, MotionScript_133c8, Properties_3648
 	create_object AnimScript_22f6f, MotionScript_133d5, Properties_3648
-	frame  0, $48b8
+	frame  0, OAM_2c8b8
 
 AnimScript_22c3e:
 	play_sfx SFX_34
 	set_motion_script MotionScript_13109.script_13292
-	frame 15, $4968
+	frame 15, OAM_2c968
 	set_value wd3d2, $00
 .script_22c4e
-	frame  1, $4968
+	frame  1, OAM_2c968
 	script_exec Func_4b19
 	jump_if_equal wd3d2, $ff, .script_22c65
 	jump_if_equal wd3d2, $64, .script_22c9d
@@ -4920,7 +4920,7 @@ AnimScript_22c3e:
 	script_exec Func_4bad
 	set_value wd3d2, $00
 .script_22c6c
-	frame  1, $4968
+	frame  1, OAM_2c968
 	jump_if_equal wd3d2, $ff, .script_22c80
 	jump_if_equal wd3d2, $64, .script_22c9d
 	inc_value wd3d2
@@ -4929,11 +4929,11 @@ AnimScript_22c3e:
 	play_sfx SFX_35
 	play_sfx SFX_02
 	set_motion_script MotionScript_10008
-	frame  4, $48f8
-	frame 48, $4928
+	frame  4, OAM_2c8f8
+	frame 48, OAM_2c928
 	script_exec Func_4b5a
 	play_sfx SFX_PUFF
-	frame 56, $4968
+	frame 56, OAM_2c968
 .script_22c9d
 	script_delay 20
 	set_object_properties Properties_3604
@@ -4942,10 +4942,10 @@ AnimScript_22c3e:
 AnimScript_22ca9:
 	play_sfx SFX_34
 	set_motion_script MotionScript_13109.script_132a9
-	frame 15, $4984
+	frame 15, OAM_2c984
 	set_value wd3d2, $00
 .script_22cb9
-	frame  1, $4984
+	frame  1, OAM_2c984
 	script_exec Func_4b27
 	jump_if_equal wd3d2, $ff, .script_22cd0
 	jump_if_equal wd3d2, $64, .script_22d08
@@ -4955,7 +4955,7 @@ AnimScript_22ca9:
 	script_exec Func_4bad
 	set_value wd3d2, $00
 .script_22cd7
-	frame  1, $4984
+	frame  1, OAM_2c984
 	jump_if_equal wd3d2, $ff, .script_22ceb
 	jump_if_equal wd3d2, $64, .script_22d08
 	inc_value wd3d2
@@ -4964,11 +4964,11 @@ AnimScript_22ca9:
 	play_sfx SFX_35
 	play_sfx SFX_02
 	set_motion_script MotionScript_10008
-	frame  4, $4910
-	frame 48, $4948
+	frame  4, OAM_2c910
+	frame 48, OAM_2c948
 	script_exec Func_4b5f
 	play_sfx SFX_PUFF
-	frame 56, $4984
+	frame 56, OAM_2c984
 .script_22d08
 	script_delay 20
 	set_object_properties Properties_3604
@@ -4988,61 +4988,61 @@ AnimScript_22d14:
 .script_22d2c
 	set_motion_script MotionScript_13109.script_13332
 	create_object AnimScript_22e4e, MotionScript_13109.script_13332, Properties_3636
-	frame 16, $4a30
-	frame 10, $4828
+	frame 16, OAM_2ca30
+	frame 10, OAM_2c828
 	create_object AnimScript_22f6f, MotionScript_133ae, Properties_3648
-	frame 24, $4a70
-	frame 10, $4828
-	frame 16, $4a30
+	frame 24, OAM_2ca70
+	frame 10, OAM_2c828
+	frame 16, OAM_2ca30
 	set_motion_script MotionScript_13109.script_13319
 	script_delay 10
 .script_22d55
 	set_object_properties Properties_360d
 	set_motion_script MotionScript_13109.script_13207
-	frame 32, $49e8
+	frame 32, OAM_2c9e8
 	set_object_properties Properties_3604
 	create_object AnimScript_22e4e, MotionScript_13109.script_1320a, Properties_3636
-	frame 16, $4a30
+	frame 16, OAM_2ca30
 	play_sfx SFX_28
-	frame 10, $4828
-	frame 24, $4a70
-	frame 10, $4828
-	frame 16, $4a30
+	frame 10, OAM_2c828
+	frame 24, OAM_2ca70
+	frame 10, OAM_2c828
+	frame 16, OAM_2ca30
 .script_22d81
-	frame 16, $49e8
+	frame 16, OAM_2c9e8
 	set_scripts .script_22d81, MotionScript_13109.script_13319
 .script_22d89
 	set_motion_script MotionScript_13109.script_13332
 	create_object AnimScript_22ed1, MotionScript_13109.script_13332, Properties_3636
-	frame 16, $4a50
-	frame 10, $4844
+	frame 16, OAM_2ca50
+	frame 10, OAM_2c844
 	create_object AnimScript_22f6f, MotionScript_133bb, Properties_3648
-	frame 24, $4a8c
-	frame 10, $4844
-	frame 16, $4a50
+	frame 24, OAM_2ca8c
+	frame 10, OAM_2c844
+	frame 16, OAM_2ca50
 	set_motion_script MotionScript_13109.script_13319
 	script_delay 100
 .script_22db2
 	set_motion_script MotionScript_13109.script_13207
-	frame 32, $4a0c
+	frame 32, OAM_2ca0c
 	create_object AnimScript_22ed1, MotionScript_13109.script_1320a, Properties_3636
-	frame 16, $4a50
+	frame 16, OAM_2ca50
 	play_sfx SFX_28
-	frame 10, $4844
-	frame 24, $4a8c
-	frame 10, $4844
-	frame 16, $4a50
+	frame 10, OAM_2c844
+	frame 24, OAM_2ca8c
+	frame 10, OAM_2c844
+	frame 16, OAM_2ca50
 .script_22dd4
-	frame 16, $4a0c
+	frame 16, OAM_2ca0c
 	set_scripts .script_22dd4, MotionScript_13109.script_13319
 
 AnimScript_22ddc:
 	branch_kirby_pos .script_22de3, .script_22de8
 .script_22de3
-	frame 30, $4af8
+	frame 30, OAM_2caf8
 	jump_rel .script_22deb
 .script_22de8
-	frame 30, $4b14
+	frame 30, OAM_2cb14
 .script_22deb
 	script_exec Func_4897
 	script_end
@@ -5059,96 +5059,96 @@ AnimScript_22def:
 	play_sfx SFX_00
 	set_motion_script MotionScript_1338b
 .script_22e1e
-	frame  4, $4af8
+	frame  4, OAM_2caf8
 	create_object AnimScript_20ae6, MotionScript_107c3, Data_3421
 	jump_rel .script_22e1e
 .script_22e2a
 	play_sfx SFX_00
 	set_motion_script MotionScript_13382
 .script_22e33
-	frame  4, $4b14
+	frame  4, OAM_2cb14
 	create_object AnimScript_20ae6, MotionScript_107c3, Data_3421
 	jump_rel .script_22e33
 
 AnimScript_22e3f:
-	frame  1, $58b8
+	frame  1, OAM_2d8b8
 	script_delay 180
 	set_flags hKirbyFlags5, $20, $04
 	script_delay 0
-	frame  0, $5c25
+	frame  0, OAM_2dc25
 
 AnimScript_22e4e:
 	create_object AnimScript_22f54, MotionScript_133e2, Properties_3628
-	frame 16, $4aa8
+	frame 16, OAM_2caa8
 	create_object AnimScript_22f58, MotionScript_133e8, Properties_3628
-	frame  2, $4ab0
+	frame  2, OAM_2cab0
 	create_object AnimScript_22f58, MotionScript_133ee, Properties_3628
-	frame  2, $4ab8
+	frame  2, OAM_2cab8
 	create_object AnimScript_22f58, MotionScript_133f4, Properties_3628
-	frame  2, $4ac0
+	frame  2, OAM_2cac0
 	create_object AnimScript_22f58, MotionScript_133fa, Properties_3628
-	frame  2, $4ac8
+	frame  2, OAM_2cac8
 	create_object AnimScript_22f58, MotionScript_13400, Properties_3628
-	frame  2, $4ad0
+	frame  2, OAM_2cad0
 	create_object AnimScript_22f5c, MotionScript_13406, Properties_362f
-	frame 24, $4ad8
+	frame 24, OAM_2cad8
 	create_object AnimScript_22f58, MotionScript_13400, Properties_3628
-	frame  2, $4ad0
+	frame  2, OAM_2cad0
 	create_object AnimScript_22f58, MotionScript_133fa, Properties_3628
-	frame  2, $4ac8
+	frame  2, OAM_2cac8
 	create_object AnimScript_22f58, MotionScript_133f4, Properties_3628
-	frame  2, $4ac0
+	frame  2, OAM_2cac0
 	create_object AnimScript_22f58, MotionScript_133ee, Properties_3628
-	frame  2, $4ab8
+	frame  2, OAM_2cab8
 	create_object AnimScript_22f58, MotionScript_133e8, Properties_3628
-	frame  2, $4ab0
+	frame  2, OAM_2cab0
 	create_object AnimScript_22f54, MotionScript_133e2, Properties_3628
-	frame 16, $4aa8
+	frame 16, OAM_2caa8
 	script_end
 
 AnimScript_22ed1:
 	create_object AnimScript_22f54, MotionScript_133f4, Properties_3628
-	frame 16, $4ac0
+	frame 16, OAM_2cac0
 	create_object AnimScript_22f58, MotionScript_133ee, Properties_3628
-	frame  2, $4ab8
+	frame  2, OAM_2cab8
 	create_object AnimScript_22f58, MotionScript_133e8, Properties_3628
-	frame  2, $4ab0
+	frame  2, OAM_2cab0
 	create_object AnimScript_22f58, MotionScript_133e2, Properties_3628
-	frame  2, $4aa8
+	frame  2, OAM_2caa8
 	create_object AnimScript_22f58, MotionScript_1340c, Properties_3628
-	frame  2, $4ae0
+	frame  2, OAM_2cae0
 	create_object AnimScript_22f58, MotionScript_13412, Properties_3628
-	frame  2, $4ae8
+	frame  2, OAM_2cae8
 	create_object AnimScript_22f5c, MotionScript_13418, Properties_362f
-	frame 24, $4af0
+	frame 24, OAM_2caf0
 	create_object AnimScript_22f58, MotionScript_13412, Properties_3628
-	frame  2, $4ae8
+	frame  2, OAM_2cae8
 	create_object AnimScript_22f58, MotionScript_1340c, Properties_3628
-	frame  2, $4ae0
+	frame  2, OAM_2cae0
 	create_object AnimScript_22f58, MotionScript_133e2, Properties_3628
-	frame  2, $4aa8
+	frame  2, OAM_2caa8
 	create_object AnimScript_22f58, MotionScript_133e8, Properties_3628
-	frame  2, $4ab0
+	frame  2, OAM_2cab0
 	create_object AnimScript_22f58, MotionScript_133ee, Properties_3628
-	frame  2, $4ab8
+	frame  2, OAM_2cab8
 	create_object AnimScript_22f54, MotionScript_133f4, Properties_3628
-	frame 16, $4ac0
+	frame 16, OAM_2cac0
 	script_end
 
 AnimScript_22f54:
-	frame  8, $58b8
+	frame  8, OAM_2d8b8
 	script_end
 
 AnimScript_22f58:
-	frame  2, $58b8
+	frame  2, OAM_2d8b8
 	script_end
 
 AnimScript_22f5c:
-	frame  6, $58b8
+	frame  6, OAM_2d8b8
 	script_end
 
 AnimScript_22f60:
-	frame  0, $58b8
+	frame  0, OAM_2d8b8
 
 AnimScript_22f63:
 	position_offset 0, -6
@@ -5161,26 +5161,26 @@ AnimScript_22f69:
 AnimScript_22f6f:
 	play_sfx SFX_23
 .loop
-	frame  4, $5c91
-	frame  4, $5c9d
-	frame  4, $5ca9
-	frame  4, $5cb5
-	frame  4, $5cc1
-	frame  4, $5ccd
-	frame  4, $5cd9
-	frame  4, $5ce5
+	frame  4, OAM_2dc91
+	frame  4, OAM_2dc9d
+	frame  4, OAM_2dca9
+	frame  4, OAM_2dcb5
+	frame  4, OAM_2dcc1
+	frame  4, OAM_2dccd
+	frame  4, OAM_2dcd9
+	frame  4, OAM_2dce5
 	jump_rel .loop
 
 AnimScript_DoorGuardGordo:
 	set_object_properties Properties_363f
 .loop
 	script_repeat 2
-	frame 10, $5e45
-	frame 10, $5e4d
+	frame 10, OAM_2de45
+	frame 10, OAM_2de4d
 	script_repeat_end
 	script_repeat 4
-	frame  6, $5e45
-	frame  6, $5e4d
+	frame  6, OAM_2de45
+	frame  6, OAM_2de4d
 	script_repeat_end
 	jump_abs .loop
 ; 0x22fa7

@@ -1675,7 +1675,7 @@ UpdateInhaleParticles:
 	ld hl, wObjectScreenXPositions + OBJECT_SLOT_KIRBY
 	add [hl]
 	ld b, a ; (ParticleX + KirbyX)
-	ld hl, $5c19
+	ld hl, OAM_2dc19
 	xor a
 	jp LoadSprite
 

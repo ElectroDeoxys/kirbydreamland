@@ -33,6 +33,8 @@ ROMX $9
 	"Animation Scripts Extra"
 ROMX $a
 	"Bank A"
+ROMX $b
+	"Bank B"
 ROMX $c
 	"Motion Scripts Extra"
 ROMX $d
