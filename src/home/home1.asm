@@ -3275,7 +3275,7 @@ LoadSprite::
 	ld [wOAMFlagsOverride], a
 	ld a, [wROMBank]
 	push af
-	ld a, $0b
+	ld a, BANK("OAM")
 	bankswitch
 	ld a, [hl]
 	cp $80

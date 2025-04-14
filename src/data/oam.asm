@@ -204,9 +204,21 @@ OAM_2c1fc:
 OAM_2c204:
 	db  -7,   0, $ce, OAMF_PAL0
 	db  -7,  -8, $c8, OAMF_PAL0 | OAM_END
-; 0x2c20c
 
-SECTION "Bank B@4224", ROMX[$4224], BANK[$b]
+; unreferenced
+OAM_2c20c:
+	db  -8,  -8, $ca, OAMF_PAL0 | OAMF_XFLIP
+	db  -8,   0, $c6, OAMF_PAL0 | OAMF_XFLIP | OAM_END
+
+; unreferenced
+OAM_2c214:
+	db  -9,  -8, $cc, OAMF_PAL0 | OAMF_XFLIP
+	db  -9,   0, $c6, OAMF_PAL0 | OAMF_XFLIP | OAM_END
+
+; unreferenced
+OAM_2c21c:
+	db  -7,  -8, $ce, OAMF_PAL0 | OAMF_XFLIP
+	db  -7,   0, $c8, OAMF_PAL0 | OAMF_XFLIP | OAM_END
 
 OAM_2c224:
 	db   0,   4, $f0, OAMF_PAL0 | OAMF_XFLIP
@@ -343,9 +355,16 @@ OAM_2c394:
 OAM_2c39c:
 	db  -8,  -8, $d0, OAMF_PAL0 | OAMF_XFLIP
 	db  -8,   0, $cc, OAMF_PAL0 | OAMF_XFLIP | OAM_END
-; 0x2c3a4
 
-SECTION "Bank B@43b4", ROMX[$43b4], BANK[$b]
+; unreferenced
+OAM_2c3a4:
+	db  -8,  -8, $cc, OAMF_PAL0 | OAMF_YFLIP
+	db  -8,   0, $d0, OAMF_PAL0 | OAMF_YFLIP | OAM_END
+
+; unreferenced
+OAM_2c3ac:
+	db  -8,  -8, $d0, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP
+	db  -8,   0, $cc, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP | OAM_END
 
 OAM_2c3b4:
 	db  -8, -11, $b2, OAMF_PAL0
@@ -368,9 +387,11 @@ OAM_2c3d4:
 OAM_2c3dc:
 	db  -8,  -8, $ba, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP
 	db  -8,   0, $b8, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP | OAM_END
-; 0x2c3e4
 
-SECTION "Bank B@43ec", ROMX[$43ec], BANK[$b]
+; unreferenced
+OAM_2c3e4:
+	db  -8,  -8, $b8, OAMF_PAL0 | OAMF_YFLIP
+	db  -8,   0, $ba, OAMF_PAL0 | OAMF_YFLIP | OAM_END
 
 OAM_2c3ec:
 	db  -8,  -8, $d2, OAMF_PAL0
@@ -383,9 +404,12 @@ OAM_2c3f4:
 OAM_2c3fc:
 	db  -8,  -8, $d6, OAMF_PAL0
 	db  -8,   0, $d6, OAMF_PAL0 | OAMF_XFLIP | OAM_END
-; 0x2c404
 
-SECTION "Bank B@440c", ROMX[$440c], BANK[$b]
+OAM_2c404:
+	db -12,  -4, $ea, OAMF_PAL0 | OAMF_XFLIP | OAM_END
+
+OAM_2c408:
+	db -12,  -4, $ea, OAMF_PAL0 | OAM_END
 
 OAM_2c40c:
 	db  -8,  -8, $ae, OAMF_PAL0
@@ -460,9 +484,10 @@ OAM_2c48c:
 OAM_2c494:
 	db  -8,   0, $e6, OAMF_PAL0 | OAMF_XFLIP
 	db  -8,  -8, $e6, OAMF_PAL0 | OAM_END
-; 0x2c49c
 
-SECTION "Bank B@44a0", ROMX[$44a0], BANK[$b]
+; unreferenced
+OAM_2c49c:
+	db  -8,  -4, $e8, OAMF_PAL0 | OAMF_XFLIP | OAM_END
 
 OAM_2c4a0:
 	db  -8,   0, $e4, OAMF_PAL0 | OAMF_XFLIP
@@ -499,9 +524,11 @@ OAM_2c4d8:
 OAM_2c4e0:
 	db  -8,   0, $f4, OAMF_PAL0
 	db  -8,  -8, $f2, OAMF_PAL0 | OAM_END
-; 0x2c4e8
 
-SECTION "Bank B@44f0", ROMX[$44f0], BANK[$b]
+; unreferenced
+OAM_2c4e8:
+	db  -8,   0, $f4, OAMF_PAL0
+	db  -8,  -8, $ea, OAMF_PAL0 | OAM_END
 
 OAM_2c4f0:
 	db  -8,   0, $ee, OAMF_PAL0
@@ -566,37 +593,170 @@ OAM_2c560:
 OAM_2c568:
 	db  -8,  -8, $e8, OAMF_PAL0
 	db  -8,   0, $c6, OAMF_PAL0 | OAM_END
-; 0x2c570
 
-SECTION "Bank B@4578", ROMX[$4578], BANK[$b]
+; unreferenced
+OAM_2c570:
+	db  -8,  -8, $ea, OAMF_PAL0
+	db  -8,   0, $c2, OAMF_PAL0 | OAM_END
 
 OAM_2c578:
 	db  -8,  -8, $ea, OAMF_PAL1
 	db  -8,   0, $c2, OAMF_PAL1 | OAM_END
-; 0x2c580
 
-SECTION "Bank B@4590", ROMX[$4590], BANK[$b]
+OAM_2c580:
+	db  -8,  -8, $c2, OAMF_PAL0 | OAMF_XFLIP
+	db  -8,   0, $c0, OAMF_PAL0 | OAMF_XFLIP | OAM_END
+
+OAM_2c588:
+	db  -8,  -8, $c6, OAMF_PAL0 | OAMF_XFLIP
+	db  -8,   0, $c4, OAMF_PAL0 | OAMF_XFLIP | OAM_END
 
 OAM_2c590:
 	db  -8,  -8, $c6, OAMF_PAL0 | OAMF_XFLIP
 	db  -8,   0, $e8, OAMF_PAL0 | OAMF_XFLIP | OAM_END
-; 0x2c598
 
-SECTION "Bank B@45a0", ROMX[$45a0], BANK[$b]
+; unreferenced
+OAM_2c598:
+	db  -8,  -8, $c2, OAMF_PAL0 | OAMF_XFLIP
+	db  -8,   0, $ea, OAMF_PAL0 | OAMF_XFLIP | OAM_END
 
 OAM_2c5a0:
 	db  -8,  -8, $c2, OAMF_PAL1 | OAMF_XFLIP
 	db  -8,   0, $ea, OAMF_PAL1 | OAMF_XFLIP | OAM_END
-; 0x2c5a8
 
-SECTION "Bank B@4654", ROMX[$4654], BANK[$b]
+OAM_2c5a8:
+	db  -8,  -4, $88, OAMF_PAL0 | OAM_END
+
+OAM_2c5ac:
+	db -12,  -4, $88, OAMF_PAL0 | OAM_END
+
+; unreferenced
+OAM_2c5b0:
+	db  -8,   0, $d8, OAMF_PAL0
+	db  -8,  -8, $c8, OAMF_PAL0 | OAM_END
+
+; unreferenced
+OAM_2c5b8:
+	db  -8,   0, $da, OAMF_PAL0
+	db  -8,  -8, $ca, OAMF_PAL0 | OAM_END
+
+; unreferenced
+OAM_2c5c0:
+	db  -8,  -8, $ca, OAMF_PAL0
+	db  -8,   0, $d6, OAMF_PAL0 | OAM_END
+
+; unreferenced
+OAM_2c5c8:
+	db  -8,   0, $dc, OAMF_PAL0
+	db  -8,  -8, $cc, OAMF_PAL0 | OAM_END
+
+; unreferenced
+    OAM_2c5d0:
+	db  -8,  -8, $d8, OAMF_PAL0 | OAMF_XFLIP
+	db  -8,   0, $c8, OAMF_PAL0 | OAMF_XFLIP | OAM_END
+
+; unreferenced
+OAM_2c5d8:
+	db  -8,  -8, $da, OAMF_PAL0 | OAMF_XFLIP
+	db  -8,   0, $ca, OAMF_PAL0 | OAMF_XFLIP | OAM_END
+
+; unreferenced
+OAM_2c5e0:
+	db  -8,   0, $ca, OAMF_PAL0 | OAMF_XFLIP
+	db  -8,  -8, $d6, OAMF_PAL0 | OAMF_XFLIP | OAM_END
+
+; unreferenced
+OAM_2c5e8:
+	db  -8,  -8, $dc, OAMF_PAL0 | OAMF_XFLIP
+	db  -8,   0, $cc, OAMF_PAL0 | OAMF_XFLIP | OAM_END
+
+; unreferenced
+OAM_2c5f0:
+	db  -8,   0, $ce, OAMF_PAL0 | OAMF_XFLIP
+	db  -8,  -8, $de, OAMF_PAL0 | OAMF_XFLIP | OAM_END
+
+; unreferenced
+OAM_2c5f8:
+	db  -6,   2, $d4, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP | OAM_END
+
+; unreferenced
+OAM_2c5fc:
+	db  -8,  -8, $ce, OAMF_PAL0 | OAMF_YFLIP
+	db  -8,   0, $de, OAMF_PAL0 | OAMF_YFLIP | OAM_END
+
+; unreferenced
+OAM_2c604:
+	db -10, -10, $d4, OAMF_PAL0 | OAM_END
+
+; unreferenced
+OAM_2c608:
+	db  -8,  -8, $ce, OAMF_PAL0
+	db  -8,   0, $de, OAMF_PAL0 | OAM_END
+
+; unreferenced
+OAM_2c610:
+	db  -6, -10, $d4, OAMF_PAL0 | OAMF_YFLIP | OAM_END
+
+; unreferenced
+OAM_2c614:
+	db  -8,   0, $ce, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP
+	db  -8,  -8, $de, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP | OAM_END
+
+; unreferenced
+OAM_2c61c:
+	db -10,   3, $d4, OAMF_PAL0 | OAMF_XFLIP | OAM_END
+
+; unreferenced
+OAM_2c620:
+	db  -8,   0, $e0, OAMF_PAL0 | OAMF_XFLIP
+	db  -8,  -8, $e0, OAMF_PAL0 | OAM_END
+
+; unreferenced
+OAM_2c628:
+	db  -8,   0, $e2, OAMF_PAL0 | OAMF_XFLIP
+	db  -8,  -8, $e2, OAMF_PAL0 | OAM_END
+
+; unreferenced
+OAM_2c630:
+	db  -8,  -8, $e4, OAMF_PAL0
+	db  -8,   0, $e4, OAMF_PAL0 | OAMF_XFLIP | OAM_END
+
+; unreferenced
+OAM_2c638:
+	db  -8,  -4, $ae, OAMF_PAL0 | OAM_END
+
+; unreferenced
+OAM_2c63c:
+	db  -8,  -9, $e6, OAMF_PAL0 | OAM_END
+
+; unreferenced
+OAM_2c640:
+	db  -8,  -6, $e6, OAMF_PAL0 | OAM_END
+
+; unreferenced
+OAM_2c644:
+	db  -8,  -2, $e6, OAMF_PAL0 | OAM_END
+
+; unreferenced
+OAM_2c648:
+	db  -8,   1, $e6, OAMF_PAL0 | OAM_END
+
+; unreferenced
+OAM_2c64c:
+	db  -8, -13, $e6, OAMF_PAL0 | OAM_END
+
+; unreferenced
+OAM_2c650:
+	db  -8,   5, $e6, OAMF_PAL0 | OAM_END
 
 OAM_2c654:
 	db  -8,  -1, $d0, OAMF_PAL0 | OAMF_XFLIP
 	db  -8,  -8, $d0, OAMF_PAL0 | OAM_END
-; 0x2c65c
 
-SECTION "Bank B@4664", ROMX[$4664], BANK[$b]
+; unreferenced
+OAM_2c65c:
+	db  -8,  -1, $d2, OAMF_PAL0 | OAMF_XFLIP
+	db  -8,  -8, $d2, OAMF_PAL0 | OAM_END
 
 OAM_2c664:
 	db  -8,   0, $98, OAMF_PAL0
@@ -645,18 +805,33 @@ OAM_2c6d4:
 	db  -8,  -8, $9a, OAMF_PAL0 | OAMF_XFLIP
 	db -22,  -1, $d0, OAMF_PAL0 | OAMF_XFLIP
 	db -22,  -8, $d0, OAMF_PAL0 | OAM_END
-; 0x2c6e4
 
-SECTION "Bank B@46f4", ROMX[$46f4], BANK[$b]
+; unreferenced
+OAM_2c6e4:
+	db  -8,   0, $ac, OAMF_PAL0
+	db  -8,  -8, $aa, OAMF_PAL0
+	db -21,   1, $d0, OAMF_PAL0 | OAMF_XFLIP
+	db -21,  -6, $d0, OAMF_PAL0 | OAM_END
 
 OAM_2c6f4:
 	db  -8,  -8, $a4, OAMF_PAL0 | OAMF_YFLIP
 	db  -8,   0, $a4, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP
 	db -21,   0, $d0, OAMF_PAL0 | OAMF_XFLIP
 	db -21,  -7, $d0, OAMF_PAL0 | OAM_END
-; 0x2c704
 
-SECTION "Bank B@4724", ROMX[$4724], BANK[$b]
+; unreferenced
+OAM_2c704:
+	db  -8,  -1, $da, OAMF_PAL0
+	db  -8,  -9, $ca, OAMF_PAL0
+	db -24,   1, $d0, OAMF_PAL0 | OAMF_XFLIP
+	db -24,  -6, $d0, OAMF_PAL0 | OAM_END
+
+; unreferenced
+OAM_2c714:
+	db  -8,   0, $6c, OAMF_PAL0 | OAMF_XFLIP
+	db  -8,  -8, $6c, OAMF_PAL0
+	db -23,  -1, $d0, OAMF_PAL0 | OAMF_XFLIP
+	db -23,  -8, $d0, OAMF_PAL0 | OAM_END
 
 OAM_2c724:
 	db  -8,   0, $d8, OAMF_PAL0
@@ -1199,9 +1374,15 @@ OAM_2ccc0:
 OAM_2ccc4:
 	db  -8,  -8, $08, OAMF_PAL0 | OAMF_YFLIP
 	db  -8,   0, $18, OAMF_PAL0 | OAMF_YFLIP | OAM_END
-; 0x2cccc
 
-SECTION "Bank B@4ce4", ROMX[$4ce4], BANK[$b]
+; unreferenced
+OAM_2cccc:
+	db -16, -12, $22, OAMF_PAL0 | OAMF_YFLIP
+	db -16,  -4, $30, OAMF_PAL0 | OAMF_YFLIP
+	db -16,   4, $32, OAMF_PAL0 | OAMF_YFLIP
+	db   0, -12, $0e, OAMF_PAL0 | OAMF_YFLIP
+	db   0,  -4, $20, OAMF_PAL0 | OAMF_YFLIP
+	db   0,   4, $0c, OAMF_PAL0 | OAMF_YFLIP | OAM_END
 
 OAM_2cce4:
 	db -16,   4, $38, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP
@@ -1423,9 +1604,10 @@ OAM_2cfa4:
 	db -22,   8, $48, OAMF_PAL0 | OAMF_XFLIP
 	db -17, -15, $48, OAMF_PAL0
 	db -33, -19, $48, OAMF_PAL0 | OAM_END
-; 0x2cfb8
 
-SECTION "Bank B@4fbc", ROMX[$4fbc], BANK[$b]
+; unreferenced
+OAM_2cfb8:
+	db   0,   0, $70, OAMF_PAL0 | OAM_END
 
 OAM_2cfbc:
 	db   0,   0, $fe, OAMF_PAL0 | OAM_END
@@ -1564,9 +1746,11 @@ OAM_2d0b4:
 	db  16, -11, $14, OAMF_PAL0
 	db  16,  -3, $24, OAMF_PAL0
 	db   0,  -3, $00, OAMF_PAL0 | OAM_END
-; 0x2d0dc
 
-SECTION "Bank B@50e4", ROMX[$50e4], BANK[$b]
+; unreferenced
+OAM_2d0dc:
+	db  -8,   0, $84, OAMF_PAL0
+	db  -8,  -8, $84, OAMF_PAL0 | OAMF_XFLIP | OAM_END
 
 OAM_2d0e4:
 	db  -8,  -8, $84, OAMF_PAL0 | OAMF_XFLIP
@@ -1620,9 +1804,14 @@ OAM_2d168:
 	db -16, -14, $4e, OAMF_PAL0 | OAMF_XFLIP
 	db   0,   6, $5e, OAMF_PAL0
 	db   0,  14, $5e, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP | OAM_END
-; 0x2d180
 
-SECTION "Bank B@5194", ROMX[$5194], BANK[$b]
+; unreferenced
+OAM_2d180:
+	db  -4,  -3, $a2, OAMF_PAL0
+	db -24, -11, $5e, OAMF_PAL0 | OAMF_YFLIP
+	db -24,  -3, $5e, OAMF_PAL0 | OAMF_XFLIP
+	db   8,  -5, $4e, OAMF_PAL0 | OAMF_YFLIP
+	db   8,   3, $4e, OAMF_PAL0 | OAMF_XFLIP | OAM_END
 
 OAM_2d194:
 	db  -4,  -3, $a2, OAMF_PAL0 | OAM_END
@@ -1845,9 +2034,28 @@ OAM_2d40c:
 	db   0, -16, $66, OAMF_PAL0
 	db -16,  -8, $74, OAMF_PAL0
 	db -16,   0, $84, OAMF_PAL0 | OAM_END
-; 0x2d42c
 
-SECTION "Bank B@546c", ROMX[$546c], BANK[$b]
+; unreferenced
+OAM_2d42c:
+	db -16,   8, $64, OAMF_PAL0 | OAMF_XFLIP
+	db   0,   8, $66, OAMF_PAL0 | OAMF_XFLIP
+	db   0,   0, $76, OAMF_PAL0 | OAMF_XFLIP
+	db   0, -16, $96, OAMF_PAL0 | OAMF_XFLIP
+	db   0,  -8, $86, OAMF_PAL0 | OAMF_XFLIP
+	db -16, -16, $94, OAMF_PAL0 | OAMF_XFLIP
+	db -16,  -8, $84, OAMF_PAL0 | OAMF_XFLIP
+	db -16,   0, $74, OAMF_PAL0 | OAMF_XFLIP | OAM_END
+
+; unreferenced
+OAM_2d44c:
+	db -12, -16, $a4, OAMF_PAL0
+	db -12,  -8, $b4, OAMF_PAL0
+	db -12,   0, $c4, OAMF_PAL0
+	db -12,   8, $d4, OAMF_PAL0
+	db   4,   8, $d6, OAMF_PAL0
+	db   4,   0, $c6, OAMF_PAL0
+	db   4,  -8, $b6, OAMF_PAL0
+	db   4, -16, $a6, OAMF_PAL0 | OAM_END
 
 OAM_2d46c:
 	db -16, -12, $d0, OAMF_PAL0
@@ -1890,9 +2098,17 @@ OAM_2d4cc:
 	db   0,  -7, $a2, OAMF_PAL0
 	db -16,   1, $b0, OAMF_PAL0
 	db -16,  -7, $fa, OAMF_PAL0 | OAM_END
-; 0x2d4ec
 
-SECTION "Bank B@550c", ROMX[$550c], BANK[$b]
+; unreferenced
+OAM_2d4ec:
+	db -16,   7, $ea, OAMF_PAL0 | OAMF_XFLIP
+	db   0,   7, $ec, OAMF_PAL0 | OAMF_XFLIP
+	db -16, -17, $c0, OAMF_PAL0 | OAMF_XFLIP
+	db   0, -17, $c2, OAMF_PAL0 | OAMF_XFLIP
+	db   0,  -1, $a2, OAMF_PAL0 | OAMF_XFLIP
+	db   0,  -9, $b2, OAMF_PAL0 | OAMF_XFLIP
+	db -16,  -1, $fa, OAMF_PAL0 | OAMF_XFLIP
+	db -16,  -9, $b0, OAMF_PAL0 | OAMF_XFLIP | OAM_END
 
 OAM_2d50c:
 	db -16,   8, $d4, OAMF_PAL0
@@ -1913,9 +2129,15 @@ OAM_2d52c:
 	db   0,   0, $ca, OAMF_PAL0
 	db   0,  -8, $ba, OAMF_PAL0
 	db   0, -16, $aa, OAMF_PAL0 | OAM_END
-; 0x2d54c
 
-SECTION "Bank B@5564", ROMX[$5564], BANK[$b]
+; unreferenced
+OAM_2d54c:
+	db   0, -12, $f2, OAMF_PAL0 | OAMF_XFLIP
+	db   0,  -4, $8a, OAMF_PAL0 | OAMF_XFLIP
+	db   0,   4, $7a, OAMF_PAL0 | OAMF_XFLIP
+	db -16,   4, $d0, OAMF_PAL0 | OAMF_XFLIP
+	db -16,  -4, $e0, OAMF_PAL0 | OAMF_XFLIP
+	db -16, -12, $f0, OAMF_PAL0 | OAMF_XFLIP | OAM_END
 
 OAM_2d564:
 	db -16, -12, $78, OAMF_PAL0
@@ -1932,9 +2154,26 @@ OAM_2d57c:
 	db -16,   4, $f0, OAMF_PAL0
 	db -16,  -4, $88, OAMF_PAL0
 	db   0,  -4, $56, OAMF_PAL0 | OAM_END
-; 0x2d594
 
-SECTION "Bank B@55cc", ROMX[$55cc], BANK[$b]
+; unreferenced
+OAM_2d594:
+	db   0,   4, $d0, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP
+	db   0,  -4, $e0, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP
+	db   0, -12, $f0, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP
+	db -16, -12, $f2, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP
+	db -16,  -4, $e2, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP
+	db -16,   4, $d2, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP | OAM_END
+
+; unreferenced
+OAM_2d5ac:
+	db -20,   8, $a6, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP
+	db -20,   0, $b6, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP
+	db -20,  -8, $c6, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP
+	db -20, -16, $d6, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP
+	db  -4, -16, $d4, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP
+	db  -4,  -8, $c4, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP
+	db  -4,   0, $b4, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP
+	db  -4,   8, $a4, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP | OAM_END
 
 OAM_2d5cc:
 	db -16,   8, $cc, OAMF_PAL0
@@ -1945,9 +2184,15 @@ OAM_2d5cc:
 	db   0,   8, $ce, OAMF_PAL0
 	db   0,   0, $be, OAMF_PAL0
 	db   0,  -8, $ae, OAMF_PAL0 | OAM_END
-; 0x2d5ec
 
-SECTION "Bank B@5604", ROMX[$5604], BANK[$b]
+; unreferenced
+OAM_2d5ec:
+	db   0,   4, $78, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP
+	db   0,  -4, $88, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP
+	db   0, -12, $f0, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP
+	db -16, -12, $f2, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP
+	db -16,  -4, $8a, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP
+	db -16,   4, $7a, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP | OAM_END
 
 OAM_2d604:
 	db  -8,   0, $54, OAMF_PAL0
@@ -2014,9 +2259,16 @@ OAM_2d69c:
 OAM_2d6a4:
 	db  -8,   0, $d0, OAMF_PAL0
 	db  -8,  -8, $c0, OAMF_PAL0 | OAM_END
-; 0x2d6ac
 
-SECTION "Bank B@56bc", ROMX[$56bc], BANK[$b]
+; unreferenced
+OAM_2d6ac:
+	db  -8,  -8, $c6, OAMF_PAL0
+	db  -8,   0, $d6, OAMF_PAL0 | OAM_END
+
+; unreferenced
+OAM_2d6b4:
+	db  -8,  -8, $c4, OAMF_PAL0
+	db  -8,   0, $d4, OAMF_PAL0 | OAM_END
 
 OAM_2d6bc:
 	db  -8,  -8, $c2, OAMF_PAL0
@@ -2025,9 +2277,11 @@ OAM_2d6bc:
 OAM_2d6c4:
 	db  -8,  -8, $ee, OAMF_PAL0
 	db  -8,   0, $d0, OAMF_PAL0 | OAM_END
-; 0x2d6cc
 
-SECTION "Bank B@56d4", ROMX[$56d4], BANK[$b]
+; unreferenced
+OAM_2d6cc:
+	db  -8,  -8, $c9, OAMF_PAL0
+	db  -8,   0, $d9, OAMF_PAL0 | OAM_END
 
 OAM_2d6d4:
 	db -16,   8, $54, OAMF_PAL0
@@ -2154,16 +2408,25 @@ OAM_2d838:
 	db -16,   0, $5c, OAMF_PAL0
 	db -16,  -8, $4c, OAMF_PAL0
 	db -16, -16, $3c, OAMF_PAL0 | OAM_END
-; 0x2d85c
 
-SECTION "Bank B@5864", ROMX[$5864], BANK[$b]
+; unreferenced
+OAM_2d85c:
+	db  -8,   0, $8e, OAMF_PAL0
+	db  -8,  -8, $7e, OAMF_PAL0 | OAM_END
 
 OAM_2d864:
 	db  -8,   0, $8e, OAMF_PAL0
 	db  -8,  -8, $7e, OAMF_PAL0 | OAM_END
-; 0x2d86c
 
-SECTION "Bank B@587c", ROMX[$587c], BANK[$b]
+; unreferenced
+OAM_2d86c:
+	db  -7, -10, $8c, OAMF_PAL0
+	db  -7,   5, $8c, OAMF_PAL0 | OAMF_XFLIP | OAM_END
+
+; unreferenced
+OAM_2d874:
+	db  16,   5, $8c, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP
+	db  16, -11, $8c, OAMF_PAL0 | OAMF_YFLIP | OAM_END
 
 OAM_2d87c:
 	db  -8,   0, $92, OAMF_PAL0
@@ -2556,9 +2819,11 @@ OAM_2dc25:
 OAM_2dc2d:
 	db  -8,   0, $74, OAMF_PAL0
 	db  -8,  -8, $64, OAMF_PAL0 | OAM_END
-; 0x2dc35
 
-SECTION "Bank B@5c3d", ROMX[$5c3d], BANK[$b]
+; unreferenced
+OAM_2dc35:
+	db  -8,   0, $74, OAMF_PAL1
+	db  -8,  -8, $64, OAMF_PAL1 | OAM_END
 
 OAM_2dc3d:
 	db  -8,   0, $72, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP
@@ -2758,9 +3023,21 @@ OAM_2de09:
 
 OAM_2de0d:
 	db  -8,  -4, $84, OAMF_PAL1 | OAMF_XFLIP | OAM_END
-; 0x2de11
 
-SECTION "Bank B@5e2d", ROMX[$5e2d], BANK[$b]
+; unreferenced
+OAM_2de11:
+	db   0,   0, $86, OAMF_PAL0
+	db   0,  -8, $86, OAMF_PAL0 | OAM_END
+
+; unreferenced
+OAM_2de19:
+	db   0,   8, $86, OAMF_PAL0
+	db   0,   0, $86, OAMF_PAL0
+	db   0,  -8, $86, OAMF_PAL0
+	db   0, -16, $86, OAMF_PAL0 | OAM_END
+
+OAM_2de29:
+	db  -8,  -4, $88, OAMF_PAL0 | OAM_END
 
 OAM_2de2d:
 	db -10,  -5, $88, OAMF_PAL0 | OAM_END
@@ -2811,16 +3088,18 @@ OAM_2de75:
 OAM_2de7d:
 	db  -8,   0, $9a, OAMF_PAL0
 	db  -8,  -8, $94, OAMF_PAL0 | OAM_END
-; 0x2de85
 
-SECTION "Bank B@5e8d", ROMX[$5e8d], BANK[$b]
+OAM_2de85:
+	db  -8,  -8, $96, OAMF_PAL0
+	db  -8,   0, $98, OAMF_PAL0 | OAM_END
 
 OAM_2de8d:
 	db  -8,   1, $98, OAMF_PAL1
 	db  -8,  -7, $92, OAMF_PAL1 | OAM_END
-; 0x2de95
 
-SECTION "Bank B@5e9d", ROMX[$5e9d], BANK[$b]
+OAM_2de95:
+	db  -8,   1, $98, OAMF_PAL1
+	db  -8,  -7, $96, OAMF_PAL1 | OAM_END
 
 OAM_2de9d:
 	db  -8,  -8, $98, OAMF_PAL0 | OAMF_XFLIP
@@ -2829,16 +3108,18 @@ OAM_2de9d:
 OAM_2dea5:
 	db  -8,  -8, $9a, OAMF_PAL0 | OAMF_XFLIP
 	db  -8,   0, $94, OAMF_PAL0 | OAMF_XFLIP | OAM_END
-; 0x2dead
 
-SECTION "Bank B@5eb5", ROMX[$5eb5], BANK[$b]
+OAM_2dead:
+	db  -8,   0, $96, OAMF_PAL0 | OAMF_XFLIP
+	db  -8,  -8, $98, OAMF_PAL0 | OAMF_XFLIP | OAM_END
 
 OAM_2deb5:
 	db  -8,  -9, $98, OAMF_PAL1 | OAMF_XFLIP
 	db  -8,  -1, $92, OAMF_PAL1 | OAMF_XFLIP | OAM_END
-; 0x2debd
 
-SECTION "Bank B@5ec5", ROMX[$5ec5], BANK[$b]
+OAM_2debd:
+	db  -8,  -9, $98, OAMF_PAL1 | OAMF_XFLIP
+	db  -8,  -1, $96, OAMF_PAL1 | OAMF_XFLIP | OAM_END
 
 OAM_2dec5:
 	db  -8,   0, $9e, OAMF_PAL0
@@ -2875,9 +3156,91 @@ OAM_2defd:
 OAM_2df05:
 	db  -8,  -8, $ac, OAMF_PAL0 | OAMF_XFLIP
 	db  -8,   0, $aa, OAMF_PAL0 | OAMF_XFLIP | OAM_END
-; 0x2df0d
 
-SECTION "Bank B@5f95", ROMX[$5f95], BANK[$b]
+; unreferenced
+OAM_2df0d:
+	db  -8,   0, $e6, OAMF_PAL0 | OAMF_XFLIP
+	db  -8,  -8, $e6, OAMF_PAL0 | OAM_END
+
+; unreferenced
+OAM_2df15:
+	db  -8,   0, $e8, OAMF_PAL0 | OAMF_XFLIP
+	db  -8,  -8, $e8, OAMF_PAL0 | OAM_END
+
+; unreferenced
+OAM_2df1d:
+	db  -8,   0, $e4, OAMF_PAL0 | OAMF_XFLIP
+	db  -8,  -8, $e4, OAMF_PAL0 | OAM_END
+
+; unreferenced
+OAM_2df25:
+	db  -8,   0, $f2, OAMF_PAL0 | OAMF_XFLIP
+	db  -8,  -8, $f2, OAMF_PAL0 | OAM_END
+
+; unreferenced
+    OAM_2df2d:
+	db  -8,   0, $f2, OAMF_PAL0 | OAMF_XFLIP
+	db  -8,  -8, $ea, OAMF_PAL0 | OAM_END
+
+; unreferenced
+OAM_2df35:
+	db  -8,   0, $f8, OAMF_PAL0
+	db  -8,  -8, $fa, OAMF_PAL0 | OAM_END
+
+; unreferenced
+OAM_2df3d:
+	db  -8,   0, $ec, OAMF_PAL0
+	db  -8,  -8, $f0, OAMF_PAL0 | OAM_END
+
+; unreferenced
+OAM_2df45:
+	db  -8,  -8, $f8, OAMF_PAL0 | OAMF_XFLIP
+	db  -8,   0, $fa, OAMF_PAL0 | OAMF_XFLIP | OAM_END
+
+; unreferenced
+OAM_2df4d:
+	db  -8,  -8, $ec, OAMF_PAL0 | OAMF_XFLIP
+	db  -8,   0, $f0, OAMF_PAL0 | OAMF_XFLIP | OAM_END
+
+; unreferenced
+OAM_2df55:
+	db  -8,   0, $fc, OAMF_PAL0 | OAMF_XFLIP
+	db  -8,  -8, $fc, OAMF_PAL0 | OAM_END
+
+; unreferenced
+OAM_2df5d:
+	db  -8,   0, $f4, OAMF_PAL0
+	db  -8,  -8, $f2, OAMF_PAL0 | OAM_END
+
+; unreferenced
+OAM_2df65:
+	db  -8,   0, $f4, OAMF_PAL0
+	db  -8,  -8, $ea, OAMF_PAL0 | OAM_END
+
+; unreferenced
+OAM_2df6d:
+	db  -8,   0, $ee, OAMF_PAL0
+	db  -8,  -8, $f0, OAMF_PAL0 | OAM_END
+
+; unreferenced
+OAM_2df75:
+	db  -8,   0, $f6, OAMF_PAL0
+	db  -8,  -8, $fa, OAMF_PAL0 | OAM_END
+
+; unreferenced
+OAM_2df7d:
+	db  -8,  -8, $ee, OAMF_PAL0 | OAMF_XFLIP
+	db  -8,   0, $f0, OAMF_PAL0 | OAMF_XFLIP | OAM_END
+
+; unreferenced
+OAM_2df85:
+	db  -8,  -8, $f6, OAMF_PAL0 | OAMF_XFLIP
+	db  -8,   0, $fa, OAMF_PAL0 | OAMF_XFLIP | OAM_END
+
+; unreferenced
+OAM_2df8d:
+	db  -8,   0, $fc, OAMF_PAL0 | OAMF_XFLIP
+	db  -8,  -8, $fe, OAMF_PAL0 | OAM_END
 
 OAM_2df95:
 	db  -8,  -1, $b4, OAMF_PAL1
@@ -2886,9 +3249,10 @@ OAM_2df95:
 OAM_2df9d:
 	db  -8,   0, $b4, OAMF_PAL1
 	db  -8,  -8, $ae, OAMF_PAL0 | OAM_END
-; 0x2dfa5
 
-SECTION "Bank B@5fad", ROMX[$5fad], BANK[$b]
+OAM_2dfa5:
+	db  -8,   0, $b4, OAMF_PAL1
+	db  -8,  -8, $b2, OAMF_PAL1 | OAM_END
 
 OAM_2dfad:
 	db  -8,  -9, $b4, OAMF_PAL1 | OAMF_XFLIP
@@ -2957,9 +3321,16 @@ OAM_2e025:
 OAM_2e02d:
 	db  -8,  -8, $de, OAMF_PAL0 | OAMF_XFLIP
 	db  -8,   0, $dc, OAMF_PAL0 | OAMF_XFLIP | OAM_END
-; 0x2e035
 
-SECTION "Bank B@6045", ROMX[$6045], BANK[$b]
+; unreferenced
+OAM_2e035:
+	db  -8,   0, $da, OAMF_PAL0 | OAMF_YFLIP
+	db  -8,  -8, $d8, OAMF_PAL0 | OAMF_YFLIP | OAM_END
+
+; unreferenced
+OAM_2e03d:
+	db  -8,   0, $de, OAMF_PAL0 | OAMF_YFLIP
+	db  -8,  -8, $dc, OAMF_PAL0 | OAMF_YFLIP | OAM_END
 
 OAM_2e045:
 	db  -8,   0, $ba, OAMF_PAL0 | OAMF_XFLIP
@@ -3237,7 +3608,10 @@ OAM_2e359:
 	db -51,   0, $fa, OAMF_PAL1 | OAMF_XFLIP | OAMF_PRI
 	db -35,  -8, $fa, OAMF_PAL1 | OAMF_YFLIP | OAMF_PRI
 	db -35,   0, $fa, OAMF_PAL1 | OAMF_XFLIP | OAMF_PRI | OAM_END
-; 0x2e389
+
+; unreferenced
+; seems like placeholder data
+; from 0x2e389 to 0x2e429
 
 SECTION "Bank B@6429", ROMX[$6429], BANK[$b]
 
@@ -3456,9 +3830,60 @@ OAM_2e6e9:
 	db   8,  -8, $f8, OAMF_PAL0 | OAMF_YFLIP
 	db   8, -16, $f6, OAMF_PAL0 | OAMF_YFLIP
 	db   0, -24, $f4, OAMF_PAL0 | OAMF_YFLIP | OAM_END
-; 0x2e729
 
-SECTION "Bank B@67b9", ROMX[$67b9], BANK[$b]
+; unreferenced
+OAM_2e729:
+	db  -8,  -8, $fa, OAMF_PAL0
+	db  -8,   0, $fc, OAMF_PAL0
+	db   0, -20, $4e, OAMF_PAL0
+	db   0, -12, $4e, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP
+	db -16,   4, $4e, OAMF_PAL0
+	db -16,  12, $4e, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP | OAM_END
+
+; unreferenced
+OAM_2e741:
+	db  -8,   0, $fc, OAMF_PAL0
+	db  -8,  -8, $fa, OAMF_PAL0
+	db  -8,  14, $5e, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP
+	db  -8,   6, $5e, OAMF_PAL0
+	db  -8, -16, $5e, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP
+	db  -8, -24, $5e, OAMF_PAL0 | OAM_END
+
+; unreferenced
+OAM_2e759:
+	db  -8,   0, $fc, OAMF_PAL0
+	db  -8,  -8, $fa, OAMF_PAL0
+	db   0,  12, $4e, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP
+	db   0,   4, $4e, OAMF_PAL0
+	db -16, -12, $4e, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP
+	db -16, -20, $4e, OAMF_PAL0 | OAM_END
+
+; unreferenced
+OAM_2e771:
+	db  -8,   0, $fc, OAMF_PAL0
+	db  -8,  -8, $fa, OAMF_PAL0
+	db   4,   8, $5e, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP
+	db   4,   0, $5e, OAMF_PAL0
+	db -20,  -8, $5e, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP
+	db -20, -16, $5e, OAMF_PAL0 | OAM_END
+
+; unreferenced
+    OAM_2e789:
+	db  -8,   0, $fc, OAMF_PAL0
+	db  -8,  -8, $fa, OAMF_PAL0
+	db   6,   0, $4e, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP
+	db   6,  -8, $4e, OAMF_PAL0
+	db -22,   0, $4e, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP
+	db -22,  -8, $4e, OAMF_PAL0 | OAM_END
+
+; unreferenced
+OAM_2e7a1:
+	db  -8,  -8, $fa, OAMF_PAL0
+	db  -8,   0, $fc, OAMF_PAL0
+	db   4, -16, $5e, OAMF_PAL0
+	db   4,  -8, $5e, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP
+	db -20,   0, $5e, OAMF_PAL0
+	db -20,   8, $5e, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP | OAM_END
 
 OAM_2e7b9:
 	db -21,  -4, $ec, OAMF_PAL0
@@ -3491,23 +3916,60 @@ OAM_2e801:
 	db -20,  -9, $ec, OAMF_PAL0
 	db  -8,   0, $fc, OAMF_PAL0
 	db  -8,  -8, $fa, OAMF_PAL0 | OAM_END
-; 0x2e819
 
-SECTION "Bank B@6879", ROMX[$6879], BANK[$b]
+; unreferenced
+OAM_2e819:
+	db -21,  -4, $ec, OAMF_PAL0
+	db   5,  -4, $ec, OAMF_PAL0
+	db  -8, -17, $ec, OAMF_PAL0
+	db  -8,   9, $ec, OAMF_PAL0
+	db  -8,  -8, $fc, OAMF_PAL0 | OAMF_XFLIP
+	db  -8,   0, $fa, OAMF_PAL0 | OAMF_XFLIP | OAM_END
+
+; unreferenced
+OAM_2e831:
+	db -12, -17, $ec, OAMF_PAL0
+	db  -3,   9, $ec, OAMF_PAL0
+	db   5,  -8, $ec, OAMF_PAL0
+	db -20,   1, $ec, OAMF_PAL0
+	db  -8,  -8, $fc, OAMF_PAL0 | OAMF_XFLIP
+	db  -8,   0, $fa, OAMF_PAL0 | OAMF_XFLIP | OAM_END
+
+; unreferenced
+OAM_2e849:
+	db -17, -13, $ec, OAMF_PAL0
+	db   1,   6, $ec, OAMF_PAL0
+	db   1, -13, $ec, OAMF_PAL0
+	db -17,   6, $ec, OAMF_PAL0
+	db  -8,  -8, $fc, OAMF_PAL0 | OAMF_XFLIP
+	db  -8,   0, $fa, OAMF_PAL0 | OAMF_XFLIP | OAM_END
+
+; unreferenced
+OAM_2e861:
+	db   4,   2, $ec, OAMF_PAL0
+	db -20,  -9, $ec, OAMF_PAL0
+	db  -2, -15, $ec, OAMF_PAL0
+	db -14,   8, $ec, OAMF_PAL0
+	db  -8,  -8, $fc, OAMF_PAL0 | OAMF_XFLIP
+	db  -8,   0, $fa, OAMF_PAL0 | OAMF_XFLIP | OAM_END
 
 OAM_2e879:
 	db  -8,   0, $fc, OAMF_PAL0
 	db  -8,  -8, $fa, OAMF_PAL0 | OAM_END
-; 0x2e881
 
-SECTION "Bank B@6889", ROMX[$6889], BANK[$b]
+; unreferenced
+OAM_2e881:
+	db  -8,  -8, $fc, OAMF_PAL0 | OAMF_XFLIP
+	db  -8,   0, $fa, OAMF_PAL0 | OAMF_XFLIP | OAM_END
 
 OAM_2e889:
 	db  -8,   0, $fc, OAMF_PAL0 | OAMF_YFLIP
 	db  -8,  -8, $fa, OAMF_PAL0 | OAMF_YFLIP | OAM_END
-; 0x2e891
 
-SECTION "Bank B@6899", ROMX[$6899], BANK[$b]
+; unreferenced
+OAM_2e891:
+	db  -8,  -8, $fc, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP
+	db  -8,   0, $fa, OAMF_PAL0 | OAMF_XFLIP | OAMF_YFLIP | OAM_END
 
 OAM_2e899:
 	db  -3,  -3, $86, OAMF_PAL0 | OAM_END

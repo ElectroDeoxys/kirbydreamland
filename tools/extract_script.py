@@ -12,6 +12,9 @@ args = parser.parse_args()
 syms = symbols.read_symbols()
 ram = symbols.read_ram()
 
+ANIM_SCRIPT_BANK = 0x9
+MOTION_SCRIPT_BANK = 0xc
+
 x_velocities = { 0X00: "0", 0X70: "VEL_RIGHT_0_00", 0X71: "VEL_RIGHT_1_64TH", 0X72: "VEL_RIGHT_1_32TH", 0X73: "VEL_RIGHT_1_16TH", 0X74: "VEL_RIGHT_1_8TH", 0X75: "VEL_RIGHT_0_25", 0X76: "VEL_RIGHT_0_50", 0X77: "VEL_RIGHT_0_75", 0X78: "VEL_RIGHT_1_00", 0X79: "VEL_RIGHT_1_25", 0X7A: "VEL_RIGHT_2_00", 0X7B: "VEL_RIGHT_3_00", 0X7C: "VEL_RIGHT_4_00", 0X7D: "VEL_RIGHT_6_00", 0X7E: "VEL_RIGHT_8_00", 0X7F: "VEL_RIGHT_16_00", 0X80: "VEL_LEFT_0_00", 0X81: "VEL_LEFT_1_64TH", 0X82: "VEL_LEFT_1_32TH", 0X83: "VEL_LEFT_1_16TH", 0X84: "VEL_LEFT_1_8TH", 0X85: "VEL_LEFT_0_25", 0X86: "VEL_LEFT_0_50", 0X87: "VEL_LEFT_0_75", 0X88: "VEL_LEFT_1_00", 0X89: "VEL_LEFT_1_25", 0X8A: "VEL_LEFT_2_00", 0X8B: "VEL_LEFT_3_00", 0X8C: "VEL_LEFT_4_00", 0X8D: "VEL_LEFT_6_00", 0X8E: "VEL_LEFT_8_00", 0X8F: "VEL_LEFT_16_00" }
 y_velocities = { 0X00: "0", 0X70: "VEL_DOWN_0_00", 0X71: "VEL_DOWN_1_64TH", 0X72: "VEL_DOWN_1_32TH", 0X73: "VEL_DOWN_1_16TH", 0X74: "VEL_DOWN_1_8TH", 0X75: "VEL_DOWN_0_25", 0X76: "VEL_DOWN_0_50", 0X77: "VEL_DOWN_0_75", 0X78: "VEL_DOWN_1_00", 0X79: "VEL_DOWN_1_25", 0X7A: "VEL_DOWN_2_00", 0X7B: "VEL_DOWN_3_00", 0X7C: "VEL_DOWN_4_00", 0X7D: "VEL_DOWN_6_00", 0X7E: "VEL_DOWN_8_00", 0X7F: "VEL_DOWN_16_00", 0X80: "VEL_UP_0_00", 0X81: "VEL_UP_1_64TH", 0X82: "VEL_UP_1_32TH", 0X83: "VEL_UP_1_16TH", 0X84: "VEL_UP_1_8TH", 0X85: "VEL_UP_0_25", 0X86: "VEL_UP_0_50", 0X87: "VEL_UP_0_75", 0X88: "VEL_UP_1_00", 0X89: "VEL_UP_1_25", 0X8A: "VEL_UP_2_00", 0X8B: "VEL_UP_3_00", 0X8C: "VEL_UP_4_00", 0X8D: "VEL_UP_6_00", 0X8E: "VEL_UP_8_00", 0X8F: "VEL_UP_16_00" }
 sfx = {0X00: "SFX_00", 0X01: "SFX_INHALE", 0X02: "SFX_02", 0X03: "SFX_SWALLOW", 0X04: "SFX_JUMP", 0X05: "SFX_BUMP", 0X06: "SFX_DAMAGE", 0X07: "SFX_ENTER_DOOR", 0X08: "SFX_08", 0X09: "SFX_POWER_UP", 0X0A: "SFX_EXPLOSION", 0X0B: "SFX_RESTORE_HP", 0X0C: "SFX_WARP_STAR", 0X0D: "SFX_13", 0X0E: "SFX_14", 0X0F: "SFX_PUFF", 0X10: "SFX_STAR_SPIT", 0X11: "SFX_17", 0X12: "SFX_18", 0X13: "SFX_19", 0X14: "SFX_20", 0X15: "SFX_LOSE_LIFE", 0X16: "SFX_1UP", 0X17: "SFX_23", 0X18: "SFX_PAUSE_OFF", 0X19: "SFX_25", 0X1A: "SFX_CURSOR", 0X1B: "SFX_GAME_START", 0X1C: "SFX_28", 0X1D: "SFX_29", 0X1E: "SFX_30", 0X1F: "SFX_31", 0X20: "SFX_BOSS_DEFEAT", 0X21: "SFX_PAUSE_ON", 0X22: "SFX_34", 0X23: "SFX_35", 0XFF: "SFX_NONE"}
@@ -70,6 +73,13 @@ def parse_percent(data):
 def parse_wram_address(data):
     return (2, ('w', parse_word(data)))
 
+def parse_update_func_arg(data):
+    arg = parse_word(data)
+    if arg == 0x0000:
+        return (2, ('s', "NULL"))
+    else:
+        return parse_anim_script(data)
+
 SCRIPT_END = 0xe0
 JUMP_ABS = 0xe1
 JUMP_REL = 0xe2
@@ -127,7 +137,7 @@ commands = {
     JUMPTABLE: ("jumptable", [parse_wram_address]),
     SCRIPT_DELAY: ("script_delay", [parse_int]),
     SCRIPT_ED: ("script_ed", [parse_int]),
-    SET_UPDATE_FUNC: ("set_update_func", [parse_bank5_func, parse_anim_script]),
+    SET_UPDATE_FUNC: ("set_update_func", [parse_bank5_func, parse_update_func_arg]),
     CLEAR_UPDATE_FUNC: ("clear_update_func", []),
     SET_POSITION: ("set_position", [parse_int, parse_int]),
     POSITION_OFFSET: ("position_offset", [parse_signed, parse_signed]),
@@ -175,10 +185,10 @@ def get_command_string(cmd_byte, args, address_labels, cur_bank):
         return format_address_in_bank(addr, cur_bank, ".script_")
 
     def format_anim_script(addr):
-        return format_address_in_bank(addr, 9, "AnimScript_")
+        return format_address_in_bank(addr, ANIM_SCRIPT_BANK, "AnimScript_")
 
     def format_motion_script(addr):
-        return format_address_in_bank(addr, 0xc, "MotionScript_")
+        return format_address_in_bank(addr, MOTION_SCRIPT_BANK, "MotionScript_")
 
     def format_properties(addr):
         return format_address_in_bank(addr, 0, "Properties_")
@@ -230,7 +240,7 @@ def get_command_string(cmd_byte, args, address_labels, cur_bank):
         if arg_type == 't':
             res_str = res_str[:-2]
         if arg_type == 'c':
-            arg_type = 'a' if cur_bank == 0x9 else 'm'
+            arg_type = 'a' if cur_bank == ANIM_SCRIPT_BANK else 'm'
 
         res_str += arg_formatter_map[arg_type](arg) + ', '
 
@@ -242,7 +252,7 @@ for o in reader.standardise_list(args.offsets):
     # cache whole bank
     offset = int(o, 16)
     bank = int(offset / 0x4000)
-    is_motion_script = (bank == 0xc)
+    is_motion_script = (bank == MOTION_SCRIPT_BANK)
     source = reader.get_rom_bytes(bank * 0x4000, 0x4000)
     pos = offset % 0x4000
 
@@ -384,7 +394,8 @@ for o in reader.standardise_list(args.offsets):
                 y_vel = y_velocities[args[1]] if args[1] in y_velocities else str(args[1] / 8)
                 out_str += f"\tset_velocities {cmd_byte:2d}, {x_vel}, {y_vel}\n"
             else:
-                out_str += f"\tframe {cmd_byte:2d}, ${args[0]:04x}\n"
+                oam_off = args[0] + 0x2c000 - 0x4000
+                out_str += f"\tframe {cmd_byte:2d}, OAM_{oam_off:0x}\n"
         else:
             out_str += "\t{}\n".format(get_command_string(cmd_byte, args, address_labels, bank))
 

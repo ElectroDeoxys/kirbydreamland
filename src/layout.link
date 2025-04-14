@@ -34,7 +34,7 @@ ROMX $9
 ROMX $a
 	"Bank A"
 ROMX $b
-	"Bank B"
+	"OAM"
 ROMX $c
 	"Motion Scripts Extra"
 ROMX $d

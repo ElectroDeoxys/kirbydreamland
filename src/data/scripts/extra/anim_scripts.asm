@@ -17,9 +17,17 @@ AnimScript_243be:
 	frame  2, OAM_2dde1
 	script_repeat_end
 	script_end
-; 0x243de
 
-SECTION "Bank 9@43f6", ROMX[$43f6], BANK[$9]
+; unreferenced
+AnimScript_243de:
+	set_flags hKirbyFlags5, $00, $20
+	set_update_func Func_142dc, NULL
+.loop
+	frame  8, OAM_2dbe1
+	frame  8, OAM_2dbe9
+	frame  8, OAM_2dbf9
+	frame  8, OAM_2dbf1
+	jump_rel .loop
 
 AnimScript_243f6:
 	frame  8, OAM_2dc25
@@ -27,9 +35,72 @@ AnimScript_243f6:
 	frame  8, OAM_2dc3d
 	frame  8, OAM_2dc45
 	jump_abs AnimScript_243f6
-; 0x24405
 
-SECTION "Bank 9@44a4", ROMX[$44a4], BANK[$9]
+; unreferenced
+AnimScript_24405:
+	jump_if_not_flags hKirbyFlags3, $20, .script_24419
+	frame  6, OAM_2daf1
+	frame  6, OAM_2dae9
+	set_motion_script MotionScript_30cb3
+	frame  0, OAM_2daf1
+
+.script_24419
+	frame  6, OAM_2da71
+	frame  6, OAM_2da69
+	set_motion_script MotionScript_30cb3
+	frame  0, OAM_2da71
+
+; unreferenced
+AnimScript_24427:
+	play_sfx SFX_STAR_SPIT
+	jump_if_flags wPowerUpAttack, $02, AnimScript_24be3
+	jump_if_flags wPowerUpAttack, $04, AnimScript_24bd1
+	set_update_func Func_141b1, AnimScript_24bb4
+	jump_if_not_flags hKirbyFlags3, $20, .script_2445b
+	script_repeat 2
+	frame  4, OAM_2dc25
+	frame  4, OAM_2dc45
+	frame  4, OAM_2dc3d
+	frame  4, OAM_2dc2d
+	script_repeat_end
+	frame  4, OAM_2dc25
+	frame  4, OAM_2dc45
+	frame  4, OAM_2dc1d
+	script_end
+.script_2445b
+	script_repeat 2
+	frame  4, OAM_2dc25
+	frame  4, OAM_2dc2d
+	frame  4, OAM_2dc3d
+	frame  4, OAM_2dc45
+	script_repeat_end
+	frame  4, OAM_2dc25
+	frame  4, OAM_2dc45
+	frame  4, OAM_2dc1d
+	script_end
+
+; unreferenced
+AnimScript_24474:
+	frame  0, OAM_2ddf9
+
+; unreferenced
+AnimScript_24477:
+	play_sfx SFX_PUFF
+	jump_if_flags wPowerUpAttack, $02, AnimScript_24be3
+	jump_if_flags wPowerUpAttack, $04, AnimScript_24bd1
+	jump_if_flags hEngineFlags, $01, AnimScript_2449e
+	set_update_func Func_141b1, AnimScript_24bb4
+AnimScript_24492:
+	jump_if_not_flags hKirbyFlags3, $20, AnimScript_2449b
+	frame  0, OAM_2dcf9
+
+AnimScript_2449b:
+	frame  0, OAM_2dcf1
+
+AnimScript_2449e:
+	frame  1, OAM_2d8b8
+	set_abs_pos
+	jump_rel AnimScript_24492
 
 AnimScript_244a4:
 	script_repeat 1
@@ -102,9 +173,16 @@ AnimScript_2451d:
 	script_delay 4
 	script_repeat_end
 	script_ret
-; 0x24566
 
-SECTION "Bank 9@4572", ROMX[$4572], BANK[$9]
+; unreferenced
+AnimScript_24566:
+	frame  4, OAM_2db81
+	frame  0, OAM_2db89
+
+; unreferenced
+AnimScript_2456c:
+	frame  4, OAM_2db99
+	frame  0, OAM_2dba1
 
 AnimScript_24572:
 	script_repeat 2
@@ -121,9 +199,22 @@ AnimScript_24587:
 	frame 16, OAM_2de55
 	frame 16, OAM_2de5d
 	jump_abs AnimScript_24587
-; 0x24590
 
-SECTION "Bank 9@45ae", ROMX[$45ae], BANK[$9]
+; unreferenced
+AnimScript_24590:
+	frame 16, OAM_2de65
+	frame 16, OAM_2de6d
+	jump_abs AnimScript_24590
+
+; unreferenced
+AnimScript_24599:
+	frame  8, OAM_2de5d
+	frame 16, OAM_2de55
+	frame  8, OAM_2de5d
+	frame  8, OAM_2de6d
+	frame 16, OAM_2de65
+	frame  8, OAM_2de6d
+	jump_abs AnimScript_24599
 
 AnimScript_245ae:
 .loop
@@ -157,9 +248,37 @@ AnimScript_245ea:
 	frame 16, OAM_2de9d
 	frame 16, OAM_2dea5
 	jump_abs AnimScript_245ea
-; 0x245f3
 
-SECTION "Bank 9@461d", ROMX[$461d], BANK[$9]
+; unreferenced
+AnimScript_245f3:
+	frame  0, OAM_2de85
+
+; unreferenced
+AnimScript_245f6:
+	frame  0, OAM_2dead
+
+; unreferenced
+AnimScript_245f9:
+	frame  3, OAM_2de8d
+	frame  3, OAM_2de75
+	jump_abs AnimScript_245f9
+
+; unreferenced
+AnimScript_24602:
+	frame  3, OAM_2deb5
+	frame  3, OAM_2de9d
+	jump_abs AnimScript_24602
+
+; unreferenced
+AnimScript_2460b:
+	frame  3, OAM_2de95
+	frame  3, OAM_2de85
+	jump_abs AnimScript_2460b
+
+AnimScript_24614:
+	frame  3, OAM_2debd
+	frame  3, OAM_2dead
+	jump_abs AnimScript_24614
 
 AnimScript_2461d:
 	frame 10, OAM_2de75
@@ -172,16 +291,15 @@ AnimScript_2461d:
 	frame 10, OAM_2dea5
 	frame 10, OAM_2de75
 	jump_abs AnimScript_2461d
-; 0x2463b
-
-SECTION "Bank 9@463b", ROMX[$463b], BANK[$9]
 
 AnimScript_2463b:
 	frame  8, OAM_2decd
 	frame  0, OAM_2dec5
-; 0x24641
 
-SECTION "Bank 9@4647", ROMX[$4647], BANK[$9]
+; unreferenced
+AnimScript_24641:
+	frame  8, OAM_2dedd
+	frame  0, OAM_2ded5
 
 AnimScript_24647:
 .loop
@@ -205,9 +323,11 @@ AnimScript_24662:
 	frame  5, OAM_2ded5
 	frame  5, OAM_2dedd
 	jump_abs .loop
-; 0x2466b
 
-SECTION "Bank 9@4671", ROMX[$4671], BANK[$9]
+; unreferenced
+AnimScript_2466b:
+	frame 10, OAM_2def5
+	jump_abs AnimScript_2466b
 
 AnimScript_24671:
 	frame 11, OAM_2def5
@@ -266,9 +386,152 @@ AnimScript_24701:
 	frame  8, OAM_2dee5
 	frame 10, OAM_2deed
 	jump_abs .loop
-; 0x24756
 
-SECTION "Bank 9@48d2", ROMX[$48d2], BANK[$9]
+; unreferenced
+AnimScript_24756:
+	set_abs_pos
+	set_object_properties Data_3425
+	script_exec ScriptFunc_CheckHalfSideOfScreen
+	jump_if_equal wKirbySideOfScreen, $00, .script_24778
+	set_motion_script MotionScript_30b54
+.script_2476a
+	frame 10, OAM_2d8f1
+	frame  6, OAM_2d8f9
+	frame 10, OAM_2d901
+	frame  6, OAM_2d8f9
+	jump_rel .script_2476a
+.script_24778
+	set_motion_script MotionScript_30b60
+.script_2477d
+	frame 10, OAM_2d8c1
+	frame  6, OAM_2d8c9
+	frame 10, OAM_2d8d1
+	frame  6, OAM_2d8c9
+	jump_rel .script_2477d
+
+AnimScript_2478b:
+	set_motion_script MotionScript_30008
+	create_object AnimScript_247b3, MotionScript_30008, Data_3425
+	create_object AnimScript_247bf, MotionScript_30008, Data_3425
+	script_call AnimScript_248d2
+	frame 55, OAM_2d8e1
+	play_music MUSIC_VICTORY
+AnimScript_247a8:
+	jumptable wStage
+	dw AnimScript_247cb
+	dw AnimScript_24812
+	dw AnimScript_24865
+	dw AnimScript_2489d
+
+AnimScript_247b3:
+	position_offset -30, 0
+	script_call AnimScript_248f8
+	frame 55, OAM_2d8e1
+	jump_abs AnimScript_247a8
+
+AnimScript_247bf:
+	position_offset 30, 0
+	script_call AnimScript_248f8
+	frame 55, OAM_2d8e1
+	jump_abs AnimScript_247a8
+
+AnimScript_247cb:
+	set_motion_script MotionScript_30b71
+	script_repeat 2
+	frame 10, OAM_2d8d1
+	frame  6, OAM_2d8c9
+	frame 10, OAM_2d8c1
+	frame  6, OAM_2d8c9
+	script_repeat_end
+	frame  9, OAM_2d8d1
+	frame  5, OAM_2d8c9
+	script_call AnimScript_248d2
+	script_call AnimScript_248d2
+	frame 31, OAM_2d8e1
+	frame 24, OAM_2d8d9
+	frame 55, OAM_2db69
+	frame  8, OAM_2dbc9
+	frame  4, OAM_2d8b9
+	frame  8, OAM_2dbc5
+	frame  4, OAM_2d8b9
+	frame  8, OAM_2dbc9
+	script_call AnimScript_248e5
+	frame 23, OAM_2dbad
+	frame 60, OAM_2d911
+	set_value wStageTransitionCounter, $01
+	script_delay 0
+
+AnimScript_24812:
+	set_motion_script MotionScript_30ba4
+	frame 10, OAM_2d909
+	frame 10, OAM_2dba9
+	frame 10, OAM_2d8d9
+	frame 10, OAM_2dbc5
+	frame 20, OAM_2d8d9
+	frame 18, OAM_2dbc9
+	frame 60, OAM_2db69
+	frame  9, OAM_2dbc9
+	frame  9, OAM_2d8e1
+	script_repeat 3
+	frame  6, OAM_2dbe1
+	frame  6, OAM_2dbe9
+	frame  6, OAM_2dbf9
+	frame  6, OAM_2dbf1
+	script_repeat_end
+	frame  6, OAM_2dbc9
+	frame  2, OAM_2d8c9
+	frame  4, OAM_2d8d1
+	script_repeat 2
+	frame  6, OAM_2dbe1
+	frame  6, OAM_2dbe9
+	frame  6, OAM_2dbf9
+	frame  6, OAM_2dbf1
+	script_repeat_end
+	script_call AnimScript_248d2
+	frame 60, OAM_2d8e1
+	set_value wStageTransitionCounter, $01
+	script_delay 0
+
+AnimScript_24865:
+	set_motion_script MotionScript_30c04
+	frame 60, OAM_2d909
+	frame 20, OAM_2dbad
+	script_repeat 2
+	frame  6, OAM_2dbe1
+	frame  6, OAM_2dbe9
+	frame  6, OAM_2dbf9
+	frame  6, OAM_2dbf1
+	script_repeat_end
+	frame 31, OAM_2d8e1
+	script_repeat 2
+	frame 10, OAM_2d909
+	frame 30, OAM_2db71
+	script_repeat_end
+	script_call AnimScript_248d2
+	script_call AnimScript_248d2
+	frame 32, OAM_2dbad
+	frame 60, OAM_2d911
+	set_value wStageTransitionCounter, $01
+	script_delay 0
+
+AnimScript_2489d:
+	set_motion_script MotionScript_30c46
+	frame 60, OAM_2dbc5
+	frame 20, OAM_2dbc9
+	frame 16, OAM_2d8d9
+	frame 32, OAM_2d909
+	frame 16, OAM_2d8d9
+	frame 16, OAM_2dbc9
+	frame 20, OAM_2db71
+	frame 20, OAM_2dba9
+	frame 20, OAM_2d909
+	frame 20, OAM_2dba9
+	script_call AnimScript_248e5
+	script_call AnimScript_248e5
+	frame 32, OAM_2dbad
+	frame 60, OAM_2d911
+	set_value wStageTransitionCounter, $01
+	script_delay 0
 
 AnimScript_248d2:
 	frame  4, OAM_2d8d1
@@ -287,9 +550,16 @@ AnimScript_248e5:
 	frame  4, OAM_2db81
 	frame  4, OAM_2d8d1
 	script_ret
-; 0x248f8
 
-SECTION "Bank 9@490b", ROMX[$490b], BANK[$9]
+; unreferenced
+AnimScript_248f8:
+	frame  4, OAM_2dc91
+	frame  4, OAM_2dc9d
+	frame  4, OAM_2dca9
+	frame  4, OAM_2dcb5
+	frame  4, OAM_2dcc1
+	frame  4, OAM_2dccd
+	script_ret
 
 AnimScript_2490b:
 	frame  0, OAM_2dc1d
@@ -297,35 +567,40 @@ AnimScript_2490b:
 AnimScript_2490e:
 	script_exec Func_4ad6
 	set_update_func ObjFunc_CountdownToExplosion, 256
+AnimScript_24916:
 	frame 162, OAM_2dc4d
 .loop
 	frame  2, OAM_2dc55
 	frame  2, OAM_2dc4d
 	jump_rel .loop
-; 0x24921
 
-SECTION "Bank 9@4924", ROMX[$4924], BANK[$9]
+; unreferenced
+AnimScript_24921:
+	frame  0, OAM_2dc5d
 
 AnimScript_24924:
 	script_exec Func_4ad6
 	frame  0, OAM_2dc5d
-; 0x2492a
 
-SECTION "Bank 9@492d", ROMX[$492d], BANK[$9]
+; unreferenced
+AnimScript_2492a:
+	frame  0, OAM_2dc65
 
 AnimScript_2492d:
 	script_exec Func_4ad6
 	frame  0, OAM_2dc65
-; 0x24933
 
-SECTION "Bank 9@4936", ROMX[$4936], BANK[$9]
+; unreferenced
+AnimScript_24933:
+	frame  0, OAM_2dc6d
 
 AnimScript_24936:
 	script_exec Func_4ad6
 	frame  0, OAM_2dc6d
-; 0x2493c
 
-SECTION "Bank 9@493f", ROMX[$493f], BANK[$9]
+; unreferenced
+AnimScript_2493c:
+	frame  0, OAM_2dc75
 
 AnimScript_2493f:
 	script_exec Func_4ad6
@@ -413,9 +688,10 @@ AnimScript_249da:
 	frame  1, OAM_2de09
 	frame  1, OAM_2de0d
 	jump_abs AnimScript_249da
-; 0x249ed
 
-SECTION "Bank 9@49f0", ROMX[$49f0], BANK[$9]
+; unreferenced
+AnimScript_249ed:
+	frame  0, OAM_2de29
 
 AnimScript_249f0:
 	play_sfx SFX_17
@@ -436,18 +712,184 @@ AnimScript_24a10:
 	frame  4, OAM_2dd29
 	frame  4, OAM_2dd31
 	script_end
-; 0x24a1a
 
-SECTION "Bank 9@4b00", ROMX[$4b00], BANK[$9]
+; unreferenced
+AnimScript_24a1a:
+	set_rel_pos
+AnimScript_24a1b:
+	play_sfx SFX_28
+	jumptable_random 3
+	dw AnimScript_24a29
+	dw AnimScript_24a55
+	dw AnimScript_24a90
+	dw AnimScript_24ad1
+
+AnimScript_24a29:
+	create_object AnimScript_2490b, MotionScript_308ab, Data_3421
+	create_object AnimScript_2490b, MotionScript_308bc, Data_3421
+	frame  3, OAM_2dc25
+	frame  3, OAM_2dc2d
+	create_object AnimScript_2490b, MotionScript_308a1, Data_3421
+	create_object AnimScript_2490b, MotionScript_308b2, Data_3421
+	frame  3, OAM_2dc3d
+	frame  3, OAM_2dc45
+	frame  3, OAM_2dc25
+	script_end
+
+AnimScript_24a55:
+	create_object AnimScript_2490b, MotionScript_308c3, Data_3421
+	create_object AnimScript_2490b, MotionScript_308d7, Data_3421
+	create_object AnimScript_2490b, MotionScript_308eb, Data_3421
+	create_object AnimScript_2490b, MotionScript_308ff, Data_3421
+	script_delay 9
+	create_object AnimScript_2490b, MotionScript_308cd, Data_3421
+	create_object AnimScript_2490b, MotionScript_308e1, Data_3421
+	create_object AnimScript_2490b, MotionScript_308f5, Data_3421
+	create_object AnimScript_2490b, MotionScript_30909, Data_3421
+	script_end
+
+AnimScript_24a90:
+	branch_kirby_pos .script_24a97, .script_24ab4
+.script_24a97
+	create_object AnimScript_2490b, MotionScript_30913, Data_3421
+	create_object AnimScript_2490b, MotionScript_30920, Data_3421
+	create_object AnimScript_2490b, MotionScript_3092d, Data_3421
+	create_object AnimScript_2490b, MotionScript_3093a, Data_3421
+	script_end
+.script_24ab4
+	create_object AnimScript_2490b, MotionScript_30947, Data_3421
+	create_object AnimScript_2490b, MotionScript_30954, Data_3421
+	create_object AnimScript_2490b, MotionScript_30961, Data_3421
+	create_object AnimScript_2490b, MotionScript_3096e, Data_3421
+	script_end
+
+AnimScript_24ad1:
+	create_object AnimScript_24aee, MotionScript_3097b, Data_3421
+	create_object AnimScript_24aee, MotionScript_30981, Data_3421
+	create_object AnimScript_24aee, MotionScript_30987, Data_3421
+	create_object AnimScript_24aee, MotionScript_3098d, Data_3421
+	script_end
+
+AnimScript_24aee:
+	frame 10, OAM_2dc1d
+	set_motion_script MotionScript_30008
+	script_delay 10
+	script_end
+
+; unreferenced
+AnimScript_24af9:
+	frame  4, OAM_2dd29
+	frame  4, OAM_2dd31
+	script_end
 
 AnimScript_24b00:
-	set_value wDisableBumpStars, $01
+	set_value wDisableBumpStars, TRUE
 	frame 24, OAM_2dc1d
-	set_value wDisableBumpStars, $00
+	set_value wDisableBumpStars, FALSE
 	script_end
-; 0x24b0c
 
-SECTION "Bank 9@4c2d", ROMX[$4c2d], BANK[$9]
+; unreferenced
+AnimScript_24b0c:
+	frame  4, OAM_2dc1d
+	frame  5, OAM_2dc25
+	frame  5, OAM_2dc2d
+	frame  5, OAM_2dc3d
+	frame  5, OAM_2dc45
+	frame  6, OAM_2dc1d
+	script_end
+
+AnimScript_24b1f:
+	play_sfx SFX_29
+	create_object AnimScript_243be, MotionScript_30008, Data_3421
+	create_object AnimScript_24b0c, MotionScript_3077f, Data_3421
+	create_object AnimScript_24b0c, MotionScript_3078b, Data_3421
+	create_object AnimScript_24b0c, MotionScript_30797, Data_3421
+	create_object AnimScript_24b0c, MotionScript_307a3, Data_3421
+	create_object AnimScript_24b0c, MotionScript_307af, Data_3421
+	create_object AnimScript_24b0c, MotionScript_307bb, Data_3421
+	create_object AnimScript_24b0c, MotionScript_307c7, Data_3421
+	create_object AnimScript_24b0c, MotionScript_307d3, Data_3421
+	script_ret
+
+AnimScript_24b63:
+	create_object AnimScript_243be, MotionScript_30008, Data_3421
+	create_object AnimScript_24ba7, MotionScript_307df, Data_3421
+	create_object AnimScript_24ba7, MotionScript_307f3, Data_3421
+	create_object AnimScript_24ba7, MotionScript_307fd, Data_3421
+	create_object AnimScript_24ba7, MotionScript_307e9, Data_3421
+	script_delay 18
+	create_object AnimScript_24ba7, MotionScript_3081b, Data_3421
+	create_object AnimScript_24ba7, MotionScript_30825, Data_3421
+	create_object AnimScript_24ba7, MotionScript_30807, Data_3421
+	create_object AnimScript_24ba7, MotionScript_30825, Data_3421
+	script_delay 18
+	script_ret
+
+AnimScript_24ba7:
+	frame  3, OAM_2dc1d
+	frame  6, OAM_2dc25
+	frame  0, OAM_2dc1d
+
+; unreferenced
+AnimScript_24bb0:
+	frame  2, OAM_2d8b8
+	script_end
+
+AnimScript_24bb4:
+	script_exec Func_4a1c
+	set_scripts AnimScript_24a10, MotionScript_30008
+
+AnimScript_24bbc:
+	script_exec Func_4a1c
+	set_object_properties Data_35b7
+	set_scripts AnimScript_243be, MotionScript_30008
+
+; unreferenced
+AnimScript_24bc9:
+	set_update_func Func_142a3, NULL
+	jump_abs AnimScript_24000
+
+AnimScript_24bd1:
+	set_flags wPowerUpAttack, $fe, $00
+	script_exec Func_4adf
+	set_update_func Func_141b1, AnimScript_24bbc
+	set_scripts AnimScript_24916, MotionScript_30302
+
+AnimScript_24be3:
+	set_flags wPowerUpAttack, $fe, $00
+	play_sfx SFX_00
+	script_exec Func_4ae6
+	set_scripts AnimScript_2493f, MotionScript_30370
+
+; unreferenced
+AnimScript_24bf4:
+	position_offset 0, 5
+	play_sfx SFX_19
+	set_update_func Func_141b1, AnimScript_24bb4
+	jump_if_not_flags hKirbyFlags3, $20, .loop_2
+.loop_1
+	frame  2, OAM_2dd11
+	frame  2, OAM_2dd19
+	jump_abs .loop_1
+.loop_2
+	frame  2, OAM_2dd01
+	frame  2, OAM_2dd09
+	jump_abs .loop_2
+
+; unreferenced
+AnimScript_24c18:
+	frame  0, OAM_2d8d9
+
+; unreferenced
+AnimScript_24c1b:
+	frame  4, OAM_2dbe1
+	frame  4, OAM_2dbf1
+	frame  4, OAM_2dbf9
+	frame  4, OAM_2dbe9
+	jump_abs AnimScript_24c1b
+
+AnimScript_24c2a:
+	frame  0, OAM_2db69
 
 AnimScript_24c2d:
 	frame 12, OAM_2d8f1
@@ -486,9 +928,43 @@ AnimScript_24c6c:
 	script_repeat_end
 	frame 48, OAM_2de55
 	jump_abs .loop
-; 0x24c7b
 
-SECTION "Bank 9@4ccf", ROMX[$4ccf], BANK[$9]
+; unreferenced
+AnimScript_24c7b:
+	set_update_func Func_14208, NULL
+	branch_kirby_pos .script_24c87, .script_24ca1
+.script_24c87
+	script_call AnimScript_24cbb
+	branch_kirby_pos .script_24c91, .script_24cab
+.script_24c91
+	script_call AnimScript_24cbb
+	branch_kirby_pos .script_24c9b, .script_24cb5
+.script_24c9b
+	script_call AnimScript_24cbb
+	jump_abs AnimScript_24c7b
+.script_24ca1
+	script_call AnimScript_24cc5
+	branch_kirby_pos .script_24c91, .script_24cab
+.script_24cab
+	script_call AnimScript_24cc5
+	branch_kirby_pos .script_24c9b, .script_24cb5
+.script_24cb5
+	script_call AnimScript_24cc5
+	jump_abs AnimScript_24c7b
+
+AnimScript_24cbb:
+	script_repeat 3
+	frame  8, OAM_2dec5
+	frame  8, OAM_2decd
+	script_repeat_end
+	script_ret
+
+AnimScript_24cc5:
+	script_repeat 3
+	frame  8, OAM_2ded5
+	frame  8, OAM_2dedd
+	script_repeat_end
+	script_ret
 
 AnimScript_24ccf:
 	frame  0, OAM_2dee5
@@ -573,9 +1049,13 @@ AnimScript_24d75:
 	frame 17, OAM_2c1b4
 	script_repeat_end
 	script_ret
-; 0x24d7f
 
-SECTION "Bank 9@4d87", ROMX[$4d87], BANK[$9]
+; unreferenced
+AnimScript_24d7f:
+.loop
+	script_call AnimScript_24d8f
+	script_call AnimScript_24d99
+	jump_rel .loop
 
 AnimScript_24d87:
 .loop
@@ -611,9 +1091,14 @@ AnimScript_24dbf:
 	frame 20, OAM_2c1c4
 	frame 20, OAM_2c1bc
 	jump_abs .loop
-; 0x24dc8
 
-SECTION "Bank 9@4dce", ROMX[$4dce], BANK[$9]
+; unreferenced
+AnimScript_24dc8:
+	frame  0, OAM_2c1c4
+
+; unreferenced
+AnimScript_24dcb:
+	frame  0, OAM_2c1bc
 
 AnimScript_24dce:
 	play_sfx SFX_28
@@ -636,20 +1121,43 @@ AnimScript_24de5:
 	frame  9, OAM_2c18c
 	frame  9, OAM_2c194
 	jump_rel .loop
-; 0x24ded
 
-SECTION "Bank 9@4e30", ROMX[$4e30], BANK[$9]
+; unreferenced
+AnimScript_24ded:
+	position_offset 0, -10
+	set_object_properties Data_352c
+	set_update_func Func_141b1, AnimScript_24e17
+	set_motion_script MotionScript_31015
+	frame  0, OAM_2c17c
 
+AnimScript_24e02:
+	position_offset 0, -10
+	set_object_properties Data_352c
+	set_update_func Func_141b1, AnimScript_24e21
+	set_motion_script MotionScript_31015
+	frame  0, OAM_2c18c
+
+AnimScript_24e17:
+	set_object_properties PoppyBrosJrProperties
+	set_scripts AnimScript_24ddd, MotionScript_30fba
+
+AnimScript_24e21:
+	set_object_properties PoppyBrosJrProperties
+	set_scripts AnimScript_24de5, MotionScript_30fc5
+
+; unreferenced
+AnimScript_24e2b:
+	set_update_func Func_140c2, AnimScript_24e83
 AnimScript_24e30:
 	set_motion_script MotionScript_3102a
 .loop
 	script_call AnimScript_24e54
 	script_call AnimScript_24e5e
 	jump_rel .loop
-; 0x24e3d
 
-SECTION "Bank 9@4e42", ROMX[$4e42], BANK[$9]
-
+; unreferenced
+AnimScript_24e3d:
+	set_update_func Func_140c2, AnimScript_24e83
 AnimScript_24e42:
 	set_motion_script MotionScript_31032
 .loop
@@ -690,10 +1198,13 @@ AnimScript_24e71:
 
 AnimScript_24e7d:
 	frame  0, OAM_2c224
-; 0x24e80
 
-SECTION "Bank 9@4e88", ROMX[$4e88], BANK[$9]
+; unreferenced
+AnimScript_24e80:
+	frame  0, OAM_2c26c
 
+AnimScript_24e83:
+	set_object_properties Properties_353e
 AnimScript_24e88:
 	branch_kirby_pos .script_24e8f, .script_24ea1
 .script_24e8f
@@ -712,9 +1223,13 @@ AnimScript_24eb3:
 	script_call AnimScript_24ec3
 	script_call AnimScript_24edf
 	jump_rel .loop
-; 0x24ebb
 
-SECTION "Bank 9@4ec3", ROMX[$4ec3], BANK[$9]
+; unreferenced
+AnimScript_24ebb:
+.loop
+	script_call AnimScript_24edf
+	script_call AnimScript_24ec3
+	jump_rel .loop
 
 AnimScript_24ec3:
 	set_update_func Func_140c2, AnimScript_24ed2
@@ -784,9 +1299,59 @@ AnimScript_24f40:
 	frame 20, OAM_2c1ec
 	set_object_properties Data_3550
 	frame  0, OAM_2c1ec
-; 0x24f69
 
-SECTION "Bank 9@4fb7", ROMX[$4fb7], BANK[$9]
+; unreferenced
+AnimScript_24f69:
+	play_sfx SFX_28
+	branch_kirby_pos .script_24f74, .script_24f7e
+.script_24f74
+	create_object AnimScript_24ded, MotionScript_30008, PoppyBrosJrProperties
+	jump_abs AnimScript_24a29
+.script_24f7e
+	create_object AnimScript_24e02, MotionScript_30008, PoppyBrosJrProperties
+	jump_abs AnimScript_24a29
+
+; unreferenced
+AnimScript_24f88:
+	script_end
+
+; unreferenced
+AnimScript_24f89:
+.loop
+	script_call AnimScript_24f99
+	script_call AnimScript_24fa8
+	jump_rel .loop
+
+; unreferenced
+AnimScript_24f91:
+.loop
+	script_call AnimScript_24fa8
+	script_call AnimScript_24f99
+	jump_rel .loop
+
+AnimScript_24f99:
+.loop
+	frame 10, OAM_2c1d4
+	frame 10, OAM_2c1ec
+	frame 10, OAM_2c1e4
+	frame 10, OAM_2c1dc
+	jump_rel .loop
+
+; unreferenced
+AnimScript_24fa7:
+	script_ret
+
+AnimScript_24fa8:
+.loop
+	frame 10, OAM_2c1dc
+	frame 10, OAM_2c1e4
+	frame 10, OAM_2c1ec
+	frame 10, OAM_2c1d4
+	jump_rel .loop
+
+; unreferenced
+AnimScript_24fb6:
+	script_ret
 
 AnimScript_24fb7:
 	frame  0, OAM_2c160
@@ -867,9 +1432,16 @@ AnimScript_25058:
 	frame  3, OAM_2c0dc
 	frame  8, OAM_2c0c8
 	script_ret
-; 0x25087
 
-SECTION "Bank 9@50a0", ROMX[$50a0], BANK[$9]
+; unreferenced
+AnimScript_25087:
+	set_value wd3f1, $01
+	set_flags wConsumedItems, $00, $40
+	script_exec ScriptFunc_EnableScrollingAndFadeOut
+	script_exec_arg ScriptFunc_AddScore, $00
+	set_flags hHUDFlags, $80, $23
+	script_call AnimScript_24b63
+	script_end
 
 AnimScript_250a0:
 	position_offset -16, 8
@@ -951,8 +1523,6 @@ AnimScript_2515c:
 	frame 10, OAM_2c000
 	script_ret
 
-SECTION "Bank 9@517b", ROMX[$517b], BANK[$9]
-
 AnimScript_2517b:
 	frame  1, OAM_2c068
 	frame 10, OAM_2c078
@@ -962,8 +1532,6 @@ AnimScript_2517b:
 	frame  1, OAM_2c058
 	script_ret
 
-SECTION "Bank 9@5192", ROMX[$5192], BANK[$9]
-
 AnimScript_25192:
 	frame  1, OAM_2c068
 	frame  5, OAM_2c078
@@ -972,9 +1540,25 @@ AnimScript_25192:
 	frame  1, OAM_2c068
 	frame  1, OAM_2c058
 	script_ret
-; 0x251a9
 
-SECTION "Bank 9@51d8", ROMX[$51d8], BANK[$9]
+; unreferenced
+AnimScript_251a9:
+	frame  6, OAM_2c034
+	frame 28, OAM_2c024
+	script_exec Func_4897
+	script_end
+
+; unreferenced
+AnimScript_251b3:
+	play_music MUSIC_NONE
+	play_sfx SFX_29
+	create_object AnimScript_24981, MotionScript_312a2, Data_3421
+	script_call AnimScript_24b1f
+	script_exec_arg ScriptFunc_AddScore, $01
+	set_flags hHUDFlags, $80, $23
+	frame 30, OAM_2d8b8
+	set_value wClearScreenFlags, $81
+	frame  0, OAM_2c044
 
 AnimScript_251d8:
 	frame  0, OAM_2dcf9
@@ -1019,8 +1603,6 @@ AnimScript_251db:
 	frame  8, OAM_2c1e4
 	frame  8, OAM_2c1ec
 	jump_rel .script_25233
-
-SECTION "Bank 9@5241", ROMX[$5241], BANK[$9]
 
 AnimScript_25241:
 	frame  1, OAM_2de45
@@ -1072,18 +1654,22 @@ AnimScript_25298:
 	script_repeat_end
 	frame 33, OAM_2c204
 	jump_abs AnimScript_25298
-; 0x252aa
 
-SECTION "Bank 9@52ad", ROMX[$52ad], BANK[$9]
+; unreferenced
+AnimScript_252aa:
+	frame  0, OAM_2c47c
 
 AnimScript_252ad:
 	frame 10, OAM_2c47c
 	frame 10, OAM_2c484
 	frame 10, OAM_2c48c
 	jump_abs AnimScript_252ad
-; 0x252b9
 
-SECTION "Bank 9@52c2", ROMX[$52c2], BANK[$9]
+; unreferenced
+AnimScript_252b9:
+	frame 16, OAM_2c484
+	frame 16, OAM_2c48c
+	frame  0, OAM_2c3fc
 
 AnimScript_252c2:
 	frame 10, OAM_2c3ec
@@ -1109,9 +1695,14 @@ AnimScript_252ce:
 	create_object AnimScript_2530a, MotionScript_3130e, GlunkPodProperties
 	frame 40, OAM_2c3fc
 	jump_abs AnimScript_252ce
-; 0x25304
 
-SECTION "Bank 9@530a", ROMX[$530a], BANK[$9]
+; unreferenced
+AnimScript_25304:
+	frame  0, OAM_2c408
+
+; unreferenced
+AnimScript_25307:
+	frame  0, OAM_2c404
 
 AnimScript_2530a:
 	frame  2, OAM_2e899
@@ -1137,9 +1728,12 @@ AnimScript_25334:
 	frame  8, OAM_2c3b4
 	frame  8, OAM_2c3c0
 	jump_abs AnimScript_25334
-; 0x2533d
 
-SECTION "Bank 9@5346", ROMX[$5346], BANK[$9]
+; unreferenced
+AnimScript_2533d:
+	frame  8, OAM_2c3c8
+	frame  8, OAM_2c3d4
+	jump_abs AnimScript_2533d
 
 AnimScript_25346:
 .loop
@@ -1414,9 +2008,43 @@ AnimScript_2558c:
 AnimScript_2559b:
 	frame 55, OAM_2c43c
 	jump_rel AnimScript_2558c
-; 0x255a0
 
-SECTION "Bank 9@5616", ROMX[$5616], BANK[$9]
+; unreferenced
+AnimScript_255a0:
+	create_object AnimScript_249f0, MotionScript_31761, ShotzoBulletProperties
+	set_motion_script MotionScript_302a4
+	frame 70, OAM_2def5
+	create_object AnimScript_249f0, MotionScript_31752, ShotzoBulletProperties
+	set_motion_script MotionScript_302a4
+	frame 70, OAM_2def5
+	create_object AnimScript_249f0, MotionScript_31764, ShotzoBulletProperties
+	set_motion_script MotionScript_302a4
+	frame 160, OAM_2def5
+	jump_abs AnimScript_255a0
+
+; unreferenced
+AnimScript_255d0:
+	branch_kirby_pos .script_255d7, .script_255ec
+.script_255d7
+	frame 45, OAM_2deed
+	create_object AnimScript_249f0, MotionScript_302f2, ShotzoBulletProperties
+	set_motion_script MotionScript_30298
+	frame 45, OAM_2deed
+	jump_abs AnimScript_255d0
+.script_255ec
+	frame 45, OAM_2defd
+	create_object AnimScript_249f0, MotionScript_302ef, ShotzoBulletProperties
+	set_motion_script MotionScript_302b0
+	frame 45, OAM_2defd
+	jump_abs AnimScript_255d0
+
+; unreferenced
+AnimScript_25601:
+	frame 45, OAM_2df05
+	create_object AnimScript_249f0, MotionScript_302f8, ShotzoBulletProperties
+	set_motion_script MotionScript_302bc
+	frame 45, OAM_2df05
+	jump_abs AnimScript_25601
 
 AnimScript_25616:
 	frame 25, OAM_2dee5
@@ -1424,9 +2052,30 @@ AnimScript_25616:
 	set_motion_script MotionScript_3028c
 	frame 10, OAM_2dee5
 	jump_abs AnimScript_25616
-; 0x2562b
 
-SECTION "Bank 9@5679", ROMX[$5679], BANK[$9]
+; unreferenced
+AnimScript_2562b:
+	frame 45, OAM_2df05
+	create_object AnimScript_249f0, MotionScript_302d1, ShotzoBulletProperties
+	set_motion_script MotionScript_302bc
+	frame 45, OAM_2df05
+	frame 45, OAM_2defd
+	create_object AnimScript_249f0, MotionScript_31764, ShotzoBulletProperties
+	set_motion_script MotionScript_302b0
+	frame 45, OAM_2defd
+	jump_abs AnimScript_2562b
+
+; unreferenced
+AnimScript_25652:
+	frame 45, OAM_2dee5
+	create_object AnimScript_249f0, MotionScript_302f5, ShotzoBulletProperties
+	set_motion_script MotionScript_3028c
+	frame 45, OAM_2dee5
+	frame 45, OAM_2deed
+	create_object AnimScript_25d81, MotionScript_302ef, GlunkPodProperties
+	set_motion_script MotionScript_30298
+	frame 45, OAM_2deed
+	jump_abs AnimScript_25652
 
 AnimScript_25679:
 	set_motion_script MotionScript_321b8
@@ -1565,9 +2214,14 @@ AnimScript_257d5:
 	frame  8, OAM_2de5d
 	frame  8, OAM_2de65
 	jump_abs AnimScript_257c3
-; 0x257ea
 
-SECTION "Bank 9@57f0", ROMX[$57f0], BANK[$9]
+; unreferenced
+AnimScript_257ea:
+	frame  0, OAM_2df9d
+
+; unreferenced
+AnimScript_257ed:
+	frame  0, OAM_2dfb5
 
 AnimScript_257f0:
 	frame  8, OAM_2df9d
@@ -1590,15 +2244,42 @@ AnimScript_25802:
 	frame 24, OAM_2dfad
 	script_repeat_end
 	jump_abs AnimScript_25802
-; 0x25817
 
-SECTION "Bank 9@5856", ROMX[$5856], BANK[$9]
+; unreferenced
+AnimScript_25817:
+	set_update_func Func_14105, NULL
+	script_exec ScriptFunc_SetImmuneFlag
+	frame 30, OAM_2dfa5
+	script_exec ScriptFunc_ResetImmuneFlag
+	frame 10, OAM_2df9d
+	frame 40, OAM_2df95
+	frame  0, OAM_2df9d
+
+; unreferenced
+AnimScript_2582e:
+	set_update_func Func_14105, NULL
+	script_exec ScriptFunc_SetImmuneFlag
+	frame  0, OAM_2dfa5
+
+; unreferenced
+AnimScript_25839:
+	set_update_func Func_14105, NULL
+	script_exec ScriptFunc_SetImmuneFlag
+	frame 112, OAM_2dfbd
+	frame 48, OAM_2dfb5
+	script_exec ScriptFunc_ResetImmuneFlag
+	script_repeat 3
+	frame 32, OAM_2dfad
+	frame 10, OAM_2dfb5
+	script_repeat_end
+	jump_abs AnimScript_25839
 
 AnimScript_25856:
 	frame  0, OAM_2dfcd
-; 0x25859
 
-SECTION "Bank 9@585c", ROMX[$585c], BANK[$9]
+; unreferenced
+AnimScript_25859:
+	frame  0, OAM_2dfe5
 
 AnimScript_2585c:
 	frame 10, OAM_2dfcd
@@ -1634,9 +2315,22 @@ AnimScript_2585c:
 	script_call AnimScript_2451d
 	frame 30, OAM_2dfe5
 	jump_abs .script_25889
-; 0x258b6
 
-SECTION "Bank 9@58d6", ROMX[$58d6], BANK[$9]
+; unreferenced
+AnimScript_258b6:
+	set_motion_script MotionScript_318d3
+	frame 12, OAM_2dfcd
+	frame 20, OAM_2dfc5
+	jump_random 13 percent - 1, .script_258c7
+	dw AnimScript_258b6 ; bug, supposed to be jump_rel
+
+.script_258c7
+	script_repeat 6
+	frame  4, OAM_2dfed
+	frame  4, OAM_2dfe5
+	script_repeat_end
+	script_call AnimScript_2451d
+	jump_abs AnimScript_258b6
 
 AnimScript_258d6:
 	set_update_func Func_14105, NULL
@@ -1650,9 +2344,10 @@ AnimScript_258d6:
 	script_repeat_end
 	script_call AnimScript_2451d
 	jump_abs AnimScript_258d6
-; 0x258f6
 
-SECTION "Bank 9@58f9", ROMX[$58f9], BANK[$9]
+; unreferenced
+AnimScript_258f6:
+	frame  0, OAM_2e045
 
 AnimScript_258f9:
 	frame 16, OAM_2e045
@@ -1674,9 +2369,20 @@ AnimScript_25917:
 	frame  4, OAM_2e055
 	frame  4, OAM_2e05d
 	jump_abs AnimScript_25917
-; 0x25926
 
-SECTION "Bank 9@593e", ROMX[$593e], BANK[$9]
+; unreferenced
+AnimScript_25926:
+	frame  0, OAM_2e065
+
+; unreferenced
+AnimScript_25929:
+	frame  8, OAM_2e065
+	frame 48, OAM_2e045
+	frame  4, OAM_2e04d
+	frame  4, OAM_2e055
+	frame  4, OAM_2e05d
+	frame  8, OAM_2e045
+	jump_abs AnimScript_25929
 
 AnimScript_2593e:
 	frame 16, OAM_2e045
@@ -1832,10 +2538,10 @@ AnimScript_25a5f:
 AnimScript_25a6f:
 	set_object_properties ExplosionProperties
 	set_scripts AnimScript_243be, MotionScript_30008
-; 0x25a79
 
-SECTION "Bank 9@5a7c", ROMX[$5a7c], BANK[$9]
-
+; unreferenced
+AnimScript_25a79:
+	frame 176, OAM_2e24d
 AnimScript_25a7c:
 	frame 80, OAM_2e255
 	frame  4, OAM_2e25d
@@ -1979,9 +2685,16 @@ AnimScript_25b9c:
 	frame  4, OAM_2e0b5
 	frame  4, OAM_2e0d5
 	jump_abs AnimScript_25b9c
-; 0x25bab
 
-SECTION "Bank 9@5bc0", ROMX[$5bc0], BANK[$9]
+; unreferenced
+AnimScript_25bab:
+	frame  8, OAM_2e06d
+	frame  6, OAM_2e095
+	frame  6, OAM_2e0b5
+	frame  8, OAM_2e0d5
+	frame  6, OAM_2e0b5
+	frame  6, OAM_2e095
+	jump_abs AnimScript_25bab
 
 AnimScript_25bc0:
 	position_offset -10, -16
@@ -1990,9 +2703,28 @@ AnimScript_25bc0:
 AnimScript_25bc6:
 	position_offset -10, 16
 	jump_abs AnimScript_249f0
-; 0x25bcc
 
-SECTION "Bank 9@5c09", ROMX[$5c09], BANK[$9]
+; unreferenced
+AnimScript_25bcc:
+	play_music MUSIC_NONE
+	set_flags hKirbyFlags5, $00, $20
+	set_flags hKirbyFlags6, $40, $00
+	set_flags hPalFadeFlags, $20, $10
+	set_value wObjectAnimScriptPtrs, $23
+	set_value $d2bb, $16
+	set_value wLevelXSection, $20
+	set_rel_pos
+	create_object AnimScript_24981, MotionScript_31d72, Data_3421
+	script_call AnimScript_24b1f
+	set_scripts AnimScript_24000, MotionScript_31d31
+
+; unreferenced
+AnimScript_25bfb:
+	play_sfx SFX_28
+	frame  6, OAM_2dd21
+	frame  2, OAM_2dd29
+	frame  2, OAM_2dd31
+	script_end
 
 AnimScript_25c09:
 .loop
@@ -2024,9 +2756,12 @@ AnimScript_25c49:
 	frame  8, OAM_2c518
 	frame  8, OAM_2c520
 	jump_abs AnimScript_25c49
-; 0x25c52
 
-SECTION "Bank 9@5c5b", ROMX[$5c5b], BANK[$9]
+; unreferenced
+AnimScript_25c52:
+	frame  8, OAM_2c528
+	frame  8, OAM_2c530
+	jump_abs AnimScript_25c52
 
 AnimScript_25c5b:
 	frame 12, OAM_2c518
@@ -2040,9 +2775,10 @@ AnimScript_25c64:
 
 AnimScript_25c6d:
 	frame  0, OAM_2c540
-; 0x25c70
 
-SECTION "Bank 9@5c73", ROMX[$5c73], BANK[$9]
+; unreferenced
+AnimScript_25c70:
+	frame  0, OAM_2c538
 
 AnimScript_25c73:
 	frame  0, OAM_2c548
@@ -2111,9 +2847,13 @@ AnimScript_25cf3:
 	frame 10, OAM_2c558
 	frame 10, OAM_2c560
 	jump_rel .loop
-; 0x25cfb
 
-SECTION "Bank 9@5d03", ROMX[$5d03], BANK[$9]
+; unreferenced
+AnimScript_25cfb:
+.loop
+	frame 10, OAM_2c580
+	frame 10, OAM_2c588
+	jump_rel .loop
 
 AnimScript_25d03:
 	set_object_properties Properties_34ed
@@ -2169,9 +2909,13 @@ AnimScript_25d3c:
 AnimScript_25d78:
 	position_offset 0, 6
 	jump_abs AnimScript_249f0
-; 0x25d7e
 
-SECTION "Bank 9@5d84", ROMX[$5d84], BANK[$9]
+; unreferenced
+AnimScript_25d7e:
+	frame  0, OAM_2c5a8
+
+AnimScript_25d81:
+	frame  0, OAM_2c5ac
 
 AnimScript_25d84:
 	jump_abs AnimScript_25d87.script_25dac
@@ -2389,9 +3133,15 @@ AnimScript_25f39:
 AnimScript_25f4b:
 	set_object_properties Data_3421
 	set_scripts AnimScript_25ed5, MotionScript_32161
-; 0x25f55
 
-SECTION "Bank 9@5f60", ROMX[$5f60], BANK[$9]
+; unreferenced
+AnimScript_25f55:
+	script_end
+
+; unreferenced
+AnimScript_25f56:
+	create_object AnimScript_24a1b, MotionScript_30008, Data_3421
+	jump_abs AnimScript_25ed5
 
 AnimScript_25f60:
 	set_object_properties StandardEnemyGravityProperties
@@ -2424,9 +3174,15 @@ AnimScript_25f96:
 
 AnimScript_25fa3:
 	set_scripts AnimScript_2461d, MotionScript_303ff
-; 0x25fa8
 
-SECTION "Bank 9@5fbb", ROMX[$5fbb], BANK[$9]
+; unreferenced
+AnimScript_25fa8:
+	frame 64, OAM_2c6f4
+	script_repeat 3
+	create_object AnimScript_25d81, MotionScript_31785, GlunkPodProperties
+	frame 16, OAM_2c6f4
+	script_repeat_end
+	jump_abs AnimScript_25fa8
 
 AnimScript_25fbb:
 	frame 20, OAM_2c794
@@ -2455,9 +3211,11 @@ AnimScript_25fdc:
 AnimScript_25fef:
 	script_call AnimScript_2606d
 	jump_abs AnimScript_25fef
-; 0x25ff5
 
-SECTION "Bank 9@5ffb", ROMX[$5ffb], BANK[$9]
+; unreferenced
+AnimScript_25ff5:
+	script_call AnimScript_260e7
+	jump_abs AnimScript_25ff5
 
 AnimScript_25ffb:
 	script_call AnimScript_2609c
@@ -2561,8 +3319,6 @@ AnimScript_260e7:
 	frame 16, OAM_2c75c
 	frame 20, OAM_2c754
 	script_ret
-
-SECTION "Bank 9@6116", ROMX[$6116], BANK[$9]
 
 AnimScript_26116:
 	frame  0, OAM_2d8b8
@@ -2963,9 +3719,13 @@ AnimScript_2649c:
 	script_repeat_end
 	frame  4, OAM_2cbac
 	script_end
-; 0x264b2
 
-SECTION "Bank 9@64b7", ROMX[$64b7], BANK[$9]
+	dw $58b8 ; ?
+
+; unreferenced
+AnimScript_264b4:
+	script_delay 112
+	script_end
 
 AnimScript_264b7:
 	frame  8, OAM_2cbb8
@@ -3131,8 +3891,6 @@ AnimScript_26594:
 
 .script_265d9
 	jump_abs AnimScript_243f6
-
-SECTION "Bank 9@65dc", ROMX[$65dc], BANK[$9]
 
 AnimScript_265dc:
 	frame 128, OAM_2d8b8
@@ -3943,9 +4701,35 @@ AnimScript_26d20:
 	frame 16, OAM_2e7e9
 	frame 16, OAM_2e801
 	jump_rel .loop
-; 0x26d2e
 
-SECTION "Bank 9@6d67", ROMX[$6d67], BANK[$9]
+; unreferenced
+AnimScript_26d2e:
+	play_sfx SFX_EXPLOSION
+	script_call AnimScript_26d40
+	create_object AnimScript_26d60, MotionScript_33117, Data_3421
+	script_call AnimScript_26d40
+	script_end
+
+AnimScript_26d40:
+	frame  2, OAM_2dd39
+	frame  2, OAM_2dd51
+	frame  2, OAM_2dd69
+	frame  2, OAM_2dd81
+	frame  2, OAM_2dd99
+	frame  2, OAM_2ddb1
+	frame  2, OAM_2ddc9
+	frame  2, OAM_2dde1
+	script_ret
+
+; unreferenced
+AnimScript_26d59:
+	set_abs_pos
+	set_position 80, 80
+	jump_abs AnimScript_24972
+
+AnimScript_26d60:
+	set_value wClearScreenFlags, $81
+	frame  0, OAM_2e889
 
 AnimScript_26d67:
 	frame  0, OAM_2e4a9
@@ -4062,9 +4846,98 @@ AnimScript_26e42:
 	frame  8, OAM_2e6a9
 	frame  8, OAM_2e6e9
 	jump_rel .loop
-; 0x26e4a
 
-SECTION "Bank 9@6ef6", ROMX[$6ef6], BANK[$9]
+; unreferenced
+AnimScript_26e4a:
+.loop
+	frame  8, OAM_2e529
+	frame  8, OAM_2e569
+	jump_rel .loop
+
+; unreferenced
+AnimScript_26e52:
+.loop
+	frame  8, OAM_2e5a9
+	frame  8, OAM_2e5e9
+	jump_rel .loop
+
+; unreferenced
+AnimScript_26e5a:
+	script_repeat 2
+	frame  2, OAM_2e429
+	frame  2, OAM_2e569
+	frame  2, OAM_2e5a9
+	frame  2, OAM_2e4e9
+	script_repeat_end
+	script_exec Func_4897
+	script_end
+
+; unreferenced
+AnimScript_26e6d:
+	play_music MUSIC_NONE
+	create_object AnimScript_24981, MotionScript_3032d, Data_3421
+	script_call AnimScript_24b1f
+	script_exec_arg ScriptFunc_AddScore, $07
+	set_flags hHUDFlags, $80, $23
+	frame 30, OAM_2d8b8
+	set_value wClearScreenFlags, $81
+	script_end
+
+AnimScript_26e8c:
+	jumptable_random 3
+	dw .script_26e96
+	dw .script_26ebc
+	dw .script_26ea2
+	dw .script_26ebc
+
+.script_26e96
+	script_repeat 1
+	frame 16, OAM_2de75
+	frame 16, OAM_2de7d
+	script_repeat_end
+	jump_abs .script_26eab
+.script_26ea2
+	script_repeat 3
+	frame 16, OAM_2de75
+	frame 16, OAM_2de7d
+	script_repeat_end
+.script_26eab
+	set_motion_script MotionScript_30008
+	script_repeat 8
+	frame  3, OAM_2de8d
+	frame  3, OAM_2de75
+	script_repeat_end
+	script_call AnimScript_261de
+.script_26ebc
+	set_scripts AnimScript_245e1, MotionScript_302d4
+
+AnimScript_26ec1:
+	jumptable_random 3
+	dw .script_26ecb
+	dw .script_26ef1
+	dw .script_26ed7
+	dw .script_26ef1
+
+.script_26ecb
+	script_repeat 1
+	frame 16, OAM_2de9d
+	frame 16, OAM_2dea5
+	script_repeat_end
+	jump_abs .script_26ee0
+.script_26ed7
+	script_repeat 3
+	frame 16, OAM_2de9d
+	frame 16, OAM_2dea5
+	script_repeat_end
+.script_26ee0
+	set_motion_script MotionScript_30008
+	script_repeat 8
+	frame  3, OAM_2deb5
+	frame  3, OAM_2de9d
+	script_repeat_end
+	script_call AnimScript_2623f
+.script_26ef1
+	set_scripts AnimScript_245ea, MotionScript_302d7
 
 AnimScript_26ef6:
 	frame  0, OAM_2d8b8
@@ -4199,9 +5072,35 @@ AnimScript_2703d:
 	frame 80, OAM_2c494
 	play_sfx SFX_JUMP
 	frame  0, OAM_2c494
-; 0x2704a
 
-SECTION "Bank 9@70a0", ROMX[$70a0], BANK[$9]
+; unreferenced
+AnimScript_2704a:
+	jump_if_equal wBossHP, $00, .script_27064
+	script_call AnimScript_24b63
+	set_value wKirbySideOfScreen, $00
+	set_value wd3cf, $00
+	set_value wd3d0, $00
+	set_value wd3d1, $00
+	script_end
+.script_27064
+	jump_if_equal wStage, $04, .script_27070
+	jump_if_equal wArea, $08, .script_2708c
+.script_27070
+	play_music MUSIC_NONE
+	play_sfx SFX_29
+	script_call AnimScript_24b1f
+	script_exec_arg ScriptFunc_AddScore, $03
+	set_flags hHUDFlags, $80, $23
+	script_delay 120
+	set_flags hKirbyFlags5, $ff, $04
+	script_end
+.script_2708c
+	script_call AnimScript_24b63
+	script_exec_arg ScriptFunc_AddScore, $02
+	set_flags hHUDFlags, $80, $23
+	script_delay 120
+	set_flags hKirbyFlags5, $ff, $04
+	script_end
 
 AnimScript_270a0:
 	script_delay 1
@@ -4401,9 +5300,49 @@ AnimScript_271fe:
 .script_272be
 	frame  8, OAM_2ca0c
 	set_scripts .script_272be, MotionScript_337bb.script_339d1
-; 0x272c6
 
-SECTION "Bank 9@7338", ROMX[$7338], BANK[$9]
+; unreferenced
+AnimScript_272c6:
+	branch_kirby_pos .script_272cd, .script_272d2
+.script_272cd
+	frame 30, OAM_2caf8
+	jump_rel .script_272d5
+.script_272d2
+	frame 30, OAM_2cb14
+.script_272d5
+	script_exec Func_4897
+	script_end
+
+; unreferenced
+AnimScript_272d9:
+	set_flags hKirbyFlags5, $00, $20
+	set_value wObjectAnimScriptTimers, $ff
+	play_music MUSIC_NONE
+	create_object AnimScript_27329, MotionScript_30008, Data_3421
+	create_object AnimScript_24981, MotionScript_30008, Data_3421
+	set_value wClearScreenFlags, $81
+	branch_kirby_pos .script_272ff, .script_27314
+.script_272ff
+	play_sfx SFX_00
+	set_motion_script MotionScript_33a37
+.script_27308
+	frame  4, OAM_2caf8
+	create_object AnimScript_24b00, MotionScript_3082f, Data_3421
+	jump_rel .script_27308
+.script_27314
+	play_sfx SFX_00
+	set_motion_script MotionScript_33a2e
+.script_2731d
+	frame  4, OAM_2cb14
+	create_object AnimScript_24b00, MotionScript_3082f, Data_3421
+	jump_rel .script_2731d
+
+AnimScript_27329:
+	frame  1, OAM_2d8b8
+	script_delay 180
+	set_flags hKirbyFlags5, $20, $04
+	script_delay 0
+	frame  0, OAM_2dc25
 
 AnimScript_27338:
 	create_object AnimScript_2743e, MotionScript_33a8e, Properties_3628
@@ -4477,9 +5416,16 @@ AnimScript_27446:
 
 AnimScript_2744a:
 	frame  0, OAM_2d8b8
-; 0x2744d
 
-SECTION "Bank 9@7459", ROMX[$7459], BANK[$9]
+; unreferenced
+AnimScript_2744d:
+	position_offset 0, -6
+	jump_abs AnimScript_2490b
+
+; unreferenced
+AnimScript_27453:
+	position_offset 0, 6
+	jump_abs AnimScript_2490b
 
 AnimScript_27459:
 	play_sfx SFX_23
