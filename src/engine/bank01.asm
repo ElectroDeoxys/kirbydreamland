@@ -1447,9 +1447,20 @@ ScriptFunc_CheckHalfSideOfScreen:
 	ld a, d
 	ld [wKirbySideOfScreen], a
 	ret
-; 0x4a0c
 
-SECTION "Bank 1@4a1c", ROMX[$4a1c], BANK[$1]
+; unreferenced?
+Func_4a0c:
+	ld d, $00
+	ld hl, wObjectScreenYPositions
+	add hl, bc
+	ld a, [hl]
+	cp e
+	jr c, .asm_4a17
+	inc d
+.asm_4a17
+	ld a, d
+	ld [wKirbySideOfScreen], a
+	ret
 
 Func_4a1c:
 	push bc
@@ -1725,9 +1736,6 @@ ScriptFunc_AddScore:
 	dw  2500 ; SCORE_2500
 	dw     0 ; $8
 	dw 10000 ; SCORE_10000
-; 0x4ba4
-
-SECTION "Bank 1@4ba6", ROMX[$4ba6], BANK[$1]
 
 Func_4ba6:
 	ld hl, wObjectPropertyFlags

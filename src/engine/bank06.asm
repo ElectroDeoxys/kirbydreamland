@@ -1,8 +1,4 @@
-SECTION "Title Screen", ROMX[$4000], BANK[$6]
-
 INCLUDE "engine/title_screen.asm"
-
-SECTION "Bank 6@40e4", ROMX[$40e4], BANK[$6]
 
 ; starts stage that is in wStage
 StartStage::
@@ -67,7 +63,7 @@ StartStage::
 	call ResetTimer
 	call Func_18285
 
-	ld d, $00 ; useless
+	ld d, $00 ; unused
 
 	ld a, [wStage]
 	ld c, a
@@ -2390,14 +2386,14 @@ Data_1926a:
 	assert_table_length NUM_MT_DEDEDE_AREAS
 
 BG_192d6: INCBIN "data/bg_192d6.bin"
-; 0x19452
 
-SECTION "Bank 6@5786", ROMX[$5786], BANK[$6]
+; unreferenced
+BG_19452: INCBIN "data/BG_19452.bin"
 
 BG_19786: INCBIN "data/bg_19786.bin"
-; 0x198ac
 
-SECTION "Bank 6@5e86", ROMX[$5e86], BANK[$6]
+; unreferenced
+BG_198ac: INCBIN "data/BG_198ac.bin"
 
 BG_19e86: INCBIN "data/bg_19e86.bin"
 
@@ -2421,6 +2417,11 @@ Data_1b497:: INCBIN "data/data_1b497.bin.lz"
 Data_1b653:: INCBIN "data/data_1b653.bin.lz"
 Data_1b77c:: INCBIN "data/data_1b77c.bin.lz"
 
-SECTION "Bank 6@7b0d", ROMX[$7b0d], BANK[$6]
+; unreferenced
+Data_1b835:: INCBIN "data/data_1b835.bin.lz"
+Data_1b8df:: INCBIN "data/data_1b8df.bin.lz"
+Data_1b95d:: INCBIN "data/data_1b95d.bin.lz"
+Data_1b9f9:: INCBIN "data/data_1b9f9.bin.lz"
+Data_1baaf:: INCBIN "data/data_1baaf.bin.lz"
 
 Gfx_1bb0d: INCBIN "gfx/gfx_1bb0d.2bpp.lz"

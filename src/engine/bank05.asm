@@ -140,9 +140,6 @@ Func_140ce:
 	call Func_140d5
 	ret c
 	jp SetObjectUpdateFuncArgAsAnimScript
-; 0x140d5
-
-SECTION "Bank 5@40d5", ROMX[$40d5], BANK[$5]
 
 Func_140d5:
 	ld hl, wObjectStatuses
@@ -163,9 +160,21 @@ Func_140d5:
 	set OBJFLAG_3_F, [hl]
 	xor a
 	ret
-; 0x140f1
 
-SECTION "Bank 5@4105", ROMX[$4105], BANK[$5]
+; unreferenced?
+Func_140f1:
+	ld hl, wd1a0
+	add hl, bc
+	bit 0, [hl]
+	jr z, .asm_140fe
+	res 0, [hl]
+	set 3, [hl]
+	ret
+.asm_140fe
+	bit 3, [hl]
+	ret z
+	res 3, [hl]
+	jr SetObjectUpdateFuncArgAsAnimScript
 
 Func_14105:
 	ld hl, wObjectStatuses
@@ -212,9 +221,26 @@ Func_14105:
 	dw -1.00
 	dw  0.25
 	dw  1.00
-; 0x14148
 
-SECTION "Bank 5@415e", ROMX[$415e], BANK[$5]
+; unreferenced?
+Func_14148:
+	ld hl, wObjectScreenXPositions
+	ld a, [hl]
+	add hl, bc
+	sub [hl]
+	bit 7, a
+	jr z, .asm_14154
+	cpl
+	inc a
+.asm_14154
+	cp $03
+	ret nc
+	ld hl, wObjectScreenYPositions
+	ld a, [hl]
+	add hl, bc
+	cp [hl]
+	ret nc
+;	fallthrough
 
 SetObjectUpdateFuncArgAsAnimScript:
 	ld hl, wObjectAnimScriptPtrs
@@ -241,6 +267,8 @@ Func_14172:
 	ld a, [wd3cd]
 	and a
 	ret z
+;	fallthrough
+Func_14180:
 	ld hl, wObjectUpdateFuncArgs
 	add hl, bc
 	add hl, bc
@@ -256,9 +284,24 @@ Func_14172:
 .asm_14195
 	pop bc
 	ret
-; 0x14197
 
-SECTION "Bank 5@41b1", ROMX[$41b1], BANK[$5]
+; unreferenced?
+Func_14197:
+	ld hl, wObjectStatuses
+	add hl, bc
+	set 5, [hl]
+	ld hl, wd1a0
+	add hl, bc
+	bit 0, [hl]
+	jr nz, .asm_141a8
+	res 3, [hl]
+	ret
+.asm_141a8
+	res 0, [hl]
+	bit 3, [hl]
+	ret nz
+	set 3, [hl]
+	jr Func_14180
 
 Func_141b1:
 	ld hl, wObjectStatuses

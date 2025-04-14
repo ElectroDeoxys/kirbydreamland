@@ -2196,26 +2196,26 @@ OAM_2d8b0:
 	db  -8,   0, $8a, OAMF_PAL0
 	db  -8,  -8, $88, OAMF_PAL0 | OAM_END
 
-OAM_2d8b8:
+OAM_2d8b8::
 	db $80 ; end
 
-OAM_2d8b9:
+OAM_2d8b9::
 	db  -8,  -8, $02, OAMF_PAL0
 	db  -8,   0, $12, OAMF_PAL0 | OAM_END
 
-OAM_2d8c1:
+OAM_2d8c1::
 	db  -8,  -8, $04, OAMF_PAL0
 	db  -8,   0, $14, OAMF_PAL0 | OAM_END
 
-OAM_2d8c9:
+OAM_2d8c9::
 	db  -8,  -8, $06, OAMF_PAL0
 	db  -8,   0, $16, OAMF_PAL0 | OAM_END
 
-OAM_2d8d1:
+OAM_2d8d1::
 	db  -8,  -8, $08, OAMF_PAL0
 	db  -8,   0, $18, OAMF_PAL0 | OAM_END
 
-OAM_2d8d9:
+OAM_2d8d9::
 	db  -8,  -8, $00, OAMF_PAL0
 	db  -8,   0, $10, OAMF_PAL0 | OAM_END
 
@@ -2223,23 +2223,23 @@ OAM_2d8e1:
 	db  -8,  -8, $02, OAMF_PAL0
 	db  -8,   0, $50, OAMF_PAL0 | OAM_END
 
-OAM_2d8e9:
+OAM_2d8e9::
 	db  -8,   0, $02, OAMF_PAL0 | OAMF_XFLIP
 	db  -8,  -8, $12, OAMF_PAL0 | OAMF_XFLIP | OAM_END
 
-OAM_2d8f1:
+OAM_2d8f1::
 	db  -8,   0, $04, OAMF_PAL0 | OAMF_XFLIP
 	db  -8,  -8, $14, OAMF_PAL0 | OAMF_XFLIP | OAM_END
 
-OAM_2d8f9:
+OAM_2d8f9::
 	db  -8,   0, $06, OAMF_PAL0 | OAMF_XFLIP
 	db  -8,  -8, $16, OAMF_PAL0 | OAMF_XFLIP | OAM_END
 
-OAM_2d901:
+OAM_2d901::
 	db  -8,   0, $08, OAMF_PAL0 | OAMF_XFLIP
 	db  -8,  -8, $18, OAMF_PAL0 | OAMF_XFLIP | OAM_END
 
-OAM_2d909:
+OAM_2d909::
 	db  -8,   0, $00, OAMF_PAL0 | OAMF_XFLIP
 	db  -8,  -8, $10, OAMF_PAL0 | OAMF_XFLIP | OAM_END
 
@@ -2247,7 +2247,7 @@ OAM_2d911:
 	db  -8,   0, $02, OAMF_PAL0 | OAMF_XFLIP
 	db  -8,  -8, $50, OAMF_PAL0 | OAMF_XFLIP | OAM_END
 
-OAM_2d919:
+OAM_2d919::
 	db   1, -12, $22, OAMF_PAL0
 	db   1,  -4, $30, OAMF_PAL0
 	db   1,   4, $32, OAMF_PAL0
@@ -2255,7 +2255,7 @@ OAM_2d919:
 	db -15,  -4, $20, OAMF_PAL0
 	db -15,   4, $0c, OAMF_PAL0 | OAM_END
 
-OAM_2d931:
+OAM_2d931::
 	db   0,   4, $32, OAMF_PAL0
 	db   0, -12, $22, OAMF_PAL0
 	db   0,  -4, $30, OAMF_PAL0
@@ -2263,7 +2263,7 @@ OAM_2d931:
 	db -16,  -4, $20, OAMF_PAL0
 	db -16, -12, $1e, OAMF_PAL0 | OAM_END
 
-OAM_2d949:
+OAM_2d949::
 	db   1,   4, $22, OAMF_PAL0 | OAMF_XFLIP
 	db   1,  -4, $30, OAMF_PAL0 | OAMF_XFLIP
 	db   1, -12, $32, OAMF_PAL0 | OAMF_XFLIP
@@ -2271,56 +2271,190 @@ OAM_2d949:
 	db -15,  -4, $20, OAMF_PAL0 | OAMF_XFLIP
 	db -15, -12, $0c, OAMF_PAL0 | OAMF_XFLIP | OAM_END
 
-OAM_2d961:
+OAM_2d961::
 	db   0,   4, $22, OAMF_PAL0 | OAMF_XFLIP
 	db   0,  -4, $30, OAMF_PAL0 | OAMF_XFLIP
 	db   0, -12, $32, OAMF_PAL0 | OAMF_XFLIP
 	db -16,   4, $1e, OAMF_PAL0 | OAMF_XFLIP
 	db -16,  -4, $20, OAMF_PAL0 | OAMF_XFLIP
 	db -16, -12, $1c, OAMF_PAL0 | OAMF_XFLIP | OAM_END
-; 0x2d979
 
-SECTION "Bank B@5a69", ROMX[$5a69], BANK[$b]
+OAM_2d979::
+	db   0, -12, $28, OAMF_PAL0
+	db   0,  -4, $30, OAMF_PAL0 | OAMF_XFLIP
+	db   0,   4, $28, OAMF_PAL0 | OAMF_XFLIP
+	db -16, -12, $1e, OAMF_PAL0
+	db -16,  -4, $20, OAMF_PAL0
+	db -16,   4, $1c, OAMF_PAL0 | OAM_END
 
-OAM_2da69:
+OAM_2d991::
+	db   0, -12, $28, OAMF_PAL0
+	db   0,  -4, $30, OAMF_PAL0 | OAMF_XFLIP
+	db   0,   4, $28, OAMF_PAL0 | OAMF_XFLIP
+	db -16, -12, $0e, OAMF_PAL0
+	db -16,  -4, $20, OAMF_PAL0
+	db -16,   4, $0c, OAMF_PAL0 | OAM_END
+
+OAM_2d9a9::
+	db   0, -13, $28, OAMF_PAL0
+	db   0,  -5, $30, OAMF_PAL0 | OAMF_XFLIP
+	db   0,   3, $38, OAMF_PAL0 | OAMF_XFLIP
+	db -16, -13, $0e, OAMF_PAL0
+	db -16,  -5, $20, OAMF_PAL0
+	db -16,   3, $1c, OAMF_PAL0 | OAM_END
+
+OAM_2d9c1::
+	db   1, -11, $38, OAMF_PAL0
+	db   1,  -3, $30, OAMF_PAL0 | OAMF_XFLIP
+	db   1,   5, $28, OAMF_PAL0 | OAMF_XFLIP
+	db -15, -11, $1e, OAMF_PAL0
+	db -15,  -3, $20, OAMF_PAL0
+	db -15,   5, $0c, OAMF_PAL0 | OAM_END
+
+OAM_2d9d9::
+	db   0, -12, $38, OAMF_PAL0
+	db   0,  -4, $30, OAMF_PAL0 | OAMF_XFLIP
+	db   0,   4, $38, OAMF_PAL0 | OAMF_XFLIP
+	db -16, -12, $0e, OAMF_PAL0
+	db -16,  -4, $20, OAMF_PAL0
+	db -16,   4, $0c, OAMF_PAL0 | OAM_END
+
+OAM_2d9f1::
+	db   0,   4, $28, OAMF_PAL0 | OAMF_XFLIP
+	db   0,  -4, $30, OAMF_PAL0
+	db   0, -12, $28, OAMF_PAL0
+	db -16,   4, $1e, OAMF_PAL0 | OAMF_XFLIP
+	db -16,  -4, $20, OAMF_PAL0 | OAMF_XFLIP
+	db -16, -12, $1c, OAMF_PAL0 | OAMF_XFLIP | OAM_END
+
+OAM_2da09::
+	db   0,   4, $28, OAMF_PAL0 | OAMF_XFLIP
+	db   0,  -4, $30, OAMF_PAL0
+	db   0, -12, $28, OAMF_PAL0
+	db -16,   4, $0e, OAMF_PAL0 | OAMF_XFLIP
+	db -16,  -4, $20, OAMF_PAL0 | OAMF_XFLIP
+	db -16, -12, $0c, OAMF_PAL0 | OAMF_XFLIP | OAM_END
+
+OAM_2da21::
+	db   0,   5, $28, OAMF_PAL0 | OAMF_XFLIP
+	db   0,  -3, $30, OAMF_PAL0
+	db   0, -11, $38, OAMF_PAL0
+	db -16,   5, $0e, OAMF_PAL0 | OAMF_XFLIP
+	db -16,  -3, $20, OAMF_PAL0 | OAMF_XFLIP
+	db -16, -11, $1c, OAMF_PAL0 | OAMF_XFLIP | OAM_END
+
+OAM_2da39::
+	db   1,   3, $38, OAMF_PAL0 | OAMF_XFLIP
+	db   1,  -5, $30, OAMF_PAL0
+	db   1, -13, $28, OAMF_PAL0
+	db -15,   3, $1e, OAMF_PAL0 | OAMF_XFLIP
+	db -15,  -5, $20, OAMF_PAL0 | OAMF_XFLIP
+	db -15, -13, $0c, OAMF_PAL0 | OAMF_XFLIP | OAM_END
+
+OAM_2da51::
+	db   0,   4, $38, OAMF_PAL0 | OAMF_XFLIP
+	db   0,  -4, $30, OAMF_PAL0
+	db   0, -12, $38, OAMF_PAL0
+	db -16,   4, $0e, OAMF_PAL0 | OAMF_XFLIP
+	db -16,  -4, $20, OAMF_PAL0 | OAMF_XFLIP
+	db -16, -12, $0c, OAMF_PAL0 | OAMF_XFLIP | OAM_END
+
+OAM_2da69::
 	db  -8,  -8, $08, OAMF_PAL0
 	db  -8,   0, $1a, OAMF_PAL0 | OAM_END
 
-OAM_2da71:
+OAM_2da71::
 	db   0,  -8, $26, OAMF_PAL0
 	db   0,   0, $36, OAMF_PAL0
 	db -16,  -8, $24, OAMF_PAL0
 	db -16,   0, $34, OAMF_PAL0 | OAM_END
 
-OAM_2da81:
+OAM_2da81::
 	db   1,   4, $32, OAMF_PAL0
 	db   1, -12, $22, OAMF_PAL0
 	db   1,  -4, $30, OAMF_PAL0
 	db -15,   4, $40, OAMF_PAL0
 	db -15,  -4, $20, OAMF_PAL0
 	db -15, -12, $0e, OAMF_PAL0 | OAM_END
-; 0x2da99
 
-SECTION "Bank B@5ae9", ROMX[$5ae9], BANK[$b]
+OAM_2da99::
+	db   0,   4, $32, OAMF_PAL0
+	db   0, -12, $22, OAMF_PAL0
+	db   0,  -4, $30, OAMF_PAL0
+	db -16,   4, $40, OAMF_PAL0
+	db -16,  -4, $20, OAMF_PAL0
+	db -16, -12, $1e, OAMF_PAL0 | OAM_END
 
-OAM_2dae9:
+OAM_2dab1::
+	db   1, -12, $28, OAMF_PAL0
+	db   1,  -4, $30, OAMF_PAL0 | OAMF_XFLIP
+	db   1,   4, $28, OAMF_PAL0 | OAMF_XFLIP
+	db -15, -12, $0e, OAMF_PAL0
+	db -15,  -4, $20, OAMF_PAL0
+	db -15,   4, $40, OAMF_PAL0 | OAM_END
+
+OAM_2dac9::
+	db   0, -12, $28, OAMF_PAL0
+	db   0,  -4, $30, OAMF_PAL0 | OAMF_XFLIP
+	db   0,   4, $28, OAMF_PAL0 | OAMF_XFLIP
+	db -16, -12, $0e, OAMF_PAL0
+	db -16,  -4, $20, OAMF_PAL0
+	db -16,   4, $3a, OAMF_PAL0 | OAM_END
+
+OAM_2dae1::
+	db  -8,  -8, $08, OAMF_PAL0
+	db  -8,   0, $0a, OAMF_PAL0 | OAM_END
+
+OAM_2dae9::
 	db  -8,   0, $08, OAMF_PAL0 | OAMF_XFLIP
 	db  -8,  -8, $1a, OAMF_PAL0 | OAMF_XFLIP | OAM_END
 
-OAM_2daf1:
+OAM_2daf1::
 	db   0,   0, $26, OAMF_PAL0 | OAMF_XFLIP
 	db   0,  -8, $36, OAMF_PAL0 | OAMF_XFLIP
 	db -16,   0, $24, OAMF_PAL0 | OAMF_XFLIP
 	db -16,  -8, $34, OAMF_PAL0 | OAMF_XFLIP | OAM_END
-; 0x2db01
 
-SECTION "Bank B@5b69", ROMX[$5b69], BANK[$b]
+OAM_2db01::
+	db   1,   4, $22, OAMF_PAL0 | OAMF_XFLIP
+	db   1,  -4, $30, OAMF_PAL0 | OAMF_XFLIP
+	db   1, -12, $32, OAMF_PAL0 | OAMF_XFLIP
+	db -15,   4, $0e, OAMF_PAL0 | OAMF_XFLIP
+	db -15,  -4, $20, OAMF_PAL0 | OAMF_XFLIP
+	db -15, -12, $40, OAMF_PAL0 | OAMF_XFLIP | OAM_END
 
-OAM_2db69:
+OAM_2db19::
+	db   0,   4, $22, OAMF_PAL0 | OAMF_XFLIP
+	db   0,  -4, $30, OAMF_PAL0 | OAMF_XFLIP
+	db   0, -12, $32, OAMF_PAL0 | OAMF_XFLIP
+	db -16,   4, $1e, OAMF_PAL0 | OAMF_XFLIP
+	db -16,  -4, $20, OAMF_PAL0 | OAMF_XFLIP
+	db -16, -12, $40, OAMF_PAL0 | OAMF_XFLIP | OAM_END
+
+OAM_2db31::
+	db   0,   4, $28, OAMF_PAL0 | OAMF_XFLIP
+	db   0,  -4, $30, OAMF_PAL0
+	db   0, -12, $28, OAMF_PAL0
+	db -16,   4, $0e, OAMF_PAL0 | OAMF_XFLIP
+	db -16,  -4, $20, OAMF_PAL0 | OAMF_XFLIP
+	db -16, -12, $40, OAMF_PAL0 | OAMF_XFLIP | OAM_END
+
+OAM_2db49::
+	db   0,   4, $28, OAMF_PAL0 | OAMF_XFLIP
+	db   0,  -4, $30, OAMF_PAL0
+	db   0, -12, $28, OAMF_PAL0
+	db -16,   4, $0e, OAMF_PAL0 | OAMF_XFLIP
+	db -16,  -4, $20, OAMF_PAL0 | OAMF_XFLIP
+	db -16, -12, $3a, OAMF_PAL0 | OAMF_XFLIP | OAM_END
+
+OAM_2db61::
+	db  -8,   0, $08, OAMF_PAL0 | OAMF_XFLIP
+	db  -8,  -8, $0a, OAMF_PAL0 | OAMF_XFLIP | OAM_END
+OAM_2db69::
 	db  -8,  -8, $42, OAMF_PAL0
 	db  -8,   0, $52, OAMF_PAL0 | OAM_END
 
-OAM_2db71:
+OAM_2db71::
 	db  -8,   0, $42, OAMF_PAL0 | OAMF_XFLIP
 	db  -8,  -8, $52, OAMF_PAL0 | OAMF_XFLIP | OAM_END
 
@@ -2351,35 +2485,35 @@ OAM_2dba1:
 OAM_2dba9:
 	db  -8,  -4, $54, OAMF_PAL0 | OAMF_XFLIP | OAM_END
 
-OAM_2dbad:
+OAM_2dbad::
 	db  -8,   0, $46, OAMF_PAL0 | OAMF_XFLIP
 	db  -8,  -8, $56, OAMF_PAL0 | OAMF_XFLIP | OAM_END
 
-OAM_2dbb5:
+OAM_2dbb5::
 	db -16,   0, $46, OAMF_PAL0 | OAMF_XFLIP
 	db -16,  -8, $56, OAMF_PAL0 | OAMF_XFLIP | OAM_END
 
-OAM_2dbbd:
+OAM_2dbbd::
 	db  -8,   0, $54, OAMF_PAL0 | OAMF_XFLIP | OAM_END
 
-OAM_2dbc1:
+OAM_2dbc1::
 	db  -8,  -8, $54, OAMF_PAL0 | OAMF_XFLIP | OAM_END
 
 OAM_2dbc5:
 	db  -8,  -4, $54, OAMF_PAL0 | OAM_END
 
-OAM_2dbc9:
+OAM_2dbc9::
 	db  -8,  -8, $46, OAMF_PAL0
 	db  -8,   0, $56, OAMF_PAL0 | OAM_END
 
-OAM_2dbd1:
+OAM_2dbd1::
 	db -16,  -8, $46, OAMF_PAL0
 	db -16,   0, $56, OAMF_PAL0 | OAM_END
 
-OAM_2dbd9:
+OAM_2dbd9::
 	db  -8,   0, $54, OAMF_PAL0 | OAM_END
 
-OAM_2dbdd:
+OAM_2dbdd::
 	db  -8,  -8, $54, OAMF_PAL0 | OAM_END
 
 OAM_2dbe1:

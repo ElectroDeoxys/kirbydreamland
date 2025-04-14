@@ -1027,7 +1027,7 @@ LevelObject_3cdef:
 	object 7, 1, 0, 0, AnimScript_25a5f, MotionScript_30008, CoconutProperties
 LevelObject_3cdf9:
 	object 3, 13, 8, 0, AnimScript_24572, MotionScript_31e24, GordoProperties
-	dw $364f
+	dw PuffyProperties ; ?
 LevelObject_3ce05:
 	object 6, 19, 8, 0, AnimScript_24960, MotionScript_30008, OneUpProperties, 3
 
@@ -2244,9 +2244,9 @@ Data_3de38:
 	dbw $00, NULL
 	dbw $0b, LevelObject_3dfa8
 	db $ff ; end
-; 0x3de3f
 
-SECTION "Bank F@5e42", ROMX[$5e42], BANK[$f]
+; unreferenced
+	dbw $00, NULL
 
 LevelObject_3de42:
 	object 38, 3, 3, 0, AnimScript_24c2d, MotionScript_30d36, KirbyItemProperties, 0

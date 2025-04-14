@@ -1607,9 +1607,10 @@ NoteFrequencies:
 	bigdw $7da ; 3449.3 Hz ; A_5
 	bigdw $7dc ; 3640.9 Hz ; A#5
 	bigdw $7de ; 3855.1 Hz ; B_5
-; 0x15486
 
-SECTION "Bank 5@548e", ROMX[$548e], BANK[$5]
+; unreferenced
+Data_15486:
+	db $1a, $1a, $1a, $1a, $2e, $2e, $2e, $2e
 
 ; offsets in wAudioStack reserved for each channel
 ; holds stack for general audio commands

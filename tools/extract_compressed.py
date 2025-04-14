@@ -12,7 +12,7 @@ for o in args.offsets:
     #cache whole bank
     offset = int(o, 16)
     bank = int(offset / 0x4000)
-    source = reader.getROMBytes(bank * 0x4000, 0x4000)
+    source = reader.get_rom_bytes(bank * 0x4000, 0x4000)
     offset = offset % 0x4000 # convert to offset relative in bank
 
     pos = offset

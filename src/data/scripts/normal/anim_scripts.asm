@@ -1414,8 +1414,10 @@ AnimScript_20dda:
 	frame  0, OAM_2c224
 ; 0x20ddd
 
-SECTION "Bank 8@4de5", ROMX[$4de5], BANK[$8]
+SECTION "Bank 8@4de0", ROMX[$4de0], BANK[$8]
 
+AnimScript_20de0:
+	set_object_properties Properties_353e
 AnimScript_20de5:
 	branch_kirby_pos .script_20de5, .script_20dfe
 .script_20de5

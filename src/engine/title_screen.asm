@@ -106,4 +106,12 @@ TitleScreen::
 .text
 	db "EXTRA GAME"
 .text_end
-; 0x180d4
+
+; unreferenced
+Func_180d4:
+	ld a, TRUE
+	ld [wExtraGameEnabled], a
+	ld a, BANK(Epilogue)
+	ld [wROMBank], a
+	ld [$2100], a
+	jp Epilogue

@@ -176,9 +176,10 @@ Data_1c1a2:
 
 Data_1c1a8::
 	dw AnimScript_20ec6, MotionScript_10008, Data_3421
-; 0x1c1ae
 
-SECTION "Bank 7@41b4", ROMX[$41b4], BANK[$7]
+; unreferenced
+Data_1c1ae:
+	dw AnimScript_20de0, MotionScript_10008, Properties_353e
 
 Data_1c1b4::
 	dw AnimScript_20ec6, MotionScript_10008, Data_3421
@@ -218,9 +219,6 @@ Data_1c1f6::
 
 Data_1c1fc::
 	dw AnimScript_22def, MotionScript_10008, Data_3421
-; 0x1c1fc
-
-SECTION "Bank 7@4202", ROMX[$4202], BANK[$7]
 
 Data_1c202:
 	dbw $00, NULL

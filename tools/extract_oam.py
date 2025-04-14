@@ -1,5 +1,6 @@
 import reader
 import argparse
+import symbols
 import re
 
 parser = argparse.ArgumentParser(description='Extracts OAM data.')
@@ -7,6 +8,8 @@ parser.add_argument('offsets', metavar='offsets', type=str, nargs='+',
                     help='offset(s) to parse')
 
 args = parser.parse_args()
+
+syms = symbols.read_symbols()
 
 out_str = ""
 
@@ -16,6 +19,9 @@ def convert_signed(x):
 for o in reader.standardise_list(args.offsets):
     offset = int(o, 16)
     pos = 0
+
+    if offset in syms:
+        continue
 
     out_str += f"OAM_{o}:\n"
 

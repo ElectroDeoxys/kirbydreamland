@@ -944,7 +944,7 @@ ENDR
 	ld hl, wObjectStatuses
 	add hl, bc
 	ld [hl], a
-	ld de, $58b8
+	ld de, OAM_2d8b8
 	ld hl, wSpriteOAMPtrs
 	add hl, bc
 	add hl, bc
@@ -3842,8 +3842,15 @@ MACRO object_properties
 
 IF (\1) & PROPERTY_2
 
-ASSERT _NARG == 4
+IF _NARG == 4
 	db \4 ; ?
+ELSE
+	db \4 ; damage dealt to Kirby
+	db \5 ; health points
+	db \6 ; ?
+	db (\7) / 10 ; score when defeated
+	dw \8 ; when object is defeated
+ENDC
 
 ELIF (\1) & PROPERTY_PERSISTENT
 
@@ -3875,9 +3882,6 @@ Data_3429::
 
 InvincibilityCandyProperties::
 	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, INVINCIBILITY_CANDY, Data_1c172
-; 0x342f
-
-SECTION "Home@3435", ROM0[$3435]
 
 BombProperties::
 	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, BOMB, Data_1c172
@@ -3899,18 +3903,20 @@ WarpStarFloatingProperties::
 
 MaximTomatoProperties::
 	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, MAXIM_TOMATO, Data_1c172
-; 0x345f
 
-SECTION "Home@3465", ROM0[$3465]
+; unreferenced
+Properties_345f::
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_PERSISTENT, 16, 16, MAXIM_TOMATO, Data_1c172
 
 EnergyDrinkProperties::
 	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 12, 16, ENERGY_DRINK, Data_1c172
 
 SparklingStarProperties::
 	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_PERSISTENT, 16, 16, SPARKLING_STAR, Data_1c172
-; 0x3471
 
-SECTION "Home@3477", ROM0[$3477]
+; unreferenced
+Properties_3471::
+	object_properties PROPERTY_SINKABLE | PROPERTY_PERSISTENT, 16, 16, SPARKLING_STAR, Data_1c172
 
 OneUpProperties::
 	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY | PROPERTY_PERSISTENT, 16, 16, ONE_UP, Data_1c172
@@ -3928,16 +3934,18 @@ Properties_3495::
 	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $01, 200, Data_1c154
 
 Properties_349e::
-	object_properties PROPERTY_REL_POS | PROPERTY_2, 12, 12, $01
-; 0x34a2
+	object_properties PROPERTY_REL_POS | PROPERTY_2, 12, 12, 1, 1, $00, 200, Data_1c154
 
-SECTION "Home@34b9", ROM0[$34b9]
+; unreferenced
+Properties_34a7::
+	object_properties $00, 12, 12, 1, 1, $03, 200, Data_1c154
+
+; unreferenced
+Properties_34b0::
+	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $03, 400, Data_1c154
 
 GordoProperties::
 	object_properties PROPERTY_REL_POS, 12, 12, 3, 100, $00, 0
-; 0x34be
-
-SECTION "Home@34c0", ROM0[$34c0]
 
 Properties_34c0::
 	object_properties $00, 12, 12, 3, 100, $01, 0, Data_1c154
@@ -3950,8 +3958,6 @@ ShotzoBulletProperties::
 
 ShotzoProperties::
 	object_properties PROPERTY_REL_POS, 12, 12, 1, 100, $01, 30, Data_1c154
-
-SECTION "Home@34e4", ROM0[$34e4]
 
 ScarfyProperties::
 	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $03, 400, Data_1c160
@@ -3967,9 +3973,10 @@ CappyProperties::
 
 CaplessCappyProperties::
 	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE, 12, 12, 1, 1, $03, 200, Data_1c154
-; 0x3511
 
-SECTION "Home@351a", ROM0[$351a]
+; unreferenced
+Properties_3511::
+	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $03, 50, Data_1c154
 
 TwizzyProperties::
 	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $03, 200, Data_1c154
@@ -4011,10 +4018,11 @@ Data_3586::
 	object_properties PROPERTY_REL_POS, 26, 64, 2, 6, $09, 0, Data_1c1cc
 
 Data_358f::
-	object_properties PROPERTY_REL_POS | PROPERTY_2, 26, 32, $06
-; 0x3593
+	db PROPERTY_REL_POS | PROPERTY_2, 26 / 2, 32 / 2
 
-SECTION "Home@3596", ROM0[$3596]
+; unreferenced
+Properties_3592::
+	object_properties PROPERTY_1 | PROPERTY_2, 2, 2, $00
 
 Data_3596::
 	object_properties PROPERTY_REL_POS, 12, 12, 1, 60, $01, 0
@@ -4063,21 +4071,16 @@ Properties_35e9::
 
 LololoProperties::
 	object_properties $00, 12, 12, 1, 3, $09, 0, Data_1c1d2
-; 0x35fb
 
-SECTION "Home@3604", ROM0[$3604]
+; unreferenced
+Properties_35fb::
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE, 12, 12, 1, 1, $03, 300, Data_1c154
 
 Properties_3604::
-	object_properties PROPERTY_REL_POS | PROPERTY_2, 0, 0, $00
-; 0x3608
-
-SECTION "Home@360d", ROM0[$360d]
+	object_properties PROPERTY_REL_POS | PROPERTY_2, 0, 0, 0, 1, $00, 0, Data_1c1fc
 
 Properties_360d::
-	object_properties PROPERTY_REL_POS | PROPERTY_2 | PROPERTY_SINKABLE | PROPERTY_GRAVITY, 0, 0, $00
-; 0x3611
-
-SECTION "Home@3616", ROM0[$3616]
+	object_properties PROPERTY_REL_POS | PROPERTY_2 | PROPERTY_SINKABLE | PROPERTY_GRAVITY, 0, 0, 0, 1, $00, 0, Data_1c1fc
 
 Properties_3616::
 	object_properties PROPERTY_REL_POS, 22, 26, 1, 10, $09, 0, Data_1c1f6
@@ -4108,9 +4111,9 @@ PuffyProperties::
 GlunkProperties::
 SirKibbleProperties::
 	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $03, 500, Data_1c154
-; 0x3658
 
-SECTION "Home@366a", ROM0[$366a]
+CoconutProperties::
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE, 6, 6, 1, 1, $03, 50, Data_1c154
 
 Data_366a::
 	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY, 6, 6, 1, 1, $03, 50, Data_1c154
@@ -4122,16 +4125,7 @@ SirKibbleBladeProperties::
 	object_properties PROPERTY_REL_POS, 8, 8, 1, 1, $01, 50, Data_1c154
 
 Data_3685::
-	db PROPERTY_REL_POS, $06, $06, $01
-; 0x3689
-
-SECTION "Home@3661", ROM0[$3661]
-
-CoconutProperties::
-	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE, 6, 6, 1, 1, $03, 50, Data_1c154
-; 0x366a
-
-SECTION "Home@368e", ROM0[$368e]
+	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $03, 10, Data_1c154
 
 Data_368e::
 	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY, 12, 12, 1, 1, $03, 500, Data_1c154
@@ -4141,21 +4135,44 @@ MumbiesProperties::
 
 MumbiesOrbitingProperties::
 	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $01, 500, Data_1c154
-; 0x36a0
-
-SECTION "Home@36a9", ROM0[$36a9]
 
 ConerProperties::
 	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY, 12, 12, 1, 1, $03, 300, Data_1c154
-; 0x366a
 
-SECTION "Home@36cd", ROM0[$36cd]
+; unreferenced
+Properties_36b2::
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE, 12, 12, 1, 1, $03, 300, Data_1c154
+
+; unreferenced
+Properties_36bb::
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE, 12, 12, 1, 1, $03, 500, Data_1c154
+
+; unreferenced
+Properties_36c4::
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY, 12, 12, 2, 1, $03, 200, Data_1c154
 
 Properties_36cd::
 	object_properties PROPERTY_REL_POS, 12, 12, 2, 1, $03, 200, Data_1c154
-; 0x36d6
 
-SECTION "Home@3703", ROM0[$3703]
+; unreferenced
+Properties_36d6::
+	object_properties PROPERTY_REL_POS, 12, 12, 2, 1, $01, 200, Data_1c154
+
+; unreferenced
+Properties_36df::
+	object_properties PROPERTY_REL_POS | PROPERTY_2, 12, 12, 2, 1, $00, 200, Data_1c154
+
+; unreferenced
+Properties_36e8::
+	object_properties $00, 12, 12, 2, 1, $03, 200, Data_1c154
+
+; unreferenced
+Properties_36f1::
+	object_properties PROPERTY_REL_POS, 12, 12, 2, 1, $03, 400, Data_1c154
+
+; unreferenced
+Properties_36fa::
+	object_properties PROPERTY_REL_POS, 6, 6, 2, 0, $11, 10, Data_1c154
 
 Properties_3703::
 	object_properties PROPERTY_REL_POS, 12, 12, 2, 100, $01, 0, Data_1c154
@@ -4174,18 +4191,20 @@ Properties_3727::
 
 Properties_3730::
 	object_properties PROPERTY_REL_POS, 12, 12, 2, 1, $03, 500, Data_1c154
-; 0x3739
 
-SECTION "Home@3742", ROM0[$3742]
+; unreferenced
+Properties_3739::
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY, 12, 12, 1, 1, $03, 500, Data_1c154
 
 Properties_3742::
 	object_properties PROPERTY_REL_POS, 12, 12, 2, 1, $03, 500, Data_1c154
 
 Properties_374b::
 	object_properties PROPERTY_REL_POS, 12, 12, 2, 1, $01, 500, Data_1c154
-; 0x3754
 
-SECTION "Home@375d", ROM0[$375d]
+; unreferenced
+Properties_3754::
+	object_properties PROPERTY_REL_POS, 8, 8, 2, 1, $01, 50, Data_1c154
 
 InitInhaleParticleXCoords::
 	xor a
