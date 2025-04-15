@@ -392,7 +392,7 @@ AnimScript_Hit:
 	frame  4, OAM_2dd31
 	script_end
 
-AnimScript_20a00:
+AnimScript_DefeatStars_RelPos:
 	set_rel_pos
 AnimScript_DefeatStars:
 	play_sfx SFX_28
@@ -507,7 +507,7 @@ AnimScript_20b8d:
 	frame  6, OAM_2dc25
 	frame  0, OAM_2dc1d
 
-AnimScript_20b96:
+AnimScript_UnkSpitStarFX:
 	frame  2, OAM_2d8b8
 	script_end
 
@@ -520,7 +520,7 @@ AnimScript_DestructiveExplosion:
 	set_object_properties Data_35b7
 	set_scripts AnimScript_Explosion, MotionScript_10008
 
-AnimScript_20baf:
+AnimScript_DiveHitbox:
 	set_update_func Func_142a3, NULL
 	jump_abs AnimScript_20000
 
@@ -536,7 +536,7 @@ AnimScript_MikeAttack:
 	script_exec Func_4ae6
 	set_scripts AnimScript_20925, MotionScript_10370
 
-AnimScript_20bda:
+AnimScript_FirePellet:
 	position_offset 0, 5
 	play_sfx SFX_19
 	set_update_func Func_141b1, AnimScript_DestructiveHit
@@ -765,7 +765,7 @@ AnimScript_20d83:
 
 ; unreferenced
 AnimScript_20d8d:
-	set_update_func Func_140c2, AnimScript_20de0
+	set_update_func Func_140c2, AnimScript_GrizzoSeparated
 AnimScript_20d92:
 	set_motion_script MotionScript_10f06
 .loop
@@ -775,7 +775,7 @@ AnimScript_20d92:
 
 ; unreferenced
 AnimScript_20d9f:
-	set_update_func Func_140c2, AnimScript_20de0
+	set_update_func Func_140c2, AnimScript_GrizzoSeparated
 
 AnimScript_20da4:
 	set_motion_script MotionScript_10f0e
@@ -817,10 +817,11 @@ AnimScript_20dda:
 AnimScript_20ddd:
 	frame  0, OAM_2c26c
 
-AnimScript_20de0:
+AnimScript_GrizzoSeparated:
 	set_object_properties Properties_353e
 AnimScript_20de5:
 	branch_kirby_pos .script_20de5, .script_20dfe
+
 .script_20de5
 	set_motion_script MotionScript_10f3c
 	frame 30, OAM_2c254
@@ -828,9 +829,6 @@ AnimScript_20de5:
 	set_scripts AnimScript_20dc5, MotionScript_10f5a
 
 .script_20dfe
-
-; unreferenced
-AnimScript_20dfe:
 	set_motion_script MotionScript_10f4b
 	frame 30, OAM_2c29c
 	set_object_properties GrizzoProperties
@@ -920,7 +918,7 @@ AnimScript_20e9d:
 	set_object_properties Data_3550
 	frame  0, OAM_2c1ec
 
-AnimScript_20ec6:
+AnimScript_PoppyBrosJrSeparated:
 	play_sfx SFX_28
 	branch_kirby_pos .script_20ed1, .script_20edb
 .script_20ed1
@@ -1063,7 +1061,7 @@ AnimScript_PoppyBrosSr:
 	frame  8, OAM_2c0c8
 	script_ret
 
-AnimScript_21004:
+AnimScript_OnPoppyBrosSrDestroyed:
 	set_value wd3f1, $01
 	set_flags wConsumedItems, $00, 1 << 6
 	script_exec ScriptFunc_EnableScrollingAndFadeOut
@@ -1154,13 +1152,13 @@ AnimScript_WhispyWoods:
 	frame  1, OAM_2c058
 	script_ret
 
-AnimScript_210e7:
+AnimScript_WhispyWoodsDespawnGuard:
 	frame  6, OAM_2c034
 	frame 28, OAM_2c024
 	script_exec Func_4897
 	script_end
 
-AnimScript_210f1:
+AnimScript_OnWhispyWoodsDestroyed:
 	play_music MUSIC_NONE
 	play_sfx SFX_29
 	create_object AnimScript_20967, MotionScript_111c7, Data_3421
@@ -2306,7 +2304,7 @@ AnimScript_21a73:
 	position_offset -10, 16
 	jump_abs AnimScript_Bullet
 
-AnimScript_21a79:
+AnimScript_OnKaboolaDestroyed:
 	play_music MUSIC_NONE
 	set_flags hKirbyFlags5, $00, KIRBY5F_UNK5
 	set_flags hKirbyFlags6, KIRBY6F_UNK6, $00
@@ -2730,26 +2728,26 @@ AnimScript_21da7:
 	jump_rel .loop
 
 AnimScript_21dc9:
-	create_object AnimScript_21d82, MotionScript_11e25, Data_3421
+	create_object AnimScript_21d82, MotionScript_ParasolSeparated, Data_3421
 	set_object_properties StandardEnemyProperties
 	frame  1, OAM_2de55
 	script_exec Func_4afb
 
 AnimScript_21ddb:
-	create_object AnimScript_21d82, MotionScript_11e25, Data_3421
+	create_object AnimScript_21d82, MotionScript_ParasolSeparated, Data_3421
 	set_object_properties StandardEnemyProperties
 	frame  1, OAM_2de75
 	script_exec Func_4afb
 
 AnimScript_21ded:
 	set_object_properties Data_3421
-	set_scripts AnimScript_21d82, MotionScript_11e25
+	set_scripts AnimScript_21d82, MotionScript_ParasolSeparated
 
 ; unreferenced
 AnimScript_21df7:
 	script_end
 
-AnimScript_21df8:
+AnimScript_ParasolSeparated:
 	create_object AnimScript_DefeatStars, MotionScript_10008, Data_3421
 	frame  0, OAM_2c654
 
@@ -4060,7 +4058,7 @@ AnimScript_22863:
 	frame 16, OAM_2e801
 	jump_rel .loop
 
-AnimScript_22871:
+AnimScript_KrackoJrExplosion:
 	play_sfx SFX_EXPLOSION
 	script_call .script_22883
 	create_object AnimScript_228a3, MotionScript_12a9a, Data_3421
@@ -4213,7 +4211,7 @@ AnimScript_2298f:
 	frame  8, OAM_2e5e9
 	jump_rel .loop
 
-AnimScript_22997:
+AnimScript_KrackoDespawnGuard:
 	script_repeat 2
 	frame  2, OAM_2e429
 	frame  2, OAM_2e569
@@ -4223,7 +4221,7 @@ AnimScript_22997:
 	script_exec Func_4897
 	script_end
 
-AnimScript_229aa:
+AnimScript_OnKrackoDestroyed:
 	play_music MUSIC_NONE
 	create_object AnimScript_20967, MotionScript_1032d, Data_3421
 	script_call AnimScript_20b05
@@ -4406,7 +4404,7 @@ AnimScript_22b53:
 	play_sfx SFX_JUMP
 	frame  0, OAM_2c494
 
-AnimScript_22b60:
+AnimScript_OnLololoLalalaDestroyed:
 	jump_if_equal wBossHP, 0, .script_22b7a
 	script_call AnimScript_20b49
 	set_value wKirbySideOfScreen, $00
@@ -4635,7 +4633,7 @@ AnimScript_22d14:
 	frame 16, OAM_2ca0c
 	set_scripts .script_22dd4, MotionScript_13109.script_13319
 
-AnimScript_22ddc:
+AnimScript_KingDededeDespawnGuard:
 	branch_kirby_pos .script_22de3, .script_22de8
 .script_22de3
 	frame 30, OAM_2caf8

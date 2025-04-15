@@ -938,8 +938,7 @@ MotionScript_KirbyMike:
 	set_velocities  2, VEL_RIGHT_0_50, 0
 	jump_abs .loop
 
-; unreferenced
-MotionScript_30cbc:
+MotionScript_InvincibilityStar:
 	jumptable_random 7
 	dw .script_30cce
 	dw .script_30cdb
@@ -2836,14 +2835,14 @@ MotionScript_31d31:
 	set_flags hHUDFlags, $80, $23
 	set_flags hEngineFlags, $02, $00
 	set_flags wd1a0, $30, $00
-	set_value wFoodPowerUpCounter, $00
-	set_value $d3e0, $00
+	set_value wFoodPowerUpCounter + 0, $00
+	set_value wFoodPowerUpCounter + 1, $00
 	set_value wPowerUpAttack, $00
 	script_repeat 16
 	set_velocities  1, 0, VEL_UP_1_00
 	set_velocities  2, 0, 0
 	inc_value wSCY
-	dec_value $d0d1
+	dec_value wObjectYCoords + (OBJECT_SLOT_KIRBY * 3) + $1
 	dec_value wKirbyScreenY
 	script_repeat_end
 	inc_value wLevelYSection
@@ -3304,7 +3303,7 @@ MotionScript_3214d:
 	create_object AnimScript_25f4b, MotionScript_10008, Data_3685
 	set_scripts AnimScript_25f96, MotionScript_10008
 
-MotionScript_32161:
+MotionScript_ParasolSeparated:
 	branch_kirby_pos .script_32168, .script_32190
 .script_32168
 	position_offset 0, -16
@@ -5676,7 +5675,7 @@ MotionScript_3379f:
 	script_ret
 
 MotionScript_337bb:
-	set_value wBossHPCounter, $0a
+	set_value wBossHPCounter, 10
 	set_value wd3c1, $01
 	create_object AnimScript_2526d, MotionScript_10008, Data_3421
 	set_value wd3c0, $01
@@ -5685,7 +5684,7 @@ MotionScript_337bb:
 	script_exec Func_48af
 	set_value wd3cd, $01
 	script_exec Func_4aad
-	create_object AnimScript_2744a, MotionScript_33aca, Properties_3616
+	create_object AnimScript_22f60, MotionScript_33aca, Properties_3616
 	script_call MotionScript_3379f
 	script_call MotionScript_3379f
 	script_call MotionScript_3379f
@@ -6041,10 +6040,9 @@ MotionScript_33aca:
 	set_velocities  1, 0, 0
 	jump_rel .loop
 
-; unreferenced
-MotionScript_33ad7:
-	script_exec_arg ScriptFunc_AddScore, $09
-	set_flags hHUDFlags, $80, $23
+MotionScript_OnKingDededeDestroyed:
+	script_exec_arg ScriptFunc_AddScore, SCORE_10000
+	set_flags hHUDFlags, HUD_BOSS_BATTLE, HUD_UPDATE_FIRST_ROW | HUD_UPDATE_LABEL | HUD_UPDATE_SCORE_DIGITS
 	script_exec Func_48c0
 	script_end
 

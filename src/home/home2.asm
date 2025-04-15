@@ -605,20 +605,17 @@ Func_21fb::
 	and a
 	jr z, .asm_222b
 	dec a
-ASSERT Data_1c0ce == Data_3c0ce
-	ld hl, Data_1c0ce ; aka Data_3c0ce
+	ld hl, SceneObjectLists
 	jr .asm_2249
 .asm_222b
 	ld hl, hKirbyFlags5
 	bit KIRBY5F_STAGE_INTRO_F, [hl]
 	jr z, .asm_223a
-ASSERT Data_1c13a == Data_3c13a
-	ld hl, Data_1c13a ; aka Data_3c13a
+	ld hl, StageIntroObjectLists
 	ld a, [wStage]
 	jr .asm_2249
 .asm_223a
-ASSERT Data_1c000 == Data_3c000
-	ld hl, Data_1c000 ; aka Data_3c000
+	ld hl, LevelObjectLists
 	ld a, [wStage]
 	ld e, a
 	add hl, de

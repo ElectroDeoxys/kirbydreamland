@@ -880,7 +880,7 @@ MotionScript_KirbyMike:
 	set_velocities  2, VEL_RIGHT_0_50, 0
 	jump_abs .loop
 
-MotionScript_10c50:
+MotionScript_InvincibilityStar:
 	jumptable_random $07
 	dw .script_10c62
 	dw .script_10c6f
@@ -3000,7 +3000,7 @@ MotionScript_11e11:
 	create_object AnimScript_21ded, MotionScript_10008, Data_3685
 	set_scripts AnimScript_21e38, MotionScript_10008
 
-MotionScript_11e25:
+MotionScript_ParasolSeparated:
 	branch_kirby_pos .script_11e2c, .script_11e43
 
 .script_11e2c
@@ -5463,7 +5463,7 @@ MotionScript_1341e:
 	set_velocities  1, 0, 0
 	jump_rel .loop
 
-MotionScript_1342b:
+MotionScript_OnKingDededeDestroyed:
 	script_exec_arg ScriptFunc_AddScore, SCORE_10000
 	set_flags hHUDFlags, HUD_BOSS_BATTLE, HUD_UPDATE_FIRST_ROW | HUD_UPDATE_LABEL | HUD_UPDATE_SCORE_DIGITS
 	script_exec Func_48c0

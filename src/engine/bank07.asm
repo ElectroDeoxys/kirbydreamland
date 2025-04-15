@@ -1,213 +1,4 @@
-Data_1c000::
-	table_width 2
-	dw .GreenGreens  ; GREEN_GREENS
-	dw .CastleLololo ; CASTLE_LOLOLO
-	dw .FloatIslands ; FLOAT_ISLANDS
-	dw .BubblyClouds ; BUBBLY_CLOUDS
-	dw .MtDedede     ; MT_DEDEDE
-	assert_table_length NUM_STAGES
-
-.GreenGreens:
-	table_width 4
-	dw Data_1c202, Data_1c2d0 ; GREEN_GREENS_0
-	dw Data_1c245, Data_1c2d0 ; GREEN_GREENS_1
-	dw Data_1c24f, Data_1c2d0 ; GREEN_GREENS_2
-	dw Data_1c2a1, Data_1c2d4 ; GREEN_GREENS_3
-	dw Data_1c2c9, Data_1c2f9 ; GREEN_GREENS_4
-	assert_table_length NUM_GREEN_GREENS_AREAS
-
-.CastleLololo:
-	table_width 4
-	dw Data_1c5b2, Data_1c5b9 ; CASTLE_LOLOLO_00
-	dw Data_1c621, Data_1c625 ; CASTLE_LOLOLO_01
-	dw Data_1c692, Data_1c6a2 ; CASTLE_LOLOLO_02
-	dw Data_1c5ca, Data_1c5e0 ; CASTLE_LOLOLO_03
-	dw Data_1c6d0, Data_1c6d7 ; CASTLE_LOLOLO_04
-	dw Data_1c729, Data_1c748 ; CASTLE_LOLOLO_05
-	dw Data_1c7c2, Data_1c7c6 ; CASTLE_LOLOLO_06
-	dw Data_1c819, Data_1c835 ; CASTLE_LOLOLO_07
-	dw Data_1d936, Data_1d93d ; CASTLE_LOLOLO_08
-	dw Data_1c8e0, Data_1c8ea ; CASTLE_LOLOLO_09
-	dw Data_1c909, Data_1c919 ; CASTLE_LOLOLO_10
-	dw Data_1c88a, Data_1c8a0 ; CASTLE_LOLOLO_11
-	dw Data_1c947, Data_1c960 ; CASTLE_LOLOLO_12
-	dw Data_1c9c0, Data_1c9d6 ; CASTLE_LOLOLO_13
-	dw Data_1d944, Data_1d94e ; CASTLE_LOLOLO_14
-	dw Data_1ca16, Data_1ca20 ; CASTLE_LOLOLO_15
-	assert_table_length NUM_CASTLE_LOLOLO_AREAS
-
-.FloatIslands:
-	table_width 4
-	dw Data_1ca39, Data_1caa9 ; FLOAT_ISLANDS_0
-	dw Data_1caad, Data_1cae4 ; FLOAT_ISLANDS_1
-	dw Data_1cb1b, Data_1cb31 ; FLOAT_ISLANDS_2
-	dw Data_1cb47, Data_1cb84 ; FLOAT_ISLANDS_3
-	dw Data_1cb88, Data_1cb92 ; FLOAT_ISLANDS_4
-	dw Data_1cb9c, Data_1cba3 ; FLOAT_ISLANDS_5
-	dw Data_1cbad, Data_1cbb4 ; FLOAT_ISLANDS_6
-	dw Data_1cbb8, Data_1cbcb ; FLOAT_ISLANDS_7
-	assert_table_length NUM_FLOAT_ISLANDS_AREAS
-
-.BubblyClouds:
-	table_width 4
-	dw Data_1cf48, Data_1cfa3 ; BUBBLY_CLOUDS_0
-	dw Data_1d0d3, Data_1d10d ; BUBBLY_CLOUDS_1
-	dw Data_1d1c5, Data_1d1c9 ; BUBBLY_CLOUDS_2
-	dw Data_1d269, Data_1d29a ; BUBBLY_CLOUDS_3
-	dw Data_1d8f9, Data_1d900 ; BUBBLY_CLOUDS_4
-	dw Data_1d35f, Data_1d384 ; BUBBLY_CLOUDS_5
-	dw Data_1d426, Data_1d445 ; BUBBLY_CLOUDS_6
-	dw Data_1d4a5, Data_1d4be ; BUBBLY_CLOUDS_7
-	dw Data_1d541, Data_1d545 ; BUBBLY_CLOUDS_8
-	dw Data_1d914, Data_1d91b ; BUBBLY_CLOUDS_9
-	assert_table_length NUM_BUBBLY_CLOUDS_AREAS
-
-.MtDedede:
-	table_width 4
-	dw Data_1d976, Data_1da22 ; MT_DEDEDE_0
-	dw Data_1d97a, Data_1da22 ; MT_DEDEDE_1
-	dw Data_1d993, Data_1d9b2 ; MT_DEDEDE_2
-	dw Data_1d9d1, Data_1d9ed ; MT_DEDEDE_3
-	dw Data_1da22, Data_1d9fd ; MT_DEDEDE_4
-	dw Data_1da26, Data_1da22 ; MT_DEDEDE_5
-	dw Data_1c2c9, Data_1c2f9 ; MT_DEDEDE_6
-	dw Data_1cbb8, Data_1cbcb ; MT_DEDEDE_7
-	dw Data_1d944, Data_1d94e ; MT_DEDEDE_8
-	dw Data_1d914, Data_1d91b ; MT_DEDEDE_9
-	assert_table_length NUM_MT_DEDEDE_AREAS
-
-Data_1c0ce::
-	table_width 4
-	dw Data_1d58f, Data_1d7e7 ; SCENE_TITLE_SCREEN
-	dw Data_1d5ba, Data_1d7e7 ; SCENE_SOUND_TEST
-	dw Data_1d5fd, Data_1d7e7 ; SCENE_EPILOGUE_DEDEDE_LAUNCH
-	dw Data_1d607, Data_1d7e7 ; SCENE_EPILOGUE_KIRBY_DANCE
-	dw Data_1d61d, Data_1d7e7 ; SCENE_EPILOGUE_KIRBY_INFLATE
-	dw Data_1d624, Data_1d7e7 ; SCENE_EPILOGUE_FALLING_FOOD
-	dw Data_1d631, Data_1d7e7 ; SCENE_CREDITS
-	dw Data_1d5c4, Data_1d7e7 ; SCENE_EPILOGUE_KIRBY_DEFLATE
-	dw Data_1d5e0, Data_1d7e7 ; SCENE_EPILOGUE_BYE_BYE
-	dw Data_1d5f9, Data_1d7e7 ; SCENE_GAME_OVER
-	dw Data_1d63e, Data_1d7e7 ; SCENE_CONTINUE
-	dw Data_1d7e7, Data_1d7e7 ; SCENE_GREEN_GREENS_ENEMIES_1
-	dw Data_1d7e7, Data_1d7e7 ; SCENE_GREEN_GREENS_ENEMIES_2
-	dw Data_1d7e7, Data_1d7e7 ; SCENE_GREEN_GREENS_ENEMIES_3
-	dw Data_1d7e7, Data_1d7e7 ; SCENE_CASTLE_LOLOLO_ENEMIES_1
-	dw Data_1d7e7, Data_1d7e7 ; SCENE_CASTLE_LOLOLO_ENEMIES_2
-	dw Data_1d7e7, Data_1d7e7 ; SCENE_FLOAT_ISLANDS_ENEMIES_1
-	dw Data_1d7e7, Data_1d7e7 ; SCENE_FLOAT_ISLANDS_ENEMIES_2
-	dw Data_1d7e7, Data_1d7e7 ; SCENE_BUBBLE_CLOUDS_ENEMIES_1
-	dw Data_1d7e7, Data_1d7e7 ; SCENE_BUBBLE_CLOUDS_ENEMIES_2
-	dw Data_1d7e7, Data_1d7e7 ; SCENE_GREEN_GREENS_ENEMIES_4
-	dw Data_1d7e7, Data_1d7e7 ; SCENE_CASTLE_LOLOLO_ENEMIES_3
-	dw Data_1d7e7, Data_1d7e7 ; SCENE_FLOAT_ISLANDS_ENEMIES_3
-	dw Data_1d7e7, Data_1d7e7 ; SCENE_BUBBLE_CLOUDS_ENEMIES_3
-	dw Data_1d7e7, Data_1d7e7 ; SCENE_KING_DEDEDE
-	dw Data_1d7e7, Data_1d7e7 ; SCENE_CONFIG_MODE_UNLOCK
-	dw Data_1d7e7, Data_1d7e7 ; SCENE_EXTRA_GAME_UNLOCK
-	assert_table_length NUM_SCENES
-
-Data_1c13a::
-	table_width 4
-	dw Data_1d78b, Data_1d7e7 ; GREEN_GREENS
-	dw Data_1d7a7, Data_1d7e7 ; CASTLE_LOLOLO
-	dw Data_1d7bd, Data_1d7e7 ; FLOAT_ISLANDS
-	dw Data_1d7ca, Data_1d7e7 ; BUBBLY_CLOUDS
-	dw Data_1d7d4, Data_1d7e7 ; MT_DEDEDE
-	assert_table_length NUM_STAGES
-
-Data_1c14e::
-	dw AnimScript_20000, MotionScript_10008, Data_3425
-
-Data_1c154::
-	dw AnimScript_DefeatStars, MotionScript_10008, PuffOfSmokeProperties
-
-Data_1c15a::
-	dw AnimScript_20a00, MotionScript_10008, Properties_35a6
-
-Data_1c160::
-	dw AnimScript_Explosion, MotionScript_10008, ExplosionProperties
-
-Data_1c166::
-	dw AnimScript_Explosion, MotionScript_10008, Properties_35c4
-
-Data_1c16c::
-	dw AnimScript_203b2, MotionScript_10008, ExplosionProperties
-
-Data_1c172::
-	dw AnimScript_20000, MotionScript_10008, Data_3421
-
-Data_1c178::
-	dw AnimScript_SmallStar, MotionScript_Star_RandomDirection, Data_3421
-
-Data_1c17e::
-	dw AnimScript_Star, MotionScript_10c50, Data_3421
-
-Data_1c184::
-	dw AnimScript_SpitStar, MotionScript_SpitStar, SpitStarProperties
-
-Data_1c18a::
-	dw AnimScript_20baf, MotionScript_10008, DiveHitboxProperties
-
-Data_1c190::
-	dw AnimScript_20b96, MotionScript_10008, Data_35ab
-
-Data_1c196::
-	dw AnimScript_20bda, MotionScript_1022a, Data_35b3
-
-Data_1c19c::
-	dw AnimScript_KirbyPuff, MotionScript_KirbyPuff, Data_35b3
-
-Data_1c1a2::
-	dw AnimScript_20474, MotionScript_InhaledObject, Data_3685
-
-Data_1c1a8::
-	dw AnimScript_20ec6, MotionScript_10008, Data_3421
-
-; unreferenced
-Data_1c1ae:
-	dw AnimScript_20de0, MotionScript_10008, Properties_353e
-
-Data_1c1b4::
-	dw AnimScript_20ec6, MotionScript_10008, Data_3421
-
-Data_1c1ba::
-	dw AnimScript_21df8, MotionScript_11e25, Data_3421
-
-Data_1c1c0::
-	dw AnimScript_21004, MotionScript_10008, Data_3421
-
-Data_1c1c6::
-	dw AnimScript_210e7, MotionScript_10008, Data_358f
-
-Data_1c1cc::
-	dw AnimScript_210f1, MotionScript_10008, Data_3421
-
-Data_1c1d2::
-	dw AnimScript_22b60, MotionScript_10008, Data_3421
-
-Data_1c1d8::
-	dw AnimScript_21a79, MotionScript_10008, Data_3425
-
-Data_1c1de::
-	dw AnimScript_22871, MotionScript_10008, Data_3421
-
-Data_1c1e4::
-	dw AnimScript_22997, MotionScript_10008, Data_3421
-
-Data_1c1ea::
-	dw AnimScript_229aa, MotionScript_10008, Data_3421
-
-Data_1c1f0::
-	dw AnimScript_22ddc, MotionScript_10008, Properties_361f
-
-Data_1c1f6::
-	dw AnimScript_22f60, MotionScript_1342b, Data_3421
-
-Data_1c1fc::
-	dw AnimScript_22def, MotionScript_10008, Data_3421
-
-Data_1c202:
+ObjectList_GreenGreens0_X:
 	dbw $00, NULL
 	dbw $0f, LevelObject_1c304
 	dbw $11, LevelObject_1c318
@@ -232,13 +23,13 @@ Data_1c202:
 	dbw $4e, LevelObject_1c3e0
 	db $ff ; end
 
-Data_1c245:
+ObjectList_GreenGreens1_X:
 	dbw $00, NULL
 	dbw $05, LevelObject_1c3eb
 	dbw $0a, LevelObject_1c3f6
 	db $ff ; end
 
-Data_1c24f:
+ObjectList_GreenGreens2_X:
 	dbw $00, NULL
 	dbw $0a, LevelObject_1c45b
 	dbw $0f, LevelObject_1c40b
@@ -268,7 +59,7 @@ Data_1c24f:
 	dbw $4c, LevelObject_1c51a
 	db $ff ; end
 
-Data_1c2a1:
+ObjectList_GreenGreens3_X:
 	dbw $00, NULL
 	dbw $01, LevelObject_1c556
 	dbw $02, LevelObject_1c594
@@ -284,16 +75,18 @@ Data_1c2a1:
 	dbw $0c, LevelObject_1c54c
 	db $ff ; end
 
-Data_1c2c9:
+ObjectList_GreenGreens4_X:
 	dbw $00, NULL
 	dbw $07, LevelObject_1c59e
 	db $ff ; end
 
-Data_1c2d0:
+ObjectList_GreenGreens0_Y:
+ObjectList_GreenGreens1_Y:
+ObjectList_GreenGreens2_Y:
 	dbw $00, NULL
 	db $ff ; end
 
-Data_1c2d4:
+ObjectList_GreenGreens3_Y:
 	dbw $00, NULL
 	dbw $04, LevelObject_1c52e
 	dbw $04, LevelObject_1c524
@@ -308,7 +101,7 @@ Data_1c2d4:
 	dbw $25, LevelObject_1c594
 	db $ff ; end
 
-Data_1c2f9:
+ObjectList_GreenGreens4_Y:
 	dbw $00, NULL
 	dbw $16, LevelObject_1c59e
 	dbw $1a, LevelObject_1c5a8
@@ -458,12 +251,12 @@ LevelObject_1c59e:
 LevelObject_1c5a8:
 	object 0, 26, 0, 0, AnimScript_WhispyWoodsScrollLocker, MotionScript_10008, Data_3421
 
-Data_1c5b2:
+ObjectList_CastleLololo00_X:
 	dbw $00, NULL
 	dbw $08, LevelObject_1c5c0
 	db $ff ; end
 
-Data_1c5b9:
+ObjectList_CastleLololo00_Y:
 	dbw $00, NULL
 	dbw $01, LevelObject_1c5c0
 	db $ff ; end
@@ -471,7 +264,7 @@ Data_1c5b9:
 LevelObject_1c5c0:
 	object 8, 1, 0, 0, AnimScript_2143e, MotionScript_1154d, StandardEnemyGravityProperties
 
-Data_1c5ca:
+ObjectList_CastleLololo03_X:
 	dbw $00, NULL
 	dbw $0a, LevelObject_1c603
 	dbw $0b, LevelObject_1c5e4
@@ -481,7 +274,7 @@ Data_1c5ca:
 	dbw $16, LevelObject_1c617
 	db $ff ; end
 
-Data_1c5e0:
+ObjectList_CastleLololo03_Y:
 	dbw $00, NULL
 	db $ff ; end
 
@@ -498,11 +291,11 @@ LevelObject_1c60d:
 LevelObject_1c617:
 	object 22, 6, 0, 0, AnimScript_2143e, MotionScript_1154d, StandardEnemyProperties
 
-Data_1c621:
+ObjectList_CastleLololo01_X:
 	dbw $00, NULL
 	db $ff ; end
 
-Data_1c625:
+ObjectList_CastleLololo01_Y:
 	dbw $00, NULL
 	dbw $01, LevelObject_1c64c
 	dbw $01, LevelObject_1c656
@@ -531,7 +324,7 @@ LevelObject_1c67e:
 LevelObject_1c688:
 	object 7, 14, 0, 0, AnimScript_205ae, MotionScript_103ff, StandardEnemyProperties
 
-Data_1c692:
+ObjectList_CastleLololo02_X:
 	dbw $00, NULL
 	dbw $00, LevelObject_1c6a6
 	dbw $02, LevelObject_1c6c5
@@ -539,7 +332,7 @@ Data_1c692:
 	dbw $09, LevelObject_1c6b0
 	db $ff ; end
 
-Data_1c6a2:
+ObjectList_CastleLololo02_Y:
 	dbw $00, NULL
 	db $ff ; end
 
@@ -552,12 +345,12 @@ LevelObject_1c6ba:
 LevelObject_1c6c5:
 	object 2, 6, 0, 0, AnimScript_EnergyDrink, MotionScript_10008, EnergyDrinkProperties, 1
 
-Data_1c6d0:
+ObjectList_CastleLololo04_X:
 	dbw $00, NULL
 	dbw $09, LevelObject_1c715
 	db $ff ; end
 
-Data_1c6d7:
+ObjectList_CastleLololo04_Y:
 	dbw $00, NULL
 	dbw $01, LevelObject_1c6ed
 	dbw $06, LevelObject_1c701
@@ -580,7 +373,7 @@ LevelObject_1c715:
 LevelObject_1c71f:
 	object 17, 6, 0, 0, AnimScript_Chuckie, MotionScript_Chuckie, Data_3421
 
-Data_1c729:
+ObjectList_CastleLololo05_X:
 	dbw $00, NULL
 	dbw $02, LevelObject_1c772
 	dbw $05, LevelObject_1c7a4
@@ -593,7 +386,7 @@ Data_1c729:
 	dbw $0f, LevelObject_1c786
 	db $ff ; end
 
-Data_1c748:
+ObjectList_CastleLololo05_Y:
 	dbw $00, NULL
 	dbw $01, LevelObject_1c790
 	dbw $01, LevelObject_1c79a
@@ -625,11 +418,11 @@ LevelObject_1c7ae:
 LevelObject_1c7b8:
 	object 11, 2, 0, 0, AnimScript_20647, MotionScript_102ce, StandardEnemyProperties
 
-Data_1c7c2:
+ObjectList_CastleLololo06_X:
 	dbw $00, NULL
 	db $ff ; end
 
-Data_1c7c6:
+ObjectList_CastleLololo06_Y:
 	dbw $00, NULL
 	dbw $05, LevelObject_1c7dc
 	dbw $06, LevelObject_1c7f0
@@ -652,7 +445,7 @@ LevelObject_1c804:
 LevelObject_1c80e:
 	object 8, 11, 0, 0, AnimScript_2090a, MotionScript_10008, InvincibilityCandyProperties, 2
 
-Data_1c819:
+ObjectList_CastleLololo07_X:
 	dbw $00, NULL
 	dbw $07, LevelObject_1c844
 	dbw $0a, LevelObject_1c86c
@@ -664,7 +457,7 @@ Data_1c819:
 	dbw $19, LevelObject_1c839
 	db $ff ; end
 
-Data_1c835:
+ObjectList_CastleLololo07_Y:
 	dbw $00, NULL
 	db $ff ; end
 
@@ -685,7 +478,7 @@ LevelObject_1c876:
 LevelObject_1c880:
 	object 20, 4, 0, 0, AnimScript_212d1, MotionScript_112d9, StandardEnemyProperties
 
-Data_1c88a:
+ObjectList_CastleLololo11_X:
 	dbw $00, NULL
 	dbw $06, LevelObject_1c8b8
 	dbw $08, LevelObject_1c8c2
@@ -695,7 +488,7 @@ Data_1c88a:
 	dbw $0f, LevelObject_1c8ae
 	db $ff ; end
 
-Data_1c8a0:
+ObjectList_CastleLololo11_Y:
 	dbw $00, NULL
 	db $ff ; end
 
@@ -712,13 +505,13 @@ LevelObject_1c8cc:
 LevelObject_1c8d6:
 	object 15, 0, 0, 0, AnimScript_21433, MotionScript_11545, StandardEnemyGravityProperties
 
-Data_1c8e0:
+ObjectList_CastleLololo09_X:
 	dbw $00, NULL
 	dbw $0b, LevelObject_1c8ff
 	dbw $0b, LevelObject_1c8f4
 	db $ff ; end
 
-Data_1c8ea:
+ObjectList_CastleLololo09_Y:
 	dbw $00, NULL
 	dbw $03, LevelObject_1c8ff
 	dbw $09, LevelObject_1c8f4
@@ -729,7 +522,7 @@ LevelObject_1c8f4:
 LevelObject_1c8ff:
 	object 11, 3, 0, 0, AnimScript_CirclingEnemiesTrap, MotionScript_10008, Data_3421
 
-Data_1c909:
+ObjectList_CastleLololo10_X:
 	dbw $00, NULL
 	dbw $01, LevelObject_1c931
 	dbw $01, LevelObject_1c91d
@@ -737,7 +530,7 @@ Data_1c909:
 	dbw $08, LevelObject_1c927
 	db $ff ; end
 
-Data_1c919:
+ObjectList_CastleLololo10_Y:
 	dbw $00, NULL
 	db $ff ; end
 
@@ -750,7 +543,7 @@ LevelObject_1c931:
 LevelObject_1c93c:
 	object 7, 3, 8, 0, AnimScript_EnergyDrink, MotionScript_10008, EnergyDrinkProperties, 5
 
-Data_1c947:
+ObjectList_CastleLololo12_X:
 	dbw $00, NULL
 	dbw $00, LevelObject_1c979
 	dbw $03, LevelObject_1c9b6
@@ -761,7 +554,7 @@ Data_1c947:
 	dbw $0c, LevelObject_1c998
 	db $ff ; end
 
-Data_1c960:
+ObjectList_CastleLololo12_Y:
 	dbw $00, NULL
 	dbw $03, LevelObject_1c9a2
 	dbw $04, LevelObject_1c98e
@@ -787,7 +580,7 @@ LevelObject_1c9ac:
 LevelObject_1c9b6:
 	object 3, 5, 0, 0, AnimScript_20572, MotionScript_114b2, GordoProperties
 
-Data_1c9c0:
+ObjectList_CastleLololo13_X:
 	dbw $00, NULL
 	dbw $01, LevelObject_1c9da
 	dbw $06, LevelObject_1c9ee
@@ -797,7 +590,7 @@ Data_1c9c0:
 	dbw $0d, LevelObject_1c9e4
 	db $ff ; end
 
-Data_1c9d6:
+ObjectList_CastleLololo13_Y:
 	dbw $00, NULL
 	db $ff ; end
 
@@ -814,13 +607,13 @@ LevelObject_1ca02:
 LevelObject_1ca0c:
 	object 12, 5, 0, 0, AnimScript_21238, MotionScript_11251, StandardEnemyProperties
 
-Data_1ca16:
+ObjectList_CastleLololo15_X:
 	dbw $00, NULL
 	dbw $01, LevelObject_1ca24
 	dbw $05, LevelObject_1ca2e
 	db $ff ; end
 
-Data_1ca20:
+ObjectList_CastleLololo15_Y:
 	dbw $00, NULL
 	db $ff ; end
 
@@ -830,7 +623,7 @@ LevelObject_1ca2e:
 	object 5, 3, -8, 0, AnimScript_20967, MotionScript_1032d, Data_3421
 	db $1f
 
-Data_1ca39:
+ObjectList_FloatIslands0_X:
 	dbw $00, NULL
 	dbw $10, LevelObject_1cbcf
 	dbw $12, LevelObject_1cbd9
@@ -870,11 +663,11 @@ Data_1ca39:
 	dbw $6f, LevelObject_1cd2e
 	db $ff ; end
 
-Data_1caa9:
+ObjectList_FloatIslands0_Y:
 	dbw $00, NULL
 	db $ff ; end
 
-Data_1caad:
+ObjectList_FloatIslands1_X:
 	dbw $00, NULL
 	dbw $01, LevelObject_1cd38
 	dbw $02, LevelObject_1cd43
@@ -895,7 +688,7 @@ Data_1caad:
 	dbw $2e, LevelObject_1cdd9
 	db $ff ; end
 
-Data_1cae4:
+ObjectList_FloatIslands1_Y:
 	dbw $00, NULL
 	dbw $01, LevelObject_1cdbb
 	dbw $02, LevelObject_1cdd9
@@ -916,7 +709,7 @@ Data_1cae4:
 	dbw $0E, LevelObject_1cd4d
 	db $ff ; end
 
-Data_1cb1b:
+ObjectList_FloatIslands2_X:
 	dbw $00, NULL
 	dbw $01, LevelObject_1cde4
 	dbw $02, LevelObject_1cdee
@@ -926,7 +719,7 @@ Data_1cb1b:
 	dbw $0F, LevelObject_1ce0c
 	db $ff ; end
 
-Data_1cb31:
+ObjectList_FloatIslands2_Y:
 	dbw $00, NULL
 	dbw $01, LevelObject_1ce02
 	dbw $02, LevelObject_1cde4
@@ -936,7 +729,7 @@ Data_1cb31:
 	dbw $16, LevelObject_1ce16
 	db $ff ; end
 
-Data_1cb47:
+ObjectList_FloatIslands3_X:
 	dbw $00, NULL
 	dbw $0A, LevelObject_1ce21
 	dbw $0E, LevelObject_1ce2b
@@ -959,43 +752,43 @@ Data_1cb47:
 	dbw $44, LevelObject_1ced6
 	db $ff ; end
 
-Data_1cb84:
+ObjectList_FloatIslands3_Y:
 	dbw $00, NULL
 	db $ff ; end
 
-Data_1cb88:
+ObjectList_FloatIslands4_X:
 	dbw $00, NULL
 	dbw $01, LevelObject_1cee0
 	dbw $02, LevelObject_1ceeb
 	db $ff ; end
 
-Data_1cb92:
+ObjectList_FloatIslands4_Y:
 	dbw $00, NULL
 	dbw $04, LevelObject_1cee0
 	dbw $04, LevelObject_1ceeb
 	db $ff ; end
 
-Data_1cb9c:
+ObjectList_FloatIslands5_X:
 	dbw $00, NULL
 	dbw $06, LevelObject_1cef6
 	db $ff ; end
 
-Data_1cba3:
+ObjectList_FloatIslands5_Y:
 	dbw $00, NULL
 	dbw $02, LevelObject_1cef6
 	dbw $15, LevelObject_1cf00
 	db $ff ; end
 
-Data_1cbad:
+ObjectList_FloatIslands6_X:
 	dbw $00, NULL
 	dbw $05, LevelObject_1cf0b
 	db $ff ; end
 
-Data_1cbb4:
+ObjectList_FloatIslands6_Y:
 	dbw $00, NULL
 	db $ff ; end
 
-Data_1cbb8:
+ObjectList_FloatIslands7_X:
 	dbw $00, NULL
 	dbw $0A, LevelObject_1cf29
 	dbw $0D, LevelObject_1cf15
@@ -1004,7 +797,7 @@ Data_1cbb8:
 	dbw $26, LevelObject_1cf3e
 	db $ff ; end 
 
-Data_1cbcb:
+ObjectList_FloatIslands7_Y:
 	dbw $00, NULL
 	db $ff ; end
 
@@ -1192,7 +985,7 @@ LevelObject_1cf33:
 LevelObject_1cf3e:
 	object 38, 1, 0, -5, AnimScript_2195e, MotionScript_Kaboola, KaboolaProperties
 
-Data_1cf48:
+ObjectList_BubblyClouds0_X:
 	dbw $00, NULL
 	dbw $0b, LevelObject_1d033
 	dbw $0e, LevelObject_1d0c9
@@ -1225,7 +1018,7 @@ Data_1cf48:
 	dbw $60, LevelObject_1d079
 	db $ff ; end
 
-Data_1cfa3:
+ObjectList_BubblyClouds0_Y:
 	dbw $00, NULL
 	db $ff ; end
 
@@ -1290,7 +1083,7 @@ LevelObject_1d0bf:
 LevelObject_1d0c9:
 	object 14, 0, 8, 0, AnimScript_20572, MotionScript_10508, GordoProperties
 
-Data_1d0d3:
+ObjectList_BubblyClouds1_X:
 	dbw $00, NULL
 	dbw $09, LevelObject_1d193
 	dbw $0b, LevelObject_1d1bb
@@ -1312,7 +1105,7 @@ Data_1d0d3:
 	dbw $42, LevelObject_1d1b1
 	db $ff ; end
 
-Data_1d10d:
+ObjectList_BubblyClouds1_Y:
 	dbw $00, NULL
 	db $ff ; end
 
@@ -1353,11 +1146,11 @@ LevelObject_1d1b1:
 LevelObject_1d1bb:
 	object 11, 4, 0, 0, AnimScript_21e91, MotionScript_10008, SirKibbleProperties
 
-Data_1d1c5:
+ObjectList_BubblyClouds2_X:
 	dbw $00, NULL
 	db $ff ; end
 
-Data_1d1c9:
+ObjectList_BubblyClouds2_Y:
 	dbw $00, NULL
 	dbw $04, LevelObject_1d1f1
 	dbw $06, LevelObject_1d237
@@ -1398,7 +1191,7 @@ LevelObject_1d255:
 LevelObject_1d25f:
 	object 17, 7, 0, 0, AnimScript_Scarfy, MotionScript_11c94, ScarfyProperties
 
-Data_1d269:
+ObjectList_BubblyClouds3_X:
 	dbw $00, NULL
 	dbw $03, LevelObject_1d333
 	dbw $0f, LevelObject_1d349
@@ -1417,7 +1210,7 @@ Data_1d269:
 	dbw $31, LevelObject_1d2ed
 	db $ff ; end
 
-Data_1d29a:
+ObjectList_BubblyClouds3_Y:
 	dbw $00, NULL
 	dbw $00, LevelObject_1d2c5
 	dbw $01, LevelObject_1d31f
@@ -1465,7 +1258,7 @@ LevelObject_1d349:
 LevelObject_1d354:
 	object 40, 8, 0, 0, AnimScript_20946, MotionScript_10008, OneUpProperties, 3
 
-Data_1d35f:
+ObjectList_BubblyClouds5_X:
 	dbw $00, NULL
 	dbw $01, LevelObject_1d3f3
 	dbw $04, LevelObject_1d3bf
@@ -1480,7 +1273,7 @@ Data_1d35f:
 	dbw $30, LevelObject_1d3ca
 	db $ff ; end
 
-Data_1d384:
+ObjectList_BubblyClouds5_Y:
 	dbw $00, NULL
 	dbw $00, LevelObject_1d3ca
 	dbw $04, LevelObject_1d412
@@ -1520,7 +1313,7 @@ LevelObject_1d412:
 ; unreferenced
 	object 18, 3, 8, 0, AnimScript_21587, MotionScript_10008, ShotzoProperties
 
-Data_1d426:
+ObjectList_BubblyClouds6_X:
 	dbw $00, NULL
 	dbw $0a, LevelObject_1d48f
 	dbw $10, LevelObject_1d49a
@@ -1533,7 +1326,7 @@ Data_1d426:
 	dbw $4f, LevelObject_1d485
 	db $ff ; end
 
-Data_1d445:
+ObjectList_BubblyClouds6_Y:
 	dbw $00, NULL
 	db $ff ; end
 
@@ -1556,7 +1349,7 @@ LevelObject_1d48f:
 LevelObject_1d49a:
 	object 16, 2, 0, 0, AnimScript_220f0, MotionScript_10008, OneUpProperties, 60
 
-Data_1d4a5:
+ObjectList_BubblyClouds7_X:
 	dbw $00, NULL
 	dbw $04, LevelObject_1d505
 	dbw $04, LevelObject_1d4fb
@@ -1567,7 +1360,7 @@ Data_1d4a5:
 	dbw $0a, LevelObject_1d537
 	db $ff ; end
 
-Data_1d4be:
+ObjectList_BubblyClouds7_Y:
 	dbw $00, NULL
 	dbw $02, LevelObject_1d519
 	dbw $02, LevelObject_1d4fb
@@ -1601,11 +1394,11 @@ LevelObject_1d52d:
 LevelObject_1d537:
 	object 10, 16, 0, 46, AnimScript_21b44, MotionScript_10008, StandardEnemyProperties
 
-Data_1d541:
+ObjectList_BubblyClouds8_X:
 	dbw $00, NULL
 	db $ff ; end
 
-Data_1d545:
+ObjectList_BubblyClouds8_Y:
 	dbw $00, NULL
 	dbw $20, LevelObject_1d558
 	dbw $37, LevelObject_1d563
@@ -1625,7 +1418,7 @@ LevelObject_1d579:
 LevelObject_1d584:
 	object 8, 85, 0, 0, AnimScript_20946, MotionScript_11fad, OneUpProperties, 36
 
-Data_1d58f:
+ObjectList_TitleScreen:
 	dbw $00, NULL
 	dbw $00, LevelObject_1d5b0
 	dbw $00, LevelObject_1d5a6
@@ -1639,13 +1432,13 @@ LevelObject_1d5a6:
 LevelObject_1d5b0:
 	object 0, 0, 0, 0, AnimScript_TitleScreenStarSpawner, MotionScript_10008, Data_3425
 
-Data_1d5ba:
+ObjectList_SoundTest:
 	dbw $00, NULL
 	dbw $06, Data_1d777
 	dbw $07, Data_1d781
 	db $ff ; end
 
-Data_1d5c4:
+ObjectList_Epilogue_KirbyDeflate:
 	dbw $00, NULL
 	dbw $05, LevelObject_1d6e1
 	dbw $05, LevelObject_1d6eb
@@ -1657,7 +1450,7 @@ Data_1d5c4:
 	dbw $05, LevelObject_1d727
 	db $ff ; end
 
-Data_1d5e0:
+ObjectList_Epilogue_ByeBye:
 	dbw $00, NULL
 	dbw $01, LevelObject_1d763
 	dbw $03, LevelObject_1d76d
@@ -1668,17 +1461,17 @@ Data_1d5e0:
 	dbw $09, LevelObject_1d759
 	db $ff ; end
 
-Data_1d5f9:
+ObjectList_GameOver:
 	dbw $00, NULL
 	db $ff ; end
 
-Data_1d5fd:
+ObjectList_Epilogue_DededeLaunch:
 	dbw $00, NULL
 	dbw $05, Data_1d655
 	dbw $06, Data_1d64b
 	db $ff ; end
 
-Data_1d607:
+ObjectList_Epilogue_KirbyDance:
 	dbw $00, NULL
 	dbw $01, LevelObject_1d687
 	dbw $02, LevelObject_1d67d
@@ -1688,26 +1481,26 @@ Data_1d607:
 	dbw $07, LevelObject_1d669
 	db $ff ; end
 
-Data_1d61d:
+ObjectList_Epilogue_KirbyInflate:
 	dbw $00, NULL
 	dbw $05, LevelObject_1d69b
 	db $ff ; end
 
-Data_1d624:
+ObjectList_Epilogue_FallingFood:
 	dbw $00, NULL
 	dbw $03, LevelObject_1d6a5
 	dbw $05, LevelObject_1d6af
 	dbw $05, LevelObject_1d6b9
 	db $ff ; end
 
-Data_1d631:
+ObjectList_Credits:
 	dbw $00, NULL
 	dbw $01, LevelObject_1d6c3
 	dbw $04, LevelObject_1d6cd
 	dbw $07, LevelObject_1d6d7
 	db $ff ; end
 
-Data_1d63e:
+ObjectList_Continue:
 	dbw $00, NULL
 	dbw $02, LevelObject_1d8e5
 	dbw $03, LevelObject_1d8ef
@@ -1786,7 +1579,7 @@ Data_1d777:
 Data_1d781:
 	object $08, $07, $f0, $f8, AnimScript_SoundTestKirbyEyes, MotionScript_10008, Data_3425
 
-Data_1d78b:
+ObjectList_GreenGreensIntro:
 	dbw $00, NULL
 	dbw $01, LevelObject_1d7eb
 	dbw $05, LevelObject_1d7f5
@@ -1798,7 +1591,7 @@ Data_1d78b:
 	dbw $0c, LevelObject_1d813
 	db $ff ; end
 
-Data_1d7a7:
+ObjectList_CastleLololoIntro:
 	dbw $00, NULL
 	dbw $01, LevelObject_1d83b
 	dbw $02, LevelObject_1d845
@@ -1808,20 +1601,20 @@ Data_1d7a7:
 	dbw $05, LevelObject_1d86d
 	db $ff ; end
 
-Data_1d7bd:
+ObjectList_FloatIslandsIntro:
 	dbw $00, NULL
 	dbw $01, LevelObject_1d877
 	dbw $06, LevelObject_1d881
 	dbw $06, LevelObject_1d88b
 	db $ff ; end
 
-Data_1d7ca:
+ObjectList_BubblyCloudsIntro:
 	dbw $00, NULL
 	dbw $05, LevelObject_1d895
 	dbw $05, LevelObject_1d89f
 	db $ff ; end
 
-Data_1d7d4:
+ObjectList_MtDededeIntro:
 	dbw $00, NULL
 	dbw $00, LevelObject_1d8a9
 	dbw $00, LevelObject_1d8d1
@@ -1830,7 +1623,23 @@ Data_1d7d4:
 	dbw $07, LevelObject_1d8c7
 	db $ff ; end
 
-Data_1d7e7:
+ObjectList_Null:
+ObjectList_SceneGreenGreensEnemies1:
+ObjectList_SceneGreenGreensEnemies2:
+ObjectList_SceneGreenGreensEnemies3:
+ObjectList_SceneCastleLololoEnemies1:
+ObjectList_SceneCastleLololoEnemies2:
+ObjectList_SceneFloatIslandsEnemies1:
+ObjectList_SceneFloatIslandsEnemies2:
+ObjectList_SceneBubbleCloudsEnemies1:
+ObjectList_SceneBubbleCloudsEnemies2:
+ObjectList_SceneGreenGreensEnemies4:
+ObjectList_SceneCastleLololoEnemies3:
+ObjectList_SceneFloatIslandsEnemies3:
+ObjectList_SceneBubbleCloudsEnemies3:
+ObjectList_KingDedede:
+ObjectList_ConfigModeUnlock:
+ObjectList_ExtraGameUnlock:
 	dbw $00, NULL
 	db $ff ; end
 
@@ -1894,12 +1703,12 @@ LevelObject_1d8e5:
 LevelObject_1d8ef:
 	object 3, 5, 14, 2, AnimScript_227f2, MotionScript_128f6, Data_3421
 
-Data_1d8f9:
+ObjectList_BubblyClouds4_X:
 	dbw $00, NULL
 	dbw $08, LevelObject_1d922
 	db $ff ; end
 
-Data_1d900:
+ObjectList_BubblyClouds4_Y:
 	dbw $00, NULL
 	dbw $11, LevelObject_1d922
 	dbw $1a, LevelObject_1d90a
@@ -1908,12 +1717,12 @@ Data_1d900:
 LevelObject_1d90a:
 	object 0, 26, 0, 0, AnimScript_21191, MotionScript_10008, Data_3421
 
-Data_1d914:
+ObjectList_BubblyClouds9_X:
 	dbw $00, NULL
 	dbw $0a, LevelObject_1d92c
 	db $ff ; end
 
-Data_1d91b:
+ObjectList_BubblyClouds9_Y:
 	dbw $00, NULL
 	dbw $04, LevelObject_1d92c
 	db $ff ; end
@@ -1924,23 +1733,23 @@ LevelObject_1d922:
 LevelObject_1d92c:
 	object 10, 4, 0, 0, AnimScript_228aa, MotionScript_12b2d, Data_3421
 
-Data_1d936:
+ObjectList_CastleLololo08_X:
 	dbw $00, NULL
 	dbw $01, LevelObject_1d958
 	db $ff ; end
 
-Data_1d93d:
+ObjectList_CastleLololo08_Y:
 	dbw $00, NULL
 	dbw $01, LevelObject_1d958
 	db $ff ; end
 
-Data_1d944:
+ObjectList_CastleLololo14_X:
 	dbw $00, NULL
 	dbw $01, LevelObject_1d962
 	dbw $09, LevelObject_1d96c
 	db $ff ; end
 
-Data_1d94e:
+ObjectList_CastleLololo14_Y:
 	dbw $00, NULL
 	dbw $01, LevelObject_1d962
 	dbw $09, LevelObject_1d96c
@@ -1952,13 +1761,12 @@ LevelObject_1d962:
 	object 1, 1, 0, 0, AnimScript_22a33, MotionScript_12e09, LololoProperties
 LevelObject_1d96c:
 	object 9, 9, 0, 0, AnimScript_22a33, MotionScript_12f5a, LololoProperties
-; 0x1d976
 
-Data_1d976:
+ObjectList_MtDedede0_X:
 	dbw $00, NULL
 	db $ff ; end
 
-Data_1d97a:
+ObjectList_MtDedede1_X:
 	dbw $00, NULL
 	dbw $08, LevelObject_1da6e
 	dbw $0f, LevelObject_1da5a
@@ -1969,7 +1777,7 @@ Data_1d97a:
 	dbw $26, LevelObject_1da30
 	db $ff ; end
 
-Data_1d993:
+ObjectList_MtDedede2_X:
 	dbw $00, NULL
 	dbw $03, LevelObject_1daac
 	dbw $07, LevelObject_1da8e
@@ -1982,7 +1790,7 @@ Data_1d993:
 	dbw $1b, LevelObject_1da83
 	db $ff ; end
 
-Data_1d9b2:
+ObjectList_MtDedede2_Y:
 	dbw $00, NULL
 	dbw $01, LevelObject_1daac
 	dbw $02, LevelObject_1dac0
@@ -1995,7 +1803,7 @@ Data_1d9b2:
 	dbw $0a, LevelObject_1daa2
 	db $ff ; end
 
-Data_1d9d1:
+ObjectList_MtDedede3_X:
 	dbw $00, NULL
 	dbw $01, LevelObject_1dad4
 	dbw $03, LevelObject_1dadf
@@ -2007,7 +1815,7 @@ Data_1d9d1:
 	dbw $13, LevelObject_1db12
 	db $ff ; end
 
-Data_1d9ed:
+ObjectList_MtDedede3_Y:
 	dbw $00, NULL
 	dbw $03, LevelObject_1db12
 	dbw $0c, LevelObject_1dadf
@@ -2015,7 +1823,7 @@ Data_1d9ed:
 	dbw $0c, LevelObject_1daf4
 	db $ff ; end
 
-Data_1d9fd:
+ObjectList_MtDedede4_Y:
 	dbw $00, NULL
 	dbw $00, LevelObject_1db50
 	dbw $00, LevelObject_1db5a
@@ -2030,11 +1838,14 @@ Data_1d9fd:
 	dbw $2f, LevelObject_1db46
 	db $ff ; end
 
-Data_1da22:
+ObjectList_MtDedede0_Y:
+ObjectList_MtDedede1_Y:
+ObjectList_MtDedede4_X:
+ObjectList_MtDedede5_Y:
 	dbw $00, NULL
 	db $ff ; end
 
-Data_1da26:
+ObjectList_MtDedede5_X:
 	dbw $00, NULL
 	dbw $0b, LevelObject_1db96
 	db $ff ; end

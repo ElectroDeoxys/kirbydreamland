@@ -382,8 +382,7 @@ AnimScript_Hit:
 	frame  4, OAM_2dd31
 	script_end
 
-; unreferenced
-AnimScript_24a1a:
+AnimScript_DefeatStars_RelPos:
 	set_rel_pos
 AnimScript_DefeatStars:
 	play_sfx SFX_28
@@ -499,8 +498,7 @@ AnimScript_24ba7:
 	frame  6, OAM_2dc25
 	frame  0, OAM_2dc1d
 
-; unreferenced
-AnimScript_24bb0:
+AnimScript_UnkSpitStarFX:
 	frame  2, OAM_2d8b8
 	script_end
 
@@ -513,8 +511,7 @@ AnimScript_DestructiveExplosion:
 	set_object_properties Data_35b7
 	set_scripts AnimScript_Explosion, MotionScript_10008
 
-; unreferenced
-AnimScript_24bc9:
+AnimScript_DiveHitbox:
 	set_update_func Func_142a3, NULL
 	jump_abs AnimScript_20000
 
@@ -530,16 +527,17 @@ AnimScript_MikeAttack:
 	script_exec Func_4ae6
 	set_scripts AnimScript_2493f, MotionScript_10370
 
-; unreferenced
-AnimScript_24bf4:
+AnimScript_FirePellet:
 	position_offset 0, 5
 	play_sfx SFX_19
 	set_update_func Func_141b1, AnimScript_DestructiveHit
-	jump_if_not_flags hKirbyFlags3, $20, .loop_2
+	jump_if_not_flags hKirbyFlags3, KIRBY3F_FACE_LEFT, .loop_2
+
 .loop_1
 	frame  2, OAM_2dd11
 	frame  2, OAM_2dd19
 	jump_abs .loop_1
+
 .loop_2
 	frame  2, OAM_2dd01
 	frame  2, OAM_2dd09
@@ -815,7 +813,7 @@ AnimScript_24e21:
 
 ; unreferenced
 AnimScript_24e2b:
-	set_update_func Func_140c2, AnimScript_24e83
+	set_update_func Func_140c2, AnimScript_GrizzoSeparated
 AnimScript_24e30:
 	set_motion_script MotionScript_3102a
 .loop
@@ -825,7 +823,7 @@ AnimScript_24e30:
 
 ; unreferenced
 AnimScript_24e3d:
-	set_update_func Func_140c2, AnimScript_24e83
+	set_update_func Func_140c2, AnimScript_GrizzoSeparated
 AnimScript_24e42:
 	set_motion_script MotionScript_31032
 .loop
@@ -871,7 +869,7 @@ AnimScript_24e7d:
 AnimScript_24e80:
 	frame  0, OAM_2c26c
 
-AnimScript_24e83:
+AnimScript_GrizzoSeparated:
 	set_object_properties Properties_353e
 AnimScript_24e88:
 	branch_kirby_pos .script_24e8f, .script_24ea1
@@ -968,8 +966,7 @@ AnimScript_24f40:
 	set_object_properties Data_3550
 	frame  0, OAM_2c1ec
 
-; unreferenced
-AnimScript_24f69:
+AnimScript_PoppyBrosJrSeparated:
 	play_sfx SFX_28
 	branch_kirby_pos .script_24f74, .script_24f7e
 .script_24f74
@@ -1101,13 +1098,12 @@ AnimScript_25058:
 	frame  8, OAM_2c0c8
 	script_ret
 
-; unreferenced
-AnimScript_25087:
+AnimScript_OnPoppyBrosSrDestroyed:
 	set_value wd3f1, $01
-	set_flags wConsumedItems, $00, $40
+	set_flags wConsumedItems, $00, 1 << 6
 	script_exec ScriptFunc_EnableScrollingAndFadeOut
-	script_exec_arg ScriptFunc_AddScore, $00
-	set_flags hHUDFlags, $80, $23
+	script_exec_arg ScriptFunc_AddScore, SCORE_300
+	set_flags hHUDFlags, HUD_BOSS_BATTLE, HUD_UPDATE_FIRST_ROW | HUD_UPDATE_LABEL | HUD_UPDATE_SCORE_DIGITS
 	script_call AnimScript_24b63
 	script_end
 
@@ -1209,23 +1205,21 @@ AnimScript_25192:
 	frame  1, OAM_2c058
 	script_ret
 
-; unreferenced
-AnimScript_251a9:
+AnimScript_WhispyWoodsDespawnGuard:
 	frame  6, OAM_2c034
 	frame 28, OAM_2c024
 	script_exec Func_4897
 	script_end
 
-; unreferenced
-AnimScript_251b3:
+AnimScript_OnWhispyWoodsDestroyed:
 	play_music MUSIC_NONE
 	play_sfx SFX_29
 	create_object AnimScript_24981, MotionScript_312a2, Data_3421
 	script_call AnimScript_24b1f
-	script_exec_arg ScriptFunc_AddScore, $01
-	set_flags hHUDFlags, $80, $23
+	script_exec_arg ScriptFunc_AddScore, SCORE_1000
+	set_flags hHUDFlags, HUD_BOSS_BATTLE, HUD_UPDATE_FIRST_ROW | HUD_UPDATE_LABEL | HUD_UPDATE_SCORE_DIGITS
 	frame 30, OAM_2d8b8
-	set_value wClearScreenFlags, $81
+	set_value wClearScreenFlags, CLEAR_ACTIVE | CLEAR_NON_MIKE
 	frame  0, OAM_2c044
 
 AnimScript_251d8:
@@ -2372,15 +2366,14 @@ AnimScript_25bc6:
 	position_offset -10, 16
 	jump_abs AnimScript_249f0
 
-; unreferenced
-AnimScript_25bcc:
+AnimScript_OnKaboolaDestroyed:
 	play_music MUSIC_NONE
-	set_flags hKirbyFlags5, $00, $20
-	set_flags hKirbyFlags6, $40, $00
-	set_flags hPalFadeFlags, $20, $10
-	set_value wObjectAnimScriptPtrs + 0, $23
-	set_value wObjectAnimScriptPtrs + 1, $16
-	set_value wLevelXSection, $20
+	set_flags hKirbyFlags5, $00, KIRBY5F_UNK5
+	set_flags hKirbyFlags6, KIRBY6F_UNK6, $00
+	set_flags hPalFadeFlags, SCROLLINGF_UNK5, SCROLL_LOCKED
+	set_value wObjectAnimScriptPtrs + (2 * OBJECT_SLOT_KIRBY) + 0, LOW(AnimScript_1623)
+	set_value wObjectAnimScriptPtrs + (2 * OBJECT_SLOT_KIRBY) + 1, HIGH(AnimScript_1623)
+	set_value wLevelXSection, 32
 	set_rel_pos
 	create_object AnimScript_24981, MotionScript_31d72, Data_3421
 	script_call AnimScript_24b1f
@@ -2788,25 +2781,24 @@ AnimScript_25f05:
 	jump_rel .loop
 
 AnimScript_25f27:
-	create_object AnimScript_25ed5, MotionScript_32161, Data_3421
+	create_object AnimScript_25ed5, MotionScript_ParasolSeparated, Data_3421
 	set_object_properties StandardEnemyProperties
 	frame  1, OAM_2de55
 	script_exec Func_4afb
 AnimScript_25f39:
-	create_object AnimScript_25ed5, MotionScript_32161, Data_3421
+	create_object AnimScript_25ed5, MotionScript_ParasolSeparated, Data_3421
 	set_object_properties StandardEnemyProperties
 	frame  1, OAM_2de75
 	script_exec Func_4afb
 AnimScript_25f4b:
 	set_object_properties Data_3421
-	set_scripts AnimScript_25ed5, MotionScript_32161
+	set_scripts AnimScript_25ed5, MotionScript_ParasolSeparated
 
 ; unreferenced
 AnimScript_25f55:
 	script_end
 
-; unreferenced
-AnimScript_25f56:
+AnimScript_ParasolSeparated:
 	create_object AnimScript_DefeatStars, MotionScript_10008, Data_3421
 	jump_abs AnimScript_25ed5
 
@@ -4369,15 +4361,14 @@ AnimScript_26d20:
 	frame 16, OAM_2e801
 	jump_rel .loop
 
-; unreferenced
-AnimScript_26d2e:
+AnimScript_KrackoJrExplosion:
 	play_sfx SFX_EXPLOSION
-	script_call AnimScript_26d40
+	script_call .script_26d40
 	create_object AnimScript_26d60, MotionScript_33117, Data_3421
-	script_call AnimScript_26d40
+	script_call .script_26d40
 	script_end
 
-AnimScript_26d40:
+.script_26d40
 	frame  2, OAM_2dd39
 	frame  2, OAM_2dd51
 	frame  2, OAM_2dd69
@@ -4528,8 +4519,7 @@ AnimScript_26e52:
 	frame  8, OAM_2e5e9
 	jump_rel .loop
 
-; unreferenced
-AnimScript_26e5a:
+AnimScript_KrackoDespawnGuard:
 	script_repeat 2
 	frame  2, OAM_2e429
 	frame  2, OAM_2e569
@@ -4539,8 +4529,7 @@ AnimScript_26e5a:
 	script_exec Func_4897
 	script_end
 
-; unreferenced
-AnimScript_26e6d:
+AnimScript_OnKrackoDestroyed:
 	play_music MUSIC_NONE
 	create_object AnimScript_24981, MotionScript_1032d, Data_3421
 	script_call AnimScript_24b1f
@@ -4740,8 +4729,7 @@ AnimScript_2703d:
 	play_sfx SFX_JUMP
 	frame  0, OAM_2c494
 
-; unreferenced
-AnimScript_2704a:
+AnimScript_OnLololoLalalaDestroyed:
 	jump_if_equal wBossHP, $00, .script_27064
 	script_call AnimScript_24b63
 	set_value wKirbySideOfScreen, $00
@@ -4968,8 +4956,7 @@ AnimScript_271fe:
 	frame  8, OAM_2ca0c
 	set_scripts .script_272be, MotionScript_337bb.script_339d1
 
-; unreferenced
-AnimScript_272c6:
+AnimScript_KingDededeDespawnGuard:
 	branch_kirby_pos .script_272cd, .script_272d2
 .script_272cd
 	frame 30, OAM_2caf8
@@ -4980,8 +4967,7 @@ AnimScript_272c6:
 	script_exec Func_4897
 	script_end
 
-; unreferenced
-AnimScript_272d9:
+AnimScript_22def:
 	set_flags hKirbyFlags5, $00, $20
 	set_value wObjectAnimScriptTimers, $ff
 	play_music MUSIC_NONE
@@ -5081,7 +5067,7 @@ AnimScript_27446:
 	frame  6, OAM_2d8b8
 	script_end
 
-AnimScript_2744a:
+AnimScript_22f60:
 	frame  0, OAM_2d8b8
 
 AnimScript_WarpStarTrailingStar1:

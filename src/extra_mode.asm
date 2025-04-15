@@ -2,6 +2,7 @@ DEF EXTRA_MODE EQU 1
 
 SECTION "Bank F", ROMX
 
+INCLUDE "data/scripts/object_lists_common.asm"
 INCLUDE "engine/bank0f.asm"
 
 
