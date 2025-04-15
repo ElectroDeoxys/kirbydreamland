@@ -466,4 +466,12 @@ ConfigurationMenu:
 	set PROCESS_BG_QUEUE_F, a
 	ld [hEngineFlags], a
 	ret
-; 0x1a727
+
+; unreferenced
+; seems like leftover garbage code
+	db $d7
+	ld [hEngineFlags], a
+	ret
+	db $d7
+	ld [hEngineFlags], a
+	ret

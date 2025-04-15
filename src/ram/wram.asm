@@ -435,8 +435,8 @@ wd3d2:: ; d3d2
 wd3d3:: ; d3d3
 	db
 
-wEnemyHurtCounter:: db ; d3d4
-wEnemyHurtObjectIndex::   db ; d3d5
+wEnemyHurtCounter::     db ; d3d4
+wEnemyHurtObjectIndex:: db ; d3d5
 
 wd3d6:: ; d3d6
 	db
