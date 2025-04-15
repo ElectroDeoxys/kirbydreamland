@@ -1,668 +1,8 @@
-AnimScript_20000:
-	frame  0, OAM_2d8b8
-
-AnimScript_20003:
-	script_delay 0
-
-AnimScript_20005:
-	set_object_properties Data_35b7
-	set_update_func Func_141b1, AnimScript_20ba2
-	script_exec Func_4adf
-	set_scripts AnimScript_Explosion, MotionScript_102fb
-
-AnimScript_20017:
-	set_object_properties Data_35b7
-	set_update_func Func_141b1, AnimScript_20ba2
-	set_scripts AnimScript_Explosion, MotionScript_10008
-
-AnimScript_20026:
-	jump_if_flags hEngineFlags, KABOOLA_BATTLE, .script_20034
-	create_object AnimScript_20a01, MotionScript_10008, Data_3421
-	script_end
-.script_20034
-	create_object AnimScript_21aa8, MotionScript_10008, Data_3425
-	script_end
-
-AnimScript_2003c:
-	create_object AnimScript_20044, MotionScript_10008, Data_3421
-	script_end
-
-AnimScript_20044:
-	frame  2, OAM_2dd29
-	frame  2, OAM_2dd31
-AnimScript_2004a:
-	script_end
-
-AnimScript_2004b:
-	set_motion_script MotionScript_1092a
-	frame 60, OAM_2dc01
-	frame  6, OAM_2dc01
-	script_repeat 15
-	frame  8, OAM_2dc01
-	create_object AnimScript_208f1, MotionScript_135bc, Data_3425
-	script_repeat_end
-	frame 16, OAM_2d8b8
-	play_sfx SFX_13
-	frame 16, OAM_2d8b8
-	frame 128, OAM_2dc1d
-	jump_abs AnimScript_209f6
-
-AnimScript_20073:
-	set_motion_script MotionScript_1096c
-	frame 44, OAM_2dc01
-	frame 40, OAM_2dc01
-	create_object AnimScript_Explosion, MotionScript_135bc, Data_3425
-	frame 88, OAM_2dc01
-.loop
-	frame  4, OAM_2dc01
-	create_object AnimScript_Explosion, MotionScript_10317, Data_3425
-	create_object AnimScript_Explosion, MotionScript_135bc, Data_3425
-	create_object AnimScript_Explosion, MotionScript_135bc, Data_3425
-	jump_abs .loop
-
-AnimScript_200a3:
-	set_motion_script MotionScript_109a3
-	frame 100, OAM_2dc01
-	frame 142, OAM_2dc01
-	frame 20, OAM_2d8b8
-	frame  0, OAM_2dc1d
-
-AnimScript_200b4:
-	set_motion_script MotionScript_10a29
-	frame 80, OAM_2dc01
-	script_repeat 21
-	create_object AnimScript_208f1, MotionScript_10a13, Data_3425
-	frame  4, OAM_2dc01
-	script_repeat_end
-	frame 20, OAM_2dc01
-	create_object AnimScript_20af2, MotionScript_10713, Data_3425
-	create_object AnimScript_20af2, MotionScript_1071f, Data_3425
-	create_object AnimScript_20af2, MotionScript_1072b, Data_3425
-	create_object AnimScript_20af2, MotionScript_10737, Data_3425
-	create_object AnimScript_20af2, MotionScript_10743, Data_3425
-	create_object AnimScript_20af2, MotionScript_10767, Data_3425
-	create_object AnimScript_20af2, MotionScript_1074f, Data_3425
-	create_object AnimScript_20af2, MotionScript_1075b, Data_3425
-	create_object AnimScript_20138, MotionScript_10008, Data_3425
-	script_end
-
-AnimScript_2010c:
-	frame  0, OAM_2dc01
-
-AnimScript_2010f:
-	jumptable_random %11
-	dw .sub_20119
-	dw .sub_2011e
-	dw .sub_20123
-	dw .sub_20123
-
-.sub_20119
-	frame 48, OAM_2db69
-	jump_rel .common
-
-.sub_2011e
-	frame 48, OAM_2d8d9
-	jump_rel .common
-
-.sub_20123
-	frame 10, OAM_2dbe1
-	frame 10, OAM_2dbe9
-	frame 10, OAM_2dbf9
-	frame 10, OAM_2dbf1
-	frame  8, OAM_2d8d9
-.common
-	frame 16, OAM_2dbc9
-	frame  0, OAM_2d8b9
-
-AnimScript_20138:
-	script_repeat 2
-	frame  2, OAM_2dc91
-	frame  2, OAM_2dc9d
-	frame  2, OAM_2dca9
-	frame  2, OAM_2dcb5
-	frame  2, OAM_2dcc1
-	frame  2, OAM_2dccd
-	frame  2, OAM_2dcd9
-	frame  2, OAM_2dce5
-	script_repeat_end
-	script_end
-
-AnimScript_20154:
-	create_object AnimScript_20af2, MotionScript_10713, Data_3425
-	create_object AnimScript_20af2, MotionScript_1071f, Data_3425
-	create_object AnimScript_20af2, MotionScript_1072b, Data_3425
-	create_object AnimScript_20af2, MotionScript_10737, Data_3425
-	create_object AnimScript_20af2, MotionScript_10743, Data_3425
-	create_object AnimScript_20af2, MotionScript_10767, Data_3425
-	create_object AnimScript_20af2, MotionScript_1074f, Data_3425
-	create_object AnimScript_20af2, MotionScript_1075b, Data_3425
-.loop
-	frame  8, OAM_2dbf9
-	create_object AnimScript_20ae6, MotionScript_107c3, Data_3425
-	frame  8, OAM_2dbe9
-	create_object AnimScript_20ae6, MotionScript_107c3, Data_3425
-	frame  8, OAM_2dbe1
-	create_object AnimScript_20ae6, MotionScript_107c3, Data_3425
-	frame  8, OAM_2dbf1
-	create_object AnimScript_20ae6, MotionScript_107c3, Data_3425
-	jump_abs .loop
-
-AnimScript_201b7:
-	set_rel_pos
-	set_object_properties StandardEnemyGravityProperties
-	set_update_func Func_141b1, AnimScript_2073c
-	jump_if_not_flags hKirbyFlags3, KIRBY3F_FACE_LEFT, .script_201d2
-	set_motion_script MotionScript_10a92
-.loop_1
-	script_call AnimScript_208cb
-	jump_rel .loop_1
-
-.script_201d2
-	set_motion_script MotionScript_10abd
-.loop_2
-	script_call AnimScript_208b8
-	jump_rel .loop_2
-
-AnimScript_201dc:
-	script_delay 0
-
-	script_repeat 10
-	frame  4, OAM_2dbe1
-	frame  4, OAM_2d8b8
-	frame  4, OAM_2dbe9
-	frame  4, OAM_2d8b8
-	frame  4, OAM_2dbf9
-	frame  4, OAM_2d8b8
-	frame  4, OAM_2dbf1
-	frame  4, OAM_2d8b8
-	script_repeat_end
-
-	frame  1, OAM_2d8d9
-	set_kirby_pos
-	set_flags hKirbyFlags5, KIRBY5F_UNK5, $00
-	script_delay 0
-
-AnimScript_20206:
-	set_flags hEngineFlags, $00, ENGINEF_UNK5
-	jump_if_flags hKirbyFlags6, KIRBY6F_UNK7, $4008 ; bug?
-	set_motion_script MotionScript_135d2
-	create_object AnimScript_Explosion, MotionScript_10008, Data_3425
-	frame  4, OAM_2dc01
-	create_object AnimScript_Explosion, MotionScript_10008, Data_3425
-	frame  4, OAM_2dc01
-	create_object AnimScript_Explosion, MotionScript_10008, Data_3425
-	frame  8, OAM_2dc01
-	create_object AnimScript_Explosion, MotionScript_10008, Data_3425
-	frame 80, OAM_2dc01
-
-	script_repeat 4
-	create_object AnimScript_22f63, MotionScript_135bc, Data_3425
-	play_sfx SFX_DAMAGE
-	script_delay 4
-	script_repeat_end
-
-	script_delay 16
-
-	script_repeat 8
-	create_object AnimScript_22f69, MotionScript_135bc, Data_3425
-	play_sfx SFX_20
-	script_delay 4
-	script_repeat_end
-
-	play_sfx SFX_ENTER_DOOR
-	create_object AnimScript_208f1, MotionScript_106eb, Data_3425
-	create_object AnimScript_208f1, MotionScript_106f5, Data_3425
-	create_object AnimScript_208f1, MotionScript_106ff, Data_3425
-	create_object AnimScript_208f1, MotionScript_10709, Data_3425
-.loop
-	frame 10, OAM_2dbe1
-	frame 10, OAM_2dbf1
-	frame 10, OAM_2dbf9
-	frame 10, OAM_2dbe9
-	jump_abs .loop
-
-AnimScript_2028f:
-	script_repeat 6
-	create_object AnimScript_22f63, MotionScript_135bc, Data_3425
-	frame 10, OAM_2db69
-	script_repeat_end
-
-	frame 58, OAM_2db69
-	frame  8, OAM_2dbc9
-	set_kirby_pos
-	set_flags hPalFadeFlags, $00, SCROLL_LOCKED
-	set_value wStageTransitionCounter, 1
-	set_motion_script MotionScript_10008
-	frame  0, OAM_2d8b9
-
-AnimScript_202b6::
-	frame 26, OAM_2d8c1
-	frame 18, OAM_2d8c9
-	frame 18, OAM_2d8d1
-	frame  8, OAM_2d8c9
-	frame 18, OAM_2d8c1
-	script_repeat 6
-	frame 10, OAM_2d8c9
-	frame 16, OAM_2d8d1
-	frame 10, OAM_2d8c9
-	frame 16, OAM_2d8c1
-	script_repeat_end
-	script_call AnimScript_208b8
-	script_call AnimScript_208b8
-	frame 128, OAM_2db79
-	frame 128, OAM_2d8b9
-	frame  8, OAM_2dbc9
-	frame 128, OAM_2db69
-	frame 48, OAM_2dbc9
-	frame  4, OAM_2d8b9
-	frame 10, OAM_2dbc5
-	frame 96, OAM_2d8b9
-	frame 16, OAM_2dbd1
-	frame 16, OAM_2dbdd
-	frame 16, OAM_2dbc9
-	frame 16, OAM_2dbd9
-	frame 16, OAM_2dbd1
-	script_call AnimScript_208b8
-	script_call AnimScript_208b8
-	frame  1, OAM_2d8d9
-	set_flags hKirbyFlags5, KIRBY5F_UNK0, KIRBY5F_UNK0
-	script_delay 1
-
-AnimScript_20311::
-	frame 26, OAM_2d8f1
-	frame 18, OAM_2d8f9
-	frame 18, OAM_2d901
-	frame  8, OAM_2d8f9
-	frame 18, OAM_2d8f1
-	script_repeat 3
-	frame 10, OAM_2d8f9
-	frame 16, OAM_2d901
-	frame 10, OAM_2d8f9
-	frame 16, OAM_2d8f1
-	script_repeat_end
-	script_call AnimScript_208cb
-	script_call AnimScript_208cb
-	frame 128, OAM_2db91
-	frame 128, OAM_2d8e9
-	frame  8, OAM_2dbad
-	frame 128, OAM_2db71
-	frame 48, OAM_2dbad
-	frame  4, OAM_2d8e9
-	frame 10, OAM_2dba9
-	frame 96, OAM_2d8e9
-	frame 16, OAM_2dbb5
-	frame 16, OAM_2dbc1
-	frame 16, OAM_2dbad
-	frame 16, OAM_2dbbd
-	frame 16, OAM_2dbb5
-	script_call AnimScript_208cb
-	script_call AnimScript_208cb
-	frame  1, OAM_2d909
-	set_flags hKirbyFlags5, $00, KIRBY5F_UNK0
-	script_delay 1
-
-AnimScript_2036c:
-	create_object AnimScript_20a01, MotionScript_10008, Data_3421
-	frame 16, OAM_2d8b8
-	set_flags wClearScreenFlags, $00, CLEAR_NEXT_OBJ
-	script_end
-
-AnimScript_2037c:
-	frame  2, OAM_2dc91
-	frame  2, OAM_2dc9d
-	frame  2, OAM_2dca9
-	frame  2, OAM_2dcb5
-	frame  2, OAM_2dcc1
-	frame  2, OAM_2dccd
-	frame  2, OAM_2dcd9
-	frame  2, OAM_2dce5
-	frame  2, OAM_2dc91
-	frame  2, OAM_2dc9d
-	frame  2, OAM_2dca9
-	frame  2, OAM_2dcb5
-	frame  2, OAM_2dcc1
-	frame  2, OAM_2dccd
-	frame  2, OAM_2dcd9
-	frame  2, OAM_2dce5
-	set_flags wClearScreenFlags, $00, CLEAR_NEXT_OBJ
-	script_end
-
-AnimScript_203b2:
-	frame 32, OAM_2d8b8
-	script_end
-
-AnimScript_203b6:
-	script_exec ScriptFunc_CreateExplosion
-	set_object_properties ExplosionProperties
-AnimScript_Explosion:
-	play_sfx SFX_EXPLOSION
-	script_repeat 2
-	frame  2, OAM_2dd39
-	frame  2, OAM_2dd51
-	frame  2, OAM_2dd69
-	frame  2, OAM_2dd81
-	frame  2, OAM_2dd99
-	frame  2, OAM_2ddb1
-	frame  2, OAM_2ddc9
-	frame  2, OAM_2dde1
-	script_repeat_end
-	script_end
-
-AnimScript_203de:
-	set_flags hKirbyFlags5, $00, $20
-	set_update_func Func_142dc, NULL
-AnimScript_203e8:
-.loop
-	frame  8, OAM_2dbe1
-	frame  8, OAM_2dbe9
-	frame  8, OAM_2dbf9
-	frame  8, OAM_2dbf1
-	jump_rel .loop
-
-AnimScript_203f6:
-.loop
-	frame  8, OAM_2dc25
-	frame  8, OAM_2dc2d
-	frame  8, OAM_2dc3d
-	frame  8, OAM_2dc45
-	jump_abs .loop
-
-AnimScript_20405:
-	jump_if_not_flags hKirbyFlags3, KIRBY3F_FACE_LEFT, .script_20419
-	frame  6, OAM_2daf1
-	frame  6, OAM_2dae9
-	set_motion_script MotionScript_10c47
-	frame  0, OAM_2daf1
-.script_20419:
-	frame  6, OAM_2da71
-	frame  6, OAM_2da69
-	set_motion_script MotionScript_10c47
-	frame  0, OAM_2da71
-
-AnimScript_SpitStar:
-	play_sfx SFX_STAR_SPIT
-	jump_if_flags wPowerUpAttack, POWERUP_MIKE, AnimScript_20bc9
-	jump_if_flags wPowerUpAttack, POWERUP_BOMB, AnimScript_20bb7
-	set_update_func Func_141b1, AnimScript_20b9a
-	jump_if_not_flags hKirbyFlags3, KIRBY3F_FACE_LEFT, .script_2045b
-	script_repeat 2
-	frame  4, OAM_2dc25
-	frame  4, OAM_2dc45
-	frame  4, OAM_2dc3d
-	frame  4, OAM_2dc2d
-	script_repeat_end
-	frame  4, OAM_2dc25
-	frame  4, OAM_2dc45
-	frame  2, OAM_2dc1d
-	script_end
-
-.script_2045b
-	script_repeat 2
-	frame  4, OAM_2dc25
-	frame  4, OAM_2dc2d
-	frame  4, OAM_2dc3d
-	frame  4, OAM_2dc45
-	script_repeat_end
-	frame  4, OAM_2dc25
-	frame  4, OAM_2dc45
-	frame  4, OAM_2dc1d
-	script_end
-
-AnimScript_20474:
-	frame  0, OAM_2ddf9
-
-AnimScript_KirbyPuff:
-	play_sfx SFX_PUFF
-	jump_if_flags wPowerUpAttack, POWERUP_MIKE, AnimScript_20bc9
-	jump_if_flags wPowerUpAttack, POWERUP_BOMB, AnimScript_20bb7
-	jump_if_flags hEngineFlags, KABOOLA_BATTLE, .script_2049e
-	set_update_func Func_141b1, AnimScript_20b9a
-.check_land
-	jump_if_not_flags hKirbyFlags3, KIRBY3F_FACE_LEFT, .script_2049b
-	frame  0, OAM_2dcf9
-.script_2049b
-	frame  0, OAM_2dcf1
-.script_2049e
-	frame  1, OAM_2d8b8
-	set_abs_pos
-	jump_rel .check_land
-
-AnimScript_204a4:
-	script_repeat 3
-	create_object AnimScript_209c0, MotionScript_103bf, GlunkPodProperties
-	set_pal_dark
-	script_delay 2
-	set_pal_light
-	script_delay 2
-	script_repeat_end
-	script_repeat 3
-	create_object AnimScript_209c0, MotionScript_103fb, GlunkPodProperties
-	set_pal_dark
-	script_delay 2
-	set_pal_light
-	script_delay 2
-	script_repeat_end
-	script_repeat 3
-	create_object AnimScript_209c0, MotionScript_103f7, GlunkPodProperties
-	set_pal_dark
-	script_delay 2
-	set_pal_light
-	script_delay 2
-	script_repeat_end
-	script_repeat 3
-	create_object AnimScript_209c0, MotionScript_103f3, GlunkPodProperties
-	set_pal_dark
-	script_delay 2
-	set_pal_light
-	script_delay 2
-	script_repeat_end
-	script_repeat 3
-	create_object AnimScript_209c0, MotionScript_103ef, GlunkPodProperties
-	set_pal_dark
-	script_delay 2
-	set_pal_light
-	script_delay 2
-	script_repeat_end
-	script_repeat 3
-	create_object AnimScript_209c0, MotionScript_103eb, GlunkPodProperties
-	set_pal_dark
-	script_delay 2
-	set_pal_light
-	script_delay 2
-	script_repeat_end
-	script_ret
-
-AnimScript_2051d:
-	script_repeat 3
-	create_object AnimScript_209c0, MotionScript_103bf, GlunkPodProperties
-	script_delay 4
-	script_repeat_end
-	script_repeat 3
-	create_object AnimScript_209c0, MotionScript_103c3, GlunkPodProperties
-	script_delay 4
-	script_repeat_end
-	script_repeat 3
-	create_object AnimScript_209c0, MotionScript_103c7, GlunkPodProperties
-	script_delay 4
-	script_repeat_end
-	script_repeat 3
-	create_object AnimScript_209c0, MotionScript_103cb, GlunkPodProperties
-	script_delay 4
-	script_repeat_end
-	script_repeat 3
-	create_object AnimScript_209c0, MotionScript_103cf, GlunkPodProperties
-	script_delay 4
-	script_repeat_end
-	script_repeat 3
-	create_object AnimScript_209c0, MotionScript_103d3, GlunkPodProperties
-	script_delay 4
-	script_repeat_end
-	script_ret
-
-AnimScript_20566::
-	frame  4, OAM_2db81
-	frame  0, OAM_2db89
-
-AnimScript_2056c::
-	frame  4, OAM_2db99
-	frame  0, OAM_2dba1
-
-AnimScript_20572:
-.loop
-	script_repeat 2
-	frame 10, OAM_2de45
-	frame 10, OAM_2de4d
-	script_repeat_end
-	script_repeat 4
-	frame  6, OAM_2de45
-	frame  6, OAM_2de4d
-	script_repeat_end
-	jump_abs .loop
-
-AnimScript_20587:
-.loop
-	frame 16, OAM_2de55
-	frame 16, OAM_2de5d
-	jump_abs .loop
-
-; unreferenced
-AnimScript_20590:
-	frame 16, OAM_2de65
-	frame 16, OAM_2de6d
-	jump_abs AnimScript_20590
-
-; unreferenced
-AnimScript_20599:
-	frame  8, OAM_2de5d
-	frame 16, OAM_2de55
-	frame  8, OAM_2de5d
-	frame  8, OAM_2de6d
-	frame 16, OAM_2de65
-	frame  8, OAM_2de6d
-	jump_abs AnimScript_20599
-
-AnimScript_205ae:
-.loop
-	frame 10, OAM_2de55
-	frame 10, OAM_2de5d
-	frame 10, OAM_2de55
-	frame 10, OAM_2de5d
-	frame 20, OAM_2de65
-	frame 10, OAM_2de6d
-	frame 10, OAM_2de65
-	frame 10, OAM_2de6d
-	frame 10, OAM_2de55
-	jump_abs .loop
-
-AnimScript_205cc:
-.loop
-	frame 64, OAM_2de55
-	frame  8, OAM_2de5d
-	frame  8, OAM_2de6d
-	frame 64, OAM_2de65
-	frame  8, OAM_2de6d
-	frame  8, OAM_2de5d
-	jump_abs .loop
-
-AnimScript_205e1:
-.loop
-	frame 16, OAM_2de75
-	frame 16, OAM_2de7d
-	jump_abs .loop
-
-AnimScript_205ea:
-.loop
-	frame 16, OAM_2de9d
-	frame 16, OAM_2dea5
-	jump_abs .loop
-
-; unreferenced
-AnimScript_205f3:
-	frame  0, OAM_2de85
-
-; unreferenced
-AnimScript_205f6:
-	frame  0, OAM_2dead
-
-; unreferenced
-AnimScript_205f9:
-	frame  3, OAM_2de8d
-	frame  3, OAM_2de75
-	jump_abs AnimScript_205f9
-
-; unreferenced
-AnimScript_20602:
-	frame  3, OAM_2deb5
-	frame  3, OAM_2de9d
-	jump_abs AnimScript_20602
-
-; unreferenced
-AnimScript_2060b:
-	frame  3, OAM_2de95
-	frame  3, OAM_2de85
-	jump_abs AnimScript_2060b
-
-; unreferenced
-AnimScript_20614:
-	frame  3, OAM_2debd
-	frame  3, OAM_2dead
-	jump_abs AnimScript_20614
-
-AnimScript_2061d:
-.loop
-	frame 10, OAM_2de75
-	frame 10, OAM_2de7d
-	frame 10, OAM_2de75
-	frame 10, OAM_2de7d
-	frame 20, OAM_2de9d
-	frame 10, OAM_2dea5
-	frame 10, OAM_2de9d
-	frame 10, OAM_2dea5
-	frame 10, OAM_2de75
-	jump_abs .loop
-
-AnimScript_2063b:
-	frame  8, OAM_2decd
-	frame  0, OAM_2dec5
-
-AnimScript_20641:
-	frame  8, OAM_2dedd
-	frame  0, OAM_2ded5
-
-AnimScript_20647:
-.loop
-	frame 10, OAM_2dec5
-	frame 10, OAM_2decd
-	jump_abs .loop
-
-AnimScript_20650:
-.loop
-	frame 10, OAM_2ded5
-	frame 10, OAM_2dedd
-	jump_abs .loop
-
-AnimScript_20659:
-.loop
-	frame  5, OAM_2dec5
-	frame  5, OAM_2decd
-	jump_abs .loop
-
-AnimScript_20662:
-.loop
-	frame  5, OAM_2ded5
-	frame  5, OAM_2dedd
-	jump_abs .loop
-
-; unreferenced
-AnimScript_2066b:
-	frame 10, OAM_2def5
-	jump_abs AnimScript_2066b
-
 AnimScript_20671:
 .loop
 	script_repeat 3
 	frame 10, OAM_2def5
-	create_object AnimScript_Bullet, MotionScript_1030e, ShotzoBulletProperties
+	create_object AnimScript_Bullet, MotionScript_Projectile_Up, ShotzoBulletProperties
 	set_motion_script MotionScript_102a4
 	frame 10, OAM_2def5
 	script_repeat_end
@@ -714,7 +54,7 @@ AnimScript_20707:
 	frame 100, OAM_2def5
 	jump_abs .loop
 
-AnimScript_2073c:
+AnimScript_KirbyDance:
 	set_abs_pos
 	set_object_properties Data_3425
 
@@ -742,37 +82,37 @@ AnimScript_2073c:
 	frame  6, OAM_2d8c9
 	jump_rel .loop_2
 
-AnimScript_MainKirbyStageClearDance:
+AnimScript_MainKirbyDance:
 	set_motion_script MotionScript_10008
 	; create extra Kirbys for dance
-	create_object AnimScript_LeftKirbyStageClearDance, MotionScript_10008, Data_3425
-	create_object AnimScript_RightKirbyStageClearDance, MotionScript_10008, Data_3425
-	script_call AnimScript_208b8
+	create_object AnimScript_LeftKirbyDance, MotionScript_10008, Data_3425
+	create_object AnimScript_RightKirbyDance, MotionScript_10008, Data_3425
+	script_call AnimScript_KirbySpin_Right
 	frame 55, OAM_2d8e1
 	play_music MUSIC_VICTORY
 
-AnimScript_KirbyStageClearDance_Common:
+AnimScript_KirbyDance_Common:
 	jumptable wStage
 	table_width 2
-	dw AnimScript_KirbyStageClearDance_GreenGreens  ; GREEN_GREENS
-	dw AnimScript_KirbyStageClearDance_CastleLololo ; CASTLE_LOLOLO
-	dw AnimScript_KirbyStageClearDance_FloatIslands ; FLOAT_ISLANDS
-	dw AnimScript_KirbyStageClearDance_BubblyClouds ; BUBBLY_CLOUDS
+	dw AnimScript_KirbyDance_GreenGreens  ; GREEN_GREENS
+	dw AnimScript_KirbyDance_CastleLololo ; CASTLE_LOLOLO
+	dw AnimScript_KirbyDance_FloatIslands ; FLOAT_ISLANDS
+	dw AnimScript_KirbyDance_BubblyClouds ; BUBBLY_CLOUDS
 	assert_table_length NUM_STAGES - 1
 
-AnimScript_LeftKirbyStageClearDance:
+AnimScript_LeftKirbyDance:
 	position_offset -30, 0
 	script_call AnimScript_208de
 	frame 55, OAM_2d8e1
-	jump_abs AnimScript_KirbyStageClearDance_Common
+	jump_abs AnimScript_KirbyDance_Common
 
-AnimScript_RightKirbyStageClearDance:
+AnimScript_RightKirbyDance:
 	position_offset 30, 0
 	script_call AnimScript_208de
 	frame 55, OAM_2d8e1
-	jump_abs AnimScript_KirbyStageClearDance_Common
+	jump_abs AnimScript_KirbyDance_Common
 
-AnimScript_KirbyStageClearDance_GreenGreens:
+AnimScript_KirbyDance_GreenGreens:
 	set_motion_script MotionScript_10b05
 	script_repeat 2
 	frame 10, OAM_2d8d1
@@ -782,8 +122,8 @@ AnimScript_KirbyStageClearDance_GreenGreens:
 	script_repeat_end
 	frame  9, OAM_2d8d1
 	frame  5, OAM_2d8c9
-	script_call AnimScript_208b8
-	script_call AnimScript_208b8
+	script_call AnimScript_KirbySpin_Right
+	script_call AnimScript_KirbySpin_Right
 	frame 31, OAM_2d8e1
 	frame 24, OAM_2d8d9
 	frame 55, OAM_2db69
@@ -792,13 +132,13 @@ AnimScript_KirbyStageClearDance_GreenGreens:
 	frame  8, OAM_2dbc5
 	frame  4, OAM_2d8b9
 	frame  8, OAM_2dbc9
-	script_call AnimScript_208cb
+	script_call AnimScript_KirbySpin_Left
 	frame 23, OAM_2dbad
 	frame 60, OAM_2d911
 	set_value wStageTransitionCounter, 1
 	script_delay 0
 
-AnimScript_KirbyStageClearDance_CastleLololo:
+AnimScript_KirbyDance_CastleLololo:
 	set_motion_script MotionScript_10b38
 	frame 10, OAM_2d909
 	frame 10, OAM_2dba9
@@ -824,12 +164,12 @@ AnimScript_KirbyStageClearDance_CastleLololo:
 	frame  6, OAM_2dbf9
 	frame  6, OAM_2dbf1
 	script_repeat_end
-	script_call AnimScript_208b8
+	script_call AnimScript_KirbySpin_Right
 	frame 60, OAM_2d8e1
 	set_value wStageTransitionCounter, 1
 	script_delay 0
 
-AnimScript_KirbyStageClearDance_FloatIslands:
+AnimScript_KirbyDance_FloatIslands:
 	set_motion_script MotionScript_10b98
 	frame 60, OAM_2d909
 	frame 20, OAM_2dbad
@@ -844,14 +184,14 @@ AnimScript_KirbyStageClearDance_FloatIslands:
 	frame 10, OAM_2d909
 	frame 30, OAM_2db71
 	script_repeat_end
-	script_call AnimScript_208b8
-	script_call AnimScript_208b8
+	script_call AnimScript_KirbySpin_Right
+	script_call AnimScript_KirbySpin_Right
 	frame 32, OAM_2dbad
 	frame 60, OAM_2d911
 	set_value wStageTransitionCounter, 1
 	script_delay 0
 
-AnimScript_KirbyStageClearDance_BubblyClouds:
+AnimScript_KirbyDance_BubblyClouds:
 	set_motion_script MotionScript_10bda
 	frame 60, OAM_2dbc5
 	frame 20, OAM_2dbc9
@@ -863,14 +203,14 @@ AnimScript_KirbyStageClearDance_BubblyClouds:
 	frame 20, OAM_2dba9
 	frame 20, OAM_2d909
 	frame 20, OAM_2dba9
-	script_call AnimScript_208cb
-	script_call AnimScript_208cb
+	script_call AnimScript_KirbySpin_Left
+	script_call AnimScript_KirbySpin_Left
 	frame 32, OAM_2dbad
 	frame 60, OAM_2d911
 	set_value wStageTransitionCounter, 1
 	script_delay 0
 
-AnimScript_208b8:
+AnimScript_KirbySpin_Right:
 	frame  4, OAM_2d8d1
 	frame  4, OAM_2db81
 	frame  4, OAM_2db89
@@ -879,7 +219,7 @@ AnimScript_208b8:
 	frame  4, OAM_2d901
 	script_ret
 
-AnimScript_208cb:
+AnimScript_KirbySpin_Left:
 	frame  4, OAM_2d901
 	frame  4, OAM_2db99
 	frame  4, OAM_2dba1
@@ -897,7 +237,7 @@ AnimScript_208de:
 	frame  4, OAM_2dccd
 	script_ret
 
-AnimScript_208f1:
+AnimScript_Star:
 	frame  0, OAM_2dc1d
 
 AnimScript_BombItem:
@@ -1019,7 +359,7 @@ AnimScript_20967:
 	set_flags hKirbyFlags5, $00, KIRBY5F_TRIGGER_TRANSITION
 	script_end
 
-AnimScript_209c0:
+AnimScript_Projectile:
 .loop
 	play_sfx SFX_18
 	frame  1, OAM_2de01
@@ -1046,7 +386,7 @@ AnimScript_Bullet:
 	frame  4, OAM_2dc19
 	script_end
 
-AnimScript_209f6:
+AnimScript_Hit:
 	frame  4, OAM_2dd21
 	frame  4, OAM_2dd29
 	frame  4, OAM_2dd31
@@ -1054,7 +394,7 @@ AnimScript_209f6:
 
 AnimScript_20a00:
 	set_rel_pos
-AnimScript_20a01:
+AnimScript_DefeatStars:
 	play_sfx SFX_28
 	jumptable_random %11
 	dw AnimScript_20a0f
@@ -1063,42 +403,42 @@ AnimScript_20a01:
 	dw AnimScript_20ab7
 
 AnimScript_20a0f:
-	create_object AnimScript_208f1, MotionScript_1083f, Data_3421
-	create_object AnimScript_208f1, MotionScript_10850, Data_3421
+	create_object AnimScript_Star, MotionScript_1083f, Data_3421
+	create_object AnimScript_Star, MotionScript_10850, Data_3421
 	frame  3, OAM_2dc25
 	frame  3, OAM_2dc2d
-	create_object AnimScript_208f1, MotionScript_10835, Data_3421
-	create_object AnimScript_208f1, MotionScript_10846, Data_3421
+	create_object AnimScript_Star, MotionScript_10835, Data_3421
+	create_object AnimScript_Star, MotionScript_10846, Data_3421
 	frame  3, OAM_2dc3d
 	frame  3, OAM_2dc45
 	frame  3, OAM_2dc25
 	script_end
 
 AnimScript_20a3b:
-	create_object AnimScript_208f1, MotionScript_10857, Data_3421
-	create_object AnimScript_208f1, MotionScript_1086b, Data_3421
-	create_object AnimScript_208f1, MotionScript_1087f, Data_3421
-	create_object AnimScript_208f1, MotionScript_10893, Data_3421
+	create_object AnimScript_Star, MotionScript_10857, Data_3421
+	create_object AnimScript_Star, MotionScript_1086b, Data_3421
+	create_object AnimScript_Star, MotionScript_1087f, Data_3421
+	create_object AnimScript_Star, MotionScript_10893, Data_3421
 	script_delay 9
-	create_object AnimScript_208f1, MotionScript_10861, Data_3421
-	create_object AnimScript_208f1, MotionScript_10875, Data_3421
-	create_object AnimScript_208f1, MotionScript_10889, Data_3421
-	create_object AnimScript_208f1, MotionScript_1089d, Data_3421
+	create_object AnimScript_Star, MotionScript_10861, Data_3421
+	create_object AnimScript_Star, MotionScript_10875, Data_3421
+	create_object AnimScript_Star, MotionScript_10889, Data_3421
+	create_object AnimScript_Star, MotionScript_1089d, Data_3421
 	script_end
 
 AnimScript_20a76:
 	branch_kirby_pos .script_20a7d, .script_20a9a
 .script_20a7d
-	create_object AnimScript_208f1, MotionScript_108a7, Data_3421
-	create_object AnimScript_208f1, MotionScript_108b4, Data_3421
-	create_object AnimScript_208f1, MotionScript_108c1, Data_3421
-	create_object AnimScript_208f1, MotionScript_108ce, Data_3421
+	create_object AnimScript_Star, MotionScript_108a7, Data_3421
+	create_object AnimScript_Star, MotionScript_108b4, Data_3421
+	create_object AnimScript_Star, MotionScript_108c1, Data_3421
+	create_object AnimScript_Star, MotionScript_108ce, Data_3421
 	script_end
 .script_20a9a
-	create_object AnimScript_208f1, MotionScript_108db, Data_3421
-	create_object AnimScript_208f1, MotionScript_108e8, Data_3421
-	create_object AnimScript_208f1, MotionScript_108f5, Data_3421
-	create_object AnimScript_208f1, MotionScript_10902, Data_3421
+	create_object AnimScript_Star, MotionScript_108db, Data_3421
+	create_object AnimScript_Star, MotionScript_108e8, Data_3421
+	create_object AnimScript_Star, MotionScript_108f5, Data_3421
+	create_object AnimScript_Star, MotionScript_10902, Data_3421
 	script_end
 
 AnimScript_20ab7:
@@ -1120,13 +460,13 @@ AnimScript_20adf:
 	frame  4, OAM_2dd31
 	script_end
 
-AnimScript_20ae6:
+AnimScript_SmallStar:
 	set_value wDisableBumpStars, TRUE
 	frame 24, OAM_2dc1d
 	set_value wDisableBumpStars, FALSE
 	script_end
 
-AnimScript_20af2:
+AnimScript_PulsingStar:
 	frame  4, OAM_2dc1d
 	frame  5, OAM_2dc25
 	frame  5, OAM_2dc2d
@@ -1138,14 +478,14 @@ AnimScript_20af2:
 AnimScript_20b05:
 	play_sfx SFX_29
 	create_object AnimScript_Explosion, MotionScript_10008, Data_3421
-	create_object AnimScript_20af2, MotionScript_10713, Data_3421
-	create_object AnimScript_20af2, MotionScript_1071f, Data_3421
-	create_object AnimScript_20af2, MotionScript_1072b, Data_3421
-	create_object AnimScript_20af2, MotionScript_10737, Data_3421
-	create_object AnimScript_20af2, MotionScript_10743, Data_3421
-	create_object AnimScript_20af2, MotionScript_1074f, Data_3421
-	create_object AnimScript_20af2, MotionScript_1075b, Data_3421
-	create_object AnimScript_20af2, MotionScript_10767, Data_3421
+	create_object AnimScript_PulsingStar, MotionScript_Star_UpFast, Data_3421
+	create_object AnimScript_PulsingStar, MotionScript_Star_RightFast, Data_3421
+	create_object AnimScript_PulsingStar, MotionScript_Star_DownFast, Data_3421
+	create_object AnimScript_PulsingStar, MotionScript_Star_LeftFast, Data_3421
+	create_object AnimScript_PulsingStar, MotionScript_Star_UpRightFast, Data_3421
+	create_object AnimScript_PulsingStar, MotionScript_Star_DownRightFast, Data_3421
+	create_object AnimScript_PulsingStar, MotionScript_Star_DownLeftFast, Data_3421
+	create_object AnimScript_PulsingStar, MotionScript_Star_UpLeftFast, Data_3421
 	script_ret
 
 AnimScript_20b49:
@@ -1171,25 +511,26 @@ AnimScript_20b96:
 	frame  2, OAM_2d8b8
 	script_end
 
-AnimScript_20b9a:
+AnimScript_DestructiveHit:
 	script_exec Func_4a1c
-	set_scripts AnimScript_209f6, MotionScript_10008
+	set_scripts AnimScript_Hit, MotionScript_10008
 
-AnimScript_20ba2:
+AnimScript_DestructiveExplosion:
 	script_exec Func_4a1c
 	set_object_properties Data_35b7
 	set_scripts AnimScript_Explosion, MotionScript_10008
+
 AnimScript_20baf:
 	set_update_func Func_142a3, NULL
 	jump_abs AnimScript_20000
 
-AnimScript_20bb7:
+AnimScript_BombAttack:
 	set_flags wPowerUpAttack, $ff ^ POWERUP_MINT_LEAF, $00
 	script_exec Func_4adf
-	set_update_func Func_141b1, AnimScript_20ba2
+	set_update_func Func_141b1, AnimScript_DestructiveExplosion
 	set_scripts AnimScript_208fc, MotionScript_SpitStar
 
-AnimScript_20bc9:
+AnimScript_MikeAttack:
 	set_flags wPowerUpAttack, $ff ^ POWERUP_MINT_LEAF, $00
 	play_sfx SFX_00
 	script_exec Func_4ae6
@@ -1198,7 +539,7 @@ AnimScript_20bc9:
 AnimScript_20bda:
 	position_offset 0, 5
 	play_sfx SFX_19
-	set_update_func Func_141b1, AnimScript_20b9a
+	set_update_func Func_141b1, AnimScript_DestructiveHit
 	jump_if_not_flags hKirbyFlags3, KIRBY3F_FACE_LEFT, .loop_2
 
 .loop_1
@@ -1211,10 +552,10 @@ AnimScript_20bda:
 	frame  2, OAM_2dd09
 	jump_abs .loop_2
 
-AnimScript_20bfe:
+AnimScript_KirbyFall:
 	frame  0, OAM_2d8d9
 
-AnimScript_20c01:
+AnimScript_KirbyTumble:
 .loop
 	frame  4, OAM_2dbe1
 	frame  4, OAM_2dbf1
@@ -1222,7 +563,7 @@ AnimScript_20c01:
 	frame  4, OAM_2dbe9
 	jump_abs .loop
 
-AnimScript_20c10:
+AnimScript_KirbyDive:
 	frame  0, OAM_2db69
 
 AnimScript_20c13:
@@ -1947,12 +1288,12 @@ AnimScript_ShootingGlunk:
 	jump_abs .loop
 
 .shoot_left
-	create_object AnimScript_21220, MotionScript_1123a, GlunkPodProperties
+	create_object AnimScript_21220, MotionScript_1123a, ProjectileProperties
 	frame 80, OAM_2c3fc
 	jump_abs .loop
 
 .shoot_right
-	create_object AnimScript_21220, MotionScript_11233, GlunkPodProperties
+	create_object AnimScript_21220, MotionScript_11233, ProjectileProperties
 	frame 80, OAM_2c3fc
 	jump_abs .loop
 
@@ -2341,7 +1682,7 @@ AnimScript_21560:
 	set_motion_script MotionScript_1028c
 	frame 65, OAM_2dee5
 	frame 65, OAM_2deed
-	create_object AnimScript_21c2e, MotionScript_1163d, GlunkPodProperties
+	create_object AnimScript_21c2e, MotionScript_1163d, ProjectileProperties
 	set_motion_script MotionScript_10298
 	frame 65, OAM_2deed
 	jump_abs AnimScript_21560
@@ -2792,7 +2133,7 @@ AnimScript_21911:
 
 AnimScript_21921:
 	set_object_properties Data_3673
-	set_scripts AnimScript_209f6, MotionScript_10008
+	set_scripts AnimScript_Hit, MotionScript_10008
 
 ; unreferenced
 AnimScript_2192b:
@@ -2865,14 +2206,14 @@ AnimScript_Kaboola_Shoot:
 	jump_rel .regular_shot
 
 .regular_shoot_one
-	create_object AnimScript_21a73, MotionScript_SpitStar_Left, KaboolaBulletProperties
+	create_object AnimScript_21a73, MotionScript_Projectile_Left, KaboolaBulletProperties
 	script_call AnimScript_21a21
 	jump_rel .maybe_invert_shot
 
 .regular_shoot_three
 	script_repeat 3
 	script_call AnimScript_21a35
-	create_object AnimScript_21a73, MotionScript_SpitStar_Left, KaboolaBulletProperties
+	create_object AnimScript_21a73, MotionScript_Projectile_Left, KaboolaBulletProperties
 	frame 10, OAM_2e06d
 	script_repeat_end
 	jump_rel .maybe_invert_shot
@@ -2880,19 +2221,19 @@ AnimScript_Kaboola_Shoot:
 .regular_shoot_triplet
 	script_call AnimScript_21a35
 	create_object AnimScript_21a73, MotionScript_11ad9, KaboolaBulletProperties
-	create_object AnimScript_21a73, MotionScript_SpitStar_Left, KaboolaBulletProperties
+	create_object AnimScript_21a73, MotionScript_Projectile_Left, KaboolaBulletProperties
 	create_object AnimScript_21a73, MotionScript_11adc, KaboolaBulletProperties
 	jump_rel .maybe_invert_shot
 
 .inverted_shoot_one
 	script_call AnimScript_21a2b
-	create_object AnimScript_21a6d, MotionScript_SpitStar_Left, KaboolaBulletProperties
+	create_object AnimScript_21a6d, MotionScript_Projectile_Left, KaboolaBulletProperties
 	jump_rel .maybe_regular_shot
 
 .inverted_shoot_three
 	script_repeat 3
 	script_call AnimScript_21a3f
-	create_object AnimScript_21a6d, MotionScript_SpitStar_Left, KaboolaBulletProperties
+	create_object AnimScript_21a6d, MotionScript_Projectile_Left, KaboolaBulletProperties
 	frame 10, OAM_2e0d5
 	script_repeat_end
 	jump_rel .maybe_regular_shot
@@ -2900,7 +2241,7 @@ AnimScript_Kaboola_Shoot:
 .inverted_shoot_triplet
 	script_call AnimScript_21a3f
 	create_object AnimScript_21a6d, MotionScript_11ad9, KaboolaBulletProperties
-	create_object AnimScript_21a6d, MotionScript_SpitStar_Left, KaboolaBulletProperties
+	create_object AnimScript_21a6d, MotionScript_Projectile_Left, KaboolaBulletProperties
 	create_object AnimScript_21a6d, MotionScript_11adc, KaboolaBulletProperties
 	jump_rel .maybe_regular_shot
 
@@ -2978,7 +2319,7 @@ AnimScript_21a79:
 	script_call AnimScript_20b05
 	set_scripts AnimScript_20000, MotionScript_11adf
 
-AnimScript_21aa8:
+AnimScript_PuffHit:
 	play_sfx SFX_28
 	frame  6, OAM_2dd21
 	frame  2, OAM_2dd29
@@ -3409,7 +2750,7 @@ AnimScript_21df7:
 	script_end
 
 AnimScript_21df8:
-	create_object AnimScript_20a01, MotionScript_10008, Data_3421
+	create_object AnimScript_DefeatStars, MotionScript_10008, Data_3421
 	frame  0, OAM_2c654
 
 AnimScript_21e02:
@@ -3448,7 +2789,7 @@ AnimScript_21e45:
 AnimScript_21e4a:
 	frame 64, OAM_2c6f4
 	script_repeat 3
-	create_object AnimScript_21c2e, MotionScript_11661, GlunkPodProperties
+	create_object AnimScript_21c2e, MotionScript_11661, ProjectileProperties
 	frame 16, OAM_2c6f4
 	script_repeat_end
 	jump_abs AnimScript_21e4a
@@ -3614,7 +2955,7 @@ AnimScript_FallingStarSpawner:
 
 AnimScript_FallingStar:
 	script_exec Func_4a93
-	jump_abs AnimScript_208f1
+	jump_abs AnimScript_Star
 
 AnimScript_21fb7:
 .loop
@@ -3673,70 +3014,70 @@ AnimScript_22016:
 
 AnimScript_2202e:
 	script_repeat 3
-	create_object AnimScript_209c0, MotionScript_103bf, GlunkPodProperties
+	create_object AnimScript_Projectile, MotionScript_103bf, ProjectileProperties
 	script_delay 4
 	script_repeat_end
 	script_repeat 3
-	create_object AnimScript_209c0, MotionScript_103fb, GlunkPodProperties
+	create_object AnimScript_Projectile, MotionScript_103fb, ProjectileProperties
 	script_delay 4
 	script_repeat_end
 	script_repeat 3
-	create_object AnimScript_209c0, MotionScript_103f7, GlunkPodProperties
+	create_object AnimScript_Projectile, MotionScript_103f7, ProjectileProperties
 	script_delay 4
 	script_repeat_end
 	script_repeat 3
-	create_object AnimScript_209c0, MotionScript_103f3, GlunkPodProperties
+	create_object AnimScript_Projectile, MotionScript_103f3, ProjectileProperties
 	script_delay 4
 	script_repeat_end
 	script_repeat 3
-	create_object AnimScript_209c0, MotionScript_103ef, GlunkPodProperties
+	create_object AnimScript_Projectile, MotionScript_103ef, ProjectileProperties
 	script_delay 4
 	script_repeat_end
 	script_repeat 3
-	create_object AnimScript_209c0, MotionScript_103eb, GlunkPodProperties
+	create_object AnimScript_Projectile, MotionScript_103eb, ProjectileProperties
 	script_delay 4
 	script_repeat_end
 	script_repeat 3
-	create_object AnimScript_209c0, MotionScript_103e7, GlunkPodProperties
+	create_object AnimScript_Projectile, MotionScript_103e7, ProjectileProperties
 	script_delay 4
 	script_repeat_end
 	script_repeat 3
-	create_object AnimScript_209c0, MotionScript_103e3, GlunkPodProperties
+	create_object AnimScript_Projectile, MotionScript_103e3, ProjectileProperties
 	script_delay 4
 	script_repeat_end
 	script_ret
 
 AnimScript_2208f:
 	script_repeat 3
-	create_object AnimScript_209c0, MotionScript_103bf, GlunkPodProperties
+	create_object AnimScript_Projectile, MotionScript_103bf, ProjectileProperties
 	script_delay 4
 	script_repeat_end
 	script_repeat 3
-	create_object AnimScript_209c0, MotionScript_103c3, GlunkPodProperties
+	create_object AnimScript_Projectile, MotionScript_103c3, ProjectileProperties
 	script_delay 4
 	script_repeat_end
 	script_repeat 3
-	create_object AnimScript_209c0, MotionScript_103c7, GlunkPodProperties
+	create_object AnimScript_Projectile, MotionScript_103c7, ProjectileProperties
 	script_delay 4
 	script_repeat_end
 	script_repeat 3
-	create_object AnimScript_209c0, MotionScript_103cb, GlunkPodProperties
+	create_object AnimScript_Projectile, MotionScript_103cb, ProjectileProperties
 	script_delay 4
 	script_repeat_end
 	script_repeat 3
-	create_object AnimScript_209c0, MotionScript_103cf, GlunkPodProperties
+	create_object AnimScript_Projectile, MotionScript_103cf, ProjectileProperties
 	script_delay 4
 	script_repeat_end
 	script_repeat 3
-	create_object AnimScript_209c0, MotionScript_103d3, GlunkPodProperties
+	create_object AnimScript_Projectile, MotionScript_103d3, ProjectileProperties
 	script_delay 4
 	script_repeat_end
 	script_repeat 3
-	create_object AnimScript_209c0, MotionScript_103d7, GlunkPodProperties
+	create_object AnimScript_Projectile, MotionScript_103d7, ProjectileProperties
 	script_delay 4
 	script_repeat_end
 	script_repeat 3
-	create_object AnimScript_209c0, MotionScript_103db, GlunkPodProperties
+	create_object AnimScript_Projectile, MotionScript_103db, ProjectileProperties
 	script_delay 4
 	script_repeat_end
 	script_ret
@@ -4184,7 +3525,7 @@ AnimScript_22440:
 	script_delay 96
 	script_delay 80
 	script_delay 64
-	jump_abs AnimScript_208f1
+	jump_abs AnimScript_Star
 
 AnimScript_2244d:
 	frame 156, OAM_2d8b8
@@ -4203,17 +3544,17 @@ AnimScript_22459:
 	frame  5, OAM_2dc25
 	frame  5, OAM_2dc2d
 	frame  5, OAM_2dc3d
-	create_object AnimScript_208f1, MotionScript_10709, Data_3425
-	create_object AnimScript_208f1, MotionScript_106ff, Data_3425
-	create_object AnimScript_208f1, MotionScript_106f5, Data_3425
-	create_object AnimScript_208f1, MotionScript_106eb, Data_3425
+	create_object AnimScript_Star, MotionScript_Star_Right, Data_3425
+	create_object AnimScript_Star, MotionScript_Star_Left, Data_3425
+	create_object AnimScript_Star, MotionScript_Star_UpRight, Data_3425
+	create_object AnimScript_Star, MotionScript_Star_UpLeft, Data_3425
 	frame 100, OAM_2dc01
 	script_repeat 28
 	script_delay 4
 	create_object AnimScript_224a8, MotionScript_123ac, Data_3425
 	script_repeat_end
 .loop
-	create_object AnimScript_224a8, MotionScript_135bc, Data_3425
+	create_object AnimScript_224a8, MotionScript_RandomLeftDirection, Data_3425
 	script_delay 8
 	jump_abs .loop
 
@@ -4293,7 +3634,7 @@ AnimScript_2252e:
 
 AnimScript_22548:
 	play_music MUSIC_SPARKLING_STAR
-	script_call AnimScript_208b8
+	script_call AnimScript_KirbySpin_Right
 	frame 20, OAM_2dbc9
 	frame 40, OAM_2d8e1
 	script_repeat 3
@@ -4302,9 +3643,9 @@ AnimScript_22548:
 	frame 12, OAM_2d8d1
 	frame 10, OAM_2d8c9
 	script_repeat_end
-	script_call AnimScript_208b8
-	script_call AnimScript_208cb
-	script_call AnimScript_208b8
+	script_call AnimScript_KirbySpin_Right
+	script_call AnimScript_KirbySpin_Left
+	script_call AnimScript_KirbySpin_Right
 	frame  0, OAM_2d8e1
 
 AnimScript_22570:
@@ -4652,7 +3993,7 @@ AnimScript_22781:
 	play_sfx SFX_DAMAGE
 .script_227e6
 	frame  4, OAM_2dbe1
-	create_object AnimScript_22333, MotionScript_107c3, Data_3425
+	create_object AnimScript_22333, MotionScript_Star_RandomDirection, Data_3425
 	jump_rel .script_227e6
 
 AnimScript_227f2:
@@ -5318,14 +4659,14 @@ AnimScript_22def:
 	set_motion_script MotionScript_1338b
 .script_22e1e
 	frame  4, OAM_2caf8
-	create_object AnimScript_20ae6, MotionScript_107c3, Data_3421
+	create_object AnimScript_SmallStar, MotionScript_Star_RandomDirection, Data_3421
 	jump_rel .script_22e1e
 .script_22e2a
 	play_sfx SFX_00
 	set_motion_script MotionScript_13382
 .script_22e33
 	frame  4, OAM_2cb14
-	create_object AnimScript_20ae6, MotionScript_107c3, Data_3421
+	create_object AnimScript_SmallStar, MotionScript_Star_RandomDirection, Data_3421
 	jump_rel .script_22e33
 
 AnimScript_22e3f:
@@ -5408,13 +4749,13 @@ AnimScript_22f5c:
 AnimScript_22f60:
 	frame  0, OAM_2d8b8
 
-AnimScript_22f63:
+AnimScript_WarpStarTrailingStar1:
 	position_offset 0, -6
-	jump_abs AnimScript_208f1
+	jump_abs AnimScript_Star
 
-AnimScript_22f69:
+AnimScript_WarpStarTrailingStar2:
 	position_offset 0, 6
-	jump_abs AnimScript_208f1
+	jump_abs AnimScript_Star
 
 AnimScript_22f6f:
 	play_sfx SFX_23

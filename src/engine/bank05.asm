@@ -1,4 +1,4 @@
-Func_14000:
+Func_14000::
 	ld a, [wd3f3 + 1]
 	ld l, a
 	ld a, [wd3f3 + 0]
@@ -17,7 +17,7 @@ Func_14000:
 ; handles motion of object in slot bc
 ; that is being inhaled by Kirby
 ; also handles when it gets in Kirby's mouth
-InhaleObject:
+InhaleObject::
 	ld hl, wd1a0
 	add hl, bc
 	bit 7, [hl]
@@ -129,14 +129,14 @@ InhaleObject:
 .done
 	ret
 
-Func_140c2:
+Func_140c2::
 	call Func_140d5
 	ret c
 	ld hl, hKirbyFlags5
 	set KIRBY5F_INHALING_OBJECT_F, [hl]
 	jp SetObjectUpdateFuncArgAsAnimScript
 
-Func_140ce:
+Func_140ce::
 	call Func_140d5
 	ret c
 	jp SetObjectUpdateFuncArgAsAnimScript
@@ -161,7 +161,7 @@ Func_140d5:
 	xor a
 	ret
 
-; unreferenced?
+; unreferenced
 Func_140f1:
 	ld hl, wd1a0
 	add hl, bc
@@ -176,7 +176,7 @@ Func_140f1:
 	res 3, [hl]
 	jr SetObjectUpdateFuncArgAsAnimScript
 
-Func_14105:
+Func_14105::
 	ld hl, wObjectStatuses
 	add hl, bc
 	res OBJSTAT_UNK1_F, [hl]
@@ -222,7 +222,7 @@ Func_14105:
 	dw  0.25
 	dw  1.00
 
-; unreferenced?
+; unreferenced
 Func_14148:
 	ld hl, wObjectScreenXPositions
 	ld a, [hl]
@@ -258,7 +258,7 @@ SetObjectUpdateFuncArgAsAnimScript:
 	ld [de], a
 	jp Func_241f
 
-Func_14172:
+Func_14172::
 	ld hl, wObjectStatuses
 	add hl, bc
 	bit OBJSTAT_HURT_F, [hl]
@@ -285,7 +285,7 @@ Func_14180:
 	pop bc
 	ret
 
-; unreferenced?
+; unreferenced
 Func_14197:
 	ld hl, wObjectStatuses
 	add hl, bc
@@ -303,14 +303,14 @@ Func_14197:
 	set 3, [hl]
 	jr Func_14180
 
-Func_141b1:
+Func_141b1::
 	ld hl, wObjectStatuses
 	add hl, bc
 	bit OBJSTAT_UNK6_F, [hl]
 	ret z
 	jp SetObjectUpdateFuncArgAsAnimScript
 
-Func_141bb:
+Func_141bb::
 	ld a, [wd3bc]
 	add $28
 	ld e, a
@@ -327,7 +327,7 @@ Func_141bb:
 	ret nc
 	jp SetObjectUpdateFuncArgAsAnimScript
 
-Func_141d3:
+Func_141d3::
 	ld a, [wd3cf]
 	ld hl, hJoypadPressed
 	bit 2, [hl]
@@ -354,13 +354,13 @@ Func_141d3:
 	ld [wKirbySideOfScreen], a
 	jp SetObjectUpdateFuncArgAsAnimScript
 
-Func_14200:
+Func_14200::
 	ld a, [wKirbySideOfScreen]
 	and a
 	ret z
 	jp SetObjectUpdateFuncArgAsAnimScript
 
-Func_14208:
+Func_14208::
 	ld hl, wd1a0
 	add hl, bc
 	bit 7, [hl]
@@ -414,7 +414,7 @@ Func_14208:
 .capped
 	ret
 
-Func_14252:
+Func_14252::
 	ld hl, wd1a0
 	add hl, bc
 	bit 7, [hl]
@@ -441,7 +441,7 @@ Func_14252:
 	ret nc ; too far away
 	jp SetObjectUpdateFuncArgAsAnimScript
 
-Func_14276:
+Func_14276::
 	ld hl, wObjectScreenXPositions
 	ld a, [hl]
 	add $28
@@ -458,7 +458,7 @@ Func_14276:
 	ret nc
 	jp SetObjectUpdateFuncArgAsAnimScript
 
-Func_1428c:
+Func_1428c::
 	push bc
 	ld a, [wd3ba]
 	ld c, a
@@ -473,7 +473,7 @@ Func_1428c:
 	pop bc
 	ret
 
-Func_142a3:
+Func_142a3::
 	ld hl, wObjectScreenXPositions + OBJECT_SLOT_KIRBY
 	ld a, [hl]
 	ld hl, wObjectXCoords + $1
@@ -493,7 +493,7 @@ Func_142a3:
 	jp z, DestroyObject
 	ret
 
-ObjFunc_CountdownToExplosion:
+ObjFunc_CountdownToExplosion::
 	ld hl, wObjectUpdateFuncArgs
 	add hl, bc
 	add hl, bc
@@ -514,7 +514,7 @@ ObjFunc_CountdownToExplosion:
 	call SetObjectScripts
 	ret
 
-Func_142dc:
+Func_142dc::
 	push bc
 	ld a, [wd3d3]
 	ld c, a

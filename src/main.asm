@@ -78,11 +78,6 @@ Data_fc9f:: INCBIN "data/data_fc9f.bin.lz"
 Data_fe39:: INCBIN "data/data_fe39.bin.lz"
 
 
-SECTION "Motion Scripts Normal", ROMX
-
-INCLUDE "data/scripts/normal/motion_scripts.asm"
-
-
 SECTION "Bank 5", ROMX
 
 INCLUDE "engine/bank05.asm"
@@ -91,21 +86,6 @@ INCLUDE "engine/bank05.asm"
 SECTION "Bank 6", ROMX
 
 INCLUDE "engine/bank06.asm"
-
-
-SECTION "Bank 7", ROMX
-
-INCLUDE "engine/bank07.asm"
-
-
-SECTION "Animation Scripts Normal", ROMX
-
-INCLUDE "data/scripts/normal/anim_scripts.asm"
-
-
-SECTION "Animation Scripts Extra", ROMX
-
-INCLUDE "data/scripts/extra/anim_scripts.asm"
 
 
 SECTION "Bank A", ROMX
@@ -123,11 +103,6 @@ Gfx_2ac79:: INCBIN "gfx/gfx_2ac79.2bpp.lz"
 SECTION "OAM", ROMX
 
 INCLUDE "data/oam.asm"
-
-
-SECTION "Motion Scripts Extra", ROMX
-
-INCLUDE "data/scripts/extra/motion_scripts.asm"
 
 
 SECTION "Bank D", ROMX
@@ -168,8 +143,3 @@ Gfx_39cbf: INCBIN "gfx/gfx_39cbf.2bpp.lz"
 BG_3acce: INCBIN "data/bg_3acce.bin.lz"
 Gfx_3add9: INCBIN "gfx/gfx_3add9.2bpp.lz"
 BG_3be4a: INCBIN "data/bg_3be4a.bin.lz"
-
-
-SECTION "Bank F", ROMX
-
-INCLUDE "engine/bank0f.asm"

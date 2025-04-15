@@ -1,16 +1,3 @@
-MACRO object
-	db \1 ; x
-	db \2 ; y
-	db \3 ; ?
-	db \4 ; ?
-	dw \5 ; anim script
-	dw \6 ; motion script
-	dw \7 ; object properties
-IF _NARG == 8
-	db \8 ; consumable item ID
-ENDC
-ENDM
-
 Data_1c000::
 	table_width 2
 	dw .GreenGreens  ; GREEN_GREENS
@@ -133,7 +120,7 @@ Data_1c14e::
 	dw AnimScript_20000, MotionScript_10008, Data_3425
 
 Data_1c154::
-	dw AnimScript_20a01, MotionScript_10008, PuffOfSmokeProperties
+	dw AnimScript_DefeatStars, MotionScript_10008, PuffOfSmokeProperties
 
 Data_1c15a::
 	dw AnimScript_20a00, MotionScript_10008, Properties_35a6
@@ -144,17 +131,17 @@ Data_1c160::
 Data_1c166::
 	dw AnimScript_Explosion, MotionScript_10008, Properties_35c4
 
-Data_1c16c:
+Data_1c16c::
 	dw AnimScript_203b2, MotionScript_10008, ExplosionProperties
 
 Data_1c172::
 	dw AnimScript_20000, MotionScript_10008, Data_3421
 
 Data_1c178::
-	dw AnimScript_20ae6, MotionScript_107c3, Data_3421
+	dw AnimScript_SmallStar, MotionScript_Star_RandomDirection, Data_3421
 
 Data_1c17e::
-	dw AnimScript_208f1, MotionScript_10c50, Data_3421
+	dw AnimScript_Star, MotionScript_10c50, Data_3421
 
 Data_1c184::
 	dw AnimScript_SpitStar, MotionScript_SpitStar, SpitStarProperties
@@ -171,7 +158,7 @@ Data_1c196::
 Data_1c19c::
 	dw AnimScript_KirbyPuff, MotionScript_KirbyPuff, Data_35b3
 
-Data_1c1a2:
+Data_1c1a2::
 	dw AnimScript_20474, MotionScript_InhaledObject, Data_3685
 
 Data_1c1a8::
@@ -205,7 +192,7 @@ Data_1c1d8::
 Data_1c1de::
 	dw AnimScript_22871, MotionScript_10008, Data_3421
 
-Data_1c1e4:
+Data_1c1e4::
 	dw AnimScript_22997, MotionScript_10008, Data_3421
 
 Data_1c1ea::

@@ -1164,7 +1164,7 @@ DamageKnockBackVelocities::
 	db HIGH($100)
 	db $00 ; end
 
-Func_4897:
+Func_4897::
 	push bc
 	ld a, [wd3ba]
 	ld c, a
@@ -1173,22 +1173,22 @@ Func_4897:
 	pop bc
 	ret
 
-Func_48a3:
+Func_48a3::
 	ld a, c
 	ld [wd3ba], a
 	ret
 
-Func_48a8:
+Func_48a8::
 	ld a, [wObjectScreenXPositions]
 	ld [wd3bc], a
 	ret
 
-Func_48af:
+Func_48af::
 	ld a, c
 	ld [wd3bb], a
 	ret
 
-Func_48b4:
+Func_48b4::
 	push bc
 	ld d, b
 	ld e, c
@@ -1198,7 +1198,7 @@ Func_48b4:
 	pop bc
 	ret
 
-Func_48c0:
+Func_48c0::
 	push bc
 	ld a, [wd3bb]
 	ld c, a
@@ -1222,13 +1222,13 @@ Func_48c0:
 	pop bc
 	ret
 
-ScriptFunc_SetImmuneFlag:
+ScriptFunc_SetImmuneFlag::
 	ld hl, wd1a0
 	add hl, bc
 	set OBJFLAG_IMMUNE_F, [hl]
 	ret
 
-ScriptFunc_ResetImmuneFlag:
+ScriptFunc_ResetImmuneFlag::
 	ld hl, wd1a0
 	add hl, bc
 	res OBJFLAG_IMMUNE_F, [hl]
@@ -1237,7 +1237,7 @@ ScriptFunc_ResetImmuneFlag:
 	res OBJSTAT_UNK5_F, [hl]
 	ret
 
-Func_48f5:
+Func_48f5::
 	push bc
 	ld e, $03
 	ld hl, wObjectScreenYPositions
@@ -1303,7 +1303,7 @@ Func_48f5:
 	db $01, $03, $05, $07, $09, $0b, $0d, $0f
 	db $02, $02, $06, $06, $0a, $0a, $0e, $0e
 
-Func_495c:
+Func_495c::
 	push bc
 	ld e, $00
 	ld hl, wObjectScreenXPositions
@@ -1381,7 +1381,7 @@ Func_495c:
 	db $2 ; $e
 	db $1 ; $f
 
-Func_49ac:
+Func_49ac::
 	call Func_495c
 	ld e, a
 	ld d, $00
@@ -1408,7 +1408,7 @@ Func_49ac:
 
 	ret ; stray ret
 
-Func_49d5:
+Func_49d5::
 	ld e, $01
 	ld hl, wObjectXCoords + $2
 	add hl, bc
@@ -1434,7 +1434,7 @@ Func_49d5:
 	ld [wd3bd], a
 	ret
 
-ScriptFunc_CheckHalfSideOfScreen:
+ScriptFunc_CheckHalfSideOfScreen::
 	ld d, $0
 	ld hl, wObjectScreenXPositions
 	add hl, bc
@@ -1448,7 +1448,7 @@ ScriptFunc_CheckHalfSideOfScreen:
 	ld [wKirbySideOfScreen], a
 	ret
 
-; unreferenced?
+; unreferenced
 Func_4a0c:
 	ld d, $00
 	ld hl, wObjectScreenYPositions
@@ -1462,7 +1462,7 @@ Func_4a0c:
 	ld [wKirbySideOfScreen], a
 	ret
 
-Func_4a1c:
+Func_4a1c::
 	push bc
 	ld a, [wSCX]
 	and $0f
@@ -1526,12 +1526,12 @@ Func_4a1c:
 	call PlaySFX
 	ret
 
-ScriptFunc_LockScrolling:
+ScriptFunc_LockScrolling::
 	ld hl, hPalFadeFlags
 	set SCROLL_LOCKED_F, [hl]
 	ret
 
-ScriptFunc_EnableScrollingAndFadeOut:
+ScriptFunc_EnableScrollingAndFadeOut::
 	ld hl, hPalFadeFlags
 	res SCROLL_LOCKED_F, [hl]
 	ld hl, hEngineFlags
@@ -1540,7 +1540,7 @@ ScriptFunc_EnableScrollingAndFadeOut:
 
 ; adds random amount between [-64, 63]
 ; to object's x coordinate
-Func_4a93:
+Func_4a93::
 	push bc
 	ld hl, wObjectXCoords + $1
 	add hl, bc
@@ -1561,24 +1561,24 @@ Func_4a93:
 	pop bc
 	ret
 
-Func_4aad:
+Func_4aad::
 	ld hl, wd3cc
 	set 0, [hl]
 	ret
 
-ScriptFunc_SetObjectPalLight:
+ScriptFunc_SetObjectPalLight::
 	ld hl, wObjectPropertyFlags
 	add hl, bc
 	res PROPERTY_PAL_F, [hl]
 	ret
 
-ScriptFunc_SetObjectPalDark:
+ScriptFunc_SetObjectPalDark::
 	ld hl, wObjectPropertyFlags
 	add hl, bc
 	set PROPERTY_PAL_F, [hl]
 	ret
 
-ScriptFunc_SetKirbyPosition:
+ScriptFunc_SetKirbyPosition::
 	ld hl, wObjectScreenXPositions
 	add hl, bc
 	ld a, [hl]
@@ -1591,26 +1591,26 @@ ScriptFunc_SetKirbyPosition:
 	ld [wKirbyScreenY], a
 	ret
 
-Func_4ad6:
+Func_4ad6::
 	ld hl, wObjectPropertyFlags
 	add hl, bc
 	res PROPERTY_GRAVITY_F, [hl]
 	res PROPERTY_SINKABLE_F, [hl]
 	ret
 
-Func_4adf:
+Func_4adf::
 	ld hl, wObjectStatuses
 	add hl, bc
 	set OBJSTAT_UNK4_F, [hl]
 	ret
 
-Func_4ae6:
+Func_4ae6::
 	ld hl, wObjectStatuses
 	add hl, bc
 	set OBJSTAT_UNK2_F, [hl]
 	ret
 
-ScriptFunc_CreateExplosion:
+ScriptFunc_CreateExplosion::
 	push bc
 	ld hl, Data_1c16c
 	call CreateObject_Group2
@@ -1620,7 +1620,7 @@ ScriptFunc_CreateExplosion:
 	call CopyObjectCoordinates
 	ret
 
-Func_4afb:
+Func_4afb::
 	ld hl, wd1a0
 	add hl, bc
 	set OBJFLAG_INHALED_F, [hl]
@@ -1635,7 +1635,7 @@ Func_4afb:
 	ld [wScriptCommand], a
 	ret
 
-Func_4b19:
+Func_4b19::
 	ld hl, wObjectScreenXPositions
 	ld a, [hl]
 	add hl, bc
@@ -1647,7 +1647,7 @@ Func_4b19:
 	ret nc
 	jr Func_4b31
 
-Func_4b27:
+Func_4b27::
 	ld hl, wObjectScreenXPositions
 	ld a, [hl]
 	add hl, bc
@@ -1683,10 +1683,10 @@ Func_4b31:
 	pop bc
 	ret
 
-Func_4b5a:
+Func_4b5a::
 	ld de, MotionScript_10194
 	jr Func_4b62
-Func_4b5f:
+Func_4b5f::
 	ld de, MotionScript_101df
 Func_4b62:
 	push bc
@@ -1696,7 +1696,7 @@ Func_4b62:
 	pop bc
 	ret
 
-Func_4b6d:
+Func_4b6d::
 	ld a, [wHP]
 	and a
 	ret z
@@ -1704,7 +1704,7 @@ Func_4b6d:
 	ld [wHP], a
 	ret
 
-ScriptFunc_AddScore:
+ScriptFunc_AddScore::
 	ld d, $00
 	ld hl, .ScoreValues
 	add hl, de
@@ -1737,13 +1737,13 @@ ScriptFunc_AddScore:
 	dw     0 ; $8
 	dw 10000 ; SCORE_10000
 
-Func_4ba6:
+Func_4ba6::
 	ld hl, wObjectPropertyFlags
 	add hl, bc
 	res PROPERTY_2_F, [hl]
 	ret
 
-Func_4bad:
+Func_4bad::
 	ld hl, wObjectPropertyFlags
 	add hl, bc
 	set PROPERTY_2_F, [hl]
@@ -1868,7 +1868,7 @@ ClearAllEnemies::
 	ld [wKirbyAnimScript + 1], a
 	ret
 
-Func_4c7b:
+Func_4c7b::
 	call SetObjectVelocity
 	ld a, e
 	ld [wd3f3 + 1], a
@@ -1876,7 +1876,7 @@ Func_4c7b:
 	ld [wd3f3 + 0], a
 	ret
 
-Func_4c87:
+Func_4c87::
 	ld e, NUM_OBJECT_SLOTS
 	ld d, $00
 .loop

@@ -1,305 +1,3 @@
-SECTION "Bank C@4008", ROMX[$4008], BANK[$c]
-
-MotionScript_30008:
-	set_velocities  0, 0, 0
-; 0x3000b
-
-SECTION "Bank C@428c", ROMX[$428c], BANK[$c]
-
-MotionScript_3028c:
-	set_velocities  2, VEL_RIGHT_4_00, 0
-	set_velocities  4, 0, 0
-	set_velocities  2, VEL_LEFT_4_00, 0
-	set_velocities  0, 0, 0
-
-MotionScript_30298:
-	set_velocities  2, VEL_RIGHT_2_00, VEL_DOWN_2_00
-	set_velocities  4, 0, 0
-	set_velocities  2, VEL_LEFT_2_00, VEL_UP_2_00
-	set_velocities  0, 0, 0
-
-MotionScript_302a4:
-	set_velocities  2, 0, VEL_DOWN_4_00
-	set_velocities  4, 0, 0
-	set_velocities  2, 0, VEL_UP_4_00
-	set_velocities  0, 0, 0
-
-MotionScript_302b0:
-	set_velocities  2, VEL_LEFT_2_00, VEL_DOWN_2_00
-	set_velocities  4, 0, 0
-	set_velocities  2, VEL_RIGHT_2_00, VEL_UP_2_00
-	set_velocities  0, 0, 0
-
-MotionScript_302bc:
-	set_velocities  2, VEL_LEFT_4_00, 0
-	set_velocities  4, 0, 0
-	set_velocities  2, VEL_RIGHT_4_00, 0
-	set_velocities  0, 0, 0
-
-; unreferenced
-MotionScript_302c8:
-	set_velocities  0, VEL_LEFT_0_25, 0
-
-; unreferenced
-MotionScript_302cb:
-	set_velocities  0, VEL_RIGHT_0_25, 0
-
-MotionScript_302ce:
-	set_velocities  0, VEL_LEFT_0_50, 0
-
-MotionScript_302d1:
-	set_velocities  0, VEL_RIGHT_0_50, 0
-
-MotionScript_302d4:
-	set_velocities  0, VEL_LEFT_0_75, 0
-
-MotionScript_302d7:
-	set_velocities  0, VEL_RIGHT_0_75, 0
-
-MotionScript_302da:
-	set_velocities  0, VEL_LEFT_1_00, 0
-
-; unreferenced
-MotionScript_302dd:
-	set_velocities  0, VEL_RIGHT_0_75, VEL_UP_0_75
-
-MotionScript_302e0:
-	set_velocities  0, VEL_RIGHT_1_00, 0
-
-; unreferenced
-MotionScript_302e3:
-	set_velocities  0, VEL_RIGHT_0_75, VEL_DOWN_0_75
-
-; unreferenced
-MotionScript_302e6:
-	set_velocities  0, VEL_LEFT_1_25, 0
-
-; unreferenced
-MotionScript_302e9:
-	set_velocities  0, VEL_RIGHT_1_25, 0
-
-; unreferenced
-MotionScript_302ec:
-	set_velocities  0, 0, VEL_UP_1_25
-
-MotionScript_302ef:
-	set_velocities  0, VEL_RIGHT_1_00, VEL_UP_1_00
-
-MotionScript_302f2:
-	set_velocities  0, VEL_LEFT_1_00, VEL_UP_1_00
-
-MotionScript_302f5:
-	set_velocities  0, VEL_LEFT_2_00, 0
-
-MotionScript_302f8:
-	set_velocities  0, VEL_RIGHT_2_00, 0
-
-; unreferenced
-MotionScript_302fb:
-	branch_kirby_pos MotionScript_3030b, MotionScript_30308
-MotionScript_30302:
-	jump_if_not_flags hKirbyFlags3, $20, MotionScript_3030b
-MotionScript_30308:
-	set_velocities  0, VEL_LEFT_3_00, 0
-
-MotionScript_3030b:
-	set_velocities  0, VEL_RIGHT_3_00, 0
-
-MotionScript_3030e:
-	set_velocities  0, 0, VEL_UP_3_00
-
-MotionScript_30311:
-	set_velocities  0, VEL_LEFT_2_00, VEL_UP_2_00
-
-; unreferenced
-MotionScript_30314:
-	set_velocities  0, VEL_LEFT_2_00, VEL_DOWN_2_00
-
-; unreferenced
-MotionScript_30317:
-	set_velocities  0, VEL_LEFT_4_00, 0
-
-; unreferenced
-MotionScript_3031a:
-	set_velocities  0, VEL_RIGHT_4_00, 0
-
-MotionScript_3031d:
-	set_velocities  1, 0, 0
-.loop
-	set_pal_light
-	script_delay 28
-	set_pal_dark
-	script_delay 4
-	jump_abs .loop
-
-MotionScript_3032d:
-	set_velocities  5, 0, 0
-	set_velocities  9, 0, VEL_DOWN_0_25
-	set_pal_dark
-	set_velocities  9, 0, VEL_DOWN_0_75
-	set_pal_light
-	set_velocities  4, 0, VEL_DOWN_0_25
-	set_object_properties SparklingStarProperties
-	jump_rel .start_loop
-.loop
-	set_velocities  5, 0, 0
-	set_velocities  9, 0, VEL_UP_0_25
-	set_velocities  9, 0, VEL_UP_0_75
-	set_pal_dark
-	set_velocities  9, 0, VEL_UP_0_25
-	set_pal_light
-	set_velocities  5, 0, 0
-	set_velocities  9, 0, VEL_DOWN_0_25
-	set_pal_dark
-	set_velocities  9, 0, VEL_DOWN_0_75
-	set_pal_light
-	set_velocities  4, 0, VEL_DOWN_0_25
-.start_loop
-	set_velocities  5, 0, VEL_DOWN_0_25
-	jump_abs .loop
-
-; unreferenced
-MotionScript_30370:
-	set_value wClearScreenFlags, $01
-	set_flags hKirbyFlags5, $00, $20
-	jump_if_not_flags hKirbyFlags3, $20, .script_3038d
-	position_offset 0, 6
-	set_velocities  2, VEL_LEFT_2_00, 0
-	set_velocities  2, VEL_LEFT_1_00, 0
-	set_velocities  4, VEL_LEFT_0_50, 0
-	jump_rel .script_30396
-.script_3038d
-	set_velocities  2, VEL_RIGHT_2_00, 0
-	set_velocities  2, VEL_RIGHT_1_00, 0
-	set_velocities  4, VEL_RIGHT_0_50, 0
-.script_30396
-	set_velocities  0, 0, 0
-
-; unreferenced
-MotionScript_30399:
-	script_exec Func_48f5
-	jumptable wd3bd
-	dw MotionScript_303bf
-	dw MotionScript_303c3
-	dw MotionScript_303c7
-	dw MotionScript_303cb
-	dw MotionScript_303cf
-	dw MotionScript_303d3
-	dw MotionScript_303d7
-	dw MotionScript_303db
-	dw MotionScript_303df
-	dw MotionScript_303e3
-	dw MotionScript_303e7
-	dw MotionScript_303eb
-	dw MotionScript_303ef
-	dw MotionScript_303f3
-	dw MotionScript_303f7
-	dw MotionScript_303fb
-
-MotionScript_303bf:
-	set_velocities  7, 0, 26.0
-	script_end
-
-MotionScript_303c3:
-	set_velocities  7, 2.25, 26.625
-	script_end
-
-MotionScript_303c7:
-	set_velocities  7, 4.0, 28.0
-	script_end
-
-MotionScript_303cb:
-	set_velocities  7, 5.375, 29.75
-	script_end
-
-MotionScript_303cf:
-	set_velocities  7, 6.0, 0
-	script_end
-
-MotionScript_303d3:
-	set_velocities  7, 5.375, 2.25
-	script_end
-
-MotionScript_303d7:
-	set_velocities  7, 4.0, 4.0
-	script_end
-
-MotionScript_303db:
-	set_velocities  7, 2.25, 5.375
-	script_end
-
-MotionScript_303df:
-	set_velocities  7, 0, 6.0
-	script_end
-
-MotionScript_303e3:
-	set_velocities  7, 29.75, 5.375
-	script_end
-
-MotionScript_303e7:
-	set_velocities  7, 28.0, 4.0
-	script_end
-
-MotionScript_303eb:
-	set_velocities  7, 26.625, 2.25
-	script_end
-
-MotionScript_303ef:
-	set_velocities  7, 26.0, 0
-	script_end
-
-MotionScript_303f3:
-	set_velocities  7, 26.625, 29.75
-	script_end
-
-MotionScript_303f7:
-	set_velocities  7, 28.0, 28.0
-	script_end
-
-MotionScript_303fb:
-	set_velocities  7, 29.75, 26.625
-	script_end
-
-MotionScript_303ff:
-.loop
-	set_velocities 10, VEL_LEFT_0_25, 0
-	set_velocities 30, VEL_LEFT_0_50, 0
-	set_velocities 10, VEL_LEFT_0_25, 0
-	set_velocities 10, VEL_RIGHT_0_25, 0
-	set_velocities 30, VEL_RIGHT_0_50, 0
-	set_velocities 10, VEL_RIGHT_0_25, 0
-	jump_abs .loop
-
-MotionScript_30414:
-	set_velocities  8, VEL_LEFT_1_00, 0
-	set_velocities  8, VEL_LEFT_2_00, 0
-	set_velocities  8, VEL_LEFT_1_00, 0
-	set_velocities  8, 0, 0
-	set_velocities  8, VEL_RIGHT_1_00, 0
-	set_velocities  8, VEL_RIGHT_2_00, 0
-	set_velocities  8, VEL_RIGHT_1_00, 0
-	set_velocities  8, 0, 0
-	jump_abs MotionScript_30414
-
-MotionScript_3042f:
-.loop
-	set_velocities 16, VEL_LEFT_0_50, 0
-	set_velocities 48, VEL_LEFT_1_25, 0
-	set_velocities 16, VEL_LEFT_0_50, 0
-	set_velocities 16, VEL_RIGHT_0_50, 0
-	set_velocities 48, VEL_RIGHT_1_25, 0
-	set_velocities 16, VEL_RIGHT_0_50, 0
-	jump_abs .loop
-
-MotionScript_30444:
-	set_velocities 10, 0, VEL_DOWN_0_25
-	set_velocities 10, 0, VEL_DOWN_0_75
-	set_velocities 10, 0, VEL_DOWN_0_25
-	set_velocities 10, 0, VEL_UP_0_25
-	set_velocities 10, 0, VEL_UP_0_75
-	set_velocities 10, 0, VEL_UP_0_25
-	jump_abs MotionScript_30444
-
 MotionScript_30459:
 	set_velocities 10, 0, 0
 	set_velocities  5, 0, VEL_DOWN_0_75
@@ -563,7 +261,7 @@ MotionScript_30691:
 	branch_on_kirby_vertical_alignment MotionScript_306b2, MotionScript_3069e
 	jump_abs MotionScript_30691
 MotionScript_3069e:
-	set_anim_script AnimScript_24662
+	set_anim_script AnimScript_20662
 	set_velocities  6, 0, VEL_DOWN_1_00
 	set_velocities  6, VEL_RIGHT_1_8TH, VEL_DOWN_0_75
 	set_velocities  6, VEL_RIGHT_0_50, VEL_DOWN_0_25
@@ -571,7 +269,7 @@ MotionScript_3069e:
 	set_velocities  0, VEL_RIGHT_2_00, 0
 
 MotionScript_306b2:
-	set_anim_script AnimScript_24659
+	set_anim_script AnimScript_20659
 	set_velocities  6, 0, VEL_DOWN_1_00
 	set_velocities  6, VEL_LEFT_1_8TH, VEL_DOWN_0_75
 	set_velocities  6, VEL_LEFT_0_50, VEL_DOWN_0_25
@@ -583,11 +281,11 @@ MotionScript_306c6:
 	branch_kirby_pos MotionScript_306b2, MotionScript_3069e
 MotionScript_306d0:
 	set_velocities 80, 0, 0
-	set_anim_script AnimScript_24647
+	set_anim_script AnimScript_20647
 	set_velocities 16, 0, VEL_UP_0_50
 	set_velocities 16, 0, VEL_UP_0_25
 	set_velocities 16, 0, VEL_UP_1_16TH
-	set_anim_script AnimScript_2463b
+	set_anim_script AnimScript_2063b
 	set_velocities  8, VEL_LEFT_0_50, 0
 	set_velocities  8, VEL_LEFT_1_25, 0
 	set_velocities  0, VEL_LEFT_3_00, 0
@@ -595,22 +293,21 @@ MotionScript_306d0:
 ; unreferenced
 MotionScript_306ef:
 	set_velocities 80, 0, 0
-	set_anim_script AnimScript_24650
+	set_anim_script AnimScript_20650
 	set_velocities 16, 0, VEL_UP_0_50
 	set_velocities 16, 0, VEL_UP_0_25
 	set_velocities 16, 0, VEL_UP_1_16TH
-	set_anim_script AnimScript_24641
+	set_anim_script AnimScript_20641
 	set_velocities  8, VEL_RIGHT_0_50, 0
 	set_velocities  8, VEL_RIGHT_1_25, 0
 	set_velocities  0, VEL_RIGHT_3_00, 0
 
-; unreferenced
-MotionScript_3070e:
-	create_object AnimScript_20138, MotionScript_30008, Data_3425
-	create_object AnimScript_2490b, MotionScript_30757, Data_3425
-	create_object AnimScript_2490b, MotionScript_30761, Data_3425
-	create_object AnimScript_2490b, MotionScript_3076b, Data_3425
-	create_object AnimScript_2490b, MotionScript_30775, Data_3425
+MotionScript_KirbyWarpStar_Crash1:
+	create_object AnimScript_20138, MotionScript_10008, Data_3425
+	create_object AnimScript_Star, MotionScript_Star_UpLeft, Data_3425
+	create_object AnimScript_Star, MotionScript_Star_UpRight, Data_3425
+	create_object AnimScript_Star, MotionScript_Star_Left, Data_3425
+	create_object AnimScript_Star, MotionScript_Star_Right, Data_3425
 	set_anim_script AnimScript_2010f
 	set_velocities  8, 0, VEL_UP_3_00
 	set_velocities  8, 0, VEL_UP_2_00
@@ -618,79 +315,79 @@ MotionScript_3070e:
 	set_velocities  8, 0, VEL_DOWN_1_00
 	set_velocities  8, 0, VEL_DOWN_2_00
 	set_velocities  8, 0, VEL_DOWN_3_00
+MotionScript_Kirby_EndTransitionSegment:
 	set_kirby_pos
-	set_flags hKirbyFlags3, $0c, $00
-	set_value wStageTransitionCounter, $01
+	set_flags hKirbyFlags3, KIRBY3F_UNK2 | KIRBY3F_DIVE, $00
+	set_value wStageTransitionCounter, 1
 	set_velocities  0, 0, 0
 
-MotionScript_30757:
+MotionScript_Star_UpLeft:
 	position_offset -4, -4
 	set_velocities  8, VEL_LEFT_0_75, VEL_UP_0_75
 	set_velocities 48, VEL_LEFT_1_8TH, VEL_UP_0_25
 	script_end
 
-MotionScript_30761:
+MotionScript_Star_UpRight:
 	position_offset 4, -4
 	set_velocities  8, VEL_RIGHT_0_75, VEL_UP_0_75
 	set_velocities 48, VEL_RIGHT_1_8TH, VEL_UP_0_25
 	script_end
 
-MotionScript_3076b:
+MotionScript_Star_Left:
 	position_offset -6, 0
 	set_velocities  8, VEL_LEFT_1_25, 0
 	set_velocities 48, VEL_LEFT_0_25, 0
 	script_end
 
-MotionScript_30775:
+MotionScript_Star_Right:
 	position_offset 6, 0
 	set_velocities  8, VEL_RIGHT_1_25, 0
 	set_velocities 48, VEL_RIGHT_0_25, 0
 	script_end
 
-; unreferenced
-MotionScript_3077f:
+MotionScript_Star_UpFast:
 	set_velocities  6, 0, VEL_UP_6_00
 	set_velocities  6, 0, VEL_UP_3_00
 	set_velocities  6, 0, VEL_UP_1_25
 	set_velocities  0, 0, VEL_UP_0_75
 
-MotionScript_3078b:
+MotionScript_Star_RightFast:
 	set_velocities  6, VEL_RIGHT_6_00, 0
 	set_velocities  6, VEL_RIGHT_3_00, 0
 	set_velocities  6, VEL_RIGHT_1_25, 0
 	set_velocities  0, VEL_RIGHT_0_75, 0
 
-MotionScript_30797:
+MotionScript_Star_DownFast:
 	set_velocities  6, 0, VEL_DOWN_6_00
 	set_velocities  6, 0, VEL_DOWN_3_00
 	set_velocities  6, 0, VEL_DOWN_1_25
 	set_velocities  0, 0, VEL_DOWN_0_75
 
-MotionScript_307a3:
+MotionScript_Star_LeftFast:
 	set_velocities  6, VEL_LEFT_6_00, 0
 	set_velocities  6, VEL_LEFT_3_00, 0
 	set_velocities  6, VEL_LEFT_1_25, 0
 	set_velocities  0, VEL_LEFT_0_75, 0
 
-MotionScript_307af:
+MotionScript_Star_UpRightFast:
 	set_velocities  6, VEL_RIGHT_4_00, VEL_UP_4_00
 	set_velocities  6, VEL_RIGHT_2_00, VEL_UP_2_00
 	set_velocities  6, VEL_RIGHT_1_00, VEL_UP_1_00
 	set_velocities  0, VEL_RIGHT_0_50, VEL_UP_0_50
 
-MotionScript_307bb:
+MotionScript_Star_DownRightFast:
 	set_velocities  6, VEL_RIGHT_4_00, VEL_DOWN_4_00
 	set_velocities  6, VEL_RIGHT_2_00, VEL_DOWN_2_00
 	set_velocities  6, VEL_RIGHT_1_00, VEL_DOWN_1_00
 	set_velocities  0, VEL_RIGHT_0_50, VEL_DOWN_0_50
 
-MotionScript_307c7:
+MotionScript_Star_DownLeftFast:
 	set_velocities  6, VEL_LEFT_4_00, VEL_DOWN_4_00
 	set_velocities  6, VEL_LEFT_2_00, VEL_DOWN_2_00
 	set_velocities  6, VEL_LEFT_1_00, VEL_DOWN_1_00
 	set_velocities  0, VEL_LEFT_0_50, VEL_DOWN_0_50
 
-MotionScript_307d3:
+MotionScript_Star_UpLeftFast:
 	set_velocities  6, VEL_LEFT_4_00, VEL_UP_4_00
 	set_velocities  6, VEL_LEFT_2_00, VEL_UP_2_00
 	set_velocities  6, VEL_LEFT_1_00, VEL_UP_1_00
@@ -745,7 +442,7 @@ MotionScript_30825:
 	set_velocities  6, VEL_LEFT_1_16TH, VEL_UP_1_16TH
 	script_end
 
-MotionScript_3082f:
+MotionScript_Star_RandomDirection:
 	jumptable_random 7
 	dw .script_30841
 	dw .script_3084d
@@ -945,8 +642,7 @@ MotionScript_3098d:
 	set_velocities  2, VEL_RIGHT_4_00, 0
 	jump_abs MotionScript_3097b
 
-; unreferenced
-MotionScript_30996:
+MotionScript_KirbyWarpStar_LiftOff1:
 	script_call MotionScript_30ae1
 	set_velocities 20, 0, 0
 	set_velocities 20, 0, VEL_UP_1_16TH
@@ -970,8 +666,7 @@ MotionScript_30996:
 	set_velocities 128, VEL_LEFT_1_8TH, VEL_DOWN_0_50
 	set_velocities  0, 0, 0
 
-; unreferenced
-MotionScript_309d8:
+MotionScript_KirbyWarpStar_LiftOff2:
 	script_call MotionScript_30ae1
 	set_velocities  8, 0, VEL_DOWN_1_25
 	set_velocities  8, 0, VEL_DOWN_0_50
@@ -987,12 +682,11 @@ MotionScript_309d8:
 	script_repeat 22
 	set_velocities  2, VEL_RIGHT_1_25, VEL_UP_1_00
 	set_velocities  2, VEL_RIGHT_2_00, VEL_DOWN_1_00
-	create_object AnimScript_2490b, MotionScript_33c68, Data_3425
+	create_object AnimScript_Star, MotionScript_RandomLeftDirection, Data_3425
 	script_repeat_end
 	set_velocities  0, VEL_LEFT_0_75, 0
 
-; unreferenced
-MotionScript_30a0f:
+MotionScript_KirbyWarpStar_LiftOff3:
 	script_call MotionScript_30ae1
 	set_velocities  8, 0, VEL_UP_1_8TH
 	set_velocities  8, VEL_LEFT_0_25, VEL_UP_2_00
@@ -1007,26 +701,26 @@ MotionScript_30a0f:
 	set_velocities 16, 0, VEL_DOWN_0_00
 	play_sfx SFX_WARP_STAR
 	script_repeat 15
-	create_object AnimScript_2490b, MotionScript_30a7f, Data_3425
+	create_object AnimScript_Star, MotionScript_RandomDownwardsDirection, Data_3425
 	set_velocities  2, VEL_RIGHT_0_00, VEL_UP_2_00
 	set_velocities  2, VEL_RIGHT_0_00, VEL_DOWN_2_00
 	script_repeat_end
-	create_object AnimScript_243be, MotionScript_30a7f, Data_3425
+	create_object AnimScript_Explosion, MotionScript_RandomDownwardsDirection, Data_3425
 	script_repeat 8
 	set_velocities  6, VEL_RIGHT_0_00, VEL_DOWN_1_8TH
-	create_object AnimScript_2490b, MotionScript_30a7f, Data_3425
+	create_object AnimScript_Star, MotionScript_RandomDownwardsDirection, Data_3425
 	script_repeat_end
 	set_velocities  8, VEL_LEFT_1_16TH, VEL_UP_1_00
-	create_object AnimScript_2490b, MotionScript_30a7f, Data_3425
+	create_object AnimScript_Star, MotionScript_RandomDownwardsDirection, Data_3425
 	set_velocities  8, VEL_LEFT_0_25, VEL_UP_2_00
-	create_object AnimScript_2490b, MotionScript_30a7f, Data_3425
+	create_object AnimScript_Star, MotionScript_RandomDownwardsDirection, Data_3425
 	set_velocities 20, VEL_LEFT_0_50, VEL_UP_4_00
 	set_position 104, 8
 	set_velocities 20, 0, 0
 	play_sfx SFX_13
 	set_velocities  0, VEL_RIGHT_1_16TH, VEL_DOWN_0_25
 
-MotionScript_30a7f:
+MotionScript_RandomDownwardsDirection:
 	jumptable_random 3
 	dw .script_30a89
 	dw .script_30a8c
@@ -1045,8 +739,7 @@ MotionScript_30a7f:
 .script_30a92
 	set_velocities  0, VEL_RIGHT_0_50, VEL_DOWN_3_00
 
-; unreferenced
-MotionScript_30a95:
+MotionScript_KirbyWarpStar_LiftOff4:
 	script_call MotionScript_30ae1
 	set_velocities  8, VEL_LEFT_4_00, VEL_UP_2_00
 	set_velocities  8, VEL_LEFT_2_00, VEL_UP_4_00
@@ -1074,29 +767,28 @@ MotionScript_30a95:
 	set_velocities  0, 0, VEL_UP_0_50
 
 MotionScript_30ae1:
-	create_object AnimScript_2490b, MotionScript_30757, Data_3425
-	create_object AnimScript_2490b, MotionScript_30761, Data_3425
-	create_object AnimScript_2490b, MotionScript_3076b, Data_3425
-	create_object AnimScript_2490b, MotionScript_30775, Data_3425
+	create_object AnimScript_Star, MotionScript_Star_UpLeft, Data_3425
+	create_object AnimScript_Star, MotionScript_Star_UpRight, Data_3425
+	create_object AnimScript_Star, MotionScript_Star_Left, Data_3425
+	create_object AnimScript_Star, MotionScript_Star_Right, Data_3425
 	script_ret
 
-; unreferenced
-MotionScript_30afe:
-	create_object AnimScript_2490b, MotionScript_30757, Data_3425
-	create_object AnimScript_2490b, MotionScript_30761, Data_3425
-	create_object AnimScript_2490b, MotionScript_3076b, Data_3425
-	create_object AnimScript_2490b, MotionScript_30775, Data_3425
+MotionScript_KirbyGetSparklingStarLeft:
+	create_object AnimScript_Star, MotionScript_Star_UpLeft, Data_3425
+	create_object AnimScript_Star, MotionScript_Star_UpRight, Data_3425
+	create_object AnimScript_Star, MotionScript_Star_Left, Data_3425
+	create_object AnimScript_Star, MotionScript_Star_Right, Data_3425
 	set_velocities  6, VEL_LEFT_0_25, 0
 	set_velocities  6, VEL_LEFT_0_25, VEL_DOWN_1_8TH
 	set_velocities  6, VEL_LEFT_0_25, VEL_DOWN_0_50
 	set_velocities  6, VEL_LEFT_0_25, VEL_DOWN_1_00
 	set_velocities  0, VEL_LEFT_0_25, VEL_DOWN_1_25
 
-MotionScript_30b29:
-	create_object AnimScript_2490b, MotionScript_30757, Data_3425
-	create_object AnimScript_2490b, MotionScript_30761, Data_3425
-	create_object AnimScript_2490b, MotionScript_3076b, Data_3425
-	create_object AnimScript_2490b, MotionScript_30775, Data_3425
+MotionScript_KirbyGetSparklingStarRight:
+	create_object AnimScript_Star, MotionScript_Star_UpLeft, Data_3425
+	create_object AnimScript_Star, MotionScript_Star_UpRight, Data_3425
+	create_object AnimScript_Star, MotionScript_Star_Left, Data_3425
+	create_object AnimScript_Star, MotionScript_Star_Right, Data_3425
 	set_velocities  6, VEL_RIGHT_0_25, 0
 	set_velocities  6, VEL_RIGHT_0_25, VEL_DOWN_1_8TH
 	set_velocities  6, VEL_RIGHT_0_25, VEL_DOWN_0_50
@@ -1114,7 +806,7 @@ MotionScript_30b60:
 	set_velocities  1, VEL_RIGHT_0_50, 0
 	jump_abs MotionScript_30b60
 MotionScript_30b6c:
-	set_scripts AnimScript_2478b, MotionScript_30008
+	set_scripts AnimScript_2478b, MotionScript_10008
 
 MotionScript_30b71:
 	set_velocities 79, VEL_LEFT_0_25, 0
@@ -1240,10 +932,11 @@ MotionScript_30ca6:
 	set_velocities  4, VEL_LEFT_0_75, VEL_DOWN_1_25
 	script_ret
 
-MotionScript_30cb3:
+MotionScript_KirbyMike:
+.loop
 	set_velocities  2, VEL_LEFT_0_50, 0
 	set_velocities  2, VEL_RIGHT_0_50, 0
-	jump_abs MotionScript_30cb3
+	jump_abs .loop
 
 ; unreferenced
 MotionScript_30cbc:
@@ -1372,7 +1065,7 @@ MotionScript_30da0:
 
 MotionScript_30dba:
 	set_velocities 80, 0, 0
-	set_anim_script AnimScript_24647
+	set_anim_script AnimScript_20647
 	set_velocities  8, VEL_LEFT_0_25, VEL_UP_3_00
 	set_velocities  8, VEL_LEFT_0_25, VEL_UP_1_25
 	set_velocities  8, VEL_LEFT_0_75, VEL_UP_0_75
@@ -1389,14 +1082,14 @@ MotionScript_30ddd:
 	branch_on_kirby_vertical_alignment .script_30dfb, .script_30dea
 	jump_abs .script_30ddd
 .script_30dea
-	set_anim_script AnimScript_24662
+	set_anim_script AnimScript_20662
 	set_velocities  6, VEL_RIGHT_0_50, VEL_DOWN_0_50
 	set_velocities  6, VEL_RIGHT_1_00, VEL_DOWN_0_25
 	set_velocities  6, VEL_RIGHT_2_00, VEL_DOWN_1_8TH
 	set_velocities  0, VEL_RIGHT_3_00, 0
 
 .script_30dfb
-	set_anim_script AnimScript_24659
+	set_anim_script AnimScript_20659
 	set_velocities  6, VEL_LEFT_0_50, VEL_DOWN_0_50
 	set_velocities  6, VEL_LEFT_1_00, VEL_DOWN_0_25
 	set_velocities  6, VEL_LEFT_2_00, VEL_DOWN_1_8TH
@@ -1823,7 +1516,7 @@ MotionScript_3117f:
 	set_velocities  6, VEL_LEFT_2_00, VEL_UP_1_8TH
 	set_velocities  6, VEL_LEFT_2_00, VEL_DOWN_1_8TH
 	set_velocities  6, VEL_LEFT_2_00, VEL_DOWN_1_00
-	create_object AnimScript_243be, MotionScript_30008, ExplosionProperties
+	create_object AnimScript_Explosion, MotionScript_10008, ExplosionProperties
 	script_end
 
 MotionScript_3119c:
@@ -1834,7 +1527,7 @@ MotionScript_3119c:
 	set_velocities  6, VEL_LEFT_2_00, VEL_UP_0_50
 	set_velocities  6, VEL_LEFT_2_00, VEL_DOWN_0_50
 	set_velocities  6, VEL_LEFT_2_00, VEL_DOWN_2_00
-	create_object AnimScript_243be, MotionScript_30008, ExplosionProperties
+	create_object AnimScript_Explosion, MotionScript_10008, ExplosionProperties
 	script_end
 
 MotionScript_311b9:
@@ -1949,7 +1642,7 @@ MotionScript_312a2:
 	set_velocities  8, VEL_LEFT_1_00, 0
 	set_velocities  8, VEL_LEFT_0_50, 0
 	set_object_properties SparklingStarProperties
-	jump_abs MotionScript_3032d.loop
+	jump_abs MotionScript_1032d_Loop
 
 MotionScript_312b3:
 .loop
@@ -2316,7 +2009,7 @@ MotionScript_315c6:
 MotionScript_315f3:
 	set_velocities  4, VEL_LEFT_1_00, VEL_UP_1_00
 	set_velocities  4, VEL_LEFT_1_00, VEL_UP_0_75
-	set_anim_script AnimScript_24647
+	set_anim_script AnimScript_20647
 	set_velocities  4, VEL_LEFT_1_00, VEL_UP_1_00
 	set_velocities  4, VEL_LEFT_0_75, VEL_UP_1_25
 	set_velocities  4, VEL_RIGHT_0_50, VEL_UP_2_00
@@ -2325,7 +2018,7 @@ MotionScript_315f3:
 	set_velocities  4, VEL_RIGHT_1_00, VEL_UP_0_75
 	set_velocities  4, VEL_RIGHT_1_00, VEL_DOWN_0_50
 	set_velocities  4, VEL_RIGHT_1_00, VEL_DOWN_0_75
-	set_anim_script AnimScript_24647
+	set_anim_script AnimScript_20647
 	set_velocities  4, VEL_RIGHT_1_00, VEL_DOWN_1_00
 	set_velocities  4, VEL_RIGHT_0_75, VEL_DOWN_1_25
 	set_velocities  4, VEL_LEFT_0_50, VEL_DOWN_2_00
@@ -2376,17 +2069,17 @@ MotionScript_31689:
 	set_velocities  8, VEL_RIGHT_0_50, 0
 	set_velocities 32, VEL_RIGHT_0_75, 0
 	set_velocities  8, VEL_RIGHT_0_50, 0
-	jump_abs MotionScript_302f5
+	jump_abs MotionScript_102f5
 
 MotionScript_3169e:
-	set_anim_script AnimScript_24000
+	set_anim_script AnimScript_20000
 	position_offset 0, 16
 	set_velocities 50, 0, 0
 	create_object AnimScript_25558, MotionScript_30e7b, StandardEnemyProperties
 	jump_abs MotionScript_3169e
 
 MotionScript_316b3:
-	set_anim_script AnimScript_24000
+	set_anim_script AnimScript_20000
 	jump_random 50 percent + 1, .script_316bf
 	set_velocities 60, 0, 0
 .script_316bf
@@ -2417,8 +2110,8 @@ MotionScript_316dc:
 
 ; unreferenced
 MotionScript_316e0:
-	create_object AnimScript_25561, MotionScript_30008, PuffOfSmokeProperties
-	create_object AnimScript_24b00, MotionScript_3082f, Data_3421
+	create_object AnimScript_25561, MotionScript_10008, PuffOfSmokeProperties
+	create_object AnimScript_SmallStar, MotionScript_Star_RandomDirection, Data_3421
 	set_velocities  4, 0, VEL_UP_4_00
 	set_velocities  4, 0, VEL_UP_3_00
 	set_velocities  4, 0, VEL_UP_2_00
@@ -2444,8 +2137,8 @@ MotionScript_316e0:
 	set_velocities 48, 0, 0
 	set_velocities  4, 0, VEL_DOWN_3_00
 	set_velocities  4, 0, VEL_DOWN_4_00
-	create_object AnimScript_25561, MotionScript_30008, PuffOfSmokeProperties
-	create_object AnimScript_24b00, MotionScript_3082f, Data_3421
+	create_object AnimScript_25561, MotionScript_10008, PuffOfSmokeProperties
+	create_object AnimScript_SmallStar, MotionScript_Star_RandomDirection, Data_3421
 	script_ret
 
 MotionScript_31748:
@@ -2946,7 +2639,7 @@ MotionScript_31b54:
 MotionScript_31b5a:
 	set_value wBossHPCounter, $08
 	set_value wd3c1, $05
-	create_object AnimScript_2526d, MotionScript_30008, Data_3421
+	create_object AnimScript_2526d, MotionScript_10008, Data_3421
 	set_velocities 32, 0, 0
 	set_velocities  8, VEL_LEFT_1_8TH, VEL_DOWN_2_00
 	set_abs_pos
@@ -3163,7 +2856,7 @@ MotionScript_31d72:
 	set_position 92, 64
 	set_velocities  1, 0, 0
 	set_rel_pos
-	jump_abs MotionScript_3032d
+	jump_abs MotionScript_1032d
 
 MotionScript_31d7d:
 .script_31d7d
@@ -3300,9 +2993,9 @@ MotionScript_31e9e:
 MotionScript_31ea7:
 	set_anim_script AnimScript_25c49
 	set_velocities 10, 0, 0
-	create_object AnimScript_2530a, MotionScript_3179a, GlunkPodProperties
-	create_object AnimScript_2530a, MotionScript_30308, GlunkPodProperties
-	create_object AnimScript_2530a, MotionScript_31797, GlunkPodProperties
+	create_object AnimScript_2530a, MotionScript_3179a, ProjectileProperties
+	create_object AnimScript_2530a, MotionScript_Projectile_Left, ProjectileProperties
+	create_object AnimScript_2530a, MotionScript_31797, ProjectileProperties
 	script_ret
 
 MotionScript_31ec5:
@@ -3311,12 +3004,12 @@ MotionScript_31ec5:
 	jump_abs MotionScript_31ec5
 .loop
 	set_update_func Func_14208, NULL
-	set_scripts AnimScript_262c4, MotionScript_30008
+	set_scripts AnimScript_262c4, MotionScript_10008
 
 ; unreferenced
 MotionScript_31edc:
 	set_update_func Func_14208, NULL
-	set_scripts AnimScript_262c4, MotionScript_30008
+	set_scripts AnimScript_262c4, MotionScript_10008
 
 MotionScript_31ee6:
 	set_velocities 32, VEL_LEFT_0_50, VEL_DOWN_1_00
@@ -3422,7 +3115,7 @@ MotionScript_31fd0:
 	set_velocities  8, 0, VEL_UP_1_00
 	set_velocities  8, 0, VEL_UP_0_50
 	set_velocities  8, 0, VEL_UP_1_8TH
-	jump_abs MotionScript_30444
+	jump_abs MotionScript_10444
 
 MotionScript_31fdf:
 	set_velocities  8, 0, VEL_DOWN_2_00
@@ -3430,7 +3123,7 @@ MotionScript_31fe2:
 	set_velocities  8, 0, VEL_DOWN_1_00
 	set_velocities  8, 0, VEL_DOWN_0_50
 	set_velocities  8, 0, VEL_DOWN_1_8TH
-	jump_abs MotionScript_30444
+	jump_abs MotionScript_10444
 
 ; unreferenced
 MotionScript_31fee:
@@ -3590,26 +3283,26 @@ MotionScript_320f5:
 MotionScript_32111:
 	set_update_func Func_140c2, AnimScript_25f27
 	script_call MotionScript_320f5
-	create_object AnimScript_25f4b, MotionScript_30008, Data_3685
-	set_scripts AnimScript_25f60, MotionScript_30008
+	create_object AnimScript_25f4b, MotionScript_10008, Data_3685
+	set_scripts AnimScript_25f60, MotionScript_10008
 
 MotionScript_32125:
 	set_update_func Func_140c2, AnimScript_25f27
 	script_call MotionScript_320f5
-	create_object AnimScript_25f4b, MotionScript_30008, Data_3685
-	set_scripts AnimScript_25f72, MotionScript_30008
+	create_object AnimScript_25f4b, MotionScript_10008, Data_3685
+	set_scripts AnimScript_25f72, MotionScript_10008
 
 MotionScript_32139:
 	set_update_func Func_140c2, AnimScript_25f39
 	script_call MotionScript_320f5
-	create_object AnimScript_25f4b, MotionScript_30008, Data_3685
-	set_scripts AnimScript_25f84, MotionScript_30008
+	create_object AnimScript_25f4b, MotionScript_10008, Data_3685
+	set_scripts AnimScript_25f84, MotionScript_10008
 
 MotionScript_3214d:
 	set_update_func Func_140c2, AnimScript_25f39
 	script_call MotionScript_320f5
-	create_object AnimScript_25f4b, MotionScript_30008, Data_3685
-	set_scripts AnimScript_25f96, MotionScript_30008
+	create_object AnimScript_25f4b, MotionScript_10008, Data_3685
+	set_scripts AnimScript_25f96, MotionScript_10008
 
 MotionScript_32161:
 	branch_kirby_pos .script_32168, .script_32190
@@ -3623,7 +3316,7 @@ MotionScript_32161:
 	play_sfx SFX_28
 	set_velocities 200, 0, 0
 	set_velocities 100, 0, 0
-	create_object AnimScript_243be, MotionScript_30008, ExplosionProperties
+	create_object AnimScript_Explosion, MotionScript_10008, ExplosionProperties
 	script_end
 .script_32190
 	position_offset 0, -16
@@ -3635,7 +3328,7 @@ MotionScript_32161:
 	play_sfx SFX_28
 	set_velocities 200, 0, 0
 	set_velocities 100, 0, 0
-	create_object AnimScript_243be, MotionScript_30008, ExplosionProperties
+	create_object AnimScript_Explosion, MotionScript_10008, ExplosionProperties
 	script_end
 
 MotionScript_321b8:
@@ -3644,7 +3337,7 @@ MotionScript_321b8:
 	set_velocities 16, 0, VEL_DOWN_0_50
 	set_velocities 16, 0, VEL_DOWN_0_75
 	script_repeat 3
-	create_object AnimScript_25d78, MotionScript_3178e, GlunkPodProperties
+	create_object AnimScript_25d78, MotionScript_3178e, ProjectileProperties
 	set_velocities  4, 0, VEL_UP_3_00
 	set_velocities  4, 0, VEL_DOWN_2_00
 	set_velocities  4, 0, VEL_UP_1_00
@@ -3784,7 +3477,7 @@ MotionScript_32305:
 	script_end
 
 MotionScript_3230c:
-	create_object AnimScript_2611c, MotionScript_30008, Data_3421
+	create_object AnimScript_2611c, MotionScript_10008, Data_3421
 .loop
 	set_velocities  1, 0, 0
 	script_delay 10
@@ -4038,7 +3731,7 @@ MotionScript_32523:
 	set_velocities  8, 0, VEL_DOWN_2_00
 	set_velocities  8, 0, VEL_DOWN_3_00
 	set_velocities  6, 0, VEL_DOWN_4_00
-	set_scripts AnimScript_264fd, MotionScript_30008
+	set_scripts AnimScript_264fd, MotionScript_10008
 
 MotionScript_3253a:
 	script_call MotionScript_3257c
@@ -4046,7 +3739,7 @@ MotionScript_3253a:
 	set_velocities  8, 0, VEL_DOWN_1_25
 	set_velocities  8, 0, VEL_DOWN_2_00
 	set_velocities 11, 0, VEL_DOWN_3_00
-	set_scripts AnimScript_264fd, MotionScript_30008
+	set_scripts AnimScript_264fd, MotionScript_10008
 
 MotionScript_3254e:
 	script_call MotionScript_3257c
@@ -4055,7 +3748,7 @@ MotionScript_3254e:
 	set_velocities  8, 0, VEL_DOWN_2_00
 	set_velocities  8, 0, VEL_DOWN_3_00
 	set_velocities  9, 0, VEL_DOWN_4_00
-	set_scripts AnimScript_264fd, MotionScript_30008
+	set_scripts AnimScript_264fd, MotionScript_10008
 
 MotionScript_32565:
 	script_call MotionScript_3257c
@@ -4064,7 +3757,7 @@ MotionScript_32565:
 	set_velocities  8, 0, VEL_DOWN_2_00
 	set_velocities  8, 0, VEL_DOWN_3_00
 	set_velocities  6, 0, VEL_DOWN_4_00
-	set_scripts AnimScript_264fd, MotionScript_30008
+	set_scripts AnimScript_264fd, MotionScript_10008
 
 MotionScript_3257c:
 	set_velocities 89, 0, 0
@@ -4083,7 +3776,7 @@ MotionScript_32589:
 	set_velocities  8, 0, VEL_DOWN_1_00
 	set_velocities  8, 0, VEL_DOWN_1_25
 	set_velocities  9, 0, VEL_DOWN_2_00
-	set_scripts AnimScript_264fd, MotionScript_30008
+	set_scripts AnimScript_264fd, MotionScript_10008
 
 MotionScript_325a6:
 	set_velocities 106, 0, 0
@@ -4285,7 +3978,7 @@ MotionScript_32727:
 	set_velocities 48, 0, 0
 	set_velocities 112, VEL_RIGHT_1_8TH, VEL_DOWN_0_50
 	set_velocities 20, VEL_RIGHT_1_16TH, VEL_DOWN_0_25
-	set_scripts AnimScript_24a10, MotionScript_30008
+	set_scripts AnimScript_Hit, MotionScript_10008
 
 MotionScript_32741:
 	set_velocities 132, 0, 0
@@ -4364,7 +4057,7 @@ MotionScript_327d1:
 	set_update_func Func_1428c, NULL
 	set_velocities 132, 0, 0
 	set_velocities 24, VEL_RIGHT_2_00, VEL_DOWN_2_00
-	create_object AnimScript_24000, MotionScript_32804, Data_3425
+	create_object AnimScript_20000, MotionScript_32804, Data_3425
 	set_velocities 160, 0, 0
 	set_velocities 64, VEL_RIGHT_2_00, VEL_DOWN_0_50
 	set_velocities 64, VEL_RIGHT_2_00, VEL_DOWN_1_8TH
@@ -4375,7 +4068,7 @@ MotionScript_327d1:
 
 MotionScript_32804:
 	script_repeat 23
-	create_object AnimScript_2490b, MotionScript_32812, Data_3425
+	create_object AnimScript_Star, MotionScript_32812, Data_3425
 	set_velocities  6, 0, 0
 	script_repeat_end
 	script_end
@@ -5224,7 +4917,7 @@ MotionScript_32fb0:
 MotionScript_32fb8:
 	set_value wBossHPCounter, $03
 	set_value wd3c1, $01
-	create_object AnimScript_2526d, MotionScript_30008, Data_3421
+	create_object AnimScript_2526d, MotionScript_10008, Data_3421
 	set_anim_script AnimScript_26d20
 	set_velocities 100, 0, 0
 	set_velocities 20, 0, VEL_DOWN_1_00
@@ -5263,10 +4956,10 @@ MotionScript_33014:
 	play_sfx SFX_30
 	branch_kirby_pos .script_3302f, .script_33037
 .script_3302f
-	create_object AnimScript_26e8c, MotionScript_302d4, StandardEnemyGravityProperties
+	create_object AnimScript_26e8c, MotionScript_102d4, StandardEnemyGravityProperties
 	script_ret
 .script_33037
-	create_object AnimScript_26ec1, MotionScript_302d7, StandardEnemyGravityProperties
+	create_object AnimScript_26ec1, MotionScript_102d7, StandardEnemyGravityProperties
 	script_ret
 
 MotionScript_3303f:
@@ -5324,17 +5017,17 @@ MotionScript_330d7:
 	set_velocities  8, 0, VEL_DOWN_2_00
 	set_velocities  8, 0, VEL_DOWN_3_00
 	set_velocities  7, 0, VEL_DOWN_4_00
-	create_object AnimScript_243be, MotionScript_30008, Properties_35c4
+	create_object AnimScript_Explosion, MotionScript_10008, Properties_35c4
 	script_end
 
 MotionScript_330ee:
-	create_object AnimScript_249f0, MotionScript_33195, GlunkPodProperties
+	create_object AnimScript_249f0, MotionScript_33195, ProjectileProperties
 	set_velocities  3, 0, 0
-	create_object AnimScript_249f0, MotionScript_33156, GlunkPodProperties
+	create_object AnimScript_249f0, MotionScript_33156, ProjectileProperties
 	set_velocities  3, 0, 0
-	create_object AnimScript_249f0, MotionScript_3316b, GlunkPodProperties
+	create_object AnimScript_249f0, MotionScript_3316b, ProjectileProperties
 	set_velocities  3, 0, 0
-	create_object AnimScript_249f0, MotionScript_33180, GlunkPodProperties
+	create_object AnimScript_249f0, MotionScript_33180, ProjectileProperties
 	set_velocities  3, 0, 0
 	script_ret
 
@@ -5352,14 +5045,14 @@ MotionScript_33117:
 MotionScript_33136:
 	set_abs_pos
 	set_position 88, 104
-	create_object AnimScript_24a10, MotionScript_30008, Data_3425
+	create_object AnimScript_Hit, MotionScript_10008, Data_3425
 	set_velocities  8, 0, VEL_UP_1_00
 	set_velocities  8, 0, VEL_UP_0_50
 	set_velocities  8, 0, VEL_UP_1_8TH
 	set_velocities  8, 0, VEL_DOWN_1_8TH
 	set_velocities  8, 0, VEL_DOWN_0_50
 	set_velocities  8, 0, VEL_DOWN_1_00
-	jump_abs MotionScript_3031d
+	jump_abs MotionScript_WarpStar
 
 MotionScript_33156:
 	set_velocities  8, VEL_LEFT_0_50, VEL_UP_0_75
@@ -5400,7 +5093,7 @@ MotionScript_33195:
 MotionScript_331aa:
 	set_value wBossHPCounter, $06
 	set_value wd3c1, $01
-	create_object AnimScript_2526d, MotionScript_30008, Data_3421
+	create_object AnimScript_2526d, MotionScript_10008, Data_3421
 	script_exec Func_48a3
 	set_update_func Func_14172, Data_1c1e4
 	set_velocities  8, VEL_LEFT_1_25, VEL_DOWN_0_50
@@ -5496,36 +5189,36 @@ MotionScript_331aa:
 
 .script_332ce
 	set_velocities 32, 0, VEL_DOWN_2_00
-	create_object AnimScript_243be, MotionScript_30008, ExplosionProperties
+	create_object AnimScript_Explosion, MotionScript_10008, ExplosionProperties
 	script_end
 
 .script_332d9
 	script_call MotionScript_33469
 	set_anim_script AnimScript_26e0c
 	script_repeat 2
-	create_object AnimScript_249da, MotionScript_33409, GlunkPodProperties
-	create_object AnimScript_249da, MotionScript_33439, GlunkPodProperties
+	create_object AnimScript_Projectile, MotionScript_33409, ProjectileProperties
+	create_object AnimScript_Projectile, MotionScript_33439, ProjectileProperties
 	set_velocities  4, 0, 0
-	create_object AnimScript_249da, MotionScript_3340f, GlunkPodProperties
-	create_object AnimScript_249da, MotionScript_3343f, GlunkPodProperties
+	create_object AnimScript_Projectile, MotionScript_3340f, ProjectileProperties
+	create_object AnimScript_Projectile, MotionScript_3343f, ProjectileProperties
 	set_velocities  4, 0, 0
-	create_object AnimScript_249da, MotionScript_33415, GlunkPodProperties
-	create_object AnimScript_249da, MotionScript_33445, GlunkPodProperties
+	create_object AnimScript_Projectile, MotionScript_33415, ProjectileProperties
+	create_object AnimScript_Projectile, MotionScript_33445, ProjectileProperties
 	set_velocities  4, 0, 0
-	create_object AnimScript_249da, MotionScript_3341b, GlunkPodProperties
-	create_object AnimScript_249da, MotionScript_3344b, GlunkPodProperties
+	create_object AnimScript_Projectile, MotionScript_3341b, ProjectileProperties
+	create_object AnimScript_Projectile, MotionScript_3344b, ProjectileProperties
 	set_velocities  4, 0, 0
-	create_object AnimScript_249da, MotionScript_33421, GlunkPodProperties
-	create_object AnimScript_249da, MotionScript_33451, GlunkPodProperties
+	create_object AnimScript_Projectile, MotionScript_33421, ProjectileProperties
+	create_object AnimScript_Projectile, MotionScript_33451, ProjectileProperties
 	set_velocities  4, 0, 0
-	create_object AnimScript_249da, MotionScript_33427, GlunkPodProperties
-	create_object AnimScript_249da, MotionScript_33457, GlunkPodProperties
+	create_object AnimScript_Projectile, MotionScript_33427, ProjectileProperties
+	create_object AnimScript_Projectile, MotionScript_33457, ProjectileProperties
 	set_velocities  4, 0, 0
-	create_object AnimScript_249da, MotionScript_3342d, GlunkPodProperties
-	create_object AnimScript_249da, MotionScript_3345d, GlunkPodProperties
+	create_object AnimScript_Projectile, MotionScript_3342d, ProjectileProperties
+	create_object AnimScript_Projectile, MotionScript_3345d, ProjectileProperties
 	set_velocities  4, 0, 0
-	create_object AnimScript_249da, MotionScript_33433, GlunkPodProperties
-	create_object AnimScript_249da, MotionScript_33463, GlunkPodProperties
+	create_object AnimScript_Projectile, MotionScript_33433, ProjectileProperties
+	create_object AnimScript_Projectile, MotionScript_33463, ProjectileProperties
 	set_velocities  4, 0, 0
 	script_repeat_end
 	jump_abs .script_33212
@@ -5586,67 +5279,67 @@ MotionScript_333f1:
 
 MotionScript_33409:
 	position_offset 0, -28
-	jump_abs MotionScript_303bf
+	jump_abs MotionScript_103bf
 
 MotionScript_3340f:
 	position_offset 8, -24
-	jump_abs MotionScript_303c3
+	jump_abs MotionScript_103c3
 
 MotionScript_33415:
 	position_offset 16, -16
-	jump_abs MotionScript_303c7
+	jump_abs MotionScript_103c7
 
 MotionScript_3341b:
 	position_offset 24, -8
-	jump_abs MotionScript_303cb
+	jump_abs MotionScript_103cb
 
 MotionScript_33421:
 	position_offset 28, 0
-	jump_abs MotionScript_303cf
+	jump_abs MotionScript_103cf
 
 MotionScript_33427:
 	position_offset 24, 8
-	jump_abs MotionScript_303d3
+	jump_abs MotionScript_103d3
 
 MotionScript_3342d:
 	position_offset 16, 16
-	jump_abs MotionScript_303d7
+	jump_abs MotionScript_103d7
 
 MotionScript_33433:
 	position_offset 8, 24
-	jump_abs MotionScript_303db
+	jump_abs MotionScript_103db
 
 MotionScript_33439:
 	position_offset 0, 28
-	jump_abs MotionScript_303df
+	jump_abs MotionScript_103df
 
 MotionScript_3343f:
 	position_offset -8, 24
-	jump_abs MotionScript_303e3
+	jump_abs MotionScript_103e3
 
 MotionScript_33445:
 	position_offset -16, 16
-	jump_abs MotionScript_303e7
+	jump_abs MotionScript_103e7
 
 MotionScript_3344b:
 	position_offset -24, 8
-	jump_abs MotionScript_303eb
+	jump_abs MotionScript_103eb
 
 MotionScript_33451:
 	position_offset -28, 0
-	jump_abs MotionScript_303ef
+	jump_abs MotionScript_103ef
 
 MotionScript_33457:
 	position_offset -24, -8
-	jump_abs MotionScript_303f3
+	jump_abs MotionScript_103f3
 
 MotionScript_3345d:
 	position_offset -16, -16
-	jump_abs MotionScript_303f7
+	jump_abs MotionScript_103f7
 
 MotionScript_33463:
 	position_offset -8, -24
-	jump_abs MotionScript_303fb
+	jump_abs MotionScript_103fb
 
 MotionScript_33469:
 	set_anim_script AnimScript_26e23
@@ -5676,12 +5369,12 @@ MotionScript_33497:
 	set_velocities 16, VEL_LEFT_2_00, 0
 	set_velocities  8, VEL_LEFT_1_00, 0
 	set_velocities  8, VEL_LEFT_0_50, 0
-	jump_abs MotionScript_3032d
+	jump_abs MotionScript_1032d
 
 MotionScript_334a3:
 	set_value wBossHPCounter, $06
 	set_value wd3c1, $01
-	create_object AnimScript_2526d, MotionScript_30008, Data_3421
+	create_object AnimScript_2526d, MotionScript_10008, Data_3421
 	set_value wKirbySideOfScreen, $00
 	set_value wd3cf, $00
 	set_value wd3d0, $00
@@ -5885,7 +5578,7 @@ MotionScript_336b3:
 MotionScript_336cc:
 	set_value wBossHPCounter, $03
 	set_value wd3c1, $01
-	create_object AnimScript_2526d, MotionScript_30008, Data_3421
+	create_object AnimScript_2526d, MotionScript_10008, Data_3421
 MotionScript_336db:
 .loop
 	jumptable_random 3
@@ -5948,7 +5641,7 @@ MotionScript_33743:
 	jump_abs MotionScript_336db
 
 MotionScript_3376c:
-	create_object AnimScript_24b00, MotionScript_3082f, Data_3425
+	create_object AnimScript_SmallStar, MotionScript_Star_RandomDirection, Data_3425
 	play_sfx SFX_30
 	set_velocities 20, 0, 0
 	play_sfx SFX_28
@@ -5985,7 +5678,7 @@ MotionScript_3379f:
 MotionScript_337bb:
 	set_value wBossHPCounter, $0a
 	set_value wd3c1, $01
-	create_object AnimScript_2526d, MotionScript_30008, Data_3421
+	create_object AnimScript_2526d, MotionScript_10008, Data_3421
 	set_value wd3c0, $01
 	script_exec ScriptFunc_LockScrolling
 	script_exec Func_48a3
@@ -6018,7 +5711,7 @@ MotionScript_337bb:
 .script_33817
 	set_value wd3cd, $00
 	set_object_properties Properties_360d
-	create_object AnimScript_24b00, MotionScript_3082f, Data_3425
+	create_object AnimScript_SmallStar, MotionScript_Star_RandomDirection, Data_3425
 	set_velocities 16, VEL_LEFT_1_25, 0
 	set_velocities 16, VEL_LEFT_0_75, 0
 	set_velocities 16, VEL_LEFT_1_8TH, 0
@@ -6027,7 +5720,7 @@ MotionScript_337bb:
 .script_33835
 	set_value wd3cd, $00
 	set_object_properties Properties_360d
-	create_object AnimScript_24b00, MotionScript_3082f, Data_3425
+	create_object AnimScript_SmallStar, MotionScript_Star_RandomDirection, Data_3425
 	set_velocities 16, VEL_RIGHT_1_25, 0
 	set_velocities 16, VEL_RIGHT_0_75, 0
 	set_velocities 16, VEL_RIGHT_1_8TH, 0
@@ -6140,7 +5833,7 @@ MotionScript_337bb:
 .script_3394a
 	set_object_properties Properties_360d
 .script_3394f
-	create_object AnimScript_2490b, MotionScript_33ae4, Data_3421
+	create_object AnimScript_Star, MotionScript_33ae4, Data_3421
 	script_repeat 3
 	set_velocities  2, VEL_RIGHT_1_00, 0
 	set_velocities  2, VEL_LEFT_1_00, 0
@@ -6150,7 +5843,7 @@ MotionScript_337bb:
 .script_33961
 	set_object_properties Properties_360d
 .loop
-	create_object AnimScript_2490b, MotionScript_33ae4.script_33af6, Data_3421
+	create_object AnimScript_Star, MotionScript_33ae4.script_33af6, Data_3421
 	script_repeat 3
 	set_velocities  2, VEL_LEFT_1_00, 0
 	set_velocities  2, VEL_RIGHT_1_00, 0
@@ -6523,7 +6216,7 @@ MotionScript_33ae4:
 	set_velocities  2, VEL_LEFT_4_00, 0
 	script_end
 
-MotionScript_33c68:
+MotionScript_RandomLeftDirection:
 	jumptable_random 3
 	dw .script_33c72
 	dw .script_33c75
@@ -6541,4 +6234,42 @@ MotionScript_33c68:
 
 .script_33c7b
 	set_velocities  0, VEL_LEFT_3_00, VEL_UP_0_75
-; 0x33c7e
+
+	set_velocities  0, 0, 0
+
+MotionScript_KirbyWarpStar_Crash2:
+	set_position $00, $70
+	set_velocities 16, VEL_RIGHT_3_00, 0
+	set_velocities 16, VEL_RIGHT_2_00, 0
+	set_velocities 16, VEL_RIGHT_1_25, 0
+	set_velocities 16, VEL_RIGHT_1_00, VEL_UP_1_16TH
+	set_velocities 16, VEL_RIGHT_1_00, VEL_UP_1_8TH
+	set_velocities 16, VEL_RIGHT_0_50, VEL_UP_1_8TH
+	script_repeat 4
+	set_velocities  2, VEL_LEFT_1_25, VEL_UP_2_00
+	set_velocities  2, VEL_LEFT_1_00, VEL_DOWN_1_25
+	script_repeat_end
+	set_velocities 16, VEL_LEFT_1_25, VEL_DOWN_0_50
+	script_repeat 8
+	set_velocities  2, VEL_LEFT_1_25, VEL_UP_2_00
+	set_velocities  2, VEL_LEFT_1_00, VEL_DOWN_3_00
+	script_repeat_end
+	set_velocities  8, VEL_RIGHT_0_25, VEL_UP_3_00
+	set_velocities  8, VEL_RIGHT_0_25, VEL_UP_1_25
+	set_velocities  8, VEL_RIGHT_0_25, VEL_UP_0_50
+	set_velocities  8, VEL_RIGHT_0_25, VEL_UP_1_8TH
+	set_velocities 40, 0, 0
+	set_velocities 16, VEL_RIGHT_1_8TH, VEL_DOWN_1_8TH
+	set_velocities 16, VEL_RIGHT_1_8TH, VEL_DOWN_0_25
+	set_velocities 16, VEL_RIGHT_1_8TH, VEL_DOWN_0_75
+	set_velocities 16, VEL_RIGHT_1_8TH, VEL_DOWN_1_00
+	script_repeat 2
+	play_sfx SFX_BUMP
+	set_velocities  2, VEL_LEFT_1_8TH, 0
+	set_velocities 10, VEL_LEFT_1_8TH, VEL_UP_0_50
+	set_velocities 10, VEL_LEFT_1_8TH, VEL_UP_1_8TH
+	set_velocities 10, VEL_LEFT_1_8TH, VEL_DOWN_1_8TH
+	set_velocities 10, VEL_LEFT_1_8TH, VEL_DOWN_0_50
+	script_repeat_end
+	play_sfx SFX_25
+	set_scripts AnimScript_2028f, MotionScript_10008

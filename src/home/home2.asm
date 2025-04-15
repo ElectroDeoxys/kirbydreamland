@@ -3950,7 +3950,7 @@ GordoProperties::
 Properties_34c0::
 	object_properties $00, 12, 12, 3, 100, $01, 0, Data_1c154
 
-GlunkPodProperties::
+ProjectileProperties::
 	object_properties PROPERTY_REL_POS, 6, 6, 1, 0, $11, 10, Data_1c154
 
 ShotzoBulletProperties::

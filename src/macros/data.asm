@@ -20,3 +20,16 @@ ENDR
 ENDM
 
 DEF percent EQUS "* $ff / 100"
+
+MACRO object
+	db \1 ; x
+	db \2 ; y
+	db \3 ; ?
+	db \4 ; ?
+	dw \5 ; anim script
+	dw \6 ; motion script
+	dw \7 ; object properties
+IF _NARG == 8
+	db \8 ; consumable item ID
+ENDC
+ENDM
