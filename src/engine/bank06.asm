@@ -2388,12 +2388,12 @@ Data_1926a:
 BG_192d6: INCBIN "data/bg_192d6.bin"
 
 ; unreferenced
-BG_19452: INCBIN "data/BG_19452.bin"
+BG_19452: INCBIN "data/bg_19452.bin"
 
 BG_19786: INCBIN "data/bg_19786.bin"
 
 ; unreferenced
-BG_198ac: INCBIN "data/BG_198ac.bin"
+BG_198ac: INCBIN "data/bg_198ac.bin"
 
 BG_19e86: INCBIN "data/bg_19e86.bin"
 
