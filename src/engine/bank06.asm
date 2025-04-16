@@ -705,7 +705,7 @@ Pause::
 	and KIRBY2F_SPIT | KIRBY2F_MOUTHFUL | KIRBY2F_INHALE | KIRBY2F_HOVER
 	jr nz, .show_sprites
 	ld a, [hKirbyFlags3]
-	and KIRBY3F_LAND
+	and KIRBY3F_SQUISHED
 	jr nz, .show_sprites
 	ld a, [hKirbyFlags4]
 	and KIRBY4F_UNK3 | KIRBY4F_UNK4 | KIRBY4F_UNK5

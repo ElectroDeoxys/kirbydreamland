@@ -160,7 +160,7 @@ Func_326::
 	and $ff ^ (KIRBY1F_WALK | KIRBY1F_GROUNDED | KIRBY1F_AIRBORNE)
 	ldh [hKirbyFlags1], a
 	ldh a, [hKirbyFlags3]
-	and ~(KIRBY3F_UNK2 | KIRBY3F_DIVE)
+	and ~(KIRBY3F_DIVE_BOUNCE | KIRBY3F_DIVE)
 	ldh [hKirbyFlags3], a
 	xor a
 	ld [wd064], a
@@ -185,7 +185,7 @@ Func_38f::
 	xor a
 	ld [wd064], a
 	ldh a, [hKirbyFlags3]
-	and ~(KIRBY3F_UNK2 | KIRBY3F_DIVE)
+	and ~(KIRBY3F_DIVE_BOUNCE | KIRBY3F_DIVE)
 	ldh [hKirbyFlags3], a
 	ret
 
@@ -1021,7 +1021,7 @@ Func_8dc::
 	ret nz
 
 	ldh a, [hKirbyFlags3]
-	and KIRBY3F_UNK2
+	and KIRBY3F_DIVE_BOUNCE
 	ret nz
 
 	; skip if airborne
@@ -1033,7 +1033,7 @@ Func_8dc::
 	set 0, a
 	ldh [hKirbyFlags1], a
 	ldh a, [hKirbyFlags3]
-	and ~(KIRBY3F_UNK2 | KIRBY3F_DIVE | KIRBY3F_UNK6)
+	and ~(KIRBY3F_DIVE_BOUNCE | KIRBY3F_DIVE | KIRBY3F_UNK6)
 	ldh [hKirbyFlags3], a
 	ld a, $16
 	ld [wd065], a
@@ -1138,7 +1138,7 @@ Func_998:
 	cp $07
 	jr nz, .asm_9c0
 	ldh a, [hKirbyFlags3]
-	and ~(KIRBY3F_UNK2 | KIRBY3F_DIVE)
+	and ~(KIRBY3F_DIVE_BOUNCE | KIRBY3F_DIVE)
 	ldh [hKirbyFlags3], a
 	call Func_11de
 .asm_9c0
@@ -1439,7 +1439,7 @@ Func_9de:
 	cp $06
 	jp z, Func_caf
 	ldh a, [hKirbyFlags3]
-	and $ff ^ (KIRBY3F_UNK0 | KIRBY3F_UNK1 | KIRBY3F_UNK6 | KIRBY3F_LAND)
+	and $ff ^ (SQUISH_BITMASK | KIRBY3F_UNK6 | KIRBY3F_SQUISHED)
 	ldh [hKirbyFlags3], a
 	ld a, [wObjectPropertyFlags + OBJECT_SLOT_KIRBY]
 	res PROPERTY_PRIORITY_F, a
@@ -1518,9 +1518,9 @@ Func_c85:
 	jp z, .set_carry
 	cp $ff
 	jp nc, .set_carry
-	ld b, KIRBY3F_UNK0 | KIRBY3F_LAND
+	ld b, SQUISH_UP | KIRBY3F_SQUISHED
 	ldh a, [hKirbyFlags3]
-	and ~(KIRBY3F_UNK0 | KIRBY3F_UNK1)
+	and ~SQUISH_BITMASK
 	or b
 	ldh [hKirbyFlags3], a
 	call SpawnBumpStar_WithSFX
@@ -1646,7 +1646,7 @@ Func_caf:
 	jp .asm_ee0
 .asm_d7f
 	ldh a, [hKirbyFlags3]
-	bit KIRBY3F_UNK2_F, a
+	bit KIRBY3F_DIVE_BOUNCE_F, a
 	jr z, .asm_da7
 	ldh a, [hKirbyFlags2]
 	and KIRBY2F_MOUTHFUL | KIRBY2F_INHALE
@@ -1663,8 +1663,8 @@ Func_caf:
 	ld [wJoypadDown], a
 	jp .asm_ece
 .asm_da7
-	bit 3, a
-	jp nz, .asm_e7f
+	bit KIRBY3F_DIVE_F, a
+	jp nz, .dive_bounce
 	ldh a, [hKirbyFlags4]
 	bit KIRBY4F_UNK4_F, a
 	jr nz, .asm_df4
@@ -1692,8 +1692,8 @@ Func_caf:
 	ld hl, hKirbyFlags4
 	res KIRBY4F_UNK4_F, [hl]
 	ldh a, [hKirbyFlags3]
-	and ~(KIRBY3F_UNK0 | KIRBY3F_UNK1 | KIRBY3F_UNK2 | KIRBY3F_DIVE | KIRBY3F_DUCK)
-	or KIRBY3F_LAND
+	and ~(SQUISH_BITMASK | KIRBY3F_DIVE_BOUNCE | KIRBY3F_DIVE | KIRBY3F_DUCK)
+	or SQUISH_DOWN | KIRBY3F_SQUISHED
 	ldh [hKirbyFlags3], a
 	ld hl, hKirbyFlags2
 	res KIRBY2F_UNK1_F, [hl]
@@ -1738,7 +1738,7 @@ Func_caf:
 	and KIRBY6F_UNK1 | KIRBY6F_UNK2 | KIRBY6F_UNK3 | KIRBY6F_UNK4 | KIRBY6F_UNK5 | KIRBY6F_UNK6
 	jp nz, .asm_ece
 	ldh a, [hKirbyFlags3]
-	and $ff ^ (KIRBY3F_UNK0 | KIRBY3F_UNK1 | KIRBY3F_UNK2 | KIRBY3F_DIVE | KIRBY3F_LAND)
+	and $ff ^ (SQUISH_BITMASK | KIRBY3F_DIVE_BOUNCE | KIRBY3F_DIVE | KIRBY3F_SQUISHED)
 	or KIRBY3F_DUCK
 	ldh [hKirbyFlags3], a
 	ldh a, [hKirbyFlags1]
@@ -1769,14 +1769,15 @@ Func_caf:
 	xor a
 	ld [wd065], a
 	ldh a, [hKirbyFlags3]
-	and ~(KIRBY3F_UNK0 | KIRBY3F_UNK1 | KIRBY3F_UNK2 | KIRBY3F_DIVE | KIRBY3F_DUCK)
-	or KIRBY3F_LAND
+	and ~(SQUISH_BITMASK | KIRBY3F_DIVE_BOUNCE | KIRBY3F_DIVE | KIRBY3F_DUCK)
+	or SQUISH_DOWN | KIRBY3F_SQUISHED
 	ldh [hKirbyFlags3], a
 	push de
 	call SpawnBumpStar_WithSFX
 	pop de
 	jr .asm_ece
-.asm_e7f
+
+.dive_bounce
 	ld hl, hKirbyFlags3
 	res KIRBY3F_DIVE_F, [hl]
 	ldh a, [hKirbyFlags2]
@@ -1786,7 +1787,7 @@ Func_caf:
 	bit KIRBY6F_UNK6_F, a
 	jr nz, .asm_ec8
 	ldh a, [hKirbyFlags3]
-	set KIRBY3F_UNK2_F, a
+	set KIRBY3F_DIVE_BOUNCE_F, a
 	res KIRBY3F_UNK6_F, a
 	ldh [hKirbyFlags3], a
 
@@ -1839,7 +1840,7 @@ Func_caf:
 	jr nz, .asm_f0f
 	ld hl, hKirbyFlags3
 	ld a, [hl]
-	and KIRBY3F_UNK2 | KIRBY3F_DIVE
+	and KIRBY3F_DIVE_BOUNCE | KIRBY3F_DIVE
 	jr nz, .asm_f0f
 	ld a, [wd064]
 	inc a
@@ -1927,7 +1928,7 @@ Func_caf:
 	set KIRBY1F_GROUNDED_F, a
 	ldh [hKirbyFlags1], a
 	ldh a, [hKirbyFlags3]
-	and $ff ^ (KIRBY3F_UNK2 | KIRBY3F_DIVE | KIRBY3F_UNK6 | KIRBY3F_LAND)
+	and $ff ^ (KIRBY3F_DIVE_BOUNCE | KIRBY3F_DIVE | KIRBY3F_UNK6 | KIRBY3F_SQUISHED)
 	ldh [hKirbyFlags3], a
 	ldh a, [hVBlankFlags]
 	and ~(VBLANK_0 | VBLANK_1)
@@ -2234,9 +2235,9 @@ Func_11c9::
 	bit KIRBY1F_GROUNDED_F, a
 	ret z
 	ldh a, [hKirbyFlags3]
-	bit KIRBY3F_UNK2_F, a
+	bit KIRBY3F_DIVE_BOUNCE_F, a
 	ret z
-	res KIRBY3F_UNK2_F, a
+	res KIRBY3F_DIVE_BOUNCE_F, a
 	ldh [hKirbyFlags3], a
 	ldh a, [hKirbyFlags2]
 	res KIRBY2F_SPIT_F, a
@@ -2632,11 +2633,11 @@ Func_139b::
 	and KIRBY2F_HOVER
 	jr nz, .check_duck
 	ldh a, [hKirbyFlags3]
-	bit KIRBY3F_LAND_F, a
+	bit KIRBY3F_SQUISHED_F, a
 	jr z, .check_duck
 	ld c, KIRBY_SQUISH_DOWN
 	ldh a, [hKirbyFlags3]
-	and KIRBY3F_UNK0 | KIRBY3F_UNK1
+	and SQUISH_BITMASK
 	add c
 	ld c, a
 .check_duck
@@ -2682,7 +2683,7 @@ Func_139b::
 	ld c, KIRBY_PUFF
 .asm_146b
 	ldh a, [hKirbyFlags3]
-	bit KIRBY3F_UNK2_F, a
+	bit KIRBY3F_DIVE_BOUNCE_F, a
 	jr z, .asm_147d
 	ldh a, [hKirbyFlags2]
 	bit KIRBY2F_SPIT_F, a
@@ -2725,7 +2726,7 @@ Func_139b::
 	jr .asm_14dc
 .asm_14b6
 	ldh a, [hKirbyFlags3]
-	res KIRBY3F_LAND_F, a
+	res KIRBY3F_SQUISHED_F, a
 	ldh [hKirbyFlags3], a
 	ld c, KIRBY_MOUTHFUL
 	ldh a, [hKirbyFlags1]
@@ -2762,7 +2763,7 @@ Func_139b::
 	and KIRBY2F_INHALE | KIRBY2F_UNK5 | KIRBY2F_UNK6 | KIRBY2F_HOVER
 	jr nz, .asm_1510
 	ldh a, [hKirbyFlags3]
-	and KIRBY3F_UNK2 | KIRBY3F_DIVE | KIRBY3F_DUCK | KIRBY3F_LAND
+	and KIRBY3F_DIVE_BOUNCE | KIRBY3F_DIVE | KIRBY3F_DUCK | KIRBY3F_SQUISHED
 	jr nz, .asm_1510
 	ldh a, [hKirbyFlags6]
 	bit KIRBY6F_UNK5_F, a
@@ -2951,28 +2952,28 @@ AnimScript_162b:
 AnimScript_163f:
 	set_flags hKirbyFlags2, $00, KIRBY2F_UNK1
 	frame  6, OAM_2dbc9
-	set_flags hKirbyFlags3, KIRBY3F_LAND, $00
+	set_flags hKirbyFlags3, KIRBY3F_SQUISHED, $00
 	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1, $00
 	script_delay 1
 
 AnimScript_1653:
 	set_flags hKirbyFlags2, $00, KIRBY2F_UNK1
 	frame  6, OAM_2dbd1
-	set_flags hKirbyFlags3, KIRBY3F_LAND, $00
+	set_flags hKirbyFlags3, KIRBY3F_SQUISHED, $00
 	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1, $00
 	script_delay 1
 
 AnimScript_1667:
 	set_flags hKirbyFlags2, $00, KIRBY2F_UNK1
 	frame  6, OAM_2dbd9
-	set_flags hKirbyFlags3, KIRBY3F_LAND, $00
+	set_flags hKirbyFlags3, KIRBY3F_SQUISHED, $00
 	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1, $00
 	script_delay 1
 
 AnimScript_167b:
 	set_flags hKirbyFlags2, $00, KIRBY2F_UNK1
 	frame  6, OAM_2dbdd
-	set_flags hKirbyFlags3, KIRBY3F_LAND, $00
+	set_flags hKirbyFlags3, KIRBY3F_SQUISHED, $00
 	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1, $00
 	script_delay 1
 
@@ -3001,7 +3002,7 @@ AnimScript_16ae:
 	set_flags hKirbyFlags2, $00, KIRBY2F_UNK1
 	frame  5, OAM_2db69
 	frame  6, OAM_2dbc9
-	set_flags hKirbyFlags3, KIRBY3F_UNK2 | KIRBY3F_DIVE | KIRBY3F_DUCK | KIRBY3F_LAND, $00
+	set_flags hKirbyFlags3, KIRBY3F_DIVE_BOUNCE | KIRBY3F_DIVE | KIRBY3F_DUCK | KIRBY3F_SQUISHED, $00
 	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_SPIT, $00
 	set_value wd064, $02
 	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1, $00
@@ -3130,28 +3131,28 @@ AnimScript_17b2:
 AnimScript_17c6:
 	set_flags hKirbyFlags2, $00, KIRBY2F_UNK1
 	frame  6, OAM_2dbad
-	set_flags hKirbyFlags3, KIRBY3F_LAND, $00
+	set_flags hKirbyFlags3, KIRBY3F_SQUISHED, $00
 	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1, $00
 	script_delay 1
 
 AnimScript_17da:
 	set_flags hKirbyFlags2, $00, KIRBY2F_UNK1
 	frame  6, OAM_2dbb5
-	set_flags hKirbyFlags3, KIRBY3F_LAND, $00
+	set_flags hKirbyFlags3, KIRBY3F_SQUISHED, $00
 	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1, $00
 	script_delay 1
 
 AnimScript_17ee:
 	set_flags hKirbyFlags2, $00, KIRBY2F_UNK1
 	frame  6, OAM_2dbbd
-	set_flags hKirbyFlags3, KIRBY3F_LAND, $00
+	set_flags hKirbyFlags3, KIRBY3F_SQUISHED, $00
 	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1, $00
 	script_delay 1
 
 AnimScript_1802:
 	set_flags hKirbyFlags2, $00, KIRBY2F_UNK1
 	frame  6, OAM_2dbc1
-	set_flags hKirbyFlags3, KIRBY3F_LAND, $00
+	set_flags hKirbyFlags3, KIRBY3F_SQUISHED, $00
 	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1, $00
 	script_delay 1
 
@@ -3180,7 +3181,7 @@ AnimScript_1835:
 	set_flags hKirbyFlags2, $00, KIRBY2F_UNK1
 	frame  5, OAM_2db71
 	frame  6, OAM_2dbad
-	set_flags hKirbyFlags3, KIRBY3F_UNK2 | KIRBY3F_DIVE | KIRBY3F_DUCK | KIRBY3F_LAND, $00
+	set_flags hKirbyFlags3, KIRBY3F_DIVE_BOUNCE | KIRBY3F_DIVE | KIRBY3F_DUCK | KIRBY3F_SQUISHED, $00
 	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_SPIT, $00
 	set_value wd064, $02
 	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1, $00

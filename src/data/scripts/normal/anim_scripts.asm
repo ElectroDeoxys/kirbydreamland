@@ -4019,7 +4019,7 @@ AnimScript_22810:
 	frame  5, OAM_2d88c
 	script_delay 150
 	set_value wd3d0, $01
-	set_flags hKirbyFlags6, $ff, $80
+	set_flags hKirbyFlags6, $ff, KIRBY6F_UNK7
 	script_end
 
 AnimScript_2282b:
@@ -4031,7 +4031,7 @@ AnimScript_22834:
 	frame  2, OAM_2d884
 	frame 26, OAM_2d88c
 	set_value wd3d0, $01
-	set_flags hKirbyFlags6, $80, $00
+	set_flags hKirbyFlags6, KIRBY6F_UNK7, $00
 	frame  0, OAM_2d88c
 
 AnimScript_22846:
@@ -4645,7 +4645,7 @@ AnimScript_KingDededeDespawnGuard:
 	script_end
 
 AnimScript_22def:
-	set_flags hKirbyFlags5, $00, $20
+	set_flags hKirbyFlags5, $00, KIRBY5F_UNK5
 	set_value wObjectAnimScriptTimers + OBJECT_SLOT_KIRBY, $ff
 	play_music MUSIC_NONE
 	create_object AnimScript_22e3f, MotionScript_10008, Data_3421
@@ -4670,7 +4670,7 @@ AnimScript_22def:
 AnimScript_22e3f:
 	frame  1, OAM_2d8b8
 	script_delay 180
-	set_flags hKirbyFlags5, $20, $04
+	set_flags hKirbyFlags5, KIRBY5F_UNK5, KIRBY5F_TRIGGER_TRANSITION
 	script_delay 0
 	frame  0, OAM_2dc25
 

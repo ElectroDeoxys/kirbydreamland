@@ -32,7 +32,7 @@ Func_4000::
 	ld [wKirbyScreenDeltaX], a
 	ldh a, [hPalFadeFlags]
 	bit SCROLLINGF_UNK5_F, a
-	jp nz, .asm_40e1
+	jp nz, .continue_walk
 	inc e
 	ld a, [wKirbyScreenX]
 	add $0d
@@ -47,7 +47,7 @@ Func_4000::
 	inc d ; num pixels
 	dec e ; decrement num pixels remaining
 	jr nz, .asm_4049
-	jp .asm_40e1
+	jp .continue_walk
 .aligned
 	call ConvertPositionCoordinateToBlock
 	ld a, c
@@ -65,60 +65,64 @@ Func_4000::
 	cp $09
 	jr z, .asm_4081
 	cp $08
-	jr nz, .asm_40a4
+	jr nz, .stop_walk
 	call Func_1248
-	jr c, .asm_40a4
+	jr c, .stop_walk
 .asm_4081
 	ld a, [wKirbyScreenY]
 	sub $01
 	ld [wd05f], a
 	call Func_819
 	and a
-	jr z, .asm_40e1
+	jr z, .continue_walk
 	cp $01
-	jr z, .asm_40e1
+	jr z, .continue_walk
 	cp $06
-	jr z, .asm_40e1
+	jr z, .continue_walk
 	cp $09
-	jr z, .asm_40e1
+	jr z, .continue_walk
 	cp $08
-	jr nz, .asm_40a4
+	jr nz, .stop_walk
 	call Func_1257
-	jr nc, .asm_40e1
-.asm_40a4
+	jr nc, .continue_walk
+
+.stop_walk
 	ldh a, [hKirbyFlags2]
 	bit KIRBY2F_UNK6_F, a
-	jr nz, .asm_40d5
+	jr nz, .stop_walk_without_bump
 	call Func_11c9
 	ldh a, [hKirbyFlags3]
-	and KIRBY3F_UNK2 | KIRBY3F_DIVE
-	jr nz, .asm_40d5
+	and KIRBY3F_DIVE_BOUNCE | KIRBY3F_DIVE
+	jr nz, .stop_walk_without_bump
+
 	ld a, [wKirbyXVel + 0]
 	cp HIGH(1.5078)
-	jr nc, .asm_40c1
+	jr nc, .bump
 	ld a, [wKirbyXVel + 1]
 	cp LOW(1.5078)
-	jr c, .asm_40d5
-.asm_40c1
+	jr c, .stop_walk_without_bump
+.bump
 	; x vel >= 1.5078
 	ldh a, [hKirbyFlags1]
 	res KIRBY1F_WALK_F, a
 	ldh [hKirbyFlags1], a
-	ld b, KIRBY3F_UNK1 | KIRBY3F_LAND
+	ld b, SQUISH_FRONT | KIRBY3F_SQUISHED
 	ldh a, [hKirbyFlags3]
-	and KIRBY3F_DUCK | KIRBY3F_FACE_LEFT | KIRBY3F_UNK6 | KIRBY3F_LAND
+	and KIRBY3F_DUCK | KIRBY3F_FACE_LEFT | KIRBY3F_UNK6 | KIRBY3F_SQUISHED
 	or b
 	ldh [hKirbyFlags3], a
 	push de
 	call SpawnBumpStar_WithSFX
 	pop de
-.asm_40d5
+
+.stop_walk_without_bump
 	call StopKirbyWalking
 	ld a, 255
 	ld [wKirbyXAccumulator], a
 	ld a, d
 	ld [wKirbyScreenDeltaX], a
-.asm_40e1
+
+.continue_walk
 	ldh a, [hPalFadeFlags]
 	bit SCROLL_LOCKED_F, a
 	jr nz, .asm_4115
@@ -178,7 +182,7 @@ Func_4000::
 
 .asm_4149
 	ldh a, [hKirbyFlags3]
-	and KIRBY3F_UNK2 | KIRBY3F_DIVE
+	and KIRBY3F_DIVE_BOUNCE | KIRBY3F_DIVE
 	jr nz, .asm_416f
 	ld a, [wKirbyXVel + 0]
 	cp HIGH($182)
@@ -187,9 +191,9 @@ Func_4000::
 	cp LOW($182)
 	jr c, .asm_416f
 .asm_415d
-	ld b, KIRBY3F_UNK1 | KIRBY3F_LAND
+	ld b, SQUISH_FRONT | KIRBY3F_SQUISHED
 	ldh a, [hKirbyFlags3]
-	and KIRBY3F_DUCK | KIRBY3F_FACE_LEFT | KIRBY3F_UNK6 | KIRBY3F_LAND
+	and KIRBY3F_DUCK | KIRBY3F_FACE_LEFT | KIRBY3F_UNK6 | KIRBY3F_SQUISHED
 	or b
 	ldh [hKirbyFlags3], a
 	call SpawnBumpStar_WithSFX
@@ -295,14 +299,14 @@ Func_417c::
 	jr nz, .asm_4245
 	call Func_11c9
 	ldh a, [hKirbyFlags3]
-	and KIRBY3F_UNK2 | KIRBY3F_DIVE
+	and KIRBY3F_DIVE_BOUNCE | KIRBY3F_DIVE
 	jr nz, .asm_4245
 	ld a, [wKirbyXVel + 0]
 	cp HIGH(1.0)
 	jr nz, .asm_4245
-	ld b, KIRBY3F_UNK0 | KIRBY3F_UNK1 | KIRBY3F_LAND
+	ld b, SQUISH_BACK | KIRBY3F_SQUISHED
 	ldh a, [hKirbyFlags3]
-	and KIRBY3F_DUCK | KIRBY3F_FACE_LEFT | KIRBY3F_UNK6 | KIRBY3F_LAND
+	and KIRBY3F_DUCK | KIRBY3F_FACE_LEFT | KIRBY3F_UNK6 | KIRBY3F_SQUISHED
 	or b
 	ldh [hKirbyFlags3], a
 	push de
@@ -359,15 +363,15 @@ Func_417c::
 
 Func_42a1::
 	ldh a, [hKirbyFlags3]
-	and KIRBY3F_UNK2 | KIRBY3F_DIVE
+	and KIRBY3F_DIVE_BOUNCE | KIRBY3F_DIVE
 	jr nz, .stop_walking
 	ld a, [wKirbyXVel + 0]
 	cp HIGH(1.0)
 	jr c, .stop_walking ; < 1.0
 	; x velocity >= 1.0
-	ld b, KIRBY3F_UNK0 | KIRBY3F_UNK1 | KIRBY3F_LAND
+	ld b, SQUISH_BACK | KIRBY3F_SQUISHED
 	ldh a, [hKirbyFlags3]
-	and KIRBY3F_DUCK | KIRBY3F_FACE_LEFT | KIRBY3F_UNK6 | KIRBY3F_LAND
+	and KIRBY3F_DUCK | KIRBY3F_FACE_LEFT | KIRBY3F_UNK6 | KIRBY3F_SQUISHED
 	or b
 	ldh [hKirbyFlags3], a
 	call SpawnBumpStar_WithSFX
@@ -396,7 +400,7 @@ KirbyControl::
 	bit KIRBY2F_INHALE_F, [hl]
 	jr nz, .not_ducking
 	ldh a, [hKirbyFlags3]
-	bit KIRBY3F_UNK2_F, a
+	bit KIRBY3F_DIVE_BOUNCE_F, a
 	jr nz, .not_ducking
 
 	; do duck
@@ -424,9 +428,9 @@ KirbyControl::
 	and KIRBY2F_INHALE | KIRBY2F_UNK5 | KIRBY2F_UNK6 | KIRBY2F_HOVER
 	jr nz, .check_b_btn
 	ldh a, [hKirbyFlags3]
-	bit KIRBY3F_LAND_F, a
+	bit KIRBY3F_SQUISHED_F, a
 	jr nz, .check_b_btn
-	bit KIRBY3F_UNK2_F, a
+	bit KIRBY3F_DIVE_BOUNCE_F, a
 	jr nz, .check_b_btn
 	ldh a, [hJoypadPressed]
 	bit A_BUTTON_F, a
@@ -454,7 +458,7 @@ KirbyControl::
 	ld [wd065], a
 	ld [wd064], a
 	ldh a, [hKirbyFlags3]
-	and ~(KIRBY3F_UNK2 | KIRBY3F_DIVE)
+	and ~(KIRBY3F_DIVE_BOUNCE | KIRBY3F_DIVE)
 	ldh [hKirbyFlags3], a
 	ld a, SFX_JUMP
 	call PlaySFX
@@ -516,7 +520,7 @@ KirbyControl::
 	ld a, $16
 	ld [wd065], a
 	ldh a, [hKirbyFlags3]
-	and ~(KIRBY3F_UNK2 | KIRBY3F_DIVE | KIRBY3F_UNK6)
+	and ~(KIRBY3F_DIVE_BOUNCE | KIRBY3F_DIVE | KIRBY3F_UNK6)
 	ldh [hKirbyFlags3], a
 	xor a
 	ld [wd064], a
@@ -558,14 +562,14 @@ KirbyControl::
 	and $ff ^ (KIRBY2F_MOUTHFUL)
 	jr nz, .asm_4492
 	ldh a, [hKirbyFlags3]
-	and KIRBY3F_UNK2 | KIRBY3F_DUCK | KIRBY3F_LAND
+	and KIRBY3F_DIVE_BOUNCE | KIRBY3F_DUCK | KIRBY3F_SQUISHED
 	jr nz, .asm_4492
 
 	; do inhale
 	ld hl, hKirbyFlags2
 	set KIRBY2F_INHALE_F, [hl]
 	ldh a, [hKirbyFlags3]
-	and ~(KIRBY3F_UNK2 | KIRBY3F_DIVE)
+	and ~(KIRBY3F_DIVE_BOUNCE | KIRBY3F_DIVE)
 	ldh [hKirbyFlags3], a
 	xor a
 	ld [wd064], a
@@ -642,7 +646,7 @@ KirbyControl::
 	and KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_MOUTHFUL | KIRBY2F_INHALE | KIRBY2F_UNK5 | KIRBY2F_UNK6
 	jr nz, .check_d_left
 	ldh a, [hKirbyFlags3]
-	and ~(KIRBY3F_UNK2 | KIRBY3F_DIVE)
+	and ~(KIRBY3F_DIVE_BOUNCE | KIRBY3F_DIVE)
 	ldh [hKirbyFlags3], a
 	ldh a, [hKirbyFlags2]
 	bit KIRBY2F_UNK6_F, a
@@ -853,7 +857,7 @@ KirbyControl::
 	xor a
 	ld [wd064], a
 	ldh a, [hKirbyFlags3]
-	and ~(KIRBY3F_UNK2 | KIRBY3F_DIVE)
+	and ~(KIRBY3F_DIVE_BOUNCE | KIRBY3F_DIVE)
 	ldh [hKirbyFlags3], a
 	bit A_BUTTON_F + 4, b
 	jr nz, .asm_4629
@@ -943,7 +947,7 @@ KirbyControl::
 
 .asm_4709
 	ldh a, [hKirbyFlags3]
-	bit KIRBY3F_UNK2_F, a
+	bit KIRBY3F_DIVE_BOUNCE_F, a
 	jr z, .asm_4726
 	ld hl, hKirbyFlags1
 	set KIRBY1F_JUMP_RISE_F, [hl]
@@ -1041,7 +1045,7 @@ Func_4783::
 	jr nz, .asm_47bf
 	call Func_8dc
 	ldh a, [hKirbyFlags3]
-	res KIRBY3F_LAND_F, a
+	res KIRBY3F_SQUISHED_F, a
 	ldh [hKirbyFlags3], a
 	xor a
 	ld [wd094], a

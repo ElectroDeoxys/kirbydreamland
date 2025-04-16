@@ -116,7 +116,7 @@ ENDC
 	set_anim_script AnimScript_15f1
 	set_velocities  1, 0, 0
 	set_kirby_pos
-	set_flags hKirbyFlags3, KIRBY3F_UNK2 | KIRBY3F_DIVE, $00
+	set_flags hKirbyFlags3, KIRBY3F_DIVE_BOUNCE | KIRBY3F_DIVE, $00
 	set_value wStageTransitionCounter, 1
 	set_velocities  0, 0, 0
 

@@ -317,7 +317,7 @@ MotionScript_KirbyWarpStar_Crash1:
 	set_velocities  8, 0, VEL_DOWN_3_00
 MotionScript_Kirby_EndTransitionSegment:
 	set_kirby_pos
-	set_flags hKirbyFlags3, KIRBY3F_UNK2 | KIRBY3F_DIVE, $00
+	set_flags hKirbyFlags3, KIRBY3F_DIVE_BOUNCE | KIRBY3F_DIVE, $00
 	set_value wStageTransitionCounter, 1
 	set_velocities  0, 0, 0
 
@@ -1680,7 +1680,7 @@ MotionScript_312bf:
 
 ; unreferenced
 MotionScript_31304:
-	jump_if_flags hKirbyFlags3, $40, .script_3130d
+	jump_if_flags hKirbyFlags3, KIRBY3F_UNK6, .script_3130d
 	set_velocities  0, 0, VEL_DOWN_1_25
 .script_3130d
 	script_end
@@ -2846,7 +2846,7 @@ MotionScript_31d31:
 	dec_value wKirbyScreenY
 	script_repeat_end
 	inc_value wLevelYSection
-	set_flags hKirbyFlags5, $20, $00
+	set_flags hKirbyFlags5, KIRBY5F_UNK5, $00
 	set_flags hEngineFlags, $41, $00
 	set_velocities  0, 0, 0
 
@@ -3508,7 +3508,7 @@ MotionScript_32326:
 
 MotionScript_3233c:
 	script_exec Func_4ad6
-	jump_if_flags hKirbyFlags3, $40, .script_3234f
+	jump_if_flags hKirbyFlags3, KIRBY3F_UNK6, .script_3234f
 	jumptable_random 3
 	dw MotionScript_3235d
 	dw MotionScript_32360
@@ -3520,7 +3520,7 @@ MotionScript_3233c:
 
 MotionScript_32350:
 	script_exec Func_4ad6
-	jump_if_flags hKirbyFlags3, $40, .loop
+	jump_if_flags hKirbyFlags3, KIRBY3F_UNK6, .loop
 	jump_abs MotionScript_31779
 .loop
 	script_end

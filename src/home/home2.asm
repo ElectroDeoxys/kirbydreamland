@@ -4221,7 +4221,7 @@ Func_3768::
 	ld hl, hKirbyFlags1
 	res KIRBY1F_AIRBORNE_F, [hl]
 	ld a, [hKirbyFlags3]
-	and $ff ^ (KIRBY3F_UNK2 | KIRBY3F_DIVE | KIRBY3F_DUCK | KIRBY3F_LAND)
+	and $ff ^ (KIRBY3F_DIVE_BOUNCE | KIRBY3F_DIVE | KIRBY3F_DUCK | KIRBY3F_SQUISHED)
 	ld [hKirbyFlags3], a
 	ld a, KIRBY2F_HOVER
 	ld [hKirbyFlags2], a

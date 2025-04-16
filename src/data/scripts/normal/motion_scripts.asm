@@ -261,7 +261,7 @@ MotionScript_KirbyWarpStar_Crash1:
 	set_velocities  8, 0, VEL_DOWN_3_00
 MotionScript_Kirby_EndTransitionSegment:
 	set_kirby_pos
-	set_flags hKirbyFlags3, KIRBY3F_UNK2 | KIRBY3F_DIVE, $00
+	set_flags hKirbyFlags3, KIRBY3F_DIVE_BOUNCE | KIRBY3F_DIVE, $00
 	set_value wStageTransitionCounter, 1
 	set_velocities  0, 0, 0
 
@@ -1578,7 +1578,7 @@ MotionScript_111e4:
 
 ; unreferenced
 MotionScript_11229:
-	jump_if_flags hKirbyFlags3, $40, .script_11232
+	jump_if_flags hKirbyFlags3, KIRBY3F_UNK6, .script_11232
 	set_velocities  0, 0, VEL_DOWN_1_25
 .script_11232
 	script_end
