@@ -1,8 +1,5 @@
 SECTION "romheader", ROM0
 
-	ds $20
-	ds $20, $ff
-
 ; interrupts
 SECTION "VBlank", ROM0
 	jp VBlank
@@ -16,17 +13,13 @@ SECTION "Timer", ROM0
 	jp Timer
 	ds 5
 
-	ds $8
-	ds $20, $ff
-
-	ds $20
-	ds $20, $ff
-
-	ds $20
-	ds $20, $ff
-
-SECTION "Start", ROM0
+SECTION "Start", ROM0[$100]
 
 Start:
 	nop
 	jp _Start
+
+; The Game Boy cartridge header data is patched over by rgbfix.
+; This makes sure it doesn't get used for anything else.
+
+	ds $0150 - @, $00

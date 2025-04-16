@@ -38,6 +38,7 @@ kirbydreamland: $(rom) compare
 
 clean: tidy
 	find src/gfx \( -iname '*.1bpp' -o -iname '*.2bpp' \) -delete
+	find src/ -iname 'overlay.bin' -delete
 
 tidy:
 	rm -f $(rom) $(rom_obj) $(rom:.gb=.map) $(rom:.gb=.sym) src/rgbdscheck.o
@@ -84,8 +85,8 @@ endif
 
 opts = -jv -l 0x01 -m MBC1 -p 0 -t "KIRBY DREAM LAND" -r 0
 
-$(rom): $(rom_obj) src/layout.link
-	$(RGBLINK) -d -m $(rom:.gb=.map) -n $(rom:.gb=.sym) -l src/layout.link -o $@ $(filter %.o,$^) -O overlay
+$(rom): $(rom_obj) src/layout.link src/overlay.bin
+	$(RGBLINK) -d -m $(rom:.gb=.map) -n $(rom:.gb=.sym) -l src/layout.link -o $@ $(filter %.o,$^) -O src/overlay.bin
 	$(RGBFIX) $(opts) $@
 
 
@@ -95,3 +96,6 @@ $(rom): $(rom_obj) src/layout.link
 	$(RGBGFX) $(rgbgfx) -o $@ $<
 	$(if $(tools/gfx),\
 		tools/gfx $(tools/gfx) -o $@ $@)
+
+src/overlay.bin:
+	tools/overlay $(tools/overlay) $@

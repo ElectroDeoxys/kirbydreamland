@@ -27,5 +27,8 @@
 # *disasm.py output file
 *output.asm
 
+# overlay bin file
+overlay.bin
+
 # vscode
 *.vscode/*
