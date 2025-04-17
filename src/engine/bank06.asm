@@ -2418,7 +2418,7 @@ Data_1b653:: INCBIN "data/data_1b653.bin.lz"
 Data_1b77c:: INCBIN "data/data_1b77c.bin.lz"
 
 
-IF DEF(_KDL_JP)
+IF DEF(_KDL_JP) || DEF(_KDL_JP11)
 BG_1b835:: INCBIN "data/bg_1b835_jp.bin.lz"
 BG_1b8df:: INCBIN "data/bg_1b8df_jp.bin.lz"
 BG_1b95d:: INCBIN "data/bg_1b95d_jp.bin.lz"

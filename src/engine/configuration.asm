@@ -469,10 +469,12 @@ ConfigurationMenu:
 
 ; unreferenced
 ; seems like leftover garbage code
+IF !DEF(_KDL_JP11)
 	db $d7
 	ld [hEngineFlags], a
 	ret
-IF !DEF(_KDL_JP)
+ENDC
+IF !DEF(_KDL_JP) && !DEF(_KDL_JP11)
 	db $d7
 	ld [hEngineFlags], a
 	ret

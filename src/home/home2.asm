@@ -4674,7 +4674,7 @@ StartLevelAfterContinue::
 	bankswitch
 	ret
 
-IF !DEF(_KDL_JP)
+IF !DEF(_KDL_JP) && !DEF(_KDL_JP11)
 ; unreferenced
 Func_3da9:
 	ret nc

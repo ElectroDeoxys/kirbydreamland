@@ -13,7 +13,7 @@ Gfx_9b2c:: INCBIN "gfx/gfx_9b2c.2bpp.lz"
 Gfx_a3ee:: INCBIN "gfx/gfx_a3ee.2bpp.lz"
 Gfx_ac49:: INCBIN "gfx/gfx_ac49.2bpp.lz"
 Gfx_b7e9: INCBIN "gfx/gfx_b7e9.2bpp.lz"
-IF DEF(_KDL_JP)
+IF DEF(_KDL_JP) || DEF(_KDL_JP11)
 Gfx_28000: INCBIN "gfx/gfx_28000_jp.2bpp.lz"
 Gfx_282ac: INCBIN "gfx/gfx_282ac_jp.2bpp.lz"
 ENDC
@@ -22,7 +22,7 @@ ENDC
 SECTION "Bank 3", ROMX
 
 BG_c000:
-IF DEF(_KDL_JP)
+IF DEF(_KDL_JP) || DEF(_KDL_JP11)
 	INCBIN "data/bg_c000_jp.bin.lz"
 ELSE
 	INCBIN "data/bg_c000.bin.lz"
@@ -33,7 +33,7 @@ BG_c37a: INCBIN "data/bg_c37a.bin.lz"
 BG_c41d: INCBIN "data/bg_c41d.bin.lz"
 BG_c4c9: INCBIN "data/bg_c4c9.bin.lz"
 BG_c541:
-IF DEF(_KDL_JP)
+IF DEF(_KDL_JP) || DEF(_KDL_JP11)
 	INCBIN "data/bg_c541_jp.bin.lz"
 ELSE
 	INCBIN "data/bg_c541.bin.lz"
@@ -47,14 +47,14 @@ Data_cac3:: INCBIN "data/data_cac3.bin.lz"
 Data_ccff:: INCBIN "data/data_ccff.bin.lz"
 
 Gfx_cfcf:
-IF DEF(_KDL_JP)
+IF DEF(_KDL_JP) || DEF(_KDL_JP11)
 	INCBIN "gfx/gfx_cfcf_jp.2bpp.lz"
 ELSE
 	INCBIN "gfx/gfx_cfcf.2bpp.lz"
 ENDC
 Gfx_d894: INCBIN "gfx/gfx_d894.2bpp.lz"
 Gfx_dcdd:
-IF DEF(_KDL_JP)
+IF DEF(_KDL_JP) || DEF(_KDL_JP11)
 	INCBIN "gfx/gfx_dcdd_jp.2bpp.lz"
 ELSE
 	INCBIN "gfx/gfx_dcdd.2bpp.lz"
@@ -114,7 +114,7 @@ INCLUDE "engine/bank06.asm"
 
 SECTION "Bank A", ROMX
 
-IF !DEF(_KDL_JP)
+IF !DEF(_KDL_JP) && !DEF(_KDL_JP11)
 Gfx_28000: INCBIN "gfx/gfx_28000.2bpp.lz"
 Gfx_282ac: INCBIN "gfx/gfx_282ac.2bpp.lz"
 ENDC
@@ -166,7 +166,7 @@ BG_39707: INCBIN "data/bg_39707.bin.lz"
 Gfx_39820: INCBIN "gfx/gfx_39820.2bpp.lz"
 BG_39be1: INCBIN "data/bg_39be1.bin.lz"
 
-IF DEF(_KDL_JP)
+IF DEF(_KDL_JP) || DEF(_KDL_JP11)
 Gfx_39cbf: INCBIN "gfx/gfx_39cbf_jp.2bpp.lz"
 BG_3acce: INCBIN "data/bg_3acce_jp.bin.lz"
 Gfx_3add9: INCBIN "gfx/gfx_3add9_jp.2bpp.lz"

@@ -82,7 +82,7 @@ CreditsText:
 	db "                    "
 	db "   SO MANY PLAYERS. "
 	db "                    "
-IF DEF(_KDL_JP)
+IF DEF(_KDL_JP) || DEF(_KDL_JP11)
 	db " PRESENTED BY       "
 	db "                    "
 	db " HAL LABORATORY,INC."
