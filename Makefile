@@ -1,4 +1,6 @@
-rom := kirbydreamland.gb
+roms := \
+	kirbydreamland.gb \
+	kirbydreamland_jp.gb
 
 rom_obj := \
 src/audio.o \
@@ -8,7 +10,8 @@ src/normal_mode.o \
 src/extra_mode.o \
 src/ram.o
 
-kirbydreamland_obj := $(rom_obj:.o=.o)
+kirbydreamland_obj    := $(rom_obj:.o=.o)
+kirbydreamland_jp_obj := $(rom_obj:.o=_jp.o)
 
 ### Build tools
 
@@ -28,24 +31,30 @@ RGBLINK ?= $(RGBDS)rgblink
 ### Build targets
 
 .SUFFIXES:
+.PHONY: all kirbydreamland kirbydreamland_jp clean tidy compare tools
 .SECONDEXPANSION:
 .PRECIOUS:
 .SECONDARY:
-.PHONY: all kirbydreamland clean tidy compare tools
 
-all: $(rom) compare
-kirbydreamland: $(rom) compare
+all: kirbydreamland
+kirbydreamland:    kirbydreamland.gb
+kirbydreamland_jp: kirbydreamland_jp.gb
 
 clean: tidy
 	find src/gfx \( -iname '*.1bpp' -o -iname '*.2bpp' \) -delete
-	find src/ -iname 'overlay.bin' -delete
+	find src/ -iname '*overlay.bin' -delete
 
 tidy:
-	rm -f $(rom) $(rom_obj) $(rom:.gb=.map) $(rom:.gb=.sym) src/rgbdscheck.o
+	$(RM) $(roms) \
+	      $(roms:.gb=.sym) \
+	      $(roms:.gb=.map) \
+	      $(kirbydreamland_obj) \
+	      $(kirbydreamland_jp_obj) \
+	      src/rgbdscheck.o
 	$(MAKE) clean -C tools/
 
-compare: $(rom)
-	@$(SHA1) -c rom.sha1
+compare: $(roms)
+	@$(SHA1) -c roms.sha1
 
 tools:
 	$(MAKE) -C tools/
@@ -56,6 +65,9 @@ RGBASMFLAGS = -P includes.asm -I src/ -Q 8 -Weverything
 ifeq ($(DEBUG),1)
 RGBASMFLAGS += -E
 endif
+
+$(kirbydreamland_obj):    RGBASMFLAGS +=
+$(kirbydreamland_jp_obj): RGBASMFLAGS += -D _KDL_JP
 
 src/rgbdscheck.o: src/rgbdscheck.asm
 	$(RGBASM) -o $@ $<
@@ -75,7 +87,8 @@ ifeq (,$(filter clean tidy tools,$(MAKECMDGOALS)))
 $(info $(shell $(MAKE) -C tools))
 
 # Dependencies for objects
-$(foreach obj, $(rom_obj), $(eval $(call DEP,$(obj),$(obj:.o=.asm))))
+$(foreach obj, $(kirbydreamland_obj), $(eval $(call DEP,$(obj),$(obj:.o=.asm))))
+$(foreach obj, $(kirbydreamland_jp_obj), $(eval $(call DEP,$(obj),$(obj:_jp.o=.asm))))
 
 endif
 
@@ -83,11 +96,12 @@ endif
 %.asm: ;
 
 
-opts = -jv -l 0x01 -m MBC1 -p 0 -t "KIRBY DREAM LAND" -r 0
+kirbydreamland_opts    = -jv -l 0x01 -m MBC1 -p 0 -t "KIRBY DREAM LAND" -r 0
+kirbydreamland_jp_opts = -v -l 0x01 -m MBC1 -p 0 -t "HOSHINOKA-BI" -r 0
 
-$(rom): $(rom_obj) src/layout.link src/overlay.bin
-	$(RGBLINK) -d -m $(rom:.gb=.map) -n $(rom:.gb=.sym) -l src/layout.link -o $@ $(filter %.o,$^) -O src/overlay.bin
-	$(RGBFIX) $(opts) $@
+%.gb: $$(%_obj) src/layout.link src/%_overlay.bin
+	$(RGBLINK) -d -m $*.map -n $*.sym -l src/layout.link -o $@ $(filter %.o,$^) -O src/$*_overlay.bin
+	$(RGBFIX) $($*_opts) $@
 
 
 ### Catch-all graphics rules
@@ -97,5 +111,8 @@ $(rom): $(rom_obj) src/layout.link src/overlay.bin
 	$(if $(tools/gfx),\
 		tools/gfx $(tools/gfx) -o $@ $@)
 
-src/overlay.bin:
+%kirbydreamland_overlay.bin:
 	tools/overlay $(tools/overlay) $@
+
+%kirbydreamland_jp_overlay.bin:
+	tools/overlay $(tools/overlay) -j $@

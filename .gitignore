@@ -28,7 +28,7 @@
 *output.asm
 
 # overlay bin file
-overlay.bin
+*overlay.bin
 
 # vscode
 *.vscode/*

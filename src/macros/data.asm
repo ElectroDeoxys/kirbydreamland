@@ -7,6 +7,11 @@ MACRO dbw
 	dw \2
 ENDM
 
+MACRO dba
+	db BANK(\1)
+	bigdw \1
+ENDM
+
 MACRO dwb
 	dw \1
 	db \2

@@ -1428,7 +1428,11 @@ ObjectList_TitleScreen:
 LevelObject_1d59c:
 	object 4, 3, 10, -26, AnimScript_TitleScreenWarpStarKirby, MotionScript_TitleScreenWarpStarKirby, Data_3425
 LevelObject_1d5a6:
+IF DEF(_KDL_JP)
+	object 0, 6, -16, -8, AnimScript_TitleScreenKirbySpawner, MotionScript_10008, Data_3425
+ELSE
 	object 0, 7, -16, -8, AnimScript_TitleScreenKirbySpawner, MotionScript_10008, Data_3425
+ENDC
 LevelObject_1d5b0:
 	object 0, 0, 0, 0, AnimScript_TitleScreenStarSpawner, MotionScript_10008, Data_3425
 

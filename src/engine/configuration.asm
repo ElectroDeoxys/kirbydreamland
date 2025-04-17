@@ -472,6 +472,8 @@ ConfigurationMenu:
 	db $d7
 	ld [hEngineFlags], a
 	ret
+IF !DEF(_KDL_JP)
 	db $d7
 	ld [hEngineFlags], a
 	ret
+ENDC

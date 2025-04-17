@@ -13,17 +13,31 @@ Gfx_9b2c:: INCBIN "gfx/gfx_9b2c.2bpp.lz"
 Gfx_a3ee:: INCBIN "gfx/gfx_a3ee.2bpp.lz"
 Gfx_ac49:: INCBIN "gfx/gfx_ac49.2bpp.lz"
 Gfx_b7e9: INCBIN "gfx/gfx_b7e9.2bpp.lz"
+IF DEF(_KDL_JP)
+Gfx_28000: INCBIN "gfx/gfx_28000_jp.2bpp.lz"
+Gfx_282ac: INCBIN "gfx/gfx_282ac_jp.2bpp.lz"
+ENDC
 
 
 SECTION "Bank 3", ROMX
 
-BG_c000: INCBIN "data/bg_c000.bin.lz"
+BG_c000:
+IF DEF(_KDL_JP)
+	INCBIN "data/bg_c000_jp.bin.lz"
+ELSE
+	INCBIN "data/bg_c000.bin.lz"
+ENDC
 Gfx_c1c7: INCBIN "gfx/gfx_c1c7.2bpp.lz"
 BG_c2c8: INCBIN "data/bg_c2c8.bin.lz"
 BG_c37a: INCBIN "data/bg_c37a.bin.lz"
 BG_c41d: INCBIN "data/bg_c41d.bin.lz"
 BG_c4c9: INCBIN "data/bg_c4c9.bin.lz"
-BG_c541: INCBIN "data/bg_c541.bin.lz"
+BG_c541:
+IF DEF(_KDL_JP)
+	INCBIN "data/bg_c541_jp.bin.lz"
+ELSE
+	INCBIN "data/bg_c541.bin.lz"
+ENDC
 BG_c665: INCBIN "data/bg_c665.bin.lz"
 BG_c6b5: INCBIN "data/bg_c6b5.bin.lz"
 
@@ -32,9 +46,19 @@ Data_c8d9:: INCBIN "data/data_c8d9.bin.lz"
 Data_cac3:: INCBIN "data/data_cac3.bin.lz"
 Data_ccff:: INCBIN "data/data_ccff.bin.lz"
 
-Gfx_cfcf: INCBIN "gfx/gfx_cfcf.2bpp.lz"
+Gfx_cfcf:
+IF DEF(_KDL_JP)
+	INCBIN "gfx/gfx_cfcf_jp.2bpp.lz"
+ELSE
+	INCBIN "gfx/gfx_cfcf.2bpp.lz"
+ENDC
 Gfx_d894: INCBIN "gfx/gfx_d894.2bpp.lz"
-Gfx_dcdd: INCBIN "gfx/gfx_dcdd.2bpp.lz"
+Gfx_dcdd:
+IF DEF(_KDL_JP)
+	INCBIN "gfx/gfx_dcdd_jp.2bpp.lz"
+ELSE
+	INCBIN "gfx/gfx_dcdd.2bpp.lz"
+ENDC
 
 ; unreferenced
 Data_e195: INCBIN "data/data_e195.bin.lz"
@@ -90,8 +114,10 @@ INCLUDE "engine/bank06.asm"
 
 SECTION "Bank A", ROMX
 
+IF !DEF(_KDL_JP)
 Gfx_28000: INCBIN "gfx/gfx_28000.2bpp.lz"
 Gfx_282ac: INCBIN "gfx/gfx_282ac.2bpp.lz"
+ENDC
 Gfx_2888d:: INCBIN "gfx/gfx_2888d.2bpp.lz"
 Gfx_290f3:: INCBIN "gfx/gfx_290f3.2bpp.lz"
 Gfx_291f5:: INCBIN "gfx/gfx_291f5.2bpp.lz"
@@ -139,7 +165,16 @@ Gfx_39206: INCBIN "gfx/gfx_39206.2bpp.lz"
 BG_39707: INCBIN "data/bg_39707.bin.lz"
 Gfx_39820: INCBIN "gfx/gfx_39820.2bpp.lz"
 BG_39be1: INCBIN "data/bg_39be1.bin.lz"
+
+IF DEF(_KDL_JP)
+Gfx_39cbf: INCBIN "gfx/gfx_39cbf_jp.2bpp.lz"
+BG_3acce: INCBIN "data/bg_3acce_jp.bin.lz"
+Gfx_3add9: INCBIN "gfx/gfx_3add9_jp.2bpp.lz"
+BG_3be4a: INCBIN "data/bg_3be4a_jp.bin.lz"
+ELSE
 Gfx_39cbf: INCBIN "gfx/gfx_39cbf.2bpp.lz"
 BG_3acce: INCBIN "data/bg_3acce.bin.lz"
 Gfx_3add9: INCBIN "gfx/gfx_3add9.2bpp.lz"
 BG_3be4a: INCBIN "data/bg_3be4a.bin.lz"
+ENDC
+

@@ -277,11 +277,13 @@ Func_14180:
 	ld l, a
 	call Func_2708
 	push bc
-	jr c, .asm_14195
+IF !DEF(_KDL_JP)
+	jr c, .done
+ENDC
 	ld a, [wd3ba]
 	ld c, a
 	call Func_21d5
-.asm_14195
+.done
 	pop bc
 	ret
 

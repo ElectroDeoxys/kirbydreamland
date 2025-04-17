@@ -454,7 +454,9 @@ KirbyControl::
 	set KIRBY1F_JUMP_RISE_F, a
 	ldh [hKirbyFlags1], a
 	xor a
+IF !DEF(_KDL_JP)
 	ld [wDisableBumpStars], a
+ENDC
 	ld [wd065], a
 	ld [wd064], a
 	ldh a, [hKirbyFlags3]

@@ -451,12 +451,15 @@ AnimScript_24af9:
 	script_end
 
 AnimScript_SmallStar:
+IF !DEF(_KDL_JP)
 	set_value wDisableBumpStars, TRUE
+ENDC
 	frame 24, OAM_2dc1d
+IF !DEF(_KDL_JP)
 	set_value wDisableBumpStars, FALSE
+ENDC
 	script_end
 
-; unreferenced
 AnimScript_PulsingStar:
 	frame  4, OAM_2dc1d
 	frame  5, OAM_2dc25

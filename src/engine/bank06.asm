@@ -2095,11 +2095,11 @@ Func_19098:
 
 Data_190bb:
 	table_width 3
-	db $06, $78, $35 ; GREEN_GREENS
-	db $06, $78, $df ; CASTLE_LOLOLO
-	db $06, $79, $5d ; FLOAT_ISLANDS
-	db $06, $79, $f9 ; BUBBLY_CLOUDS
-	db $06, $7a, $af ; MT_DEDEDE
+	dba BG_1b835 ; GREEN_GREENS
+	dba BG_1b8df ; CASTLE_LOLOLO
+	dba BG_1b95d ; FLOAT_ISLANDS
+	dba BG_1b9f9 ; BUBBLY_CLOUDS
+	dba BG_1baaf ; MT_DEDEDE
 	assert_table_length NUM_STAGES
 
 StageTransitions:
@@ -2417,11 +2417,20 @@ Data_1b497:: INCBIN "data/data_1b497.bin.lz"
 Data_1b653:: INCBIN "data/data_1b653.bin.lz"
 Data_1b77c:: INCBIN "data/data_1b77c.bin.lz"
 
-; unreferenced
-Data_1b835:: INCBIN "data/data_1b835.bin.lz"
-Data_1b8df:: INCBIN "data/data_1b8df.bin.lz"
-Data_1b95d:: INCBIN "data/data_1b95d.bin.lz"
-Data_1b9f9:: INCBIN "data/data_1b9f9.bin.lz"
-Data_1baaf:: INCBIN "data/data_1baaf.bin.lz"
 
+IF DEF(_KDL_JP)
+BG_1b835:: INCBIN "data/bg_1b835_jp.bin.lz"
+BG_1b8df:: INCBIN "data/bg_1b8df_jp.bin.lz"
+BG_1b95d:: INCBIN "data/bg_1b95d_jp.bin.lz"
+BG_1b9f9:: INCBIN "data/bg_1b9f9_jp.bin.lz"
+BG_1baaf:: INCBIN "data/bg_1baaf.bin.lz"
+Gfx_1bb0d: INCBIN "gfx/gfx_1bb0d_jp.2bpp.lz"
+ELSE
+BG_1b835:: INCBIN "data/bg_1b835.bin.lz"
+BG_1b8df:: INCBIN "data/bg_1b8df.bin.lz"
+BG_1b95d:: INCBIN "data/bg_1b95d.bin.lz"
+BG_1b9f9:: INCBIN "data/bg_1b9f9.bin.lz"
+BG_1baaf:: INCBIN "data/bg_1baaf.bin.lz"
 Gfx_1bb0d: INCBIN "gfx/gfx_1bb0d.2bpp.lz"
+ENDC
+

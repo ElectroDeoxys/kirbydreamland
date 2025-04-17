@@ -274,8 +274,7 @@ UpdateHUD:
 	ret
 
 MACRO data_2070
-	db BANK(\1)
-	bigdw \1
+	dba \1
 	dw \2
 ENDM
 
@@ -297,18 +296,13 @@ Data_2089::
 	data_2070 Gfx_ac49,  vTiles1 tile $00 ; MT_DEDEDE
 	assert_table_length NUM_STAGES
 
-MACRO data_20a2
-	db BANK(\1)
-	bigdw \1
-ENDM
-
 StageBlockTileMaps::
 	table_width 3
-	data_20a2 Data_c6e0 ; GREEN_GREENS
-	data_20a2 Data_cac3 ; CASTLE_LOLOLO
-	data_20a2 Data_c8d9 ; FLOAT_ISLANDS
-	data_20a2 Data_ccff ; BUBBLY_CLOUDS
-	data_20a2 Data_1b77c ; MT_DEDEDE
+	dba Data_c6e0 ; GREEN_GREENS
+	dba Data_cac3 ; CASTLE_LOLOLO
+	dba Data_c8d9 ; FLOAT_ISLANDS
+	dba Data_ccff ; BUBBLY_CLOUDS
+	dba Data_1b77c ; MT_DEDEDE
 	assert_table_length NUM_STAGES
 
 OBP0FadeInMasks:
@@ -4251,9 +4245,11 @@ SpawnBumpStar_WithSFX::
 	call PlaySFX
 ;	fallthrough
 SpawnBumpStar:
+IF !DEF(_KDL_JP)
 	ld a, [wDisableBumpStars]
 	and a
 	ret nz
+ENDC
 	ld hl, Data_1c178
 ;	fallthrough
 
@@ -4398,8 +4394,7 @@ StageHeaders::
 	assert_table_length NUM_STAGES
 
 MACRO area
-	db BANK(\1)
-	bigdw \1 ; ?
+	dba \1 ; ?
 	db \2 ; level width in blocks
 	db \3 ; level height in blocks
 	db \4 ; if $0, fade from white, otherwise fade from black
@@ -4679,9 +4674,10 @@ StartLevelAfterContinue::
 	bankswitch
 	ret
 
+IF !DEF(_KDL_JP)
 ; unreferenced
 Func_3da9:
 	ret nc
 	ld [$2100], a
 	ret
-; 0x3dae
+ENDC

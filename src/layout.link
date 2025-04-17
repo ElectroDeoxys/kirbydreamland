@@ -21,7 +21,6 @@ ROMX $4
 	"Motion Scripts Normal"
 ROMX $5
 	"Bank 5"
-	org $4c4a
 	"Audio Engine"
 ROMX $6
 	"Bank 6"

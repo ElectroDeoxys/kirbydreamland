@@ -9,7 +9,11 @@ TitleScreen::
 	ld [wSCX ], a
 	ld [wOBP], a
 	ld [wBGP], a
-	ld a, $00 ; unnecessary
+IF DEF(_KDL_JP)
+	ld a, 8
+ELSE
+	ld a, 0 ; unnecessary
+ENDC
 	ld [wSCY], a
 
 	; load graphics

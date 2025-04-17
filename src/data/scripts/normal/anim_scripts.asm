@@ -461,9 +461,13 @@ AnimScript_20adf:
 	script_end
 
 AnimScript_SmallStar:
+IF !DEF(_KDL_JP)
 	set_value wDisableBumpStars, TRUE
+ENDC
 	frame 24, OAM_2dc1d
+IF !DEF(_KDL_JP)
 	set_value wDisableBumpStars, FALSE
+ENDC
 	script_end
 
 AnimScript_PulsingStar:
@@ -1780,7 +1784,7 @@ AnimScript_2165d:
 AnimScript_2167b:
 	frame  1, OAM_2d8b8
 	set_object_properties Data_3421
-	set_update_func Func_14252, MotionScript_1168b
+	set_update_func Func_14252, AnimScript_2168b
 	frame  0, OAM_2d8b8
 
 AnimScript_2168b:
@@ -3325,7 +3329,7 @@ AnimScript_222d5:
 	frame  4, OAM_2cbac
 	script_end
 
-	dw AnimScript_218b8 ; ?
+	dw $58b8 ; ?
 
 ; unreferenced
 AnimScript_222ed:

@@ -82,6 +82,15 @@ CreditsText:
 	db "                    "
 	db "   SO MANY PLAYERS. "
 	db "                    "
+IF DEF(_KDL_JP)
+	db " PRESENTED BY       "
+	db "                    "
+	db " HAL LABORATORY,INC."
+	db "                    "
+	db " LICENSED TO        "
+	db "                    "
+	db "          NINTENDO  "
+ELSE
 	db " KIRBY'S DREAM LAND "
 	db "                    "
 	db " PRESENTED BY...    "
@@ -89,6 +98,7 @@ CreditsText:
 	db " HAL LABORATORY,INC."
 	db "                    "
 	db "    AND NINTENDO    "
+ENDC
 	db "                    "
 	db " THANK YOU FOR      "
 	db "                    "
