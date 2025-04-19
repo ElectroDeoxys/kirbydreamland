@@ -10,17 +10,17 @@ ConfigurationMenu:
 	ld [wd096], a
 	call ClearSprites
 
-	ld hl, Gfx_8855
+	ld hl, HUDGfx
 	ld de, vTiles2 tile $67
-	ld c, BANK(Gfx_8855)
+	ld c, BANK(HUDGfx)
 	call FarDecompress
-	ld hl, Gfx_1bb0d
+	ld hl, ConfigurationGfx
 	ld de, vTiles1 tile $00
-	ld c, BANK(Gfx_1bb0d)
+	ld c, BANK(ConfigurationGfx)
 	call FarDecompress
-	ld hl, Gfx_c1c7
+	ld hl, FontWoNumbersGfx
 	ld de, vTiles1 tile $60
-	ld c, BANK(Gfx_c1c7)
+	ld c, BANK(FontWoNumbersGfx)
 	call FarDecompress
 	ld hl, BG_c541
 	debgcoord 0, 0

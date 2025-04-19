@@ -280,20 +280,20 @@ ENDM
 
 Data_2070::
 	table_width 5
-	data_2070 Gfx_8952, vTiles1 tile $2e ; GREEN_GREENS
-	data_2070 Gfx_9266, vTiles1 tile $2e ; CASTLE_LOLOLO
-	data_2070 Gfx_9b2c, vTiles1 tile $2e ; FLOAT_ISLANDS
-	data_2070 Gfx_a3ee, vTiles1 tile $2e ; BUBBLY_CLOUDS
-	data_2070 Gfx_ac49, vTiles1 tile $00 ; MT_DEDEDE
+	data_2070 GreenGreensGfx,  vTiles1 tile $2e ; GREEN_GREENS
+	data_2070 CastleLololoGfx, vTiles1 tile $2e ; CASTLE_LOLOLO
+	data_2070 FloatIslandsGfx, vTiles1 tile $2e ; FLOAT_ISLANDS
+	data_2070 BubblyCloudsGfx, vTiles1 tile $2e ; BUBBLY_CLOUDS
+	data_2070 MtDededeGfx,     vTiles1 tile $00 ; MT_DEDEDE
 	assert_table_length NUM_STAGES
 
 Data_2089::
 	table_width 5
-	data_2070 Gfx_291f5, vTiles1 tile $2e ; GREEN_GREENS
-	data_2070 Gfx_29b0b, vTiles1 tile $2e ; CASTLE_LOLOLO
-	data_2070 Gfx_2a3c1, vTiles1 tile $2e ; FLOAT_ISLANDS
-	data_2070 Gfx_2ac79, vTiles1 tile $2e ; BUBBLY_CLOUDS
-	data_2070 Gfx_ac49,  vTiles1 tile $00 ; MT_DEDEDE
+	data_2070 GreenGreensExtraGfx,  vTiles1 tile $2e ; GREEN_GREENS
+	data_2070 CastleLololoExtraGfx, vTiles1 tile $2e ; CASTLE_LOLOLO
+	data_2070 FloatIslandsExtraGfx, vTiles1 tile $2e ; FLOAT_ISLANDS
+	data_2070 BubblyCloudsExtraGfx, vTiles1 tile $2e ; BUBBLY_CLOUDS
+	data_2070 MtDededeGfx,          vTiles1 tile $00 ; MT_DEDEDE
 	assert_table_length NUM_STAGES
 
 StageBlockTileMaps::

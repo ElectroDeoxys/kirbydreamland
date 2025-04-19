@@ -17,21 +17,21 @@ ENDC
 	ld [wSCY], a
 
 	; load graphics
-	ld hl, Gfx_8000
+	ld hl, CommonGfx
 	ld de, vTiles0 tile $00
-	ld c, BANK(Gfx_8000)
+	ld c, BANK(CommonGfx)
 	call FarDecompress
-	ld hl, Gfx_28000
+	ld hl, TitleScreen1Gfx
 	ld de, vTiles1 tile $00
-	ld c, BANK(Gfx_28000)
+	ld c, BANK(TitleScreen1Gfx)
 	call FarDecompress
-	ld hl, Gfx_282ac
+	ld hl, TitleScreen2Gfx
 	ld de, vTiles2 tile $00
-	ld c, BANK(Gfx_282ac)
+	ld c, BANK(TitleScreen2Gfx)
 	call FarDecompress
-	ld hl, Gfx_b7e9
+	ld hl, FontGfx
 	ld de, vTiles1 tile $60
-	ld c, BANK(Gfx_b7e9)
+	ld c, BANK(FontGfx)
 	call FarDecompress
 	ld hl, BG_c000
 	debgcoord 0, 0

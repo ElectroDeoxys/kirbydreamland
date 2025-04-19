@@ -5,17 +5,17 @@ INCLUDE "engine/bank01.asm"
 
 SECTION "Bank 2", ROMX
 
-Gfx_8000:: INCBIN "gfx/gfx_8000.2bpp.lz"
-Gfx_8855:: INCBIN "gfx/gfx_8855.2bpp.lz"
-Gfx_8952:: INCBIN "gfx/gfx_8952.2bpp.lz"
-Gfx_9266:: INCBIN "gfx/gfx_9266.2bpp.lz"
-Gfx_9b2c:: INCBIN "gfx/gfx_9b2c.2bpp.lz"
-Gfx_a3ee:: INCBIN "gfx/gfx_a3ee.2bpp.lz"
-Gfx_ac49:: INCBIN "gfx/gfx_ac49.2bpp.lz"
-Gfx_b7e9: INCBIN "gfx/gfx_b7e9.2bpp.lz"
+CommonGfx:: INCBIN "gfx/objects/common.2bpp.lz"
+HUDGfx::    INCBIN "gfx/hud.2bpp.lz"
+GreenGreensGfx:: INCBIN "gfx/objects/green_greens.2bpp.lz"
+CastleLololoGfx:: INCBIN "gfx/objects/castle_lololo.2bpp.lz"
+FloatIslandsGfx:: INCBIN "gfx/objects/float_islands.2bpp.lz"
+BubblyCloudsGfx:: INCBIN "gfx/objects/bubbly_clouds.2bpp.lz"
+MtDededeGfx:: INCBIN "gfx/objects/mt_dedede.2bpp.lz"
+FontGfx: INCBIN "gfx/font.2bpp.lz"
 IF DEF(_KDL_JP) || DEF(_KDL_JP11)
-Gfx_28000: INCBIN "gfx/gfx_28000_jp.2bpp.lz"
-Gfx_282ac: INCBIN "gfx/gfx_282ac_jp.2bpp.lz"
+TitleScreen1Gfx: INCBIN "gfx/title_screen_1_jp.2bpp.lz"
+TitleScreen2Gfx: INCBIN "gfx/title_screen_2_jp.2bpp.lz"
 ENDC
 
 
@@ -27,7 +27,7 @@ IF DEF(_KDL_JP) || DEF(_KDL_JP11)
 ELSE
 	INCBIN "data/bg_c000.bin.lz"
 ENDC
-Gfx_c1c7: INCBIN "gfx/gfx_c1c7.2bpp.lz"
+FontWoNumbersGfx: INCBIN "gfx/font_wo_numbers.2bpp.lz"
 BG_c2c8: INCBIN "data/bg_c2c8.bin.lz"
 BG_c37a: INCBIN "data/bg_c37a.bin.lz"
 BG_c41d: INCBIN "data/bg_c41d.bin.lz"
@@ -46,18 +46,18 @@ Data_c8d9:: INCBIN "data/data_c8d9.bin.lz"
 Data_cac3:: INCBIN "data/data_cac3.bin.lz"
 Data_ccff:: INCBIN "data/data_ccff.bin.lz"
 
-Gfx_cfcf:
+Epilogue1Gfx:
 IF DEF(_KDL_JP) || DEF(_KDL_JP11)
-	INCBIN "gfx/gfx_cfcf_jp.2bpp.lz"
+	INCBIN "gfx/epilogue_1_jp.2bpp.lz"
 ELSE
-	INCBIN "gfx/gfx_cfcf.2bpp.lz"
+	INCBIN "gfx/epilogue_1.2bpp.lz"
 ENDC
-Gfx_d894: INCBIN "gfx/gfx_d894.2bpp.lz"
-Gfx_dcdd:
+Epilogue2Gfx: INCBIN "gfx/epilogue_2.2bpp.lz"
+StageIntroGfx:
 IF DEF(_KDL_JP) || DEF(_KDL_JP11)
-	INCBIN "gfx/gfx_dcdd_jp.2bpp.lz"
+	INCBIN "gfx/stage_intro_jp.2bpp.lz"
 ELSE
-	INCBIN "gfx/gfx_dcdd.2bpp.lz"
+	INCBIN "gfx/stage_intro.2bpp.lz"
 ENDC
 
 ; unreferenced
@@ -115,15 +115,15 @@ INCLUDE "engine/bank06.asm"
 SECTION "Bank A", ROMX
 
 IF !DEF(_KDL_JP) && !DEF(_KDL_JP11)
-Gfx_28000: INCBIN "gfx/gfx_28000.2bpp.lz"
-Gfx_282ac: INCBIN "gfx/gfx_282ac.2bpp.lz"
+TitleScreen1Gfx: INCBIN "gfx/title_screen_1.2bpp.lz"
+TitleScreen2Gfx: INCBIN "gfx/title_screen_2.2bpp.lz"
 ENDC
-Gfx_2888d:: INCBIN "gfx/gfx_2888d.2bpp.lz"
-Gfx_290f3:: INCBIN "gfx/gfx_290f3.2bpp.lz"
-Gfx_291f5:: INCBIN "gfx/gfx_291f5.2bpp.lz"
-Gfx_29b0b:: INCBIN "gfx/gfx_29b0b.2bpp.lz"
-Gfx_2a3c1:: INCBIN "gfx/gfx_2a3c1.2bpp.lz"
-Gfx_2ac79:: INCBIN "gfx/gfx_2ac79.2bpp.lz"
+CommonExtraGfx:: INCBIN "gfx/objects/common_extra.2bpp.lz"
+HUDExtraGfx:: INCBIN "gfx/hud_extra.2bpp.lz"
+GreenGreensExtraGfx:: INCBIN "gfx/objects/green_greens_extra.2bpp.lz"
+CastleLololoExtraGfx:: INCBIN "gfx/objects/castle_lololo_extra.2bpp.lz"
+FloatIslandsExtraGfx:: INCBIN "gfx/objects/float_islands_extra.2bpp.lz"
+BubblyCloudsExtraGfx:: INCBIN "gfx/objects/bubbly_clouds_extra.2bpp.lz"
 
 
 SECTION "OAM", ROMX
@@ -133,48 +133,47 @@ INCLUDE "data/oam.asm"
 
 SECTION "Bank D", ROMX
 
-Gfx_34000: INCBIN "gfx/gfx_34000.2bpp.lz"
-Gfx_345c0: INCBIN "gfx/gfx_345c0.2bpp.lz"
-Gfx_346fb: INCBIN "gfx/gfx_346fb.2bpp.lz"
+GreenGreensCredits1Gfx: INCBIN "gfx/credits/green_greens_1.2bpp.lz"
+BG_345c0: INCBIN "data/bg_345c0.bin.lz"
+GreenGreensCredits2Gfx: INCBIN "gfx/credits/green_greens_2.2bpp.lz"
 BG_34cb4: INCBIN "data/bg_34cb4.bin.lz"
-Gfx_34dc0: INCBIN "gfx/gfx_34dc0.2bpp.lz"
+GreenGreensCredits3Gfx: INCBIN "gfx/credits/green_greens_3.2bpp.lz"
 BG_3535c: INCBIN "data/bg_3535c.bin.lz"
-Gfx_3543e: INCBIN "gfx/gfx_3543e.2bpp.lz"
+CastleLololoCredits1Gfx: INCBIN "gfx/credits/castle_lololo_1.2bpp.lz"
 BG_35987: INCBIN "data/bg_35987.bin.lz"
-Gfx_35a89: INCBIN "gfx/gfx_35a89.2bpp.lz"
+CastleLololoCredits2Gfx: INCBIN "gfx/credits/castle_lololo_2.2bpp.lz"
 BG_35fd2: INCBIN "data/bg_35fd2.bin.lz"
-Gfx_36063: INCBIN "gfx/gfx_36063.2bpp.lz"
+FloatIslandsCredits1Gfx: INCBIN "gfx/credits/float_islands_1.2bpp.lz"
 BG_36553: INCBIN "data/bg_36553.bin.lz"
-Gfx_36658: INCBIN "gfx/gfx_36658.2bpp.lz"
+FloatIslandsCredits2Gfx: INCBIN "gfx/credits/float_islands_2.2bpp.lz"
 BG_36b80: INCBIN "data/bg_36b80.bin.lz"
-Gfx_36c7c: INCBIN "gfx/gfx_36c7c.2bpp.lz"
+BubblyCloudsCredits1Gfx: INCBIN "gfx/credits/bubbly_clouds_1.2bpp.lz"
 BG_3717d: INCBIN "data/bg_3717d.bin.lz"
-Gfx_3729b: INCBIN "gfx/gfx_3729b.2bpp.lz"
+BubblyCloudsCredits2Gfx: INCBIN "gfx/credits/bubbly_clouds_2.2bpp.lz"
 BG_3779c: INCBIN "data/bg_3779c.bin.lz"
 BG_378cc: INCBIN "data/bg_378cc.bin.lz"
 
 
 SECTION "Bank E", ROMX
 
-Gfx_38000: INCBIN "gfx/gfx_38000.2bpp.lz"
-Gfx_38582: INCBIN "gfx/gfx_38582.2bpp.lz"
+GreenGreensCredits4Gfx: INCBIN "gfx/credits/green_greens_4.2bpp.lz"
+CastleLololoCredits3Gfx: INCBIN "gfx/credits/castle_lololo_3.2bpp.lz"
 BG_38ac6: INCBIN "data/bg_38ac6.bin.lz"
-Gfx_38bf3: INCBIN "gfx/gfx_38bf3.2bpp.lz"
+FloatIslandsCredits3Gfx: INCBIN "gfx/credits/float_islands_3.2bpp.lz"
 BG_3911e: INCBIN "data/bg_3911e.bin.lz"
-Gfx_39206: INCBIN "gfx/gfx_39206.2bpp.lz"
+BubblyCloudsCredits3Gfx: INCBIN "gfx/credits/bubbly_clouds_3.2bpp.lz"
 BG_39707: INCBIN "data/bg_39707.bin.lz"
-Gfx_39820: INCBIN "gfx/gfx_39820.2bpp.lz"
+MtDededeCreditsGfx: INCBIN "gfx/credits/mt_dedede.2bpp.lz"
 BG_39be1: INCBIN "data/bg_39be1.bin.lz"
 
 IF DEF(_KDL_JP) || DEF(_KDL_JP11)
-Gfx_39cbf: INCBIN "gfx/gfx_39cbf_jp.2bpp.lz"
+ConfigModeUnlockGfx: INCBIN "gfx/config_mode_unlock_jp.2bpp.lz"
 BG_3acce: INCBIN "data/bg_3acce_jp.bin.lz"
-Gfx_3add9: INCBIN "gfx/gfx_3add9_jp.2bpp.lz"
+ExtraGameUnlockGfx: INCBIN "gfx/extra_game_unlock_jp.2bpp.lz"
 BG_3be4a: INCBIN "data/bg_3be4a_jp.bin.lz"
 ELSE
-Gfx_39cbf: INCBIN "gfx/gfx_39cbf.2bpp.lz"
+ConfigModeUnlockGfx: INCBIN "gfx/config_mode_unlock.2bpp.lz"
 BG_3acce: INCBIN "data/bg_3acce.bin.lz"
-Gfx_3add9: INCBIN "gfx/gfx_3add9.2bpp.lz"
+ExtraGameUnlockGfx: INCBIN "gfx/extra_game_unlock.2bpp.lz"
 BG_3be4a: INCBIN "data/bg_3be4a.bin.lz"
 ENDC
-

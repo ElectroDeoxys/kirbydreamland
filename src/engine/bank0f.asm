@@ -1703,7 +1703,7 @@ ObjectList_SceneFloatIslandsEnemies2:
 	dbw $06, LevelObject_3da77
 	db $ff ; end
 
-ObjectList_SceneBubbleCloudsEnemies1:
+ObjectList_SceneBubblyCloudsEnemies1:
 	dbw $00, NULL
 	dbw $01, LevelObject_3d973
 	dbw $03, LevelObject_3da8b
@@ -1713,7 +1713,7 @@ ObjectList_SceneBubbleCloudsEnemies1:
 	dbw $07, LevelObject_3da81
 	db $ff ; end
 
-ObjectList_SceneBubbleCloudsEnemies2:
+ObjectList_SceneBubblyCloudsEnemies2:
 	dbw $00, NULL
 	dbw $01, LevelObject_3d973
 	dbw $03, LevelObject_3dabd
@@ -1746,7 +1746,7 @@ ObjectList_SceneFloatIslandsEnemies3:
 	dbw $07, LevelObject_3db2b
 	db $ff ; end
 
-ObjectList_SceneBubbleCloudsEnemies3:
+ObjectList_SceneBubblyCloudsEnemies3:
 	dbw $00, NULL
 	dbw $01, LevelObject_3d973
 	dbw $03, LevelObject_3db53

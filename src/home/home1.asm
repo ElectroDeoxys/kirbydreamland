@@ -3626,23 +3626,23 @@ LoadArea::
 	ld a, [wExtraGameEnabled]
 	and a
 	jr nz, .extra_game
-	ld hl, Gfx_8000
+	ld hl, CommonGfx
 	ld de, vTiles0 + $00
-	ld c, BANK(Gfx_8000)
+	ld c, BANK(CommonGfx)
 	call FarDecompress
-	ld hl, Gfx_8855
+	ld hl, HUDGfx
 	ld de, vTiles2 tile $67
-	ld c, BANK(Gfx_8855)
+	ld c, BANK(HUDGfx)
 	call FarDecompress
 	jr .asm_1b66
 .extra_game
-	ld hl, Gfx_2888d
+	ld hl, CommonExtraGfx
 	ld de, vTiles0 + $00
-	ld c, BANK(Gfx_2888d)
+	ld c, BANK(CommonExtraGfx)
 	call FarDecompress
-	ld hl, Gfx_290f3
+	ld hl, HUDExtraGfx
 	ld de, vTiles2 tile $67
-	ld c, BANK(Gfx_290f3)
+	ld c, BANK(HUDExtraGfx)
 	call FarDecompress
 .asm_1b66
 	pop de

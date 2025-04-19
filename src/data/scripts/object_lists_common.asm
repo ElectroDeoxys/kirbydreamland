@@ -102,12 +102,12 @@ ENDC
 	dw ObjectList_SceneCastleLololoEnemies2, ObjectList_Null ; SCENE_CASTLE_LOLOLO_ENEMIES_2
 	dw ObjectList_SceneFloatIslandsEnemies1, ObjectList_Null ; SCENE_FLOAT_ISLANDS_ENEMIES_1
 	dw ObjectList_SceneFloatIslandsEnemies2, ObjectList_Null ; SCENE_FLOAT_ISLANDS_ENEMIES_2
-	dw ObjectList_SceneBubbleCloudsEnemies1, ObjectList_Null ; SCENE_BUBBLE_CLOUDS_ENEMIES_1
-	dw ObjectList_SceneBubbleCloudsEnemies2, ObjectList_Null ; SCENE_BUBBLE_CLOUDS_ENEMIES_2
+	dw ObjectList_SceneBubblyCloudsEnemies1, ObjectList_Null ; SCENE_BUBBLY_CLOUDS_ENEMIES_1
+	dw ObjectList_SceneBubblyCloudsEnemies2, ObjectList_Null ; SCENE_BUBBLY_CLOUDS_ENEMIES_2
 	dw ObjectList_SceneGreenGreensEnemies4,  ObjectList_Null ; SCENE_GREEN_GREENS_ENEMIES_4
 	dw ObjectList_SceneCastleLololoEnemies3, ObjectList_Null ; SCENE_CASTLE_LOLOLO_ENEMIES_3
 	dw ObjectList_SceneFloatIslandsEnemies3, ObjectList_Null ; SCENE_FLOAT_ISLANDS_ENEMIES_3
-	dw ObjectList_SceneBubbleCloudsEnemies3, ObjectList_Null ; SCENE_BUBBLE_CLOUDS_ENEMIES_3
+	dw ObjectList_SceneBubblyCloudsEnemies3, ObjectList_Null ; SCENE_BUBBLY_CLOUDS_ENEMIES_3
 	dw ObjectList_KingDedede,                ObjectList_Null ; SCENE_KING_DEDEDE
 	dw ObjectList_ConfigModeUnlock,          ObjectList_Null ; SCENE_CONFIG_MODE_UNLOCK
 	dw ObjectList_ExtraGameUnlock,           ObjectList_Null ; SCENE_EXTRA_GAME_UNLOCK

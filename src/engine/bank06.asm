@@ -232,23 +232,23 @@ Func_18285:
 	ld a, [wExtraGameEnabled]
 	and a
 	jr nz, .extra_game
-	ld hl, Gfx_8000
+	ld hl, CommonGfx
 	ld de, vTiles0 tile $00
-	ld c, BANK(Gfx_8000)
+	ld c, BANK(CommonGfx)
 	call FarDecompress
-	ld hl, Gfx_8855
+	ld hl, HUDGfx
 	ld de, vTiles2 tile $67
-	ld c, BANK(Gfx_8855)
+	ld c, BANK(HUDGfx)
 	call FarDecompress
 	jr .asm_182b9
 .extra_game
-	ld hl, Gfx_2888d
+	ld hl, CommonExtraGfx
 	ld de, vTiles0 tile $00
-	ld c, BANK(Gfx_2888d)
+	ld c, BANK(CommonExtraGfx)
 	call FarDecompress
-	ld hl, Gfx_290f3
+	ld hl, HUDExtraGfx
 	ld de, vTiles2 tile $67
-	ld c, BANK(Gfx_290f3)
+	ld c, BANK(HUDExtraGfx)
 	call FarDecompress
 .asm_182b9
 	ld d, $00
@@ -297,13 +297,13 @@ StageIntro:
 	call ClearSprites
 	call ResetTimer
 
-	ld hl, Gfx_8000
+	ld hl, CommonGfx
 	ld de, vTiles0 tile $00
-	ld c, BANK(Gfx_8000)
+	ld c, BANK(CommonGfx)
 	call FarDecompress
-	ld hl, Gfx_8855
+	ld hl, HUDGfx
 	ld de, vTiles2 tile $67
-	ld c, BANK(Gfx_8855)
+	ld c, BANK(HUDGfx)
 	call FarDecompress
 
 	ld a, [wStage]
@@ -334,13 +334,13 @@ StageIntro:
 	ld a, [wStage]
 	cp MT_DEDEDE
 	jr z, .asm_1835b
-	ld hl, Gfx_b7e9
+	ld hl, FontGfx
 	ld de, vTiles1 tile $60
-	ld c, BANK(Gfx_b7e9)
+	ld c, BANK(FontGfx)
 	call FarDecompress
-	ld hl, Gfx_dcdd
+	ld hl, StageIntroGfx
 	ld de, vTiles1 tile $00
-	ld c, BANK(Gfx_dcdd)
+	ld c, BANK(StageIntroGfx)
 	call FarDecompress
 
 .asm_1835b
@@ -942,9 +942,9 @@ GameOver:
 	debgcoord 0, 0
 	ld c, BANK(BG_c665)
 	call FarDecompress
-	ld hl, Gfx_c1c7
+	ld hl, FontWoNumbersGfx
 	ld de, vTiles1 tile $60
-	ld c, BANK(Gfx_c1c7)
+	ld c, BANK(FontWoNumbersGfx)
 	call FarDecompress
 
 	ld a, MUSIC_GAME_OVER
@@ -993,13 +993,13 @@ GameOver:
 	ld [wd096], a
 	call ClearSprites
 
-	ld hl, Gfx_b7e9
+	ld hl, FontGfx
 	ld de, vTiles1 tile $60
-	ld c, BANK(Gfx_b7e9)
+	ld c, BANK(FontGfx)
 	call FarDecompress
-	ld hl, Gfx_dcdd
+	ld hl, StageIntroGfx
 	ld de, vTiles1 tile $00
-	ld c, BANK(Gfx_dcdd)
+	ld c, BANK(StageIntroGfx)
 	call FarDecompress
 	ld hl, BG_c6b5
 	debgcoord 0, 0
@@ -1097,17 +1097,17 @@ Epilogue:
 
 	call ResetTimer
 
-	ld hl, Gfx_c1c7
+	ld hl, FontWoNumbersGfx
 	ld de, vTiles1 tile $60
-	ld c, BANK(Gfx_c1c7)
+	ld c, BANK(FontWoNumbersGfx)
 	call FarDecompress
-	ld hl, Gfx_cfcf
+	ld hl, Epilogue1Gfx
 	ld de, vTiles0 tile $00
-	ld c, BANK(Gfx_cfcf)
+	ld c, BANK(Epilogue1Gfx)
 	call FarDecompress
-	ld hl, Gfx_d894
+	ld hl, Epilogue2Gfx
 	ld de, vTiles2 tile $00
-	ld c, BANK(Gfx_d894)
+	ld c, BANK(Epilogue2Gfx)
 	call FarDecompress
 	ld hl, BG_c2c8
 	debgcoord 0, 0
@@ -1137,17 +1137,17 @@ Epilogue:
 	call FadeOut
 	call ResetTimer
 
-	ld hl, Gfx_8000
+	ld hl, CommonGfx
 	ld de, vTiles0 tile $00
-	ld c, BANK(Gfx_8000)
+	ld c, BANK(CommonGfx)
 	call FarDecompress
-	ld hl, Gfx_8855
+	ld hl, HUDGfx
 	ld de, vTiles2 tile $67
-	ld c, BANK(Gfx_8855)
+	ld c, BANK(HUDGfx)
 	call FarDecompress
-	ld hl, Gfx_ac49
+	ld hl, MtDededeGfx
 	ld de, vTiles1 tile $00
-	ld c, BANK(Gfx_ac49)
+	ld c, BANK(MtDededeGfx)
 	call FarDecompress
 	ld hl, Data_1b77c
 	ld de, wBlockTileMap
@@ -1192,17 +1192,17 @@ Epilogue:
 	call Func_19098
 	call ResetTimer
 
-	ld hl, Gfx_c1c7
+	ld hl, FontWoNumbersGfx
 	ld de, vTiles1 tile $60
-	ld c, BANK(Gfx_c1c7)
+	ld c, BANK(FontWoNumbersGfx)
 	call FarDecompress
-	ld hl, Gfx_cfcf
+	ld hl, Epilogue1Gfx
 	ld de, vTiles0 tile $00
-	ld c, BANK(Gfx_cfcf)
+	ld c, BANK(Epilogue1Gfx)
 	call FarDecompress
-	ld hl, Gfx_d894
+	ld hl, Epilogue2Gfx
 	ld de, vTiles2 tile $00
-	ld c, BANK(Gfx_d894)
+	ld c, BANK(Epilogue2Gfx)
 	call FarDecompress
 	ld hl, BG_c2c8
 	debgcoord 0, 0
@@ -1695,186 +1695,173 @@ Epilogue:
 	ld a, SCENE_GREEN_GREENS_ENEMIES_1
 	call Func_21fb
 	call Func_19098
-
-	ld hl, Gfx_34000
+	ld hl, GreenGreensCredits1Gfx
 	ld de, vTiles2 tile $00
-	ld c, BANK(Gfx_34000)
+	ld c, BANK(GreenGreensCredits1Gfx)
 	call FarDecompress
-	ld hl, Gfx_345c0
+	ld hl, BG_345c0
 	debgcoord 0, 0
-	ld c, BANK(Gfx_345c0)
+	ld c, BANK(BG_345c0)
 	call FarDecompress
-
 	call StopTimerAndSwitchOnLCD
 	call FadeIn
 	ld de, 416
 	call .DoFrames
 	call FadeOut
+
 	call ResetTimer
 	ld a, SCENE_GREEN_GREENS_ENEMIES_2
 	call Func_21fb
 	call Func_19098
-
-	ld hl, Gfx_346fb
+	ld hl, GreenGreensCredits2Gfx
 	ld de, vTiles2 tile $00
-	ld c, BANK(Gfx_346fb)
+	ld c, BANK(GreenGreensCredits2Gfx)
 	call FarDecompress
 	ld hl, BG_34cb4
 	debgcoord 0, 0
 	ld c, BANK(BG_34cb4)
 	call FarDecompress
-
 	call StopTimerAndSwitchOnLCD
 	call FadeIn
 	ld de, 416
 	call .DoFrames
 	call FadeOut
+
 	call ResetTimer
 	ld a, SCENE_GREEN_GREENS_ENEMIES_3
 	call Func_21fb
 	call Func_19098
-
-	ld hl, Gfx_34dc0
+	ld hl, GreenGreensCredits3Gfx
 	ld de, vTiles2 tile $00
-	ld c, BANK(Gfx_34dc0)
+	ld c, BANK(GreenGreensCredits3Gfx)
 	call FarDecompress
 	ld hl, BG_3535c
 	debgcoord 0, 0
 	ld c, BANK(BG_3535c)
 	call FarDecompress
-
 	call StopTimerAndSwitchOnLCD
 	call FadeIn
 	ld de, 236
 	call .DoFrames
 	call FadeOut
-	call ResetTimer
 
+	call ResetTimer
 	ld a, CASTLE_LOLOLO
 	ld [wStage], a
-
 	call Func_18275
 	ld a, SCENE_CASTLE_LOLOLO_ENEMIES_1
 	call Func_21fb
 	call Func_19098
-
-	ld hl, Gfx_3543e
+	ld hl, CastleLololoCredits1Gfx
 	ld de, vTiles2 tile $00
-	ld c, BANK(Gfx_3543e)
+	ld c, BANK(CastleLololoCredits1Gfx)
 	call FarDecompress
 	ld hl, BG_35987
 	debgcoord 0, 0
 	ld c, BANK(BG_35987)
 	call FarDecompress
-
 	call StopTimerAndSwitchOnLCD
 	call FadeIn
 	ld de, 416
 	call .DoFrames
 	call FadeOut
+
 	call ResetTimer
 	ld a, SCENE_CASTLE_LOLOLO_ENEMIES_2
 	call Func_21fb
 	call Func_19098
-
-	ld hl, Gfx_35a89
+	ld hl, CastleLololoCredits2Gfx
 	ld de, vTiles2 tile $00
-	ld c, BANK(Gfx_35a89)
+	ld c, BANK(CastleLololoCredits2Gfx)
 	call FarDecompress
 	ld hl, BG_35fd2
 	debgcoord 0, 0
 	ld c, BANK(BG_35fd2)
 	call FarDecompress
-
 	call StopTimerAndSwitchOnLCD
 	call FadeIn
 	ld de, 416
 	call .DoFrames
 	call FadeOut
-	call ResetTimer
 
+	call ResetTimer
 	ld a, FLOAT_ISLANDS
 	ld [wStage], a
 	call Func_18275
 	ld a, SCENE_FLOAT_ISLANDS_ENEMIES_1
 	call Func_21fb
 	call Func_19098
-
-	ld hl, Gfx_36063
+	ld hl, FloatIslandsCredits1Gfx
 	ld de, vTiles2 tile $00
-	ld c, BANK(Gfx_36063)
+	ld c, BANK(FloatIslandsCredits1Gfx)
 	call FarDecompress
 	ld hl, BG_36553
 	debgcoord 0, 0
 	ld c, BANK(BG_36553)
 	call FarDecompress
-
 	call StopTimerAndSwitchOnLCD
 	call FadeIn
 	ld de, 416
 	call .DoFrames
 	call FadeOut
+
 	call ResetTimer
 	ld a, SCENE_FLOAT_ISLANDS_ENEMIES_2
 	call Func_21fb
 	call Func_19098
-
-	ld hl, Gfx_36658
+	ld hl, FloatIslandsCredits2Gfx
 	ld de, vTiles2 tile $00
-	ld c, BANK(Gfx_36658)
+	ld c, BANK(FloatIslandsCredits2Gfx)
 	call FarDecompress
 	ld hl, BG_36b80
 	debgcoord 0, 0
 	ld c, BANK(BG_36b80)
 	call FarDecompress
-
 	call StopTimerAndSwitchOnLCD
 	call FadeIn
 	ld de, 416
 	call .DoFrames
 	call FadeOut
-	call ResetTimer
 
+	call ResetTimer
 	ld a, BUBBLY_CLOUDS
 	ld [wStage], a
 	call Func_18275
-	ld a, SCENE_BUBBLE_CLOUDS_ENEMIES_1
+	ld a, SCENE_BUBBLY_CLOUDS_ENEMIES_1
 	call Func_21fb
 	call Func_19098
-
-	ld hl, Gfx_36c7c
+	ld hl, BubblyCloudsCredits1Gfx
 	ld de, vTiles2 tile $00
-	ld c, BANK(Gfx_36c7c)
+	ld c, BANK(BubblyCloudsCredits1Gfx)
 	call FarDecompress
 	ld hl, BG_3717d
 	debgcoord 0, 0
 	ld c, BANK(BG_3717d)
 	call FarDecompress
-
 	call StopTimerAndSwitchOnLCD
 	call FadeIn
 	ld de, 416
 	call .DoFrames
 	call FadeOut
+
 	call ResetTimer
-	ld a, SCENE_BUBBLE_CLOUDS_ENEMIES_2
+	ld a, SCENE_BUBBLY_CLOUDS_ENEMIES_2
 	call Func_21fb
 	call Func_19098
-
-	ld hl, Gfx_3729b
+	ld hl, BubblyCloudsCredits2Gfx
 	ld de, vTiles2 tile $00
-	ld c, BANK(Gfx_3729b)
+	ld c, BANK(BubblyCloudsCredits2Gfx)
 	call FarDecompress
 	ld hl, BG_3779c
 	debgcoord 0, 0
 	ld c, BANK(BG_3779c)
 	call FarDecompress
-
 	call StopTimerAndSwitchOnLCD
 	call FadeIn
 	ld de, 416
 	call .DoFrames
 	call FadeOut
+
 	call ResetTimer
 	xor a
 	ld [wStage], a
@@ -1882,21 +1869,20 @@ Epilogue:
 	ld a, SCENE_GREEN_GREENS_ENEMIES_4
 	call Func_21fb
 	call Func_19098
-
-	ld hl, Gfx_38000
+	ld hl, GreenGreensCredits4Gfx
 	ld de, vTiles2 tile $00
-	ld c, BANK(Gfx_38000)
+	ld c, BANK(GreenGreensCredits4Gfx)
 	call FarDecompress
 	ld hl, BG_378cc
 	debgcoord 0, 0
 	ld c, BANK(BG_378cc)
 	call FarDecompress
-
 	call StopTimerAndSwitchOnLCD
 	call FadeIn
 	ld de, 416
 	call .DoFrames
 	call FadeOut
+
 	call ResetTimer
 	ld a, CASTLE_LOLOLO
 	ld [wStage], a
@@ -1904,21 +1890,20 @@ Epilogue:
 	ld a, SCENE_CASTLE_LOLOLO_ENEMIES_3
 	call Func_21fb
 	call Func_19098
-
-	ld hl, Gfx_38582
+	ld hl, CastleLololoCredits3Gfx
 	ld de, vTiles2 tile $00
-	ld c, BANK(Gfx_38582)
+	ld c, BANK(CastleLololoCredits3Gfx)
 	call FarDecompress
 	ld hl, BG_38ac6
 	debgcoord 0, 0
 	ld c, BANK(BG_38ac6)
 	call FarDecompress
-
 	call StopTimerAndSwitchOnLCD
 	call FadeIn
 	ld de, 416
 	call .DoFrames
 	call FadeOut
+
 	call ResetTimer
 	ld a, FLOAT_ISLANDS
 	ld [wStage], a
@@ -1926,63 +1911,57 @@ Epilogue:
 	ld a, SCENE_FLOAT_ISLANDS_ENEMIES_3
 	call Func_21fb
 	call Func_19098
-
-	ld hl, Gfx_38bf3
+	ld hl, FloatIslandsCredits3Gfx
 	ld de, vTiles2 tile $00
-	ld c, BANK(Gfx_38bf3)
+	ld c, BANK(FloatIslandsCredits3Gfx)
 	call FarDecompress
 	ld hl, BG_3911e
 	debgcoord 0, 0
 	ld c, BANK(BG_3911e)
 	call FarDecompress
-
 	call StopTimerAndSwitchOnLCD
 	call FadeIn
 	ld de, 416
 	call .DoFrames
 	call FadeOut
+
 	call ResetTimer
 	ld a, BUBBLY_CLOUDS
 	ld [wStage], a
 	call Func_18285
-	ld a, SCENE_BUBBLE_CLOUDS_ENEMIES_3
+	ld a, SCENE_BUBBLY_CLOUDS_ENEMIES_3
 	call Func_21fb
 	call Func_19098
-
-	ld hl, Gfx_39206
+	ld hl, BubblyCloudsCredits3Gfx
 	ld de, vTiles2 tile $00
-	ld c, BANK(Gfx_39206)
+	ld c, BANK(BubblyCloudsCredits3Gfx)
 	call FarDecompress
 	ld hl, BG_39707
 	debgcoord 0, 0
 	ld c, BANK(BG_39707)
 	call FarDecompress
-
 	call StopTimerAndSwitchOnLCD
 	call FadeIn
 	ld de, 416
 	call .DoFrames
 	call FadeOut
+
 	call ResetTimer
-
-	ld hl, Gfx_ac49
+	ld hl, MtDededeGfx
 	ld de, vTiles1 tile $00
-	ld c, BANK(Gfx_ac49)
+	ld c, BANK(MtDededeGfx)
 	call FarDecompress
-
 	ld a, SCENE_KING_DEDEDE
 	call Func_21fb
 	call Func_19098
-
-	ld hl, Gfx_39820
+	ld hl, MtDededeCreditsGfx
 	ld de, vTiles2 tile $00
-	ld c, BANK(Gfx_39820)
+	ld c, BANK(MtDededeCreditsGfx)
 	call FarDecompress
 	ld hl, BG_39be1
 	debgcoord 0, 0
 	ld c, BANK(BG_39be1)
 	call FarDecompress
-
 	call StopTimerAndSwitchOnLCD
 	call FadeIn
 	ld de, 416
@@ -2005,24 +1984,21 @@ Epilogue:
 	jr nz, .asm_19009
 .asm_1901e
 	call FadeOut
-	call ResetTimer
 
+	call ResetTimer
 	ld a, MUSIC_NONE
 	call PlayMusic
-
 	ld a, SCENE_CONFIG_MODE_UNLOCK
 	call Func_21fb
 	call Func_19098
-
-	ld hl, Gfx_39cbf
+	ld hl, ConfigModeUnlockGfx
 	ld de, vTiles0 tile $00
-	ld c, BANK(Gfx_39cbf)
+	ld c, BANK(ConfigModeUnlockGfx)
 	call FarDecompress
 	ld hl, BG_3acce
 	debgcoord 0, 0
 	ld c, BANK(BG_3acce)
 	call FarDecompress
-
 	call StopTimerAndSwitchOnLCD
 	call FadeIn
 .asm_1904d
@@ -2033,20 +2009,17 @@ Epilogue:
 .asm_19055
 	ld a, MUSIC_NONE
 	call PlayMusic
-
 	ld a, SCENE_EXTRA_GAME_UNLOCK
 	call Func_21fb
 	call Func_19098
-
-	ld hl, Gfx_3add9
+	ld hl, ExtraGameUnlockGfx
 	ld de, vTiles0 tile $00
-	ld c, BANK(Gfx_3add9)
+	ld c, BANK(ExtraGameUnlockGfx)
 	call FarDecompress
 	ld hl, BG_3be4a
 	debgcoord 0, 0
 	ld c, BANK(BG_3be4a)
 	call FarDecompress
-
 	call StopTimerAndSwitchOnLCD
 	call FadeIn
 .asm_1907e
@@ -2158,12 +2131,12 @@ StageTransitions:
 	dw .NoTransition ; BUBBLY_CLOUDS_1
 	dw .NoTransition ; BUBBLY_CLOUDS_2
 	dw .NoTransition ; BUBBLY_CLOUDS_3
-	dw .BubbleClouds4 ; BUBBLY_CLOUDS_4
+	dw .BubblyClouds4 ; BUBBLY_CLOUDS_4
 	dw .NoTransition ; BUBBLY_CLOUDS_5
 	dw .NoTransition ; BUBBLY_CLOUDS_6
 	dw .NoTransition ; BUBBLY_CLOUDS_7
 	dw .NoTransition ; BUBBLY_CLOUDS_8
-	dw .BubbleClouds9 ; BUBBLY_CLOUDS_9
+	dw .BubblyClouds9 ; BUBBLY_CLOUDS_9
 	assert_table_length NUM_BUBBLY_CLOUDS_AREAS
 
 .MtDedede:
@@ -2263,7 +2236,7 @@ StageTransitions:
 	trans_wait 240
 	trans_next_stage 1
 
-.BubbleClouds4:
+.BubblyClouds4:
 	trans_wait 100
 	trans_move_kirby_2 0.5, 10
 	trans_move_kirby_2 1.0, 10
@@ -2276,7 +2249,7 @@ StageTransitions:
 	trans_wait 255
 	trans_end 1
 
-.BubbleClouds9:
+.BubblyClouds9:
 	trans_wait 240
 	trans_wait 240
 	trans_wait 240
@@ -2424,13 +2397,12 @@ BG_1b8df:: INCBIN "data/bg_1b8df_jp.bin.lz"
 BG_1b95d:: INCBIN "data/bg_1b95d_jp.bin.lz"
 BG_1b9f9:: INCBIN "data/bg_1b9f9_jp.bin.lz"
 BG_1baaf:: INCBIN "data/bg_1baaf.bin.lz"
-Gfx_1bb0d: INCBIN "gfx/gfx_1bb0d_jp.2bpp.lz"
+ConfigurationGfx: INCBIN "gfx/configuration_jp.2bpp.lz"
 ELSE
 BG_1b835:: INCBIN "data/bg_1b835.bin.lz"
 BG_1b8df:: INCBIN "data/bg_1b8df.bin.lz"
 BG_1b95d:: INCBIN "data/bg_1b95d.bin.lz"
 BG_1b9f9:: INCBIN "data/bg_1b9f9.bin.lz"
 BG_1baaf:: INCBIN "data/bg_1baaf.bin.lz"
-Gfx_1bb0d: INCBIN "gfx/gfx_1bb0d.2bpp.lz"
+ConfigurationGfx: INCBIN "gfx/configuration.2bpp.lz"
 ENDC
-
