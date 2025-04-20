@@ -658,7 +658,7 @@ MotionScript_KirbyWarpStar_LiftOff3:
 	set_velocities  8, VEL_LEFT_0_25, VEL_UP_2_00
 	create_object AnimScript_Star, MotionScript_RandomDownwardsDirection, Data_3425
 	set_velocities 20, VEL_LEFT_0_50, VEL_UP_4_00
-	set_position $68, $08
+	set_position 104, 8
 	set_velocities 20, 0, 0
 	play_sfx SFX_13
 	set_velocities  0, VEL_RIGHT_1_16TH, VEL_DOWN_0_25
@@ -1467,28 +1467,28 @@ MotionScript_WhispyWoodsApple:
 	jump_rel .wait_and_fall
 
 .position_1
-	set_position $30, $20
+	set_position 48, 32
 	script_ret
 .position_2
-	set_position $18, $20
+	set_position 24, 32
 	script_ret
 .position_3
-	set_position $28, $20
+	set_position 40, 32
 	script_ret
 .position_4
-	set_position $38, $20
+	set_position 56, 32
 	script_ret
 .position_5
-	set_position $48, $20
+	set_position 72, 32
 	script_ret
 .position_6
-	set_position $58, $20
+	set_position 88, 32
 	script_ret
 .position_7
-	set_position $13, $20
+	set_position 19, 32
 	script_ret
 .position_8
-	set_position $4d, $20
+	set_position 77, 32
 	script_ret
 
 .wait_and_fall
@@ -2621,7 +2621,7 @@ MotionScript_11adf:
 
 MotionScript_11b20:
 	set_abs_pos
-	set_position $5c, $40
+	set_position 92, 64
 	set_velocities  1, 0, 0
 	set_rel_pos
 	jump_abs MotionScript_1032d
@@ -4432,7 +4432,7 @@ MotionScript_128fe:
 	set_velocities  8, VEL_LEFT_0_25, VEL_UP_0_25
 	set_velocities  7, VEL_LEFT_0_25, 0
 	set_abs_pos
-	set_position $90, $3a
+	set_position 144, 58
 	set_rel_pos
 	script_ret
 
@@ -4808,7 +4808,7 @@ MotionScript_12e09:
 
 .script_12e32
 	jump_if_equal wKirbySideOfScreen, $ff, .right_side
-	set_position $a1, $18
+	set_position 161, 24
 	set_value wKirbySideOfScreen, $ff
 	script_call MotionScript_12ff1
 	set_value wKirbySideOfScreen, $00
@@ -4816,7 +4816,7 @@ MotionScript_12e09:
 
 .script_12e49
 	jump_if_equal wd3cf, $ff, .right_side
-	set_position $a1, $38
+	set_position 161, 56
 	set_value wd3cf, $ff
 	script_call MotionScript_12ff1
 	set_value wd3cf, $00
@@ -4824,7 +4824,7 @@ MotionScript_12e09:
 
 .script_12e60
 	jump_if_equal wd3d0, $ff, .right_side
-	set_position $a1, $58
+	set_position 161, 88
 	set_value wd3d0, $ff
 	script_call MotionScript_12ff1
 	set_value wd3d0, $00
@@ -4832,7 +4832,7 @@ MotionScript_12e09:
 
 .script_12e77
 	jump_if_equal wd3d1, $ff, .right_side
-	set_position $a1, $78
+	set_position 161, 120
 	set_value wd3d1, $ff
 	script_call MotionScript_12ff1
 	set_value wd3d1, $00
@@ -4847,7 +4847,7 @@ MotionScript_12e09:
 
 .script_12e98
 	jump_if_equal wKirbySideOfScreen, $ff, .left_side
-	set_position $10, $18
+	set_position 16, 24
 	set_value wKirbySideOfScreen, $ff
 	script_call MotionScript_13017
 	set_value wKirbySideOfScreen, $00
@@ -4855,7 +4855,7 @@ MotionScript_12e09:
 
 .script_12eaf
 	jump_if_equal wd3cf, $ff, .left_side
-	set_position $10, $38
+	set_position 16, 56
 	set_value wd3cf, $ff
 	script_call MotionScript_13017
 	set_value wd3cf, $00
@@ -4863,7 +4863,7 @@ MotionScript_12e09:
 
 .script_12ec6
 	jump_if_equal wd3d0, $ff, .left_side
-	set_position $10, $58
+	set_position 16, 88
 	set_value wd3d0, $ff
 	script_call MotionScript_13017
 	set_value wd3d0, $00
@@ -4871,7 +4871,7 @@ MotionScript_12e09:
 
 .script_12edd
 	jump_if_equal wd3d1, $ff, .left_side
-	set_position $10, $78
+	set_position 16, 120
 	set_value wd3d1, $ff
 	script_call MotionScript_13017
 	set_value wd3d1, $00
@@ -5016,16 +5016,16 @@ MotionScript_13038:
 	dw .bottom_door
 
 .upper_door
-	set_position $a3, $18
+	set_position 163, 24
 	jump_abs .attack_short
 .mid_upper_door
-	set_position $a3, $38
+	set_position 163, 56
 	jump_abs .attack_mid
 .mid_bottom_door
-	set_position $a3, $58
+	set_position 163, 88
 	jump_abs .attack_far
 .bottom_door
-	set_position $a3, $78
+	set_position 163, 120
 	jump_abs .attack_far ; useless jump
 
 .attack_far
@@ -5671,7 +5671,7 @@ MotionScript_RandomLeftDirection:
 	set_velocities  0, VEL_LEFT_3_00, VEL_UP_0_75
 
 MotionScript_KirbyWarpStar_Crash2:
-	set_position $00, $70
+	set_position 0, 112
 	set_velocities 16, VEL_RIGHT_3_00, 0
 	set_velocities 16, VEL_RIGHT_2_00, 0
 	set_velocities 16, VEL_RIGHT_1_25, 0

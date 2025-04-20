@@ -6236,7 +6236,7 @@ MotionScript_RandomLeftDirection:
 	set_velocities  0, 0, 0
 
 MotionScript_KirbyWarpStar_Crash2:
-	set_position $00, $70
+	set_position 0, 112
 	set_velocities 16, VEL_RIGHT_3_00, 0
 	set_velocities 16, VEL_RIGHT_2_00, 0
 	set_velocities 16, VEL_RIGHT_1_25, 0

@@ -18,7 +18,7 @@ MotionScript_1000b::
 ELSE
 MotionScript_1000b_@:
 ENDC
-	set_position $18, $00
+	set_position 24, 0
 	set_velocities 60, VEL_RIGHT_0_75, VEL_DOWN_2_00
 	jump_abs MotionScript_KirbyWarpStar_Crash1
 
@@ -27,7 +27,7 @@ MotionScript_10014::
 ELSE
 MotionScript_10014_@:
 ENDC
-	set_position $08, $52
+	set_position 8, 82
 	set_anim_script AnimScript_KirbyFall
 	set_velocities  1, 0, 0
 	create_object AnimScript_Explosion, MotionScript_102e0, Data_3425
@@ -40,7 +40,7 @@ MotionScript_1002f::
 ELSE
 MotionScript_1002f_@:
 ENDC
-	set_position $44, $08
+	set_position 68, 8
 	set_velocities 40, VEL_RIGHT_0_50, VEL_DOWN_2_00
 	play_sfx SFX_08
 	create_object AnimScript_Star, MotionScript_Star_UpLeft, Data_3425
@@ -55,7 +55,7 @@ ELSE
 MotionScript_10056_@:
 ENDC
 	set_anim_script AnimScript_KirbyTumble
-	set_position $1e, $86
+	set_position 30, 134
 	set_velocities 10, VEL_RIGHT_0_25, VEL_UP_3_00
 	create_object AnimScript_Star, MotionScript_Star_UpLeft, Data_3425
 	create_object AnimScript_Star, MotionScript_Star_UpRight, Data_3425
@@ -88,7 +88,7 @@ MotionScript_100bf::
 ELSE
 MotionScript_100bf_@:
 ENDC
-	set_position $51, $48
+	set_position 81, 72
 	set_anim_script AnimScript_KirbyFall
 	set_velocities  1, 0, 0
 	create_object AnimScript_SmallStar, MotionScript_Star_UpFast, Data_3425
@@ -112,7 +112,7 @@ MotionScript_1011d::
 ELSE
 MotionScript_1011d_@:
 ENDC
-	set_position $58, $78
+	set_position 88, 120
 	set_anim_script AnimScript_15f1
 	set_velocities  1, 0, 0
 	set_kirby_pos
@@ -279,7 +279,7 @@ MotionScript_10276::
 ELSE
 MotionScript_10276_@:
 ENDC
-	set_position $40, $78
+	set_position 64, 120
 	set_anim_script AnimScript_15f1
 	set_velocities  1, 0, 0
 	set_kirby_pos
