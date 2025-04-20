@@ -116,7 +116,7 @@ ENDC
 	set_anim_script AnimScript_15f1
 	set_velocities  1, 0, 0
 	set_kirby_pos
-	set_flags hKirbyFlags3, KIRBY3F_DIVE_BOUNCE | KIRBY3F_DIVE, $00
+	set_flags hKirbyFlags3, KIRBY3F_DIVE_BOUNCE | KIRBY3F_DIVE, NONE
 	set_value wStageTransitionCounter, 1
 	set_velocities  0, 0, 0
 
@@ -137,13 +137,13 @@ MotionScript_10149::
 ELSE
 MotionScript_10149_@:
 ENDC
-	set_flags hKirbyFlags5, $00, KIRBY5F_UNK5
+	set_flags hKirbyFlags5, NONE, KIRBY5F_UNK5
 	script_repeat 3
 	set_velocities  1, VEL_LEFT_2_00, VEL_UP_4_00
 	set_velocities  1, VEL_RIGHT_2_00, VEL_UP_2_00
 	script_repeat_end
 	set_kirby_pos
-	set_flags hKirbyFlags5, KIRBY5F_UNK5, $00
+	set_flags hKirbyFlags5, KIRBY5F_UNK5, NONE
 	set_velocities  0, 0, 0
 
 IF DEF(EXPORT_SCRIPTS)
@@ -151,13 +151,13 @@ MotionScript_10162::
 ELSE
 MotionScript_10162_@:
 ENDC
-	set_flags hKirbyFlags5, $00, KIRBY5F_UNK5
+	set_flags hKirbyFlags5, NONE, KIRBY5F_UNK5
 	script_repeat 4
 	set_velocities  1, VEL_LEFT_2_00, VEL_DOWN_1_25
 	set_velocities  1, VEL_RIGHT_2_00, VEL_DOWN_1_25
 	script_repeat_end
 	set_kirby_pos
-	set_flags hKirbyFlags5, KIRBY5F_UNK5, $00
+	set_flags hKirbyFlags5, KIRBY5F_UNK5, NONE
 	set_velocities  0, 0, 0
 
 ; unreferenced
@@ -166,7 +166,7 @@ MotionScript_1017b::
 ELSE
 MotionScript_1017b_@:
 ENDC
-	set_flags hKirbyFlags5, $00, $20
+	set_flags hKirbyFlags5, NONE, KIRBY5F_UNK5
 	play_sfx SFX_LOSE_LIFE
 	set_velocities 100, 0, 0
 	play_sfx SFX_30
@@ -189,18 +189,18 @@ ENDC
 	play_sfx SFX_ENTER_DOOR
 	set_anim_script AnimScript_203e8
 	set_value wDamageBlinkingCounter, $5a
-	set_flags wd1a0, $00, $20
+	set_flags wd1a0 + OBJECT_SLOT_KIRBY, NONE, $20
 	position_offset 8, 0
 	create_object AnimScript_20138, MotionScript_10008, Data_3421
 	set_velocities  8, VEL_RIGHT_1_8TH, VEL_UP_2_00
 	set_velocities  8, VEL_RIGHT_1_8TH, VEL_UP_0_75
 	set_velocities  8, VEL_RIGHT_1_8TH, VEL_UP_1_8TH
 	set_abs_pos
-	set_flags hKirbyFlags5, $20, $00
+	set_flags hKirbyFlags5, KIRBY5F_UNK5, NONE
 	set_kirby_pos
 	script_exec Func_3d48
 	script_exec Func_4b6d
-	set_flags hPalFadeFlags, $00, $08
+	set_flags hPalFadeFlags, NONE, SCROLLINGF_UNK3
 	set_velocities  0, 0, 0
 
 IF DEF(EXPORT_SCRIPTS)
@@ -218,18 +218,18 @@ ENDC
 	play_sfx SFX_ENTER_DOOR
 	set_anim_script AnimScript_203e8
 	set_value wDamageBlinkingCounter, $5a
-	set_flags wd1a0, $00, $20
+	set_flags wd1a0 + OBJECT_SLOT_KIRBY, NONE, $20
 	position_offset -8, 0
 	create_object AnimScript_20138, MotionScript_10008, Data_3421
 	set_velocities  8, VEL_LEFT_1_8TH, VEL_UP_2_00
 	set_velocities  8, VEL_LEFT_1_8TH, VEL_UP_0_75
 	set_velocities  8, VEL_LEFT_1_8TH, VEL_UP_1_8TH
 	set_abs_pos
-	set_flags hKirbyFlags5, $20, $00
+	set_flags hKirbyFlags5, KIRBY5F_UNK5, NONE
 	set_kirby_pos
 	script_exec Func_3d48
 	script_exec Func_4b6d
-	set_flags hPalFadeFlags, $00, $08
+	set_flags hPalFadeFlags, NONE, SCROLLINGF_UNK3
 	set_velocities  0, 0, 0
 
 IF DEF(EXPORT_SCRIPTS)
@@ -283,7 +283,7 @@ ENDC
 	set_anim_script AnimScript_15f1
 	set_velocities  1, 0, 0
 	set_kirby_pos
-	set_flags hKirbyFlags5, KIRBY5F_TRIGGER_TRANSITION, $00
+	set_flags hKirbyFlags5, KIRBY5F_TRIGGER_TRANSITION, NONE
 	set_velocities  0, 0, 0
 
 IF DEF(EXPORT_SCRIPTS)
@@ -582,7 +582,7 @@ ELSE
 MotionScript_10370_@:
 ENDC
 	set_value wClearScreenFlags, CLEAR_ACTIVE
-	set_flags hKirbyFlags5, $00, KIRBY5F_UNK5
+	set_flags hKirbyFlags5, NONE, KIRBY5F_UNK5
 	jump_if_not_flags hKirbyFlags3, KIRBY3F_FACE_LEFT, .script_1038d
 	position_offset 0, 6
 	set_velocities  2, VEL_LEFT_2_00, 0

@@ -2945,36 +2945,36 @@ AnimScript_162b:
 	frame 10, OAM_2da81
 	frame 10, OAM_2da99
 	frame 10, OAM_2da69
-	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_SPIT | KIRBY2F_HOVER, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_SPIT | KIRBY2F_HOVER, NONE
 	set_value wd094, $01
 	script_delay 1
 
 AnimScript_163f:
-	set_flags hKirbyFlags2, $00, KIRBY2F_UNK1
+	set_flags hKirbyFlags2, NONE, KIRBY2F_UNK1
 	frame  6, OAM_2dbc9
-	set_flags hKirbyFlags3, KIRBY3F_SQUISHED, $00
-	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1, $00
+	set_flags hKirbyFlags3, KIRBY3F_SQUISHED, NONE
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1, NONE
 	script_delay 1
 
 AnimScript_1653:
-	set_flags hKirbyFlags2, $00, KIRBY2F_UNK1
+	set_flags hKirbyFlags2, NONE, KIRBY2F_UNK1
 	frame  6, OAM_2dbd1
-	set_flags hKirbyFlags3, KIRBY3F_SQUISHED, $00
-	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1, $00
+	set_flags hKirbyFlags3, KIRBY3F_SQUISHED, NONE
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1, NONE
 	script_delay 1
 
 AnimScript_1667:
-	set_flags hKirbyFlags2, $00, KIRBY2F_UNK1
+	set_flags hKirbyFlags2, NONE, KIRBY2F_UNK1
 	frame  6, OAM_2dbd9
-	set_flags hKirbyFlags3, KIRBY3F_SQUISHED, $00
-	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1, $00
+	set_flags hKirbyFlags3, KIRBY3F_SQUISHED, NONE
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1, NONE
 	script_delay 1
 
 AnimScript_167b:
-	set_flags hKirbyFlags2, $00, KIRBY2F_UNK1
+	set_flags hKirbyFlags2, NONE, KIRBY2F_UNK1
 	frame  6, OAM_2dbdd
-	set_flags hKirbyFlags3, KIRBY3F_SQUISHED, $00
-	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1, $00
+	set_flags hKirbyFlags3, KIRBY3F_SQUISHED, NONE
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1, NONE
 	script_delay 1
 
 AnimScript_168f:
@@ -2999,13 +2999,13 @@ AnimScript_16ab:
 	frame  0, OAM_2db69
 
 AnimScript_16ae:
-	set_flags hKirbyFlags2, $00, KIRBY2F_UNK1
+	set_flags hKirbyFlags2, NONE, KIRBY2F_UNK1
 	frame  5, OAM_2db69
 	frame  6, OAM_2dbc9
-	set_flags hKirbyFlags3, KIRBY3F_DIVE_BOUNCE | KIRBY3F_DIVE | KIRBY3F_DUCK | KIRBY3F_SQUISHED, $00
-	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_SPIT, $00
+	set_flags hKirbyFlags3, KIRBY3F_DIVE_BOUNCE | KIRBY3F_DIVE | KIRBY3F_DUCK | KIRBY3F_SQUISHED, NONE
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_SPIT, NONE
 	set_value wd064, $02
-	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1, NONE
 	script_delay 1
 
 AnimScript_16ce:
@@ -3018,31 +3018,31 @@ AnimScript_16ce:
 AnimScript_16de:
 	frame  8, OAM_2da71
 	frame  6, OAM_2da69
-	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_SPIT | KIRBY2F_MOUTHFUL | KIRBY2F_INHALE | KIRBY2F_HOVER, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_SPIT | KIRBY2F_MOUTHFUL | KIRBY2F_INHALE | KIRBY2F_HOVER, NONE
 	frame  8, OAM_2dae1
 	set_value wd094, $01
 	script_delay 1
 
 AnimScript_16f2:
-	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_INHALE, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_INHALE, NONE
 	frame  0, OAM_2d979
 
 AnimScript_16fa:
-	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_INHALE, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_INHALE, NONE
 .loop
 	frame 12, OAM_2d9a9
 	frame 12, OAM_2d9c1
 	jump_rel .loop
 
 AnimScript_1707:
-	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_INHALE, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_INHALE, NONE
 	frame  0, OAM_2d9d9
 
 AnimScript_170f:
 	frame  5, OAM_2dab1
 	frame  5, OAM_2da71
 	frame  6, OAM_2da69
-	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_SPIT | KIRBY2F_MOUTHFUL | KIRBY2F_INHALE | KIRBY2F_HOVER, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_SPIT | KIRBY2F_MOUTHFUL | KIRBY2F_INHALE | KIRBY2F_HOVER, NONE
 	set_value wd094, $01
 	script_delay 1
 
@@ -3059,8 +3059,8 @@ AnimScript_1732:
 	frame  5, OAM_2d991
 	frame  3, OAM_2dac9
 	frame  3, OAM_2dae1
-	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_SPIT | KIRBY2F_MOUTHFUL | KIRBY2F_INHALE | KIRBY2F_HOVER, $00
-	set_flags hKirbyFlags4, KIRBY5F_DAMAGE_KNOCK_BACK_LEFT, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_SPIT | KIRBY2F_MOUTHFUL | KIRBY2F_INHALE | KIRBY2F_HOVER, NONE
+	set_flags hKirbyFlags4, KIRBY5F_DAMAGE_KNOCK_BACK_LEFT, NONE
 	script_delay 1
 
 AnimScript_1747:
@@ -3071,13 +3071,13 @@ AnimScript_1747:
 
 AnimScript_1753:
 	frame  5, OAM_2da69
-	set_flags hKirbyFlags6, KIRBY6F_UNK4, $00
+	set_flags hKirbyFlags6, KIRBY6F_UNK4, NONE
 	script_delay 1
 
 AnimScript_175d:
 	frame  3, OAM_2da81
 	frame  3, OAM_2da99
-	set_flags hKirbyFlags6, KIRBY6F_UNK2, $00
+	set_flags hKirbyFlags6, KIRBY6F_UNK2, NONE
 	script_delay 1
 
 AnimScript_176a:
@@ -3124,36 +3124,36 @@ AnimScript_17b2:
 	frame 10, OAM_2db01
 	frame 10, OAM_2db19
 	frame 10, OAM_2dae9
-	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_SPIT | KIRBY2F_HOVER, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_SPIT | KIRBY2F_HOVER, NONE
 	set_value wd094, $01
 	script_delay 1
 
 AnimScript_17c6:
-	set_flags hKirbyFlags2, $00, KIRBY2F_UNK1
+	set_flags hKirbyFlags2, NONE, KIRBY2F_UNK1
 	frame  6, OAM_2dbad
-	set_flags hKirbyFlags3, KIRBY3F_SQUISHED, $00
-	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1, $00
+	set_flags hKirbyFlags3, KIRBY3F_SQUISHED, NONE
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1, NONE
 	script_delay 1
 
 AnimScript_17da:
-	set_flags hKirbyFlags2, $00, KIRBY2F_UNK1
+	set_flags hKirbyFlags2, NONE, KIRBY2F_UNK1
 	frame  6, OAM_2dbb5
-	set_flags hKirbyFlags3, KIRBY3F_SQUISHED, $00
-	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1, $00
+	set_flags hKirbyFlags3, KIRBY3F_SQUISHED, NONE
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1, NONE
 	script_delay 1
 
 AnimScript_17ee:
-	set_flags hKirbyFlags2, $00, KIRBY2F_UNK1
+	set_flags hKirbyFlags2, NONE, KIRBY2F_UNK1
 	frame  6, OAM_2dbbd
-	set_flags hKirbyFlags3, KIRBY3F_SQUISHED, $00
-	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1, $00
+	set_flags hKirbyFlags3, KIRBY3F_SQUISHED, NONE
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1, NONE
 	script_delay 1
 
 AnimScript_1802:
-	set_flags hKirbyFlags2, $00, KIRBY2F_UNK1
+	set_flags hKirbyFlags2, NONE, KIRBY2F_UNK1
 	frame  6, OAM_2dbc1
-	set_flags hKirbyFlags3, KIRBY3F_SQUISHED, $00
-	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1, $00
+	set_flags hKirbyFlags3, KIRBY3F_SQUISHED, NONE
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1, NONE
 	script_delay 1
 
 AnimScript_1816:
@@ -3178,13 +3178,13 @@ AnimScript_1832:
 	frame  0, OAM_2db71
 
 AnimScript_1835:
-	set_flags hKirbyFlags2, $00, KIRBY2F_UNK1
+	set_flags hKirbyFlags2, NONE, KIRBY2F_UNK1
 	frame  5, OAM_2db71
 	frame  6, OAM_2dbad
-	set_flags hKirbyFlags3, KIRBY3F_DIVE_BOUNCE | KIRBY3F_DIVE | KIRBY3F_DUCK | KIRBY3F_SQUISHED, $00
-	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_SPIT, $00
+	set_flags hKirbyFlags3, KIRBY3F_DIVE_BOUNCE | KIRBY3F_DIVE | KIRBY3F_DUCK | KIRBY3F_SQUISHED, NONE
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_SPIT, NONE
 	set_value wd064, $02
-	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1, NONE
 	script_delay 1
 
 AnimScript_1855:
@@ -3197,31 +3197,31 @@ AnimScript_1855:
 AnimScript_1865:
 	frame  8, OAM_2daf1
 	frame  6, OAM_2dae9
-	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_SPIT | KIRBY2F_MOUTHFUL | KIRBY2F_INHALE | KIRBY2F_HOVER, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_SPIT | KIRBY2F_MOUTHFUL | KIRBY2F_INHALE | KIRBY2F_HOVER, NONE
 	frame  8, OAM_2db61
 	set_value wd094, $01
 	script_delay 1
 
 AnimScript_1879:
-	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_INHALE, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_INHALE, NONE
 	frame  0, OAM_2d9f1
 
 AnimScript_1881:
-	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_INHALE, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_INHALE, NONE
 .loop
 	frame 12, OAM_2da21
 	frame 12, OAM_2da39
 	jump_rel .loop
 
 AnimScript_188e:
-	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_INHALE, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_INHALE, NONE
 	frame  0, OAM_2da51
 
 AnimScript_1896:
 	frame  5, OAM_2db31
 	frame  5, OAM_2daf1
 	frame  6, OAM_2dae9
-	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_SPIT | KIRBY2F_MOUTHFUL | KIRBY2F_INHALE | KIRBY2F_HOVER, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_SPIT | KIRBY2F_MOUTHFUL | KIRBY2F_INHALE | KIRBY2F_HOVER, NONE
 	set_value wd094, $01
 	script_delay 1
 
@@ -3238,8 +3238,8 @@ AnimScript_18b9:
 	frame  5, OAM_2da09
 	frame  3, OAM_2db49
 	frame  3, OAM_2db61
-	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_SPIT | KIRBY2F_MOUTHFUL | KIRBY2F_INHALE | KIRBY2F_HOVER, $00
-	set_flags hKirbyFlags4, KIRBY5F_DAMAGE_KNOCK_BACK_LEFT, $00
+	set_flags hKirbyFlags2, KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_SPIT | KIRBY2F_MOUTHFUL | KIRBY2F_INHALE | KIRBY2F_HOVER, NONE
+	set_flags hKirbyFlags4, KIRBY5F_DAMAGE_KNOCK_BACK_LEFT, NONE
 	script_delay 1
 
 AnimScript_18ce:
@@ -3250,13 +3250,13 @@ AnimScript_18ce:
 
 AnimScript_18da:
 	frame  5, OAM_2dae9
-	set_flags hKirbyFlags6, KIRBY6F_UNK4, $00
+	set_flags hKirbyFlags6, KIRBY6F_UNK4, NONE
 	script_delay 1
 
 AnimScript_18e4:
 	frame  3, OAM_2db01
 	frame  3, OAM_2db19
-	set_flags hKirbyFlags6, KIRBY6F_UNK2, $00
+	set_flags hKirbyFlags6, KIRBY6F_UNK2, NONE
 	script_delay 1
 
 AnimScript_18f1:
@@ -3433,11 +3433,12 @@ Func_19c9::
 	add hl, bc
 	ld a, [hli]
 	and a
-	jr z, .asm_19f8
+	jr z, .fade_from_white ; jump if FADE_FROM_WHITE
+	; a = FADE_FROM_BLACK
 	ldh a, [hPalFadeFlags]
 	set FADE_COLOR_F, a
 	ldh [hPalFadeFlags], a
-.asm_19f8
+.fade_from_white
 	ret
 
 LoadArea::
@@ -3497,37 +3498,37 @@ LoadArea::
 
 	inc hl
 	ld a, [hl]
-	and $15
-	jr z, .asm_1a6e
-	bit 0, a
+	and AREAF_SCROLL_LOCKED | AREAF_XWRAP | AREAF_UNK4
+	jr z, .check_boss_battle
+	bit AREAF_SCROLL_LOCKED_F, a
 	jr nz, .lock_scroll
-	bit 4, a
+	bit AREAF_UNK4_F, a
 	jr nz, .asm_1a68
 
 	ldh a, [hEngineFlags]
 	set ENGINEF_XWARP_F, a
 	ldh [hEngineFlags], a
-	jr .asm_1a6e
+	jr .check_boss_battle
 
 .lock_scroll
 	ldh a, [hPalFadeFlags]
 	set SCROLL_LOCKED_F, a
 	ldh [hPalFadeFlags], a
-	jr .asm_1a6e
+	jr .check_boss_battle
 
 .asm_1a68
 	ldh a, [hHUDFlags]
 	set HUD_6_F, a
 	ldh [hHUDFlags], a
 
-.asm_1a6e
-	bit 3, [hl]
-	jr z, .asm_1a79
+.check_boss_battle
+	bit AREAF_BOSS_BATTLE_F, [hl]
+	jr z, .not_boss_battle
 	push hl
 	ld a, MUSIC_BOSS_BATTLE
 	ld [wOverrideMusic], a
 	pop hl
-.asm_1a79
+.not_boss_battle
 	inc hl
 	ld a, [hl]
 	ld [wd042], a

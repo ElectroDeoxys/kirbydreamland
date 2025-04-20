@@ -356,7 +356,7 @@ AnimScript_20967:
 .mt_dedede_9
 	frame 120, OAM_2d8b8
 .trigger_transition
-	set_flags hKirbyFlags5, $00, KIRBY5F_TRIGGER_TRANSITION
+	set_flags hKirbyFlags5, NONE, KIRBY5F_TRIGGER_TRANSITION
 	script_end
 
 AnimScript_Projectile:
@@ -529,13 +529,13 @@ AnimScript_DiveHitbox:
 	jump_abs AnimScript_20000
 
 AnimScript_BombAttack:
-	set_flags wPowerUpAttack, $ff ^ POWERUP_MINT_LEAF, $00
+	set_flags wPowerUpAttack, $ff ^ POWERUP_MINT_LEAF, NONE
 	script_exec Func_4adf
 	set_update_func Func_141b1, AnimScript_DestructiveExplosion
 	set_scripts AnimScript_208fc, MotionScript_SpitStar
 
 AnimScript_MikeAttack:
-	set_flags wPowerUpAttack, $ff ^ POWERUP_MINT_LEAF, $00
+	set_flags wPowerUpAttack, $ff ^ POWERUP_MINT_LEAF, NONE
 	play_sfx SFX_00
 	script_exec Func_4ae6
 	set_scripts AnimScript_20925, MotionScript_10370
@@ -1067,7 +1067,7 @@ AnimScript_PoppyBrosSr:
 
 AnimScript_OnPoppyBrosSrDestroyed:
 	set_value wd3f1, $01
-	set_flags wConsumedItems, $00, 1 << 6
+	set_flags wConsumedItems, NONE, 1 << 6
 	script_exec ScriptFunc_EnableScrollingAndFadeOut
 	script_exec_arg ScriptFunc_AddScore, SCORE_300
 	set_flags hHUDFlags, HUD_BOSS_BATTLE, HUD_UPDATE_FIRST_ROW | HUD_UPDATE_LABEL | HUD_UPDATE_SCORE_DIGITS
@@ -1240,11 +1240,11 @@ AnimScript_BossHPIncrementer:
 	set_abs_pos
 	set_position 20, 20
 	set_value wBossHP, 0
-	set_flags hHUDFlags, $00, HUD_UPDATE_LABEL | HUD_BOSS_BATTLE
+	set_flags hHUDFlags, NONE, HUD_UPDATE_LABEL | HUD_BOSS_BATTLE
 .loop
 	frame 10, OAM_2d8b8
 	inc_value wBossHP
-	set_flags hHUDFlags, $00, HUD_UPDATE_FIRST_ROW
+	set_flags hHUDFlags, NONE, HUD_UPDATE_FIRST_ROW
 	play_sfx SFX_RESTORE_HP
 	dec_value wBossHPCounter
 	jump_if_equal wBossHPCounter, 0, .end
@@ -2310,8 +2310,8 @@ AnimScript_21a73:
 
 AnimScript_OnKaboolaDestroyed:
 	play_music MUSIC_NONE
-	set_flags hKirbyFlags5, $00, KIRBY5F_UNK5
-	set_flags hKirbyFlags6, KIRBY6F_UNK6, $00
+	set_flags hKirbyFlags5, NONE, KIRBY5F_UNK5
+	set_flags hKirbyFlags6, KIRBY6F_UNK6, NONE
 	set_flags hPalFadeFlags, SCROLLINGF_UNK5, SCROLL_LOCKED
 	set_value wObjectAnimScriptPtrs + (2 * OBJECT_SLOT_KIRBY) + 0, LOW(AnimScript_1623)
 	set_value wObjectAnimScriptPtrs + (2 * OBJECT_SLOT_KIRBY) + 1, HIGH(AnimScript_1623)
@@ -4035,7 +4035,7 @@ AnimScript_22834:
 	frame  2, OAM_2d884
 	frame 26, OAM_2d88c
 	set_value wd3d0, $01
-	set_flags hKirbyFlags6, KIRBY6F_UNK7, $00
+	set_flags hKirbyFlags6, KIRBY6F_UNK7, NONE
 	frame  0, OAM_2d88c
 
 AnimScript_22846:
@@ -4649,7 +4649,7 @@ AnimScript_KingDededeDespawnGuard:
 	script_end
 
 AnimScript_22def:
-	set_flags hKirbyFlags5, $00, KIRBY5F_UNK5
+	set_flags hKirbyFlags5, NONE, KIRBY5F_UNK5
 	set_value wObjectAnimScriptTimers + OBJECT_SLOT_KIRBY, $ff
 	play_music MUSIC_NONE
 	create_object AnimScript_22e3f, MotionScript_10008, Data_3421

@@ -4397,8 +4397,8 @@ MACRO area
 	dba \1 ; ?
 	db \2 ; level width in blocks
 	db \3 ; level height in blocks
-	db \4 ; if $0, fade from white, otherwise fade from black
-	db \5 ; ?
+	db \4 ; which color to fade from (FADE_FROM_WHITE/FADE_FROM_BLACK)
+	db \5 ; AREA_* flags
 	db \6 ; ?
 ENDM
 
@@ -4413,71 +4413,71 @@ Data_38b1:
 
 .GreenGreens:
 	table_width 8
-	area Data_eda3, 110,  8, $0, $00, $46 ; GREEN_GREENS_0
-	area Data_ea78,  16,  8, $0, $00, $06 ; GREEN_GREENS_1
-	area Data_eba1,  80,  8, $0, $00, $46 ; GREEN_GREENS_2
-	area Data_f005,  16, 40, $0, $00, $06 ; GREEN_GREENS_3
-	area Data_ead2,  10, 24, $0, $08, $00 ; GREEN_GREENS_4
+	area Data_eda3, 110,  8, FADE_FROM_WHITE, NONE,              $46 ; GREEN_GREENS_0
+	area Data_ea78,  16,  8, FADE_FROM_WHITE, NONE,              $06 ; GREEN_GREENS_1
+	area Data_eba1,  80,  8, FADE_FROM_WHITE, NONE,              $46 ; GREEN_GREENS_2
+	area Data_f005,  16, 40, FADE_FROM_WHITE, NONE,              $06 ; GREEN_GREENS_3
+	area Data_ead2,  10, 24, FADE_FROM_WHITE, AREAF_BOSS_BATTLE, $00 ; GREEN_GREENS_4
 	assert_table_length NUM_GREEN_GREENS_AREAS
 
 .CastleLololo:
 	table_width 8
-	area Data_f626, 10,  8, $0, $00, $00 ; CASTLE_LOLOLO_00
-	area Data_f71e, 10, 16, $1, $00, $00 ; CASTLE_LOLOLO_01
-	area Data_f3f1, 10,  8, $0, $00, $00 ; CASTLE_LOLOLO_02
-	area Data_f1cd, 24,  8, $1, $00, $0e ; CASTLE_LOLOLO_03
-	area Data_f42b, 20, 12, $1, $04, $0a ; CASTLE_LOLOLO_04
-	area Data_f771, 16, 12, $1, $00, $06 ; CASTLE_LOLOLO_05
-	area Data_f58d, 10, 20, $0, $00, $00 ; CASTLE_LOLOLO_06
-	area Data_f234, 60,  8, $1, $00, $14 ; CASTLE_LOLOLO_07
-	area Data_f317, 10,  8, $0, $00, $00 ; CASTLE_LOLOLO_08
-	area Data_f4ba, 22, 16, $0, $00, $0c ; CASTLE_LOLOLO_09
-	area Data_f199, 10,  8, $1, $00, $00 ; CASTLE_LOLOLO_10
-	area Data_f669, 16,  8, $0, $00, $06 ; CASTLE_LOLOLO_11
-	area Data_f366, 12, 16, $0, $00, $02 ; CASTLE_LOLOLO_12
-	area Data_f6bc, 16,  8, $0, $00, $06 ; CASTLE_LOLOLO_13
-	area Data_f33d, 10,  8, $0, $08, $00 ; CASTLE_LOLOLO_14
-	area Data_f801, 10,  8, $0, $00, $00 ; CASTLE_LOLOLO_15
+	area Data_f626, 10,  8, FADE_FROM_WHITE, NONE,              $00 ; CASTLE_LOLOLO_00
+	area Data_f71e, 10, 16, FADE_FROM_BLACK, NONE,              $00 ; CASTLE_LOLOLO_01
+	area Data_f3f1, 10,  8, FADE_FROM_WHITE, NONE,              $00 ; CASTLE_LOLOLO_02
+	area Data_f1cd, 24,  8, FADE_FROM_BLACK, NONE,              $0e ; CASTLE_LOLOLO_03
+	area Data_f42b, 20, 12, FADE_FROM_BLACK, AREAF_XWRAP,       $0a ; CASTLE_LOLOLO_04
+	area Data_f771, 16, 12, FADE_FROM_BLACK, NONE,              $06 ; CASTLE_LOLOLO_05
+	area Data_f58d, 10, 20, FADE_FROM_WHITE, NONE,              $00 ; CASTLE_LOLOLO_06
+	area Data_f234, 60,  8, FADE_FROM_BLACK, NONE,              $14 ; CASTLE_LOLOLO_07
+	area Data_f317, 10,  8, FADE_FROM_WHITE, NONE,              $00 ; CASTLE_LOLOLO_08
+	area Data_f4ba, 22, 16, FADE_FROM_WHITE, NONE,              $0c ; CASTLE_LOLOLO_09
+	area Data_f199, 10,  8, FADE_FROM_BLACK, NONE,              $00 ; CASTLE_LOLOLO_10
+	area Data_f669, 16,  8, FADE_FROM_WHITE, NONE,              $06 ; CASTLE_LOLOLO_11
+	area Data_f366, 12, 16, FADE_FROM_WHITE, NONE,              $02 ; CASTLE_LOLOLO_12
+	area Data_f6bc, 16,  8, FADE_FROM_WHITE, NONE,              $06 ; CASTLE_LOLOLO_13
+	area Data_f33d, 10,  8, FADE_FROM_WHITE, AREAF_BOSS_BATTLE, $00 ; CASTLE_LOLOLO_14
+	area Data_f801, 10,  8, FADE_FROM_WHITE, NONE,              $00 ; CASTLE_LOLOLO_15
 	assert_table_length NUM_CASTLE_LOLOLO_AREAS
 
 .FloatIslands:
 	table_width 8
-	area Data_e273, 120,  8, $0, $00, $6e ; FLOAT_ISLANDS_0
-	area Data_e688,  50, 16, $1, $00, $28 ; FLOAT_ISLANDS_1
-	area Data_e5bc,  10, 24, $0, $00, $00 ; FLOAT_ISLANDS_2
-	area Data_e8d3,  70,  8, $0, $00, $3c ; FLOAT_ISLANDS_3
-	area Data_e593,  10,  8, $1, $00, $00 ; FLOAT_ISLANDS_4
-	area Data_e86f,  10, 24, $1, $01, $00 ; FLOAT_ISLANDS_5
-	area Data_ea54,  10,  8, $0, $00, $00 ; FLOAT_ISLANDS_6
-	area Data_e49e,  42,  8, $0, $00, $14 ; FLOAT_ISLANDS_7
+	area Data_e273, 120,  8, FADE_FROM_WHITE, NONE,                $6e ; FLOAT_ISLANDS_0
+	area Data_e688,  50, 16, FADE_FROM_BLACK, NONE,                $28 ; FLOAT_ISLANDS_1
+	area Data_e5bc,  10, 24, FADE_FROM_WHITE, NONE,                $00 ; FLOAT_ISLANDS_2
+	area Data_e8d3,  70,  8, FADE_FROM_WHITE, NONE,                $3c ; FLOAT_ISLANDS_3
+	area Data_e593,  10,  8, FADE_FROM_BLACK, NONE,                $00 ; FLOAT_ISLANDS_4
+	area Data_e86f,  10, 24, FADE_FROM_BLACK, AREAF_SCROLL_LOCKED, $00 ; FLOAT_ISLANDS_5
+	area Data_ea54,  10,  8, FADE_FROM_WHITE, NONE,                $00 ; FLOAT_ISLANDS_6
+	area Data_e49e,  42,  8, FADE_FROM_WHITE, NONE,                $14 ; FLOAT_ISLANDS_7
 	assert_table_length NUM_FLOAT_ISLANDS_AREAS
 
 .BubblyClouds:
 	table_width 8
-	area Data_f843,   98,   8, $0, $00, $58 ; BUBBLY_CLOUDS_0
-	area Data_fc9f,   70,   8, $0, $00, $3c ; BUBBLY_CLOUDS_1
-	area Data_fac5,   18,  32, $0, $04, $16 ; BUBBLY_CLOUDS_2
-	area Data_1ace8,  50,  12, $0, $00, $28 ; BUBBLY_CLOUDS_3
-	area Data_fe39,   10,  24, $0, $00, $00 ; BUBBLY_CLOUDS_4
-	area Data_1a9d7,  50,  14, $0, $00, $28 ; BUBBLY_CLOUDS_5
-	area Data_1ab94,  60,   8, $0, $00, $32 ; BUBBLY_CLOUDS_6
-	area Data_1a800,  14,  40, $0, $00, $04 ; BUBBLY_CLOUDS_7
-	area Data_1ae6d,  10, 100, $0, $00, $00 ; BUBBLY_CLOUDS_8
-	area Data_1b12d,  10,   8, $0, $08, $00 ; BUBBLY_CLOUDS_9
+	area Data_f843,   98,   8, FADE_FROM_WHITE, NONE,              $58 ; BUBBLY_CLOUDS_0
+	area Data_fc9f,   70,   8, FADE_FROM_WHITE, NONE,              $3c ; BUBBLY_CLOUDS_1
+	area Data_fac5,   18,  32, FADE_FROM_WHITE, AREAF_XWRAP,       $16 ; BUBBLY_CLOUDS_2
+	area Data_1ace8,  50,  12, FADE_FROM_WHITE, NONE,              $28 ; BUBBLY_CLOUDS_3
+	area Data_fe39,   10,  24, FADE_FROM_WHITE, NONE,              $00 ; BUBBLY_CLOUDS_4
+	area Data_1a9d7,  50,  14, FADE_FROM_WHITE, NONE,              $28 ; BUBBLY_CLOUDS_5
+	area Data_1ab94,  60,   8, FADE_FROM_WHITE, NONE,              $32 ; BUBBLY_CLOUDS_6
+	area Data_1a800,  14,  40, FADE_FROM_WHITE, NONE,              $04 ; BUBBLY_CLOUDS_7
+	area Data_1ae6d,  10, 100, FADE_FROM_WHITE, NONE,              $00 ; BUBBLY_CLOUDS_8
+	area Data_1b12d,  10,   8, FADE_FROM_WHITE, AREAF_BOSS_BATTLE, $00 ; BUBBLY_CLOUDS_9
 	assert_table_length NUM_BUBBLY_CLOUDS_AREAS
 
 .MtDedede:
 	table_width 8
-	area Data_1b16e,  60,  8, $0, $10, $32 ; MT_DEDEDE_0
-	area Data_1b653,  40,  8, $0, $00, $1e ; MT_DEDEDE_1
-	area Data_1b225,  30, 16, $0, $00, $14 ; MT_DEDEDE_2
-	area Data_1b39c,  26, 14, $0, $00, $10 ; MT_DEDEDE_3
-	area Data_1b497,  10, 50, $0, $00, $00 ; MT_DEDEDE_4
-	area Data_1b1e2,  18,  8, $0, $00, $08 ; MT_DEDEDE_5
-	area Data_ead2,   10, 24, $0, $00, $00 ; MT_DEDEDE_6
-	area Data_e49e,   42,  8, $0, $00, $14 ; MT_DEDEDE_7
-	area Data_f33d,   10,  8, $0, $00, $00 ; MT_DEDEDE_8
-	area Data_1b12d,  10,  8, $0, $00, $00 ; MT_DEDEDE_9
+	area Data_1b16e,  60,  8, FADE_FROM_WHITE, AREAF_UNK4, $32 ; MT_DEDEDE_0
+	area Data_1b653,  40,  8, FADE_FROM_WHITE, NONE,       $1e ; MT_DEDEDE_1
+	area Data_1b225,  30, 16, FADE_FROM_WHITE, NONE,       $14 ; MT_DEDEDE_2
+	area Data_1b39c,  26, 14, FADE_FROM_WHITE, NONE,       $10 ; MT_DEDEDE_3
+	area Data_1b497,  10, 50, FADE_FROM_WHITE, NONE,       $00 ; MT_DEDEDE_4
+	area Data_1b1e2,  18,  8, FADE_FROM_WHITE, NONE,       $08 ; MT_DEDEDE_5
+	area Data_ead2,   10, 24, FADE_FROM_WHITE, NONE,       $00 ; MT_DEDEDE_6
+	area Data_e49e,   42,  8, FADE_FROM_WHITE, NONE,       $14 ; MT_DEDEDE_7
+	area Data_f33d,   10,  8, FADE_FROM_WHITE, NONE,       $00 ; MT_DEDEDE_8
+	area Data_1b12d,  10,  8, FADE_FROM_WHITE, NONE,       $00 ; MT_DEDEDE_9
 	assert_table_length NUM_MT_DEDEDE_AREAS
 
 Data_3a43::

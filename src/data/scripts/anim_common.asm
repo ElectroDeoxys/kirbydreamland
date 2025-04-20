@@ -251,7 +251,7 @@ ENDC
 
 	frame  1, OAM_2d8d9
 	set_kirby_pos
-	set_flags hKirbyFlags5, KIRBY5F_UNK5, $00
+	set_flags hKirbyFlags5, KIRBY5F_UNK5, NONE
 	script_delay 0
 
 IF DEF(EXPORT_SCRIPTS)
@@ -259,7 +259,7 @@ AnimScript_20206::
 ELSE
 AnimScript_20206_@:
 ENDC
-	set_flags hEngineFlags, $00, ENGINEF_UNK5
+	set_flags hEngineFlags, NONE, ENGINEF_UNK5
 	jump_if_flags hKirbyFlags6, KIRBY6F_UNK7, $4008 ; bug?
 	set_motion_script MotionScript_KirbyWarpStar_Crash2
 	create_object AnimScript_Explosion, MotionScript_10008, Data_3425
@@ -310,7 +310,7 @@ ENDC
 	frame 58, OAM_2db69
 	frame  8, OAM_2dbc9
 	set_kirby_pos
-	set_flags hPalFadeFlags, $00, SCROLL_LOCKED
+	set_flags hPalFadeFlags, NONE, SCROLL_LOCKED
 	set_value wStageTransitionCounter, 1
 	set_motion_script MotionScript_10008
 	frame  0, OAM_2d8b9
@@ -386,7 +386,7 @@ ENDC
 	script_call AnimScript_KirbySpin_Left
 	script_call AnimScript_KirbySpin_Left
 	frame  1, OAM_2d909
-	set_flags hKirbyFlags5, $00, KIRBY5F_UNK0
+	set_flags hKirbyFlags5, NONE, KIRBY5F_UNK0
 	script_delay 1
 
 IF DEF(EXPORT_SCRIPTS)
@@ -396,7 +396,7 @@ AnimScript_2036c_@:
 ENDC
 	create_object AnimScript_DefeatStars, MotionScript_10008, Data_3421
 	frame 16, OAM_2d8b8
-	set_flags wClearScreenFlags, $00, CLEAR_NEXT_OBJ
+	set_flags wClearScreenFlags, NONE, CLEAR_NEXT_OBJ
 	script_end
 
 IF DEF(EXPORT_SCRIPTS)
@@ -420,7 +420,7 @@ ENDC
 	frame  2, OAM_2dccd
 	frame  2, OAM_2dcd9
 	frame  2, OAM_2dce5
-	set_flags wClearScreenFlags, $00, CLEAR_NEXT_OBJ
+	set_flags wClearScreenFlags, NONE, CLEAR_NEXT_OBJ
 	script_end
 
 IF DEF(EXPORT_SCRIPTS)
@@ -461,7 +461,7 @@ AnimScript_203de::
 ELSE
 AnimScript_203de_@:
 ENDC
-	set_flags hKirbyFlags5, $00, $20
+	set_flags hKirbyFlags5, NONE, KIRBY5F_UNK5
 	set_update_func Func_142dc, NULL
 IF DEF(EXPORT_SCRIPTS)
 AnimScript_203e8::

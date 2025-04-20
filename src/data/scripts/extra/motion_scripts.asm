@@ -317,7 +317,7 @@ MotionScript_KirbyWarpStar_Crash1:
 	set_velocities  8, 0, VEL_DOWN_3_00
 MotionScript_Kirby_EndTransitionSegment:
 	set_kirby_pos
-	set_flags hKirbyFlags3, KIRBY3F_DIVE_BOUNCE | KIRBY3F_DIVE, $00
+	set_flags hKirbyFlags3, KIRBY3F_DIVE_BOUNCE | KIRBY3F_DIVE, NONE
 	set_value wStageTransitionCounter, 1
 	set_velocities  0, 0, 0
 
@@ -2832,9 +2832,9 @@ MotionScript_31ca3:
 ; unreferenced
 MotionScript_31d31:
 	script_exec_arg ScriptFunc_AddScore, $05
-	set_flags hHUDFlags, $80, $23
-	set_flags hEngineFlags, $02, $00
-	set_flags wd1a0, $30, $00
+	set_flags hHUDFlags, HUD_BOSS_BATTLE, HUD_UPDATE_FIRST_ROW | HUD_UPDATE_LABEL | HUD_UPDATE_SCORE_DIGITS
+	set_flags hEngineFlags, HURT_PAL_EFFECT, NONE
+	set_flags wd1a0 + OBJECT_SLOT_KIRBY, $30, NONE
 	set_value wFoodPowerUpCounter + 0, $00
 	set_value wFoodPowerUpCounter + 1, $00
 	set_value wPowerUpAttack, $00
@@ -2846,8 +2846,8 @@ MotionScript_31d31:
 	dec_value wKirbyScreenY
 	script_repeat_end
 	inc_value wLevelYSection
-	set_flags hKirbyFlags5, KIRBY5F_UNK5, $00
-	set_flags hEngineFlags, $41, $00
+	set_flags hKirbyFlags5, KIRBY5F_UNK5, NONE
+	set_flags hEngineFlags, KABOOLA_BATTLE | ENGINEF_UNK6, NONE
 	set_velocities  0, 0, 0
 
 MotionScript_31d72:
@@ -5033,7 +5033,7 @@ MotionScript_330ee:
 ; unreferenced
 MotionScript_33117:
 	script_exec_arg ScriptFunc_AddScore, $06
-	set_flags hHUDFlags, $80, $23
+	set_flags hHUDFlags, HUD_BOSS_BATTLE, HUD_UPDATE_FIRST_ROW | HUD_UPDATE_LABEL | HUD_UPDATE_SCORE_DIGITS
 	create_object AnimScript_24972, MotionScript_33136, WarpStarFloatingProperties
 	set_velocities  8, VEL_RIGHT_0_75, VEL_UP_2_00
 	set_velocities  8, VEL_RIGHT_1_00, VEL_UP_2_00
