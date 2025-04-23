@@ -1,0 +1,8 @@
+StageMusics:
+	table_width 1
+	db MUSIC_GREEN_GREENS
+	db MUSIC_CASTLE_LOLOLO
+	db MUSIC_FLOAT_ISLANDS
+	db MUSIC_BUBBLY_CLOUDS
+	db MUSIC_MT_DEDEDE
+	assert_table_length NUM_STAGES

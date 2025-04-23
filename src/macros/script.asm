@@ -237,6 +237,10 @@ MACRO play_music
 	script_exec_arg PlayMusic, \1
 ENDM
 
+MACRO add_score
+	script_exec_arg ScriptFunc_AddScore, \1
+ENDM
+
 MACRO set_object_properties
 	script_exec ScriptFunc_SetObjectProperties
 	dw \1

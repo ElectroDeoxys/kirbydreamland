@@ -24,6 +24,8 @@ ROMX $5
 	"Audio Engine"
 ROMX $6
 	"Bank 6"
+	org $6800
+	"Level Blocks"
 ROMX $7
 	"Bank 7"
 ROMX $8

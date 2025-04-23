@@ -298,10 +298,10 @@ Data_2089::
 
 StageBlockTileMaps::
 	table_width 3
-	dba Data_c6e0 ; GREEN_GREENS
-	dba Data_cac3 ; CASTLE_LOLOLO
-	dba Data_c8d9 ; FLOAT_ISLANDS
-	dba Data_ccff ; BUBBLY_CLOUDS
+	dba GreenGreensBlockTileMaps ; GREEN_GREENS
+	dba CastleLololoBlockTileMaps ; CASTLE_LOLOLO
+	dba FloatIslandsBlockTileMaps ; FLOAT_ISLANDS
+	dba BubblyCloudsBlockTileMaps ; BUBBLY_CLOUDS
 	dba Data_1b77c ; MT_DEDEDE
 	assert_table_length NUM_STAGES
 

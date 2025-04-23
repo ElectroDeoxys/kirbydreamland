@@ -1069,7 +1069,7 @@ AnimScript_OnPoppyBrosSrDestroyed:
 	set_value wd3f1, $01
 	set_flags wConsumedItems, NONE, 1 << 6
 	script_exec ScriptFunc_EnableScrollingAndFadeOut
-	script_exec_arg ScriptFunc_AddScore, SCORE_300
+	add_score SCORE_300
 	set_flags hHUDFlags, HUD_BOSS_BATTLE, HUD_UPDATE_FIRST_ROW | HUD_UPDATE_LABEL | HUD_UPDATE_SCORE_DIGITS
 	script_call AnimScript_20b49
 	script_end
@@ -1080,7 +1080,7 @@ AnimScript_PoppyBrosSrBomb:
 
 AnimScript_WhispyWoods:
 .loop_wait
-	jump_if_equal wLevelYSection, $11, .init
+	jump_if_equal wLevelYSection, 17, .init
 	frame  1, OAM_2c000
 	jump_abs .loop_wait
 
@@ -1167,7 +1167,7 @@ AnimScript_OnWhispyWoodsDestroyed:
 	play_sfx SFX_29
 	create_object AnimScript_20967, MotionScript_111c7, Data_3421
 	script_call AnimScript_20b05
-	script_exec_arg ScriptFunc_AddScore, SCORE_1000
+	add_score SCORE_1000
 	set_flags hHUDFlags, HUD_BOSS_BATTLE, HUD_UPDATE_FIRST_ROW | HUD_UPDATE_LABEL | HUD_UPDATE_SCORE_DIGITS
 	frame 30, OAM_2d8b8
 	set_value wClearScreenFlags, CLEAR_ACTIVE | CLEAR_NON_MIKE
@@ -1223,7 +1223,7 @@ AnimScript_WhispyWoodsApple_RollRight:
 
 AnimScript_WhispyWoodsScrollLocker:
 .loop
-	jump_if_equal wLevelYSection, $11, .lock_scroll
+	jump_if_equal wLevelYSection, 17, .lock_scroll
 	frame  1, OAM_2d8b8
 	jump_abs .loop
 
@@ -4229,7 +4229,7 @@ AnimScript_OnKrackoDestroyed:
 	play_music MUSIC_NONE
 	create_object AnimScript_20967, MotionScript_1032d, Data_3421
 	script_call AnimScript_20b05
-	script_exec_arg ScriptFunc_AddScore, SCORE_2500
+	add_score SCORE_2500
 	set_flags hHUDFlags, HUD_BOSS_BATTLE, HUD_UPDATE_FIRST_ROW | HUD_UPDATE_LABEL | HUD_UPDATE_SCORE_DIGITS
 	frame 30, OAM_2d8b8
 	set_value wClearScreenFlags, CLEAR_ACTIVE | CLEAR_NON_MIKE
@@ -4424,7 +4424,7 @@ AnimScript_OnLololoLalalaDestroyed:
 	play_music MUSIC_NONE
 	play_sfx SFX_29
 	script_call AnimScript_20b05
-	script_exec_arg ScriptFunc_AddScore, SCORE_650
+	add_score SCORE_650
 	set_flags hHUDFlags, HUD_BOSS_BATTLE, HUD_UPDATE_FIRST_ROW | HUD_UPDATE_LABEL | HUD_UPDATE_SCORE_DIGITS
 	script_delay 120
 	set_flags hKirbyFlags5, $ff, KIRBY5F_TRIGGER_TRANSITION
@@ -4432,7 +4432,7 @@ AnimScript_OnLololoLalalaDestroyed:
 
 .castle_lololo_midstage
 	script_call AnimScript_20b49
-	script_exec_arg ScriptFunc_AddScore, SCORE_400
+	add_score SCORE_400
 	set_flags hHUDFlags, HUD_BOSS_BATTLE, HUD_UPDATE_FIRST_ROW | HUD_UPDATE_LABEL | HUD_UPDATE_SCORE_DIGITS
 	script_delay 120
 	set_flags hKirbyFlags5, $ff, KIRBY5F_TRIGGER_TRANSITION

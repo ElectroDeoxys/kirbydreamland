@@ -188,7 +188,7 @@ ENDC
 .script_101a3
 	play_sfx SFX_ENTER_DOOR
 	set_anim_script AnimScript_203e8
-	set_value wDamageBlinkingCounter, $5a
+	set_value wDamageBlinkingCounter, 90
 	set_flags wd1a0 + OBJECT_SLOT_KIRBY, NONE, $20
 	position_offset 8, 0
 	create_object AnimScript_20138, MotionScript_10008, Data_3421
@@ -217,7 +217,7 @@ ENDC
 .script_101ee
 	play_sfx SFX_ENTER_DOOR
 	set_anim_script AnimScript_203e8
-	set_value wDamageBlinkingCounter, $5a
+	set_value wDamageBlinkingCounter, 90
 	set_flags wd1a0 + OBJECT_SLOT_KIRBY, NONE, $20
 	position_offset -8, 0
 	create_object AnimScript_20138, MotionScript_10008, Data_3421

@@ -1860,7 +1860,7 @@ InitRAM::
 	ld a, SELECT | START
 	ld [wNonStickyKeys], a
 	ld a, TRUE
-	ld [wMtDededeDefeatedBosses + MT_DEDEDE_5], a
+	ld [wMtDededeClearedAreas + MT_DEDEDE_5], a
 
 	; initial RNG seed
 	ld hl, wRNG
@@ -1878,4 +1878,4 @@ LoadMultiplicationTable::
 	ret
 
 .MultiplicationTableData:
-	INCBIN "data/data_14b3a.bin.lz"
+	INCBIN "data/multiplication_table.bin.lz"

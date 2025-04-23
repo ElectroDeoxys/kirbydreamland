@@ -126,7 +126,7 @@ AnimScript_247cb:
 	script_call AnimScript_KirbySpin_Left
 	frame 23, OAM_2dbad
 	frame 60, OAM_2d911
-	set_value wStageTransitionCounter, $01
+	set_value wStageTransitionCounter, 1
 	script_delay 0
 
 AnimScript_24812:
@@ -157,7 +157,7 @@ AnimScript_24812:
 	script_repeat_end
 	script_call AnimScript_KirbySpin_Right
 	frame 60, OAM_2d8e1
-	set_value wStageTransitionCounter, $01
+	set_value wStageTransitionCounter, 1
 	script_delay 0
 
 AnimScript_24865:
@@ -179,7 +179,7 @@ AnimScript_24865:
 	script_call AnimScript_KirbySpin_Right
 	frame 32, OAM_2dbad
 	frame 60, OAM_2d911
-	set_value wStageTransitionCounter, $01
+	set_value wStageTransitionCounter, 1
 	script_delay 0
 
 AnimScript_2489d:
@@ -198,7 +198,7 @@ AnimScript_2489d:
 	script_call AnimScript_KirbySpin_Left
 	frame 32, OAM_2dbad
 	frame 60, OAM_2d911
-	set_value wStageTransitionCounter, $01
+	set_value wStageTransitionCounter, 1
 	script_delay 0
 
 AnimScript_KirbySpin_Right:
@@ -308,7 +308,7 @@ AnimScript_24972:
 	jump_abs .loop
 
 AnimScript_24981:
-	jump_if_equal wStage, $04, .script_249a6
+	jump_if_equal wStage, MT_DEDEDE, .script_249a6
 	play_music MUSIC_SPARKLING_STAR
 .script_2498b
 	frame  4, OAM_2dc91
@@ -1030,7 +1030,7 @@ AnimScript_24fba:
 .script_24fc1
 	set_object_properties Data_356b
 	script_exec ScriptFunc_LockScrolling
-	set_value wBossHPCounter, $03
+	set_value wBossHPCounter, 3
 	set_value wd3c1, $01
 	create_object AnimScript_2526d, MotionScript_10008, Data_3421
 	frame 45, OAM_2c088
@@ -1105,7 +1105,7 @@ AnimScript_OnPoppyBrosSrDestroyed:
 	set_value wd3f1, $01
 	set_flags wConsumedItems, NONE, 1 << 6
 	script_exec ScriptFunc_EnableScrollingAndFadeOut
-	script_exec_arg ScriptFunc_AddScore, SCORE_300
+	add_score SCORE_300
 	set_flags hHUDFlags, HUD_BOSS_BATTLE, HUD_UPDATE_FIRST_ROW | HUD_UPDATE_LABEL | HUD_UPDATE_SCORE_DIGITS
 	script_call AnimScript_24b63
 	script_end
@@ -1116,12 +1116,12 @@ AnimScript_250a0:
 
 AnimScript_250a6:
 .script_250a6
-	jump_if_equal wLevelYSection, $11, .script_250b2
+	jump_if_equal wLevelYSection, 17, .script_250b2
 	frame  1, OAM_2c000
 	jump_abs .script_250a6
 .script_250b2
 	set_object_properties Data_3586
-	set_value wBossHPCounter, $06
+	set_value wBossHPCounter, 6
 	set_value wd3c1, $01
 	create_object AnimScript_2526d, MotionScript_10008, Data_3421
 	frame 60, OAM_2c000
@@ -1219,7 +1219,7 @@ AnimScript_OnWhispyWoodsDestroyed:
 	play_sfx SFX_29
 	create_object AnimScript_24981, MotionScript_312a2, Data_3421
 	script_call AnimScript_24b1f
-	script_exec_arg ScriptFunc_AddScore, SCORE_1000
+	add_score SCORE_1000
 	set_flags hHUDFlags, HUD_BOSS_BATTLE, HUD_UPDATE_FIRST_ROW | HUD_UPDATE_LABEL | HUD_UPDATE_SCORE_DIGITS
 	frame 30, OAM_2d8b8
 	set_value wClearScreenFlags, CLEAR_ACTIVE | CLEAR_NON_MIKE
@@ -1283,7 +1283,7 @@ AnimScript_25241:
 	jump_rel .loop
 
 AnimScript_25259:
-	jump_if_equal wLevelYSection, $11, .loop
+	jump_if_equal wLevelYSection, 17, .loop
 	frame  1, OAM_2d8b8
 	jump_abs AnimScript_25259
 .loop
@@ -1298,7 +1298,7 @@ AnimScript_2526d:
 	frame  1, OAM_2d8b8
 	set_abs_pos
 	set_position 20, 20
-	set_value wBossHP, $00
+	set_value wBossHP, 0
 	set_flags hHUDFlags, NONE, HUD_UPDATE_LABEL | HUD_BOSS_BATTLE
 .script_2527d
 	frame 10, OAM_2d8b8
@@ -1306,7 +1306,7 @@ AnimScript_2526d:
 	set_flags hHUDFlags, NONE, HUD_UPDATE_FIRST_ROW
 	play_sfx SFX_RESTORE_HP
 	dec_value wBossHPCounter
-	jump_if_equal wBossHPCounter, $00, .script_25297
+	jump_if_equal wBossHPCounter, 0, .script_25297
 	jump_rel .script_2527d
 .script_25297
 	script_end
@@ -4536,7 +4536,7 @@ AnimScript_OnKrackoDestroyed:
 	play_music MUSIC_NONE
 	create_object AnimScript_24981, MotionScript_1032d, Data_3421
 	script_call AnimScript_24b1f
-	script_exec_arg ScriptFunc_AddScore, $07
+	add_score SCORE_2500
 	set_flags hHUDFlags, HUD_BOSS_BATTLE, HUD_UPDATE_FIRST_ROW | HUD_UPDATE_LABEL | HUD_UPDATE_SCORE_DIGITS
 	frame 30, OAM_2d8b8
 	set_value wClearScreenFlags, $81
@@ -4747,14 +4747,14 @@ AnimScript_OnLololoLalalaDestroyed:
 	play_music MUSIC_NONE
 	play_sfx SFX_29
 	script_call AnimScript_24b1f
-	script_exec_arg ScriptFunc_AddScore, $03
+	add_score SCORE_650
 	set_flags hHUDFlags, HUD_BOSS_BATTLE, HUD_UPDATE_FIRST_ROW | HUD_UPDATE_LABEL | HUD_UPDATE_SCORE_DIGITS
 	script_delay 120
 	set_flags hKirbyFlags5, $ff, KIRBY5F_TRIGGER_TRANSITION
 	script_end
 .script_2708c
 	script_call AnimScript_24b63
-	script_exec_arg ScriptFunc_AddScore, $02
+	add_score SCORE_400
 	set_flags hHUDFlags, HUD_BOSS_BATTLE, HUD_UPDATE_FIRST_ROW | HUD_UPDATE_LABEL | HUD_UPDATE_SCORE_DIGITS
 	script_delay 120
 	set_flags hKirbyFlags5, $ff, KIRBY5F_TRIGGER_TRANSITION

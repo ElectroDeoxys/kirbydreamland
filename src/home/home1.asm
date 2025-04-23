@@ -406,7 +406,7 @@ ProcessDoorConnection::
 	ld a, [wArea]
 	ld c, a
 	ld b, $00
-	ld hl, wMtDededeDefeatedBosses
+	ld hl, wMtDededeClearedAreas
 	add hl, bc
 	ld a, [hl]
 	cp TRUE
@@ -3328,7 +3328,7 @@ ClearSprites::
 .got_offset
 	ld l, a
 	ld h, HIGH(wVirtualOAM)
-	ld de, $4
+	ld de, sizeof_OAM_ATTRS
 	ld b, $00
 .loop_oam
 	ld [hl], b
@@ -3542,7 +3542,7 @@ LoadArea::
 	ldh a, [hPalFadeFlags]
 	set SCROLL_LOCKED_F, a
 	ldh [hPalFadeFlags], a
-	ld a, [wMtDededeDefeatedBosses + MT_DEDEDE_1]
+	ld a, [wMtDededeClearedAreas + MT_DEDEDE_1]
 	and a
 	jr z, .asm_1aae
 	ld a, $15
@@ -3555,7 +3555,7 @@ LoadArea::
 	ld [wLevelBlockMap + $ac], a
 	ld b, 1
 .asm_1aae
-	ld a, [wMtDededeDefeatedBosses + MT_DEDEDE_2]
+	ld a, [wMtDededeClearedAreas + MT_DEDEDE_2]
 	and a
 	jr z, .asm_1ac9
 	ld a, $15
@@ -3568,7 +3568,7 @@ LoadArea::
 	ld [wLevelBlockMap + $19c], a
 	inc b
 .asm_1ac9
-	ld a, [wMtDededeDefeatedBosses + MT_DEDEDE_3]
+	ld a, [wMtDededeClearedAreas + MT_DEDEDE_3]
 	and a
 	jr z, .asm_1ae4
 	ld a, $15
@@ -3581,7 +3581,7 @@ LoadArea::
 	ld [wLevelBlockMap + $b2], a
 	inc b
 .asm_1ae4
-	ld a, [wMtDededeDefeatedBosses + MT_DEDEDE_4]
+	ld a, [wMtDededeClearedAreas + MT_DEDEDE_4]
 	and a
 	jr z, .asm_1aff
 	ld a, $15
@@ -3598,22 +3598,22 @@ LoadArea::
 	cp b
 	jr nz, .asm_1b08
 	xor a
-	ld [wMtDededeDefeatedBosses + MT_DEDEDE_5], a
+	ld [wMtDededeClearedAreas + MT_DEDEDE_5], a
 .asm_1b08
 	xor a
 .asm_1b09
-	ld hl, wMtDededeDefeatedBosses
+	ld hl, wMtDededeClearedAreas
 	ld c, a
 	ld b, $00
 	add hl, bc
 	ld a, TRUE
 	ld [hl], a
 	xor a
-	ld [wMtDededeDefeatedBosses + MT_DEDEDE_0], a
-	ld [wMtDededeDefeatedBosses + MT_DEDEDE_6], a
-	ld [wMtDededeDefeatedBosses + MT_DEDEDE_8], a
-	ld [wMtDededeDefeatedBosses + MT_DEDEDE_7], a
-	ld [wMtDededeDefeatedBosses + MT_DEDEDE_9], a
+	ld [wMtDededeClearedAreas + MT_DEDEDE_0], a
+	ld [wMtDededeClearedAreas + MT_DEDEDE_6], a
+	ld [wMtDededeClearedAreas + MT_DEDEDE_8], a
+	ld [wMtDededeClearedAreas + MT_DEDEDE_7], a
+	ld [wMtDededeClearedAreas + MT_DEDEDE_9], a
 	ld hl, Data_1bc5
 	add hl, bc
 	ld a, [hl]

@@ -50,7 +50,7 @@ ConfigurationMenu:
 
 .input_ret
 	wait_vblank
-	call Func_19098
+	call UpdateObjectsAndClearStaleSprites
 
 	ld hl, .input_ret
 	push hl
@@ -263,7 +263,7 @@ ConfigurationMenu:
 
 .asm_1a58a
 	wait_vblank
-	call Func_19098
+	call UpdateObjectsAndClearStaleSprites
 
 	ld a, [hJoypadPressed]
 	bit A_BUTTON_F, a

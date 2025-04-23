@@ -2636,7 +2636,7 @@ MotionScript_31b54:
 	set_velocities  0, 0, 0
 
 MotionScript_31b5a:
-	set_value wBossHPCounter, $08
+	set_value wBossHPCounter, 8
 	set_value wd3c1, $05
 	create_object AnimScript_2526d, MotionScript_10008, Data_3421
 	set_velocities 32, 0, 0
@@ -2831,7 +2831,7 @@ MotionScript_31ca3:
 
 ; unreferenced
 MotionScript_31d31:
-	script_exec_arg ScriptFunc_AddScore, $05
+	add_score SCORE_2000
 	set_flags hHUDFlags, HUD_BOSS_BATTLE, HUD_UPDATE_FIRST_ROW | HUD_UPDATE_LABEL | HUD_UPDATE_SCORE_DIGITS
 	set_flags hEngineFlags, HURT_PAL_EFFECT, NONE
 	set_flags wd1a0 + OBJECT_SLOT_KIRBY, $30, NONE
@@ -4914,7 +4914,7 @@ MotionScript_32fb0:
 	jump_rel .loop
 
 MotionScript_32fb8:
-	set_value wBossHPCounter, $03
+	set_value wBossHPCounter, 3
 	set_value wd3c1, $01
 	create_object AnimScript_2526d, MotionScript_10008, Data_3421
 	set_anim_script AnimScript_26d20
@@ -5032,7 +5032,7 @@ MotionScript_330ee:
 
 ; unreferenced
 MotionScript_33117:
-	script_exec_arg ScriptFunc_AddScore, $06
+	add_score SCORE_750
 	set_flags hHUDFlags, HUD_BOSS_BATTLE, HUD_UPDATE_FIRST_ROW | HUD_UPDATE_LABEL | HUD_UPDATE_SCORE_DIGITS
 	create_object AnimScript_24972, MotionScript_33136, WarpStarFloatingProperties
 	set_velocities  8, VEL_RIGHT_0_75, VEL_UP_2_00
@@ -5090,7 +5090,7 @@ MotionScript_33195:
 	set_velocities  0, VEL_RIGHT_1_8TH, VEL_DOWN_6_00
 
 MotionScript_331aa:
-	set_value wBossHPCounter, $06
+	set_value wBossHPCounter, 6
 	set_value wd3c1, $01
 	create_object AnimScript_2526d, MotionScript_10008, Data_3421
 	script_exec Func_48a3
@@ -5371,7 +5371,7 @@ MotionScript_33497:
 	jump_abs MotionScript_1032d
 
 MotionScript_334a3:
-	set_value wBossHPCounter, $06
+	set_value wBossHPCounter, 6
 	set_value wd3c1, $01
 	create_object AnimScript_2526d, MotionScript_10008, Data_3421
 	set_value wKirbySideOfScreen, $00
@@ -5575,7 +5575,7 @@ MotionScript_336b3:
 	script_ret
 
 MotionScript_336cc:
-	set_value wBossHPCounter, $03
+	set_value wBossHPCounter, 3
 	set_value wd3c1, $01
 	create_object AnimScript_2526d, MotionScript_10008, Data_3421
 MotionScript_336db:
@@ -6041,7 +6041,7 @@ MotionScript_33aca:
 	jump_rel .loop
 
 MotionScript_OnKingDededeDestroyed:
-	script_exec_arg ScriptFunc_AddScore, SCORE_10000
+	add_score SCORE_10000
 	set_flags hHUDFlags, HUD_BOSS_BATTLE, HUD_UPDATE_FIRST_ROW | HUD_UPDATE_LABEL | HUD_UPDATE_SCORE_DIGITS
 	script_exec Func_48c0
 	script_end

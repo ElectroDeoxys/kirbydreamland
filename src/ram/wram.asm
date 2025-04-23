@@ -92,7 +92,7 @@ wd041:: ; d041
 wd042:: ; d042
 	db
 
-wMtDededeDefeatedBosses:: ; d043
+wMtDededeClearedAreas:: ; d043
 	ds NUM_MT_DEDEDE_AREAS
 
 wd04d:: ; d04d
