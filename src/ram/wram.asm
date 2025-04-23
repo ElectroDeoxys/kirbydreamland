@@ -536,10 +536,10 @@ wd40d:: ; d40d
 wd40f:: ; d40f
 	db
 
-wd410:: ; d410
+wAttackObjectStatus:: ; d410
 	db
 
-wd411:: ; d411
+wAttackObjectIndex:: ; d411
 	db
 
 wCurObjCollisionX:: ; d412

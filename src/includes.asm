@@ -9,6 +9,7 @@ INCLUDE "constants/hardware.inc"
 
 INCLUDE "constants/charmaps.asm"
 INCLUDE "constants/audio_constants.asm"
+INCLUDE "constants/block_constants.asm"
 INCLUDE "constants/gfx_constants.asm"
 INCLUDE "constants/input_constants.asm"
 INCLUDE "constants/item_constants.asm"

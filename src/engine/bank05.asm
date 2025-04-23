@@ -512,7 +512,7 @@ ObjFunc_CountdownToExplosion::
 	or e
 	ret nz ; still counting down
 	ld hl, AnimScript_203b6
-	ld de, MotionScript_10008
+	ld de, MotionScript_Stationary
 	call SetObjectScripts
 	ret
 
@@ -564,7 +564,7 @@ Func_142dc::
 	ld [wd3d2], a
 	ld c, OBJECT_SLOT_KIRBY
 	ld hl, AnimScript_20000
-	ld de, MotionScript_10008
+	ld de, MotionScript_Stationary
 	call SetObjectScripts
 	pop bc
 	jp Func_241f
@@ -625,13 +625,13 @@ ProcessObjectInteractions::
 	ld a, [wObjectStatuses + OBJECT_SLOT_13]
 	bit OBJSTAT_UNK2_F, a
 	ret nz
-	ld [wd410], a
+	ld [wAttackObjectStatus], a
 	ld a, [wObjectScreenXPositions + OBJECT_SLOT_13]
 	ld [wCurObjCollisionX], a
 	ld a, [wObjectScreenYPositions + OBJECT_SLOT_13]
 	ld [wCurObjCollisionY], a
 	ld a, OBJECT_SLOT_13
-	ld [wd411], a
+	ld [wAttackObjectIndex], a
 	ld hl, wObjectPropertyPtrs + OBJECT_SLOT_13 * $2
 	jr .asm_143cd
 
@@ -646,13 +646,13 @@ ProcessObjectInteractions::
 	ld a, [wObjectStatuses + OBJECT_SLOT_14]
 	bit OBJSTAT_UNK2_F, a
 	ret nz
-	ld [wd410], a
+	ld [wAttackObjectStatus], a
 	ld a, [wObjectScreenXPositions + OBJECT_SLOT_14]
 	ld [wCurObjCollisionX], a
 	ld a, [wObjectScreenYPositions + OBJECT_SLOT_14]
 	ld [wCurObjCollisionY], a
 	ld a, OBJECT_SLOT_14
-	ld [wd411], a
+	ld [wAttackObjectIndex], a
 	ld hl, wObjectPropertyPtrs + OBJECT_SLOT_14 * $2
 .asm_143cd
 	ld a, [hli]
@@ -699,7 +699,7 @@ ProcessObjectInteractions::
 	ld a, [hli] ; OBJ_DAMAGE
 	ld [wDamage], a
 	inc hl
-	ld a, [hli] ; OBJ_UNK5
+	ld a, [hli] ; OBJ_INTERACTION
 	ld [wd40f], a
 	ld a, [hli] ; OBJ_SCORE
 	ld [wScoreToAdd], a
@@ -757,9 +757,9 @@ ProcessObjectInteractions::
 
 .skip_damage
 	ld a, [wd40f]
-	bit 3, a
+	bit OBJINT_UNK3_F, a
 	ret nz
-	bit 0, a
+	bit OBJINT_VULNERABLE_F, a
 	ret z
 	call .DecrementObjectHP
 	ret nz ; still has HP
@@ -787,7 +787,7 @@ ProcessObjectInteractions::
 	ld a, [hli] ; OBJ_DAMAGE
 	ld [wDamage], a
 	inc hl
-	ld a, [hli] ; OBJ_UNK5
+	ld a, [hli] ; OBJ_INTERACTION
 	ld [wd40f], a
 	ld a, [hli] ; OBJ_SCORE
 	ld [wScoreToAdd], a
@@ -797,14 +797,14 @@ ProcessObjectInteractions::
 	ld [wd40d + 1], a
 
 	ld a, [wd40f]
-	bit 4, a
+	bit OBJINT_UNK4_F, a
 	ret nz
-	bit 3, a
+	bit OBJINT_UNK3_F, a
 	jr z, .asm_144f5
-	ld a, [wd410]
-	bit 0, a
-	jr nz, .asm_144ee
-	bit 3, a
+	ld a, [wAttackObjectStatus]
+	bit OBJSTAT_UNK0_F, a
+	jr nz, .destroy_atk_obj
+	bit OBJSTAT_UNK3_F, a
 	jr z, .asm_144c5
 	ld hl, AnimScript_2003c
 	jr .asm_144e4
@@ -822,46 +822,46 @@ ProcessObjectInteractions::
 	ld a, [wd40d + 1]
 	ld d, a
 	call Func_23af
-	jr .asm_144ee
+	jr .destroy_atk_obj
 
 .non_zero_hp_1
 	ld hl, AnimScript_20026
 .asm_144e4
-	ld de, MotionScript_10008
-	ld a, [wd411]
+	ld de, MotionScript_Stationary
+	ld a, [wAttackObjectIndex]
 	ld c, a
 	jp SetObjectScripts
-.asm_144ee
-	ld a, [wd411]
+.destroy_atk_obj
+	ld a, [wAttackObjectIndex]
 	ld c, a
 	jp DestroyObject
 .asm_144f5
-	bit 0, a
+	bit OBJINT_VULNERABLE_F, a
 	jr nz, .asm_1451e
 
 .non_zero_hp_2
-	ld a, [wd411]
+	ld a, [wAttackObjectIndex]
 	ld c, a
-	ld a, [wd410]
-	bit 0, a
+	ld a, [wAttackObjectStatus]
+	bit OBJSTAT_UNK0_F, a
 	jr nz, .asm_1451b
 	ld hl, AnimScript_2003c
-	bit 3, a
+	bit OBJSTAT_UNK3_F, a
 	jr nz, .asm_14515
 	ld hl, AnimScript_20017
-	bit 4, a
+	bit OBJSTAT_UNK4_F, a
 	jr nz, .asm_14515
 	ld hl, AnimScript_20026
 .asm_14515
-	ld de, MotionScript_10008
+	ld de, MotionScript_Stationary
 	jp SetObjectScripts
 .asm_1451b
 	jp DestroyObject
 .asm_1451e
-	ld hl, wd410
-	bit 0, [hl]
+	ld hl, wAttackObjectStatus
+	bit OBJSTAT_UNK0_F, [hl]
 	jr z, .asm_1453b
-	bit 1, [hl]
+	bit OBJSTAT_UNK1_F, [hl]
 	jr nz, .asm_1453b
 	ld a, [hKirbyFlags3]
 	and KIRBY3F_FACE_LEFT
@@ -882,17 +882,17 @@ ProcessObjectInteractions::
 	ld a, [wd40d + 1]
 	ld d, a
 	call Func_23af
-	ld a, [wd410]
-	bit 4, a
+	ld a, [wAttackObjectStatus]
+	bit OBJSTAT_UNK4_F, a
 	jr nz, .asm_14560
-	ld a, [wd411]
+	ld a, [wAttackObjectIndex]
 	ld c, a
 	jp DestroyObject
 .asm_14560
-	ld a, [wd411]
+	ld a, [wAttackObjectIndex]
 	ld c, a
 	ld hl, AnimScript_20005
-	ld de, MotionScript_10008
+	ld de, MotionScript_Stationary
 	jp SetObjectScripts
 
 ; input:
@@ -1350,7 +1350,7 @@ ENDR
 
 .not_persistent
 	call Func_148dc
-	bit 1, [hl] ; OBJ_UNK5
+	bit OBJINT_UNK1_F, [hl] ; OBJ_INTERACTION
 	jr z, .next_obj
 .check_y
 	ld hl, wObjectScreenYPositions
@@ -1458,7 +1458,7 @@ Func_148dc:
 	add hl, bc
 	add hl, bc
 	ld a, [hli]
-	add OBJ_UNK5
+	add OBJ_INTERACTION
 	ld h, [hl]
 	incc h
 	ld l, a
@@ -1507,16 +1507,16 @@ Func_148ea:
 	jr z, .asm_14991
 	inc hl
 .asm_14933
-	ld a, $00
+	ld a, LOW(wBlockTypesByID)
 	add [hl]
 	ld e, a
-	ld a, $ca
-	adc $00
+	ld a, HIGH(wBlockTypesByID)
+	adc 0
 	ld d, a
 	ld a, [de]
-	cp $04
+	cp BLOCK_4
 	jr z, .asm_14969
-	cp $05
+	cp BLOCK_5
 	jr z, .asm_1496e
 	dec c
 	jr nz, .asm_1492b
@@ -1529,16 +1529,16 @@ Func_148ea:
 	dec b
 	jr z, .asm_14991
 	dec hl
-	ld a, $00
+	ld a, LOW(wBlockTypesByID)
 	add [hl]
 	ld e, a
-	ld a, $ca
-	adc $00
+	ld a, HIGH(wBlockTypesByID)
+	adc 0
 	ld d, a
 	ld a, [de]
-	cp $04
+	cp BLOCK_4
 	jr z, .asm_14969
-	cp $05
+	cp BLOCK_5
 	jr z, .asm_1496e
 	dec c
 	jr nz, .asm_1494e

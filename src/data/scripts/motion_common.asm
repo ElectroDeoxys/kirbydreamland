@@ -7,9 +7,9 @@ ENDC
 	set_velocities  0, 0, 0
 
 IF DEF(EXPORT_SCRIPTS)
-MotionScript_10008::
+MotionScript_Stationary::
 ELSE
-MotionScript_10008_@:
+MotionScript_Stationary_@:
 ENDC
 	set_velocities  0, 0, 0
 
@@ -99,7 +99,7 @@ ENDC
 	create_object AnimScript_SmallStar, MotionScript_Star_UpLeftFast, Data_3425
 	create_object AnimScript_SmallStar, MotionScript_Star_DownRightFast, Data_3425
 	create_object AnimScript_SmallStar, MotionScript_Star_DownLeftFast, Data_3425
-	create_object AnimScript_20138, MotionScript_10008, Data_3425
+	create_object AnimScript_20138, MotionScript_Stationary, Data_3425
 	play_sfx SFX_LOSE_LIFE
 	set_velocities  8, 0, VEL_UP_1_00
 	set_velocities  8, 0, VEL_UP_0_50
@@ -133,9 +133,9 @@ ENDC
 	set_velocities  0, 0, VEL_DOWN_3_00
 
 IF DEF(EXPORT_SCRIPTS)
-MotionScript_10149::
+MotionScript_Kirby_HitBySpikesUp::
 ELSE
-MotionScript_10149_@:
+MotionScript_Kirby_HitBySpikesUp_@:
 ENDC
 	set_flags hKirbyFlags5, NONE, KIRBY5F_UNK5
 	script_repeat 3
@@ -147,9 +147,9 @@ ENDC
 	set_velocities  0, 0, 0
 
 IF DEF(EXPORT_SCRIPTS)
-MotionScript_10162::
+MotionScript_Kirby_HitBySpikesDown::
 ELSE
-MotionScript_10162_@:
+MotionScript_Kirby_HitBySpikesDown_@:
 ENDC
 	set_flags hKirbyFlags5, NONE, KIRBY5F_UNK5
 	script_repeat 4
@@ -175,9 +175,9 @@ ENDC
 	set_velocities  0, 0, 0
 
 IF DEF(EXPORT_SCRIPTS)
-MotionScript_10194::
+MotionScript_Kirby_SpatOutLeft::
 ELSE
-MotionScript_10194_@:
+MotionScript_Kirby_SpatOutLeft_@:
 ENDC
 	set_rel_pos
 .script_10195
@@ -191,7 +191,7 @@ ENDC
 	set_value wDamageBlinkingCounter, 90
 	set_flags wd1a0 + OBJECT_SLOT_KIRBY, NONE, $20
 	position_offset 8, 0
-	create_object AnimScript_20138, MotionScript_10008, Data_3421
+	create_object AnimScript_20138, MotionScript_Stationary, Data_3421
 	set_velocities  8, VEL_RIGHT_1_8TH, VEL_UP_2_00
 	set_velocities  8, VEL_RIGHT_1_8TH, VEL_UP_0_75
 	set_velocities  8, VEL_RIGHT_1_8TH, VEL_UP_1_8TH
@@ -204,9 +204,9 @@ ENDC
 	set_velocities  0, 0, 0
 
 IF DEF(EXPORT_SCRIPTS)
-MotionScript_101df::
+MotionScript_Kirby_SpatOutRight::
 ELSE
-MotionScript_101df_@:
+MotionScript_Kirby_SpatOutRight_@:
 ENDC
 	set_rel_pos
 .script_101e0
@@ -220,7 +220,7 @@ ENDC
 	set_value wDamageBlinkingCounter, 90
 	set_flags wd1a0 + OBJECT_SLOT_KIRBY, NONE, $20
 	position_offset -8, 0
-	create_object AnimScript_20138, MotionScript_10008, Data_3421
+	create_object AnimScript_20138, MotionScript_Stationary, Data_3421
 	set_velocities  8, VEL_LEFT_1_8TH, VEL_UP_2_00
 	set_velocities  8, VEL_LEFT_1_8TH, VEL_UP_0_75
 	set_velocities  8, VEL_LEFT_1_8TH, VEL_UP_1_8TH
@@ -233,9 +233,9 @@ ENDC
 	set_velocities  0, 0, 0
 
 IF DEF(EXPORT_SCRIPTS)
-MotionScript_1022a::
+MotionScript_FirePellet::
 ELSE
-MotionScript_1022a_@:
+MotionScript_FirePellet_@:
 ENDC
 	jump_if_not_flags hKirbyFlags3, KIRBY3F_FACE_LEFT, .script_1023a
 	set_velocities  8, VEL_LEFT_4_00, 0
@@ -287,9 +287,9 @@ ENDC
 	set_velocities  0, 0, 0
 
 IF DEF(EXPORT_SCRIPTS)
-MotionScript_1028c::
+MotionScript_ProjectileRecoil_Left::
 ELSE
-MotionScript_1028c_@:
+MotionScript_ProjectileRecoil_Left_@:
 ENDC
 	set_velocities  2, VEL_RIGHT_4_00, 0
 	set_velocities  4, 0, 0
@@ -297,9 +297,9 @@ ENDC
 	set_velocities  0, 0, 0
 
 IF DEF(EXPORT_SCRIPTS)
-MotionScript_10298::
+MotionScript_ProjectileRecoil_UpLeft::
 ELSE
-MotionScript_10298_@:
+MotionScript_ProjectileRecoil_UpLeft_@:
 ENDC
 	set_velocities  2, VEL_RIGHT_2_00, VEL_DOWN_2_00
 	set_velocities  4, 0, 0
@@ -307,9 +307,9 @@ ENDC
 	set_velocities  0, 0, 0
 
 IF DEF(EXPORT_SCRIPTS)
-MotionScript_102a4::
+MotionScript_ProjectileRecoil_Up::
 ELSE
-MotionScript_102a4_@:
+MotionScript_ProjectileRecoil_Up_@:
 ENDC
 	set_velocities  2, 0, VEL_DOWN_4_00
 	set_velocities  4, 0, 0
@@ -317,9 +317,9 @@ ENDC
 	set_velocities  0, 0, 0
 
 IF DEF(EXPORT_SCRIPTS)
-MotionScript_102b0::
+MotionScript_ProjectileRecoil_UpRight::
 ELSE
-MotionScript_102b0_@:
+MotionScript_ProjectileRecoil_UpRight_@:
 ENDC
 	set_velocities  2, VEL_LEFT_2_00, VEL_DOWN_2_00
 	set_velocities  4, 0, 0
@@ -327,9 +327,9 @@ ENDC
 	set_velocities  0, 0, 0
 
 IF DEF(EXPORT_SCRIPTS)
-MotionScript_102bc::
+MotionScript_ProjectileRecoil_Right::
 ELSE
-MotionScript_102bc_@:
+MotionScript_ProjectileRecoil_Right_@:
 ENDC
 	set_velocities  2, VEL_LEFT_4_00, 0
 	set_velocities  4, 0, 0
@@ -337,9 +337,9 @@ ENDC
 	set_velocities  0, 0, 0
 
 IF DEF(EXPORT_SCRIPTS)
-MotionScript_102c8::
+MotionScript_WalkLeft_Slow::
 ELSE
-MotionScript_102c8_@:
+MotionScript_WalkLeft_Slow_@:
 ENDC
 	set_velocities  0, VEL_LEFT_0_25, 0
 
@@ -493,7 +493,6 @@ MotionScript_Projectile_Up_@:
 ENDC
 	set_velocities  0, 0, VEL_UP_3_00
 
-; unreferenced
 IF DEF(EXPORT_SCRIPTS)
 MotionScript_10311::
 ELSE
@@ -538,9 +537,9 @@ ENDC
 	jump_abs .loop
 
 IF DEF(EXPORT_SCRIPTS)
-MotionScript_1032d::
+MotionScript_SparklingStar::
 ELSE
-MotionScript_1032d_@:
+MotionScript_SparklingStar_@:
 ENDC
 	set_velocities  5, 0, 0
 	set_velocities  9, 0, VEL_DOWN_0_25
@@ -549,12 +548,12 @@ ENDC
 	script_exec ScriptFunc_SetObjectPalLight
 	set_velocities  4, 0, VEL_DOWN_0_25
 	set_object_properties SparklingStarProperties
-	jump_rel MotionScript_1032d_StartLoop
+	jump_rel MotionScript_SparklingStar_StartLoop
 
 IF DEF(EXPORT_SCRIPTS)
-MotionScript_1032d_Loop::
+MotionScript_SparklingStar_Loop::
 ELSE
-MotionScript_1032d_Loop_@:
+MotionScript_SparklingStar_Loop_@:
 ENDC
 	set_velocities  5, 0, 0
 	set_velocities  9, 0, VEL_UP_0_25
@@ -569,17 +568,17 @@ ENDC
 	set_pal_light
 	set_velocities  4, 0, VEL_DOWN_0_25
 IF DEF(EXPORT_SCRIPTS)
-MotionScript_1032d_StartLoop::
+MotionScript_SparklingStar_StartLoop::
 ELSE
-MotionScript_1032d_StartLoop_@:
+MotionScript_SparklingStar_StartLoop_@:
 ENDC
 	set_velocities  5, 0, VEL_DOWN_0_25
-	jump_abs MotionScript_1032d_Loop
+	jump_abs MotionScript_SparklingStar_Loop
 
 IF DEF(EXPORT_SCRIPTS)
-MotionScript_10370::
+MotionScript_MikeAttack::
 ELSE
-MotionScript_10370_@:
+MotionScript_MikeAttack_@:
 ENDC
 	set_value wClearScreenFlags, CLEAR_ACTIVE
 	set_flags hKirbyFlags5, NONE, KIRBY5F_UNK5
@@ -750,9 +749,9 @@ ENDC
 	script_end
 
 IF DEF(EXPORT_SCRIPTS)
-MotionScript_103ff::
+MotionScript_BackAndForth_Slow::
 ELSE
-MotionScript_103ff_@:
+MotionScript_BackAndForth_Slow_@:
 ENDC
 .loop
 	set_velocities 10, VEL_LEFT_0_25, 0
@@ -764,9 +763,9 @@ ENDC
 	jump_abs .loop
 
 IF DEF(EXPORT_SCRIPTS)
-MotionScript_10414::
+MotionScript_BackAndForthWithStop::
 ELSE
-MotionScript_10414_@:
+MotionScript_BackAndForthWithStop_@:
 ENDC
 .loop
 	set_velocities  8, VEL_LEFT_1_00, 0
@@ -780,9 +779,9 @@ ENDC
 	jump_abs .loop
 
 IF DEF(EXPORT_SCRIPTS)
-MotionScript_1042f::
+MotionScript_BackAndForth_Fast::
 ELSE
-MotionScript_1042f_@:
+MotionScript_BackAndForth_Fast_@:
 ENDC
 .loop
 	set_velocities 16, VEL_LEFT_0_50, 0
@@ -794,9 +793,9 @@ ENDC
 	jump_abs .loop
 
 IF DEF(EXPORT_SCRIPTS)
-MotionScript_10444::
+MotionScript_UpAndDown::
 ELSE
-MotionScript_10444_@:
+MotionScript_UpAndDown_@:
 ENDC
 .loop
 	set_velocities 10, 0, VEL_DOWN_0_25

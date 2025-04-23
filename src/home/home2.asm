@@ -678,7 +678,7 @@ Func_21fb::
 	jr nz, .asm_22c5
 	ld hl, Data_1c14e
 	lb de, $80, $80
-	call CreateObject_Groups1And2
+	call CreateKirbyObject
 	jr c, .asm_22dd
 .asm_22c5
 	call Func_3199
@@ -762,7 +762,7 @@ ClearConsumedItems::
 ; - d = x position
 ; - e = y position
 ; - hl = scripts and object data
-CreateObject_Groups1And2:
+CreateKirbyObject:
 	ld c, OBJECT_SLOT_KIRBY
 	ld b, OBJECT_GROUP_1_END
 	jr CreateObject
@@ -2414,9 +2414,9 @@ UpdateObject:
 	call Func_2e20
 	and a
 	jr z, .handle_screen_position
-	cp $06
+	cp BLOCK_WATER
 	jr nz, .zero_y_velocity
-	; a == $6
+	; a == BLOCK_WATER
 	ld hl, wObjectYVels
 	add hl, bc
 	add hl, bc
@@ -2541,27 +2541,28 @@ UpdateObject:
 CanObjMove:
 	ld a, c
 	and a
-	jr z, .no_carry ; is Kirby
+	jr z, .can_move ; is Kirby
 	ld hl, wClearScreenFlags
 	bit CLEAR_UNK3_F, [hl]
-	jr z, .no_carry
+	jr z, .can_move
 	ld hl, wObjectPropertyFlags
 	add hl, bc
 	bit PROPERTY_2_F, [hl]
-	jr nz, .no_carry
+	jr nz, .can_move
 	ld hl, wObjectPropertyPtrs
 	add hl, bc
 	add hl, bc
 	ld a, [hli]
-	add OBJ_UNK5
+	add OBJ_INTERACTION
 	ld h, [hl]
 	incc h
 	ld l, a
-	bit 0, [hl]
-	jr nz, .no_carry
+	bit OBJINT_VULNERABLE_F, [hl]
+	jr nz, .can_move
+; cannot move
 	scf
 	ret
-.no_carry
+.can_move
 	xor a
 	ret
 
@@ -3838,7 +3839,7 @@ IF _NARG == 4
 ELSE
 	db \4 ; damage dealt to Kirby
 	db \5 ; health points
-	db \6 ; ?
+	db \6 ; interaction flags
 	db (\7) / 10 ; score when defeated
 	dw \8 ; when object is defeated
 ENDC
@@ -3853,7 +3854,7 @@ ELSE
 
 	db \4 ; damage dealt to Kirby
 	db \5 ; health points
-	db \6 ; ?
+	db \6 ; interaction flags
 	db (\7) / 10 ; score when defeated
 IF _NARG == 8
 	dw \8 ; when object is defeated
@@ -3916,286 +3917,286 @@ KirbyItemProperties::
 	object_properties PROPERTY_REL_POS | PROPERTY_PERSISTENT, 16, 16, KIRBY_ITEM, Data_1c172
 
 StandardEnemyGravityProperties::
-	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY, 12, 12, 1, 1, $03, 200, Data_1c154
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY, 12, 12, 1, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 200, Data_1c154
 
 StandardEnemyProperties::
-	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $03, 200, Data_1c154
+	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 200, Data_1c154
 
 Properties_3495::
-	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $01, 200, Data_1c154
+	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, OBJINT_VULNERABLE, 200, Data_1c154
 
 Properties_349e::
-	object_properties PROPERTY_REL_POS | PROPERTY_2, 12, 12, 1, 1, $00, 200, Data_1c154
+	object_properties PROPERTY_REL_POS | PROPERTY_2, 12, 12, 1, 1, NONE, 200, Data_1c154
 
 ; unreferenced
 Properties_34a7::
-	object_properties $00, 12, 12, 1, 1, $03, 200, Data_1c154
+	object_properties NONE, 12, 12, 1, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 200, Data_1c154
 
 ; unreferenced
 Properties_34b0::
-	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $03, 400, Data_1c154
+	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 400, Data_1c154
 
 GordoProperties::
-	object_properties PROPERTY_REL_POS, 12, 12, 3, 100, $00, 0
+	object_properties PROPERTY_REL_POS, 12, 12, 3, 100, NONE, 0
 
 Properties_34c0::
-	object_properties $00, 12, 12, 3, 100, $01, 0, Data_1c154
+	object_properties NONE, 12, 12, 3, 100, OBJINT_VULNERABLE, 0, Data_1c154
 
 ProjectileProperties::
-	object_properties PROPERTY_REL_POS, 6, 6, 1, 0, $11, 10, Data_1c154
+	object_properties PROPERTY_REL_POS, 6, 6, 1, 0, OBJINT_VULNERABLE | OBJINT_UNK4, 10, Data_1c154
 
 ShotzoBulletProperties::
-	object_properties PROPERTY_REL_POS, 6, 6, 1, 100, $01, 0, Data_1c154
+	object_properties PROPERTY_REL_POS, 6, 6, 1, 100, OBJINT_VULNERABLE, 0, Data_1c154
 
 ShotzoProperties::
-	object_properties PROPERTY_REL_POS, 12, 12, 1, 100, $01, 30, Data_1c154
+	object_properties PROPERTY_REL_POS, 12, 12, 1, 100, OBJINT_VULNERABLE, 30, Data_1c154
 
 ScarfyProperties::
-	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $03, 400, Data_1c160
+	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 400, Data_1c160
 
 Properties_34ed::
-	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $01, 700, Data_1c154
+	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, OBJINT_VULNERABLE, 700, Data_1c154
 
 ParasolWaddleDeeProperties::
-	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $03, 300, Data_1c1ba
+	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 300, Data_1c1ba
 
 CappyProperties::
-	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE, 12, 12, 1, 1, $03, 200, Data_1c154
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE, 12, 12, 1, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 200, Data_1c154
 
 CaplessCappyProperties::
-	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE, 12, 12, 1, 1, $03, 200, Data_1c154
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE, 12, 12, 1, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 200, Data_1c154
 
 ; unreferenced
 Properties_3511::
-	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $03, 50, Data_1c154
+	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 50, Data_1c154
 
 TwizzyProperties::
-	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $03, 200, Data_1c154
+	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 200, Data_1c154
 
 PoppyBrosJrProperties::
-	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $03, 200, Data_1c154
+	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 200, Data_1c154
 
 Data_352c::
-	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE, 12, 12, 1, 1, $03, 200, Data_1c154
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE, 12, 12, 1, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 200, Data_1c154
 
 GrizzoProperties::
-	object_properties PROPERTY_REL_POS, 20, 20, 2, 1, $03, 400, Data_1c154
+	object_properties PROPERTY_REL_POS, 20, 20, 2, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 400, Data_1c154
 
 Properties_353e::
-	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY, 18, 18, 2, 1, $01, 400, Data_1c154
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY, 18, 18, 2, 1, OBJINT_VULNERABLE, 400, Data_1c154
 
 PoppyBrosJrOnGrizzoProperties::
-	object_properties PROPERTY_REL_POS, 20, 26, 2, 1, $03, 200, Data_1c1a8
+	object_properties PROPERTY_REL_POS, 20, 26, 2, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 200, Data_1c1a8
 
 Data_3550::
-	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE, 12, 12, 1, 1, $03, 200, Data_1c154
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE, 12, 12, 1, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 200, Data_1c154
 
 Data_3559::
-	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE, 12, 12, 1, 1, $01, 200, Data_1c154
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE, 12, 12, 1, 1, OBJINT_VULNERABLE, 200, Data_1c154
 
 PoppyBrosJrOnAppleProperties::
-	object_properties PROPERTY_REL_POS, 16, 32, 1, 1, $03, 300, Data_1c1b4
+	object_properties PROPERTY_REL_POS, 16, 32, 1, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 300, Data_1c1b4
 
 Data_356b::
-	object_properties PROPERTY_REL_POS, 16, 22, 1, 3, $09, 0, Data_1c1c0
+	object_properties PROPERTY_REL_POS, 16, 22, 1, 3, OBJINT_VULNERABLE | OBJINT_UNK3, 0, Data_1c1c0
 
 Data_3574::
-	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $03, 10, Data_1c160
+	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 10, Data_1c160
 
 Properties_357d::
-	object_properties $00, 12, 12, 1, 1, $03, 10, Data_1c166
+	object_properties NONE, 12, 12, 1, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 10, Data_1c166
 
 Data_3586::
-	object_properties PROPERTY_REL_POS, 26, 64, 2, 6, $09, 0, Data_1c1cc
+	object_properties PROPERTY_REL_POS, 26, 64, 2, 6, OBJINT_VULNERABLE | OBJINT_UNK3, 0, Data_1c1cc
 
 Data_358f::
 	db PROPERTY_REL_POS | PROPERTY_2, 26 / 2, 32 / 2
 
 ; unreferenced
 Properties_3592::
-	object_properties PROPERTY_1 | PROPERTY_2, 2, 2, $00
+	object_properties PROPERTY_1 | PROPERTY_2, 2, 2, NONE
 
 Data_3596::
-	object_properties PROPERTY_REL_POS, 12, 12, 1, 60, $01, 0
+	object_properties PROPERTY_REL_POS, 12, 12, 1, 60, OBJINT_VULNERABLE, 0
 
 Data_359d::
-	object_properties $00, 12, 12, 1, 1, $03, 200, Data_1c15a
+	object_properties NONE, 12, 12, 1, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 200, Data_1c15a
 
 Properties_35a6::
 	db PROPERTY_2
 
 SpitStarProperties::
-	object_properties PROPERTY_REL_POS | PROPERTY_2 | PROPERTY_SINKABLE, 20, 20, $01
+	object_properties PROPERTY_REL_POS | PROPERTY_2 | PROPERTY_SINKABLE, 20, 20, OBJINT_VULNERABLE
 
 Data_35ab::
-	object_properties PROPERTY_REL_POS | PROPERTY_2 | PROPERTY_SINKABLE, 20, 28, $01
+	object_properties PROPERTY_REL_POS | PROPERTY_2 | PROPERTY_SINKABLE, 20, 28, OBJINT_VULNERABLE
 
 DiveHitboxProperties::
-	object_properties PROPERTY_2, 20, 20, $01
+	object_properties PROPERTY_2, 20, 20, OBJINT_VULNERABLE
 
 Data_35b3::
-	object_properties PROPERTY_REL_POS | PROPERTY_2 | PROPERTY_SINKABLE, 12, 12, $01
+	object_properties PROPERTY_REL_POS | PROPERTY_2 | PROPERTY_SINKABLE, 12, 12, OBJINT_VULNERABLE
 
 Data_35b7::
-	object_properties PROPERTY_REL_POS | PROPERTY_2 | PROPERTY_SINKABLE, 40, 40, $01
+	object_properties PROPERTY_REL_POS | PROPERTY_2 | PROPERTY_SINKABLE, 40, 40, OBJINT_VULNERABLE
 
 ExplosionProperties::
-	object_properties PROPERTY_REL_POS, 40, 40, 1, 5, $00, 0, Data_1c160
+	object_properties PROPERTY_REL_POS, 40, 40, 1, 5, NONE, 0, Data_1c160
 
 Properties_35c4::
-	object_properties $00, 40, 40, 1, 5, $00, 0, Data_1c160
+	object_properties NONE, 40, 40, 1, 5, NONE, 0, Data_1c160
 
 PuffOfSmokeProperties::
 	db PROPERTY_REL_POS | PROPERTY_2 | PROPERTY_SINKABLE
 
 KaboolaProperties::
-	object_properties PROPERTY_REL_POS, 36, 32, 1, 40, $09, 0, Data_1c1d8
+	object_properties PROPERTY_REL_POS, 36, 32, 1, 40, OBJINT_VULNERABLE | OBJINT_UNK3, 0, Data_1c1d8
 
 KaboolaBulletProperties::
-	object_properties $00, 6, 4, 1, 0, $10, 0, Data_1c154
+	object_properties NONE, 6, 4, 1, 0, OBJINT_UNK4, 0, Data_1c154
 
 Properties_35e0::
-	object_properties $00, 20, 20, 1, 3, $09, 0, Data_1c1de
+	object_properties NONE, 20, 20, 1, 3, OBJINT_VULNERABLE | OBJINT_UNK3, 0, Data_1c1de
 
 Properties_35e9::
-	object_properties PROPERTY_REL_POS, 32, 26, 1, 6, $09, 0, Data_1c1ea
+	object_properties PROPERTY_REL_POS, 32, 26, 1, 6, OBJINT_VULNERABLE | OBJINT_UNK3, 0, Data_1c1ea
 
 LololoProperties::
-	object_properties $00, 12, 12, 1, 3, $09, 0, Data_1c1d2
+	object_properties NONE, 12, 12, 1, 3, OBJINT_VULNERABLE | OBJINT_UNK3, 0, Data_1c1d2
 
 ; unreferenced
 Properties_35fb::
-	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE, 12, 12, 1, 1, $03, 300, Data_1c154
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE, 12, 12, 1, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 300, Data_1c154
 
 Properties_3604::
-	object_properties PROPERTY_REL_POS | PROPERTY_2, 0, 0, 0, 1, $00, 0, Data_1c1fc
+	object_properties PROPERTY_REL_POS | PROPERTY_2, 0, 0, 0, 1, NONE, 0, Data_1c1fc
 
 Properties_360d::
-	object_properties PROPERTY_REL_POS | PROPERTY_2 | PROPERTY_SINKABLE | PROPERTY_GRAVITY, 0, 0, 0, 1, $00, 0, Data_1c1fc
+	object_properties PROPERTY_REL_POS | PROPERTY_2 | PROPERTY_SINKABLE | PROPERTY_GRAVITY, 0, 0, 0, 1, NONE, 0, Data_1c1fc
 
 Properties_3616::
-	object_properties PROPERTY_REL_POS, 22, 26, 1, 10, $09, 0, Data_1c1f6
+	object_properties PROPERTY_REL_POS, 22, 26, 1, 10, OBJINT_VULNERABLE | OBJINT_UNK3, 0, Data_1c1f6
 
 Properties_361f::
-	object_properties PROPERTY_REL_POS, 0, 0, 1, 100, $00, 10, Data_1c1fc
+	object_properties PROPERTY_REL_POS, 0, 0, 1, 100, NONE, 10, Data_1c1fc
 
 Properties_3628::
-	object_properties PROPERTY_REL_POS, 20, 16, 1, 1, $00, 0
+	object_properties PROPERTY_REL_POS, 20, 16, 1, 1, NONE, 0
 
 Properties_362f::
-	object_properties PROPERTY_REL_POS, 52, 16, 1, 1, $00, 0
+	object_properties PROPERTY_REL_POS, 52, 16, 1, 1, NONE, 0
 
 Properties_3636::
-	object_properties PROPERTY_REL_POS, 2, 2, 0, 80, $01, 0, Data_1c154
+	object_properties PROPERTY_REL_POS, 2, 2, 0, 80, OBJINT_VULNERABLE, 0, Data_1c154
 
 Properties_363f::
-	object_properties PROPERTY_REL_POS, 16, 16, 6, 100, $01, 0, Data_1c154
+	object_properties PROPERTY_REL_POS, 16, 16, 6, 100, OBJINT_VULNERABLE, 0, Data_1c154
 
 Properties_3648::
-	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $02, 0
+	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, OBJINT_UNK1, 0
 
 TwoFaceProperties::
 BlipperProperties::
 PuffyProperties::
-	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $03, 300, Data_1c154
+	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 300, Data_1c154
 
 GlunkProperties::
 SirKibbleProperties::
-	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $03, 500, Data_1c154
+	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 500, Data_1c154
 
 CoconutProperties::
-	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE, 6, 6, 1, 1, $03, 50, Data_1c154
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE, 6, 6, 1, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 50, Data_1c154
 
 Data_366a::
-	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY, 6, 6, 1, 1, $03, 50, Data_1c154
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY, 6, 6, 1, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 50, Data_1c154
 
 Data_3673::
-	object_properties PROPERTY_REL_POS, 18, 18, 1, 5, $01, 0, Data_1c172
+	object_properties PROPERTY_REL_POS, 18, 18, 1, 5, OBJINT_VULNERABLE, 0, Data_1c172
 
 SirKibbleBladeProperties::
-	object_properties PROPERTY_REL_POS, 8, 8, 1, 1, $01, 50, Data_1c154
+	object_properties PROPERTY_REL_POS, 8, 8, 1, 1, OBJINT_VULNERABLE, 50, Data_1c154
 
 Data_3685::
-	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $03, 10, Data_1c154
+	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 10, Data_1c154
 
 Data_368e::
-	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY, 12, 12, 1, 1, $03, 500, Data_1c154
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY, 12, 12, 1, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 500, Data_1c154
 
 MumbiesProperties::
-	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $03, 500, Data_1c154
+	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 500, Data_1c154
 
 MumbiesOrbitingProperties::
-	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, $01, 500, Data_1c154
+	object_properties PROPERTY_REL_POS, 12, 12, 1, 1, OBJINT_VULNERABLE, 500, Data_1c154
 
 ConerProperties::
-	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY, 12, 12, 1, 1, $03, 300, Data_1c154
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY, 12, 12, 1, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 300, Data_1c154
 
 ; unreferenced
 Properties_36b2::
-	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE, 12, 12, 1, 1, $03, 300, Data_1c154
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE, 12, 12, 1, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 300, Data_1c154
 
 ; unreferenced
 Properties_36bb::
-	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE, 12, 12, 1, 1, $03, 500, Data_1c154
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE, 12, 12, 1, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 500, Data_1c154
 
 ; unreferenced
 Properties_36c4::
-	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY, 12, 12, 2, 1, $03, 200, Data_1c154
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY, 12, 12, 2, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 200, Data_1c154
 
 Properties_36cd::
-	object_properties PROPERTY_REL_POS, 12, 12, 2, 1, $03, 200, Data_1c154
+	object_properties PROPERTY_REL_POS, 12, 12, 2, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 200, Data_1c154
 
 ; unreferenced
 Properties_36d6::
-	object_properties PROPERTY_REL_POS, 12, 12, 2, 1, $01, 200, Data_1c154
+	object_properties PROPERTY_REL_POS, 12, 12, 2, 1, OBJINT_VULNERABLE, 200, Data_1c154
 
 ; unreferenced
 Properties_36df::
-	object_properties PROPERTY_REL_POS | PROPERTY_2, 12, 12, 2, 1, $00, 200, Data_1c154
+	object_properties PROPERTY_REL_POS | PROPERTY_2, 12, 12, 2, 1, NONE, 200, Data_1c154
 
 ; unreferenced
 Properties_36e8::
-	object_properties $00, 12, 12, 2, 1, $03, 200, Data_1c154
+	object_properties NONE, 12, 12, 2, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 200, Data_1c154
 
 ; unreferenced
 Properties_36f1::
-	object_properties PROPERTY_REL_POS, 12, 12, 2, 1, $03, 400, Data_1c154
+	object_properties PROPERTY_REL_POS, 12, 12, 2, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 400, Data_1c154
 
 ; unreferenced
 Properties_36fa::
-	object_properties PROPERTY_REL_POS, 6, 6, 2, 0, $11, 10, Data_1c154
+	object_properties PROPERTY_REL_POS, 6, 6, 2, 0, OBJINT_VULNERABLE | OBJINT_UNK4, 10, Data_1c154
 
 Properties_3703::
-	object_properties PROPERTY_REL_POS, 12, 12, 2, 100, $01, 0, Data_1c154
+	object_properties PROPERTY_REL_POS, 12, 12, 2, 100, OBJINT_VULNERABLE, 0, Data_1c154
 
 Properties_370c::
-	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE, 12, 12, 2, 1, $03, 200, Data_1c154
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE, 12, 12, 2, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 200, Data_1c154
 
 Properties_3715::
-	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE, 12, 12, 2, 1, $03, 200, Data_1c154
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE, 12, 12, 2, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 200, Data_1c154
 
 Properties_371e::
-	object_properties PROPERTY_REL_POS, 12, 12, 2, 1, $03, 200, Data_1c154
+	object_properties PROPERTY_REL_POS, 12, 12, 2, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 200, Data_1c154
 
 Properties_3727::
-	object_properties PROPERTY_REL_POS, 12, 12, 2, 1, $03, 300, Data_1c154
+	object_properties PROPERTY_REL_POS, 12, 12, 2, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 300, Data_1c154
 
 Properties_3730::
-	object_properties PROPERTY_REL_POS, 12, 12, 2, 1, $03, 500, Data_1c154
+	object_properties PROPERTY_REL_POS, 12, 12, 2, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 500, Data_1c154
 
 ; unreferenced
 Properties_3739::
-	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY, 12, 12, 1, 1, $03, 500, Data_1c154
+	object_properties PROPERTY_REL_POS | PROPERTY_SINKABLE | PROPERTY_GRAVITY, 12, 12, 1, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 500, Data_1c154
 
 Properties_3742::
-	object_properties PROPERTY_REL_POS, 12, 12, 2, 1, $03, 500, Data_1c154
+	object_properties PROPERTY_REL_POS, 12, 12, 2, 1, OBJINT_VULNERABLE | OBJINT_UNK1, 500, Data_1c154
 
 Properties_374b::
-	object_properties PROPERTY_REL_POS, 12, 12, 2, 1, $01, 500, Data_1c154
+	object_properties PROPERTY_REL_POS, 12, 12, 2, 1, OBJINT_VULNERABLE, 500, Data_1c154
 
 ; unreferenced
 Properties_3754::
-	object_properties PROPERTY_REL_POS, 8, 8, 2, 1, $01, 50, Data_1c154
+	object_properties PROPERTY_REL_POS, 8, 8, 2, 1, OBJINT_VULNERABLE, 50, Data_1c154
 
 InitInhaleParticleXCoords::
 	xor a
@@ -4278,7 +4279,7 @@ Func_37b9:
 	add c
 	ld [hli], a
 	ld a, e
-	adc $00
+	adc 0
 	ld [hl], a
 	pop bc
 	push bc

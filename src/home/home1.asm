@@ -891,7 +891,7 @@ Func_7cd:
 	pop bc
 	ret
 .return_zero
-	xor a
+	xor a ; BLOCK_0
 	jr .done
 
 Func_819::
@@ -1199,15 +1199,15 @@ Func_9de:
 	add $03
 	ld [wd05e], a
 	call Func_7cd
-	ld c, $00
+	ld c, BLOCK_0
 	ld b, a
 	and a
 	jr z, .asm_a3f
-	cp $01
+	cp BLOCK_1
 	jr z, .asm_a3f
-	cp $06
+	cp BLOCK_WATER
 	jr z, .asm_a3f
-	cp $07
+	cp BLOCK_7
 	jr nz, .asm_a63
 	ldh a, [hKirbyFlags4]
 	set KIRBY4F_UNK6_F, a
@@ -1220,11 +1220,11 @@ Func_9de:
 	ld c, a
 	and a
 	jp z, .asm_ab8
-	cp $01
+	cp BLOCK_1
 	jp z, .asm_ab8
-	cp $06
+	cp BLOCK_WATER
 	jp z, .asm_ab8
-	cp $07
+	cp BLOCK_7
 	jr nz, .asm_a63
 	ldh a, [hKirbyFlags4]
 	set KIRBY4F_UNK6_F, a
@@ -1243,23 +1243,23 @@ Func_9de:
 	ld a, b
 	and a
 	jr z, .asm_a87
-	cp $07
+	cp BLOCK_7
 	jr z, .asm_a87
-	cp $08
+	cp BLOCK_8
 	jr nz, .asm_a9e
 	jr .asm_a93
 .asm_a87
 	ld a, c
 	and a
 	jr z, .asm_a93
-	cp $07
+	cp BLOCK_7
 	jr z, .asm_ab8
-	cp $08
+	cp BLOCK_8
 	jr nz, .asm_a9e
 .asm_a93
 	push bc
 	push de
-	call InflictHalfDamage_MoveUp
+	call InflictHalfDamage_MoveDown
 	pop de
 	pop bc
 	jr c, .asm_aa9
@@ -1425,8 +1425,8 @@ Func_9de:
 	ld a, [wKirbyScreenY]
 	add $18
 	call Func_7a7
-	cp $07
-	jp z, InflictHalfDamage_MoveUp
+	cp BLOCK_7
+	jp z, InflictHalfDamage_MoveDown
 .asm_be0
 	ldh a, [hKirbyFlags2]
 	bit KIRBY2F_UNK6_F, a
@@ -1436,7 +1436,7 @@ Func_9de:
 	jp nc, Func_caf
 	dec a
 	call Func_7b5
-	cp $06
+	cp BLOCK_WATER
 	jp z, Func_caf
 	ldh a, [hKirbyFlags3]
 	and $ff ^ (SQUISH_BITMASK | KIRBY3F_UNK6 | KIRBY3F_SQUISHED)
@@ -1575,15 +1575,15 @@ Func_caf:
 	add $03
 	ld [wd05e], a
 	call Func_7cd
-	ld c, $00
+	ld c, BLOCK_0
 	ld b, a
 	and a
 	jr z, .asm_d24
-	cp $01
+	cp BLOCK_1
 	jr z, .asm_d24
-	cp $08
+	cp BLOCK_8
 	jr z, .asm_d1e
-	cp $06
+	cp BLOCK_WATER
 	jr nz, .asm_d55
 	call Func_326
 	jr .asm_d24
@@ -1599,11 +1599,11 @@ Func_caf:
 	ld c, a
 	and a
 	jp z, .asm_d4f
-	cp $01
+	cp BLOCK_1
 	jr z, .asm_d55
-	cp $08
+	cp BLOCK_8
 	jr z, .asm_d46
-	cp $06
+	cp BLOCK_WATER
 	jr nz, .asm_d55
 	call Func_326
 	jp .asm_ee0
@@ -1627,19 +1627,19 @@ Func_caf:
 	ld a, b
 	and a
 	jr z, .asm_d6a
-	cp $07
+	cp BLOCK_7
 	jr nz, .asm_d7f
 	jr .asm_d72
 .asm_d6a
 	ld a, c
 	and a
 	jr z, .asm_d72
-	cp $07
+	cp BLOCK_7
 	jr nz, .asm_d7f
 .asm_d72
 	push bc
 	push de
-	call InflictHalfDamage_MoveDown
+	call InflictHalfDamage_MoveUp
 	pop de
 	pop bc
 	jp c, .asm_ece
@@ -2014,9 +2014,9 @@ Func_caf:
 	ld a, [wKirbyScreenY]
 	sub $08
 	call Func_7b5
-	cp $08
+	cp BLOCK_8
 	ret nz
-	jp InflictHalfDamage_MoveDown
+	jp InflictHalfDamage_MoveUp
 
 Func_1046:
 	push bc
@@ -2819,10 +2819,10 @@ Func_139b::
 	ldh a, [hKirbyFlags3]
 	bit KIRBY3F_FACE_LEFT_F, a
 	jr nz, .facing_left
-	ld de, MotionScript_102bc
+	ld de, MotionScript_ProjectileRecoil_Right
 	jr .got_motion_script
 .facing_left
-	ld de, MotionScript_1028c
+	ld de, MotionScript_ProjectileRecoil_Left
 .got_motion_script
 	ld a, b
 	ld h, a

@@ -29,7 +29,7 @@ AnimScript_20017_@:
 ENDC
 	set_object_properties Data_35b7
 	set_update_func Func_141b1, AnimScript_DestructiveExplosion
-	set_scripts AnimScript_Explosion, MotionScript_10008
+	set_scripts AnimScript_Explosion, MotionScript_Stationary
 
 IF DEF(EXPORT_SCRIPTS)
 AnimScript_20026::
@@ -37,10 +37,10 @@ ELSE
 AnimScript_20026_@:
 ENDC
 	jump_if_flags hEngineFlags, KABOOLA_BATTLE, .script_20034
-	create_object AnimScript_DefeatStars, MotionScript_10008, Data_3421
+	create_object AnimScript_DefeatStars, MotionScript_Stationary, Data_3421
 	script_end
 .script_20034
-	create_object AnimScript_PuffHit, MotionScript_10008, Data_3425
+	create_object AnimScript_PuffHit, MotionScript_Stationary, Data_3425
 	script_end
 
 IF DEF(EXPORT_SCRIPTS)
@@ -48,7 +48,7 @@ AnimScript_2003c::
 ELSE
 AnimScript_2003c_@:
 ENDC
-	create_object AnimScript_20044, MotionScript_10008, Data_3421
+	create_object AnimScript_20044, MotionScript_Stationary, Data_3421
 	script_end
 
 IF DEF(EXPORT_SCRIPTS)
@@ -131,7 +131,7 @@ ENDC
 	create_object AnimScript_PulsingStar, MotionScript_Star_UpLeftFast, Data_3425
 	create_object AnimScript_PulsingStar, MotionScript_Star_DownRightFast, Data_3425
 	create_object AnimScript_PulsingStar, MotionScript_Star_DownLeftFast, Data_3425
-	create_object AnimScript_20138, MotionScript_10008, Data_3425
+	create_object AnimScript_20138, MotionScript_Stationary, Data_3425
 	script_end
 
 IF DEF(EXPORT_SCRIPTS)
@@ -262,13 +262,13 @@ ENDC
 	set_flags hEngineFlags, NONE, ENGINEF_UNK5
 	jump_if_flags hKirbyFlags6, KIRBY6F_UNK7, $4008 ; bug?
 	set_motion_script MotionScript_KirbyWarpStar_Crash2
-	create_object AnimScript_Explosion, MotionScript_10008, Data_3425
+	create_object AnimScript_Explosion, MotionScript_Stationary, Data_3425
 	frame  4, OAM_2dc01
-	create_object AnimScript_Explosion, MotionScript_10008, Data_3425
+	create_object AnimScript_Explosion, MotionScript_Stationary, Data_3425
 	frame  4, OAM_2dc01
-	create_object AnimScript_Explosion, MotionScript_10008, Data_3425
+	create_object AnimScript_Explosion, MotionScript_Stationary, Data_3425
 	frame  8, OAM_2dc01
-	create_object AnimScript_Explosion, MotionScript_10008, Data_3425
+	create_object AnimScript_Explosion, MotionScript_Stationary, Data_3425
 	frame 80, OAM_2dc01
 
 	script_repeat 4
@@ -312,7 +312,7 @@ ENDC
 	set_kirby_pos
 	set_flags hPalFadeFlags, NONE, SCROLL_LOCKED
 	set_value wStageTransitionCounter, 1
-	set_motion_script MotionScript_10008
+	set_motion_script MotionScript_Stationary
 	frame  0, OAM_2d8b9
 
 IF DEF(EXPORT_SCRIPTS)
@@ -394,7 +394,7 @@ AnimScript_2036c::
 ELSE
 AnimScript_2036c_@:
 ENDC
-	create_object AnimScript_DefeatStars, MotionScript_10008, Data_3421
+	create_object AnimScript_DefeatStars, MotionScript_Stationary, Data_3421
 	frame 16, OAM_2d8b8
 	set_flags wClearScreenFlags, NONE, CLEAR_NEXT_OBJ
 	script_end

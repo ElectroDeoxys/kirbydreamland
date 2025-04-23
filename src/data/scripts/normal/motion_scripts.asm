@@ -247,7 +247,7 @@ MotionScript_1067d:
 	jump_abs .loop
 
 MotionScript_KirbyWarpStar_Crash1:
-	create_object AnimScript_20138, MotionScript_10008, Data_3425
+	create_object AnimScript_20138, MotionScript_Stationary, Data_3425
 	create_object AnimScript_Star, MotionScript_Star_UpLeft, Data_3425
 	create_object AnimScript_Star, MotionScript_Star_UpRight, Data_3425
 	create_object AnimScript_Star, MotionScript_Star_Left, Data_3425
@@ -748,7 +748,7 @@ MotionScript_10af4:
 	jump_abs .loop
 
 MotionScript_10b00:
-	set_scripts AnimScript_MainKirbyDance, MotionScript_10008
+	set_scripts AnimScript_MainKirbyDance, MotionScript_Stationary
 
 MotionScript_10b05:
 	set_velocities 79, VEL_LEFT_0_25, 0
@@ -1420,7 +1420,7 @@ MotionScript_PoppyBrosSrBombFall:
 	set_velocities  8, VEL_LEFT_1_25, VEL_UP_1_8TH
 	set_velocities  8, VEL_LEFT_1_25, VEL_DOWN_1_8TH
 	set_velocities  8, VEL_LEFT_1_25, VEL_DOWN_1_00
-	create_object AnimScript_Explosion, MotionScript_10008, ExplosionProperties
+	create_object AnimScript_Explosion, MotionScript_Stationary, ExplosionProperties
 	script_end
 
 MotionScript_PoppyBrosSrBombBounce:
@@ -1431,7 +1431,7 @@ MotionScript_PoppyBrosSrBombBounce:
 	set_velocities  8, VEL_LEFT_1_25, VEL_UP_0_50
 	set_velocities  8, VEL_LEFT_1_25, VEL_DOWN_0_50
 	set_velocities  8, VEL_LEFT_1_25, VEL_DOWN_2_00
-	create_object AnimScript_Explosion, MotionScript_10008, ExplosionProperties
+	create_object AnimScript_Explosion, MotionScript_Stationary, ExplosionProperties
 	script_end
 
 MotionScript_WhispyWoodsPuff:
@@ -1539,7 +1539,7 @@ MotionScript_111c7:
 	set_velocities  8, VEL_LEFT_1_00, 0
 	set_velocities  8, VEL_LEFT_0_50, 0
 	set_object_properties SparklingStarProperties
-	jump_abs MotionScript_1032d_Loop
+	jump_abs MotionScript_SparklingStar_Loop
 
 MotionScript_111d8:
 .loop
@@ -1989,7 +1989,7 @@ MotionScript_Chuckie:
 	script_ret
 
 MotionScript_Chuckie_PopOut:
-	create_object AnimScript_PuffOfSmoke, MotionScript_10008, PuffOfSmokeProperties
+	create_object AnimScript_PuffOfSmoke, MotionScript_Stationary, PuffOfSmokeProperties
 	create_object AnimScript_SmallStar, MotionScript_Star_RandomDirection, Data_3421
 	set_velocities  4, 0, VEL_UP_4_00
 	set_velocities  4, 0, VEL_UP_3_00
@@ -2016,7 +2016,7 @@ MotionScript_Chuckie_PopOut:
 	set_velocities 48, 0, 0
 	set_velocities  4, 0, VEL_DOWN_3_00
 	set_velocities  4, 0, VEL_DOWN_4_00
-	create_object AnimScript_PuffOfSmoke, MotionScript_10008, PuffOfSmokeProperties
+	create_object AnimScript_PuffOfSmoke, MotionScript_Stationary, PuffOfSmokeProperties
 	create_object AnimScript_SmallStar, MotionScript_Star_RandomDirection, Data_3421
 	script_ret
 
@@ -2478,7 +2478,7 @@ MotionScript_1199f:
 MotionScript_Kaboola:
 	set_value wBossHPCounter, 8
 	set_value wd3c1, $05
-	create_object AnimScript_BossHPIncrementer, MotionScript_10008, Data_3421
+	create_object AnimScript_BossHPIncrementer, MotionScript_Stationary, Data_3421
 	set_velocities 32, 0, 0
 	set_velocities  8, VEL_LEFT_1_8TH, VEL_DOWN_2_00
 	set_abs_pos
@@ -2624,7 +2624,7 @@ MotionScript_11b20:
 	set_position 92, 64
 	set_velocities  1, 0, 0
 	set_rel_pos
-	jump_abs MotionScript_1032d
+	jump_abs MotionScript_SparklingStar
 
 MotionScript_11b2b:
 .loop
@@ -2794,7 +2794,7 @@ MotionScript_11c94:
 	set_velocities  8, 0, VEL_UP_1_00
 	set_velocities  8, 0, VEL_UP_0_50
 	set_velocities  8, 0, VEL_UP_1_8TH
-	jump_abs MotionScript_10444
+	jump_abs MotionScript_UpAndDown
 
 MotionScript_11ca3:
 	set_velocities  8, 0, VEL_DOWN_2_00
@@ -2802,7 +2802,7 @@ MotionScript_11ca6:
 	set_velocities  8, 0, VEL_DOWN_1_00
 	set_velocities  8, 0, VEL_DOWN_0_50
 	set_velocities  8, 0, VEL_DOWN_1_8TH
-	jump_abs MotionScript_10444
+	jump_abs MotionScript_UpAndDown
 
 ; unreferenced
 MotionScript_11cb2:
@@ -2979,26 +2979,26 @@ MotionScript_11db9:
 MotionScript_11dd5:
 	set_update_func Func_140c2, AnimScript_21dc9
 	script_call MotionScript_11db9
-	create_object AnimScript_21ded, MotionScript_10008, Data_3685
-	set_scripts AnimScript_21e02, MotionScript_10008
+	create_object AnimScript_21ded, MotionScript_Stationary, Data_3685
+	set_scripts AnimScript_21e02, MotionScript_Stationary
 
 MotionScript_11de9:
 	set_update_func Func_140c2, AnimScript_21dc9
 	script_call MotionScript_11db9
-	create_object AnimScript_21ded, MotionScript_10008, Data_3685
-	set_scripts AnimScript_21e14, MotionScript_10008
+	create_object AnimScript_21ded, MotionScript_Stationary, Data_3685
+	set_scripts AnimScript_21e14, MotionScript_Stationary
 
 MotionScript_11dfd:
 	set_update_func Func_140c2, AnimScript_21ddb
 	script_call MotionScript_11db9
-	create_object AnimScript_21ded, MotionScript_10008, Data_3685
-	set_scripts AnimScript_21e26, MotionScript_10008
+	create_object AnimScript_21ded, MotionScript_Stationary, Data_3685
+	set_scripts AnimScript_21e26, MotionScript_Stationary
 
 MotionScript_11e11:
 	set_update_func Func_140c2, AnimScript_21ddb
 	script_call MotionScript_11db9
-	create_object AnimScript_21ded, MotionScript_10008, Data_3685
-	set_scripts AnimScript_21e38, MotionScript_10008
+	create_object AnimScript_21ded, MotionScript_Stationary, Data_3685
+	set_scripts AnimScript_21e38, MotionScript_Stationary
 
 MotionScript_ParasolSeparated:
 	branch_kirby_pos .script_11e2c, .script_11e43
@@ -3132,7 +3132,7 @@ MotionScript_11f4a:
 	script_end
 
 MotionScript_Waterfall:
-	create_object AnimScript_WaterfallParticles, MotionScript_10008, Data_3421
+	create_object AnimScript_WaterfallParticles, MotionScript_Stationary, Data_3421
 .loop
 	set_velocities  1, 0, 0
 	script_delay 10
@@ -3356,7 +3356,7 @@ MotionScript_1213c:
 	set_velocities  8, 0, VEL_DOWN_2_00
 	set_velocities  8, 0, VEL_DOWN_3_00
 	set_velocities  6, 0, VEL_DOWN_4_00
-	set_scripts AnimScript_22336, MotionScript_10008
+	set_scripts AnimScript_22336, MotionScript_Stationary
 
 MotionScript_12153:
 	script_call MotionScript_12195
@@ -3364,7 +3364,7 @@ MotionScript_12153:
 	set_velocities  8, 0, VEL_DOWN_1_25
 	set_velocities  8, 0, VEL_DOWN_2_00
 	set_velocities 11, 0, VEL_DOWN_3_00
-	set_scripts AnimScript_22336, MotionScript_10008
+	set_scripts AnimScript_22336, MotionScript_Stationary
 
 MotionScript_12167:
 	script_call MotionScript_12195
@@ -3373,7 +3373,7 @@ MotionScript_12167:
 	set_velocities  8, 0, VEL_DOWN_2_00
 	set_velocities  8, 0, VEL_DOWN_3_00
 	set_velocities  9, 0, VEL_DOWN_4_00
-	set_scripts AnimScript_22336, MotionScript_10008
+	set_scripts AnimScript_22336, MotionScript_Stationary
 
 MotionScript_1217e:
 	script_call MotionScript_12195
@@ -3382,7 +3382,7 @@ MotionScript_1217e:
 	set_velocities  8, 0, VEL_DOWN_2_00
 	set_velocities  8, 0, VEL_DOWN_3_00
 	set_velocities  6, 0, VEL_DOWN_4_00
-	set_scripts AnimScript_22336, MotionScript_10008
+	set_scripts AnimScript_22336, MotionScript_Stationary
 
 MotionScript_12195:
 	set_velocities 89, 0, 0
@@ -3401,7 +3401,7 @@ MotionScript_121a2:
 	set_velocities  8, 0, VEL_DOWN_1_00
 	set_velocities  8, 0, VEL_DOWN_1_25
 	set_velocities  9, 0, VEL_DOWN_2_00
-	set_scripts AnimScript_22336, MotionScript_10008
+	set_scripts AnimScript_22336, MotionScript_Stationary
 
 MotionScript_121bf:
 	set_velocities 106, 0, 0
@@ -3619,7 +3619,7 @@ MotionScript_12340:
 	set_velocities 48, 0, 0
 	set_velocities 112, VEL_RIGHT_1_8TH, VEL_DOWN_0_50
 	set_velocities 20, VEL_RIGHT_1_16TH, VEL_DOWN_0_25
-	set_scripts AnimScript_Hit, MotionScript_10008
+	set_scripts AnimScript_Hit, MotionScript_Stationary
 
 MotionScript_1235a:
 	set_velocities 132, 0, 0
@@ -4310,7 +4310,7 @@ MotionScript_128f6:
 MotionScript_128fe:
 	set_value wBossHPCounter, 3
 	set_value wd3c1, $01
-	create_object AnimScript_BossHPIncrementer, MotionScript_10008, Data_3421
+	create_object AnimScript_BossHPIncrementer, MotionScript_Stationary, Data_3421
 	set_anim_script AnimScript_22863
 	set_velocities 100, 0, 0
 	set_velocities 20, 0, VEL_DOWN_1_00
@@ -4460,7 +4460,7 @@ MotionScript_12a9a:
 MotionScript_12ab9:
 	set_abs_pos
 	set_position 88, 104
-	create_object AnimScript_Hit, MotionScript_10008, Data_3425
+	create_object AnimScript_Hit, MotionScript_Stationary, Data_3425
 	set_velocities  8, 0, VEL_UP_1_00
 	set_velocities  8, 0, VEL_UP_0_50
 	set_velocities  8, 0, VEL_UP_1_8TH
@@ -4508,7 +4508,7 @@ MotionScript_12b18:
 MotionScript_12b2d:
 	set_value wBossHPCounter, 6
 	set_value wd3c1, $01
-	create_object AnimScript_BossHPIncrementer, MotionScript_10008, Data_3421
+	create_object AnimScript_BossHPIncrementer, MotionScript_Stationary, Data_3421
 	script_exec Func_48a3
 	set_update_func Func_14172, Data_1c1e4
 	set_velocities  8, VEL_LEFT_1_25, VEL_DOWN_0_50
@@ -4788,12 +4788,12 @@ MotionScript_12dfd:
 	set_velocities 16, VEL_LEFT_2_00, 0
 	set_velocities  8, VEL_LEFT_1_00, 0
 	set_velocities  8, VEL_LEFT_0_50, 0
-	jump_abs MotionScript_1032d
+	jump_abs MotionScript_SparklingStar
 
 MotionScript_12e09:
 	set_value wBossHPCounter, 6
 	set_value wd3c1, $01
-	create_object AnimScript_BossHPIncrementer, MotionScript_10008, Data_3421
+	create_object AnimScript_BossHPIncrementer, MotionScript_Stationary, Data_3421
 	set_value wKirbySideOfScreen, $00
 	set_value wd3cf, $00
 	set_value wd3d0, $00
@@ -5006,7 +5006,7 @@ MotionScript_1301c:
 MotionScript_13038:
 	set_value wBossHPCounter, 3
 	set_value wd3c1, $01
-	create_object AnimScript_BossHPIncrementer, MotionScript_10008, Data_3421
+	create_object AnimScript_BossHPIncrementer, MotionScript_Stationary, Data_3421
 .loop
 	; randomly selects which door to pop out from
 	jumptable_random %11
@@ -5097,7 +5097,7 @@ MotionScript_130ed:
 MotionScript_13109:
 	set_value wBossHPCounter, 10
 	set_value wd3c1, $01
-	create_object AnimScript_BossHPIncrementer, MotionScript_10008, Data_3421
+	create_object AnimScript_BossHPIncrementer, MotionScript_Stationary, Data_3421
 	set_value wd3c0, $01
 	script_exec ScriptFunc_LockScrolling
 	script_exec Func_48a3
@@ -5705,4 +5705,4 @@ MotionScript_KirbyWarpStar_Crash2:
 	set_velocities 10, VEL_LEFT_1_8TH, VEL_DOWN_0_50
 	script_repeat_end
 	play_sfx SFX_25
-	set_scripts AnimScript_2028f, MotionScript_10008
+	set_scripts AnimScript_2028f, MotionScript_Stationary

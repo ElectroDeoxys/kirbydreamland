@@ -58,13 +58,13 @@ Func_4000::
 	call Func_819
 	and a
 	jr z, .asm_4081
-	cp $01
+	cp BLOCK_1
 	jr z, .asm_4081
-	cp $06
+	cp BLOCK_WATER
 	jr z, .asm_4081
-	cp $09
+	cp BLOCK_9
 	jr z, .asm_4081
-	cp $08
+	cp BLOCK_8
 	jr nz, .stop_walk
 	call Func_1248
 	jr c, .stop_walk
@@ -75,13 +75,13 @@ Func_4000::
 	call Func_819
 	and a
 	jr z, .continue_walk
-	cp $01
+	cp BLOCK_1
 	jr z, .continue_walk
-	cp $06
+	cp BLOCK_WATER
 	jr z, .continue_walk
-	cp $09
+	cp BLOCK_9
 	jr z, .continue_walk
-	cp $08
+	cp BLOCK_8
 	jr nz, .stop_walk
 	call Func_1257
 	jr nc, .continue_walk
@@ -266,13 +266,13 @@ Func_417c::
 	call Func_819
 	and a
 	jr z, .asm_41fe
-	cp $01
+	cp BLOCK_1
 	jr z, .asm_41fe
-	cp $06
+	cp BLOCK_WATER
 	jr z, .asm_41fe
-	cp $09
+	cp BLOCK_9
 	jr z, .asm_41fe
-	cp $07
+	cp BLOCK_7
 	jr nz, .asm_4221
 	call Func_1248
 	jr c, .asm_4221
@@ -283,13 +283,13 @@ Func_417c::
 	call Func_819
 	and a
 	jr z, .asm_4250
-	cp $01
+	cp BLOCK_1
 	jr z, .asm_4250
-	cp $06
+	cp BLOCK_WATER
 	jr z, .asm_4250
-	cp $09
+	cp BLOCK_9
 	jr z, .asm_4250
-	cp $08
+	cp BLOCK_8
 	jr nz, .asm_4221
 	call Func_1257
 	jr c, .asm_4250
@@ -1507,9 +1507,9 @@ Func_4a1c::
 	adc 0
 	ld d, a
 	ld a, [de]
-	cp $04
+	cp BLOCK_4
 	jr z, .asm_4a68
-	cp $05
+	cp BLOCK_5
 	jr z, .asm_4a6d
 	pop de
 	pop bc
@@ -1684,16 +1684,16 @@ Func_4b31:
 	ld [wd3d3], a
 	ld c, OBJECT_SLOT_KIRBY
 	ld hl, AnimScript_203de
-	ld de, MotionScript_10008
+	ld de, MotionScript_Stationary
 	call SetObjectScripts
 	pop bc
 	ret
 
 Func_4b5a::
-	ld de, MotionScript_10194
+	ld de, MotionScript_Kirby_SpatOutLeft
 	jr Func_4b62
 Func_4b5f::
-	ld de, MotionScript_101df
+	ld de, MotionScript_Kirby_SpatOutRight
 Func_4b62:
 	push bc
 	ld c, OBJECT_SLOT_KIRBY
@@ -1808,14 +1808,14 @@ ClearAllEnemies::
 	add hl, bc
 	add hl, bc
 	ld a, [hli]
-	add OBJ_UNK5
+	add OBJ_INTERACTION
 	ld h, [hl]
 	incc h
 	ld l, a
-	ld a, [hli] ; OBJ_UNK5
-	bit 3, a
+	ld a, [hli] ; OBJ_INTERACTION
+	bit OBJINT_UNK3_F, a
 	jr nz, .next_object
-	bit 0, a
+	bit OBJINT_VULNERABLE_F, a
 	jr z, .next_object
 	ld a, [hl] ; OBJ_SCORE
 	ld [wScoreToAdd], a
@@ -1835,7 +1835,7 @@ ClearAllEnemies::
 	call AddToScore
 	ld hl, AnimScript_2036c
 .defeated_without_score
-	ld de, MotionScript_10008
+	ld de, MotionScript_Stationary
 	call SetObjectScripts
 
 ; wait for star animation to finish
@@ -1899,14 +1899,14 @@ Func_4c87::
 	dec e
 	jr .loop
 
-InflictHalfDamage_MoveUp::
+InflictHalfDamage_MoveDown::
 	ld a, [wDamageBlinkingCounter]
 	and a
-	jp nz, InflictHalfDamage_MoveDown.set_carry
+	jp nz, InflictHalfDamage_MoveUp.set_carry
 	ld hl, wInvincibilityCounter
 	ld a, [hli]
 	or [hl]
-	jp nz, InflictHalfDamage_MoveDown.set_carry
+	jp nz, InflictHalfDamage_MoveUp.set_carry
 
 	; halve HP
 	ld a, [wHP]
@@ -1923,7 +1923,7 @@ InflictHalfDamage_MoveUp::
 	ld a, SFX_LOSE_LIFE
 	call PlaySFX
 
-	ld de, MotionScript_10162
+	ld de, MotionScript_Kirby_HitBySpikesDown
 	ld hl, AnimScript_201dc
 	ld bc, OBJECT_SLOT_KIRBY
 	call SetObjectScripts
@@ -1942,7 +1942,7 @@ InflictHalfDamage_MoveUp::
 	xor a
 	ret
 
-InflictHalfDamage_MoveDown::
+InflictHalfDamage_MoveUp::
 	ld a, [wDamageBlinkingCounter]
 	and a
 	jr nz, .set_carry
@@ -1966,7 +1966,7 @@ InflictHalfDamage_MoveDown::
 	set OBJFLAG_BLINKING_F, a
 	ld [wd1a0 + OBJECT_SLOT_KIRBY], a
 
-	ld de, MotionScript_10149
+	ld de, MotionScript_Kirby_HitBySpikesUp
 	ld hl, AnimScript_201dc
 	ld bc, OBJECT_SLOT_KIRBY
 	call SetObjectScripts

@@ -127,37 +127,37 @@ ENDC
 IF DEF(EXPORT_SCRIPTS)
 Data_1c14e::
 ENDC
-	dw AnimScript_20000, MotionScript_10008, Data_3425
+	dw AnimScript_20000, MotionScript_Stationary, Data_3425
 
 IF DEF(EXPORT_SCRIPTS)
 Data_1c154::
 ENDC
-	dw AnimScript_DefeatStars, MotionScript_10008, PuffOfSmokeProperties
+	dw AnimScript_DefeatStars, MotionScript_Stationary, PuffOfSmokeProperties
 
 IF DEF(EXPORT_SCRIPTS)
 Data_1c15a::
 ENDC
-	dw AnimScript_DefeatStars_RelPos, MotionScript_10008, Properties_35a6
+	dw AnimScript_DefeatStars_RelPos, MotionScript_Stationary, Properties_35a6
 
 IF DEF(EXPORT_SCRIPTS)
 Data_1c160::
 ENDC
-	dw AnimScript_Explosion, MotionScript_10008, ExplosionProperties
+	dw AnimScript_Explosion, MotionScript_Stationary, ExplosionProperties
 
 IF DEF(EXPORT_SCRIPTS)
 Data_1c166::
 ENDC
-	dw AnimScript_Explosion, MotionScript_10008, Properties_35c4
+	dw AnimScript_Explosion, MotionScript_Stationary, Properties_35c4
 
 IF DEF(EXPORT_SCRIPTS)
 Data_1c16c::
 ENDC
-	dw AnimScript_203b2, MotionScript_10008, ExplosionProperties
+	dw AnimScript_203b2, MotionScript_Stationary, ExplosionProperties
 
 IF DEF(EXPORT_SCRIPTS)
 Data_1c172::
 ENDC
-	dw AnimScript_20000, MotionScript_10008, Data_3421
+	dw AnimScript_20000, MotionScript_Stationary, Data_3421
 
 IF DEF(EXPORT_SCRIPTS)
 Data_1c178::
@@ -177,17 +177,17 @@ ENDC
 IF DEF(EXPORT_SCRIPTS)
 Data_1c18a::
 ENDC
-	dw AnimScript_DiveHitbox, MotionScript_10008, DiveHitboxProperties
+	dw AnimScript_DiveHitbox, MotionScript_Stationary, DiveHitboxProperties
 
 IF DEF(EXPORT_SCRIPTS)
 Data_1c190::
 ENDC
-	dw AnimScript_UnkSpitStarFX, MotionScript_10008, Data_35ab
+	dw AnimScript_UnkSpitStarFX, MotionScript_Stationary, Data_35ab
 
 IF DEF(EXPORT_SCRIPTS)
 Data_1c196::
 ENDC
-	dw AnimScript_FirePellet, MotionScript_1022a, Data_35b3
+	dw AnimScript_FirePellet, MotionScript_FirePellet, Data_35b3
 
 IF DEF(EXPORT_SCRIPTS)
 Data_1c19c::
@@ -202,18 +202,18 @@ ENDC
 IF DEF(EXPORT_SCRIPTS)
 Data_1c1a8::
 ENDC
-	dw AnimScript_PoppyBrosJrSeparated, MotionScript_10008, Data_3421
+	dw AnimScript_PoppyBrosJrSeparated, MotionScript_Stationary, Data_3421
 
 ; unreferenced
 IF DEF(EXPORT_SCRIPTS)
 Data_1c1ae::
 ENDC
-	dw AnimScript_GrizzoSeparated, MotionScript_10008, Properties_353e
+	dw AnimScript_GrizzoSeparated, MotionScript_Stationary, Properties_353e
 
 IF DEF(EXPORT_SCRIPTS)
 Data_1c1b4::
 ENDC
-	dw AnimScript_PoppyBrosJrSeparated, MotionScript_10008, Data_3421
+	dw AnimScript_PoppyBrosJrSeparated, MotionScript_Stationary, Data_3421
 
 IF DEF(EXPORT_SCRIPTS)
 Data_1c1ba::
@@ -223,47 +223,47 @@ ENDC
 IF DEF(EXPORT_SCRIPTS)
 Data_1c1c0::
 ENDC
-	dw AnimScript_OnPoppyBrosSrDestroyed, MotionScript_10008, Data_3421
+	dw AnimScript_OnPoppyBrosSrDestroyed, MotionScript_Stationary, Data_3421
 
 IF DEF(EXPORT_SCRIPTS)
 Data_1c1c6::
 ENDC
-	dw AnimScript_WhispyWoodsDespawnGuard, MotionScript_10008, Data_358f
+	dw AnimScript_WhispyWoodsDespawnGuard, MotionScript_Stationary, Data_358f
 
 IF DEF(EXPORT_SCRIPTS)
 Data_1c1cc::
 ENDC
-	dw AnimScript_OnWhispyWoodsDestroyed, MotionScript_10008, Data_3421
+	dw AnimScript_OnWhispyWoodsDestroyed, MotionScript_Stationary, Data_3421
 
 IF DEF(EXPORT_SCRIPTS)
 Data_1c1d2::
 ENDC
-	dw AnimScript_OnLololoLalalaDestroyed, MotionScript_10008, Data_3421
+	dw AnimScript_OnLololoLalalaDestroyed, MotionScript_Stationary, Data_3421
 
 IF DEF(EXPORT_SCRIPTS)
 Data_1c1d8::
 ENDC
-	dw AnimScript_OnKaboolaDestroyed, MotionScript_10008, Data_3425
+	dw AnimScript_OnKaboolaDestroyed, MotionScript_Stationary, Data_3425
 
 IF DEF(EXPORT_SCRIPTS)
 Data_1c1de::
 ENDC
-	dw AnimScript_KrackoJrExplosion, MotionScript_10008, Data_3421
+	dw AnimScript_KrackoJrExplosion, MotionScript_Stationary, Data_3421
 
 IF DEF(EXPORT_SCRIPTS)
 Data_1c1e4::
 ENDC
-	dw AnimScript_KrackoDespawnGuard, MotionScript_10008, Data_3421
+	dw AnimScript_KrackoDespawnGuard, MotionScript_Stationary, Data_3421
 
 IF DEF(EXPORT_SCRIPTS)
 Data_1c1ea::
 ENDC
-	dw AnimScript_OnKrackoDestroyed, MotionScript_10008, Data_3421
+	dw AnimScript_OnKrackoDestroyed, MotionScript_Stationary, Data_3421
 
 IF DEF(EXPORT_SCRIPTS)
 Data_1c1f0::
 ENDC
-	dw AnimScript_KingDededeDespawnGuard, MotionScript_10008, Properties_361f
+	dw AnimScript_KingDededeDespawnGuard, MotionScript_Stationary, Properties_361f
 
 IF DEF(EXPORT_SCRIPTS)
 Data_1c1f6::
@@ -273,4 +273,4 @@ ENDC
 IF DEF(EXPORT_SCRIPTS)
 Data_1c1fc::
 ENDC
-	dw AnimScript_22def, MotionScript_10008, Data_3421
+	dw AnimScript_22def, MotionScript_Stationary, Data_3421

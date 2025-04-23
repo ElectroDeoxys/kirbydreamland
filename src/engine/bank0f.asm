@@ -116,7 +116,7 @@ LevelObject_3c304:
 LevelObject_3c318:
 	object 17, 5, 0, 0, AnimScript_24c6c, MotionScript_30d60, StandardEnemyProperties
 LevelObject_3c322:
-	object 21, 4, 0, 0, AnimScript_205ae, MotionScript_103ff, StandardEnemyProperties
+	object 21, 4, 0, 0, AnimScript_205ae, MotionScript_BackAndForth_Slow, StandardEnemyProperties
 LevelObject_3c32c:
 	object 22, 2, 0, 0, AnimScript_24cd5, MotionScript_30e0c, Properties_371e
 LevelObject_3c336:
@@ -124,7 +124,7 @@ LevelObject_3c336:
 LevelObject_3c340:
 	object 31, 1, 0, 0, AnimScript_20647, MotionScript_305c6, Properties_36cd
 LevelObject_3c34a:
-	object 33, 5, 0, 0, AnimScript_205ae, MotionScript_103ff, StandardEnemyProperties
+	object 33, 5, 0, 0, AnimScript_205ae, MotionScript_BackAndForth_Slow, StandardEnemyProperties
 LevelObject_3c354:
 	object 41, 5, 8, 0, AnimScript_24da3, MotionScript_312bf, Properties_370c
 LevelObject_3c35e:
@@ -140,13 +140,13 @@ LevelObject_3c386:
 LevelObject_3c390:
 	object 61, 1, 0, 0, AnimScript_20647, MotionScript_305c6, Properties_36cd
 LevelObject_3c39a:
-	object 64, 5, 0, 0, AnimScript_205cc, MotionScript_1042f, StandardEnemyProperties
+	object 64, 5, 0, 0, AnimScript_205cc, MotionScript_BackAndForth_Fast, StandardEnemyProperties
 LevelObject_3c3a4:
 	object 66, 5, 0, 0, AnimScript_24ddd, MotionScript_30fd2, PoppyBrosJrProperties
 LevelObject_3c3ae:
 	object 67, 5, 8, 0, AnimScript_24dbf, MotionScript_312b3, Properties_370c
 LevelObject_3c3b8:
-	object 70, 5, 0, 0, AnimScript_205ae, MotionScript_103ff, StandardEnemyProperties
+	object 70, 5, 0, 0, AnimScript_205ae, MotionScript_BackAndForth_Slow, StandardEnemyProperties
 LevelObject_3c3c2:
 	object 71, 3, 0, 0, AnimScript_24cd5, MotionScript_30e0c, Properties_371e
 LevelObject_3c3cc:
@@ -157,9 +157,9 @@ LevelObject_3c3e0:
 	object 78, 3, -6, 0, AnimScript_24972, MotionScript_WarpStar, WarpStarFloorProperties, 2
 
 LevelObject_3c3eb:
-	object 5, 6, 0, 0, AnimScript_24948, MotionScript_10008, EnergyDrinkProperties, 0
+	object 5, 6, 0, 0, AnimScript_24948, MotionScript_Stationary, EnergyDrinkProperties, 0
 LevelObject_3c3f6:
-	object 10, 6, 0, 0, AnimScript_24948, MotionScript_10008, EnergyDrinkProperties, 1
+	object 10, 6, 0, 0, AnimScript_24948, MotionScript_Stationary, EnergyDrinkProperties, 1
 
 LevelObject_3c401:
 	object 18, 1, 0, 0, AnimScript_20647, MotionScript_305c6, Properties_36cd
@@ -168,11 +168,11 @@ LevelObject_3c40b:
 LevelObject_3c415:
 	object 21, 6, -8, 0, AnimScript_24da3, MotionScript_312bf, Properties_370c
 LevelObject_3c41f:
-	object 25, 4, 0, 0, AnimScript_205ae, MotionScript_103ff, StandardEnemyProperties
+	object 25, 4, 0, 0, AnimScript_205ae, MotionScript_BackAndForth_Slow, StandardEnemyProperties
 LevelObject_3c429:
 	object 27, 3, 0, 0, AnimScript_24dd5, MotionScript_304a4, Properties_36cd
 LevelObject_3c433:
-	object 31, 6, 0, 0, AnimScript_205ae, MotionScript_103ff, StandardEnemyProperties
+	object 31, 6, 0, 0, AnimScript_205ae, MotionScript_BackAndForth_Slow, StandardEnemyProperties
 LevelObject_3c43d:
 	object 33, 1, 0, 0, AnimScript_20647, MotionScript_305c6, Properties_36cd
 LevelObject_3c447:
@@ -223,22 +223,22 @@ LevelObject_3c51a:
 LevelObject_3c524:
 	object 6, 4, 0, 0, AnimScript_24cde, MotionScript_30e48, Properties_371e
 LevelObject_3c52e:
-	object 9, 4, 0, 0, AnimScript_205ae, MotionScript_103ff, StandardEnemyProperties
+	object 9, 4, 0, 0, AnimScript_205ae, MotionScript_BackAndForth_Slow, StandardEnemyProperties
 LevelObject_3c538:
-	object 10, 7, 0, 0, AnimScript_205cc, MotionScript_1042f, StandardEnemyProperties
+	object 10, 7, 0, 0, AnimScript_205cc, MotionScript_BackAndForth_Fast, StandardEnemyProperties
 LevelObject_3c542:
 	object 11, 19, -7, 0, AnimScript_24d87, MotionScript_30f5f, Properties_3715
 LevelObject_3c54c:
 	object 12, 19, -7, 0, AnimScript_24d87, MotionScript_30f5f, Properties_3715
 LevelObject_3c556:
-	object 1, 14, 8, 0, AnimScript_2494e, MotionScript_10008, MaximTomatoProperties, 4
+	object 1, 14, 8, 0, AnimScript_2494e, MotionScript_Stationary, MaximTomatoProperties, 4
 	db $00
 LevelObject_3c562:
 	object 7, 19, 0, 0, AnimScript_24cde, MotionScript_30e48, Properties_371e
 LevelObject_3c56c:
 	object 6, 23, 2, 0, AnimScript_24d63, MotionScript_30f0b, Properties_3715
 ; unreferenced
-	object 14, 23, 2, 0, AnimScript_24e7d, MotionScript_10008, GrizzoProperties
+	object 14, 23, 2, 0, AnimScript_24e7d, MotionScript_Stationary, GrizzoProperties
 LevelObject_3c580:
 	object 11, 28, 0, 0, AnimScript_24e30, MotionScript_3102a, GrizzoProperties
 LevelObject_3c58a:
@@ -247,9 +247,9 @@ LevelObject_3c594:
 	object 2, 37, 0, 0, AnimScript_24d63, MotionScript_30f0b, Properties_3715
 
 LevelObject_3c59e:
-	object 7, 22, 2, -43, AnimScript_250a6, MotionScript_10008, Data_3421
+	object 7, 22, 2, -43, AnimScript_250a6, MotionScript_Stationary, Data_3421
 LevelObject_3c5a8:
-	object 0, 26, 0, 0, AnimScript_25259, MotionScript_10008, Data_3421
+	object 0, 26, 0, 0, AnimScript_25259, MotionScript_Stationary, Data_3421
 
 ObjectList_CastleLololo00_X:
 	dbw $00, NULL
@@ -283,7 +283,7 @@ LevelObject_3c5e4:
 LevelObject_3c5ee:
 	object 21, 0, -64, 0, AnimScript_25322, MotionScript_31344, StandardEnemyProperties
 LevelObject_3c5f8:
-	object 11, 6, 0, 0, AnimScript_2490e, MotionScript_10008, BombProperties, 255
+	object 11, 6, 0, 0, AnimScript_2490e, MotionScript_Stationary, BombProperties, 255
 LevelObject_3c603:
 	object 10, 6, -32, 0, AnimScript_25439, MotionScript_314d5, Properties_36cd
 LevelObject_3c60d:
@@ -308,11 +308,11 @@ ObjectList_CastleLololo01_Y:
 	db $ff ; end
 
 LevelObject_3c641:
-	object 4, 11, 8, 0, AnimScript_2493f, MotionScript_10008, MikeProperties, 7
+	object 4, 11, 8, 0, AnimScript_2493f, MotionScript_Stationary, MikeProperties, 7
 LevelObject_3c64c:
 	object 0, 3, 0, 0, AnimScript_253c4, MotionScript_102e0, Properties_36cd
 LevelObject_3c656:
-	object 7, 1, 8, 0, AnimScript_25616, MotionScript_10008, ShotzoProperties
+	object 7, 1, 8, 0, AnimScript_25616, MotionScript_Stationary, ShotzoProperties
 LevelObject_3c660:
 	object 5, 10, 0, 0, AnimScript_20572, MotionScript_30d87, Properties_34c0
 LevelObject_3c66a:
@@ -341,9 +341,9 @@ LevelObject_3c6a6:
 LevelObject_3c6b0:
 	object 9, 3, 0, 0, AnimScript_25364, MotionScript_313ff, Properties_36cd
 LevelObject_3c6ba:
-	object 7, 6, 0, 0, AnimScript_24948, MotionScript_10008, EnergyDrinkProperties, 0
+	object 7, 6, 0, 0, AnimScript_24948, MotionScript_Stationary, EnergyDrinkProperties, 0
 LevelObject_3c6c5:
-	object 2, 6, 0, 0, AnimScript_24948, MotionScript_10008, EnergyDrinkProperties, 1
+	object 2, 6, 0, 0, AnimScript_24948, MotionScript_Stationary, EnergyDrinkProperties, 1
 
 ObjectList_CastleLololo04_X:
 	dbw $00, NULL
@@ -360,9 +360,9 @@ ObjectList_CastleLololo04_Y:
 	db $ff ; end
 
 LevelObject_3c6ea:
-	object 7, 1, 0, 0, AnimScript_2556b, MotionScript_10008, Data_3421
+	object 7, 1, 0, 0, AnimScript_2556b, MotionScript_Stationary, Data_3421
 LevelObject_3c6f4:
-	object 17, 9, 0, 0, AnimScript_2556b, MotionScript_10008, Data_3421
+	object 17, 9, 0, 0, AnimScript_2556b, MotionScript_Stationary, Data_3421
 LevelObject_3c6fe:
 	object 4, 6, 0, 0, AnimScript_25558, MotionScript_316b3, Data_3421
 LevelObject_3c708:
@@ -397,13 +397,13 @@ ObjectList_CastleLololo05_Y:
 	db $ff ; end
 
 LevelObject_3c75a:
-	object 8, 7, 0, 0, AnimScript_24948, MotionScript_10008, EnergyDrinkProperties, 8
+	object 8, 7, 0, 0, AnimScript_24948, MotionScript_Stationary, EnergyDrinkProperties, 8
 LevelObject_3c765:
-	object 2, 5, 0, 0, AnimScript_252ce, MotionScript_10008, GlunkProperties
+	object 2, 5, 0, 0, AnimScript_252ce, MotionScript_Stationary, GlunkProperties
 LevelObject_3c76f:
-	object 13, 9, 0, 0, AnimScript_252ce, MotionScript_10008, GlunkProperties
+	object 13, 9, 0, 0, AnimScript_252ce, MotionScript_Stationary, GlunkProperties
 LevelObject_3c779:
-	object 15, 6, 0, 0, AnimScript_252ce, MotionScript_10008, GlunkProperties
+	object 15, 6, 0, 0, AnimScript_252ce, MotionScript_Stationary, GlunkProperties
 LevelObject_3c783:
 	object 9, 1, -32, 0, AnimScript_252ad, MotionScript_31334, GlunkProperties
 LevelObject_3c78d:
@@ -432,15 +432,15 @@ ObjectList_CastleLololo06_Y:
 LevelObject_3c7cf:
 	object 9, 5, 0, 0, AnimScript_254e7, MotionScript_31636, StandardEnemyProperties
 LevelObject_3c7d9:
-	object 1, 18, 0, 0, AnimScript_252ce, MotionScript_10008, GlunkProperties
+	object 1, 18, 0, 0, AnimScript_252ce, MotionScript_Stationary, GlunkProperties
 LevelObject_3c7e3:
 	object 1, 7, 0, -16, AnimScript_20650, MotionScript_317a6, Properties_36cd
 LevelObject_3c7ed:
 	object 4, 7, 0, 0, AnimScript_20650, MotionScript_317ac, Properties_36cd
 LevelObject_3c7f7:
-	object 8, 8, 0, 0, AnimScript_25616, MotionScript_10008, Properties_3703
+	object 8, 8, 0, 0, AnimScript_25616, MotionScript_Stationary, Properties_3703
 LevelObject_3c801:
-	object 8, 11, 0, 0, AnimScript_24924, MotionScript_10008, InvincibilityCandyProperties, 2
+	object 8, 11, 0, 0, AnimScript_24924, MotionScript_Stationary, InvincibilityCandyProperties, 2
 
 ObjectList_CastleLololo07_X:
 	dbw $00, NULL
@@ -515,9 +515,9 @@ ObjectList_CastleLololo09_Y:
 	db $ff ; end
 
 LevelObject_3c8e7:
-	object 11, 9, 0, 0, AnimScript_2576d, MotionScript_10008, MaximTomatoProperties, 10
+	object 11, 9, 0, 0, AnimScript_2576d, MotionScript_Stationary, MaximTomatoProperties, 10
 LevelObject_3c8f2:
-	object 11, 3, 0, 0, AnimScript_2568a, MotionScript_10008, Data_3421
+	object 11, 3, 0, 0, AnimScript_2568a, MotionScript_Stationary, Data_3421
 
 ObjectList_CastleLololo10_X:
 	dbw $00, NULL
@@ -536,9 +536,9 @@ LevelObject_3c910:
 LevelObject_3c91a:
 	object 8, 1, -8, 8, AnimScript_253cd, MotionScript_31474, Properties_36cd
 LevelObject_3c924:
-	object 1, 1, 8, 0, AnimScript_2492d, MotionScript_10008, SpicyFoodProperties, 4
+	object 1, 1, 8, 0, AnimScript_2492d, MotionScript_Stationary, SpicyFoodProperties, 4
 LevelObject_3c92f:
-	object 7, 3, 8, 0, AnimScript_24948, MotionScript_10008, EnergyDrinkProperties, 5
+	object 7, 3, 8, 0, AnimScript_24948, MotionScript_Stationary, EnergyDrinkProperties, 5
 
 ObjectList_CastleLololo12_X:
 	dbw $00, NULL
@@ -563,11 +563,11 @@ ObjectList_CastleLololo12_Y:
 	db $ff ; end
 
 LevelObject_3c96c:
-	object 0, 10, 0, 0, AnimScript_24948, MotionScript_10008, EnergyDrinkProperties, 6
+	object 0, 10, 0, 0, AnimScript_24948, MotionScript_Stationary, EnergyDrinkProperties, 6
 LevelObject_3c977:
-	object 10, 14, 0, 0, AnimScript_25544, MotionScript_103ff, StandardEnemyProperties
+	object 10, 14, 0, 0, AnimScript_25544, MotionScript_BackAndForth_Slow, StandardEnemyProperties
 LevelObject_3c981:
-	object 11, 4, 0, 0, AnimScript_2556b, MotionScript_10008, Data_3421
+	object 11, 4, 0, 0, AnimScript_2556b, MotionScript_Stationary, Data_3421
 LevelObject_3c98b:
 	object 12, 7, 0, 0, AnimScript_20000, MotionScript_31358, Data_3421
 LevelObject_3c995:
@@ -615,9 +615,9 @@ ObjectList_CastleLololo15_Y:
 	db $ff ; end
 
 LevelObject_3ca17:
-	object 1, 1, 0, 0, AnimScript_20000, MotionScript_10008, Data_3425
+	object 1, 1, 0, 0, AnimScript_20000, MotionScript_Stationary, Data_3425
 LevelObject_3ca21:
-	object 5, 3, -8, 0, AnimScript_24981, MotionScript_1032d, Data_3421
+	object 5, 3, -8, 0, AnimScript_24981, MotionScript_SparklingStar, Data_3421
 	db $1f
 
 ObjectList_FloatIslands0_X:
@@ -800,15 +800,15 @@ LevelObject_3cbc6:
 LevelObject_3cbd0:
 	object 20, 0, 0, 0, AnimScript_25a0d, MotionScript_31ac0, Properties_36cd
 LevelObject_3cbda:
-	object 22, 5, 0, 0, AnimScript_2585c, MotionScript_10008, GlunkProperties
+	object 22, 5, 0, 0, AnimScript_2585c, MotionScript_Stationary, GlunkProperties
 LevelObject_3cbe4:
-	object 25, 1, 0, 0, AnimScript_25a54, MotionScript_10008, CoconutProperties
+	object 25, 1, 0, 0, AnimScript_25a54, MotionScript_Stationary, CoconutProperties
 LevelObject_3cbee:
-	object 27, 4, 0, 0, AnimScript_2490e, MotionScript_10008, BombProperties ; bug, missing consumable ID
+	object 27, 4, 0, 0, AnimScript_2490e, MotionScript_Stationary, BombProperties ; bug, missing consumable ID
 LevelObject_3cbf8:
-	object 32, 4, 0, 0, AnimScript_205ae, MotionScript_103ff, StandardEnemyProperties
+	object 32, 4, 0, 0, AnimScript_205ae, MotionScript_BackAndForth_Slow, StandardEnemyProperties
 LevelObject_3cc02:
-	object 32, 4, 20, 0, AnimScript_205ae, MotionScript_103ff, StandardEnemyProperties
+	object 32, 4, 20, 0, AnimScript_205ae, MotionScript_BackAndForth_Slow, StandardEnemyProperties
 LevelObject_3cc0c:
 	object 34, 1, 0, 8, AnimScript_20647, MotionScript_304a4, Properties_36cd
 LevelObject_3cc16:
@@ -816,7 +816,7 @@ LevelObject_3cc16:
 LevelObject_3cc20:
 	object 45, 7, 0, 0, AnimScript_259c5, MotionScript_31925, PuffyProperties
 LevelObject_3cc2a:
-	object 46, 4, 0, 0, AnimScript_261af, MotionScript_10008, StandardEnemyProperties
+	object 46, 4, 0, 0, AnimScript_261af, MotionScript_Stationary, StandardEnemyProperties
 LevelObject_3cc34:
 	object 54, 7, -36, 0, AnimScript_24701, MotionScript_30459, Properties_3703
 LevelObject_3cc3e:
@@ -842,7 +842,7 @@ LevelObject_3cc98:
 LevelObject_3cca2:
 	object 90, 7, -64, 0, AnimScript_24701, MotionScript_30459, Properties_3703
 LevelObject_3ccac:
-	object 90, 4, 0, 0, AnimScript_2493f, MotionScript_10008, MikeProperties, 0
+	object 90, 4, 0, 0, AnimScript_2493f, MotionScript_Stationary, MikeProperties, 0
 LevelObject_3ccb7:
 	object 92, 4, 0, 0, AnimScript_20647, MotionScript_306d0, Properties_36cd
 LevelObject_3ccc1:
@@ -850,13 +850,13 @@ LevelObject_3ccc1:
 LevelObject_3cccb:
 	object 97, 4, 0, -10, AnimScript_205e1, MotionScript_30da0, StandardEnemyGravityProperties
 LevelObject_3ccd5:
-	object 103, 2, 0, 0, AnimScript_25a54, MotionScript_10008, CoconutProperties
+	object 103, 2, 0, 0, AnimScript_25a54, MotionScript_Stationary, CoconutProperties
 LevelObject_3ccdf:
-	object 104, 0, 0, 0, AnimScript_25a54, MotionScript_10008, CoconutProperties
+	object 104, 0, 0, 0, AnimScript_25a54, MotionScript_Stationary, CoconutProperties
 LevelObject_3cce9:
-	object 106, 3, 0, 0, AnimScript_25a54, MotionScript_10008, CoconutProperties
+	object 106, 3, 0, 0, AnimScript_25a54, MotionScript_Stationary, CoconutProperties
 LevelObject_3ccf3:
-	object 107, 1, 0, 0, AnimScript_25a54, MotionScript_10008, CoconutProperties
+	object 107, 1, 0, 0, AnimScript_25a54, MotionScript_Stationary, CoconutProperties
 LevelObject_3ccfd:
 	object 111, 3, 0, 0, AnimScript_257f0, MotionScript_3185a, ConerProperties
 LevelObject_3cd07:
@@ -865,25 +865,25 @@ LevelObject_3cd11:
 	object 111, 3, 40, 0, AnimScript_257f0, MotionScript_3185a, ConerProperties
 
 LevelObject_3cd1b:
-	object 1, 13, 8, 0, AnimScript_24948, MotionScript_10008, EnergyDrinkProperties, 1
+	object 1, 13, 8, 0, AnimScript_24948, MotionScript_Stationary, EnergyDrinkProperties, 1
 LevelObject_3cd26:
 	object 1, 9, 16, 0, AnimScript_258f9, MotionScript_31db5, Properties_36cd
 LevelObject_3cd30:
-	object 5, 12, 0, 0, AnimScript_258d6, MotionScript_10008, GlunkProperties
+	object 5, 12, 0, 0, AnimScript_258d6, MotionScript_Stationary, GlunkProperties
 LevelObject_3cd3a:
 	object 3, 9, 32, 0, AnimScript_258f9, MotionScript_31db5, Properties_36cd
 LevelObject_3cd44:
 	object 10, 5, 0, 0, AnimScript_259b0, MotionScript_30670, Properties_36cd
 LevelObject_3cd4e:
-	object 16, 2, 0, 0, AnimScript_25a54, MotionScript_10008, CoconutProperties
+	object 16, 2, 0, 0, AnimScript_25a54, MotionScript_Stationary, CoconutProperties
 LevelObject_3cd58:
-	object 16, 12, 0, 0, AnimScript_25908, MotionScript_1042f, Properties_36cd
+	object 16, 12, 0, 0, AnimScript_25908, MotionScript_BackAndForth_Fast, Properties_36cd
 LevelObject_3cd62:
-	object 23, 4, 0, 0, AnimScript_2593e, MotionScript_10444, Properties_36cd
+	object 23, 4, 0, 0, AnimScript_2593e, MotionScript_UpAndDown, Properties_36cd
 LevelObject_3cd6c:
-	object 26, 3, 0, 0, AnimScript_2593e, MotionScript_10444, Properties_36cd
+	object 26, 3, 0, 0, AnimScript_2593e, MotionScript_UpAndDown, Properties_36cd
 LevelObject_3cd76:
-	object 30, 2, 8, 3, AnimScript_2593e, MotionScript_10444, Properties_36cd
+	object 30, 2, 8, 3, AnimScript_2593e, MotionScript_UpAndDown, Properties_36cd
 LevelObject_3cd80:
 	object 21, 12, 0, 0, AnimScript_20572, MotionScript_31df5, GordoProperties
 LevelObject_3cd8a:
@@ -893,38 +893,38 @@ LevelObject_3cd94:
 LevelObject_3cd9e:
 	object 35, 8, 0, 80, AnimScript_20572, MotionScript_30498, GordoProperties
 LevelObject_3cda8:
-	object 40, 1, 8, 8, AnimScript_2593e, MotionScript_10444, Properties_36cd
+	object 40, 1, 8, 8, AnimScript_2593e, MotionScript_UpAndDown, Properties_36cd
 LevelObject_3cdb2:
-	object 41, 5, 8, 0, AnimScript_25a28, MotionScript_103ff, Properties_36cd
+	object 41, 5, 8, 0, AnimScript_25a28, MotionScript_BackAndForth_Slow, Properties_36cd
 LevelObject_3cdbc:
-	object 43, 9, 0, 0, AnimScript_2585c, MotionScript_10008, GlunkProperties
+	object 43, 9, 0, 0, AnimScript_2585c, MotionScript_Stationary, GlunkProperties
 LevelObject_3cdc6:
-	object 46, 2, 8, 0, AnimScript_24948, MotionScript_10008, EnergyDrinkProperties, 2
+	object 46, 2, 8, 0, AnimScript_24948, MotionScript_Stationary, EnergyDrinkProperties, 2
 
 LevelObject_3cdd1:
-	object 1, 2, 0, 0, AnimScript_25a5f, MotionScript_10008, CoconutProperties
+	object 1, 2, 0, 0, AnimScript_25a5f, MotionScript_Stationary, CoconutProperties
 LevelObject_3cddb:
-	object 2, 3, 0, 0, AnimScript_25a5f, MotionScript_10008, CoconutProperties
+	object 2, 3, 0, 0, AnimScript_25a5f, MotionScript_Stationary, CoconutProperties
 LevelObject_3cde5:
-	object 6, 3, 0, 0, AnimScript_25a5f, MotionScript_10008, CoconutProperties
+	object 6, 3, 0, 0, AnimScript_25a5f, MotionScript_Stationary, CoconutProperties
 LevelObject_3cdef:
-	object 7, 1, 0, 0, AnimScript_25a5f, MotionScript_10008, CoconutProperties
+	object 7, 1, 0, 0, AnimScript_25a5f, MotionScript_Stationary, CoconutProperties
 LevelObject_3cdf9:
 	object 3, 13, 8, 0, AnimScript_20572, MotionScript_31e24, GordoProperties
 	dw PuffyProperties ; ?
 LevelObject_3ce05:
-	object 6, 19, 8, 0, AnimScript_24960, MotionScript_10008, OneUpProperties, 3
+	object 6, 19, 8, 0, AnimScript_24960, MotionScript_Stationary, OneUpProperties, 3
 
 LevelObject_3ce10:
 	object 10, 7, 0, 0, AnimScript_259c5, MotionScript_318e9, PuffyProperties
 LevelObject_3ce1a:
 	object 14, 7, 0, 0, AnimScript_259c5, MotionScript_318f2, PuffyProperties
 LevelObject_3ce24:
-	object 15, 2, 8, 0, AnimScript_2492d, MotionScript_10008, SpicyFoodProperties, 8
+	object 15, 2, 8, 0, AnimScript_2492d, MotionScript_Stationary, SpicyFoodProperties, 8
 LevelObject_3ce2f:
-	object 18, 2, 0, 0, AnimScript_25a28, MotionScript_103ff, Properties_36cd
+	object 18, 2, 0, 0, AnimScript_25a28, MotionScript_BackAndForth_Slow, Properties_36cd
 LevelObject_3ce39:
-	object 20, 2, 0, 0, AnimScript_25d84, MotionScript_10008, Properties_3703
+	object 20, 2, 0, 0, AnimScript_25d84, MotionScript_Stationary, Properties_3703
 LevelObject_3ce43:
 	object 28, 1, 0, 0, AnimScript_259fb, MotionScript_31ad1, Properties_36cd
 LevelObject_3ce4d:
@@ -936,7 +936,7 @@ LevelObject_3ce61:
 LevelObject_3ce6b:
 	object 38, 0, -120, 7, AnimScript_20650, MotionScript_306c6, Properties_36cd
 LevelObject_3ce75:
-	object 39, 5, 0, 0, AnimScript_24671, MotionScript_10008, Properties_3703
+	object 39, 5, 0, 0, AnimScript_24671, MotionScript_Stationary, Properties_3703
 LevelObject_3ce7f:
 	object 44, 3, 0, 0, AnimScript_2063b, MotionScript_306d0, Properties_36cd
 LevelObject_3ce89:
@@ -948,33 +948,33 @@ LevelObject_3ce9d:
 LevelObject_3cea7:
 	object 51, 5, 0, 0, AnimScript_259b0, MotionScript_30670, Properties_36cd
 LevelObject_3ceb1:
-	object 54, 4, 0, 0, AnimScript_24671, MotionScript_10008, Properties_3703
+	object 54, 4, 0, 0, AnimScript_24671, MotionScript_Stationary, Properties_3703
 LevelObject_3cebb:
 	object 60, 4, 0, 0, AnimScript_25802, MotionScript_31872, PuffyProperties
 LevelObject_3cec5:
-	object 68, 2, 0, 0, AnimScript_24686, MotionScript_10008, Properties_3703
+	object 68, 2, 0, 0, AnimScript_24686, MotionScript_Stationary, Properties_3703
 
 LevelObject_3cecf:
-	object 1, 4, 0, 0, AnimScript_24951, MotionScript_10008, OneUpProperties, 4
+	object 1, 4, 0, 0, AnimScript_24951, MotionScript_Stationary, OneUpProperties, 4
 LevelObject_3ceda:
-	object 2, 4, 0, 0, AnimScript_24945, MotionScript_10008, EnergyDrinkProperties, 5
+	object 2, 4, 0, 0, AnimScript_24945, MotionScript_Stationary, EnergyDrinkProperties, 5
 
 LevelObject_3cee5:
-	object 6, 2, 8, 0, AnimScript_25a7c, MotionScript_10008, Data_3421
+	object 6, 2, 8, 0, AnimScript_25a7c, MotionScript_Stationary, Data_3421
 LevelObject_3ceef:
 	object 5, 21, 8, 0, AnimScript_24972, MotionScript_WarpStar, WarpStarFloorProperties, 6
 
 LevelObject_3cefa:
-	object 4, 3, 8, -8, AnimScript_25a91, MotionScript_10008, Data_3421
+	object 4, 3, 8, -8, AnimScript_25a91, MotionScript_Stationary, Data_3421
 
 LevelObject_3cf04:
 	object 13, 5, 0, 0, AnimScript_257f0, MotionScript_3185a, ConerProperties
 LevelObject_3cf0e:
-	object 14, 2, 0, 0, AnimScript_25917, MotionScript_10414, Properties_36cd
+	object 14, 2, 0, 0, AnimScript_25917, MotionScript_BackAndForthWithStop, Properties_36cd
 LevelObject_3cf18:
-	object 10, 3, 0, 0, AnimScript_25917, MotionScript_10414, Properties_36cd
+	object 10, 3, 0, 0, AnimScript_25917, MotionScript_BackAndForthWithStop, Properties_36cd
 LevelObject_3cf22:
-	object 24, 4, 8, 0, AnimScript_24936, MotionScript_10444, MintLeafProperties, 7
+	object 24, 4, 8, 0, AnimScript_24936, MotionScript_UpAndDown, MintLeafProperties, 7
 LevelObject_3cf2d:
 	object 38, 1, 0, -5, AnimScript_25aac, MotionScript_31b5a, KaboolaProperties
 
@@ -1032,7 +1032,7 @@ LevelObject_3cfd2:
 LevelObject_3cfdc:
 	object 50, 0, -64, 0, AnimScript_25cee, MotionScript_31fe2, ScarfyProperties
 LevelObject_3cfe6:
-	object 23, 3, 8, 0, AnimScript_25d84, MotionScript_10008, Properties_3703
+	object 23, 3, 8, 0, AnimScript_25d84, MotionScript_Stationary, Properties_3703
 LevelObject_3cff0:
 	object 19, 0, -64, 0, AnimScript_25c76, MotionScript_31767, Properties_36cd
 LevelObject_3cffa:
@@ -1046,7 +1046,7 @@ LevelObject_3d00e:
 LevelObject_3d022:
 	object 12, 2, 0, 0, AnimScript_205e1, MotionScript_102da, StandardEnemyGravityProperties
 LevelObject_3d02c:
-	object 27, 3, 8, 0, AnimScript_205ae, MotionScript_103ff, StandardEnemyProperties
+	object 27, 3, 8, 0, AnimScript_205ae, MotionScript_BackAndForth_Slow, StandardEnemyProperties
 LevelObject_3d036:
 	object 35, 6, 0, 0, AnimScript_25d3c, MotionScript_31f61, StandardEnemyProperties
 LevelObject_3d040:
@@ -1111,33 +1111,33 @@ LevelObject_3d114:
 LevelObject_3d11e:
 	object 44, 0, 0, 0, AnimScript_25c5b, MotionScript_31ee6, Properties_3727
 LevelObject_3d128:
-	object 43, 4, 32, 0, AnimScript_25c97, MotionScript_10008, Properties_36cd
+	object 43, 4, 32, 0, AnimScript_25c97, MotionScript_Stationary, Properties_36cd
 LevelObject_3d132:
-	object 44, 2, 32, 8, AnimScript_25ca2, MotionScript_10008, Properties_36cd
+	object 44, 2, 32, 8, AnimScript_25ca2, MotionScript_Stationary, Properties_36cd
 LevelObject_3d13c:
-	object 44, 5, 32, 8, AnimScript_25cb0, MotionScript_10008, Properties_36cd
+	object 44, 5, 32, 8, AnimScript_25cb0, MotionScript_Stationary, Properties_36cd
 LevelObject_3d146:
 	object 60, 1, 0, 0, AnimScript_254c0, MotionScript_315c6, Properties_36cd
 LevelObject_3d150:
 	object 62, 3, 0, 0, AnimScript_254c0, MotionScript_315c6, Properties_36cd
 LevelObject_3d15a:
-	object 20, 4, 0, 0, AnimScript_26167, MotionScript_10008, StandardEnemyProperties
+	object 20, 4, 0, 0, AnimScript_26167, MotionScript_Stationary, StandardEnemyProperties
 LevelObject_3d164:
-	object 25, 5, 0, 0, AnimScript_26167, MotionScript_10008, StandardEnemyProperties
+	object 25, 5, 0, 0, AnimScript_26167, MotionScript_Stationary, StandardEnemyProperties
 LevelObject_3d16e:
 	object 55, 5, 0, 0, AnimScript_25cd0, MotionScript_102ce, StandardEnemyProperties
 LevelObject_3d178:
 	object 57, 5, 0, 0, AnimScript_25cd0, MotionScript_102ce, StandardEnemyProperties
 LevelObject_3d182:
-	object 9, 6, 0, 0, AnimScript_26001, MotionScript_10008, Properties_3730
+	object 9, 6, 0, 0, AnimScript_26001, MotionScript_Stationary, Properties_3730
 LevelObject_3d18c:
-	object 16, 6, 0, 0, AnimScript_2600c, MotionScript_10008, Properties_3730
+	object 16, 6, 0, 0, AnimScript_2600c, MotionScript_Stationary, Properties_3730
 LevelObject_3d196:
-	object 32, 5, 0, 0, AnimScript_25fef, MotionScript_10008, Properties_3730
+	object 32, 5, 0, 0, AnimScript_25fef, MotionScript_Stationary, Properties_3730
 LevelObject_3d1a0:
-	object 66, 3, -8, 0, AnimScript_25fef, MotionScript_10008, Properties_3730
+	object 66, 3, -8, 0, AnimScript_25fef, MotionScript_Stationary, Properties_3730
 LevelObject_3d1aa:
-	object 11, 4, 0, 0, AnimScript_25fef, MotionScript_10008, Properties_3730
+	object 11, 4, 0, 0, AnimScript_25fef, MotionScript_Stationary, Properties_3730
 
 ObjectList_BubblyClouds2_X:
 	dbw $00, NULL
@@ -1160,7 +1160,7 @@ ObjectList_BubblyClouds2_Y:
 	db $ff ; end
 
 LevelObject_3d1e0:
-	object 3, 4, 0, 0, AnimScript_25fef, MotionScript_10008, Properties_3730
+	object 3, 4, 0, 0, AnimScript_25fef, MotionScript_Stationary, Properties_3730
 LevelObject_3d1ea:
 	object 14, 21, 0, 0, AnimScript_25fbb, MotionScript_321dd, Properties_36cd
 LevelObject_3d1f4:
@@ -1243,13 +1243,13 @@ LevelObject_3d30e:
 LevelObject_3d318:
 	object 28, 7, 0, 0, AnimScript_25fbb, MotionScript_32237, Properties_36cd
 LevelObject_3d322:
-	object 3, 9, 0, 0, AnimScript_24936, MotionScript_10008, MintLeafProperties, 0
+	object 3, 9, 0, 0, AnimScript_24936, MotionScript_Stationary, MintLeafProperties, 0
 LevelObject_3d32d:
-	object 28, 3, 0, 0, AnimScript_2494e, MotionScript_10008, MaximTomatoProperties, 1
+	object 28, 3, 0, 0, AnimScript_2494e, MotionScript_Stationary, MaximTomatoProperties, 1
 LevelObject_3d338:
-	object 15, 5, 0, 0, AnimScript_24948, MotionScript_10008, EnergyDrinkProperties, 2
+	object 15, 5, 0, 0, AnimScript_24948, MotionScript_Stationary, EnergyDrinkProperties, 2
 LevelObject_3d343:
-	object 40, 8, 0, 0, AnimScript_24960, MotionScript_10008, OneUpProperties, 3
+	object 40, 8, 0, 0, AnimScript_24960, MotionScript_Stationary, OneUpProperties, 3
 
 ObjectList_BubblyClouds5_X:
 	dbw $00, NULL
@@ -1282,29 +1282,29 @@ ObjectList_BubblyClouds5_Y:
 	db $ff ; end
 
 LevelObject_3d398:
-	object 31, 10, 0, 0, AnimScript_2494e, MotionScript_10008, MaximTomatoProperties, 4
+	object 31, 10, 0, 0, AnimScript_2494e, MotionScript_Stationary, MaximTomatoProperties, 4
 LevelObject_3d3a3:
-	object 29, 8, 0, 0, AnimScript_24945, MotionScript_10008, EnergyDrinkProperties, 5
+	object 29, 8, 0, 0, AnimScript_24945, MotionScript_Stationary, EnergyDrinkProperties, 5
 LevelObject_3d3ae:
 	object 4, 4, 0, -8, AnimScript_26116, MotionScript_3230c, Data_3421, 6
 LevelObject_3d3b9:
 	object 47, 0, 0, 0, AnimScript_25cee, MotionScript_31fe2, ScarfyProperties
 LevelObject_3d3c3:
-	object 28, 4, 0, 0, AnimScript_24945, MotionScript_10008, EnergyDrinkProperties, 50
+	object 28, 4, 0, 0, AnimScript_24945, MotionScript_Stationary, EnergyDrinkProperties, 50
 LevelObject_3d3ce:
 	object 29, 5, 10, 14, AnimScript_20572, MotionScript_32369, GordoProperties
 LevelObject_3d3d8:
 	object 26, 5, 10, 14, AnimScript_20572, MotionScript_32369, GordoProperties
 LevelObject_3d3e2:
-	object 1, 8, 0, 0, AnimScript_24936, MotionScript_10008, MintLeafProperties, 7
+	object 1, 8, 0, 0, AnimScript_24936, MotionScript_Stationary, MintLeafProperties, 7
 LevelObject_3d3ed:
-	object 42, 6, 0, 0, AnimScript_205ae, MotionScript_103ff, StandardEnemyProperties
+	object 42, 6, 0, 0, AnimScript_205ae, MotionScript_BackAndForth_Slow, StandardEnemyProperties
 LevelObject_3d3f7:
-	object 36, 6, 0, 0, AnimScript_205ae, MotionScript_103ff, StandardEnemyProperties
+	object 36, 6, 0, 0, AnimScript_205ae, MotionScript_BackAndForth_Slow, StandardEnemyProperties
 LevelObject_3d401:
-	object 38, 4, 8, 0, AnimScript_205ae, MotionScript_103ff, StandardEnemyProperties
+	object 38, 4, 8, 0, AnimScript_205ae, MotionScript_BackAndForth_Slow, StandardEnemyProperties
 ; unreferenced
-	object 18, 3, 8, 0, AnimScript_25679, MotionScript_10008, Properties_3703
+	object 18, 3, 8, 0, AnimScript_25679, MotionScript_Stationary, Properties_3703
 
 ObjectList_BubblyClouds6_X:
 	dbw $00, NULL
@@ -1324,23 +1324,23 @@ ObjectList_BubblyClouds6_Y:
 	db $ff ; end
 
 LevelObject_3d438:
-	object 19, 0, 0, 0, AnimScript_26134, MotionScript_10008, Data_3421
+	object 19, 0, 0, 0, AnimScript_26134, MotionScript_Stationary, Data_3421
 LevelObject_3d442:
-	object 29, 0, 0, 0, AnimScript_26134, MotionScript_10008, Data_3421
+	object 29, 0, 0, 0, AnimScript_26134, MotionScript_Stationary, Data_3421
 LevelObject_3d44c:
-	object 39, 0, 0, 0, AnimScript_26134, MotionScript_10008, Data_3421
+	object 39, 0, 0, 0, AnimScript_26134, MotionScript_Stationary, Data_3421
 LevelObject_3d456:
-	object 49, 0, 0, 0, AnimScript_26134, MotionScript_10008, Data_3421
+	object 49, 0, 0, 0, AnimScript_26134, MotionScript_Stationary, Data_3421
 LevelObject_3d460:
-	object 59, 0, 0, 0, AnimScript_26134, MotionScript_10008, Data_3421
+	object 59, 0, 0, 0, AnimScript_26134, MotionScript_Stationary, Data_3421
 LevelObject_3d46a:
-	object 69, 0, 0, 0, AnimScript_26134, MotionScript_10008, Data_3421
+	object 69, 0, 0, 0, AnimScript_26134, MotionScript_Stationary, Data_3421
 LevelObject_3d474:
-	object 79, 0, 0, 0, AnimScript_26134, MotionScript_10008, Data_3421
+	object 79, 0, 0, 0, AnimScript_26134, MotionScript_Stationary, Data_3421
 LevelObject_3d47e:
-	object 10, 6, 0, 0, AnimScript_2492d, MotionScript_10008, SpicyFoodProperties, 8
+	object 10, 6, 0, 0, AnimScript_2492d, MotionScript_Stationary, SpicyFoodProperties, 8
 LevelObject_3d489:
-	object 16, 2, 0, 0, AnimScript_262a0, MotionScript_10008, OneUpProperties, 60
+	object 16, 2, 0, 0, AnimScript_262a0, MotionScript_Stationary, OneUpProperties, 60
 
 ObjectList_BubblyClouds7_X:
 	dbw $00, NULL
@@ -1383,9 +1383,9 @@ LevelObject_3d508:
 LevelObject_3d512:
 	object 6, 5, 8, 0, AnimScript_25ed2, MotionScript_3214d, ParasolWaddleDeeProperties
 LevelObject_3d51c:
-	object 10, 29, 0, 0, AnimScript_25ffb, MotionScript_10008, Properties_3730
+	object 10, 29, 0, 0, AnimScript_25ffb, MotionScript_Stationary, Properties_3730
 LevelObject_3d526:
-	object 10, 16, 0, 46, AnimScript_25c97, MotionScript_10008, Properties_36cd
+	object 10, 16, 0, 46, AnimScript_25c97, MotionScript_Stationary, Properties_36cd
 
 ObjectList_BubblyClouds8_X:
 	dbw $00, NULL
@@ -1503,9 +1503,9 @@ ObjectList_TitleScreen:
 LevelObject_3d6a6:
 	object 4, 3, 10, -6, AnimScript_262db, MotionScript_323ad, Data_3425
 LevelObject_3d6b0:
-	object 0, 7, -16, -8, AnimScript_26300, MotionScript_10008, Data_3425
+	object 0, 7, -16, -8, AnimScript_26300, MotionScript_Stationary, Data_3425
 LevelObject_3d6ba:
-	object 0, 0, 0, 0, AnimScript_26380, MotionScript_10008, Data_3425
+	object 0, 0, 0, 0, AnimScript_26380, MotionScript_Stationary, Data_3425
 
 ObjectList_SoundTest:
 	dbw $00, NULL
@@ -1605,11 +1605,11 @@ LevelObject_3d7af:
 LevelObject_3d7b9:
 	object 5, 0, -4, 0, AnimScript_26740, MotionScript_3299c, Data_3425
 LevelObject_3d7c3:
-	object 5, 0, -4, 0, AnimScript_26749, MotionScript_10008, Data_3425
+	object 5, 0, -4, 0, AnimScript_26749, MotionScript_Stationary, Data_3425
 LevelObject_3d7cd:
-	object 1, 1, 0, 0, AnimScript_26905, MotionScript_10008, Data_3425
+	object 1, 1, 0, 0, AnimScript_26905, MotionScript_Stationary, Data_3425
 LevelObject_3d7d7:
-	object 4, 4, 0, 4, AnimScript_267da, MotionScript_10008, Data_3425
+	object 4, 4, 0, 4, AnimScript_267da, MotionScript_Stationary, Data_3425
 LevelObject_3d7e1:
 	object 7, 3, 0, 0, AnimScript_267d7, MotionScript_32ab4, Data_3425
 LevelObject_3d7eb:
@@ -1631,7 +1631,7 @@ LevelObject_3d831:
 LevelObject_3d83b:
 	object 4, 0, 4, 0, AnimScript_26826, MotionScript_32bc0, Data_3425
 LevelObject_3d845:
-	object 4, 0, 8, 0, AnimScript_2684f, MotionScript_10008, Data_3425
+	object 4, 0, 8, 0, AnimScript_2684f, MotionScript_Stationary, Data_3425
 LevelObject_3d84f:
 	object 5, 7, -8, 7, AnimScript_26815, MotionScript_32ba8, Data_3425
 LevelObject_3d859:
@@ -1762,105 +1762,105 @@ ObjectList_KingDedede:
 	db $ff ; end
 
 LevelObject_3d973:
-	object 1, 1, 0, 0, AnimScript_2692d, MotionScript_10008, Data_3425
+	object 1, 1, 0, 0, AnimScript_2692d, MotionScript_Stationary, Data_3425
 LevelObject_3d97d:
-	object 2, 2, -8, -8, AnimScript_20572, MotionScript_10008, Data_3425
+	object 2, 2, -8, -8, AnimScript_20572, MotionScript_Stationary, Data_3425
 LevelObject_3d987:
-	object 8, 2, -8, 0, AnimScript_20587, MotionScript_10008, Data_3425
+	object 8, 2, -8, 0, AnimScript_20587, MotionScript_Stationary, Data_3425
 LevelObject_3d991:
-	object 3, 4, -8, 0, AnimScript_205ea, MotionScript_10008, Data_3425
+	object 3, 4, -8, 0, AnimScript_205ea, MotionScript_Stationary, Data_3425
 LevelObject_3d99b:
-	object 6, 5, -8, 0, AnimScript_24ccf, MotionScript_10008, Data_3425
+	object 6, 5, -8, 0, AnimScript_24ccf, MotionScript_Stationary, Data_3425
 LevelObject_3d9a5:
-	object 5, 3, -8, -8, AnimScript_20647, MotionScript_10008, Data_3425
+	object 5, 3, -8, -8, AnimScript_20647, MotionScript_Stationary, Data_3425
 LevelObject_3d9af:
-	object 3, 2, -8, 0, AnimScript_24cd5, MotionScript_10008, Data_3425
+	object 3, 2, -8, 0, AnimScript_24cd5, MotionScript_Stationary, Data_3425
 LevelObject_3d9b9:
-	object 7, 3, -8, 8, AnimScript_24e4f, MotionScript_10008, Data_3425
+	object 7, 3, -8, 8, AnimScript_24e4f, MotionScript_Stationary, Data_3425
 LevelObject_3d9c3:
-	object 2, 5, -8, 8, AnimScript_24f03, MotionScript_10008, Data_3425
+	object 2, 5, -8, 8, AnimScript_24f03, MotionScript_Stationary, Data_3425
 LevelObject_3d9cd:
-	object 5, 4, -16, 8, AnimScript_24dbf, MotionScript_10008, Data_3425
+	object 5, 4, -16, 8, AnimScript_24dbf, MotionScript_Stationary, Data_3425
 LevelObject_3d9d7:
-	object 2, 4, 0, 0, AnimScript_24fb7, MotionScript_10008, Data_3425
+	object 2, 4, 0, 0, AnimScript_24fb7, MotionScript_Stationary, Data_3425
 LevelObject_3d9e1:
-	object 6, 4, 2, 4, AnimScript_25159, MotionScript_10008, Data_3425
+	object 6, 4, 2, 4, AnimScript_25159, MotionScript_Stationary, Data_3425
 LevelObject_3d9eb:
-	object 4, 3, 0, 0, AnimScript_2544d, MotionScript_10008, Data_3425
+	object 4, 3, 0, 0, AnimScript_2544d, MotionScript_Stationary, Data_3425
 LevelObject_3d9f5:
-	object 2, 4, -8, 0, AnimScript_2552b, MotionScript_10008, Data_3425
+	object 2, 4, -8, 0, AnimScript_2552b, MotionScript_Stationary, Data_3425
 LevelObject_3d9ff:
-	object 5, 5, -8, 0, AnimScript_25558, MotionScript_10008, Data_3425
+	object 5, 5, -8, 0, AnimScript_25558, MotionScript_Stationary, Data_3425
 LevelObject_3da09:
-	object 7, 6, 0, 0, AnimScript_253bb, MotionScript_10008, Data_3425
+	object 7, 6, 0, 0, AnimScript_253bb, MotionScript_Stationary, Data_3425
 LevelObject_3da13:
-	object 8, 4, -8, 0, AnimScript_2559b, MotionScript_10008, Data_3425
+	object 8, 4, -8, 0, AnimScript_2559b, MotionScript_Stationary, Data_3425
 LevelObject_3da1d:
-	object 3, 2, -8, -8, AnimScript_25319, MotionScript_10008, Data_3425
+	object 3, 2, -8, -8, AnimScript_25319, MotionScript_Stationary, Data_3425
 LevelObject_3da27:
-	object 8, 2, -8, 0, AnimScript_252c2, MotionScript_10008, Data_3425
+	object 8, 2, -8, 0, AnimScript_252c2, MotionScript_Stationary, Data_3425
 LevelObject_3da31:
-	object 3, 2, 0, 0, AnimScript_2702d, MotionScript_10008, Data_3425
+	object 3, 2, 0, 0, AnimScript_2702d, MotionScript_Stationary, Data_3425
 LevelObject_3da3b:
-	object 7, 4, 0, 0, AnimScript_27035, MotionScript_10008, Data_3425
+	object 7, 4, 0, 0, AnimScript_27035, MotionScript_Stationary, Data_3425
 LevelObject_3da45:
-	object 2, 5, 0, 0, AnimScript_257fc, MotionScript_10008, Data_3425
+	object 2, 5, 0, 0, AnimScript_257fc, MotionScript_Stationary, Data_3425
 LevelObject_3da4f:
-	object 6, 5, 0, 0, AnimScript_25856, MotionScript_10008, Data_3425
+	object 6, 5, 0, 0, AnimScript_25856, MotionScript_Stationary, Data_3425
 LevelObject_3da59:
-	object 8, 3, -8, 0, AnimScript_25a43, MotionScript_10008, Data_3425
+	object 8, 3, -8, 0, AnimScript_25a43, MotionScript_Stationary, Data_3425
 LevelObject_3da63:
-	object 5, 2, 0, -8, AnimScript_259d7, MotionScript_10008, Data_3425
+	object 5, 2, 0, -8, AnimScript_259d7, MotionScript_Stationary, Data_3425
 LevelObject_3da6d:
-	object 2, 3, 0, -8, AnimScript_258f9, MotionScript_10008, Data_3425
+	object 2, 3, 0, -8, AnimScript_258f9, MotionScript_Stationary, Data_3425
 LevelObject_3da77:
-	object 6, 3, -10, 0, AnimScript_25b97, MotionScript_10008, Data_3425
+	object 6, 3, -10, 0, AnimScript_25b97, MotionScript_Stationary, Data_3425
 LevelObject_3da81:
-	object 7, 4, 0, 0, AnimScript_25cf3, MotionScript_10008, Data_3425
+	object 7, 4, 0, 0, AnimScript_25cf3, MotionScript_Stationary, Data_3425
 LevelObject_3da8b:
-	object 3, 5, -8, -8, AnimScript_25c73, MotionScript_10008, Data_3425
+	object 3, 5, -8, -8, AnimScript_25c73, MotionScript_Stationary, Data_3425
 LevelObject_3da95:
-	object 7, 2, -8, 0, AnimScript_25c49, MotionScript_10008, Data_3425
+	object 7, 2, -8, 0, AnimScript_25c49, MotionScript_Stationary, Data_3425
 LevelObject_3da9f:
-	object 5, 5, 0, 8, AnimScript_26072, MotionScript_10008, Data_3425
+	object 5, 5, 0, 8, AnimScript_26072, MotionScript_Stationary, Data_3425
 LevelObject_3daa9:
-	object 4, 3, -8, -8, AnimScript_25fbb, MotionScript_10008, Data_3425
+	object 4, 3, -8, -8, AnimScript_25fbb, MotionScript_Stationary, Data_3425
 LevelObject_3dab3:
-	object 3, 3, 6, -8, AnimScript_26d67, MotionScript_10008, Data_3425
+	object 3, 3, 6, -8, AnimScript_26d67, MotionScript_Stationary, Data_3425
 LevelObject_3dabd:
-	object 7, 5, -8, -8, AnimScript_26d03, MotionScript_10008, Data_3425
+	object 7, 5, -8, -8, AnimScript_26d03, MotionScript_Stationary, Data_3425
 LevelObject_3dac7:
-	object 3, 4, 0, 0, AnimScript_20650, MotionScript_10008, Data_3425
+	object 3, 4, 0, 0, AnimScript_20650, MotionScript_Stationary, Data_3425
 LevelObject_3dad1:
-	object 5, 2, -8, -8, AnimScript_24cd5, MotionScript_10008, Data_3425
+	object 5, 2, -8, -8, AnimScript_24cd5, MotionScript_Stationary, Data_3425
 LevelObject_3dadb:
-	object 7, 6, 0, -8, AnimScript_24dbf, MotionScript_10008, Data_3425
+	object 7, 6, 0, -8, AnimScript_24dbf, MotionScript_Stationary, Data_3425
 LevelObject_3dae5:
-	object 7, 7, -8, -8, AnimScript_2544d, MotionScript_10008, Data_3425
+	object 7, 7, -8, -8, AnimScript_2544d, MotionScript_Stationary, Data_3425
 LevelObject_3daef:
-	object 3, 5, -8, 0, AnimScript_25558, MotionScript_10008, Data_3425
+	object 3, 5, -8, 0, AnimScript_25558, MotionScript_Stationary, Data_3425
 LevelObject_3daf9:
-	object 2, 3, -8, 0, AnimScript_253c4, MotionScript_10008, Data_3425
+	object 2, 3, -8, 0, AnimScript_253c4, MotionScript_Stationary, Data_3425
 LevelObject_3db03:
-	object 7, 3, 0, -8, AnimScript_2559b, MotionScript_10008, Data_3425
+	object 7, 3, 0, -8, AnimScript_2559b, MotionScript_Stationary, Data_3425
 LevelObject_3db0d:
-	object 3, 4, 0, -8, AnimScript_25856, MotionScript_10008, Data_3425
+	object 3, 4, 0, -8, AnimScript_25856, MotionScript_Stationary, Data_3425
 LevelObject_3db17:
-	object 7, 2, -8, 0, AnimScript_258f9, MotionScript_10008, Data_3425
+	object 7, 2, -8, 0, AnimScript_258f9, MotionScript_Stationary, Data_3425
 LevelObject_3db21:
-	object 2, 2, 0, -8, AnimScript_25a43, MotionScript_10008, Data_3425
+	object 2, 2, 0, -8, AnimScript_25a43, MotionScript_Stationary, Data_3425
 LevelObject_3db2b:
-	object 7, 5, -8, -8, AnimScript_24cd2, MotionScript_10008, Data_3425
+	object 7, 5, -8, -8, AnimScript_24cd2, MotionScript_Stationary, Data_3425
 LevelObject_3db35:
-	object 8, 5, -8, -8, AnimScript_25c73, MotionScript_10008, Data_3425
+	object 8, 5, -8, -8, AnimScript_25c73, MotionScript_Stationary, Data_3425
 LevelObject_3db3f:
-	object 6, 2, 0, -8, AnimScript_25c49, MotionScript_10008, Data_3425
+	object 6, 2, 0, -8, AnimScript_25c49, MotionScript_Stationary, Data_3425
 LevelObject_3db49:
-	object 5, 5, -8, 0, AnimScript_25fef, MotionScript_10008, Data_3425
+	object 5, 5, -8, 0, AnimScript_25fef, MotionScript_Stationary, Data_3425
 LevelObject_3db53:
-	object 3, 3, -8, 0, AnimScript_25fbb, MotionScript_10008, Data_3425
+	object 3, 3, -8, 0, AnimScript_25fbb, MotionScript_Stationary, Data_3425
 LevelObject_3db5d:
-	object 5, 6, -8, -8, AnimScript_270bd, MotionScript_10008, Data_3425
+	object 5, 6, -8, -8, AnimScript_270bd, MotionScript_Stationary, Data_3425
 
 ObjectList_ConfigModeUnlock:
 	dbw $00, NULL
@@ -1880,7 +1880,7 @@ LevelObject_3db7f:
 LevelObject_3db89:
 	object 6, 6, 0, 0, AnimScript_2642f, MotionScript_32483, Data_3425
 LevelObject_3db93:
-	object 8, 7, -16, -8, AnimScript_26456, MotionScript_10008, Data_3425
+	object 8, 7, -16, -8, AnimScript_26456, MotionScript_Stationary, Data_3425
 
 ObjectList_GreenGreensIntro:
 	dbw $00, NULL
@@ -1935,17 +1935,17 @@ LevelObject_3dbfd:
 LevelObject_3dc07:
 	object 5, 5, 0, 0, AnimScript_2649c, MotionScript_324e7, Data_3421
 LevelObject_3dc11:
-	object 8, 3, 0, 8, AnimScript_264c4, MotionScript_10008, Data_3421
+	object 8, 3, 0, 8, AnimScript_264c4, MotionScript_Stationary, Data_3421
 LevelObject_3dc1b:
-	object 9, 4, 0, -8, AnimScript_264cc, MotionScript_10008, Data_3421
+	object 9, 4, 0, -8, AnimScript_264cc, MotionScript_Stationary, Data_3421
 LevelObject_3dc25:
-	object 10, 3, 0, 0, AnimScript_264d4, MotionScript_10008, Data_3421
+	object 10, 3, 0, 0, AnimScript_264d4, MotionScript_Stationary, Data_3421
 LevelObject_3dc2f:
-	object 11, 4, 0, 0, AnimScript_264dc, MotionScript_10008, Data_3421
+	object 11, 4, 0, 0, AnimScript_264dc, MotionScript_Stationary, Data_3421
 LevelObject_3dc39:
-	object 12, 5, 0, -8, AnimScript_264e4, MotionScript_10008, Data_3421
+	object 12, 5, 0, -8, AnimScript_264e4, MotionScript_Stationary, Data_3421
 LevelObject_3dc43:
-	object 13, 3, 0, 0, AnimScript_264ec, MotionScript_10008, Data_3421
+	object 13, 3, 0, 0, AnimScript_264ec, MotionScript_Stationary, Data_3421
 LevelObject_3dc4d:
 	object 1, 2, 0, 5, AnimScript_264fa, MotionScript_32523, Data_3421
 LevelObject_3dc57:
@@ -1980,7 +1980,7 @@ LevelObject_3dce3:
 	object 0, 0, 0, 0, AnimScript_20000, MotionScript_327d1, Data_3425
 
 LevelObject_3dced:
-	object 4, 6, 8, -8, AnimScript_26c30, MotionScript_10008, Data_3421
+	object 4, 6, 8, -8, AnimScript_26c30, MotionScript_Stationary, Data_3421
 LevelObject_3dcf7:
 	object 2, 2, 2, -2, AnimScript_26c23, MotionScript_32ec0, Data_3421
 LevelObject_3dd01:
@@ -1998,7 +1998,7 @@ ObjectList_BubblyClouds4_Y:
 	db $ff ; end
 
 LevelObject_3dd1c:
-	object 0, 26, 0, 0, AnimScript_25269, MotionScript_10008, Data_3421
+	object 0, 26, 0, 0, AnimScript_25269, MotionScript_Stationary, Data_3421
 
 ObjectList_BubblyClouds9_X:
 	dbw $00, NULL
@@ -2140,7 +2140,7 @@ LevelObject_3de42:
 LevelObject_3de4d:
 	object 35, 3, 0, -1, AnimScript_27477, MotionScript_30d51, Data_3429, 0
 LevelObject_3de58:
-	object 32, 4, 0, 0, AnimScript_24d87, MotionScript_10008, CaplessCappyProperties
+	object 32, 4, 0, 0, AnimScript_24d87, MotionScript_Stationary, CaplessCappyProperties
 LevelObject_3de62:
 	object 29, 4, 0, 0, AnimScript_24ddd, MotionScript_30fba, PoppyBrosJrProperties
 LevelObject_3de6c:
@@ -2155,22 +2155,22 @@ LevelObject_3de8a:
 LevelObject_3de95:
 	object 27, 2, 0, -1, AnimScript_27477, MotionScript_30d51, Data_3429, 2
 LevelObject_3dea0:
-	object 7, 9, 8, 0, AnimScript_25475, MotionScript_10444, MumbiesProperties
+	object 7, 9, 8, 0, AnimScript_25475, MotionScript_UpAndDown, MumbiesProperties
 LevelObject_3deaa:
-	object 16, 7, 0, 0, AnimScript_252ce, MotionScript_10008, GlunkProperties
+	object 16, 7, 0, 0, AnimScript_252ce, MotionScript_Stationary, GlunkProperties
 LevelObject_3deb4:
 	object 24, 10, 0, 0, AnimScript_25558, MotionScript_3169e, Data_3421
 LevelObject_3debe:
-	object 3, 1, 0, 0, AnimScript_2556b, MotionScript_10008, Data_3421
+	object 3, 1, 0, 0, AnimScript_2556b, MotionScript_Stationary, Data_3421
 LevelObject_3dec8:
-	object 18, 3, 0, 0, AnimScript_253bb, MotionScript_10444, StandardEnemyProperties
+	object 18, 3, 0, 0, AnimScript_253bb, MotionScript_UpAndDown, StandardEnemyProperties
 LevelObject_3ded2:
 	object 10, 2, 0, 0, AnimScript_254e7, MotionScript_31636, StandardEnemyProperties
 LevelObject_3dedc:
-	object 21, 9, 0, 0, AnimScript_25346, MotionScript_10008, StandardEnemyProperties
+	object 21, 9, 0, 0, AnimScript_25346, MotionScript_Stationary, StandardEnemyProperties
 
 LevelObject_3dee6:
-	object 1, 11, 8, 0, AnimScript_24c4b, MotionScript_10008, KirbyItemProperties, 4
+	object 1, 11, 8, 0, AnimScript_24c4b, MotionScript_Stationary, KirbyItemProperties, 4
 LevelObject_3def1:
 	object 3, 11, 0, -1, AnimScript_27477, MotionScript_30d51, Data_3429, 4
 LevelObject_3defc:
@@ -2180,9 +2180,9 @@ LevelObject_3df06:
 LevelObject_3df10:
 	object 7, 6, 0, 0, AnimScript_259c5, MotionScript_318e0, PuffyProperties
 LevelObject_3df1a:
-	object 5, 1, 0, 0, AnimScript_25a54, MotionScript_10008, CoconutProperties
+	object 5, 1, 0, 0, AnimScript_25a54, MotionScript_Stationary, CoconutProperties
 LevelObject_3df24:
-	object 19, 3, 0, 0, AnimScript_2585c, MotionScript_10008, GlunkProperties
+	object 19, 3, 0, 0, AnimScript_2585c, MotionScript_Stationary, GlunkProperties
 LevelObject_3df2e:
 	object 11, 2, 0, 0, AnimScript_259fb, MotionScript_31aa1, StandardEnemyProperties
 
@@ -2191,17 +2191,17 @@ LevelObject_3df38:
 LevelObject_3df43:
 	object 2, 47, 0, -1, AnimScript_27477, MotionScript_30d51, Data_3429, 6
 LevelObject_3df4e:
-	object 8, 47, -4, 0, AnimScript_25ee3, MotionScript_103ff, ParasolWaddleDeeProperties
+	object 8, 47, -4, 0, AnimScript_25ee3, MotionScript_BackAndForth_Slow, ParasolWaddleDeeProperties
 LevelObject_3df58:
-	object 9, 47, 0, 0, AnimScript_25f05, MotionScript_103ff, ParasolWaddleDeeProperties
+	object 9, 47, 0, 0, AnimScript_25f05, MotionScript_BackAndForth_Slow, ParasolWaddleDeeProperties
 LevelObject_3df62:
-	object 2, 0, 8, 0, AnimScript_26134, MotionScript_10008, Data_3421
+	object 2, 0, 8, 0, AnimScript_26134, MotionScript_Stationary, Data_3421
 LevelObject_3df6c:
-	object 7, 0, -8, 0, AnimScript_26134, MotionScript_10008, Data_3421
+	object 7, 0, -8, 0, AnimScript_26134, MotionScript_Stationary, Data_3421
 LevelObject_3df76:
-	object 0, 5, 0, 0, AnimScript_25c09, MotionScript_10008, PuffyProperties
+	object 0, 5, 0, 0, AnimScript_25c09, MotionScript_Stationary, PuffyProperties
 LevelObject_3df80:
-	object 6, 33, 0, 0, AnimScript_25fef, MotionScript_10008, GlunkProperties
+	object 6, 33, 0, 0, AnimScript_25fef, MotionScript_Stationary, GlunkProperties
 LevelObject_3df8a:
 	object 3, 41, 0, 0, AnimScript_25c76, MotionScript_315a2, StandardEnemyProperties
 LevelObject_3df94:
