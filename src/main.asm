@@ -23,14 +23,14 @@ INCLUDE "engine/update_objects.asm"
 INCLUDE "data/bgmaps/stage_intros.asm"
 INCLUDE "data/stage_transitions.asm"
 
-BG_192d6: INCBIN "data/bgmaps/bg_192d6.bin"
+BG_192d6: INCBIN "data/bgmaps/bg_192d6.tilemap"
 
 ; unreferenced
-BG_19452: INCBIN "data/bgmaps/bg_19452.bin"
-BG_19786: INCBIN "data/bgmaps/bg_19786.bin"
+BG_19452: INCBIN "data/bgmaps/bg_19452.tilemap"
+BG_19786: INCBIN "data/bgmaps/bg_19786.tilemap"
 ; unreferenced
-BG_198ac: INCBIN "data/bgmaps/bg_198ac.bin"
-BG_19e86: INCBIN "data/bgmaps/bg_19e86.bin"
+BG_198ac: INCBIN "data/bgmaps/bg_198ac.tilemap"
+BG_19e86: INCBIN "data/bgmaps/bg_19e86.tilemap"
 
 INCLUDE "data/credits.asm"
 INCLUDE "engine/configuration.asm"
@@ -54,18 +54,18 @@ Data_1b77c:: INCBIN "data/level_blocks/data_1b77c.bin.lz"
 
 
 IF DEF(_KDL_JP) || DEF(_KDL_JP11)
-BG_1b835:: INCBIN "data/bgmaps/bg_1b835_jp.bin.lz"
-BG_1b8df:: INCBIN "data/bgmaps/bg_1b8df_jp.bin.lz"
-BG_1b95d:: INCBIN "data/bgmaps/bg_1b95d_jp.bin.lz"
-BG_1b9f9:: INCBIN "data/bgmaps/bg_1b9f9_jp.bin.lz"
-BG_1baaf:: INCBIN "data/bgmaps/bg_1baaf.bin.lz"
+BG_1b835:: INCBIN "data/bgmaps/bg_1b835_jp.tilemap.lz"
+BG_1b8df:: INCBIN "data/bgmaps/bg_1b8df_jp.tilemap.lz"
+BG_1b95d:: INCBIN "data/bgmaps/bg_1b95d_jp.tilemap.lz"
+BG_1b9f9:: INCBIN "data/bgmaps/bg_1b9f9_jp.tilemap.lz"
+BG_1baaf:: INCBIN "data/bgmaps/bg_1baaf.tilemap.lz"
 ConfigurationGfx: INCBIN "gfx/configuration_jp.2bpp.lz"
 ELSE
-BG_1b835:: INCBIN "data/bgmaps/bg_1b835.bin.lz"
-BG_1b8df:: INCBIN "data/bgmaps/bg_1b8df.bin.lz"
-BG_1b95d:: INCBIN "data/bgmaps/bg_1b95d.bin.lz"
-BG_1b9f9:: INCBIN "data/bgmaps/bg_1b9f9.bin.lz"
-BG_1baaf:: INCBIN "data/bgmaps/bg_1baaf.bin.lz"
+BG_1b835:: INCBIN "data/bgmaps/bg_1b835.tilemap.lz"
+BG_1b8df:: INCBIN "data/bgmaps/bg_1b8df.tilemap.lz"
+BG_1b95d:: INCBIN "data/bgmaps/bg_1b95d.tilemap.lz"
+BG_1b9f9:: INCBIN "data/bgmaps/bg_1b9f9.tilemap.lz"
+BG_1baaf:: INCBIN "data/bgmaps/bg_1baaf.tilemap.lz"
 ConfigurationGfx: INCBIN "gfx/configuration.2bpp.lz"
 ENDC
 

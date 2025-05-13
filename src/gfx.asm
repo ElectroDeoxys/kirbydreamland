@@ -18,23 +18,23 @@ SECTION "Bank 3", ROMX
 
 BG_c000::
 IF DEF(_KDL_JP) || DEF(_KDL_JP11)
-	INCBIN "data/bgmaps/bg_c000_jp.bin.lz"
+	INCBIN "data/bgmaps/bg_c000_jp.tilemap.lz"
 ELSE
-	INCBIN "data/bgmaps/bg_c000.bin.lz"
+	INCBIN "data/bgmaps/bg_c000.tilemap.lz"
 ENDC
 FontWoNumbersGfx:: INCBIN "gfx/font_wo_numbers.2bpp.lz"
-BG_c2c8:: INCBIN "data/bgmaps/bg_c2c8.bin.lz"
-BG_c37a:: INCBIN "data/bgmaps/bg_c37a.bin.lz"
-BG_c41d:: INCBIN "data/bgmaps/bg_c41d.bin.lz"
-BG_c4c9:: INCBIN "data/bgmaps/bg_c4c9.bin.lz"
+BG_c2c8:: INCBIN "data/bgmaps/bg_c2c8.tilemap.lz"
+BG_c37a:: INCBIN "data/bgmaps/bg_c37a.tilemap.lz"
+BG_c41d:: INCBIN "data/bgmaps/bg_c41d.tilemap.lz"
+BG_c4c9:: INCBIN "data/bgmaps/bg_c4c9.tilemap.lz"
 BG_c541::
 IF DEF(_KDL_JP) || DEF(_KDL_JP11)
-	INCBIN "data/bgmaps/bg_c541_jp.bin.lz"
+	INCBIN "data/bgmaps/bg_c541_jp.tilemap.lz"
 ELSE
-	INCBIN "data/bgmaps/bg_c541.bin.lz"
+	INCBIN "data/bgmaps/bg_c541.tilemap.lz"
 ENDC
-BG_c665:: INCBIN "data/bgmaps/bg_c665.bin.lz"
-BG_c6b5:: INCBIN "data/bgmaps/bg_c6b5.bin.lz"
+BG_c665:: INCBIN "data/bgmaps/bg_c665.tilemap.lz"
+BG_c6b5:: INCBIN "data/bgmaps/bg_c6b5.tilemap.lz"
 
 GreenGreensBlockTileMaps::  INCBIN "data/bgmaps/blocks/data_c6e0.bin.lz"
 FloatIslandsBlockTileMaps:: INCBIN "data/bgmaps/blocks/data_c8d9.bin.lz"
@@ -114,46 +114,46 @@ BubblyCloudsExtraGfx:: INCBIN "gfx/objects/bubbly_clouds_extra.2bpp.lz"
 SECTION "Bank D", ROMX
 
 GreenGreensCredits1Gfx:: INCBIN "gfx/credits/green_greens_1.2bpp.lz"
-BG_345c0:: INCBIN "data/bgmaps/bg_345c0.bin.lz"
+BG_345c0:: INCBIN "data/bgmaps/bg_345c0.tilemap.lz"
 GreenGreensCredits2Gfx:: INCBIN "gfx/credits/green_greens_2.2bpp.lz"
-BG_34cb4:: INCBIN "data/bgmaps/bg_34cb4.bin.lz"
+BG_34cb4:: INCBIN "data/bgmaps/bg_34cb4.tilemap.lz"
 GreenGreensCredits3Gfx:: INCBIN "gfx/credits/green_greens_3.2bpp.lz"
-BG_3535c:: INCBIN "data/bgmaps/bg_3535c.bin.lz"
+BG_3535c:: INCBIN "data/bgmaps/bg_3535c.tilemap.lz"
 CastleLololoCredits1Gfx:: INCBIN "gfx/credits/castle_lololo_1.2bpp.lz"
-BG_35987:: INCBIN "data/bgmaps/bg_35987.bin.lz"
+BG_35987:: INCBIN "data/bgmaps/bg_35987.tilemap.lz"
 CastleLololoCredits2Gfx:: INCBIN "gfx/credits/castle_lololo_2.2bpp.lz"
-BG_35fd2:: INCBIN "data/bgmaps/bg_35fd2.bin.lz"
+BG_35fd2:: INCBIN "data/bgmaps/bg_35fd2.tilemap.lz"
 FloatIslandsCredits1Gfx:: INCBIN "gfx/credits/float_islands_1.2bpp.lz"
-BG_36553:: INCBIN "data/bgmaps/bg_36553.bin.lz"
+BG_36553:: INCBIN "data/bgmaps/bg_36553.tilemap.lz"
 FloatIslandsCredits2Gfx:: INCBIN "gfx/credits/float_islands_2.2bpp.lz"
-BG_36b80:: INCBIN "data/bgmaps/bg_36b80.bin.lz"
+BG_36b80:: INCBIN "data/bgmaps/bg_36b80.tilemap.lz"
 BubblyCloudsCredits1Gfx:: INCBIN "gfx/credits/bubbly_clouds_1.2bpp.lz"
-BG_3717d:: INCBIN "data/bgmaps/bg_3717d.bin.lz"
+BG_3717d:: INCBIN "data/bgmaps/bg_3717d.tilemap.lz"
 BubblyCloudsCredits2Gfx:: INCBIN "gfx/credits/bubbly_clouds_2.2bpp.lz"
-BG_3779c:: INCBIN "data/bgmaps/bg_3779c.bin.lz"
-BG_378cc:: INCBIN "data/bgmaps/bg_378cc.bin.lz"
+BG_3779c:: INCBIN "data/bgmaps/bg_3779c.tilemap.lz"
+BG_378cc:: INCBIN "data/bgmaps/bg_378cc.tilemap.lz"
 
 
 SECTION "Bank E", ROMX
 
 GreenGreensCredits4Gfx:: INCBIN "gfx/credits/green_greens_4.2bpp.lz"
 CastleLololoCredits3Gfx:: INCBIN "gfx/credits/castle_lololo_3.2bpp.lz"
-BG_38ac6:: INCBIN "data/bgmaps/bg_38ac6.bin.lz"
+BG_38ac6:: INCBIN "data/bgmaps/bg_38ac6.tilemap.lz"
 FloatIslandsCredits3Gfx:: INCBIN "gfx/credits/float_islands_3.2bpp.lz"
-BG_3911e:: INCBIN "data/bgmaps/bg_3911e.bin.lz"
+BG_3911e:: INCBIN "data/bgmaps/bg_3911e.tilemap.lz"
 BubblyCloudsCredits3Gfx:: INCBIN "gfx/credits/bubbly_clouds_3.2bpp.lz"
-BG_39707:: INCBIN "data/bgmaps/bg_39707.bin.lz"
+BG_39707:: INCBIN "data/bgmaps/bg_39707.tilemap.lz"
 MtDededeCreditsGfx:: INCBIN "gfx/credits/mt_dedede.2bpp.lz"
-BG_39be1:: INCBIN "data/bgmaps/bg_39be1.bin.lz"
+BG_39be1:: INCBIN "data/bgmaps/bg_39be1.tilemap.lz"
 
 IF DEF(_KDL_JP) || DEF(_KDL_JP11)
 ConfigModeUnlockGfx:: INCBIN "gfx/config_mode_unlock_jp.2bpp.lz"
-BG_3acce:: INCBIN "data/bgmaps/bg_3acce_jp.bin.lz"
+BG_3acce:: INCBIN "data/bgmaps/bg_3acce_jp.tilemap.lz"
 ExtraGameUnlockGfx:: INCBIN "gfx/extra_game_unlock_jp.2bpp.lz"
-BG_3be4a:: INCBIN "data/bgmaps/bg_3be4a_jp.bin.lz"
+BG_3be4a:: INCBIN "data/bgmaps/bg_3be4a_jp.tilemap.lz"
 ELSE
 ConfigModeUnlockGfx:: INCBIN "gfx/config_mode_unlock.2bpp.lz"
-BG_3acce:: INCBIN "data/bgmaps/bg_3acce.bin.lz"
+BG_3acce:: INCBIN "data/bgmaps/bg_3acce.tilemap.lz"
 ExtraGameUnlockGfx:: INCBIN "gfx/extra_game_unlock.2bpp.lz"
-BG_3be4a:: INCBIN "data/bgmaps/bg_3be4a.bin.lz"
+BG_3be4a:: INCBIN "data/bgmaps/bg_3be4a.tilemap.lz"
 ENDC
