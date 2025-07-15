@@ -55,7 +55,7 @@ ENDC
 	ld a, 1
 	call DoFrames
 	call FadeIn
-	ld a, START
+	ld a, PAD_START
 	ld [wNonStickyKeys], a
 
 ; loop until player presses Start
@@ -63,16 +63,16 @@ ENDC
 	ld a, 1
 	call DoFrames
 	ld a, [hJoypadPressed]
-	cp B_BUTTON | SELECT | D_DOWN
+	cp PAD_B | PAD_SELECT | PAD_DOWN
 	jp z, ConfigurationMenu
-	cp A_BUTTON | SELECT | D_UP
+	cp PAD_A | PAD_SELECT | PAD_UP
 	jr nz, .no_extra_game
 	ld a, TRUE
 	ld [wExtraGameUnlocked], a
 	call .PrintExtraGameText
 .no_extra_game
 	ld a, [hJoypadPressed]
-	and START
+	and PAD_START
 	jr z, .loop
 
 	ld a, SFX_GAME_START

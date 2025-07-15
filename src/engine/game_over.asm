@@ -202,7 +202,7 @@ GameOver:
 .loop
 	wait_vblank
 	ld a, [hJoypadPressed]
-	bit START_F, a
+	bit B_PAD_START, a
 	jr nz, .start_pressed
 	dec bc
 	ld a, b

@@ -57,7 +57,7 @@ Pause::
 	set VBLANK_PENDING_F, a
 	ld [hVBlankFlags], a
 	ld a, [hJoypadPressed]
-	bit START_F, a
+	bit B_PAD_START, a
 	jr z, .loop
 
 	; player pressed Start

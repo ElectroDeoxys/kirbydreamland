@@ -17,29 +17,29 @@ Timer:
 	reti
 
 StopTimerAndSwitchOnLCD::
-	ld a, TACF_STOP
+	ld a, TAC_STOP
 	ldh [rTAC], a
 	ldh a, [hLCDC]
-	set LCDCB_ON, a
+	set B_LCDC_ENABLE, a
 	ldh [hLCDC], a
 	ldh [rLCDC], a
 	ret
 
 ResetTimer::
 	ld hl, hLCDC
-	res LCDCB_ON, [hl]
+	res B_LCDC_ENABLE, [hl]
 	ld hl, hEngineFlags
 	set RESET_TIMER_PENDING_F, [hl]
 .loop_wait_vblank
 	bit RESET_TIMER_PENDING_F, [hl]
 	jr nz, .loop_wait_vblank
-	ld a, TACF_STOP
+	ld a, TAC_STOP
 	ldh [rTAC], a
 	; sets timer to interrupt at
 	; 4k Hz / 68 ~ 59 Hz
 	ld a, -68
 	ldh [rTMA], a
-	ld a, TACF_4KHZ | TACF_START
+	ld a, TAC_4KHZ | TAC_START
 	ldh [rTAC], a
 	ret
 

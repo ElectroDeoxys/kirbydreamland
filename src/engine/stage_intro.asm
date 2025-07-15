@@ -107,7 +107,7 @@ StageIntro:
 
 	call UpdateObjectsAndClearStaleSprites
 	ld a, [hJoypadPressed]
-	bit START_F, a
+	bit B_PAD_START, a
 	jr nz, .start_btn
 	dec de
 	ld a, d

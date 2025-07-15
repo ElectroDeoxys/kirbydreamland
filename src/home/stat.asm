@@ -14,7 +14,7 @@ Stat:
 	ld a, %11100100
 	; temporarily select BG9C00 map
 	; this is reset back to BG9800 during VBlank
-	set LCDCB_BG9C00, [hl]
+	set B_LCDC_BG_MAP, [hl]
 	ldh [rBGP], a
 	; apply text scroll
 	xor a
@@ -42,7 +42,7 @@ ProcessPendingBlockFill:
 	ld [de], a
 	inc e
 	ld [de], a
-	ld hl, SCRN_VX_B ; next row
+	ld hl, TILEMAP_WIDTH ; next row
 	add hl, de
 	ld [hld], a
 	ld [hl], a

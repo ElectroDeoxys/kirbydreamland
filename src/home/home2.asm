@@ -22,7 +22,7 @@ ProcessBlockQueue:
 	ld [hl], a
 	ld a, [bc]
 	inc bc
-	ld de, SCRN_VX_B - 1
+	ld de, TILEMAP_WIDTH - 1
 	add hl, de
 	ld [hli], a
 	ld a, [bc]
@@ -2383,13 +2383,13 @@ UpdateObject:
 	add hl, bc
 	add hl, bc
 	ld a, [hl]
-	cp SCRN_X + 8
+	cp SCREEN_WIDTH_PX + 8
 	jr nc, .outside_active_area
-	ld d, SCRN_Y
+	ld d, SCREEN_HEIGHT_PX
 	ld a, [wScene]
 	and a
 	jr z, .asm_2c0e
-	ld d, SCRN_Y + 26
+	ld d, SCREEN_HEIGHT_PX + 26
 .asm_2c0e
 	ld hl, wObjectYCoords + $1
 	add hl, bc
@@ -2462,12 +2462,12 @@ UpdateObject:
 
 .check_obj_within_limits
 	push bc
-	ld b, SCRN_Y + 32
+	ld b, SCREEN_HEIGHT_PX + 32
 	ld a, [wScene]
 	and a
 	jr nz, .got_y_limit ; in a scene
 	; inside a level
-	ld b, SCRN_Y
+	ld b, SCREEN_HEIGHT_PX
 	ld hl, hKirbyFlags5
 	bit KIRBY5F_STAGE_INTRO_F, [hl]
 	jr z, .got_y_limit
@@ -2500,7 +2500,7 @@ UpdateObject:
 	ld hl, wObjectPropertyFlags
 	add hl, de
 	ld a, [hl]
-	and OAMF_PAL1 | OAMF_PRI
+	and OAM_PAL1 | OAM_PRIO
 	ld [wOAMFlagsOverride], a
 	ld hl, hKirbyFlags5
 	bit KIRBY5F_UNK5_F, [hl]
@@ -2519,7 +2519,7 @@ UpdateObject:
 	jr z, .load_sprite ; not flashing
 	; use alternate palette
 	ld a, [wOAMFlagsOverride]
-	xor OAMF_PAL1 ; flip pal number
+	xor OAM_PAL1 ; flip pal number
 	ld [wOAMFlagsOverride], a
 .load_sprite
 	ld a, [wOAMFlagsOverride]
@@ -2650,7 +2650,7 @@ CalculateObjScreenPosition_Relative:
 	sbc c
 	jr nz, .asm_2d69
 	ld a, b
-	cp SCRN_X + 16
+	cp SCREEN_WIDTH_PX + 16
 	jr c, .y_position
 .asm_2d69
 	ld a, [hEngineFlags]
@@ -2694,7 +2694,7 @@ CalculateObjScreenPosition_Relative:
 	sbc c
 	jr nz, .outside_view
 	ld a, b
-	cp SCRN_X + 16
+	cp SCREEN_WIDTH_PX + 16
 	jr c, .y_position
 .outside_view
 	call .SetObjOutsideView
@@ -2737,7 +2737,7 @@ CalculateObjScreenPosition_Relative:
 	ld a, b
 	pop bc
 	ld c, a
-	cp SCRN_Y
+	cp SCREEN_HEIGHT_PX
 	call nc, .SetObjOutsideView
 	ld a, [wObjOutsideView]
 	and a

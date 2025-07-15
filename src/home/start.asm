@@ -42,12 +42,12 @@ Reset::
 	ld [wSCX], a
 	ldh [rIF], a
 
-	ld a, STATF_LYC
+	ld a, STAT_LYC
 	ldh [rSTAT], a
-	ld a, LCDCF_BGON | LCDCF_OBJON | LCDCF_OBJ16 | LCDCF_WINON | LCDCF_WIN9C00 | LCDCF_ON
+	ld a, LCDC_BG_ON | LCDC_OBJ_ON | LCDC_OBJ_16 | LCDC_WIN_ON | LCDC_WIN_9C00 | LCDC_ON
 	ldh [hLCDC], a
 	ldh [rLCDC], a
-	ld a, IEF_VBLANK | IEF_TIMER
+	ld a, IE_VBLANK | IE_TIMER
 	ldh [rIE], a
 	ei
 
@@ -62,7 +62,7 @@ Reset::
 	ld a, DEFAULT_MAX_HP
 	ld [wConfigMaxHP], a
 	call TitleScreen
-	ld a, SELECT | START
+	ld a, PAD_SELECT | PAD_START
 	ld [wNonStickyKeys], a
 	ld a, [wConfigLives]
 	ld [wLives], a
@@ -110,11 +110,11 @@ StageLoop_SkipHUDUpdate:
 	bit KIRBY2F_INHALE_F, a
 	jr z, .check_start_btn
 	ldh a, [hJoypadPressed]
-	and $ff ^ (A_BUTTON | D_RIGHT | D_LEFT | D_DOWN)
+	and $ff ^ (PAD_A | PAD_RIGHT | PAD_LEFT | PAD_DOWN)
 	ldh [hJoypadPressed], a
 .check_start_btn
 	ldh a, [hJoypadPressed]
-	bit START_F, a
+	bit B_PAD_START, a
 	jr z, .no_pause
 	ld a, BANK(Pause)
 	bankswitch

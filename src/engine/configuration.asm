@@ -55,21 +55,21 @@ ConfigurationMenu:
 	ld hl, .input_ret
 	push hl
 	ld a, [hJoypadPressed]
-	bit A_BUTTON_F, a
+	bit B_PAD_A, a
 	jp nz, .config_a_btn
-	bit B_BUTTON_F, a
+	bit B_PAD_B, a
 	jp nz, .config_b_btn
-	bit SELECT_F, a
+	bit B_PAD_SELECT, a
 	jp nz, .config_select_btn
-	bit START_F, a
+	bit B_PAD_START, a
 	jp nz, .config_start_btn
-	bit D_RIGHT_F, a
+	bit B_PAD_RIGHT, a
 	jp nz, .config_d_right
-	bit D_LEFT_F, a
+	bit B_PAD_LEFT, a
 	jp nz, .config_d_left
-	bit D_UP_F, a
+	bit B_PAD_UP, a
 	jp nz, .config_d_up
-	bit D_DOWN_F, a
+	bit B_PAD_DOWN, a
 	jp nz, .config_d_down
 	ret
 
@@ -81,7 +81,7 @@ ConfigurationMenu:
 	ret nz
 .exit_config_menu
 	pop hl
-	ld a, SELECT | START
+	ld a, PAD_SELECT | PAD_START
 	ld [wNonStickyKeys], a
 	jp TitleScreen
 
@@ -266,21 +266,21 @@ ConfigurationMenu:
 	call UpdateObjectsAndClearStaleSprites
 
 	ld a, [hJoypadPressed]
-	bit A_BUTTON_F, a
+	bit B_PAD_A, a
 	jp nz, .soundcheck_a_btn
-	bit B_BUTTON_F, a
+	bit B_PAD_B, a
 	jp nz, .soundcheck_b_btn
-	bit SELECT_F, a
+	bit B_PAD_SELECT, a
 	jp nz, .soundcheck_select_btn
-	bit START_F, a
+	bit B_PAD_START, a
 	jp nz, .soundcheck_start_btn
-	bit D_RIGHT_F, a
+	bit B_PAD_RIGHT, a
 	jr nz, .soundcheck_d_right
-	bit D_LEFT_F, a
+	bit B_PAD_LEFT, a
 	jr nz, .soundcheck_d_left
-	bit D_UP_F, a
+	bit B_PAD_UP, a
 	jr nz, .soundcheck_d_up
-	bit D_DOWN_F, a
+	bit B_PAD_DOWN, a
 	jr nz, .soundcheck_d_down
 	jr .asm_1a58a
 

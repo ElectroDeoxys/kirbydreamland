@@ -1,7 +1,7 @@
 SECTION "WRAM0", WRAM0
 
 wVirtualOAM:: ; c000
-	ds $4 * OAM_COUNT
+	ds OAM_SIZE
 wVirtualOAMEnd::
 
 	ds $60

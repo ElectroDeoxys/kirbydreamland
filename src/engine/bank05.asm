@@ -332,17 +332,17 @@ Func_141bb::
 Func_141d3::
 	ld a, [wd3cf]
 	ld hl, hJoypadPressed
-	bit SELECT_F, [hl]
+	bit B_PAD_SELECT, [hl]
 	jr z, .asm_141e1
 	xor $01
 	jr .asm_141ee
 .asm_141e1
-	bit D_DOWN_F, [hl]
+	bit B_PAD_DOWN, [hl]
 	jr z, .asm_141e9
 	ld a, $01
 	jr .asm_141ee
 .asm_141e9
-	bit D_UP_F, [hl]
+	bit B_PAD_UP, [hl]
 	jr z, .asm_141f4
 	xor a
 .asm_141ee
@@ -350,7 +350,7 @@ Func_141d3::
 	jp SetObjectUpdateFuncArgAsAnimScript
 .asm_141f4
 	ld a, [hl]
-	and A_BUTTON | START
+	and PAD_A | PAD_START
 	ret z
 	ld a, $01
 	ld [wKirbySideOfScreen], a
@@ -1857,7 +1857,7 @@ InitRAM::
 	ld [hVBlankFlags], a
 	ld a, $00
 	ld [hKirbyFlags1], a
-	ld a, SELECT | START
+	ld a, PAD_SELECT | PAD_START
 	ld [wNonStickyKeys], a
 	ld a, TRUE
 	ld [wMtDededeClearedAreas + MT_DEDEDE_5], a

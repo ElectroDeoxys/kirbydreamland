@@ -632,8 +632,8 @@ ReadJoypad:
 
 ; can only get four inputs at a time
 ; take d-pad first
-	ld a, P1F_GET_DPAD
-	ldh [rP1], a
+	ld a, JOYP_GET_CTRL_PAD
+	ldh [rJOYP], a
 
 ; wait some cycles
 REPT 5
@@ -642,13 +642,13 @@ REPT 5
 ENDR
 
 ; store the d-pad value
-	ldh a, [rP1]
-	and %1111
+	ldh a, [rJOYP]
+	and JOYP_INPUTS
 	ld c, a
 
 ; take the buttons values next
-	ld a, P1F_GET_BTN
-	ldh [rP1], a
+	ld a, JOYP_GET_BUTTONS
+	ldh [rJOYP], a
 
 ; wait some cycles
 REPT 5
@@ -656,16 +656,16 @@ REPT 5
 	pop hl
 ENDR
 
-	ldh a, [rP1]
-	and %1111
+	ldh a, [rJOYP]
+	and JOYP_INPUTS
 
 	; button bits on lower nybble, d-pad on higher nybble
 	swap c
 	or c
 	cpl
 	ld b, a
-	and BUTTONS
-	cp A_BUTTON | B_BUTTON | SELECT | START
+	and PAD_A | PAD_B | PAD_SELECT | PAD_START
+	cp PAD_A | PAD_B | PAD_SELECT | PAD_START
 	jr nz, .no_reset
 
 ; soft reset game
@@ -680,7 +680,7 @@ ENDR
 	ld a, [wNonStickyKeys]
 	ld c, a
 	ldh a, [hKirbyFlags4]
-	and B_BUTTON ; KIRBY4F_NONSTICKY_B
+	and PAD_B ; KIRBY4F_NONSTICKY_B
 	or c
 	ld c, a
 	ld a, [wJoypadDown] ; keys that were already down
@@ -692,8 +692,8 @@ ENDR
 	ld [wJoypadDown], a
 
 ; reset joypad
-	ld a, P1F_GET_NONE
-	ldh [rP1], a
+	ld a, JOYP_GET_NONE
+	ldh [rJOYP], a
 	ret
 
 Func_6ec::
@@ -1659,7 +1659,7 @@ Func_caf:
 	ld a, SFX_INHALE
 	call PlaySFX
 	ld a, [wJoypadDown]
-	or A_BUTTON
+	or PAD_A
 	ld [wJoypadDown], a
 	jp .asm_ece
 .asm_da7
@@ -1669,7 +1669,7 @@ Func_caf:
 	bit KIRBY4F_UNK4_F, a
 	jr nz, .asm_df4
 	ldh a, [hJoypadPressed]
-	bit D_DOWN_F, a
+	bit B_PAD_DOWN, a
 	jp z, .asm_e57
 	ld a, b
 	and a
@@ -1758,7 +1758,7 @@ Func_caf:
 
 .asm_e57
 	ld a, [wJoypadDown]
-	or A_BUTTON
+	or PAD_A
 	ld [wJoypadDown], a
 	ld a, [wKirbyYVel + 0]
 	cp HIGH(1.0)
@@ -1872,11 +1872,11 @@ Func_caf:
 	cp d
 	jr nz, .asm_f3b
 .scroll_locked
-	ld c, SCRN_Y
+	ld c, SCREEN_HEIGHT_PX
 	ldh a, [hKirbyFlags6]
 	bit KIRBY6F_UNK6_F, a
 	jr z, .asm_f3b
-	ld c, SCRN_Y - 16
+	ld c, SCREEN_HEIGHT_PX - 16
 .asm_f3b
 	ld a, [wKirbyScreenY]
 	add b
@@ -1889,7 +1889,7 @@ Func_caf:
 	cp $08
 	jp nz, .asm_1021
 	ld a, [wKirbyScreenY]
-	cp SCRN_Y
+	cp SCREEN_HEIGHT_PX
 	jp c, .asm_1021
 	jp .asm_f92
 .asm_f5a
@@ -1920,7 +1920,7 @@ Func_caf:
 	dec b
 	jr nz, .asm_f80
 	ld a, [wKirbyScreenY]
-	cp SCRN_Y
+	cp SCREEN_HEIGHT_PX
 	jp nz, .asm_1019
 .asm_f92
 	ldh a, [hKirbyFlags1]
@@ -2056,7 +2056,7 @@ Func_1062::
 	dec b
 	jr nz, .loop_align
 	ld a, [wKirbyScreenX]
-	cp SCRN_X - 8
+	cp SCREEN_WIDTH_PX - 8
 	jp nz, .asm_1102
 .asm_1084
 	ld a, [wd063]
@@ -2089,7 +2089,7 @@ Func_1062::
 	ld b, a
 .asm_10b8
 	ld a, [wSCX]
-	add SCRN_X
+	add SCREEN_WIDTH_PX
 	add b
 	ld [wXCoord], a
 	ld a, [wSCY]
@@ -2274,7 +2274,7 @@ Func_11de:
 	ld b, a
 .asm_120a
 	ld a, [wSCX]
-	add SCRN_X
+	add SCREEN_WIDTH_PX
 	add b
 	ld [wXCoord], a
 	xor a
@@ -2532,7 +2532,7 @@ ENDR
 	srl a
 	srl a ; /8
 	jr z, .got_row
-	ld bc, SCRN_VX_B
+	ld bc, TILEMAP_WIDTH
 .loop
 	add hl, bc
 	dec a
@@ -3328,7 +3328,7 @@ ClearSprites::
 .got_offset
 	ld l, a
 	ld h, HIGH(wVirtualOAM)
-	ld de, sizeof_OAM_ATTRS
+	ld de, OBJ_SIZE
 	ld b, $00
 .loop_oam
 	ld [hl], b
@@ -3774,9 +3774,9 @@ GetScoreDigitTiles:
 ; places window outside visible coordinates
 ; functionally hiding it
 HideWindow::
-	ld a, SCRN_X
+	ld a, SCREEN_WIDTH_PX
 	ldh [rWX], a
-	ld a, SCRN_Y
+	ld a, SCREEN_HEIGHT_PX
 	ldh [rWY], a
 	ret
 
@@ -3785,7 +3785,7 @@ Func_1c0a::
 
 	; fills 2 rows in vBGMap1
 	; with tile index $7f
-	ld c, 2 * SCRN_VX_B
+	ld c, 2 * TILEMAP_WIDTH
 	hlbgcoord 0, 0, vBGMap1
 	ld a, $7f
 .loop_fill
@@ -3794,7 +3794,7 @@ Func_1c0a::
 	jr nz, .loop_fill
 
 	; set window's coordinate to (0, 128)
-	ld a, 0 + 7
+	ld a, WX_OFS
 	ldh [rWX], a
 	ld a, 128
 	ldh [rWY], a

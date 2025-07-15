@@ -180,7 +180,7 @@ Epilogue:
 	jr nz, .asm_189e7
 	dec b
 	push bc
-	ld bc, SCRN_VX_B - 20 ; next row
+	ld bc, TILEMAP_WIDTH - 20 ; next row
 	add hl, bc
 	pop bc
 	jr nz, .asm_189e5
@@ -259,7 +259,7 @@ Epilogue:
 	xor a
 	ld [wSCY], a
 	hlbgcoord 0, 0, vBGMap1
-	ld c, 4 * SCRN_VX_B
+	ld c, 4 * TILEMAP_WIDTH
 .asm_18a89
 	ld a, $ff
 	ld [hli], a
@@ -278,7 +278,7 @@ Epilogue:
 	dec c
 	jr nz, .asm_18a99
 	push bc
-	ld bc, SCRN_VX_B - 21
+	ld bc, TILEMAP_WIDTH - 21
 	add hl, bc
 	pop bc
 	dec b
@@ -300,7 +300,7 @@ Epilogue:
 	dec b
 	jr nz, .asm_18aba
 	push hl
-	ld hl, SCRN_VX_B - $14
+	ld hl, TILEMAP_WIDTH - $14
 	add hl, de
 	ld d, h
 	ld e, l
@@ -313,7 +313,7 @@ Epilogue:
 	ld a, $6f
 	ldh [rLYC], a
 	ld hl, rIE
-	set IEB_STAT, [hl]
+	set B_IE_STAT, [hl]
 	ld a, $90
 	ld [wCreditsTextScroll], a
 	call StopTimerAndSwitchOnLCD
@@ -444,7 +444,7 @@ Epilogue:
 	ld h, a
 	ld a, [wCreditsBGMapPtr + 1]
 	ld l, a
-	ld bc, SCRN_VX_B - 2 * 10
+	ld bc, TILEMAP_WIDTH - 2 * 10
 	add hl, bc
 	ld a, HIGH(vEnd)
 	cp h
@@ -491,7 +491,7 @@ Epilogue:
 	inc bc
 	inc de
 	push bc
-	ld bc, SCRN_VX_B
+	ld bc, TILEMAP_WIDTH
 	add hl, bc
 	pop bc
 	ld a, HIGH(wQueuedBG014BGPtr)
@@ -551,7 +551,7 @@ Epilogue:
 	call UpdateObjectsAndClearStaleSprites
 
 	ld hl, rIE
-	res IEB_STAT, [hl]
+	res B_IE_STAT, [hl]
 	xor a
 	ld [wSCX], a
 	ld [wSCY], a
@@ -601,7 +601,7 @@ Epilogue:
 	jr nz, .asm_18cf3
 	call UpdateObjectsAndClearStaleSprites
 	ld a, [hJoypadPressed]
-	bit A_BUTTON_F, a
+	bit B_PAD_A, a
 	jr nz, .asm_18d06
 	dec de
 	ld a, d
@@ -907,7 +907,7 @@ Epilogue:
 	jr nz, .asm_1900b
 	call UpdateObjectsAndClearStaleSprites
 	ld a, [hJoypadPressed]
-	bit A_BUTTON_F, a
+	bit B_PAD_A, a
 	jr nz, .asm_1901e
 	dec de
 	ld a, d

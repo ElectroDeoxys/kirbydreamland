@@ -3,7 +3,7 @@ Func_4000::
 	bit KIRBY2F_UNK6_F, a
 	call z, Func_8dc
 	ld a, [wKirbyScreenX]
-	cp SCRN_X - 8
+	cp SCREEN_WIDTH_PX - 8
 	jr c, .not_on_right_edge
 	; on right edge of screen
 	call StopKirbyWalking
@@ -149,13 +149,13 @@ Func_4000::
 	cp d
 	jr nz, .asm_4117
 .asm_4115
-	ld c, SCRN_X - 8
+	ld c, SCREEN_WIDTH_PX - 8
 .asm_4117
 	ld a, [wKirbyScreenDeltaX]
 	ld b, a
 	ld a, [wKirbyScreenX]
 	add b
-	cp SCRN_X - 8
+	cp SCREEN_WIDTH_PX - 8
 	jr nc, .asm_4149
 	ld b, a
 	ld a, c
@@ -202,7 +202,7 @@ Func_4000::
 	ldh [hKirbyFlags1], a
 .asm_416f
 	call StopKirbyWalking
-	ld a, SCRN_X - 8
+	ld a, SCREEN_WIDTH_PX - 8
 	ld [wKirbyScreenX], a
 	xor a
 	ld [wd063], a
@@ -383,7 +383,7 @@ Func_42a1::
 ; handles player input to control Kirby
 KirbyControl::
 	ldh a, [hJoypadPressed]
-	bit D_DOWN_F, a
+	bit B_PAD_DOWN, a
 	jr z, .not_ducking
 	ldh a, [hKirbyFlags1]
 	bit KIRBY1F_GROUNDED_F, a
@@ -433,7 +433,7 @@ KirbyControl::
 	bit KIRBY3F_DIVE_BOUNCE_F, a
 	jr nz, .check_b_btn
 	ldh a, [hJoypadPressed]
-	bit A_BUTTON_F, a
+	bit B_PAD_A, a
 	jr z, .asm_4361
 	ldh a, [hKirbyFlags1]
 	bit KIRBY1F_AIRBORNE_F, a
@@ -482,7 +482,7 @@ ENDC
 .check_b_btn
 	ldh a, [hJoypadPressed]
 	ld c, a
-	bit B_BUTTON_F, a
+	bit B_PAD_B, a
 	jp z, .asm_4492
 	ldh a, [hKirbyFlags2]
 	bit KIRBY2F_HOVER_F, a
@@ -557,7 +557,7 @@ ENDC
 	ldh a, [hKirbyFlags2]
 	bit KIRBY2F_MOUTHFUL_F, a
 	jr nz, .asm_444e
-	bit D_UP_F, c
+	bit B_PAD_UP, c
 	jp nz, .asm_4492
 	ld hl, hKirbyFlags4
 	res KIRBY4F_NONSTICKY_B_F, [hl]
@@ -619,7 +619,7 @@ ENDC
 .asm_4492
 	ldh a, [hJoypadPressed]
 	ld b, a
-	bit D_UP_F, a
+	bit B_PAD_UP, a
 	jp z, .check_d_left
 	ld a, [wCurSFX]
 	cp SFX_INHALE
@@ -642,7 +642,7 @@ ENDC
 	pop bc
 	and a
 	jr z, .check_d_left
-	bit B_BUTTON_F, b
+	bit B_PAD_B, b
 	jr nz, .check_d_left
 	ldh a, [hKirbyFlags2]
 	and KIRBY2F_UNK0 | KIRBY2F_UNK1 | KIRBY2F_MOUTHFUL | KIRBY2F_INHALE | KIRBY2F_UNK5 | KIRBY2F_UNK6
@@ -699,7 +699,7 @@ ENDC
 
 .check_d_left
 	ldh a, [hJoypadPressed]
-	bit D_LEFT_F, a
+	bit B_PAD_LEFT, a
 	jr z, .check_d_right
 	ldh a, [hKirbyFlags4]
 	bit KIRBY4F_UNK4_F, a
@@ -729,7 +729,7 @@ ENDC
 
 .check_d_right
 	ldh a, [hJoypadPressed]
-	bit D_RIGHT_F, a
+	bit B_PAD_RIGHT, a
 	jr z, .asm_4590
 	ldh a, [hKirbyFlags4]
 	bit KIRBY4F_UNK4_F, a
@@ -760,7 +760,7 @@ ENDC
 	ldh a, [hJoypadPressed]
 	swap a
 	ld b, a
-	and (D_RIGHT | D_LEFT) >> 4
+	and (PAD_RIGHT | PAD_LEFT) >> 4
 	ldh [hVBlankFlags], a
 	ld [wd04d], a
 	ldh a, [hKirbyFlags2]
@@ -770,9 +770,9 @@ ENDC
 	jr nz, .asm_460c
 	ld hl, hKirbyFlags1
 	set KIRBY1F_AIRBORNE_F, [hl]
-	bit A_BUTTON_F + 4, b
+	bit B_PAD_A + 4, b
 	jr nz, .asm_4629
-	bit D_UP_F - 4, b
+	bit B_PAD_UP - 4, b
 	jr nz, .asm_4629
 	ld a, [wd064]
 	and a
@@ -861,9 +861,9 @@ ENDC
 	ldh a, [hKirbyFlags3]
 	and ~(KIRBY3F_DIVE_BOUNCE | KIRBY3F_DIVE)
 	ldh [hKirbyFlags3], a
-	bit A_BUTTON_F + 4, b
+	bit B_PAD_A + 4, b
 	jr nz, .asm_4629
-	bit D_UP_F - 4, b
+	bit B_PAD_UP - 4, b
 	jr nz, .asm_4629
 	jp .asm_45c0
 
@@ -880,12 +880,12 @@ ENDC
 	ldh a, [hJoypadPressed]
 	swap a
 	ld b, a
-	and (D_RIGHT | D_LEFT) >> 4
+	and (PAD_RIGHT | PAD_LEFT) >> 4
 	ldh [hVBlankFlags], a
 	ld [wd04d], a
-	bit D_UP_F - 4, b
+	bit B_PAD_UP - 4, b
 	jr nz, .asm_46ef
-	bit A_BUTTON_F + 4, b
+	bit B_PAD_A + 4, b
 	jr nz, .asm_46ef
 	jr .asm_46fc
 .asm_4692
@@ -895,7 +895,7 @@ ENDC
 	ldh a, [hJoypadPressed]
 	swap a
 	ld b, a
-	and (D_RIGHT | D_LEFT) >> 4
+	and (PAD_RIGHT | PAD_LEFT) >> 4
 	ldh [hVBlankFlags], a
 
 	ld a, 0.996
@@ -907,9 +907,9 @@ ENDC
 	ld [wKirbyXVel + 0], a
 
 	ldh a, [hJoypadPressed]
-	bit D_UP_F, a
+	bit B_PAD_UP, a
 	jr nz, .asm_46c8
-	bit D_DOWN_F, a
+	bit B_PAD_DOWN, a
 	jr nz, .asm_46dc
 	xor a
 	ld [wKirbyYVel + 0], a
@@ -969,7 +969,7 @@ ENDC
 	ldh [hKirbyFlags3], a
 	ldh a, [hJoypadPressed]
 	swap a
-	and (D_RIGHT | D_LEFT) >> 4
+	and (PAD_RIGHT | PAD_LEFT) >> 4
 	ld b, a
 	ld a, b ; unnecessary
 	ld [wd04d], a
@@ -1000,7 +1000,7 @@ ENDC
 .asm_476b
 	ldh a, [hJoypadPressed]
 	swap a
-	and (D_RIGHT | D_LEFT) >> 4
+	and (PAD_RIGHT | PAD_LEFT) >> 4
 	ld [wd04d], a
 	ldh [hVBlankFlags], a
 	jr Func_4783
@@ -1031,7 +1031,7 @@ Func_4783::
 	bit KIRBY5F_INHALING_OBJECT_F, a
 	jr nz, .skip_spit ; still inhaling an object
 	ldh a, [hJoypadPressed]
-	bit B_BUTTON_F, a
+	bit B_PAD_B, a
 	jr nz, .skip_spit
 
 	; do spit
@@ -1445,7 +1445,7 @@ ScriptFunc_CheckHalfSideOfScreen::
 	ld hl, wObjectScreenXPositions
 	add hl, bc
 	ld a, [hl]
-	cp (SCRN_X / 2) + 8
+	cp (SCREEN_WIDTH_PX / 2) + 8
 	jr c, .got_result
 	inc d ; $1
 .got_result
