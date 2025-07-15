@@ -291,7 +291,7 @@ ENDC
 Func_14197:
 	ld hl, wObjectStatuses
 	add hl, bc
-	set 5, [hl]
+	set OBJSTAT_UNK5_F, [hl]
 	ld hl, wd1a0
 	add hl, bc
 	bit 0, [hl]
@@ -332,17 +332,17 @@ Func_141bb::
 Func_141d3::
 	ld a, [wd3cf]
 	ld hl, hJoypadPressed
-	bit 2, [hl]
+	bit SELECT_F, [hl]
 	jr z, .asm_141e1
 	xor $01
 	jr .asm_141ee
 .asm_141e1
-	bit 7, [hl]
+	bit D_DOWN_F, [hl]
 	jr z, .asm_141e9
 	ld a, $01
 	jr .asm_141ee
 .asm_141e9
-	bit 6, [hl]
+	bit D_UP_F, [hl]
 	jr z, .asm_141f4
 	xor a
 .asm_141ee
@@ -350,7 +350,7 @@ Func_141d3::
 	jp SetObjectUpdateFuncArgAsAnimScript
 .asm_141f4
 	ld a, [hl]
-	and $09
+	and A_BUTTON | START
 	ret z
 	ld a, $01
 	ld [wKirbySideOfScreen], a

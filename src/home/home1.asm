@@ -24,7 +24,7 @@ ASSERT BANK(ProcessObjectInteractions) == BANK(InhaleObjectsInRange)
 	ld [wd06a], a
 	cp $0f
 	jr c, .check_fall_in_pit
-	res 3, [hl]
+	res KIRBY6F_UNK3_F, [hl]
 .check_fall_in_pit
 	; if fell in a pit, then zero HP and lose life
 	ld a, [wKirbyScreenY]
@@ -1485,7 +1485,7 @@ Func_9de:
 	ld [wd065], a
 	ret
 .asm_c59
-	bit 2, a
+	bit KIRBY2F_SPIT_F, a
 	jr nz, .asm_c18
 	ldh a, [hKirbyFlags1]
 	res KIRBY1F_GROUNDED_F, a

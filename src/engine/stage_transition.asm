@@ -253,7 +253,7 @@ HandleStageTransition::
 	ld hl, wLevelYSection
 	dec [hl]
 	ld a, [hVBlankFlags]
-	set 5, a
+	set VBLANK_5_F, a
 	ld [hVBlankFlags], a
 .asm_18591
 	ld a, [wd067]
