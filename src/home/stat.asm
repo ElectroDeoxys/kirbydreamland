@@ -11,7 +11,7 @@ Stat:
 	ld hl, rLCDC
 	ld a, [wCreditsTextScroll]
 	ld c, a
-	ld a, %11100100
+	ldpal a, SHADE_WHITE, SHADE_LIGHT, SHADE_DARK, SHADE_BLACK
 	; temporarily select BG9C00 map
 	; this is reset back to BG9800 during VBlank
 	set B_LCDC_BG_MAP, [hl]

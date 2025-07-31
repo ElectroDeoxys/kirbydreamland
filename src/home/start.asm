@@ -30,7 +30,8 @@ Reset::
 
 	call HideWindow
 
-	ld a, %11100100 ; standard GB palette data
+	; standard GB palette configuration
+	ldpal a, SHADE_WHITE, SHADE_LIGHT, SHADE_DARK, SHADE_BLACK
 	ldh [rOBP1], a
 
 	; init scrolling and clear interrupt flags

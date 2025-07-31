@@ -664,7 +664,7 @@ ENDR
 	or c
 	cpl
 	ld b, a
-	and PAD_A | PAD_B | PAD_SELECT | PAD_START
+	and PAD_BUTTONS
 	cp PAD_A | PAD_B | PAD_SELECT | PAD_START
 	jr nz, .no_reset
 

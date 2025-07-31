@@ -1849,9 +1849,9 @@ InitRAM::
 	ld [wOverrideMusic], a ; MUSIC_NONE
 	xor a
 	ld [hl], a
-	ld a, $e4
+	ldpal a, SHADE_WHITE, SHADE_LIGHT, SHADE_DARK, SHADE_BLACK
 	ld [wBGP], a
-	ld a, $d0
+	ldpal a, SHADE_WHITE, SHADE_WHITE, SHADE_LIGHT, SHADE_BLACK
 	ld [wOBP], a
 	ld a, VBLANK_PENDING | VBLANK_IGNORE_INPUT
 	ld [hVBlankFlags], a

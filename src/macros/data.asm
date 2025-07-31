@@ -38,3 +38,7 @@ IF _NARG == 8
 	db \8 ; consumable item ID
 ENDC
 ENDM
+
+MACRO ldpal
+	ld \1, (\2 << 0) | (\3 << 2) | (\4 << 4) | (\5 << 6)
+ENDM

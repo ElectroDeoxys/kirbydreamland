@@ -318,23 +318,23 @@ Epilogue:
 	ld [wCreditsTextScroll], a
 	call StopTimerAndSwitchOnLCD
 
-	ld a, %01000000
+	ldpal a, SHADE_WHITE, SHADE_WHITE, SHADE_WHITE, SHADE_LIGHT
 	ld [wBGP], a
-	ld a, %01000000
+	ldpal a, SHADE_WHITE, SHADE_WHITE, SHADE_WHITE, SHADE_LIGHT
 	ldh [rOBP0], a
 	ld a, 5
 	call DoFrames
 
-	ld a, %10010000
+	ldpal a, SHADE_WHITE, SHADE_WHITE, SHADE_LIGHT, SHADE_DARK
 	ld [wBGP], a
-	ld a, %10000000
+	ldpal a, SHADE_WHITE, SHADE_WHITE, SHADE_WHITE, SHADE_DARK
 	ldh [rOBP0], a
 	ld a, 5
 	call DoFrames
 
-	ld a, %11100001
+	ldpal a, SHADE_LIGHT, SHADE_WHITE, SHADE_DARK, SHADE_BLACK
 	ld [wBGP], a
-	ld a, %11010000
+	ldpal a, SHADE_WHITE, SHADE_WHITE, SHADE_LIGHT, SHADE_BLACK
 	ldh [rOBP0], a
 	ld a, 5
 	call DoFrames
@@ -521,30 +521,30 @@ Epilogue:
 	ret
 
 .asm_18c5c
-	ld a, %10010000
+	ldpal a, SHADE_WHITE, SHADE_WHITE, SHADE_LIGHT, SHADE_DARK
 	ld [wBGP], a
-	ld a, %11010000
+	ldpal a, SHADE_WHITE, SHADE_WHITE, SHADE_LIGHT, SHADE_BLACK
 	ldh [rOBP0], a
 	ld a, 5
 	call DoFrames
 
-	ld a, %01000000
+	ldpal a, SHADE_WHITE, SHADE_WHITE, SHADE_WHITE, SHADE_LIGHT
 	ld [wBGP], a
-	ld a, %10000000
+	ldpal a, SHADE_WHITE, SHADE_WHITE, SHADE_WHITE, SHADE_DARK
 	ldh [rOBP0], a
 	ld a, 5
 	call DoFrames
 
-	ld a, %00000000
+	ldpal a, SHADE_WHITE, SHADE_WHITE, SHADE_WHITE, SHADE_WHITE
 	ld [wBGP], a
-	ld a, %1000000
+	ldpal a, SHADE_WHITE, SHADE_WHITE, SHADE_WHITE, SHADE_LIGHT
 	ldh [rOBP0], a
 	ld a, 5
 	call DoFrames
 
 	call ResetTimer
 
-	xor a
+	xor a ; SHADE_WHITE, SHADE_WHITE, SHADE_WHITE, SHADE_WHITE
 	ld [wBGP], a
 	ld a, SCENE_EPILOGUE_KIRBY_DEFLATE
 	call Func_21fb
