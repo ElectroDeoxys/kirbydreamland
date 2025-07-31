@@ -103,12 +103,12 @@ endif
 %.asm: ;
 
 
-kirbydreamland_opts      = -jv -l 0x01 -m MBC1 -p 0 -t "KIRBY DREAM LAND" -r 0 -n 0
-kirbydreamland_jp_opts   = -v  -l 0x01 -m MBC1 -p 0 -t "HOSHINOKA-BI"     -r 0 -n 0
-kirbydreamland_jp11_opts = -v  -l 0x01 -m MBC1 -p 0 -t "HOSHINOKA-BI"     -r 0 -n 1
+kirbydreamland_opts      = -jv -l 0x01 -m MBC1 -p 0 -t "KIRBY DREAM LAND" -r 0 -n 0 -Weverything
+kirbydreamland_jp_opts   = -v  -l 0x01 -m MBC1 -p 0 -t "HOSHINOKA-BI"     -r 0 -n 0 -Weverything
+kirbydreamland_jp11_opts = -v  -l 0x01 -m MBC1 -p 0 -t "HOSHINOKA-BI"     -r 0 -n 1 -Weverything
 
 %.gb: $$(%_obj) src/layout.link src/%_overlay.bin
-	$(RGBLINK) -d -m $*.map -n $*.sym -l src/layout.link -o $@ $(filter %.o,$^) -O src/$*_overlay.bin
+	$(RGBLINK) -d -m $*.map -n $*.sym -l src/layout.link -o $@ $(filter %.o,$^) -O src/$*_overlay.bin -Weverything
 	$(RGBFIX) $($*_opts) $@
 
 
