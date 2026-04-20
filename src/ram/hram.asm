@@ -1,5 +1,6 @@
 SECTION "HRAM", HRAM
 
+; applied to rLCDC on V-Blank
 hLCDC:: ; ff8a
 	db
 

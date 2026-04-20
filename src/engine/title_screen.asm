@@ -2,7 +2,7 @@ TitleScreen::
 	ld a, $ff
 	ld [wd096], a
 	call ClearSprites
-	call ResetTimer
+	call DisableLCD
 
 	xor a
 	ld [wVirtualOAMSize], a
@@ -44,7 +44,7 @@ ENDC
 	ld a, SCENE_TITLE_SCREEN
 	call Func_21fb
 
-	call StopTimerAndSwitchOnLCD
+	call EnableLCD
 
 	xor a
 	ld [hPalFadeFlags], a

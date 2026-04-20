@@ -561,7 +561,7 @@ ProcessDoorConnection::
 	call Func_139b
 	call UpdateObjects
 	call ClearSprites
-	call StopTimerAndSwitchOnLCD
+	call EnableLCD
 	call FadeIn
 	ld a, VBLANK_3
 	ldh [hVBlankFlags], a
@@ -673,7 +673,7 @@ ENDR
 	ldh [hVBlankFlags], a
 	ei
 	call FadeOut
-	call ResetTimer
+	call DisableLCD
 	jp Reset
 
 .no_reset
@@ -3447,7 +3447,7 @@ LoadArea::
 	ld a, $ff
 	ld [wOverrideMusic], a ; MUSIC_NONE
 	ld [wd096], a
-	call ResetTimer
+	call DisableLCD
 	ld hl, Data_38b1
 	ld a, [wStage]
 	add a ; *2
@@ -3781,7 +3781,7 @@ HideWindow::
 	ret
 
 Func_1c0a::
-	call ResetTimer
+	call DisableLCD
 
 	; fills 2 rows in vBGMap1
 	; with tile index $7f
@@ -3818,7 +3818,7 @@ Func_1c0a::
 	ldbgcoord 16, 1, vBGMap1
 	ldbgcoord 17, 1, vBGMap1
 
-	jp StopTimerAndSwitchOnLCD
+	jp EnableLCD
 
 ; calculates bc * e considering both values
 ; as fixed-point numbers with 8-bit precision

@@ -43,7 +43,7 @@ WaitVBlank:
 	pop hl
 	ret
 
-ApplyLCDCScrollAndBGPalette:
+ApplyLCDCScrollAndBGP:
 	ldh a, [hLCDC]
 	ldh [rLCDC], a
 	ld a, [wSCX]

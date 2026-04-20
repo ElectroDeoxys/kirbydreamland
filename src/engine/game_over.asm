@@ -170,7 +170,7 @@ Data_1874d:
 GameOver:
 	call FadeOut
 	call HideWindow
-	call ResetTimer
+	call DisableLCD
 
 	ld a, SCENE_GAME_OVER
 	call Func_21fb
@@ -190,7 +190,7 @@ GameOver:
 	xor a
 	ld [wSCX], a
 	ld [wSCY], a
-	call StopTimerAndSwitchOnLCD
+	call EnableLCD
 	call FadeIn
 	xor a
 	ld [wVirtualOAMSize], a
@@ -217,7 +217,7 @@ GameOver:
 	set KIRBY6F_UNK0_F, [hl]
 	call FadeOut
 	call HideWindow
-	call ResetTimer
+	call DisableLCD
 	call ClearAllObjects
 
 	inc a ; $1
@@ -251,7 +251,7 @@ GameOver:
 	ld a, MUSIC_SPARKLING_STAR
 	call PlayMusic
 
-	call StopTimerAndSwitchOnLCD
+	call EnableLCD
 	call FadeIn
 .asm_1880b
 	wait_vblank
@@ -301,5 +301,5 @@ GameOver:
 	ld a, 60
 	call DoFrames
 	call FadeOut
-	call ResetTimer
+	call DisableLCD
 	jp Reset

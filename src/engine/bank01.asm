@@ -2061,7 +2061,7 @@ _StartLevelAfterContinue::
 	call Func_21fb
 	call Func_139b
 	call UpdateObjects
-	call StopTimerAndSwitchOnLCD
+	call EnableLCD
 	call FadeIn
 
 	ld a, [wOverrideMusic]

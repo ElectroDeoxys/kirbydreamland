@@ -26,7 +26,7 @@ Epilogue:
 	ld [wSCX], a
 	ld [wSCY], a
 
-	call ResetTimer
+	call DisableLCD
 
 	ld hl, FontWoNumbersGfx
 	ld de, vTiles1 tile $60
@@ -45,7 +45,7 @@ Epilogue:
 	ld c, BANK(BG_c2c8)
 	call FarDecompress
 
-	call StopTimerAndSwitchOnLCD
+	call EnableLCD
 	call FadeIn
 	ld de, 200
 	ld hl, hVBlankFlags
@@ -66,7 +66,7 @@ Epilogue:
 	ld [wd096], a
 	call ClearSprites
 	call FadeOut
-	call ResetTimer
+	call DisableLCD
 
 	ld hl, CommonGfx
 	ld de, vTiles0 tile $00
@@ -98,7 +98,7 @@ Epilogue:
 	ld [wLevelHeight], a
 	ld hl, wLevelBlockMap + $4
 	call Func_1964
-	call StopTimerAndSwitchOnLCD
+	call EnableLCD
 	call FadeIn
 
 	ld de, 432 ; ~ 7 seconds
@@ -121,7 +121,7 @@ Epilogue:
 	ld a, SCENE_EPILOGUE_KIRBY_INFLATE
 	call Func_21fb
 	call UpdateObjectsAndClearStaleSprites
-	call ResetTimer
+	call DisableLCD
 
 	ld hl, FontWoNumbersGfx
 	ld de, vTiles1 tile $60
@@ -140,7 +140,7 @@ Epilogue:
 	ld c, BANK(BG_c2c8)
 	call FarDecompress
 
-	call StopTimerAndSwitchOnLCD
+	call EnableLCD
 	call FadeIn
 	ld de, 512
 	ld hl, hVBlankFlags
@@ -156,7 +156,7 @@ Epilogue:
 	jr nz, .asm_189b5
 
 	call FadeOut
-	call ResetTimer
+	call DisableLCD
 	ld a, SCENE_EPILOGUE_FALLING_FOOD
 	call Func_21fb
 	call UpdateObjectsAndClearStaleSprites
@@ -186,7 +186,7 @@ Epilogue:
 	jr nz, .asm_189e5
 
 	push de
-	call StopTimerAndSwitchOnLCD
+	call EnableLCD
 	call FadeIn
 	pop de
 	hlbgcoord 0, 31
@@ -249,7 +249,7 @@ Epilogue:
 	ld [wd096], a
 	call ClearSprites
 	call FadeOut
-	call ResetTimer
+	call DisableLCD
 	ld a, SCENE_CREDITS
 	call Func_21fb
 	call UpdateObjectsAndClearStaleSprites
@@ -316,7 +316,7 @@ Epilogue:
 	set B_IE_STAT, [hl]
 	ld a, $90
 	ld [wCreditsTextScroll], a
-	call StopTimerAndSwitchOnLCD
+	call EnableLCD
 
 	ldpal a, SHADE_WHITE, SHADE_WHITE, SHADE_WHITE, SHADE_LIGHT
 	ld [wBGP], a
@@ -542,7 +542,7 @@ Epilogue:
 	ld a, 5
 	call DoFrames
 
-	call ResetTimer
+	call DisableLCD
 
 	xor a ; SHADE_WHITE, SHADE_WHITE, SHADE_WHITE, SHADE_WHITE
 	ld [wBGP], a
@@ -561,7 +561,7 @@ Epilogue:
 	ld c, BANK(BG_c37a)
 	call FarDecompress
 
-	call StopTimerAndSwitchOnLCD
+	call EnableLCD
 	call FadeIn
 	ld de, 324
 	ld hl, hVBlankFlags
@@ -576,7 +576,7 @@ Epilogue:
 	or e
 	jr nz, .asm_18cb8
 	call FadeOut
-	call ResetTimer
+	call DisableLCD
 	ld a, SCENE_EPILOGUE_BYE_BYE
 	call Func_21fb
 	call UpdateObjectsAndClearStaleSprites
@@ -586,7 +586,7 @@ Epilogue:
 	ld c, BANK(BG_c41d)
 	call FarDecompress
 
-	call StopTimerAndSwitchOnLCD
+	call EnableLCD
 	call FadeIn
 
 	ld de, 400
@@ -609,7 +609,7 @@ Epilogue:
 	jr nz, .asm_18cf1
 .asm_18d06
 	call FadeOut
-	call ResetTimer
+	call DisableLCD
 	call ClearAllObjects
 	ld a, [wExtraGameEnabled]
 	and a
@@ -634,13 +634,13 @@ Epilogue:
 	debgcoord 0, 0
 	ld c, BANK(BG_345c0)
 	call FarDecompress
-	call StopTimerAndSwitchOnLCD
+	call EnableLCD
 	call FadeIn
 	ld de, 416
 	call .DoFrames
 	call FadeOut
 
-	call ResetTimer
+	call DisableLCD
 	ld a, SCENE_GREEN_GREENS_ENEMIES_2
 	call Func_21fb
 	call UpdateObjectsAndClearStaleSprites
@@ -652,13 +652,13 @@ Epilogue:
 	debgcoord 0, 0
 	ld c, BANK(BG_34cb4)
 	call FarDecompress
-	call StopTimerAndSwitchOnLCD
+	call EnableLCD
 	call FadeIn
 	ld de, 416
 	call .DoFrames
 	call FadeOut
 
-	call ResetTimer
+	call DisableLCD
 	ld a, SCENE_GREEN_GREENS_ENEMIES_3
 	call Func_21fb
 	call UpdateObjectsAndClearStaleSprites
@@ -670,13 +670,13 @@ Epilogue:
 	debgcoord 0, 0
 	ld c, BANK(BG_3535c)
 	call FarDecompress
-	call StopTimerAndSwitchOnLCD
+	call EnableLCD
 	call FadeIn
 	ld de, 236
 	call .DoFrames
 	call FadeOut
 
-	call ResetTimer
+	call DisableLCD
 	ld a, CASTLE_LOLOLO
 	ld [wStage], a
 	call LoadLevelGfx_RegularGame
@@ -691,13 +691,13 @@ Epilogue:
 	debgcoord 0, 0
 	ld c, BANK(BG_35987)
 	call FarDecompress
-	call StopTimerAndSwitchOnLCD
+	call EnableLCD
 	call FadeIn
 	ld de, 416
 	call .DoFrames
 	call FadeOut
 
-	call ResetTimer
+	call DisableLCD
 	ld a, SCENE_CASTLE_LOLOLO_ENEMIES_2
 	call Func_21fb
 	call UpdateObjectsAndClearStaleSprites
@@ -709,13 +709,13 @@ Epilogue:
 	debgcoord 0, 0
 	ld c, BANK(BG_35fd2)
 	call FarDecompress
-	call StopTimerAndSwitchOnLCD
+	call EnableLCD
 	call FadeIn
 	ld de, 416
 	call .DoFrames
 	call FadeOut
 
-	call ResetTimer
+	call DisableLCD
 	ld a, FLOAT_ISLANDS
 	ld [wStage], a
 	call LoadLevelGfx_RegularGame
@@ -730,13 +730,13 @@ Epilogue:
 	debgcoord 0, 0
 	ld c, BANK(BG_36553)
 	call FarDecompress
-	call StopTimerAndSwitchOnLCD
+	call EnableLCD
 	call FadeIn
 	ld de, 416
 	call .DoFrames
 	call FadeOut
 
-	call ResetTimer
+	call DisableLCD
 	ld a, SCENE_FLOAT_ISLANDS_ENEMIES_2
 	call Func_21fb
 	call UpdateObjectsAndClearStaleSprites
@@ -748,13 +748,13 @@ Epilogue:
 	debgcoord 0, 0
 	ld c, BANK(BG_36b80)
 	call FarDecompress
-	call StopTimerAndSwitchOnLCD
+	call EnableLCD
 	call FadeIn
 	ld de, 416
 	call .DoFrames
 	call FadeOut
 
-	call ResetTimer
+	call DisableLCD
 	ld a, BUBBLY_CLOUDS
 	ld [wStage], a
 	call LoadLevelGfx_RegularGame
@@ -769,13 +769,13 @@ Epilogue:
 	debgcoord 0, 0
 	ld c, BANK(BG_3717d)
 	call FarDecompress
-	call StopTimerAndSwitchOnLCD
+	call EnableLCD
 	call FadeIn
 	ld de, 416
 	call .DoFrames
 	call FadeOut
 
-	call ResetTimer
+	call DisableLCD
 	ld a, SCENE_BUBBLY_CLOUDS_ENEMIES_2
 	call Func_21fb
 	call UpdateObjectsAndClearStaleSprites
@@ -787,13 +787,13 @@ Epilogue:
 	debgcoord 0, 0
 	ld c, BANK(BG_3779c)
 	call FarDecompress
-	call StopTimerAndSwitchOnLCD
+	call EnableLCD
 	call FadeIn
 	ld de, 416
 	call .DoFrames
 	call FadeOut
 
-	call ResetTimer
+	call DisableLCD
 	xor a
 	ld [wStage], a
 	call LoadLevelGfx
@@ -808,13 +808,13 @@ Epilogue:
 	debgcoord 0, 0
 	ld c, BANK(BG_378cc)
 	call FarDecompress
-	call StopTimerAndSwitchOnLCD
+	call EnableLCD
 	call FadeIn
 	ld de, 416
 	call .DoFrames
 	call FadeOut
 
-	call ResetTimer
+	call DisableLCD
 	ld a, CASTLE_LOLOLO
 	ld [wStage], a
 	call LoadLevelGfx
@@ -829,13 +829,13 @@ Epilogue:
 	debgcoord 0, 0
 	ld c, BANK(BG_38ac6)
 	call FarDecompress
-	call StopTimerAndSwitchOnLCD
+	call EnableLCD
 	call FadeIn
 	ld de, 416
 	call .DoFrames
 	call FadeOut
 
-	call ResetTimer
+	call DisableLCD
 	ld a, FLOAT_ISLANDS
 	ld [wStage], a
 	call LoadLevelGfx
@@ -850,13 +850,13 @@ Epilogue:
 	debgcoord 0, 0
 	ld c, BANK(BG_3911e)
 	call FarDecompress
-	call StopTimerAndSwitchOnLCD
+	call EnableLCD
 	call FadeIn
 	ld de, 416
 	call .DoFrames
 	call FadeOut
 
-	call ResetTimer
+	call DisableLCD
 	ld a, BUBBLY_CLOUDS
 	ld [wStage], a
 	call LoadLevelGfx
@@ -871,13 +871,13 @@ Epilogue:
 	debgcoord 0, 0
 	ld c, BANK(BG_39707)
 	call FarDecompress
-	call StopTimerAndSwitchOnLCD
+	call EnableLCD
 	call FadeIn
 	ld de, 416
 	call .DoFrames
 	call FadeOut
 
-	call ResetTimer
+	call DisableLCD
 	ld hl, MtDededeGfx
 	ld de, vTiles1 tile $00
 	ld c, BANK(MtDededeGfx)
@@ -893,7 +893,7 @@ Epilogue:
 	debgcoord 0, 0
 	ld c, BANK(BG_39be1)
 	call FarDecompress
-	call StopTimerAndSwitchOnLCD
+	call EnableLCD
 	call FadeIn
 	ld de, 416
 	call .DoFrames
@@ -916,7 +916,7 @@ Epilogue:
 .asm_1901e
 	call FadeOut
 
-	call ResetTimer
+	call DisableLCD
 	ld a, MUSIC_NONE
 	call PlayMusic
 	ld a, SCENE_CONFIG_MODE_UNLOCK
@@ -930,7 +930,7 @@ Epilogue:
 	debgcoord 0, 0
 	ld c, BANK(BG_3acce)
 	call FarDecompress
-	call StopTimerAndSwitchOnLCD
+	call EnableLCD
 	call FadeIn
 .asm_1904d
 	ld de, 0 ; $ffff + 1 frames
@@ -951,7 +951,7 @@ Epilogue:
 	debgcoord 0, 0
 	ld c, BANK(BG_3be4a)
 	call FarDecompress
-	call StopTimerAndSwitchOnLCD
+	call EnableLCD
 	call FadeIn
 .asm_1907e
 	ld de, 0 ; $ffff + 1 frames

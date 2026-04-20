@@ -1828,12 +1828,12 @@ InitRAM::
 	cp h
 	jr nz, .loop_clear_wram
 
-	ld hl, hLCDC
+	ld hl, STARTOF("HRAM")
 .loop_clear_hram
 	xor a
 	ld [hli], a
 	ld a, l
-	cp LOW(hStack)
+	cp LOW(STARTOF("HRAM") + SIZEOF("HRAM"))
 	jr nz, .loop_clear_hram
 
 	ld a, $01

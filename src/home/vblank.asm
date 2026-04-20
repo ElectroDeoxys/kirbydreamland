@@ -28,13 +28,13 @@ VBlank:
 	and ~(VBLANK_5 | VBLANK_PENDING)
 	ldh [hVBlankFlags], a
 
-	call ApplyLCDCScrollAndBGPalette
+	call ApplyLCDCScrollAndBGP
 	call FadePalettes
 	call ReadJoypad
 	jr .asm_1d56
 
 .asm_1d53
-	call ApplyLCDCScrollAndBGPalette
+	call ApplyLCDCScrollAndBGP
 .asm_1d56
 	ld hl, hEngineFlags
 	res RESET_TIMER_PENDING_F, [hl]

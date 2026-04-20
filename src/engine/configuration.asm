@@ -1,6 +1,6 @@
 ConfigurationMenu:
 	call FadeOut
-	call ResetTimer
+	call DisableLCD
 	call ClearAllObjects
 	call HideWindow
 	xor a
@@ -40,7 +40,7 @@ ConfigurationMenu:
 	dec a
 	jr nz, .loop_draw_hp_bars
 
-	call StopTimerAndSwitchOnLCD
+	call EnableLCD
 	call FadeIn
 
 	ld a, [wConfigLives]
@@ -241,7 +241,7 @@ ConfigurationMenu:
 .SoundTest:
 	pop hl
 	call FadeOut
-	call ResetTimer
+	call DisableLCD
 	ld a, SCENE_SOUND_TEST
 	call Func_21fb
 	call HideWindow
@@ -251,7 +251,7 @@ ConfigurationMenu:
 	ld c, BANK(BG_c4c9)
 	call FarDecompress
 
-	call StopTimerAndSwitchOnLCD
+	call EnableLCD
 	call FadeIn
 
 	xor a ; SOUNDTEST_MUSIC

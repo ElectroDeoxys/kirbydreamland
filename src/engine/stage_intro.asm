@@ -10,7 +10,7 @@ StageIntro:
 	ld hl, hKirbyFlags5
 	set KIRBY5F_STAGE_INTRO_F, [hl]
 	call ClearSprites
-	call ResetTimer
+	call DisableLCD
 
 	ld hl, CommonGfx
 	ld de, vTiles0 tile $00
@@ -80,7 +80,7 @@ StageIntro:
 
 	xor a
 	call Func_21fb
-	call StopTimerAndSwitchOnLCD
+	call EnableLCD
 	call FadeIn
 
 	pop hl

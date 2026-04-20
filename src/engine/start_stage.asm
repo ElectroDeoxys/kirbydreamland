@@ -58,7 +58,7 @@ StartStage::
 	call ClearAllObjects
 	call FadeOut
 	call Func_1c0a
-	call ResetTimer
+	call DisableLCD
 	call LoadLevelGfx
 
 	ld d, $00 ; unused
@@ -127,7 +127,7 @@ StartStage::
 	ld [wArea], a
 
 	push hl
-	call StopTimerAndSwitchOnLCD
+	call EnableLCD
 	call Func_19c9
 	call LoadArea
 	pop hl
@@ -202,7 +202,7 @@ StartStage::
 
 .skip_music
 	call SetFullHP
-	call StopTimerAndSwitchOnLCD
+	call EnableLCD
 	call FadeIn
 	call Func_8dc
 	ret

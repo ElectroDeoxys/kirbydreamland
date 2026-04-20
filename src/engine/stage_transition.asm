@@ -161,7 +161,7 @@ HandleStageTransition::
 	ld a, MUSIC_MT_DEDEDE
 	call PlayMusic
 .asm_184eb
-	call StopTimerAndSwitchOnLCD
+	call EnableLCD
 	call FadeIn
 	pop hl
 	pop af
