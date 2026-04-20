@@ -185,7 +185,7 @@ UpdateHUD:
 	inc bc
 	dec d
 	jr nz, .loop_print_score
-	ld a, "0"
+	ld a, '0'
 	ldbgcoord 11, 0, vBGMap1
 	jr .asm_1ffa
 
@@ -266,10 +266,10 @@ UpdateHUD:
 	ld a, [wLives]
 	dec a
 	call GetDigits
-	add "0"
+	add '0'
 	ldbgcoord 17, 1, vBGMap1 ; ones digit
 	ld a, b
-	add "0"
+	add '0'
 	ldbgcoord 16, 1, vBGMap1 ; tens digit
 	ret
 

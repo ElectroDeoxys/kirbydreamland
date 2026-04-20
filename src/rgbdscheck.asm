@@ -1,7 +1,7 @@
-IF !DEF(__RGBDS_MAJOR__) || !DEF(__RGBDS_MINOR__) || !DEF(__RGBDS_PATCH__)
-	fail "kirbydreamland requires rgbds v0.9.4 or newer."
+IF !DEF(__RGBDS_MAJOR__)
+	fail "kirbydreamland requires rgbds 1.0.0 or newer."
 ENDC
 
-IF (__RGBDS_MAJOR__ == 0 && (__RGBDS_MINOR__ < 9 || __RGBDS_PATCH__ < 4))
-	fail "kirbydreamland requires rgbds v0.9.4 or newer."
+IF __RGBDS_MAJOR__ < 1
+	fail "kirbydreamland requires rgbds 1.0.0 or newer."
 ENDC

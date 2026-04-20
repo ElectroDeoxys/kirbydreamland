@@ -218,14 +218,14 @@ ConfigurationMenu:
 
 .UpdateNumLives:
 	call GetDigits
-	add "0"
+	add '0'
 	ld [wQueuedBG000TileID], a
 	ld a, HIGH(vBGMap0 + $12c)
 	ld [wQueuedBG000BGPtr + 0], a
 	ld a, LOW(vBGMap0 + $12c)
 	ld [wQueuedBG000BGPtr + 1], a
 	ld a, b
-	add "0"
+	add '0'
 	ld [wQueuedBG001TileID], a
 	ld a, HIGH(vBGMap0 + $12b)
 	ld [wQueuedBG001BGPtr + 0], a
@@ -382,14 +382,14 @@ ConfigurationMenu:
 
 .UpdateSoundCheckMusicNumber:
 	call GetDigits
-	add "0"
+	add '0'
 	ld [wQueuedBG000TileID], a
 	ld a, HIGH(vBGMap0 + $ee)
 	ld [wQueuedBG000BGPtr + 0], a
 	ld a, LOW(vBGMap0 + $ee)
 	ld [wQueuedBG000BGPtr + 1], a
 	ld a, b
-	add "0"
+	add '0'
 	ld [wQueuedBG001TileID], a
 	ld a, HIGH(vBGMap0 + $ed)
 	ld [wQueuedBG001BGPtr + 0], a
@@ -404,14 +404,14 @@ ConfigurationMenu:
 
 .UpdateSoundCheckSFXNumber:
 	call GetDigits
-	add "0"
+	add '0'
 	ld [wQueuedBG000TileID], a
 	ld a, HIGH(vBGMap0 + $12e)
 	ld [wQueuedBG000BGPtr + 0], a
 	ld a, LOW(vBGMap0 + $12e)
 	ld [wQueuedBG000BGPtr + 1], a
 	ld a, b
-	add "0"
+	add '0'
 	ld [wQueuedBG001TileID], a
 	ld a, HIGH(vBGMap0 + $12d)
 	ld [wQueuedBG001BGPtr + 0], a

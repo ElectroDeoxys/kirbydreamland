@@ -3760,7 +3760,7 @@ GetScoreDigitTiles:
 	ld a, [hli]
 	and a
 	jr z, .zero
-	ld e, "0"
+	ld e, '0'
 .zero
 	add e
 	ld [bc], a
