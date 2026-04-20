@@ -75,7 +75,7 @@ ASSERT BANK(ProcessObjectInteractions) == BANK(InhaleObjectsInRange)
 	bit KIRBY5F_DAMAGED_F, [hl]
 	jr z, .skip_damage_knock_back
 	ldh a, [hVBlankFlags]
-	and VBLANK_5
+	and VBLANK_SCROLL_CHANGED
 	jr nz, .skip_damage_knock_back
 	ld a, [wDamageKnockBack]
 	ld c, a
@@ -698,7 +698,7 @@ ENDR
 
 Func_6ec::
 	ldh a, [hVBlankFlags]
-	and VBLANK_5
+	and VBLANK_SCROLL_CHANGED
 	ret nz
 	ldh [hVBlankFlags], a
 	ld hl, hPalFadeFlags
@@ -1089,7 +1089,7 @@ Func_917::
 	ldh a, [hVBlankFlags]
 	res VBLANK_1_F, a
 	ldh [hVBlankFlags], a
-	bit VBLANK_5_F, b
+	bit VBLANK_SCROLL_CHANGED_F, b
 	jp z, Func_88d
 
 	ld a, [wKirbyXVel + 0]
@@ -1372,7 +1372,7 @@ Func_9de:
 	cp $01
 	jr z, .asm_b3a
 	ldh a, [hVBlankFlags]
-	bit VBLANK_5_F, a
+	bit VBLANK_SCROLL_CHANGED_F, a
 	jp nz, Func_caf
 	ld a, [wSCY]
 	sub $10
@@ -1400,7 +1400,7 @@ Func_9de:
 	ld hl, wLevelYSection
 	dec [hl]
 	ldh a, [hVBlankFlags]
-	set VBLANK_5_F, a
+	set VBLANK_SCROLL_CHANGED_F, a
 	ldh [hVBlankFlags], a
 .asm_baf
 	ld a, [wd061]
@@ -1956,7 +1956,7 @@ Func_caf:
 	jr z, .asm_fa9
 	jr nc, .asm_f92
 	ldh a, [hVBlankFlags]
-	bit VBLANK_5_F, a
+	bit VBLANK_SCROLL_CHANGED_F, a
 	ret nz
 	ld a, [wSCY]
 	and $0f
@@ -1988,7 +1988,7 @@ Func_caf:
 	add hl, bc
 	call Func_12b4
 	ldh a, [hVBlankFlags]
-	set VBLANK_5_F, a
+	set VBLANK_SCROLL_CHANGED_F, a
 	ldh [hVBlankFlags], a
 	ld hl, wLevelYSection
 	inc [hl]
@@ -2110,7 +2110,7 @@ Func_1062::
 .asm_10e1
 	call Func_1292
 	ldh a, [hVBlankFlags]
-	set VBLANK_5_F, a
+	set VBLANK_SCROLL_CHANGED_F, a
 	ldh [hVBlankFlags], a
 	ld a, [wLevelXSection]
 	ld b, a
@@ -2186,7 +2186,7 @@ Func_110b:
 	jp c, Func_42a1
 .asm_116d
 	ldh a, [hVBlankFlags]
-	bit VBLANK_5_F, a
+	bit VBLANK_SCROLL_CHANGED_F, a
 	ret nz
 	ld a, [wSCX]
 	sub $10
@@ -2210,7 +2210,7 @@ Func_110b:
 	ld [wLevelXSection], a
 	call Func_1292
 	ldh a, [hVBlankFlags]
-	set VBLANK_5_F, a
+	set VBLANK_SCROLL_CHANGED_F, a
 	ldh [hVBlankFlags], a
 	jr .asm_11be
 .asm_11ac
@@ -2219,7 +2219,7 @@ Func_110b:
 	dec hl
 	call Func_1292
 	ldh a, [hVBlankFlags]
-	set VBLANK_5_F, a
+	set VBLANK_SCROLL_CHANGED_F, a
 	ldh [hVBlankFlags], a
 	ld hl, wLevelXSection
 	dec [hl]
@@ -2298,7 +2298,7 @@ Func_11de:
 	add hl, bc
 	call Func_1292
 	ldh a, [hVBlankFlags]
-	set VBLANK_5_F, a
+	set VBLANK_SCROLL_CHANGED_F, a
 	ldh [hVBlankFlags], a
 	ld hl, wLevelXSection
 	inc [hl]
@@ -3310,21 +3310,23 @@ LoadSprite::
 	bankswitch
 	ret
 
+; if [wClearSpriteSize] == -1, then clear all sprites
+; else, clear only excess sprites from previous frame
 ClearSprites::
-	ld a, [wd096]
+	ld a, [wClearSpriteSize]
 	inc a
 	jr nz, .not_all_sprites
 ; clear all sprites
-	ld a, wVirtualOAMEnd - wVirtualOAM
+	ld a, OAM_SIZE
 	ld c, a
-	ld [wd096], a
+	ld [wClearSpriteSize], a
 	xor a
 	ld [wVirtualOAMSize], a
 	jr .got_offset
 .not_all_sprites
 	ld a, [wVirtualOAMSize]
-	ld [wd096], a
-	ld c, wVirtualOAMEnd - wVirtualOAM
+	ld [wClearSpriteSize], a
+	ld c, OAM_SIZE
 .got_offset
 	ld l, a
 	ld h, HIGH(wVirtualOAM)
@@ -3396,7 +3398,7 @@ Func_1964::
 	ldh [rSCX], a
 	ldh [rSCY], a
 	ldh a, [hVBlankFlags]
-	or VBLANK_5 | VBLANK_PENDING
+	or VBLANK_SCROLL_CHANGED | VBLANK_PENDING
 	ldh [hVBlankFlags], a
 	call ProcessBlockQueue
 	ld a, [wd06b] ; useless
@@ -3446,7 +3448,7 @@ LoadArea::
 	push hl
 	ld a, $ff
 	ld [wOverrideMusic], a ; MUSIC_NONE
-	ld [wd096], a
+	ld [wClearSpriteSize], a
 	call DisableLCD
 	ld hl, Data_38b1
 	ld a, [wStage]

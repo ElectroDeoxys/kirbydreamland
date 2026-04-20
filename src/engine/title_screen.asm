@@ -1,7 +1,8 @@
 TitleScreen::
-	ld a, $ff
-	ld [wd096], a
+	ld a, -1
+	ld [wClearSpriteSize], a
 	call ClearSprites
+
 	call DisableLCD
 
 	xor a

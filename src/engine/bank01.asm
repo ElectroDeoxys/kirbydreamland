@@ -1515,11 +1515,11 @@ Func_4a1c::
 	pop bc
 	ret
 .asm_4a68
-	xor a
+	xor a ; BLOCK_0
 	ld c, $7f
 	jr .asm_4a71
 .asm_4a6d
-	ld a, $03
+	ld a, BLOCK_3
 	ld c, $7c
 .asm_4a71
 	ld [hl], a

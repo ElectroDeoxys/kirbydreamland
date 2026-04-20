@@ -6,8 +6,9 @@ ConfigurationMenu:
 	xor a
 	ld [wSCX ], a
 	ld [wSCY], a
-	ld a, $ff
-	ld [wd096], a
+
+	ld a, -1
+	ld [wClearSpriteSize], a
 	call ClearSprites
 
 	ld hl, HUDGfx

@@ -2,7 +2,6 @@ SECTION "WRAM0", WRAM0
 
 wVirtualOAM:: ; c000
 	ds OAM_SIZE
-wVirtualOAMEnd::
 
 	ds $60
 
@@ -256,7 +255,9 @@ wd094:: ; d094
 wVirtualOAMSize:: ; d095
 	db
 
-wd096:: ; d096
+; if -1, then ClearSprites will clear all OAM
+; otherwise holds the OAM size of previous frame
+wClearSpriteSize:: ; d096
 	db
 
 wd097:: ; d097
@@ -265,7 +266,7 @@ wd097:: ; d097
 ; holds a routine that copies byte in a to [de],
 ; increments de and then returns, with some nops
 ; used exclusively in Decompress
-wDelayedCopyAToDEFunc:: ; d099
+wDecompressCopyAToDEFunc:: ; d099
 	ds $7
 
 wObjectXCoords:: ; d0a0

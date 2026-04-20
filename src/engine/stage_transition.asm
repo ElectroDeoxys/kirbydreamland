@@ -145,8 +145,8 @@ HandleStageTransition::
 	ld hl, wLevelBlockMap
 	add hl, bc
 	call Func_1964
-	ld a, $ff
-	ld [wd096], a
+	ld a, -1
+	ld [wClearSpriteSize], a
 	call .Func_1844f
 	xor a
 	call Func_21fb
@@ -253,7 +253,7 @@ HandleStageTransition::
 	ld hl, wLevelYSection
 	dec [hl]
 	ld a, [hVBlankFlags]
-	set VBLANK_5_F, a
+	set VBLANK_SCROLL_CHANGED_F, a
 	ld [hVBlankFlags], a
 .asm_18591
 	ld a, [wd067]

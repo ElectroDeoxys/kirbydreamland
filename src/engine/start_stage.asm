@@ -1,8 +1,9 @@
 ; starts stage that is in wStage
 StartStage::
-	ld a, $ff
-	ld [wd096], a
+	ld a, -1
+	ld [wClearSpriteSize], a
 	call ClearSprites
+
 	xor a
 	ld [hPalFadeFlags], a
 	ld [wd3f1], a
@@ -53,9 +54,10 @@ StartStage::
 	call HideWindow
 	call StageIntro
 .skip_intro
-	ld a, $ff
-	ld [wd096], a
+	ld a, -1
+	ld [wClearSpriteSize], a
 	call ClearAllObjects
+
 	call FadeOut
 	call Func_1c0a
 	call DisableLCD

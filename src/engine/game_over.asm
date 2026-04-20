@@ -226,8 +226,9 @@ GameOver:
 
 	ld a, SCENE_CONTINUE
 	call Func_21fb
-	ld a, $ff
-	ld [wd096], a
+
+	ld a, -1
+	ld [wClearSpriteSize], a
 	call ClearSprites
 
 	ld hl, FontGfx

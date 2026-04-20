@@ -1544,11 +1544,11 @@ Func_148ea:
 	jr nz, .asm_1494e
 	jr .asm_14991
 .asm_14969
-	xor a
+	xor a ; BLOCK_0
 	ld c, $7f
 	jr .asm_14972
 .asm_1496e
-	ld a, $03
+	ld a, BLOCK_3
 	ld c, $7c
 .asm_14972
 	ld [hl], a
@@ -1845,7 +1845,7 @@ InitRAM::
 	ld a, $00
 	ld [wKirbyScreenY], a
 	ld a, $ff
-	ld [wd096], a
+	ld [wClearSpriteSize], a
 	ld [wOverrideMusic], a ; MUSIC_NONE
 	xor a
 	ld [hl], a

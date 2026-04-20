@@ -46,7 +46,5 @@ hBlockFillPending:: ; ff96
 SECTION "Stack", HRAM
 
 hStack:: ; ff97
-	ds $67
-
+	ds $68
 hStackTop:: ; fffe
-	db

@@ -25,7 +25,7 @@ VBlank:
 	call hTransferVirtualOAM
 
 	ldh a, [hVBlankFlags]
-	and ~(VBLANK_5 | VBLANK_PENDING)
+	and ~(VBLANK_SCROLL_CHANGED | VBLANK_PENDING)
 	ldh [hVBlankFlags], a
 
 	call ApplyLCDCScrollAndBGP
@@ -82,7 +82,9 @@ ASSERT BLINK_DURATION_VISIBLE == BLINK_DURATION_INVISIBLE + 1
 	reti
 
 .waste_cycles
-	ld b, $50
+	; being here means we didn't process the frame in time for V-Blank
+	; wastes about 400 M-cycles
+	ld b, 400 / 5
 .loop_waste_cycles
 	dec b
 	jr nz, .loop_waste_cycles

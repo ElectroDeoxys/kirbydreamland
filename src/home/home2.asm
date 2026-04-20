@@ -2,7 +2,7 @@ ProcessBlockQueue:
 	ldh a, [hVBlankFlags]
 	bit VBLANK_PENDING_F, a
 	ret z
-	bit VBLANK_5_F, a
+	bit VBLANK_SCROLL_CHANGED_F, a
 	ret z
 	ld bc, wBlockQueue
 .loop_queue
@@ -157,7 +157,7 @@ FadePalettes:
 
 UpdateHUD:
 	ld hl, hVBlankFlags
-	bit VBLANK_5_F, [hl]
+	bit VBLANK_SCROLL_CHANGED_F, [hl]
 	ret nz
 	ld hl, hPalFadeFlags
 	bit FADE_MODE_F, [hl]
@@ -386,7 +386,7 @@ Decompress::
 	jp z, .loop_compressed_data
 .continue_literal_copy
 	ld a, [hli]
-	call wDelayedCopyAToDEFunc
+	call wDecompressCopyAToDEFunc
 	jr .loop_literal_copy
 
 .repeat_byte
@@ -397,7 +397,7 @@ Decompress::
 	dec b
 	jp z, .loop_compressed_data
 .continue_repeat_byte
-	call wDelayedCopyAToDEFunc
+	call wDecompressCopyAToDEFunc
 	jr .loop_repeat_byte
 
 .loop_repeat_bytes
@@ -407,9 +407,9 @@ Decompress::
 	jp z, .done_repeat_bytes
 .continue_repeat_bytes
 	ld a, [hli]
-	call wDelayedCopyAToDEFunc
+	call wDecompressCopyAToDEFunc
 	ld a, [hld]
-	call wDelayedCopyAToDEFunc
+	call wDecompressCopyAToDEFunc
 	jr .loop_repeat_bytes
 .done_repeat_bytes
 	inc hl
@@ -424,7 +424,7 @@ Decompress::
 	dec b
 	jp z, .loop_compressed_data
 .continue_increasing_sequence
-	call wDelayedCopyAToDEFunc
+	call wDecompressCopyAToDEFunc
 	inc a
 	jr .loop_increasing_sequence
 
@@ -496,18 +496,24 @@ Decompress::
 	inc hl
 	jp .loop_compressed_data
 
+; sets wDecompressCopyAToDEFunc as the following routine:
+;	swap a
+;	ld [de], a
+;	swap a
+;	inc de
+;	ret
 ; unreferenced
 Func_21a5:
-	ld a, $cb
-	ld [wDelayedCopyAToDEFunc + 0], a
-	ld [wDelayedCopyAToDEFunc + 3], a
-	ld a, $37
-	ld [wDelayedCopyAToDEFunc + 1], a
-	ld [wDelayedCopyAToDEFunc + 4], a
+	ld a, $cb ; prefix
+	ld [wDecompressCopyAToDEFunc + 0], a
+	ld [wDecompressCopyAToDEFunc + 3], a
+	ld a, $37 ; swap a
+	ld [wDecompressCopyAToDEFunc + 1], a
+	ld [wDecompressCopyAToDEFunc + 4], a
 	call Decompress
-	jp InitDelayedCopyAToDEFunc
+	jp InitDecompressCopyAToDEFunc
 
-; writes the following routine to wDelayedCopyAToDEFunc:
+; writes the following routine to wDecompressCopyAToDEFunc:
 ;	nop
 ;	nop
 ;	ld [de], a
@@ -515,8 +521,8 @@ Func_21a5:
 ;	nop
 ;	inc de
 ;	ret
-InitDelayedCopyAToDEFunc:
-	ld hl, wDelayedCopyAToDEFunc
+InitDecompressCopyAToDEFunc:
+	ld hl, wDecompressCopyAToDEFunc
 	xor a
 	ld [hli], a ; nop
 	ld [hli], a ; nop
@@ -579,9 +585,9 @@ SetObjectScripts::
 ; - a = SCENE_* constant
 Func_21fb::
 	ld [wScene], a
-	ld a, $ff
-	ld [wd096], a
 
+	ld a, -1
+	ld [wClearSpriteSize], a
 	call ClearSprites
 
 	ld a, [wROMBank]
@@ -2806,7 +2812,7 @@ Func_2e20:
 	add hl, bc
 	bit OBJFLAG_INHALED_F, [hl]
 	jr z, .not_inhaled
-	xor a
+	xor a ; BLOCK_0
 	ret
 .not_inhaled
 	push bc

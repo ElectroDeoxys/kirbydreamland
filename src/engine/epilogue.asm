@@ -1,6 +1,6 @@
 Epilogue:
-	ld a, $ff
-	ld [wd096], a
+	ld a, -1
+	ld [wClearSpriteSize], a
 	call ClearSprites
 	call FadeOut
 
@@ -62,9 +62,11 @@ Epilogue:
 
 	xor a
 	ld [hPalFadeFlags], a
-	ld a, $ff
-	ld [wd096], a
+
+	ld a, -1
+	ld [wClearSpriteSize], a
 	call ClearSprites
+
 	call FadeOut
 	call DisableLCD
 
@@ -114,9 +116,10 @@ Epilogue:
 	or e
 	jr nz, .asm_18959
 
-	ld a, $ff
-	ld [wd096], a
+	ld a, -1
+	ld [wClearSpriteSize], a
 	call ClearSprites
+
 	call FadeOut
 	ld a, SCENE_EPILOGUE_KIRBY_INFLATE
 	call Func_21fb
@@ -245,9 +248,10 @@ Epilogue:
 	jr .asm_18a09
 
 .asm_18a65
-	ld a, $ff
-	ld [wd096], a
+	ld a, -1
+	ld [wClearSpriteSize], a
 	call ClearSprites
+
 	call FadeOut
 	call DisableLCD
 	ld a, SCENE_CREDITS

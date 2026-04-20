@@ -1,7 +1,7 @@
 _Start:
 .wait_vblank
 	ldh a, [rLY]
-	cp $91
+	cp LY_VBLANK + 1
 	jr c, .wait_vblank
 Reset::
 	; reset LCDC
@@ -10,7 +10,7 @@ Reset::
 
 	di
 	; set stack
-	ld sp, hStackTop
+	ld sp, hStackTop - 1
 
 	; init RAM, OAM and audio
 	ld a, BANK("Bank 5")
@@ -18,7 +18,7 @@ Reset::
 	call InitRAM
 	call InitDMATransferFunction
 	call ClearSprites
-	call InitDelayedCopyAToDEFunc
+	call InitDecompressCopyAToDEFunc
 	call LoadMultiplicationTable
 
 	; initialize audio engine
@@ -83,12 +83,12 @@ StageLoop_UpdateHUD::
 StageLoop_SkipHUDUpdate:
 	ld a, [wBGP]
 	ldh [rBGP], a
-.asm_1f7
+.wait_vblank
 	ldh a, [hVBlankFlags]
-	bit VBLANK_5_F, a
-	jr nz, .asm_1f7
+	bit VBLANK_SCROLL_CHANGED_F, a
+	jr nz, .wait_vblank
 	bit VBLANK_PENDING_F, a
-	jr nz, .asm_1f7
+	jr nz, .wait_vblank
 	bit VBLANK_4_F, a
 	jr z, .asm_20c
 	and VBLANK_0 | VBLANK_1 | VBLANK_2 | VBLANK_3
